@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 
 import java.util.Locale;
@@ -17,12 +19,17 @@ import java.util.Locale;
 public class TabbedFragment extends Fragment {
 
     public static final String TAG = TabbedFragment.class.getSimpleName();
+    private static final String ARG_SECTION_NUMBER = "section_number";
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
 
 
-    public static TabbedFragment newInstance() {
-        return new TabbedFragment();
+    public static TabbedFragment newInstance(int sectionNumber) {
+        TabbedFragment tabbedFragment = new TabbedFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        tabbedFragment.setArguments(args);
+        return tabbedFragment;
     }
 
     @Override
@@ -40,6 +47,13 @@ public class TabbedFragment extends Fragment {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         return v;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        ((MainActivity) activity).onSectionAttached(
+                getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -67,11 +81,11 @@ public class TabbedFragment extends Fragment {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return getString(R.string.section1_tab_title1).toUpperCase(l);
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return getString(R.string.section1_tab_title2).toUpperCase(l);
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return getString(R.string.section1_tab_title3).toUpperCase(l);
             }
             return null;
         }
