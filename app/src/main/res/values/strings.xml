@@ -5,11 +5,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Internet Communication</string>
+    <string name="title_section2">Staying Anonymous</string>
+    <string name="title_section3">Mobile Phones</string>
+    <string name="title_section4">Backing Up</string>
+    <string name="title_section5">Physical Access</string>
+    <string name="section1_tab_title1">Lesson</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_skip">Skip</string>
+    <string name="pw_hint">Password</string>
 
 </resources>
