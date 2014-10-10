@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebView;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
@@ -22,7 +22,7 @@ public class TabbedFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
-
+    int mDrawerPager;
 
     public static TabbedFragment newInstance(int sectionNumber) {
         TabbedFragment tabbedFragment = new TabbedFragment();
@@ -40,9 +40,9 @@ public class TabbedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(
                 getChildFragmentManager());
-
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -103,10 +103,37 @@ public class TabbedFragment extends Fragment {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
-            TextView dummyTextView = (TextView) rootView
-                    .findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(
-                    ARG_SECTION_NUMBER)));
+            int drawerItem = ((MainActivity) getActivity()).drawerItem;
+
+            WebView wv = (WebView) rootView.findViewById(R.id.web_view);
+            wv.getSettings().setJavaScriptEnabled(true);
+            switch (drawerItem) {
+                case 0:
+                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                        wv.loadDataWithBaseURL(null, getString(R.string.section1_tab_text1), "text/html", "utf-8", null);
+                    }
+                    break;
+                case 1:
+                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                        wv.loadDataWithBaseURL(null, getString(R.string.section2_tab_text1), "text/html", "utf-8", null);
+                    }
+                    break;
+                case 2:
+                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                        wv.loadDataWithBaseURL(null, getString(R.string.section3_tab_text1), "text/html", "utf-8", null);
+                    }
+                    break;
+                case 3:
+                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                        wv.loadDataWithBaseURL(null, getString(R.string.section4_tab_text1), "text/html", "utf-8", null);
+                    }
+                    break;
+                case 4:
+                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                        wv.loadDataWithBaseURL(null, getString(R.string.section5_tab_text1), "text/html", "utf-8", null);
+                    }
+                    break;
+            }
             return rootView;
         }
     }

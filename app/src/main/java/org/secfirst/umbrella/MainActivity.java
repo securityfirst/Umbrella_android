@@ -17,6 +17,7 @@ public class MainActivity extends ActionBarActivity
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
+    public int drawerItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MainActivity extends ActionBarActivity
                 fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
                 break;
         }
+        drawerItem = position;
     }
 
     public void onSectionAttached(int number) {
