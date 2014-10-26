@@ -2,9 +2,11 @@ package org.secfirst.umbrella;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -87,12 +89,42 @@ public class MainActivity extends ActionBarActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem _searchMenuItem = menu.findItem(R.id.action_search_view);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(_searchMenuItem);
+        searchView.setQueryHint("Search");
+        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Log.i("submit", s);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                Log.i("change", s);
+                return false;
+            }
+        });
+        MenuItemCompat.setOnActionExpandListener(_searchMenuItem,new MenuItemCompat.OnActionExpandListener()
+        {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                return false;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                return false;
+            }
+        });
+
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
         }
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override

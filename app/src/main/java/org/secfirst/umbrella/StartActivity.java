@@ -59,6 +59,8 @@ public class StartActivity extends ActionBarActivity {
         });
         LinearLayout startLayout = (LinearLayout) findViewById(R.id.start_layout);
         UmbrellaUtil.setupUItoHideKeyboard(startLayout, StartActivity.this);
+
+        UmbrellaUtil.migrateDataOnStartup(this);
     }
 
     private void tryLogin() {

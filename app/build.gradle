@@ -23,4 +23,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:20.0.0'
     compile 'com.android.support:support-v4:20.0.0'
     compile 'com.viewpagerindicator:library:2.4.1'
+    compile 'org.apache.commons:commons-collections4:4.0'
 }

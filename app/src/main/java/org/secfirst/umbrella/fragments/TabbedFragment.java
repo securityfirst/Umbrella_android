@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ListView;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.adapters.SegmentAdapter;
 
 import java.util.Locale;
 
@@ -104,6 +106,12 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
             int drawerItem = ((MainActivity) getActivity()).drawerItem;
+
+            ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
+            if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
+                contentBox.setAdapter(new SegmentAdapter(getActivity(), drawerItem));
+                contentBox.setDivider(null);
+            }
 
             WebView wv = (WebView) rootView.findViewById(R.id.web_view);
             wv.getSettings().setJavaScriptEnabled(true);
