@@ -1,21 +1,24 @@
 package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.DrawerChildItem;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
 public class DrawerAdapter extends BaseExpandableListAdapter {
 
-    public ArrayList<String> groupItem, tempChild;
-    public ArrayList<Object> childItem = new ArrayList<Object>();
+    public ArrayList<String> groupItem;
+    ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
     private Context context;
 
     public DrawerAdapter(Context context) {
@@ -26,32 +29,32 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
         this.groupItem.add(context.getString(R.string.title_section3));
         this.groupItem.add(context.getString(R.string.title_section4));
         this.groupItem.add(context.getString(R.string.title_section5));
-        ArrayList<String> child = new ArrayList<String>();
-        child.add("Java");
-        child.add("Drupal");
-        child.add(".Net Framework");
-        child.add("PHP");
+        ArrayList<DrawerChildItem> child = new ArrayList<DrawerChildItem>();
+        child.add(new DrawerChildItem("Java", 1));
+        child.add(new DrawerChildItem("Drupal", 2));
+        child.add(new DrawerChildItem(".Net Framework", 3));
+        child.add(new DrawerChildItem("PHP", 3));
         childItem.add(child);
 
-        child = new ArrayList<String>();
-        child.add("Android");
-        child.add("Window Mobile");
-        child.add("iPHone");
-        child.add("Blackberry");
+        child = new ArrayList<DrawerChildItem>();
+        child.add(new DrawerChildItem("Android", 4));
+        child.add(new DrawerChildItem("Window Mobile", 5));
+        child.add(new DrawerChildItem("iPHone", 6));
+        child.add(new DrawerChildItem("Blackberry", 7));
         childItem.add(child);
 
-        child = new ArrayList<String>();
-        child.add("HTC");
-        child.add("Apple");
-        child.add("Samsung");
-        child.add("Nokia");
+        child = new ArrayList<DrawerChildItem>();
+        child.add(new DrawerChildItem("HTC", 8));
+        child.add(new DrawerChildItem("Apple", 9));
+        child.add(new DrawerChildItem("Samsung", 10));
+        child.add(new DrawerChildItem("Nokia", 11));
         childItem.add(child);
 
-        child = new ArrayList<String>();
-        child.add("Contact Us");
-        child.add("About Us");
-        child.add("Location");
-        child.add("Root Cause");
+        child = new ArrayList<DrawerChildItem>();
+        child.add(new DrawerChildItem("Contact Us", 12));
+        child.add(new DrawerChildItem("About Us", 13));
+        child.add(new DrawerChildItem("Location", 14));
+        child.add(new DrawerChildItem("Root Cause", 15));
         childItem.add(child);
     }
 
@@ -68,21 +71,34 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
-        tempChild = (ArrayList<String>) childItem.get(groupPosition);
+        ViewHolder holder;
+        final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
 
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_child_item, null);
+            holder = new ViewHolder();
+            holder.childTitle = (TextView) convertView.findViewById(R.id.drawer_child_text);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.drawer_child_text);
-        tv.setText(" - "+tempChild.get(childPosition));
+        holder.childTitle.setText(tempChild.getTitle());
+        holder.childTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("clicked", String.valueOf(tempChild.getPosition()));
+                ((MainActivity) context).onNavigationDrawerItemSelected(tempChild.getPosition());
+            }
+        });
+
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return (childItem.size()>groupPosition) ? ((ArrayList<String>) childItem.get(groupPosition)).size() : 0;
+        return (childItem.size()>groupPosition) ? (childItem.get(groupPosition)).size() : 0;
     }
 
     @Override
@@ -132,6 +148,10 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    private static class ViewHolder {
+        public TextView childTitle;
     }
 
 }

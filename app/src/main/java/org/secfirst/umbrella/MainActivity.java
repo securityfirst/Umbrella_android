@@ -14,15 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
-import org.secfirst.umbrella.fragments.NavigationDrawerFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 
 
-public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ExpandableListView.OnChildClickListener {
+public class MainActivity extends ActionBarActivity {
 
     private DrawerLayout drawer;
     private ExpandableListView drawerList;
@@ -40,7 +37,6 @@ public class MainActivity extends ActionBarActivity
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
         drawerList.setAdapter(new DrawerAdapter(this));
-        drawerList.setOnChildClickListener(this);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
                 R.drawable.ic_drawer, R.string.open_drawer,
@@ -61,28 +57,12 @@ public class MainActivity extends ActionBarActivity
         actionBarDrawerToggle.syncState();
     }
 
-    @Override
     public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        switch (position) {
-            case 0:
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
-                break;
-            case 1:
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
-                break;
-            case 2:
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
-                break;
-            case 3:
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
-                break;
-            case 4:
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
-                break;
-        }
+        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
         drawerItem = position;
+        drawer.closeDrawer(drawerList);
     }
 
     public void onSectionAttached(int number) {
@@ -158,12 +138,5 @@ public class MainActivity extends ActionBarActivity
                 drawer.openDrawer(drawerList);
         }
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i2, long l) {
-        Toast.makeText(this, "Clicked On Child" + view.getTag(),
-                Toast.LENGTH_SHORT).show();
-        return true;
     }
 }
