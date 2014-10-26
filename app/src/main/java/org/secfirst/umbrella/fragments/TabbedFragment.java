@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ListView;
 
 import org.secfirst.umbrella.MainActivity;
@@ -111,36 +110,6 @@ public class TabbedFragment extends Fragment {
             if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
                 contentBox.setAdapter(new SegmentAdapter(getActivity(), drawerItem));
                 contentBox.setDivider(null);
-            }
-
-            WebView wv = (WebView) rootView.findViewById(R.id.web_view);
-            wv.getSettings().setJavaScriptEnabled(true);
-            switch (drawerItem) {
-                case 0:
-                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                        wv.loadDataWithBaseURL(null, getString(R.string.section1_tab_text1), "text/html", "utf-8", null);
-                    }
-                    break;
-                case 1:
-                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                        wv.loadDataWithBaseURL(null, getString(R.string.section2_tab_text1), "text/html", "utf-8", null);
-                    }
-                    break;
-                case 2:
-                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                        wv.loadDataWithBaseURL(null, getString(R.string.section3_tab_text1), "text/html", "utf-8", null);
-                    }
-                    break;
-                case 3:
-                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                        wv.loadDataWithBaseURL(null, getString(R.string.section4_tab_text1), "text/html", "utf-8", null);
-                    }
-                    break;
-                case 4:
-                    if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                        wv.loadDataWithBaseURL(null, getString(R.string.section5_tab_text1), "text/html", "utf-8", null);
-                    }
-                    break;
             }
             return rootView;
         }

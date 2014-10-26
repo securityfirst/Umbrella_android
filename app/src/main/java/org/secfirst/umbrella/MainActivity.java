@@ -1,6 +1,9 @@
 package org.secfirst.umbrella;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -9,15 +12,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.Toast;
 
+import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.NavigationDrawerFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, ExpandableListView.OnChildClickListener {
 
-    private NavigationDrawerFragment mNavigationDrawerFragment;
+    private DrawerLayout drawer;
+    private ExpandableListView drawerList;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
     private CharSequence mTitle;
     public int drawerItem;
 
@@ -25,14 +34,31 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+        drawerList.setAdapter(new DrawerAdapter(this));
+        drawerList.setOnChildClickListener(this);
+
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
+                R.drawable.ic_drawer, R.string.open_drawer,
+                R.string.close_drawer) {
+            public void onDrawerClosed(View view) {}
+
+            public void onDrawerOpened(View drawerView) {}
+        };
+
+        drawer.setDrawerListener(actionBarDrawerToggle);
+
         mTitle = getTitle();
+    }
 
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        actionBarDrawerToggle.syncState();
     }
 
     @Override
@@ -86,7 +112,6 @@ public class MainActivity extends ActionBarActivity
         actionBar.setTitle(mTitle);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
@@ -108,7 +133,6 @@ public class MainActivity extends ActionBarActivity
         });
         MenuItemCompat.setOnActionExpandListener(_searchMenuItem,new MenuItemCompat.OnActionExpandListener()
         {
-
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 return false;
@@ -119,21 +143,27 @@ public class MainActivity extends ActionBarActivity
                 return false;
             }
         });
-
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            restoreActionBar();
-            return true;
-        }
         return true;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int sdk = android.os.Build.VERSION.SDK_INT;
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
+        if (sdk >= android.os.Build.VERSION_CODES.HONEYCOMB && id==android.R.id.home) {
+            if (drawer.isDrawerOpen(drawerList))
+                drawer.closeDrawer(drawerList);
+            else
+                drawer.openDrawer(drawerList);
         }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i2, long l) {
+        Toast.makeText(this, "Clicked On Child" + view.getTag(),
+                Toast.LENGTH_SHORT).show();
+        return true;
+    }
 }

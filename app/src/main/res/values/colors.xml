@@ -10,4 +10,5 @@
     <color name="umbrella_green">#FF9ABE2E</color>
     <color name="umbrella_yellow">#FFF2BC2B</color>
     <color name="umbrella_purple">#FFB73657</color>
+    <color name="holo_dark_selected">#6633b5e5</color>
 </resources>
