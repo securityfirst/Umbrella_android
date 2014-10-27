@@ -7,7 +7,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +16,7 @@ import android.widget.ExpandableListView;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.TabbedFragment;
+import org.secfirst.umbrella.models.DrawerChildItem;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -24,7 +24,6 @@ public class MainActivity extends ActionBarActivity {
     private DrawerLayout drawer;
     private ExpandableListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    private CharSequence mTitle;
     public int drawerItem;
 
     @Override
@@ -47,8 +46,7 @@ public class MainActivity extends ActionBarActivity {
         };
 
         drawer.setDrawerListener(actionBarDrawerToggle);
-
-        mTitle = getTitle();
+        onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", 1));
     }
 
     @Override
@@ -57,39 +55,13 @@ public class MainActivity extends ActionBarActivity {
         actionBarDrawerToggle.syncState();
     }
 
-    public void onNavigationDrawerItemSelected(int position) {
+    public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(position)).commit();
-        drawerItem = position;
+        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(selectedItem.getPosition())).commit();
+        drawerItem = selectedItem.getPosition();
+        getSupportActionBar().setTitle(selectedItem.getTitle());
         drawer.closeDrawer(drawerList);
-    }
-
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 0:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 1:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section3);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section4);
-                break;
-            case 4:
-                mTitle = getString(R.string.title_section5);
-                break;
-        }
-    }
-
-    public void restoreActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
     }
 
     @Override

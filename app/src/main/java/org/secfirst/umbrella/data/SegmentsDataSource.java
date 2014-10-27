@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 public class SegmentsDataSource {
 
-    // Database fields
     private SQLiteDatabase database;
     private UmbrellaSQLiteHelper dbHelper;
     private String[] allColumns = { UmbrellaSQLiteHelper.COLUMN_ID, UmbrellaSQLiteHelper.COLUMN_TITLE, UmbrellaSQLiteHelper.COLUMN_SUBTITLE, UmbrellaSQLiteHelper.COLUMN_BODY, UmbrellaSQLiteHelper.COLUMN_CATEGORY };
@@ -104,8 +103,8 @@ public class SegmentsDataSource {
                 allColumns, UmbrellaSQLiteHelper.COLUMN_CATEGORY + "=?", new String[] {String.valueOf(category)}, null, null, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            Segment comment = cursorToSegment(cursor);
-            segments.add(comment);
+            Segment segment = cursorToSegment(cursor);
+            segments.add(segment);
             cursor.moveToNext();
         }
         cursor.close();
@@ -113,12 +112,12 @@ public class SegmentsDataSource {
     }
 
     private Segment cursorToSegment(Cursor cursor) {
-        Segment comment = new Segment();
-        comment.setId(cursor.getLong(0));
-        comment.setTitle(cursor.getString(1));
-        comment.setSubtitle(cursor.getString(2));
-        comment.setBody(cursor.getString(3));
-        comment.setCategory(cursor.getInt(4));
-        return comment;
+        Segment segment = new Segment();
+        segment.setId(cursor.getLong(0));
+        segment.setTitle(cursor.getString(1));
+        segment.setSubtitle(cursor.getString(2));
+        segment.setBody(cursor.getString(3));
+        segment.setCategory(cursor.getInt(4));
+        return segment;
     }
 }

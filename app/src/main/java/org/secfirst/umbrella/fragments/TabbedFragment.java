@@ -13,17 +13,16 @@ import android.widget.ListView;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.adapters.CheckListAdapter;
 import org.secfirst.umbrella.adapters.SegmentAdapter;
 
 import java.util.Locale;
 
 public class TabbedFragment extends Fragment {
 
-    public static final String TAG = TabbedFragment.class.getSimpleName();
     private static final String ARG_SECTION_NUMBER = "section_number";
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
-    int mDrawerPager;
 
     public static TabbedFragment newInstance(int sectionNumber) {
         TabbedFragment tabbedFragment = new TabbedFragment();
@@ -53,8 +52,6 @@ public class TabbedFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -105,11 +102,20 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
             int drawerItem = ((MainActivity) getActivity()).drawerItem;
-
             ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
-            if (getArguments().getInt(ARG_SECTION_NUMBER)==1) {
-                contentBox.setAdapter(new SegmentAdapter(getActivity(), drawerItem));
-                contentBox.setDivider(null);
+
+            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+                case 1:
+                    contentBox.setAdapter(new SegmentAdapter(getActivity(), drawerItem));
+                    contentBox.setDivider(null);
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    contentBox.setAdapter(new CheckListAdapter(getActivity(), drawerItem));
+                    break;
+                default:
+
             }
             return rootView;
         }

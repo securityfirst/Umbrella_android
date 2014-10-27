@@ -2,7 +2,6 @@ package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +24,8 @@ public class SegmentAdapter extends BaseAdapter {
         SegmentsDataSource dataSource = new SegmentsDataSource(context);
         dataSource.open();
         mSegments = new ArrayList<Segment>();
-        Log.i("category", String.valueOf(category));
-        mSegments = dataSource.getAllSegmentsByCategory(category + 1);
+        mSegments = dataSource.getAllSegmentsByCategory(category);
+        dataSource.close();
         notifyDataSetChanged();
     }
 
