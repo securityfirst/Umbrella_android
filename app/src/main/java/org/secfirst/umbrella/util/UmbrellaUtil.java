@@ -2,6 +2,8 @@ package org.secfirst.umbrella.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,7 +20,9 @@ import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class UmbrellaUtil {
 
@@ -92,6 +96,21 @@ public class UmbrellaUtil {
     public static int dpToPix(int sizeInDp, Context context) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (sizeInDp*scale + 0.5f);
+    }
+
+    public static void dumpIntent(Intent i, Activity activity) {
+        String LOG_TAG = activity.getClass().getSimpleName();
+        Bundle bundle = i.getExtras();
+        if (bundle != null) {
+            Set<String> keys = bundle.keySet();
+            Iterator<String> it = keys.iterator();
+            Log.e("dump intent", "Dumping Intent start");
+            while (it.hasNext()) {
+                String key = it.next();
+                Log.e(LOG_TAG, "[" + key + "=" + bundle.get(key) + "]");
+            }
+            Log.e(LOG_TAG, "Dumping Intent end");
+        }
     }
 
 }

@@ -3,8 +3,10 @@ package org.secfirst.umbrella.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.secfirst.umbrella.models.Segment;
 
@@ -90,6 +92,22 @@ public class SegmentsDataSource {
         while (!cursor.isAfterLast()) {
             Segment comment = cursorToSegment(cursor);
             segments.add(comment);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return segments;
+    }
+
+    public ArrayList<Segment> searchSegments(String query) {
+        ArrayList<Segment> segments = new ArrayList<Segment>();
+
+        Cursor cursor = database.query(UmbrellaSQLiteHelper.TABLE_SEGMENTS,
+                allColumns, UmbrellaSQLiteHelper.COLUMN_BODY + " LIKE ?", new String[] { "%"+query+"%"}, null, null, null);
+        Log.i("cursor", DatabaseUtils.dumpCursorToString(cursor));
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Segment segment = cursorToSegment(cursor);
+            segments.add(segment);
             cursor.moveToNext();
         }
         cursor.close();

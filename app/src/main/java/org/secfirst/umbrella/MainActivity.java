@@ -1,6 +1,8 @@
 package org.secfirst.umbrella;
 
 import android.annotation.TargetApi;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.TabbedFragment;
@@ -74,12 +77,19 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Log.i("submit", s);
+                if (s.length()>2) {
+                    Intent i = new Intent(MainActivity.this, SearchActivity.class);
+                    i.setAction(Intent.ACTION_SEARCH);
+                    i.putExtra(SearchManager.QUERY, s);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(MainActivity.this, "The search query needs to be at least 3 characters long", Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Log.i("change", s);
                 return false;
             }
         });
@@ -109,6 +119,10 @@ public class MainActivity extends ActionBarActivity {
             else
                 drawer.openDrawer(drawerList);
         }
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

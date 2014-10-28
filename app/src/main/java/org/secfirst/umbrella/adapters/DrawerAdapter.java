@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.util.Global;
 
 import java.util.ArrayList;
 
@@ -23,31 +24,10 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
     public DrawerAdapter(Context context) {
         this.context = context;
+        Global global = (Global) context.getApplicationContext();
         this.groupItem = new ArrayList<String>();
-        this.groupItem.add("My Security");
-        this.groupItem.add("Communications");
-        this.groupItem.add("Personal");
-        this.groupItem.add("Travel");
-        this.groupItem.add("Operations");
-        this.groupItem.add("Home / Office");
-        this.groupItem.add("Computer Network");
-        this.groupItem.add("Glossary");
-        this.groupItem.add("Index");
-        ArrayList<DrawerChildItem> child = new ArrayList<DrawerChildItem>();
-        child.add(new DrawerChildItem("Passwords", 1));
-        child.add(new DrawerChildItem("Mobile Phones", 2));
-        child.add(new DrawerChildItem("Stay Anonymous Online", 3));
-        child.add(new DrawerChildItem("Safe Deleting", 4));
-        childItem.add(child);
-
-        child = new ArrayList<DrawerChildItem>();
-        childItem.add(child);
-
-        child = new ArrayList<DrawerChildItem>();
-        childItem.add(child);
-
-        child = new ArrayList<DrawerChildItem>();
-        childItem.add(child);
+        this.groupItem = global.getDrawerItems();
+        this.childItem = global.getDrawerChildItems();
     }
 
     @Override

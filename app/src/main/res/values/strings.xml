@@ -20,4 +20,7 @@
     <string name="action_search">Search</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Open</string>
+    <string name="title_activity_search">Search results</string>
+    <string name="no_results_label">No results found</string>
+
 </resources>
