@@ -28,7 +28,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
     public SettingsAdapter(Context context) {
         mContext = context;
-        mSettings.add(new SettingsItem("Sync"));
+        mSettings.add(new SettingsItem("Refresh from the server"));
         notifyDataSetChanged();
     }
 
@@ -43,7 +43,7 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTitle.setText("Sync");
+        holder.mTitle.setText(mSettings.get(position).getTitle());
         holder.mTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

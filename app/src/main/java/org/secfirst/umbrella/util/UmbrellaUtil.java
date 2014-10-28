@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.util;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -122,6 +123,21 @@ public class UmbrellaUtil {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public static ProgressDialog launchRingDialogWithText(final Activity activity, String text) {
+        final ProgressDialog ringProgressDialog = ProgressDialog.show(activity, "Please wait ...", text, false);
+        ringProgressDialog.setCancelable(true);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(30000);
+                    if (!activity.isFinishing()) ringProgressDialog.dismiss();
+                } catch (Exception e) { }
+            }
+        }).start();
+        return ringProgressDialog;
     }
 
 }
