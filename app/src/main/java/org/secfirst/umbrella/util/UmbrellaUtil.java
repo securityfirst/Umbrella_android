@@ -3,6 +3,8 @@ package org.secfirst.umbrella.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,7 +14,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.secfirst.umbrella.data.CheckListDataSource;
 import org.secfirst.umbrella.data.InitialData;
 import org.secfirst.umbrella.data.SegmentsDataSource;
@@ -57,40 +58,43 @@ public class UmbrellaUtil {
 
     public static void migrateDataOnStartup(Context context) {
         ArrayList<Segment> segments = InitialData.getSegmentList();
-        Log.i("class segment count", String.valueOf(segments.size()));
         SegmentsDataSource segmentDAO = new SegmentsDataSource(context);
         segmentDAO.open();
         List<Segment> fromDB = segmentDAO.getAllSegments();
-        Log.i("db segment count", String.valueOf(fromDB.size()));
 
-        Log.i("commonlist", String.valueOf(CollectionUtils.containsAll(segments, fromDB)));
-        if (true) {
-            segmentDAO.deleteAllSegments();
-            for (Segment segment : segments) {
-                Segment inserted = segmentDAO.insertSegment(segment);
-            }
+        if (fromDB.size()==0) {
+            syncSegments(segmentDAO, segments);
         }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        Log.i("class segment count", String.valueOf(checkList.size()));
         CheckListDataSource checkListDataSource = new CheckListDataSource(context);
         checkListDataSource.open();
         List<CheckItem> listsFromDB = checkListDataSource.getAllItems();
-        Log.i("db check item count", String.valueOf(listsFromDB.size()));
+        if (listsFromDB.size()==0) {
+            syncCheckLists(checkListDataSource, checkList);
+        }
+    }
 
-        Log.i("commonlist checkItems", String.valueOf(CollectionUtils.containsAll(checkList, listsFromDB)));
-        if (true) {
-            checkListDataSource.deleteAllItems();
-            CheckItem previousItem = null;
-            for (CheckItem checkItem : checkList) {
-                if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
-                    checkItem.setParent(previousItem.getId());
-                    checkListDataSource.insertItem(checkItem);
-                } else {
-                    previousItem = checkListDataSource.insertItem(checkItem);
-                }
+    public static void syncSegments(SegmentsDataSource segmentDAO, ArrayList<Segment> segments) {
+        segmentDAO.deleteAllSegments();
+        for (Segment segment : segments) {
+            segmentDAO.insertSegment(segment);
+        }
+        segmentDAO.close();
+    }
+
+    public static void syncCheckLists(CheckListDataSource checkListDataSource, ArrayList<CheckItem> checkList) {
+        checkListDataSource.deleteAllItems();
+        CheckItem previousItem = null;
+        for (CheckItem checkItem : checkList) {
+            if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
+                checkItem.setParent(previousItem.getId());
+                checkListDataSource.insertItem(checkItem);
+            } else {
+                previousItem = checkListDataSource.insertItem(checkItem);
             }
         }
+        checkListDataSource.close();
     }
 
     public static int dpToPix(int sizeInDp, Context context) {
@@ -111,6 +115,13 @@ public class UmbrellaUtil {
             }
             Log.e(LOG_TAG, "Dumping Intent end");
         }
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 }

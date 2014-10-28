@@ -22,5 +22,6 @@
     <string name="close_drawer">Open</string>
     <string name="title_activity_search">Search results</string>
     <string name="no_results_label">No results found</string>
+    <string name="no_network_message">No network connection available. Please try again later.</string>
 
 </resources>
