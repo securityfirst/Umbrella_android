@@ -6,6 +6,27 @@
     android:padding="5dp"
     tools:context=".TabbedActivity$DummySectionFragment" >
 
+    <LinearLayout
+        android:id="@+id/progress_checked"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/progress_bar_checked"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/check_bar_text"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/content_box"
         android:listSelector="@android:color/transparent"

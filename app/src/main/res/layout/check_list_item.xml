@@ -5,42 +5,60 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:paddingTop="5dp"
-        android:layout_height="match_parent">
-
-        <CheckBox
-            android:id="@+id/check_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp">
 
-        <TextView
-            android:layout_marginTop="15dp"
-            android:id="@+id/check_item_title"
-            android:textSize="@dimen/text_size_small"
-            android:textColor="@color/dark_grey"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:paddingBottom="8dp"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_marginTop="15dp"
-            android:id="@+id/check_item_subtitle"
-            android:textSize="@dimen/text_size_smallest"
-            android:textColor="@color/dark_grey"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:paddingTop="8dp"
+                android:layout_height="match_parent">
 
-    </LinearLayout>
+                <CheckBox
+                    android:id="@+id/check_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
+            </LinearLayout>
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_gravity="center"
+                android:paddingBottom="3dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/check_item_title"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/dark_grey"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/check_item_subtitle"
+                    android:textSize="@dimen/text_size_smallest"
+                    android:textColor="@color/dark_grey"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

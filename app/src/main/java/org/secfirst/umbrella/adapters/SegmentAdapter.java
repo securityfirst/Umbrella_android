@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
@@ -17,15 +16,11 @@ import java.util.ArrayList;
 public class SegmentAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Segment> mSegments;
+    private ArrayList<Segment> mSegments = new ArrayList<Segment>();
 
-    public SegmentAdapter(Context context, int category) {
+    public SegmentAdapter(Context context, ArrayList<Segment> segments) {
         this.context = context;
-        SegmentsDataSource dataSource = new SegmentsDataSource(context);
-        dataSource.open();
-        mSegments = new ArrayList<Segment>();
-        mSegments = dataSource.getAllSegmentsByCategory(category);
-        dataSource.close();
+        mSegments = segments;
         notifyDataSetChanged();
     }
 
