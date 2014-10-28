@@ -48,8 +48,9 @@ public class MainActivity extends ActionBarActivity {
             public void onDrawerOpened(View drawerView) {}
         };
 
+        Intent intent = getIntent();
         drawer.setDrawerListener(actionBarDrawerToggle);
-        onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", 1));
+        onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 1)));
     }
 
     @Override

@@ -6,11 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import org.secfirst.umbrella.adapters.SearchAdapter;
 import org.secfirst.umbrella.data.SegmentsDataSource;
@@ -35,6 +35,8 @@ public class SearchActivity extends ActionBarActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         LinearLayout noResults = (LinearLayout) findViewById(R.id.no_results);
+        LinearLayout results = (LinearLayout) findViewById(R.id.results);
+        TextView searchCount = (TextView) findViewById(R.id.search_count_text);
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
@@ -42,15 +44,14 @@ public class SearchActivity extends ActionBarActivity {
             if (query!=null) {
                 SegmentsDataSource dataSource = new SegmentsDataSource(this);
                 dataSource.open();
-                ArrayList<Segment> mSegments = new ArrayList<Segment>();
-                mSegments = dataSource.searchSegments(query);
+                ArrayList<Segment> mSegments = dataSource.searchSegments(query);
                 dataSource.close();
                 if (mSegments.size()>0) {
-                    Log.i("result count", String.valueOf(mSegments.size()));
-                    RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments);
+                    RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments, query);
                     mRecyclerView.setAdapter(mAdapter);
                     noResults.setVisibility(View.GONE);
-                    mRecyclerView.setVisibility(View.VISIBLE);
+                    results.setVisibility(View.VISIBLE);
+                    searchCount.setText(mSegments.size()+((mSegments.size()==1)?" search result":" results")+" found for this query");
                 }
             }
         }

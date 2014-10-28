@@ -1,37 +1,52 @@
 package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private ArrayList<Segment> mSegment = new ArrayList<Segment>();
+    private ArrayList<ArrayList<DrawerChildItem>> mSubtitles = new ArrayList<ArrayList<DrawerChildItem>>();
     private ArrayList<String> mTitles = new ArrayList<String>();
+    private ArrayList<String> mQueries = new ArrayList<String>();
+    private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView mSearchText;
         public TextView mTitle;
-        public TextView mSubtitle;
         public TextView mBody;
+        public CardView mCardView;
         public ViewHolder(View v) {
             super(v);
+            mSearchText = (TextView) v.findViewById(R.id.search_text);
             mTitle = (TextView) v.findViewById(R.id.search_result_title);
             mBody = (TextView) v.findViewById(R.id.search_result_body);
+            mCardView = (CardView) v.findViewById(R.id.card_view);
         }
     }
 
-    public SearchAdapter(Context context, ArrayList<Segment> segmentList) {
+    public SearchAdapter(Context context, ArrayList<Segment> segmentList, String query) {
         mSegment = segmentList;
         Global global = (Global) context.getApplicationContext();
+        mSubtitles = global.getDrawerChildItems();
         mTitles = global.getDrawerItems();
+        mQueries.add(query);
+        mContext = context;
     }
 
     @Override
@@ -45,12 +60,35 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Segment current = mSegment.get(position);
-        if (mTitles.size()>current.getCategory()) {
-            holder.mTitle.setText(mTitles.get(current.getCategory()));
+        holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + mQueries.get(0)+"</b>"));
+        final Segment current = mSegment.get(position);
+        String forTitle = "";
+        if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory());
+        if (mSubtitles.get(1).size() >= current.getCategory()) {
+            forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(1).get(current.getCategory()-1).getTitle();
+            holder.mTitle.setText(forTitle);
         }
-        String body = current.getBody().substring(0, 80);
-        holder.mBody.setText(body);
+        holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), mQueries.get(0))));
+        holder.mCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toMain = new Intent(mContext, MainActivity.class);
+                toMain.putExtra("search", current.getCategory());
+                mContext.startActivity(toMain);
+            }
+        });
+    }
+
+    private String searchBody(String body, String query) {
+        String lower = body.toLowerCase(Locale.UK);
+        int start = lower.indexOf(query.toLowerCase(Locale.UK));
+        int offset = 80;
+        int from = (start-offset>0) ? start-offset : 0;
+        int to = (start+query.length()+offset>body.length()) ? body.length() : start+query.length()+offset;
+        String returnBody = "..."+body.substring(from, to)+"...";
+
+        returnBody = returnBody.replaceAll("(?i)"+query, "<b>"+query+"</b>");
+        return returnBody;
     }
 
     @Override

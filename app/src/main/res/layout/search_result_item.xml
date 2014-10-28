@@ -3,6 +3,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/search_text"
+        android:layout_width="fill_parent"
+        android:paddingTop="15dp"
+        android:paddingRight="4dp"
+        android:gravity="right"
+        android:layout_height="wrap_content" />
+
     <android.support.v7.widget.CardView
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
@@ -13,12 +21,20 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="5dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/search_result_title"
+                android:textColor="@color/umbrella_green"
+                android:textSize="@dimen/text_size_normal"
+                android:paddingTop="2dp"
+                android:paddingBottom="4dp"
                 android:layout_width="fill_parent"
+                android:gravity="center_horizontal"
                 android:layout_height="wrap_content" />
 
             <TextView
