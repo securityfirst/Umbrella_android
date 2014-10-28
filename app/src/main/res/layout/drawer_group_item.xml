@@ -8,6 +8,7 @@
         android:id="@+id/drawer_group_text"
         android:paddingLeft="27dp"
         android:paddingTop="5dp"
+        android:textColor="@color/grey_600"
         android:paddingBottom="5dp"
         android:paddingRight="5dp"
         android:textSize="@dimen/text_size_smaller"

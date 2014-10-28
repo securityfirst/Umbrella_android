@@ -1,11 +1,11 @@
 package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.MainActivity;
@@ -52,15 +52,30 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
             convertView = mInflater.inflate(R.layout.drawer_child_item, null);
             holder = new ViewHolder();
             holder.childTitle = (TextView) convertView.findViewById(R.id.drawer_child_text);
+            holder.childIcon = (ImageView) convertView.findViewById(R.id.drawer_child_icon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
+        int iconDrawable = R.drawable.ic_lock_grey600_24dp;
+        switch (childPosition) {
+            case 1:
+                iconDrawable = R.drawable.ic_screen_lock_portrait_grey600_24dp;
+                break;
+            case 2:
+                iconDrawable = R.drawable.ic_email_grey600_24dp;
+                break;
+            case 3:
+                iconDrawable = R.drawable.ic_delete_grey600_24dp;
+                break;
+        }
+
+        holder.childIcon.setImageDrawable(context.getResources().getDrawable(iconDrawable));
         holder.childTitle.setText(tempChild.getTitle());
         holder.childTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("clicked", String.valueOf(tempChild.getPosition()));
                 ((MainActivity) context).onNavigationDrawerItemSelected(tempChild);
             }
         });
@@ -124,6 +139,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
     private static class ViewHolder {
         public TextView childTitle;
+        public ImageView childIcon;
     }
 
 }
