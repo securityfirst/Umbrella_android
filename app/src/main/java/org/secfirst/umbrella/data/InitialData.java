@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.data;
 
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 
@@ -9,6 +10,7 @@ public class InitialData {
 
     private static ArrayList<Segment> segmentList = new ArrayList<Segment>();
     private static ArrayList<CheckItem> checkList = new ArrayList<CheckItem>();
+    private static ArrayList<Category> categoryList = new ArrayList<Category>();
     public static final int PASSWORDS = 1;
     public static final int MOBILE_PHONES = 2;
     public static final int STAYING_ANONYMOUS_ONLINE = 3;
@@ -133,6 +135,23 @@ public class InitialData {
         checkList.add(new CheckItem("Use a safe deletion program", SAFE_DELETING));
 
         return checkList;
+    }
+
+    public static ArrayList<Category> getCategoryList() {
+        categoryList.add(new Category(1, 6, "Passwords"));
+        categoryList.add(new Category(2, 6, "Mobile Phones"));
+        categoryList.add(new Category(3, 6, "Stay Anonymous Online"));
+        categoryList.add(new Category(4, 6, "Safe deleting"));
+        categoryList.add(new Category(5, 0, "My Security"));
+        categoryList.add(new Category(6, 0, "Communications"));
+        categoryList.add(new Category(7, 0, "Personal"));
+        categoryList.add(new Category(8, 0, "Travel"));
+        categoryList.add(new Category(9, 0, "Operations"));
+        categoryList.add(new Category(10, 0, "Home / Office"));
+        categoryList.add(new Category(11, 0, "Computer Network"));
+        categoryList.add(new Category(12, 0, "Glossary"));
+        categoryList.add(new Category(13, 0, "Index"));
+        return categoryList;
     }
 
 }

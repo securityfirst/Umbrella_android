@@ -22,6 +22,10 @@ public class UmbrellaSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CHECK_LIST_PARENT = "parent";
     public static final String COLUMN_CHECK_LIST_CATEGORY = "category";
 
+    public static final String TABLE_CATEGORIES = "categories";
+    public static final String COLUMN_CATEGORY_ID = "_id";
+    public static final String COLUMN_CATEGORY_PARENT = "parent";
+    public static final String COLUMN_CATEGORY_CATEGORY = "category";
 
     private static final String DATABASE_NAME = "content.db";
     private static final int DATABASE_VERSION = 1;
@@ -41,6 +45,10 @@ public class UmbrellaSQLiteHelper extends SQLiteOpenHelper {
             + " integer not null, " + COLUMN_CHECK_LIST_PARENT
             + " integer not null, " + COLUMN_CHECK_LIST_CATEGORY+ " integer not null);";
 
+    public static final String DATABASE_CREATE3 = "create table "
+            + TABLE_CATEGORIES + "(" + COLUMN_CATEGORY_ID
+            + " integer primary key autoincrement, " + COLUMN_CATEGORY_PARENT+ " integer not null, "+ COLUMN_CATEGORY_CATEGORY + " text not null);";
+
     public UmbrellaSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -49,6 +57,7 @@ public class UmbrellaSQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(DATABASE_CREATE);
         database.execSQL(DATABASE_CREATE2);
+        database.execSQL(DATABASE_CREATE3);
     }
 
     @Override

@@ -15,9 +15,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import org.secfirst.umbrella.data.CategoryDataSource;
 import org.secfirst.umbrella.data.CheckListDataSource;
 import org.secfirst.umbrella.data.InitialData;
 import org.secfirst.umbrella.data.SegmentsDataSource;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 
@@ -74,6 +76,14 @@ public class UmbrellaUtil {
         if (listsFromDB.size()==0) {
             syncCheckLists(checkListDataSource, checkList);
         }
+
+        ArrayList<Category> categoryList = InitialData.getCategoryList();
+        CategoryDataSource categoryDataSource = new CategoryDataSource(context);
+        categoryDataSource.open();
+        List<Category> catFromDB = categoryDataSource.getAllItems();
+        if (catFromDB.size()==0) {
+            syncCategories(categoryDataSource, categoryList);
+        }
     }
 
     public static void syncSegments(SegmentsDataSource segmentDAO, ArrayList<Segment> segments) {
@@ -82,6 +92,15 @@ public class UmbrellaUtil {
             segmentDAO.insertSegment(segment);
         }
         segmentDAO.close();
+    }
+
+    public static void syncCategories(CategoryDataSource categoryDAO, ArrayList<Category> categories) {
+        categoryDAO.dropTable();
+        categoryDAO.createTable();
+        for (Category item : categories) {
+            categoryDAO.insertItem(item);
+        }
+        categoryDAO.close();
     }
 
     public static void syncCheckLists(CheckListDataSource checkListDataSource, ArrayList<CheckItem> checkList) {
