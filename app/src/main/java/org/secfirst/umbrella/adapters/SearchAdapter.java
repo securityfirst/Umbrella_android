@@ -14,7 +14,7 @@ import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
-import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -42,9 +42,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public SearchAdapter(Context context, ArrayList<Segment> segmentList, String query) {
         mSegment = segmentList;
-        Global global = (Global) context.getApplicationContext();
-        mSubtitles = global.getDrawerChildItems();
-        mTitles = global.getDrawerItems();
+        mSubtitles = UmbrellaUtil.getChildItems(context);
+        mTitles = UmbrellaUtil.getParentCategories(context);
         mQueries.add(query);
         mContext = context;
     }
@@ -64,8 +63,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         final Segment current = mSegment.get(position);
         String forTitle = "";
         if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory());
-        if (mSubtitles.get(1).size() >= current.getCategory()) {
-            forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(1).get(current.getCategory()-1).getTitle();
+        if (mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
+            forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
             holder.mTitle.setText(forTitle);
         }
         holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), mQueries.get(0))));

@@ -11,23 +11,21 @@ import android.widget.TextView;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DrawerChildItem;
-import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
 public class DrawerAdapter extends BaseExpandableListAdapter {
 
-    public ArrayList<String> groupItem;
+    public ArrayList<String> groupItem = new ArrayList<String>();
     ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
-    private Context context;
+    private Context mContext;
 
     public DrawerAdapter(Context context) {
-        this.context = context;
-        Global global = (Global) context.getApplicationContext();
-        this.groupItem = new ArrayList<String>();
-        this.groupItem = global.getDrawerItems();
-        this.childItem = global.getDrawerChildItems();
+        mContext = context;
+        groupItem = UmbrellaUtil.getParentCategories(context);
+        childItem = UmbrellaUtil.getChildItems(context);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
         final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
 
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context
+            LayoutInflater mInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_child_item, null);
             holder = new ViewHolder();
@@ -71,12 +69,12 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
                 break;
         }
 
-        holder.childIcon.setImageDrawable(context.getResources().getDrawable(iconDrawable));
+        holder.childIcon.setImageDrawable(mContext.getResources().getDrawable(iconDrawable));
         holder.childTitle.setText(tempChild.getTitle());
         holder.childTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) context).onNavigationDrawerItemSelected(tempChild);
+                ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
             }
         });
 
@@ -85,7 +83,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return (childItem.size()>groupPosition) ? (childItem.get(groupPosition)).size() : 0;
+        return (childItem.size() > groupPosition) ? (childItem.get(groupPosition)).size() : 0;
     }
 
     @Override
@@ -117,7 +115,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context
+            LayoutInflater mInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_group_item, null);
         }

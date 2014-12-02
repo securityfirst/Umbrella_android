@@ -17,8 +17,10 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.adapters.SettingsAdapter;
+import org.secfirst.umbrella.data.CategoryDataSource;
 import org.secfirst.umbrella.data.CheckListDataSource;
 import org.secfirst.umbrella.data.SegmentsDataSource;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
@@ -90,6 +92,24 @@ public class SettingsActivity extends ActionBarActivity {
                     checkListDataSource.open();
                     UmbrellaUtil.syncCheckLists(checkListDataSource, receivedItems);
                     Log.i("check items", "synced");
+                }
+                checkDone();
+            }
+        });
+
+        UmbrellaRestClient.get("categories", null, null, SettingsActivity.this, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<Category>>() {
+                }.getType();
+                ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
+                if (receivedItems.size() > 0) {
+                    CategoryDataSource categoryDataSource = new CategoryDataSource(SettingsActivity.this);
+                    categoryDataSource.open();
+                    UmbrellaUtil.syncCategories(categoryDataSource, receivedItems);
+                    Log.i("categories", "synced");
                 }
                 checkDone();
             }

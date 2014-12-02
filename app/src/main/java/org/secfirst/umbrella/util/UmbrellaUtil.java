@@ -21,6 +21,7 @@ import org.secfirst.umbrella.data.InitialData;
 import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
@@ -157,6 +158,47 @@ public class UmbrellaUtil {
             }
         }).start();
         return ringProgressDialog;
+    }
+
+    public static ArrayList<String> getParentCategories(Context context) {
+        CategoryDataSource catDAO = new CategoryDataSource(context);
+        catDAO.open();
+        ArrayList<Category> categories = catDAO.getAllItems();
+        catDAO.close();
+        ArrayList<String> parentCategories = new ArrayList<String>();
+        for (Category category : categories) {
+            if (category.getParent()==0) {
+                parentCategories.add(category.getCategory());
+            }
+        }
+        return parentCategories;
+    }
+
+    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
+        CategoryDataSource catDAO = new CategoryDataSource(context);
+        catDAO.open();
+        ArrayList<Category> categories = catDAO.getAllItems();
+        catDAO.close();
+        ArrayList<Category> parentCategories = new ArrayList<Category>();
+        for (Category category : categories) {
+            if (category.getParent()==0) {
+                parentCategories.add(category);
+            }
+        }
+
+        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
+        ArrayList<DrawerChildItem> child = new ArrayList<DrawerChildItem>();
+        for (Category parentCategory : parentCategories) {
+            child = new ArrayList<DrawerChildItem>();
+            for (Category category : categories) {
+                if (category.getParent() == parentCategory.getId()) {
+                    child.add(new DrawerChildItem(category.getCategory(), category.getId()));
+                }
+            }
+            childItem.add(child);
+        }
+
+        return childItem;
     }
 
 }
