@@ -201,4 +201,17 @@ public class UmbrellaUtil {
         return childItem;
     }
 
+    public static String getDifficultyString(int difficulty) {
+        switch (difficulty) {
+            case 1:
+                return "Beginner";
+            case 2:
+                return "Intermediate";
+            case 3:
+                return "Expert";
+            default:
+                return "Beginner";
+        }
+    }
+
 }

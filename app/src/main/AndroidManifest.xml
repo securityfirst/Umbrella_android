@@ -23,6 +23,7 @@
         </activity>
         <activity
             android:name="org.secfirst.umbrella.MainActivity"
+            android:theme="@style/NoActionBarTheme"
             android:label="@string/title_activity_main" >
             <meta-data android:name="android.app.default_searchable"
                 android:value=".SearchActivity" />

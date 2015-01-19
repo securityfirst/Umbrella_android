@@ -6,6 +6,11 @@
     android:padding="5dp"
     tools:context=".TabbedActivity$DummySectionFragment" >
 
+    <TextView
+        android:id="@+id/difficulty"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/progress_checked"
         android:orientation="vertical"

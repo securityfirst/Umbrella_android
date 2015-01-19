@@ -10,11 +10,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
@@ -27,14 +31,33 @@ public class MainActivity extends ActionBarActivity {
     private DrawerLayout drawer;
     private ExpandableListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    public int drawerItem;
+    public int drawerItem, navItem;
+    private Spinner titleSpinner;
+    private DrawerChildItem childItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
+        navItem = 0;
+        titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                navItem = position;
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), position), childItem.getTitle()).commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
@@ -51,6 +74,12 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = getIntent();
         drawer.setDrawerListener(actionBarDrawerToggle);
         onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 1)));
+        setNavItems("Passwords");
+    }
+
+    private void setNavItems(String title) {
+        ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, new String[] {title +" Beginner", title +" Intermediate", title +" Expert"});
+        titleSpinner.setAdapter(navAdapter);
     }
 
     @Override
@@ -60,11 +89,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
+        childItem = selectedItem;
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(selectedItem.getPosition())).commit();
-        drawerItem = selectedItem.getPosition();
-        getSupportActionBar().setTitle(selectedItem.getTitle());
+        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), navItem), childItem.getTitle()).commit();
+        drawerItem = childItem.getPosition();
+        setNavItems(childItem.getTitle());
         drawer.closeDrawer(drawerList);
     }
 

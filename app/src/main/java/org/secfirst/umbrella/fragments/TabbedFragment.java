@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,20 +23,22 @@ import org.secfirst.umbrella.data.CheckListDataSource;
 import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class TabbedFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    public static int difficulty;
 
-    public static TabbedFragment newInstance(int sectionNumber) {
+    public static TabbedFragment newInstance(int sectionNumber, int spinnerNumber) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        difficulty = spinnerNumber;
+        Log.i("spinner", String.valueOf(difficulty));
         tabbedFragment.setArguments(args);
         return tabbedFragment;
     }
@@ -49,11 +52,10 @@ public class TabbedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(
-                getChildFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        mSectionsPagerAdapter.difficulty = difficulty;
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
         return v;
     }
 
@@ -64,6 +66,8 @@ public class TabbedFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        public int difficulty;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -73,6 +77,7 @@ public class TabbedFragment extends Fragment {
             Fragment fragment = new TabbedContentFragment();
             Bundle args = new Bundle();
             args.putInt(TabbedContentFragment.ARG_SECTION_NUMBER, position + 1);
+            args.putInt(TabbedContentFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
             fragment.setArguments(args);
             return fragment;
         }
@@ -89,8 +94,6 @@ public class TabbedFragment extends Fragment {
                 case 0:
                     return getString(R.string.section1_tab_title1).toUpperCase(l);
                 case 1:
-                    return getString(R.string.section1_tab_title2).toUpperCase(l);
-                case 2:
                     return getString(R.string.section1_tab_title3).toUpperCase(l);
             }
             return null;
@@ -100,10 +103,11 @@ public class TabbedFragment extends Fragment {
     public static class TabbedContentFragment extends Fragment {
 
         public static final String ARG_SECTION_NUMBER = "section_number";
+        public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
         private ArrayList<Segment> mSegments;
         private ArrayList<CheckItem> mCheckList;
         private ProgressBar checkBar;
-        private TextView checkBarText;
+        private TextView checkBarText, textDifficulty;
 
         public TabbedContentFragment() {
         }
@@ -121,11 +125,24 @@ public class TabbedFragment extends Fragment {
             checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
             checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
             setProgressBarTo(0);
+            textDifficulty = (TextView) rootView.findViewById(R.id.difficulty);
+
+            textDifficulty.setText(UmbrellaUtil.getDifficultyString(getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)));
 
             checkBarLayout.setVisibility(getArguments().getInt(ARG_SECTION_NUMBER) == 3 ? View.VISIBLE : View.GONE);
 
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1:
+                    switch (getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)) {
+                        case 1:
+                            // do the beginner content
+                        case 2:
+                            // do the intermediate content
+                        case 3:
+                            // show expert content
+                        default:
+                            //default to beginner for now
+                    }
                     SegmentsDataSource dataSource = new SegmentsDataSource(getActivity());
                     dataSource.open();
                     mSegments = dataSource.getAllSegmentsByCategory(drawerItem);
@@ -134,8 +151,16 @@ public class TabbedFragment extends Fragment {
                     contentBox.setDivider(null);
                     break;
                 case 2:
-                    break;
-                case 3:
+                    switch (getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)) {
+                        case 1:
+                            // do the beginner check list
+                        case 2:
+                            // do the intermediate check list
+                        case 3:
+                            // show expert check list
+                        default:
+                            //default to beginner for now
+                    }
                     refreshCheckList(drawerItem);
                     contentBox.setAdapter(new CheckListAdapter(getActivity(), mCheckList, this));
                     contentBox.setDivider(null);
