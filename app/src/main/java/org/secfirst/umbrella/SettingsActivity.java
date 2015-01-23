@@ -3,10 +3,8 @@ package org.secfirst.umbrella;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -31,17 +29,13 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends BaseActivity {
     private ProgressDialog mProgress;
     private static int syncDone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.settings_list);
         mRecyclerView.setHasFixedSize(true);
@@ -52,6 +46,11 @@ public class SettingsActivity extends ActionBarActivity {
         RecyclerView.Adapter mAdapter = new SettingsAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_settings;
     }
 
     public void checkDone() {

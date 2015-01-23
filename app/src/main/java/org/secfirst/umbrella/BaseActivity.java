@@ -2,6 +2,7 @@ package org.secfirst.umbrella;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 import org.secfirst.umbrella.util.Global;
 
@@ -13,7 +14,16 @@ public abstract class BaseActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         global = (Global) getApplicationContext();
+        setContentView(getLayoutResource());
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setTitle(R.string.app_name);
+        }
     }
+
+    protected abstract int getLayoutResource();
 
     @Override
     protected void onResume() {

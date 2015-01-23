@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.content.IntentCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +25,7 @@ public class StartActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar!=null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            toolbar.setTitle(R.string.app_name);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         UmbrellaUtil.migrateDataOnStartup(this);
         if (!global.hasPasswordSet()) {
@@ -59,6 +53,11 @@ public class StartActivity extends BaseActivity {
         LinearLayout startLayout = (LinearLayout) findViewById(R.id.start_layout);
         UmbrellaUtil.setupUItoHideKeyboard(startLayout, StartActivity.this);
 
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_start;
     }
 
     @Override
@@ -129,7 +128,7 @@ public class StartActivity extends BaseActivity {
     private void tryLogin() {
         boolean isPasswordOk = global.checkPassword(inputPassword.getText().toString().trim());
         if (isPasswordOk) {
-            startActivity(new Intent(this, MainActivity.class));
+            goToMain();
         } else {
             inputPassword.setText("");
             Toast.makeText(this, getString(R.string.incorrect_password), Toast.LENGTH_SHORT).show();
@@ -137,6 +136,10 @@ public class StartActivity extends BaseActivity {
     }
 
     private void goToMain() {
-        startActivity(new Intent(StartActivity.this, (global.hasShownTour() ? MainActivity.class : TourActivity.class) ));
+        Intent toMain = new Intent(StartActivity.this, (global.getTermsAccepted() ? MainActivity.class : TourActivity.class));
+        if (global.getTermsAccepted()) {
+            toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+        }
+        startActivity(toMain);
     }
 }

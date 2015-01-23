@@ -3,7 +3,6 @@ package org.secfirst.umbrella;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -19,12 +18,11 @@ import org.secfirst.umbrella.models.Segment;
 import java.util.ArrayList;
 
 
-public class SearchActivity extends ActionBarActivity {
+public class SearchActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -55,6 +53,11 @@ public class SearchActivity extends ActionBarActivity {
                 }
             }
         }
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_search;
     }
 
 

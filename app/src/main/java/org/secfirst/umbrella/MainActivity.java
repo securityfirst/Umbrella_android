@@ -9,8 +9,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,7 +24,7 @@ import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.DrawerChildItem;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawer;
     private ExpandableListView drawerList;
@@ -38,10 +36,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
         navItem = 0;
         titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -75,6 +69,11 @@ public class MainActivity extends ActionBarActivity {
         drawer.setDrawerListener(actionBarDrawerToggle);
         onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 1)));
         setNavItems("Passwords");
+    }
+
+    @Override
+    protected int getLayoutResource() {
+        return R.layout.activity_main;
     }
 
     private void setNavItems(String title) {

@@ -32,7 +32,7 @@ public class Global extends Application {
         _termsAccepted = terms;
     }
 
-    public boolean hasShownTour() {
+    public boolean getTermsAccepted() {
         return _termsAccepted;
     }
 

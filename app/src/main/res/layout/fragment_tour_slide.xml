@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/slide_layout"
-    android:padding="35dp"
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:layout_width="match_parent"
@@ -10,6 +9,7 @@
     tools:context="org.secfirst.umbrella.fragments.TourSlideFragment">
 
     <LinearLayout
+        android:id="@+id/umbrella_layout"
         android:layout_width="wrap_content"
         android:layout_weight="3"
         android:layout_height="0dp">
@@ -41,6 +41,7 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
+        android:orientation="vertical"
         android:layout_weight="3"
         android:layout_height="0dp">
 
@@ -54,6 +55,40 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
+        <ScrollView
+            android:id="@+id/scroll_terms"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="Terms and conditions. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua."
+                android:textColor="@color/dark_grey"
+                android:background="@color/white"
+                android:padding="20dp"
+                android:textSize="@dimen/text_size_smaller"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:visibility="gone"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/white"
+        android:text="@string/btn_skip"
+        android:padding="5dp"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

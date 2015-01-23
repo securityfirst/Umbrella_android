@@ -11,7 +11,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="btn_login">Login</string>
-    <string name="btn_skip">Skip</string>
+    <string name="btn_skip">Accept</string>
     <string name="pw_hint">Password</string>
     <string name="title_activity_tour">Tour</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
