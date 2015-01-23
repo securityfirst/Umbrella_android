@@ -23,5 +23,9 @@
     <string name="title_activity_search">Search results</string>
     <string name="no_results_label">No results found</string>
     <string name="no_network_message">No network connection available. Please try again later.</string>
+    <string name="login_password">Log in with your password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="incorrect_password">Password incorrect. Please try again.</string>
+    <string name="set_password">Set password</string>
 
 </resources>

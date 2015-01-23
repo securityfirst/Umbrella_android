@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class UmbrellaUtil {
 
@@ -212,6 +213,20 @@ public class UmbrellaUtil {
             default:
                 return "Beginner";
         }
+    }
+
+    public static String checkPasswordStrength(String password) {
+        if (password.length()<6) {
+            return "Password too short";
+        } else if(!Pattern.compile("\\d").matcher(password).find()) {
+            return "Password must have at least one digit";
+        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+            return "Password must have at least one capital letter";
+        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+            return "Password must have at least one small letter";
+        }
+        return "";
+
     }
 
 }

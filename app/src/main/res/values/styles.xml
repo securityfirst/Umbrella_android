@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
     </style>
     <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
     <style name="action_btn" parent="@android:style/Widget.Button">
         <item name="android:layout_height">100dp</item>
-        <item name="android:layout_marginLeft">35dp</item>
-        <item name="android:layout_marginRight">35dp</item>
+        <item name="android:layout_marginLeft">45dp</item>
+        <item name="android:layout_marginRight">45dp</item>
         <item name="android:background">@drawable/rounded_button</item>
         <item name="android:textSize">16sp</item>
         <item name="android:layout_marginTop">10dp</item>
@@ -17,17 +17,23 @@
     <style name="input_box_small">
         <item name="android:fontFamily" tools:ignore="NewApi">Roboto</item>
         <item name="android:layout_marginTop">20dp</item>
-        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:layout_marginBottom">20dp</item>
-        <item name="android:background">@drawable/rounded_corner_opacity</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/underline</item>
+        <item name="android:layout_marginLeft">35dp</item>
+        <item name="android:layout_marginRight">35dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="android:minHeight">45dp</item>
         <item name="android:singleLine">true</item>
         <item name="android:lines">1</item>
         <item name="android:paddingLeft">10dp</item>
         <item name="android:paddingRight">10dp</item>
-        <item name="android:textColorHint">@color/medium_grey</item>
+        <item name="android:textColorHint">@color/white_transparent</item>
         <item name="android:textCursorDrawable" tools:ignore="NewApi">@null</item>
+    </style>
+    <style name="input_box_login" parent="input_box_small">
+        <item name="android:layout_marginLeft">60dp</item>
+        <item name="android:layout_marginRight">0dp</item>
     </style>
 
 </resources>

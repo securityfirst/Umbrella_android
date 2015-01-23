@@ -9,7 +9,7 @@
 
     <stroke
         android:width="0.5dp"
-        android:color="@color/grey" />
+        android:color="@color/green_button" />
 
-    <solid android:color="@color/green_transparent" />
+    <solid android:color="@color/green_button" />
 </shape>

@@ -31,7 +31,7 @@ public class TourActivity extends ActionBarActivity implements TourViewPager.OnS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         setContentView(R.layout.activity_tour);
         global = (Global) getApplicationContext();
@@ -112,7 +112,7 @@ public class TourActivity extends ActionBarActivity implements TourViewPager.OnS
     }
 
     public void toMain() {
-        global.set_shownTour(true);
+        global.set_termsAccepted(true);
         Intent toMain = new Intent(TourActivity.this, MainActivity.class);
         toMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(toMain);
