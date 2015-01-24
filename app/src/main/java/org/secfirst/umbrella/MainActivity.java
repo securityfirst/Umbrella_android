@@ -23,6 +23,7 @@ import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 
 public class MainActivity extends BaseActivity {
@@ -37,6 +38,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UmbrellaUtil.migrateDataOnStartup(this);
+        if (global.hasPasswordSet() && !global.isLoggedIn()) {
+            startActivity(new Intent(this, StartActivity.class));
+        } else if (!global.getTermsAccepted()) {
+            startActivity(new Intent(this, TourActivity.class));
+        }
+
         titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
         navItem = 0;
         groupItem = -1;
@@ -70,7 +78,13 @@ public class MainActivity extends BaseActivity {
         };
 
         drawer.setDrawerListener(actionBarDrawerToggle);
-        setDashboard("My Security");
+        if (global.hasPasswordSet()) {
+            setDashboard("My Security");
+        } else {
+            Intent intent = getIntent();
+            onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 1)));
+            setNavItems("Passwords");
+        }
     }
 
     @Override
@@ -151,6 +165,17 @@ public class MainActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem itemResetPw = menu.findItem(R.id.action_reset_password);
+        MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
+        MenuItem itemLogout = menu.findItem(R.id.action_logout);
+        itemSetPw.setVisible(!global.hasPasswordSet());
+        itemResetPw.setVisible(global.hasPasswordSet());
+        itemLogout.setVisible(global.hasPasswordSet());
+        return true;
+    }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -164,6 +189,18 @@ public class MainActivity extends BaseActivity {
         }
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        if (id == R.id.action_logout) {
+            startActivity(new Intent(this, StartActivity.class));
+            return true;
+        }
+        if (id == R.id.action_set_password) {
+            global.setPassword(this);
+            return true;
+        }
+        if (id == R.id.action_reset_password) {
+            global.resetPassword(this);
             return true;
         }
         return super.onOptionsItemSelected(item);

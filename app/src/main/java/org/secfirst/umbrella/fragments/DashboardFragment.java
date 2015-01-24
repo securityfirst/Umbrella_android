@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -50,19 +51,21 @@ public class DashboardFragment extends Fragment {
         percentDone.setText("54%");
 
         ArrayList<DashCheckFinished> checkLists = new ArrayList<>();
-        checkLists.add(new DashCheckFinished("first", 66));
-        checkLists.add(new DashCheckFinished("second", 56));
-        checkLists.add(new DashCheckFinished("third", 46));
+        checkLists.add(new DashCheckFinished("Passwords", 66));
+        checkLists.add(new DashCheckFinished("Mobile Phones", 56));
+        checkLists.add(new DashCheckFinished("Safe Deleting", 46));
         DashCheckListAdapter mAdapter = new DashCheckListAdapter(getActivity(), checkLists);
         ListView mListView = (ListView) view.findViewById(R.id.check_list);
+        mListView.setDividerHeight(10);
         mListView.setAdapter(mAdapter);
 
         ArrayList<FeedItem> forFeed = new ArrayList<>();
-        forFeed.add(new FeedItem("First title", "subtitl1e", "1info about...", ""));
+        forFeed.add(new FeedItem("First title", "subtitle1", "1info about...", ""));
         forFeed.add(new FeedItem("Second title", "subtitle2", "2info about...", ""));
         forFeed.add(new FeedItem("Third title", "subtitle3", "3info about...", ""));
         DashFeedAdapter feedAdapter = new DashFeedAdapter(getActivity(), forFeed);
         ListView feedListView = (ListView) view.findViewById(R.id.feed_list);
+        feedListView.setDividerHeight(10);
         feedListView.setAdapter(feedAdapter);
         return view;
     }
@@ -78,6 +81,28 @@ public class DashboardFragment extends Fragment {
         ArrayList<CheckItem> checkItems = checkListDataSource.getAllItems();
         checkListDataSource.close();
         return checkItems;
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
 }

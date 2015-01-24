@@ -13,20 +13,18 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="org.secfirst.umbrella.StartActivity"
-            android:label="@string/app_name" >
+            android:name="org.secfirst.umbrella.MainActivity"
+            android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="org.secfirst.umbrella.MainActivity"
-            android:theme="@style/NoActionBarTheme"
-            android:label="@string/title_activity_main" >
             <meta-data android:name="android.app.default_searchable"
                 android:value=".SearchActivity" />
+        </activity>
+        <activity
+            android:name="org.secfirst.umbrella.StartActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="org.secfirst.umbrella.TourActivity"

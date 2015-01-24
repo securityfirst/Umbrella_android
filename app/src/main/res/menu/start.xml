@@ -1,16 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:umbrella="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".StartActivity" >
 
     <item android:id="@+id/action_reset_password"
         android:title="@string/reset_password"
         android:orderInCategory="9"
-        app:showAsAction="never" />
+        umbrella:showAsAction="never" />
 
     <item android:id="@+id/action_set_password"
         android:title="@string/set_password"
         android:orderInCategory="9"
         android:visible="false"
-        app:showAsAction="never" />
+        umbrella:showAsAction="never" />
 </menu>

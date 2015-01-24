@@ -30,5 +30,6 @@
     <string name="my_checklists">My Checklists</string>
     <string name="feeds">Feeds</string>
     <string name="check_lists_total">Check lists total</string>
+    <string name="log_out">Log out</string>
 
 </resources>

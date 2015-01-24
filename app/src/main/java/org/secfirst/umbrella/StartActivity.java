@@ -1,10 +1,9 @@
 package org.secfirst.umbrella;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.IntentCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ public class StartActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        UmbrellaUtil.migrateDataOnStartup(this);
         if (!global.hasPasswordSet()) {
             goToMain();
         }
@@ -79,47 +77,10 @@ public class StartActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_reset_password) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(StartActivity.this);
-            alertDialogBuilder.setTitle("Confirm reset password");
-            alertDialogBuilder.setMessage("Are you sure you want to reset your password? This also means losing any data you might have entered so far");
-            alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog,int id) {
-                    global.savePassword("");
-                    Toast.makeText(StartActivity.this, "Password reset and all data removed.", Toast.LENGTH_SHORT).show();
-                }
-            });
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            global.resetPassword(this);
             return true;
         } else if (id == R.id.action_set_password) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle("Set your password");
-            alert.setMessage("Your password must be at least 4 characters long and must contain at least one digit and one capital letter");
-            final EditText pwInput = new EditText(this);
-            alert.setView(pwInput);
-            alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    String pw = pwInput.getText().toString();
-                    String checkError = UmbrellaUtil.checkPasswordStrength(pw);
-                    if (checkError.equals("")) {
-                        global.savePassword(pw);
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(StartActivity.this, "You must choose a stronger password. "+checkError,Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.cancel();
-                }
-            });
-            alert.show();
+            global.setPassword(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -138,7 +99,10 @@ public class StartActivity extends BaseActivity {
     private void goToMain() {
         Intent toMain = new Intent(StartActivity.this, (global.getTermsAccepted() ? MainActivity.class : TourActivity.class));
         if (global.getTermsAccepted()) {
+            Log.i("to", "main");
             toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+        } else {
+            Log.i("to", "tour");
         }
         startActivity(toMain);
     }

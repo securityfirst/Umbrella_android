@@ -16,4 +16,19 @@
         android:title="@string/action_settings"
         android:orderInCategory="100"
         umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_logout"
+        android:title="@string/log_out"
+        android:orderInCategory="101"
+        umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_set_password"
+        android:title="@string/set_password"
+        android:orderInCategory="102"
+        umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_reset_password"
+        android:title="@string/reset_password"
+        android:orderInCategory="9"
+        umbrella:showAsAction="never" />
 </menu>

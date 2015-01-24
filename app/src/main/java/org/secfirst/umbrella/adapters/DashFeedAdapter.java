@@ -18,11 +18,12 @@ import java.util.ArrayList;
 public class DashFeedAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<FeedItem> feedItems;
+    private ArrayList<FeedItem> feedItems = new ArrayList<>();
 
     public DashFeedAdapter(Context context, ArrayList<FeedItem> feedItems) {
         mContext = context;
         this.feedItems = feedItems;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -51,6 +52,7 @@ public class DashFeedAdapter extends BaseAdapter {
             holder.heading = (TextView) convertView.findViewById(R.id.feed_subtitle);
             holder.body = (TextView) convertView.findViewById(R.id.feed_body);
             holder.card = (CardView) convertView.findViewById(R.id.card_view);
+            convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -61,9 +63,11 @@ public class DashFeedAdapter extends BaseAdapter {
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(current.getUrl()));
-                mContext.startActivity(i);
+                if (!current.getUrl().equals("")) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(current.getUrl()));
+                    mContext.startActivity(i);
+                }
             }
         });
 

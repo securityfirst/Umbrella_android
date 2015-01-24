@@ -53,7 +53,7 @@ public class DashCheckListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.categoryName.setText(current.getCategory());
-        holder.percent.setText(String.valueOf(current.getPercent()));
+        holder.percent.setText(String.valueOf(current.getPercent())+"%");
 
         return convertView;
     }
