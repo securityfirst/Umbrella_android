@@ -13,5 +13,6 @@
     <color name="umbrella_purple">#FFB73657</color>
     <color name="umbrella_purple_dark">#FF8D2A43</color>
     <color name="holo_dark_selected">#6633b5e5</color>
+    <color name="dashboard_light_blue">#FF76c3da</color>
     <color name="grey_600">#546e7a</color>
 </resources>

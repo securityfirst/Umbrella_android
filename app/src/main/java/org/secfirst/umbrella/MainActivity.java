@@ -104,7 +104,7 @@ public class MainActivity extends BaseActivity {
         groupItem = 0;
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance("", "")).commit();
+        fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).commit();
         drawer.closeDrawer(drawerList);
         titleSpinner.setVisibility(View.GONE);
         setTitle(groupName);

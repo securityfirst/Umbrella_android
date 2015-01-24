@@ -6,34 +6,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.adapters.DashCheckListAdapter;
+import org.secfirst.umbrella.adapters.DashFeedAdapter;
+import org.secfirst.umbrella.data.CheckListDataSource;
+import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.DashCheckFinished;
+import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.util.Global;
 
-import org.secfirst.umbrella.fragments.dummy.DummyContent;
+import java.util.ArrayList;
 
-public class DashboardFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class DashboardFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private Global global;
 
-    private String mParam1;
-    private String mParam2;
-
-    private AbsListView mListView;
-    private ListAdapter mAdapter;
-
-    // TODO: Rename and change types of parameters
-    public static DashboardFragment newInstance(String param1, String param2) {
+    public static DashboardFragment newInstance(Global global) {
         DashboardFragment fragment = new DashboardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.global = global;
         return fragment;
     }
 
@@ -43,14 +36,6 @@ public class DashboardFragment extends Fragment implements AbsListView.OnItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
     }
 
     @Override
@@ -58,10 +43,27 @@ public class DashboardFragment extends Fragment implements AbsListView.OnItemCli
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item, container, false);
 
-        mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
-        mListView.setOnItemClickListener(this);
+        TextView checkCategory = (TextView) view.findViewById(R.id.check_category);
+        TextView percentDone = (TextView) view.findViewById(R.id.check_percent);
 
+        checkCategory.setText("Total checklists done");
+        percentDone.setText("54%");
+
+        ArrayList<DashCheckFinished> checkLists = new ArrayList<>();
+        checkLists.add(new DashCheckFinished("first", 66));
+        checkLists.add(new DashCheckFinished("second", 56));
+        checkLists.add(new DashCheckFinished("third", 46));
+        DashCheckListAdapter mAdapter = new DashCheckListAdapter(getActivity(), checkLists);
+        ListView mListView = (ListView) view.findViewById(R.id.check_list);
+        mListView.setAdapter(mAdapter);
+
+        ArrayList<FeedItem> forFeed = new ArrayList<>();
+        forFeed.add(new FeedItem("First title", "subtitl1e", "1info about...", ""));
+        forFeed.add(new FeedItem("Second title", "subtitle2", "2info about...", ""));
+        forFeed.add(new FeedItem("Third title", "subtitle3", "3info about...", ""));
+        DashFeedAdapter feedAdapter = new DashFeedAdapter(getActivity(), forFeed);
+        ListView feedListView = (ListView) view.findViewById(R.id.feed_list);
+        feedListView.setAdapter(feedAdapter);
         return view;
     }
 
@@ -70,16 +72,12 @@ public class DashboardFragment extends Fragment implements AbsListView.OnItemCli
         super.onAttach(activity);
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-    }
-
-    public void setEmptyText(CharSequence emptyText) {
-        View emptyView = mListView.getEmptyView();
-
-        if (emptyView instanceof TextView) {
-            ((TextView) emptyView).setText(emptyText);
-        }
+    private ArrayList<CheckItem> refreshCheckItems(Activity activity) {
+        CheckListDataSource checkListDataSource = new CheckListDataSource(activity);
+        checkListDataSource.open();
+        ArrayList<CheckItem> checkItems = checkListDataSource.getAllItems();
+        checkListDataSource.close();
+        return checkItems;
     }
 
 }

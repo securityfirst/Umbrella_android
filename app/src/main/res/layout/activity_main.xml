@@ -27,7 +27,6 @@
         android:layout_height="match_parent"
         tools:context="org.secfirst.umbrella.MainActivity">
 
-
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
