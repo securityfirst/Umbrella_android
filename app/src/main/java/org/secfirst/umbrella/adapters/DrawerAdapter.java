@@ -112,7 +112,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
+    public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater) mContext
@@ -121,6 +121,14 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
         }
         TextView tv = (TextView) convertView.findViewById(R.id.drawer_group_text);
         tv.setText(groupItem.get(groupPosition));
+        if (groupPosition==0) {
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) mContext).setDashboard(groupItem.get(groupPosition));
+                }
+            });
+        }
 
         return convertView;
     }

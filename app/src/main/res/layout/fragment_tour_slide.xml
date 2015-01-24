@@ -84,7 +84,7 @@
         android:layout_marginBottom="20dp"
         android:layout_marginRight="20dp"
         android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/white"
+        android:textColor="@color/white_transparent"
         android:text="@string/btn_skip"
         android:padding="5dp"
         android:background="@null"

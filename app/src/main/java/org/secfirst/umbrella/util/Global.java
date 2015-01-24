@@ -24,33 +24,28 @@ public class Global extends Application {
 
     public void savePassword(String password) {
         this._password = password;
-        sped.putString("password", password);
-        sped.commit();
+        sped.putString("password", password).commit();
     }
 
     public void set_termsAccepted(boolean terms) {
         _termsAccepted = terms;
+        sped.putBoolean("termsAccepted", _termsAccepted).commit();
     }
 
     public boolean getTermsAccepted() {
+        _termsAccepted = prefs.getBoolean("termsAccepted", false);
         return _termsAccepted;
     }
 
     public boolean checkPassword(String password) {
         this._password = prefs.getString("password", "");
-        if (!this._password.equals("") && password.equals(this._password)) {
-            return true;
-        }
-        return false;
+        return !this._password.equals("") && password.equals(this._password);
     }
 
     public boolean hasPasswordSet() {
         if (this._password.equals("")) {
             String password = prefs.getString("password", "");
-            if (!password.equals("")) {
-                return true;
-            }
-            return false;
+            return !password.equals("");
         }
         return true;
     }

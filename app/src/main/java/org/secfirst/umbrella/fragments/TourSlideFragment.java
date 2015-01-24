@@ -52,7 +52,7 @@ public class TourSlideFragment extends Fragment {
 
         TextView headingTitle = (TextView) rootView.findViewById(R.id.heading_title);
         TextView headingBody = (TextView) rootView.findViewById(R.id.heading_body);
-        Button skipBtn = (Button) rootView.findViewById(R.id.btn_skip);
+        final Button skipBtn = (Button) rootView.findViewById(R.id.btn_skip);
         final ScrollView termsView = (ScrollView) rootView.findViewById(R.id.scroll_terms);
 
         switch (mPageNumber) {
@@ -75,12 +75,15 @@ public class TourSlideFragment extends Fragment {
                     @Override
                     public void onScrollChanged() {
                         mOffset = termsView.getScrollY();
+                        if (mOffset>70) {
+                            skipBtn.setTextColor(getActivity().getResources().getColor(R.color.white));
+                        }
                     }
                 });
                 skipBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOffset>100) {
+                        if (mOffset>70) {
                             global.set_termsAccepted(true);
                             Intent toMain = new Intent(getActivity(), MainActivity.class);
                             toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);

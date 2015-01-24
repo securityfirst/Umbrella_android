@@ -20,16 +20,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
+import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.DrawerChildItem;
 
 
 public class MainActivity extends BaseActivity {
 
-    private DrawerLayout drawer;
-    private ExpandableListView drawerList;
+    public DrawerLayout drawer;
+    public ExpandableListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    public int drawerItem, navItem;
+    public int drawerItem, groupItem, navItem;
     private Spinner titleSpinner;
     private DrawerChildItem childItem;
 
@@ -38,13 +39,16 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
         navItem = 0;
+        groupItem = -1;
         titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                navItem = position;
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), position), childItem.getTitle()).commit();
+                if (groupItem!=0) {
+                    navItem = position;
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), position), childItem.getTitle()).commit();
+                }
             }
 
             @Override
@@ -65,10 +69,8 @@ public class MainActivity extends BaseActivity {
             public void onDrawerOpened(View drawerView) {}
         };
 
-        Intent intent = getIntent();
         drawer.setDrawerListener(actionBarDrawerToggle);
-        onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 1)));
-        setNavItems("Passwords");
+        setDashboard("My Security");
     }
 
     @Override
@@ -76,8 +78,9 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-    private void setNavItems(String title) {
+    public void setNavItems(String title) {
         ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, new String[] {title +" Beginner", title +" Intermediate", title +" Expert"});
+        titleSpinner.setVisibility(View.VISIBLE);
         titleSpinner.setAdapter(navAdapter);
     }
 
@@ -95,6 +98,16 @@ public class MainActivity extends BaseActivity {
         drawerItem = childItem.getPosition();
         setNavItems(childItem.getTitle());
         drawer.closeDrawer(drawerList);
+    }
+
+    public void setDashboard(String groupName) {
+        groupItem = 0;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance("", "")).commit();
+        drawer.closeDrawer(drawerList);
+        titleSpinner.setVisibility(View.GONE);
+        setTitle(groupName);
     }
 
     @Override
