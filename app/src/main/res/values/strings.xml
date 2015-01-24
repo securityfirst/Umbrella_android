@@ -4,7 +4,6 @@
     <string name="app_name">Umbrella</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="section1_tab_title1">Lesson</string>
     <string name="section1_tab_title2">Case Study</string>
     <string name="section1_tab_title3">Checklist</string>

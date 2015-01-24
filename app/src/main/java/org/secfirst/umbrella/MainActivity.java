@@ -38,6 +38,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.medium_grey));
         UmbrellaUtil.migrateDataOnStartup(this);
         if (global.hasPasswordSet() && !global.isLoggedIn()) {
             startActivity(new Intent(this, StartActivity.class));
