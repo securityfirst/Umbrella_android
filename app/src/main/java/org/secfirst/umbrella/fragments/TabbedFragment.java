@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -28,6 +27,7 @@ import java.util.Locale;
 
 public class TabbedFragment extends Fragment {
 
+    public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
     public static int difficulty;
@@ -72,10 +72,14 @@ public class TabbedFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new TabbedContentFragment();
+            Fragment fragment;
             Bundle args = new Bundle();
-            args.putInt(TabbedContentFragment.ARG_SECTION_NUMBER, position + 1);
-            args.putInt(TabbedContentFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
+            if (position==0) {
+                fragment = new TabbedContentFragment();
+            } else {
+                fragment = new CheckItemFragment();
+            }
+            args.putInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
             fragment.setArguments(args);
             return fragment;
         }
@@ -100,8 +104,6 @@ public class TabbedFragment extends Fragment {
 
     public static class TabbedContentFragment extends Fragment {
 
-        public static final String ARG_SECTION_NUMBER = "section_number";
-        public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
         private List<Segment> mSegments;
         private List<CheckItem> mCheckList;
         private ProgressBar checkBar;
@@ -116,53 +118,66 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
 
-
             long drawerItem = ((MainActivity) getActivity()).drawerItem;
             ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
-            LinearLayout checkBarLayout = (LinearLayout) rootView.findViewById(R.id.progress_checked);
-            checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
-            checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
-            setProgressBarTo(0);
             textDifficulty = (TextView) rootView.findViewById(R.id.difficulty);
 
             textDifficulty.setText(UmbrellaUtil.getDifficultyString(getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)));
 
-            checkBarLayout.setVisibility(getArguments().getInt(ARG_SECTION_NUMBER) == 2 ? View.VISIBLE : View.GONE);
-
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
+            switch (getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)) {
                 case 1:
-                    switch (getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)) {
-                        case 1:
-                            // do the beginner content
-                        case 2:
-                            // do the intermediate content
-                        case 3:
-                            // show expert content
-                        default:
-                            //default to beginner for now
-                    }
-                    mSegments = Segment.find(Segment.class, "category = ?", String.valueOf(drawerItem));
-                    contentBox.setAdapter(new SegmentAdapter(getActivity(), mSegments));
-                    contentBox.setDivider(null);
-                    break;
+                    // do the beginner content
                 case 2:
-                    switch (getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)) {
-                        case 1:
-                            // do the beginner check list
-                        case 2:
-                            // do the intermediate check list
-                        case 3:
-                            // show expert check list
-                        default:
-                            //default to beginner for now
-                    }
-                    refreshCheckList(drawerItem);
-                    contentBox.setAdapter(new CheckListAdapter(getActivity(), mCheckList, this));
-                    contentBox.setDivider(null);
-                    break;
+                    // do the intermediate content
+                case 3:
+                    // show expert content
                 default:
-
+                    //default to beginner for now
             }
+            mSegments = Segment.find(Segment.class, "category = ?", String.valueOf(drawerItem));
+            contentBox.setAdapter(new SegmentAdapter(getActivity(), mSegments));
+            contentBox.setDivider(null);
+            return rootView;
+        }
+
+    }
+
+    public static class CheckItemFragment extends Fragment {
+
+        private List<CheckItem> mCheckList;
+        private ProgressBar checkBar;
+        private TextView checkBarText, textDifficulty;
+
+        public CheckItemFragment() {}
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_check_item,
+                    container, false);
+
+
+            long drawerItem = ((MainActivity) getActivity()).drawerItem;
+            ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
+            checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
+            checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
+            setProgressBarTo(0);
+            textDifficulty = (TextView) rootView.findViewById(R.id.difficulty);
+            textDifficulty.setText(UmbrellaUtil.getDifficultyString(getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)));
+
+            switch (getArguments().getInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, 1)) {
+                case 1:
+                    // do the beginner check list
+                case 2:
+                    // do the intermediate check list
+                case 3:
+                    // show expert check list
+                default:
+                    //default to beginner for now
+            }
+            refreshCheckList(drawerItem);
+            contentBox.setAdapter(new CheckListAdapter(getActivity(), mCheckList, this));
+            contentBox.setDivider(null);
             return rootView;
         }
 

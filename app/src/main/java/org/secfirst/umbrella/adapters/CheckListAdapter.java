@@ -23,9 +23,9 @@ public class CheckListAdapter extends BaseAdapter {
 
     private List<CheckItem> checkList = new ArrayList<>();
     private Context mContext;
-    private TabbedFragment.TabbedContentFragment mFragment;
+    private TabbedFragment.CheckItemFragment mFragment;
 
-    public CheckListAdapter(Context context, List<CheckItem> mCheckList, TabbedFragment.TabbedContentFragment fragment) {
+    public CheckListAdapter(Context context, List<CheckItem> mCheckList, TabbedFragment.CheckItemFragment fragment) {
         mFragment = fragment;
         mContext = context;
         checkList = mCheckList;
