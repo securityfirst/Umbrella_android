@@ -12,20 +12,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.data.CheckListDataSource;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CheckListAdapter extends BaseAdapter {
 
-    private ArrayList<CheckItem> checkList = new ArrayList<CheckItem>();
+    private List<CheckItem> checkList = new ArrayList<>();
     private Context mContext;
     private TabbedFragment.TabbedContentFragment mFragment;
 
-    public CheckListAdapter(Context context, ArrayList<CheckItem> mCheckList, TabbedFragment.TabbedContentFragment fragment) {
+    public CheckListAdapter(Context context, List<CheckItem> mCheckList, TabbedFragment.TabbedContentFragment fragment) {
         mFragment = fragment;
         mContext = context;
         checkList = mCheckList;
@@ -94,10 +94,8 @@ public class CheckListAdapter extends BaseAdapter {
     }
 
     private void setChecked(CheckItem current, boolean b) {
-        CheckListDataSource dataSource = new CheckListDataSource(mContext);
-        dataSource.open();
-        dataSource.updateChecked(current.getId(), b ? 1 : 0);
-        dataSource.close();
+        current.setValue(b ? 1 : 0);
+        current.save();
         mFragment.refreshCheckList(current.getCategory());
     }
 

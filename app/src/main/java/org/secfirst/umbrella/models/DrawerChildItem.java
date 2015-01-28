@@ -3,15 +3,15 @@ package org.secfirst.umbrella.models;
 public class DrawerChildItem {
 
     private String title;
-    private int position;
+    private long position;
 
-    public DrawerChildItem(String name, int position) {
+    public DrawerChildItem(String name, long position) {
         this.title = name;
         this.position = position;
 
     }
 
-    public int getPosition() {
+    public long getPosition() {
         return position;
     }
 

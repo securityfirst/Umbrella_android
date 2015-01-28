@@ -12,10 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.adapters.SearchAdapter;
-import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.Segment;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchActivity extends BaseActivity {
@@ -40,10 +39,7 @@ public class SearchActivity extends BaseActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if (query!=null) {
-                SegmentsDataSource dataSource = new SegmentsDataSource(this);
-                dataSource.open();
-                ArrayList<Segment> mSegments = dataSource.searchSegments(query);
-                dataSource.close();
+                List<Segment> mSegments = Segment.find(Segment.class, "body LIKE %?% ");
                 if (mSegments.size()>0) {
                     RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments, query);
                     mRecyclerView.setAdapter(mAdapter);

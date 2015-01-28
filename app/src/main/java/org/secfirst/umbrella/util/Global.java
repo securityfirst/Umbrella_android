@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.MainActivity;
 
-public class Global extends Application {
+public class Global extends com.orm.SugarApp {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;

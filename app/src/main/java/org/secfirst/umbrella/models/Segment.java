@@ -1,7 +1,8 @@
 package org.secfirst.umbrella.models;
 
-public class Segment {
-    private long id;
+import com.orm.SugarRecord;
+
+public class Segment extends SugarRecord<Segment> {
     private String title;
     private String subtitle;
     private String body;
@@ -21,14 +22,6 @@ public class Segment {
         this.subtitle = "";
         this.body = body;
         this.category = category;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {

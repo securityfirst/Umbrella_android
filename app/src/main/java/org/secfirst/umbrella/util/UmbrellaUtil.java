@@ -18,13 +18,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import org.secfirst.umbrella.data.CategoryDataSource;
-import org.secfirst.umbrella.data.CheckListDataSource;
-import org.secfirst.umbrella.data.InitialData;
-import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
@@ -64,62 +61,57 @@ public class UmbrellaUtil {
         }
     }
 
-    public static void migrateDataOnStartup(Context context) {
+    public static void migrateData(Context context) {
         ArrayList<Segment> segments = InitialData.getSegmentList();
-        SegmentsDataSource segmentDAO = new SegmentsDataSource(context);
-        segmentDAO.open();
-        List<Segment> fromDB = segmentDAO.getAllSegments();
-
+        List<Segment> fromDB = Segment.listAll(Segment.class);
         if (fromDB.size()==0) {
-            syncSegments(segmentDAO, segments);
+            for (Segment segment : segments) {
+                segment.save();
+            }
         }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        CheckListDataSource checkListDataSource = new CheckListDataSource(context);
-        checkListDataSource.open();
-        List<CheckItem> listsFromDB = checkListDataSource.getAllItems();
+        List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
         if (listsFromDB.size()==0) {
-            syncCheckLists(checkListDataSource, checkList);
+            for (CheckItem checkItem : checkList) {
+                checkItem.save();
+            }
         }
 
         ArrayList<Category> categoryList = InitialData.getCategoryList();
-        CategoryDataSource categoryDataSource = new CategoryDataSource(context);
-        categoryDataSource.open();
-        List<Category> catFromDB = categoryDataSource.getAllItems();
+        List<Category> catFromDB = Category.listAll(Category.class);
         if (catFromDB.size()==0) {
-            syncCategories(categoryDataSource, categoryList);
+            for (Category category : categoryList) {
+                category.save();
+            }
         }
     }
 
-    public static void syncSegments(SegmentsDataSource segmentDAO, ArrayList<Segment> segments) {
-        segmentDAO.deleteAllSegments();
+    public static void syncSegments(ArrayList<Segment> segments) {
+        Segment.deleteAll(Segment.class);
         for (Segment segment : segments) {
-            segmentDAO.insertSegment(segment);
+            segment.save();
         }
-        segmentDAO.close();
     }
 
-    public static void syncCategories(CategoryDataSource categoryDAO, ArrayList<Category> categories) {
-        categoryDAO.dropTable();
-        categoryDAO.createTable();
+    public static void syncCategories(ArrayList<Category> categories) {
+        Category.deleteAll(Category.class);
         for (Category item : categories) {
-            categoryDAO.insertItem(item);
+            item.save();
         }
-        categoryDAO.close();
     }
 
-    public static void syncCheckLists(CheckListDataSource checkListDataSource, ArrayList<CheckItem> checkList) {
-        checkListDataSource.deleteAllItems();
+    public static void syncCheckLists(ArrayList<CheckItem> checkList) {
+        CheckItem.deleteAll(CheckItem.class);
         CheckItem previousItem = null;
         for (CheckItem checkItem : checkList) {
             if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
                 checkItem.setParent(previousItem.getId());
-                checkListDataSource.insertItem(checkItem);
+                checkItem.save();
             } else {
-                previousItem = checkListDataSource.insertItem(checkItem);
+                previousItem = checkItem;
             }
         }
-        checkListDataSource.close();
     }
 
     public static int dpToPix(int sizeInDp, Context context) {
@@ -164,11 +156,8 @@ public class UmbrellaUtil {
         return ringProgressDialog;
     }
 
-    public static ArrayList<String> getParentCategories(Context context) {
-        CategoryDataSource catDAO = new CategoryDataSource(context);
-        catDAO.open();
-        ArrayList<Category> categories = catDAO.getAllItems();
-        catDAO.close();
+    public static ArrayList<String> getParentCategories() {
+        List<Category> categories = Category.listAll(Category.class);
         ArrayList<String> parentCategories = new ArrayList<String>();
         for (Category category : categories) {
             if (category.getParent()==0) {
@@ -178,11 +167,8 @@ public class UmbrellaUtil {
         return parentCategories;
     }
 
-    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
-        CategoryDataSource catDAO = new CategoryDataSource(context);
-        catDAO.open();
-        ArrayList<Category> categories = catDAO.getAllItems();
-        catDAO.close();
+    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems() {
+        List<Category> categories = Category.listAll(Category.class);
         ArrayList<Category> parentCategories = new ArrayList<Category>();
         for (Category category : categories) {
             if (category.getParent()==0) {
@@ -191,12 +177,11 @@ public class UmbrellaUtil {
         }
 
         ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
-        ArrayList<DrawerChildItem> child = new ArrayList<DrawerChildItem>();
         for (Category parentCategory : parentCategories) {
-            child = new ArrayList<DrawerChildItem>();
+            ArrayList<DrawerChildItem> child = new ArrayList<>();
             for (Category category : categories) {
                 if (category.getParent() == parentCategory.getId()) {
-                    child.add(new DrawerChildItem(category.getCategory(), category.getId()));
+                    child.add(new DrawerChildItem(category.getCategory(), category.getMId()));
                 }
             }
             childItem.add(child);

@@ -1,9 +1,11 @@
 package org.secfirst.umbrella.models;
 
 
-public class Category {
+import com.orm.SugarRecord;
 
-    private int id;
+public class Category extends SugarRecord<Category> {
+
+    private long id;
     private int parent;
     private String category;
 
@@ -15,12 +17,12 @@ public class Category {
         this.category = category;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public int getParent() {
         return parent;
+    }
+
+    public long getMId() {
+        return id;
     }
 
     public String getCategory() {

@@ -1,8 +1,10 @@
 package org.secfirst.umbrella.models;
 
-public class CheckItem {
+import com.orm.SugarRecord;
 
-    private long id;
+public class CheckItem extends SugarRecord<CheckItem> {
+
+    private int mid;
     private String title;
     private String text;
     private int value;
@@ -27,6 +29,14 @@ public class CheckItem {
         this.category = category;
     }
 
+    public int getMId() {
+        return mid;
+    }
+
+    public void setMid(int mid) {
+        this.mid = mid;
+    }
+
     public int getCategory() {
         return category;
     }
@@ -39,20 +49,12 @@ public class CheckItem {
         return value;
     }
 
-    public long getId() {
-        return id;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setValue(int value) {

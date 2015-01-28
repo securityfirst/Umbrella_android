@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'com.google.code.gson:gson:2.3'
+    compile 'com.github.satyan:sugar:1.3'
 }

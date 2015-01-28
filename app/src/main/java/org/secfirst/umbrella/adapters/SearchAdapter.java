@@ -17,10 +17,11 @@ import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
-    private ArrayList<Segment> mSegment = new ArrayList<Segment>();
+    private List<Segment> mSegment = new ArrayList<>();
     private ArrayList<ArrayList<DrawerChildItem>> mSubtitles = new ArrayList<ArrayList<DrawerChildItem>>();
     private ArrayList<String> mTitles = new ArrayList<String>();
     private ArrayList<String> mQueries = new ArrayList<String>();
@@ -40,10 +41,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
     }
 
-    public SearchAdapter(Context context, ArrayList<Segment> segmentList, String query) {
+    public SearchAdapter(Context context, List<Segment> segmentList, String query) {
         mSegment = segmentList;
-        mSubtitles = UmbrellaUtil.getChildItems(context);
-        mTitles = UmbrellaUtil.getParentCategories(context);
+        mSubtitles = UmbrellaUtil.getChildItems();
+        mTitles = UmbrellaUtil.getParentCategories();
         mQueries.add(query);
         mContext = context;
     }

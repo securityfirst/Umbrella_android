@@ -13,13 +13,13 @@ import android.widget.TextView;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.DashCheckListAdapter;
 import org.secfirst.umbrella.adapters.DashFeedAdapter;
-import org.secfirst.umbrella.data.CheckListDataSource;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.util.Global;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
@@ -75,11 +75,8 @@ public class DashboardFragment extends Fragment {
         super.onAttach(activity);
     }
 
-    private ArrayList<CheckItem> refreshCheckItems(Activity activity) {
-        CheckListDataSource checkListDataSource = new CheckListDataSource(activity);
-        checkListDataSource.open();
-        ArrayList<CheckItem> checkItems = checkListDataSource.getAllItems();
-        checkListDataSource.close();
+    private List<CheckItem> refreshCheckItems(Activity activity) {
+        List<CheckItem> checkItems = CheckItem.listAll(CheckItem.class);
         return checkItems;
     }
 

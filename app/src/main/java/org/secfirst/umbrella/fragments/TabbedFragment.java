@@ -19,13 +19,11 @@ import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
 import org.secfirst.umbrella.adapters.SegmentAdapter;
-import org.secfirst.umbrella.data.CheckListDataSource;
-import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class TabbedFragment extends Fragment {
@@ -34,7 +32,7 @@ public class TabbedFragment extends Fragment {
     ViewPager mViewPager;
     public static int difficulty;
 
-    public static TabbedFragment newInstance(int sectionNumber, int spinnerNumber) {
+    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
         difficulty = spinnerNumber;
@@ -84,7 +82,7 @@ public class TabbedFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -104,8 +102,8 @@ public class TabbedFragment extends Fragment {
 
         public static final String ARG_SECTION_NUMBER = "section_number";
         public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
-        private ArrayList<Segment> mSegments;
-        private ArrayList<CheckItem> mCheckList;
+        private List<Segment> mSegments;
+        private List<CheckItem> mCheckList;
         private ProgressBar checkBar;
         private TextView checkBarText, textDifficulty;
 
@@ -119,7 +117,7 @@ public class TabbedFragment extends Fragment {
                     container, false);
 
 
-            int drawerItem = ((MainActivity) getActivity()).drawerItem;
+            long drawerItem = ((MainActivity) getActivity()).drawerItem;
             ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
             LinearLayout checkBarLayout = (LinearLayout) rootView.findViewById(R.id.progress_checked);
             checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
@@ -129,7 +127,7 @@ public class TabbedFragment extends Fragment {
 
             textDifficulty.setText(UmbrellaUtil.getDifficultyString(getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)));
 
-            checkBarLayout.setVisibility(getArguments().getInt(ARG_SECTION_NUMBER) == 3 ? View.VISIBLE : View.GONE);
+            checkBarLayout.setVisibility(getArguments().getInt(ARG_SECTION_NUMBER) == 2 ? View.VISIBLE : View.GONE);
 
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1:
@@ -143,10 +141,7 @@ public class TabbedFragment extends Fragment {
                         default:
                             //default to beginner for now
                     }
-                    SegmentsDataSource dataSource = new SegmentsDataSource(getActivity());
-                    dataSource.open();
-                    mSegments = dataSource.getAllSegmentsByCategory(drawerItem);
-                    dataSource.close();
+                    mSegments = Segment.find(Segment.class, "category = ?", String.valueOf(drawerItem));
                     contentBox.setAdapter(new SegmentAdapter(getActivity(), mSegments));
                     contentBox.setDivider(null);
                     break;
@@ -171,18 +166,15 @@ public class TabbedFragment extends Fragment {
             return rootView;
         }
 
-        public void refreshCheckList(int category) {
-            CheckListDataSource checkListDataSource = new CheckListDataSource(getActivity());
-            checkListDataSource.open();
-            mCheckList = checkListDataSource.getAllItemsByCategory(category);
-            if (mCheckList.size()>0) {
+        public void refreshCheckList(long category) {
+            mCheckList = CheckItem.find(CheckItem.class, "category = ?", String.valueOf(category));
+            if (mCheckList.size() > 0) {
                 int selected = 0;
                 for (CheckItem checkItem : mCheckList) {
                     if (checkItem.getValue()) selected++;
                 }
                 setProgressBarTo((int) Math.round(selected * 100.0 / mCheckList.size()));
             }
-            checkListDataSource.close();
         }
 
         public void setProgressBarTo(int percent) {

@@ -24,8 +24,8 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
     public DrawerAdapter(Context context) {
         mContext = context;
-        groupItem = UmbrellaUtil.getParentCategories(context);
-        childItem = UmbrellaUtil.getChildItems(context);
+        groupItem = UmbrellaUtil.getParentCategories();
+        childItem = UmbrellaUtil.getChildItems();
     }
 
     @Override

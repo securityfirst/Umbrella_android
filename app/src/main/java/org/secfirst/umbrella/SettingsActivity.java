@@ -16,9 +16,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.adapters.SettingsAdapter;
-import org.secfirst.umbrella.data.CategoryDataSource;
-import org.secfirst.umbrella.data.CheckListDataSource;
-import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
@@ -71,9 +68,7 @@ public class SettingsActivity extends BaseActivity {
                 }.getType();
                 ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
                 if (receivedSegments.size() > 0) {
-                    SegmentsDataSource segmentDAO = new SegmentsDataSource(SettingsActivity.this);
-                    segmentDAO.open();
-                    UmbrellaUtil.syncSegments(segmentDAO, receivedSegments);
+                    UmbrellaUtil.syncSegments(receivedSegments);
                     Log.i("segments", "synced");
                 }
                 checkDone();
@@ -89,9 +84,7 @@ public class SettingsActivity extends BaseActivity {
                 }.getType();
                 ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems.size() > 0) {
-                    CheckListDataSource checkListDataSource = new CheckListDataSource(SettingsActivity.this);
-                    checkListDataSource.open();
-                    UmbrellaUtil.syncCheckLists(checkListDataSource, receivedItems);
+                    UmbrellaUtil.syncCheckLists(receivedItems);
                     Log.i("check items", "synced");
                 }
                 checkDone();
@@ -107,9 +100,7 @@ public class SettingsActivity extends BaseActivity {
                 }.getType();
                 ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems.size() > 0) {
-                    CategoryDataSource categoryDataSource = new CategoryDataSource(SettingsActivity.this);
-                    categoryDataSource.open();
-                    UmbrellaUtil.syncCategories(categoryDataSource, receivedItems);
+                    UmbrellaUtil.syncCategories(receivedItems);
                     Log.i("categories", "synced");
                 }
                 checkDone();

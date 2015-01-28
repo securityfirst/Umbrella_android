@@ -12,13 +12,14 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SegmentAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<Segment> mSegments = new ArrayList<Segment>();
+    private List<Segment> mSegments = new ArrayList<>();
 
-    public SegmentAdapter(Context context, ArrayList<Segment> segments) {
+    public SegmentAdapter(Context context, List<Segment> segments) {
         this.context = context;
         mSegments = segments;
         notifyDataSetChanged();

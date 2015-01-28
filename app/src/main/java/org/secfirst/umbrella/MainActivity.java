@@ -31,7 +31,8 @@ public class MainActivity extends BaseActivity {
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    public int drawerItem, groupItem, navItem;
+    public int groupItem, navItem;
+    public long drawerItem;
     private Spinner titleSpinner;
     private DrawerChildItem childItem;
 
@@ -39,7 +40,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.medium_grey));
-        UmbrellaUtil.migrateDataOnStartup(this);
+        UmbrellaUtil.migrateData(this);
         if (global.hasPasswordSet() && !global.isLoggedIn()) {
             startActivity(new Intent(this, StartActivity.class));
         } else if (!global.getTermsAccepted()) {

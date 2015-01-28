@@ -1,8 +1,4 @@
-package org.secfirst.umbrella.data;
-
-import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.CheckItem;
-import org.secfirst.umbrella.models.Segment;
+package org.secfirst.umbrella.models;
 
 import java.util.ArrayList;
 
