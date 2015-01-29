@@ -10,6 +10,9 @@ public class CheckItem extends SugarRecord<CheckItem> {
     private int value;
     private long parent;
     private int category;
+    private int difficulty;
+    private int custom;
+    private int disabled;
 
     public CheckItem(){}
 
@@ -79,5 +82,45 @@ public class CheckItem extends SugarRecord<CheckItem> {
 
     public void setParent(long parent) {
         this.parent = parent;
+    }
+
+    public int getCustom() {
+        return custom;
+    }
+
+    public void setCustom(int custom) {
+        this.custom = custom;
+    }
+
+    public int getDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(int disabled) {
+        this.disabled = disabled;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public boolean isCustom() {
+        return custom==1;
+    }
+
+    public boolean isDisabled() {
+        return disabled==1;
+    }
+
+    public void disable() {
+        disabled = 1;
+    }
+
+    public void enable() {
+        disabled = 0;
     }
 }

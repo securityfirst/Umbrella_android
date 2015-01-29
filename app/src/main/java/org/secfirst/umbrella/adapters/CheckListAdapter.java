@@ -1,6 +1,8 @@
 package org.secfirst.umbrella.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,6 +92,58 @@ public class CheckListAdapter extends BaseAdapter {
             }
         });
 
+        holder.checkItemLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (current.isCustom()) {
+                    CharSequence menuChoiceCustom[] = new CharSequence[]{"Delete"};
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Select an action");
+                    builder.setItems(menuChoiceCustom, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
+                                current.delete();
+                                checkList.remove(i);
+                                notifyDataSetChanged();
+                            } else {
+                                // edit to come
+                            }
+                        }
+                    });
+                    builder.show();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Select an action");
+                    if (current.isDisabled()) {
+                        CharSequence menuChoice[] = new CharSequence[]{"Enable"};
+                        builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                current.enable();
+                                current.save();
+                                checkList.set(i, current);
+                                notifyDataSetChanged();
+                            }
+                        });
+                    } else {
+                        CharSequence menuChoice[] = new CharSequence[]{"Disable"};
+                        builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                current.disable();
+                                current.save();
+                                checkList.set(i, current);
+                                notifyDataSetChanged();
+                            }
+                        });
+                    }
+                    builder.show();
+                }
+                return false;
+            }
+        });
+
         return convertView;
     }
 
@@ -105,5 +159,10 @@ public class CheckListAdapter extends BaseAdapter {
         public TextView checkItemSubtitle;
         public CheckBox checkBox;
         public CardView checkView;
+    }
+
+    public void updateData(List<CheckItem> items) {
+        checkList = items;
+        notifyDataSetChanged();
     }
 }
