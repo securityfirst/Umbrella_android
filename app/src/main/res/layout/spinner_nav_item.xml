@@ -8,5 +8,5 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:textColor="#fff"
-    android:background="@color/dark_grey"
+    android:background="@color/umbrella_purple"
     android:minHeight="?attr/listPreferredItemHeightSmall"/>
