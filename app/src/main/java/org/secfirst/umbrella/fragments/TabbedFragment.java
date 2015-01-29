@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +30,13 @@ public class TabbedFragment extends Fragment {
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
     public static int difficulty;
+    public long sectionNumber;
 
     public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
+        tabbedFragment.sectionNumber = sectionNumber;
         difficulty = spinnerNumber;
-        Log.i("spinner", String.valueOf(difficulty));
         tabbedFragment.setArguments(args);
         return tabbedFragment;
     }
@@ -49,7 +49,6 @@ public class TabbedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mSectionsPagerAdapter.difficulty = difficulty;
         mViewPager = (ViewPager) v.findViewById(R.id.pager);

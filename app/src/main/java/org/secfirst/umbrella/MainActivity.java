@@ -19,14 +19,21 @@ import android.widget.ExpandableListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.orm.query.Condition;
+import com.orm.query.Select;
+
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
+import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
+import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.util.List;
 
-public class MainActivity extends BaseActivity {
+
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -54,10 +61,17 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (groupItem!=0) {
-                    navItem = position;
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), position), childItem.getTitle()).commit();
+                    List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
+                    if (hasDifficulty.size()>0) {
+                        navItem = position;
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
+                    } else {
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).commit();
+                    }
                 }
             }
 
@@ -111,6 +125,10 @@ public class MainActivity extends BaseActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), navItem), childItem.getTitle()).commit();
+        List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
+        if (hasDifficulty.size()>0) {
+            titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
+        }
         drawerItem = childItem.getPosition();
         setNavItems(childItem.getTitle());
         drawer.closeDrawer(drawerList);
@@ -206,5 +224,18 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onDifficultySelected(int difficulty) {
+        titleSpinner.setSelection(difficulty);
+        if (difficulty==0) {
+            List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
+            if (hasDifficulty.size()>0) {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
+            }
+        }
     }
 }
