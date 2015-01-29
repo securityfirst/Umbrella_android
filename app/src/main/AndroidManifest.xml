@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.secfirst.umbrella.StartActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name" >
         </activity>
         <activity

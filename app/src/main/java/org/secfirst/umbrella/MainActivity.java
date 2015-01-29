@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.medium_grey));
         UmbrellaUtil.migrateData(this);
         if (global.hasPasswordSet() && !global.isLoggedIn()) {
-            startActivity(new Intent(this, StartActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         } else if (!global.getTermsAccepted()) {
             startActivity(new Intent(this, TourActivity.class));
         }
@@ -212,7 +212,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_logout) {
-            startActivity(new Intent(this, StartActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
             return true;
         }
         if (id == R.id.action_set_password) {
