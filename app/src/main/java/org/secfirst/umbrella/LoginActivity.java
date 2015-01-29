@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
-public class StartActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity {
 
     private EditText inputPassword;
 
@@ -49,7 +49,7 @@ public class StartActivity extends BaseActivity {
             }
         });
         LinearLayout startLayout = (LinearLayout) findViewById(R.id.start_layout);
-        UmbrellaUtil.setupUItoHideKeyboard(startLayout, StartActivity.this);
+        UmbrellaUtil.setupUItoHideKeyboard(startLayout, LoginActivity.this);
 
     }
 
@@ -97,7 +97,7 @@ public class StartActivity extends BaseActivity {
     }
 
     private void goToMain() {
-        Intent toMain = new Intent(StartActivity.this, (global.getTermsAccepted() ? MainActivity.class : TourActivity.class));
+        Intent toMain = new Intent(LoginActivity.this, (global.getTermsAccepted() ? MainActivity.class : TourActivity.class));
         if (global.getTermsAccepted()) {
             Log.i("to", "main");
             toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
