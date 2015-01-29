@@ -39,7 +39,7 @@ public class SearchActivity extends BaseActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if (query!=null) {
-                List<Segment> mSegments = Segment.find(Segment.class, "body LIKE %?% ");
+                List<Segment> mSegments = Segment.find(Segment.class, "body LIKE ?", "%"+query+"%");
                 if (mSegments.size()>0) {
                     RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments, query);
                     mRecyclerView.setAdapter(mAdapter);

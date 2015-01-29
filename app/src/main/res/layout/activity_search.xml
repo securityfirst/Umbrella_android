@@ -17,6 +17,7 @@
         android:layout_width="fill_parent"
         android:visibility="visible"
         android:orientation="vertical"
+        android:paddingTop="?attr/actionBarSize"
         android:padding="30dp"
         android:layout_gravity="center"
         android:background="@color/grey"
@@ -42,6 +43,7 @@
     <LinearLayout
         android:id="@+id/results"
         android:orientation="vertical"
+        android:paddingTop="?attr/actionBarSize"
         android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -50,6 +52,7 @@
             android:id="@+id/search_count_text"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:textSize="@dimen/text_size_normal"
             android:textStyle="bold"
             android:layout_height="wrap_content" />
