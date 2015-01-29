@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.orm.query.Condition;
@@ -83,7 +84,24 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
-        drawerList.setAdapter(new DrawerAdapter(this));
+        DrawerAdapter adapter = new DrawerAdapter(this);
+        drawerList.setAdapter(adapter);
+        drawerList.setOnChildClickListener(adapter);
+        View header = View.inflate(this, R.layout.drawer_header, null);
+        final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (global.hasPasswordSet()) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
+                    global.setPassword(MainActivity.this);
+                }
+                loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+            }
+        });
+        loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+        drawerList.addHeaderView(header);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
                 R.drawable.ic_drawer, R.string.open_drawer,

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,11 +17,13 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class DrawerAdapter extends BaseExpandableListAdapter {
+public class DrawerAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
 
     public ArrayList<String> groupItem = new ArrayList<String>();
     ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
     private Context mContext;
+    private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_settings_phone_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_work_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_home_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_assignment_grey600_24dp, R.drawable.ic_list_grey600_24dp};
+    private int[] childImages = {R.drawable.ic_supervisor_account_grey600_24dp, R.drawable.ic_bug_report_grey600_24dp, R.drawable.ic_lock_grey600_24dp, R.drawable.ic_security_grey600_24dp, R.drawable.ic_delete_grey600_24dp, R.drawable.ic_backup_grey600_24dp};
 
     public DrawerAdapter(Context context) {
         mContext = context;
@@ -56,27 +59,10 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        int iconDrawable = R.drawable.ic_lock_grey600_24dp;
-        switch (childPosition) {
-            case 1:
-                iconDrawable = R.drawable.ic_screen_lock_portrait_grey600_24dp;
-                break;
-            case 2:
-                iconDrawable = R.drawable.ic_email_grey600_24dp;
-                break;
-            case 3:
-                iconDrawable = R.drawable.ic_delete_grey600_24dp;
-                break;
+        if (childImages.length > childPosition) {
+            holder.childIcon.setImageResource(childImages[childPosition]);
         }
-
-        holder.childIcon.setImageDrawable(mContext.getResources().getDrawable(iconDrawable));
         holder.childTitle.setText(tempChild.getTitle());
-        holder.childTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
-            }
-        });
 
         return convertView;
     }
@@ -119,6 +105,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_group_item, null);
         }
+
         TextView tv = (TextView) convertView.findViewById(R.id.drawer_group_text);
         tv.setText(groupItem.get(groupPosition));
         if (groupPosition==0) {
@@ -128,6 +115,11 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
                     ((MainActivity) mContext).setDashboard(groupItem.get(groupPosition));
                 }
             });
+        }
+
+        ImageView iv = (ImageView) convertView.findViewById(R.id.drawer_group_image);
+        if (groupImages.length > groupPosition) {
+            iv.setImageResource(groupImages[groupPosition]);
         }
 
         return convertView;
@@ -148,4 +140,10 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
         public ImageView childIcon;
     }
 
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
+        ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
+        return true;
+    }
 }
