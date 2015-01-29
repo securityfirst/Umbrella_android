@@ -31,5 +31,9 @@
     <string name="check_lists_total">Check lists total</string>
     <string name="log_out">Log out</string>
     <string name="log_in">Log In</string>
+    <string name="beginner_description">Have you Sum eossime nobisinvenet eos ellatiae audaeceror sedianias cuptia con?</string>
+    <string name="beginner">Beginner</string>
+    <string name="expert">Expert</string>
+    <string name="intermediate">Intermediate</string>
 
 </resources>
