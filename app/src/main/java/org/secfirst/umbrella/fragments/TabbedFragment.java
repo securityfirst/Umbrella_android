@@ -104,9 +104,7 @@ public class TabbedFragment extends Fragment {
     public static class TabbedContentFragment extends Fragment {
 
         private List<Segment> mSegments;
-        private List<CheckItem> mCheckList;
-        private ProgressBar checkBar;
-        private TextView checkBarText, textDifficulty;
+        private TextView textDifficulty;
 
         public TabbedContentFragment() {
         }
