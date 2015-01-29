@@ -49,21 +49,21 @@ public class DifficultyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_select, container, false);
-        Button btnBeginner = (Button) v.findViewById(R.id.btn_beginner);
+        View btnBeginner = v.findViewById(R.id.card_beginner);
         btnBeginner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDifficultySelected(BEGINNER);
             }
         });
-        Button btnIntermediate = (Button) v.findViewById(R.id.btn_intermediate);
+        View btnIntermediate = v.findViewById(R.id.card_intermediate);
         btnIntermediate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onDifficultySelected(INTERMEDIATE);
             }
         });
-        Button btnExpert = (Button) v.findViewById(R.id.btn_expert);
+        View btnExpert = v.findViewById(R.id.card_expert);
         btnExpert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
