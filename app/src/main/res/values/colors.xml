@@ -17,4 +17,5 @@
     <color name="holo_dark_selected">#6633b5e5</color>
     <color name="dashboard_light_blue">#FF76c3da</color>
     <color name="grey_600">#546e7a</color>
+    <color name="background_grey">#FFF2F2F2</color>
 </resources>
