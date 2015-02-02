@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.medium_grey));
+        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
         UmbrellaUtil.migrateData(this);
         if (global.hasPasswordSet() && !global.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
