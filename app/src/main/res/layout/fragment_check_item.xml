@@ -1,24 +1,22 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background"
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".TabbedActivity$DummySectionFragment">
 
     <LinearLayout
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/difficulty"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-
         <LinearLayout
             android:id="@+id/progress_checked"
             android:orientation="vertical"
+            android:layout_marginBottom="5dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
@@ -31,6 +29,8 @@
             <TextView
                 android:id="@+id/check_bar_text"
                 android:gravity="center"
+                android:textColor="@color/umbrella_green"
+                android:textSize="@dimen/text_size_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 
@@ -41,7 +41,6 @@
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
             android:layout_width="fill_parent"
-            android:layout_marginBottom="30dp"
             android:layout_height="fill_parent" />
 
     </LinearLayout>

@@ -50,7 +50,7 @@ public class CheckListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int i, View convertView, ViewGroup viewGroup) {
+    public View getView(final int i, View convertView, final ViewGroup viewGroup) {
         final ViewHolder holder;
         final CheckItem current = checkList.get(i);
 
@@ -73,24 +73,34 @@ public class CheckListAdapter extends BaseAdapter {
             holder.checkItemTitle.setVisibility(View.VISIBLE);
             holder.checkItemSubtitle.setText(current.getText());
             holder.checkBox.setChecked(current.getValue());
+            holder.checkBox.setEnabled(!current.isDisabled());
             holder.checkItemLayout.setPadding(0, 0, 0, 0);
         } else {
             holder.checkItemSubtitle.setText(current.getText());
             holder.checkItemTitle.setVisibility(View.GONE);
             holder.checkItemSubtitle.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(current.getValue());
+            holder.checkBox.setEnabled(!current.isDisabled());
             holder.checkItemLayout.setPadding(UmbrellaUtil.dpToPix(20, mContext), 0, 0, 0);
         }
 
         holder.checkView.setCardElevation(current.getValue()? 0 : 4);
+        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(current.getValue() ? R.color.white : R.color.umbrella_yellow));
 
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 setChecked(current, b);
                 holder.checkView.setCardElevation(b ? 0 : 4 );
+                if (!current.isCustom()) {
+                    holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(b ? R.color.white : R.color.umbrella_yellow));
+                }
             }
         });
+
+        if (current.isCustom()) {
+            holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(R.color.umbrella_green));
+        }
 
         holder.checkItemLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override

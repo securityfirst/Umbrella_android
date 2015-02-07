@@ -28,7 +28,6 @@ import org.secfirst.umbrella.adapters.CheckListAdapter;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.List;
 import java.util.Locale;
@@ -182,7 +181,7 @@ public class TabbedFragment extends Fragment {
 
         private List<CheckItem> mCheckList;
         private ProgressBar checkBar;
-        private TextView checkBarText, textDifficulty;
+        private TextView checkBarText;
         private CheckListAdapter cLAdapter;
 
         public CheckItemFragment() {}
@@ -200,8 +199,6 @@ public class TabbedFragment extends Fragment {
             checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
             setProgressBarTo(0);
             final int diffArg = getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1);
-            textDifficulty = (TextView) rootView.findViewById(R.id.difficulty);
-            textDifficulty.setText(UmbrellaUtil.getDifficultyString(diffArg));
             ImageButton addItem = (ImageButton) rootView.findViewById(R.id.fab);
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -266,7 +263,7 @@ public class TabbedFragment extends Fragment {
         public void setProgressBarTo(int percent) {
             if (percent>=0 && percent<=100) {
                 checkBar.setProgress(percent);
-                checkBarText.setText(percent + "% done.");
+                checkBarText.setText(percent + "% filled");
             }
         }
     }
