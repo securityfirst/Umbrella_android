@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -198,8 +199,9 @@ public class TabbedFragment extends Fragment {
             checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
             checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
             setProgressBarTo(0);
+            final int diffArg = getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1);
             textDifficulty = (TextView) rootView.findViewById(R.id.difficulty);
-            textDifficulty.setText(UmbrellaUtil.getDifficultyString(getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1)));
+            textDifficulty.setText(UmbrellaUtil.getDifficultyString(diffArg));
             ImageButton addItem = (ImageButton) rootView.findViewById(R.id.fab);
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -220,7 +222,7 @@ public class TabbedFragment extends Fragment {
                                     CheckItem nItem = new CheckItem(pw, (int) drawerItem);
                                     nItem.setCustom(1);
                                     nItem.save();
-                                    refreshCheckList(drawerItem);
+                                    refreshCheckList(drawerItem, diffArg);
                                     dialog.dismiss();
                                     Toast.makeText(getActivity(), "You have added a new item.", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -238,27 +240,18 @@ public class TabbedFragment extends Fragment {
                 }
             });
 
-
-            switch (getArguments().getInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, 1)) {
-                case 1:
-                    // do the beginner check list
-                case 2:
-                    // do the intermediate check list
-                case 3:
-                    // show expert check list
-                default:
-                    //default to beginner for now
-            }
-            refreshCheckList(drawerItem);
+            refreshCheckList(drawerItem, diffArg);
             cLAdapter = new CheckListAdapter(getActivity(), mCheckList, this);
             contentBox.setAdapter(cLAdapter);
             contentBox.setDivider(null);
             return rootView;
         }
 
-        public void refreshCheckList(long category) {
-            mCheckList = CheckItem.find(CheckItem.class, "category = ?", String.valueOf(category));
-            if (cLAdapter!=null) {
+        public void refreshCheckList(long category, int difficulty) {
+            Log.i("category", String.valueOf(category));
+            Log.i("diff", String.valueOf(difficulty));
+            mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(category), String.valueOf(difficulty));
+            if (cLAdapter != null) {
                 cLAdapter.updateData(mCheckList);
             }
             if (mCheckList.size() > 0) {

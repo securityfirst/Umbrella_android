@@ -42,93 +42,182 @@ public class InitialData {
     }
 
     public static ArrayList<CheckItem> getCheckList() {
-        checkList.add(new CheckItem("Buy a separate, pay as you go SIM card and phone", MOBILE_PHONES));
 
-        checkList.add(new CheckItem("Only use this for sensitive communication – never for anything else", MOBILE_PHONES));
+        checkList.add(new CheckItem("Implement ‘need to know’ policy", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Ensure it has a strong PIN password on it and change it frequently", MOBILE_PHONES));
+        checkList.add(new CheckItem("Delete any unnecessary sensitive information", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Do not install any applications on it", MOBILE_PHONES));
+        checkList.add(new CheckItem("Make a list of information that you keep, where it’s kept, who has access to it, and what stops others from accessing it", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Try not to turn it on and use it when your personal phone is also on", MOBILE_PHONES));
+        checkList.add(new CheckItem("Make a list of who might want to get a hold of your information", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Do not turn off your normal phone then immediately turn on your sensitive phone, it will create a pattern", MOBILE_PHONES));
+        checkList.add(new CheckItem("Note what your adversary might want to do with your information", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Avoid storing numbers or names in in the phone",  MOBILE_PHONES));
+        checkList.add(new CheckItem("Note the likelihood of your adversaries attacking", "", false, 0, 3, 1));
 
-            checkList.add(new CheckItem("Avoid storing numbers or names in in the phone", "Only those which are essential", false, 1,  MOBILE_PHONES));
+        checkList.add(new CheckItem("Note the capability of your adversaries to attack", "", false, 0, 3, 1));
 
-            checkList.add(new CheckItem("Avoid storing numbers or names in in the phone", "Delete all call records and old SMS immediately", false, 1,  MOBILE_PHONES));
+        checkList.add(new CheckItem("Note what the consequences are if the attack succeeds", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("If possible have more than one phone for sensitive communication", MOBILE_PHONES));
+        checkList.add(new CheckItem("Note what you are you willing to go through in order to try to prevent them", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Ideally get someone to text you a prearranged code from their phone, turn off your sensitive phone and ring them from a random payphone without CCTV.", MOBILE_PHONES));
+        checkList.add(new CheckItem("Protect your computer", "", false, 0, 4, 1));
 
-        checkList.add(new CheckItem("Ideally get someone to text you a prearranged code from their phone, turn off your sensitive phone and ring them from a random payphone without CCTV.", "Remember, you might be secure but the person on the other end of the phone might not be", false, 1, MOBILE_PHONES));
+        checkList.add(new CheckItem("Install antivirus on all your devices", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Always use strong passwords", PASSWORDS));
+        checkList.add(new CheckItem("Install a malware scanner on all your devices", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Never reuse passwords", PASSWORDS));
+        checkList.add(new CheckItem("Look out for indicators of malware", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Regularly change your passwords", PASSWORDS));
+        checkList.add(new CheckItem("Keep your software updated", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Search online to see has your password been exposed", PASSWORDS));
+        checkList.add(new CheckItem("Only download from official sites", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Use a password storage tool like KeePass", PASSWORDS));
+        checkList.add(new CheckItem("Avoid opening suspicious attachments", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Delete emails already read unless it is absolutely necessary to keep them.", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Open unusual attachments in Google Drive", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Use a number of different email addresses", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Double check senders email address for unexpected attachments", "", false, 10, 4, 1));
 
-            checkList.add(new CheckItem("Use a number of different email addresses", "Use them as separate channels for different things", false, 1, STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("Use a number of different email addresses", "Never cross-contaminate them", false, 1, STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("Use a number of different email addresses", "Dispose and change them regularly", false, 1, STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Close pop-up windows in the corner", "", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Regularly delete saved messages", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Use a platform like Ubuntu or Chrome", "", false, 10, 4, 1));
 
-            checkList.add(new CheckItem("Regularly delete saved messages", "Do not save messages in the “Sent Items folder”", false, 1, STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("Regularly delete saved messages", "Ensue messages are fully deleted from the trash.", false, 1, STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("If you find malware", "", false, 0, 4, 1));
 
-        checkList.add(new CheckItem("As a last resort, some users may send catalogues or communications via TrueCrypt packages and other email systems", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Unplug your computer", "", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Never, ever download and/or anything from someone you do not know and make sure all attachments are scanned", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Stop using your computer", "", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("If your are unsure about an attachment sent by someone you do know, do not open it and contact them to see did they actually send it to you", STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("If your are unsure about an attachment sent by someone you do know, do not open it and contact them to see did they actually send it to you", "It is very easy to fake an email from someone you know", false, 1, STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Log into a safe computer and change all your passwords", "", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Do not use your real details to signup for a service/email address etc.", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Reinstall operating system", "", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Never use paid services as the credit card can be linked back to you.", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Take your computer to a security expert", "", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("If using services such as Gmail or Yahoo for non-sensitive emails, regularly check the “Recent Account Activity” button at the bottom of the page to see if someone else has logged into your account ", STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("If using services such as Gmail or Yahoo for non-sensitive emails, regularly check the “Recent Account Activity” button at the bottom of the page to see if someone else has logged into your account ", "This checking is only for hackers who have low skills so should not be thought of as secure against intelligence agencies", false, 1, STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Only reinstall files from before date of infection", "", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Social networking sites are very useful for intelligence agencies who wish to track you. Do not join groups which link you to causes which they may be interested in. Also, do not add anyone as a friend who may also be the subject of observation – as it is easy to map their network and discover you also.", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Running anti-virus", "", false, 0, 4, 2));
 
-        checkList.add(new CheckItem("Always securely delete browsing histories using the “Tracks Eraser Pro” program you have been provided with.", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Run only one anti-virus at a time", "", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("If you are not using it, turn off your wireless modem (both physically and via the software options) as it potentially leaves an open door to your computer", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Update your anti-virus regularly", "", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Always use and update your anti-virus software", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Enable your anti-virus’s 'always on' virus-detection feature", "", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Change passwords as soon as an employee/intern/volunteer leaves the organisation", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Scan your files regularly", "", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Voice over Internet – Skype to Skype conversations are currently considered to be one of the most secure methods to speak. (However, governments such as the USA/UK/Russia/China/Israel can intercept Skype so this needs to be factored into consideration)", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Preventing infection", "", false, 0, 4, 2));
 
-        checkList.add(new CheckItem("Internet cafes should not be considered to be secure", STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("Internet cafes should not be considered to be secure", "As they can easily defeat all security measures by having “Trojan viruses” or key-loggers on their computers. This negates the need for the ability to break encryption by instead stealing the password directly.", false, 1, STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("Internet cafes should not be considered to be secure", "Always assume that the people in the internet café can see exactly what you can see on your screen – as usually they can", false, 1, STAYING_ANONYMOUS_ONLINE));
-            checkList.add(new CheckItem("Internet cafes should not be considered to be secure", "Intelligence agencies are also very much aware of the dangers that internet cafes pose so they often monitor them in a number of ways – physically, electronically etc.", false, 1, STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Open attachments via applications", "", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Disable all Java, JavaScript and ActiveX and all add-ons (Except for PGP or TOR related add-ons)", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Check where URLs lead", "", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Do not use Microsoft Internet Explorer, instead use Secure Firefox", STAYING_ANONYMOUS_ONLINE));
+        checkList.add(new CheckItem("Disable ‘AutoPlay’", "", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Regularly delete files you are not using", SAFE_DELETING));
+        checkList.add(new CheckItem("Prevent auto-running in your browser", "", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Make sure to delete your recycle bin or trash", SAFE_DELETING));
+        checkList.add(new CheckItem("Download over SSL", "", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Use a safe deletion program", SAFE_DELETING));
+        checkList.add(new CheckItem("Use open-source software", "", false, 33, 4, 2));
+
+        checkList.add(new CheckItem("Use open-source operating platform", "", false, 33, 4, 2));
+
+        checkList.add(new CheckItem("Preventing untrusted connections", "", false, 0, 4, 2));
+
+        checkList.add(new CheckItem("Turn on your firewall", "", false, 41, 4, 2));
+
+        checkList.add(new CheckItem("Keep only essential programs", "", false, 41, 4, 2));
+
+        checkList.add(new CheckItem("Create a strong password", "", false, 0, 5, 1));
+
+        checkList.add(new CheckItem("Make it long", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Make it complex", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Make sure it’s not personal", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Keep it secret", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Make it unique", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Change it regularly", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Make it memorable", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Give fake answers to security questions", "", false, 44, 5, 1));
+
+        checkList.add(new CheckItem("Check the strength of passwords on Passfault", "", false, 0, 5, 1));
+
+        checkList.add(new CheckItem("Change old or weak passwords", "", false, 0, 5, 1));
+
+        checkList.add(new CheckItem("Change weak answers to security questions", "", false, 0, 5, 1));
+
+        checkList.add(new CheckItem("Install KeePass", "", false, 0, 5, 2));
+
+        checkList.add(new CheckItem("Create strong password for KeepPass", "", false, 0, 5, 2));
+
+        checkList.add(new CheckItem("Back-up KeePass database", "", false, 0, 5, 2));
+
+        checkList.add(new CheckItem("Ensure computer has no malware", "", false, 0, 5, 2));
+
+        checkList.add(new CheckItem("Install two-step authentication", "", false, 0, 5, 2));
+
+        checkList.add(new CheckItem("Create & maintain non-sensitive data account", "", false, 0, 5, 3));
+
+        checkList.add(new CheckItem("Make non-sensitive account the primary account on your computer", "", false, 0, 5, 3));
+
+        checkList.add(new CheckItem("Hide/protect your password manager", "", false, 0, 5, 3));
+
+        checkList.add(new CheckItem("Check your rights about disclosure of information", "", false, 0, 5, 3));
+
+        checkList.add(new CheckItem("Set up TrueCrypt", "", false, 0, 6, 2));
+
+        checkList.add(new CheckItem("Dismount your TrueCrypt volume when not using files", "", false, 0, 6, 2));
+
+        checkList.add(new CheckItem("Create a secret volume for most sensitive material", "", false, 0, 6, 2));
+
+        checkList.add(new CheckItem("Rename your TrueCrypt volume with a different file extension", "", false, 0, 6, 2));
+
+        checkList.add(new CheckItem("Rename the TrueCrypt program", "", false, 0, 6, 2));
+
+        checkList.add(new CheckItem("If encryption is illegal…", "", false, 0, 6, 2));
+
+        checkList.add(new CheckItem("Store only non-confidential information", "", false, 70, 6, 2));
+
+        checkList.add(new CheckItem("Use code words", "", false, 70, 6, 2));
+
+        checkList.add(new CheckItem("Store sensitive information in a secure webmail account", "", false, 70, 6, 2));
+
+        checkList.add(new CheckItem("Store sensitive information securely off your computer", "", false, 70, 6, 2));
+
+        checkList.add(new CheckItem("If Windows user, install Eraser", "", false, 0, 7, 1));
+
+        checkList.add(new CheckItem("Securely delete individual files as needed", "", false, 0, 7, 1));
+
+        checkList.add(new CheckItem("Securely delete all previously deleted data every month", "", false, 0, 7, 1));
+
+        checkList.add(new CheckItem("If getting rid of old hardware, wipe the hard drive", "", false, 0, 7, 1));
+
+        checkList.add(new CheckItem("If throwing out CDs, shred them", "", false, 0, 7, 1));
+
+        checkList.add(new CheckItem("Encrypt SSD, USBs and SD cards", "", false, 0, 7, 1));
+
+        checkList.add(new CheckItem("Make a table with info type, device and location", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("Identify your vulnerable information", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("Figure out what storage device is right for you", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("Install Cobian Backup", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("Organise your files to back up", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("Back up information on regular schedule", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("Install Recuva", "", false, 0, 8, 2));
+
+        checkList.add(new CheckItem("If recovering files, do as little as possible before using Recuva", "", false, 0, 8, 1));
 
         return checkList;
     }

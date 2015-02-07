@@ -150,7 +150,7 @@ public class CheckListAdapter extends BaseAdapter {
     private void setChecked(CheckItem current, boolean b) {
         current.setValue(b ? 1 : 0);
         current.save();
-        mFragment.refreshCheckList(current.getCategory());
+        mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
     }
 
     private static class ViewHolder {

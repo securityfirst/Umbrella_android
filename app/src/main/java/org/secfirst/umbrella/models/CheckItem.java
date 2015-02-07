@@ -24,6 +24,15 @@ public class CheckItem extends SugarRecord<CheckItem> {
         this.category = category;
     }
 
+    public CheckItem(String title, String text, boolean value, long parent, int category, int difficulty) {
+        this.title = title;
+        this.text = text;
+        this.value = (value) ? 1 : 0;
+        this.parent = parent;
+        this.category = category;
+        this.difficulty = difficulty;
+    }
+
     public CheckItem(String title, int category) {
         this.title = title;
         this.text = "";
