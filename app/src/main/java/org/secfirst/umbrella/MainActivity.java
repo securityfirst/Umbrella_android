@@ -85,8 +85,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
         DrawerAdapter adapter = new DrawerAdapter(this);
-        drawerList.setAdapter(adapter);
-        drawerList.setOnChildClickListener(adapter);
         View header = View.inflate(this, R.layout.drawer_header, null);
         final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
         header.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +100,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         });
         loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
         drawerList.addHeaderView(header);
+        drawerList.setAdapter(adapter);
+        drawerList.setOnChildClickListener(adapter);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
                 R.drawable.ic_drawer, R.string.open_drawer,
