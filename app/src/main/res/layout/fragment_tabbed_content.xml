@@ -3,8 +3,9 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    android:padding="5dp"
     android:background="@color/background_grey"
+    android:padding="5dp"
+    android:layout_marginTop="5dp"
     tools:context=".TabbedActivity$DummySectionFragment" >
 
     <ScrollView
@@ -15,7 +16,6 @@
             android:id="@+id/content"
             android:textColor="@color/text_grey"
             android:textSize="@dimen/text_size_smaller"
-            android:layout_marginTop="5dp"
             android:fontFamily="sans-serif-light"
             android:layout_width="fill_parent"
             android:layout_height="match_parent" />
