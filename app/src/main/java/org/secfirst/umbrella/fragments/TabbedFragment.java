@@ -217,6 +217,7 @@ public class TabbedFragment extends Fragment {
                                 if (pw.length()>4) {
                                     CheckItem nItem = new CheckItem(pw, (int) drawerItem);
                                     nItem.setCustom(1);
+                                    nItem.setDifficulty(diffArg);
                                     nItem.save();
                                     refreshCheckList(drawerItem, diffArg);
                                     dialog.dismiss();

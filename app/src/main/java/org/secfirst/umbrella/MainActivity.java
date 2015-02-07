@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
-        UmbrellaUtil.migrateData(this);
+        UmbrellaUtil.migrateData();
         if (global.hasPasswordSet() && !global.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (!global.getTermsAccepted()) {
@@ -62,12 +62,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (groupItem!=0) {
-                    List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
+                    List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
                     if (hasDifficulty.size()>0) {
                         navItem = position;
-                        Difficulty chosen = hasDifficulty.get(0);
-                        chosen.setSelected(position);
-                        chosen.save();
+                        hasDifficulty.get(0).setSelected(position);
+                        hasDifficulty.get(0).save();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
@@ -119,7 +118,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             setDashboard("My Security");
         } else {
             Intent intent = getIntent();
-            onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 1)));
+            onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 3)));
             setNavItems("Passwords");
         }
     }

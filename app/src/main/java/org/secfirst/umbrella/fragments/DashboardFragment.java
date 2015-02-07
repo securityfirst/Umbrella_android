@@ -57,8 +57,8 @@ public class DashboardFragment extends Fragment {
         getChecklistProgress();
         ArrayList<DashCheckFinished> checkLists = getChecklistProgress();
 
-        checkCategory.setText("Total checklists done");
-        percentDone.setText(String.valueOf(getTotalCheckListPercentage(checkLists)));
+        checkCategory.setText("Total done");
+        percentDone.setText(String.valueOf(getTotalCheckListPercentage(checkLists))+"%");
         DashCheckListAdapter mAdapter = new DashCheckListAdapter(getActivity(), checkLists);
         ListView mListView = (ListView) view.findViewById(R.id.check_list);
         if (checkLists.size()==0) {
@@ -103,7 +103,7 @@ public class DashboardFragment extends Fragment {
                 }
                 dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
             }
-            returned.add(dashCheckFinished);
+            if (dashCheckFinished.getChecked()>0) returned.add(dashCheckFinished);
         }
         return returned;
     }

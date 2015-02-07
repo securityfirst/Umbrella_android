@@ -63,89 +63,89 @@ public class InitialData {
 
         checkList.add(new CheckItem("Protect your computer", "", false, 0, 4, 1));
 
-        checkList.add(new CheckItem("Install antivirus on all your devices", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Install antivirus on all your devices", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Install a malware scanner on all your devices", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Install a malware scanner on all your devices", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Look out for indicators of malware", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Look out for indicators of malware", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Keep your software updated", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Keep your software updated", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Only download from official sites", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Only download from official sites", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Avoid opening suspicious attachments", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Avoid opening suspicious attachments", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Open unusual attachments in Google Drive", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Open unusual attachments in Google Drive", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Double check senders email address for unexpected attachments", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Double check senders email address for unexpected attachments", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Close pop-up windows in the corner", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Close pop-up windows in the corner", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("Use a platform like Ubuntu or Chrome", "", false, 10, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "Use a platform like Ubuntu or Chrome", false, 10, 4, 1));
 
         checkList.add(new CheckItem("If you find malware", "", false, 0, 4, 1));
 
-        checkList.add(new CheckItem("Unplug your computer", "", false, 21, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "Unplug your computer", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Stop using your computer", "", false, 21, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "Stop using your computer", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Log into a safe computer and change all your passwords", "", false, 21, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "Log into a safe computer and change all your passwords", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Reinstall operating system", "", false, 21, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "Reinstall operating system", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Take your computer to a security expert", "", false, 21, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "Take your computer to a security expert", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Only reinstall files from before date of infection", "", false, 21, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "Only reinstall files from before date of infection", false, 21, 4, 1));
 
         checkList.add(new CheckItem("Running anti-virus", "", false, 0, 4, 2));
 
-        checkList.add(new CheckItem("Run only one anti-virus at a time", "", false, 28, 4, 2));
+        checkList.add(new CheckItem("Running anti-virus", "Run only one anti-virus at a time", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Update your anti-virus regularly", "", false, 28, 4, 2));
+        checkList.add(new CheckItem("Running anti-virus", "Update your anti-virus regularly", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Enable your anti-virus’s 'always on' virus-detection feature", "", false, 28, 4, 2));
+        checkList.add(new CheckItem("Running anti-virus", "Enable your anti-virus’s 'always on' virus-detection feature", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Scan your files regularly", "", false, 28, 4, 2));
+        checkList.add(new CheckItem("Running anti-virus", "Scan your files regularly", false, 28, 4, 2));
 
         checkList.add(new CheckItem("Preventing infection", "", false, 0, 4, 2));
 
-        checkList.add(new CheckItem("Open attachments via applications", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Open attachments via applications",  false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Check where URLs lead", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Check where URLs lead", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Disable ‘AutoPlay’", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Disable ‘AutoPlay’", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Prevent auto-running in your browser", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Prevent auto-running in your browser",  false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Download over SSL", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Download over SSL", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Use open-source software", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Use open-source software", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Use open-source operating platform", "", false, 33, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "Use open-source operating platform", false, 33, 4, 2));
 
         checkList.add(new CheckItem("Preventing untrusted connections", "", false, 0, 4, 2));
 
-        checkList.add(new CheckItem("Turn on your firewall", "", false, 41, 4, 2));
+        checkList.add(new CheckItem("Preventing untrusted connections", "Turn on your firewall",  false, 41, 4, 2));
 
-        checkList.add(new CheckItem("Keep only essential programs", "", false, 41, 4, 2));
+        checkList.add(new CheckItem("Preventing untrusted connections", "Keep only essential programs", false, 41, 4, 2));
 
         checkList.add(new CheckItem("Create a strong password", "", false, 0, 5, 1));
 
-        checkList.add(new CheckItem("Make it long", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Make it long", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Make it complex", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Make it complex", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Make sure it’s not personal", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Make sure it’s not personal", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Keep it secret", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Keep it secret", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Make it unique", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Make it unique", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Change it regularly", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Change it regularly", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Make it memorable", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Make it memorable", false, 44, 5, 1));
 
-        checkList.add(new CheckItem("Give fake answers to security questions", "", false, 44, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "Give fake answers to security questions", false, 44, 5, 1));
 
         checkList.add(new CheckItem("Check the strength of passwords on Passfault", "", false, 0, 5, 1));
 
@@ -183,13 +183,13 @@ public class InitialData {
 
         checkList.add(new CheckItem("If encryption is illegal…", "", false, 0, 6, 2));
 
-        checkList.add(new CheckItem("Store only non-confidential information", "", false, 70, 6, 2));
+        checkList.add(new CheckItem("If encryption is illegal…", "Store only non-confidential information", false, 70, 6, 2));
 
-        checkList.add(new CheckItem("Use code words", "", false, 70, 6, 2));
+        checkList.add(new CheckItem("If encryption is illegal…", "Use code words", false, 70, 6, 2));
 
-        checkList.add(new CheckItem("Store sensitive information in a secure webmail account", "", false, 70, 6, 2));
+        checkList.add(new CheckItem("If encryption is illegal…", "Store sensitive information in a secure webmail account", false, 70, 6, 2));
 
-        checkList.add(new CheckItem("Store sensitive information securely off your computer", "", false, 70, 6, 2));
+        checkList.add(new CheckItem("If encryption is illegal…", "Store sensitive information securely off your computer", false, 70, 6, 2));
 
         checkList.add(new CheckItem("If Windows user, install Eraser", "", false, 0, 7, 1));
 
@@ -217,7 +217,7 @@ public class InitialData {
 
         checkList.add(new CheckItem("Install Recuva", "", false, 0, 8, 2));
 
-        checkList.add(new CheckItem("If recovering files, do as little as possible before using Recuva", "", false, 0, 8, 1));
+        checkList.add(new CheckItem("If recovering files, do as little as possible before using Recuva", "", false, 0, 8, 2));
 
         return checkList;
     }
