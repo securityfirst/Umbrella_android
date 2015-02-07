@@ -73,12 +73,14 @@ public class CheckListAdapter extends BaseAdapter {
             holder.checkItemTitle.setVisibility(View.VISIBLE);
             holder.checkItemSubtitle.setText(current.getText());
             holder.checkBox.setChecked(current.getValue());
+            holder.checkBox.setEnabled(!current.isDisabled());
             holder.checkItemLayout.setPadding(0, 0, 0, 0);
         } else {
             holder.checkItemSubtitle.setText(current.getText());
             holder.checkItemTitle.setVisibility(View.GONE);
             holder.checkItemSubtitle.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(current.getValue());
+            holder.checkBox.setEnabled(!current.isDisabled());
             holder.checkItemLayout.setPadding(UmbrellaUtil.dpToPix(20, mContext), 0, 0, 0);
         }
 
