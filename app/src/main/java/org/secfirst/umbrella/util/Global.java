@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
+
 import org.secfirst.umbrella.MainActivity;
 
 public class Global extends com.orm.SugarApp {
@@ -19,6 +21,7 @@ public class Global extends com.orm.SugarApp {
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn;
     private String _password = "";
+    private MixpanelAPI mMixpanel;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -28,6 +31,7 @@ public class Global extends com.orm.SugarApp {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
+        mMixpanel = MixpanelAPI.getInstance(mContext, "0a52a88dd6fff39123604b9613ff5225");
     }
 
     public boolean isLoggedIn() {
@@ -115,5 +119,9 @@ public class Global extends com.orm.SugarApp {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public MixpanelAPI getmMixpanel() {
+        return mMixpanel;
     }
 }

@@ -20,10 +20,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
@@ -268,6 +271,15 @@ public class TabbedFragment extends Fragment {
                 }
                 setProgressBarTo((int) Math.round(selected * 100.0 / mCheckList.size()));
             }
+            String topic = Category.find(Category.class, "id = ?", String.valueOf(category)).get(0).getCategory();
+            JSONObject props = new JSONObject();
+            try {
+                props.put("difficulty", difficulty);
+                props.put("topic", topic);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ((MainActivity) getActivity()).getGlobal().getmMixpanel().track("Viewed Checklist", props);
         }
 
         public void setProgressBarTo(int percent) {

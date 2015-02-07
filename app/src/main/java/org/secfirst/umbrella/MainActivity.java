@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
@@ -85,8 +87,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
         DrawerAdapter adapter = new DrawerAdapter(this);
-        drawerList.setAdapter(adapter);
-        drawerList.setOnChildClickListener(adapter);
         View header = View.inflate(this, R.layout.drawer_header, null);
         final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
         header.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +102,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         });
         loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
         drawerList.addHeaderView(header);
+        drawerList.setAdapter(adapter);
+        drawerList.setOnChildClickListener(adapter);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
                 R.drawable.ic_drawer, R.string.open_drawer,
@@ -146,6 +148,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
         if (hasDifficulty.size()>0) {
             titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
+            JSONObject props = new JSONObject();
+            try {
+                props.put("difficulty", hasDifficulty.get(0).getSelected());
+                props.put("topic", childItem.getTitle());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            global.getmMixpanel().track("Viewed Lesson", props);
         }
         drawerItem = childItem.getPosition();
         setNavItems(childItem.getTitle());
@@ -254,6 +264,15 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
             }
+        } else {
+            JSONObject props = new JSONObject();
+            try {
+                props.put("difficulty", difficulty);
+                props.put("topic", childItem.getTitle());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            global.getmMixpanel().track("Viewed Lesson", props);
         }
     }
 }
