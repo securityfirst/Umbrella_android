@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -245,8 +244,6 @@ public class TabbedFragment extends Fragment {
         }
 
         public void refreshCheckList(long category, int difficulty) {
-            Log.i("category", String.valueOf(category));
-            Log.i("diff", String.valueOf(difficulty));
             mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(category), String.valueOf(difficulty));
             if (cLAdapter != null) {
                 cLAdapter.updateData(mCheckList);

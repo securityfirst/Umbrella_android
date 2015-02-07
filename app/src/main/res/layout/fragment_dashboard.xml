@@ -96,7 +96,28 @@
             <ListView
                 android:id="@+id/check_list"
                 android:layout_width="match_parent"
-                android:layout_height="190dp" />
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/check_list_no_view"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                card_view:cardCornerRadius="2dp">
+
+                <TextView
+                    android:text="No check items started on yet"
+                    android:layout_width="fill_parent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_smaller"
+                    android:textColor="@color/dark_grey"
+                    android:layout_height="wrap_content" />
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 

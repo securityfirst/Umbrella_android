@@ -65,8 +65,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
                     if (hasDifficulty.size()>0) {
                         navItem = position;
-                        hasDifficulty.get(0).setSelected(position);
-                        hasDifficulty.get(0).save();
+                        Difficulty chosen = hasDifficulty.get(0);
+                        chosen.setSelected(position);
+                        chosen.save();
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
