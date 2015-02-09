@@ -20,13 +20,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orm.query.Condition;
-import com.orm.query.Select;
-
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
@@ -56,26 +54,22 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         }
 
         titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
+        titleSpinner.setTag(0);
         navItem = 0;
         groupItem = -1;
         titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (groupItem!=0) {
-                    List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
-                    if (hasDifficulty.size()>0) {
-                        navItem = position;
-                        hasDifficulty.get(0).setSelected(position);
-                        hasDifficulty.get(0).save();
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
-                    } else {
-                        FragmentManager fragmentManager = getSupportFragmentManager();
-                        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                        fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).commit();
-                    }
+                List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+                if (hasDifficulty.size() > 0) {
+                    hasDifficulty.get(0).setSelected(position);
+                    hasDifficulty.get(0).save();
                 }
+                if (((Integer) titleSpinner.getTag()) == position) {
+                    return;
+                }
+                titleSpinner.setTag(position);
+                setFragment(1, childItem.getTitle());
             }
 
             @Override
@@ -115,11 +109,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
         drawer.setDrawerListener(actionBarDrawerToggle);
         if (global.hasPasswordSet()) {
-            setDashboard("My Security");
+            setFragment(0, "My Security");
         } else {
-            Intent intent = getIntent();
-            onNavigationDrawerItemSelected(new DrawerChildItem("Passwords", intent.getIntExtra("search", 3)));
-            setNavItems("Passwords");
+            onNavigationDrawerItemSelected(new DrawerChildItem("Managing Information", getIntent().getIntExtra("search", 3)));
         }
     }
 
@@ -129,9 +121,57 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void setNavItems(String title) {
-        ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, new String[] {title +" Beginner", title +" Intermediate", title +" Expert"});
+        Category childCategory = Category.findById(Category.class, childItem.getPosition());
+        String[] navArray = new String[] {};
+//        switch (childCategory.getDifficulties()) {
+//            case 1:
+//                navArray = new String[] {title +" Beginner"};
+//                break;
+//            case 2:
+//                navArray = new String[] {title +" Intermediate"};
+//                break;
+//            case 3:
+//                navArray = new String[] {title +" Expert"};
+//                break;
+//            case 4:
+//                navArray = new String[] {title +" Beginner", title +" Expert"};
+//                break;
+//            case 5:
+//                navArray = new String[] {title +" Intermediate", title +" Expert"};
+//                break;
+//            case 7:
+//                break;
+//        }
+                navArray = new String[] {title +" Beginner", title +" Intermediate", title +" Expert"};
+        ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, navArray);
         titleSpinner.setVisibility(View.VISIBLE);
         titleSpinner.setAdapter(navAdapter);
+    }
+
+    public void setFragment(int fragType, String groupName) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (fragType == 0) {
+            fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).commit();
+            drawer.closeDrawer(drawerList);
+            titleSpinner.setVisibility(View.GONE);
+            setTitle(groupName);
+        } else {
+            List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+            drawerItem = childItem.getPosition();
+            drawer.closeDrawer(drawerList);
+            setNavItems(childItem.getTitle());
+            if (hasDifficulty.size() > 0) {
+                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
+                if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
+                    titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
+                } else {
+                    titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
+                }
+            } else {
+                fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).commit();
+            }
+        }
     }
 
     @Override
@@ -142,26 +182,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
         childItem = selectedItem;
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), navItem), childItem.getTitle()).commit();
-        List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
-        if (hasDifficulty.size()>0) {
-            titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
-        }
-        drawerItem = childItem.getPosition();
-        setNavItems(childItem.getTitle());
-        drawer.closeDrawer(drawerList);
-    }
-
-    public void setDashboard(String groupName) {
-        groupItem = 0;
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).commit();
-        drawer.closeDrawer(drawerList);
-        titleSpinner.setVisibility(View.GONE);
-        setTitle(groupName);
+        setFragment(1, "");
     }
 
     @Override
@@ -248,14 +269,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     @Override
     public void onDifficultySelected(int difficulty) {
-        titleSpinner.setSelection(difficulty);
-        if (difficulty==0) {
-            List<Difficulty> hasDifficulty = Select.from(Difficulty.class).where(Condition.prop("category").eq(String.valueOf(childItem.getPosition()))).limit("1").list();
-            if (hasDifficulty.size()>0) {
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
-            }
+        Log.i("ch count", String.valueOf(titleSpinner.getChildCount()));
+        if (difficulty >= titleSpinner.getAdapter().getCount()) {
+            titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
+        } else {
+            titleSpinner.setSelection(difficulty);
         }
+        setFragment(1, "");
     }
 }

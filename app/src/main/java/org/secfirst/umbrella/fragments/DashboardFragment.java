@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +75,10 @@ public class DashboardFragment extends Fragment {
         forFeed.add(new FeedItem("Third title", "subtitle3", "3info about...", ""));
         DashFeedAdapter feedAdapter = new DashFeedAdapter(getActivity(), forFeed);
         ListView feedListView = (ListView) view.findViewById(R.id.feed_list);
+        feedListView.setVisibility(View.GONE);
         feedListView.setDividerHeight(10);
         feedListView.setAdapter(feedAdapter);
-        setListViewHeightBasedOnChildren(feedListView);
+//        setListViewHeightBasedOnChildren(feedListView);
         return view;
     }
 
@@ -93,8 +93,6 @@ public class DashboardFragment extends Fragment {
         for (Difficulty difficulty : hasDifficulty) {
             List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(difficulty.getCategory()), String.valueOf(difficulty.getSelected() + 1));
             Category category = Category.findById(Category.class, difficulty.getCategory());
-            Log.i("dif", String.valueOf(difficulty.getCategory()));
-            Log.i("sel", String.valueOf(difficulty.getSelected()));
             DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory());
             for (CheckItem checkItem : mCheckList) {
                 if (checkItem.getValue()) {

@@ -3,12 +3,13 @@ package org.secfirst.umbrella.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.Difficulty;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class DifficultyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final Category childCategory = Category.findById(Category.class, mSection);
         View v = inflater.inflate(R.layout.fragment_select, container, false);
         View btnBeginner = v.findViewById(R.id.card_beginner);
         btnBeginner.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +72,28 @@ public class DifficultyFragment extends Fragment {
                 onDifficultySelected(EXPERT);
             }
         });
+//        switch (childCategory.getDifficulties()) {
+//            case 1:
+//                btnExpert.setVisibility(View.GONE);
+//                btnIntermediate.setVisibility(View.GONE);
+//                break;
+//            case 2:
+//                btnBeginner.setVisibility(View.GONE);
+//                btnExpert.setVisibility(View.GONE);
+//                break;
+//            case 3:
+//                btnIntermediate.setVisibility(View.GONE);
+//                btnBeginner.setVisibility(View.GONE);
+//                break;
+//            case 4:
+//                btnIntermediate.setVisibility(View.GONE);
+//                break;
+//            case 5:
+//                btnBeginner.setVisibility(View.GONE);
+//                break;
+//            case 7:
+//                break;
+//        }
         return v;
     }
 
@@ -82,6 +106,7 @@ public class DifficultyFragment extends Fragment {
         } else {
             d = new Difficulty(mSection, difficulty);
         }
+        Log.i("set diff1", String.valueOf(difficulty));
         d.save();
         if (mListener != null) {
             mListener.onDifficultySelected(difficulty);

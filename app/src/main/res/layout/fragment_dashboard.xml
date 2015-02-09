@@ -128,6 +128,7 @@
 
             <TextView
                 android:text="@string/feeds"
+                android:visibility="gone"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_normal"

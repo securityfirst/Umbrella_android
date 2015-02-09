@@ -223,23 +223,23 @@ public class InitialData {
     }
 
     public static ArrayList<Category> getCategoryList() {
-        categoryList.add(new Category(1, 0, "My Security"));
-        categoryList.add(new Category(2, 0, "Information"));
-        categoryList.add(new Category(3, 2, "Managing Information"));
-        categoryList.add(new Category(4, 2, "Malware"));
-        categoryList.add(new Category(5, 2, "Passwords"));
-        categoryList.add(new Category(6, 2, "Protecting Files"));
-        categoryList.add(new Category(7, 2, "Safely Deleting"));
-        categoryList.add(new Category(8, 2, "Backing Up"));
-        categoryList.add(new Category(9, 0, "Personal"));
-        categoryList.add(new Category(10, 0, "Travel"));
-        categoryList.add(new Category(11, 0, "Operations"));
-        categoryList.add(new Category(12, 0, "Organisation"));
-        categoryList.add(new Category(13, 0, "Home / Office"));
-        categoryList.add(new Category(14, 0, "Emergency Response"));
-        categoryList.add(new Category(15, 0, "Tools"));
-        categoryList.add(new Category(16, 0, "Index / Glossary"));
-        categoryList.add(new Category(17, 0, "About"));
+        categoryList.add(new Category(1, 0, "My Security", 0));
+        categoryList.add(new Category(2, 0, "Information Security", 0));
+        categoryList.add(new Category(3, 2, "Managing Information", 1));
+        categoryList.add(new Category(4, 2, "Malware", 3));
+        categoryList.add(new Category(5, 2, "Passwords", 7));
+        categoryList.add(new Category(6, 2, "Protecting Files", 2));
+        categoryList.add(new Category(7, 2, "Safely Deleting", 1));
+        categoryList.add(new Category(8, 2, "Backing Up", 2));
+        categoryList.add(new Category(9, 0, "Personal", 0));
+        categoryList.add(new Category(10, 0, "Travel", 0));
+        categoryList.add(new Category(11, 0, "Operations", 0));
+        categoryList.add(new Category(12, 0, "Organisation", 0));
+        categoryList.add(new Category(13, 0, "Home / Office", 0));
+        categoryList.add(new Category(14, 0, "Emergency Response", 0));
+        categoryList.add(new Category(15, 0, "Tools", 0));
+        categoryList.add(new Category(16, 0, "Index / Glossary", 0));
+        categoryList.add(new Category(17, 0, "About", 0));
         return categoryList;
     }
 

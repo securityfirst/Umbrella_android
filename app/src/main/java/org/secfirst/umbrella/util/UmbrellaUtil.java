@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Segment;
@@ -57,13 +58,13 @@ public class UmbrellaUtil {
     }
 
     public static void migrateData() {
-        ArrayList<Segment> segments = InitialData.getSegmentList();
-        List<Segment> fromDB = Segment.listAll(Segment.class);
-        if (fromDB.size()==0) {
-            for (Segment segment : segments) {
-                segment.save();
-            }
-        }
+//        ArrayList<Segment> segments = InitialData.getSegmentList();
+//        List<Segment> fromDB = Segment.listAll(Segment.class);
+//        if (fromDB.size()==0) {
+//            for (Segment segment : segments) {
+//                segment.save();
+//            }
+//        }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
         List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
@@ -170,19 +171,6 @@ public class UmbrellaUtil {
         return childItem;
     }
 
-    public static String getDifficultyString(int difficulty) {
-        switch (difficulty) {
-            case 1:
-                return "Beginner";
-            case 2:
-                return "Intermediate";
-            case 3:
-                return "Expert";
-            default:
-                return "Beginner";
-        }
-    }
-
     public static String checkPasswordStrength(String password) {
         if (password.length()<6) {
             return "Password too short";
@@ -204,6 +192,11 @@ public class UmbrellaUtil {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.setStatusBarColor(colorResource);
         }
+    }
+
+    public static int getDifficulty(long itemNum) {
+        List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(itemNum));
+        return (hasDifficulty.size()>0) ? hasDifficulty.get(0).getSelected() : 0;
     }
 
 }
