@@ -29,6 +29,8 @@ public class SettingsAdapter extends RecyclerView.Adapter<SettingsAdapter.ViewHo
     public SettingsAdapter(Context context) {
         mContext = context;
         mSettings.add(new SettingsItem("Refresh from the server"));
+        mSettings.add(new SettingsItem("Refresh from the server"));
+        mSettings.add(new SettingsItem("Refresh from the server"));
         notifyDataSetChanged();
     }
 
