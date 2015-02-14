@@ -3,6 +3,7 @@ package org.secfirst.umbrella;
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -26,10 +27,12 @@ import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.net.URLEncoder;
 import java.util.List;
 
 
@@ -229,9 +232,15 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         MenuItem itemResetPw = menu.findItem(R.id.action_reset_password);
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
         MenuItem itemLogout = menu.findItem(R.id.action_logout);
+        MenuItem itemExport = menu.findItem(R.id.export_checklist);
         itemSetPw.setVisible(!global.hasPasswordSet());
         itemResetPw.setVisible(global.hasPasswordSet());
         itemLogout.setVisible(global.hasPasswordSet());
+        itemExport.setVisible(false);
+        if (childItem != null) {
+            List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+            itemExport.setVisible(hasDifficulty.size() > 0);
+        }
         return true;
     }
 
@@ -261,6 +270,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (id == R.id.action_reset_password) {
             global.resetPassword(this);
             return true;
+        }
+        if (id == R.id.export_checklist) {
+            List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+            if (hasDifficulty.size() > 0) {
+                String body = "";
+                List<CheckItem> items = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(childItem.getPosition()), String.valueOf(hasDifficulty.get(0).getSelected() + 1));
+                for (CheckItem checkItem : items) {
+                    body += "\n" + (checkItem.getValue() ? "☑" : "☐") + " " + checkItem.getTitle();
+                }
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + URLEncoder.encode(body)));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+                return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
