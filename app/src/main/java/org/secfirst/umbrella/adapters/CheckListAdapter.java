@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -52,7 +51,6 @@ public class CheckListAdapter extends BaseAdapter {
     @Override
     public View getView(final int i, View convertView, final ViewGroup viewGroup) {
         final ViewHolder holder;
-        final CheckItem current = checkList.get(i);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.check_list_item, null);
@@ -67,45 +65,44 @@ public class CheckListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (current.getParent()==0) {
-            holder.checkItemTitle.setText(current.getTitle());
-            holder.checkItemSubtitle.setVisibility(current.getText().equals("") ? View.GONE : View.VISIBLE);
+        if (checkList.get(i).getParent()==0) {
+            holder.checkItemTitle.setText(checkList.get(i).getTitle());
+            holder.checkItemSubtitle.setVisibility(checkList.get(i).getText().equals("") ? View.GONE : View.VISIBLE);
             holder.checkItemTitle.setVisibility(View.VISIBLE);
-            holder.checkItemSubtitle.setText(current.getText());
-            holder.checkBox.setChecked(current.getValue());
-            holder.checkBox.setEnabled(!current.isDisabled());
+            holder.checkItemSubtitle.setText(checkList.get(i).getText());
             holder.checkItemLayout.setPadding(0, 0, 0, 0);
         } else {
-            holder.checkItemSubtitle.setText(current.getText());
+            holder.checkItemSubtitle.setText(checkList.get(i).getText());
             holder.checkItemTitle.setVisibility(View.GONE);
             holder.checkItemSubtitle.setVisibility(View.VISIBLE);
-            holder.checkBox.setChecked(current.getValue());
-            holder.checkBox.setEnabled(!current.isDisabled());
             holder.checkItemLayout.setPadding(UmbrellaUtil.dpToPix(20, mContext), 0, 0, 0);
         }
+        holder.checkBox.setChecked(checkList.get(i).getValue());
+        holder.checkBox.setEnabled(!checkList.get(i).isDisabled());
 
-        holder.checkView.setCardElevation(current.getValue()? 0 : 4);
-        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(current.getValue() ? R.color.white : R.color.umbrella_yellow));
+        holder.checkView.setCardElevation(checkList.get(i).getValue()? 0 : 4);
+        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(checkList.get(i).getValue() ? R.color.white : R.color.umbrella_yellow));
 
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                setChecked(current, b);
-                holder.checkView.setCardElevation(b ? 0 : 4 );
-                if (!current.isCustom()) {
-                    holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(b ? R.color.white : R.color.umbrella_yellow));
+            public void onClick(View v) {
+                boolean isChecked = ((CheckBox) v).isChecked();
+                setChecked(true, i);
+                holder.checkView.setCardElevation(isChecked ? 0 : 4);
+                if (!checkList.get(i).isCustom()) {
+                    holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(isChecked ? R.color.white : R.color.umbrella_yellow));
                 }
             }
         });
 
-        if (current.isCustom()) {
+        if (checkList.get(i).isCustom()) {
             holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(R.color.umbrella_green));
         }
 
         holder.checkItemLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (current.isCustom()) {
+                if (checkList.get(i).isCustom()) {
                     CharSequence menuChoiceCustom[] = new CharSequence[]{"Delete"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Select an action");
@@ -113,7 +110,7 @@ public class CheckListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {
-                                current.delete();
+                                checkList.get(i).delete();
                                 checkList.remove(i);
                                 notifyDataSetChanged();
                             } else {
@@ -125,14 +122,14 @@ public class CheckListAdapter extends BaseAdapter {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Select an action");
-                    if (current.isDisabled()) {
+                    if (checkList.get(i).isDisabled()) {
                         CharSequence menuChoice[] = new CharSequence[]{"Enable"};
                         builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                current.enable();
-                                current.save();
-                                checkList.set(i, current);
+                                checkList.get(i).enable();
+                                checkList.get(i).save();
+                                checkList.set(i, checkList.get(i));
                                 notifyDataSetChanged();
                             }
                         });
@@ -141,9 +138,9 @@ public class CheckListAdapter extends BaseAdapter {
                         builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                current.disable();
-                                current.save();
-                                checkList.set(i, current);
+                                checkList.get(i).disable();
+                                checkList.get(i).save();
+                                checkList.set(i, checkList.get(i));
                                 notifyDataSetChanged();
                             }
                         });
@@ -157,9 +154,12 @@ public class CheckListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void setChecked(CheckItem current, boolean b) {
+    private void setChecked(boolean b, int i) {
+
+        CheckItem current = (CheckItem) getItem(i);
         current.setValue(b ? 1 : 0);
         current.save();
+        checkList.get(i).setValue(b ? 1 : 0);
         mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
     }
 
