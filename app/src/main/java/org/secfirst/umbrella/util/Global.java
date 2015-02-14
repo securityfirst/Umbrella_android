@@ -106,6 +106,7 @@ public class Global extends com.orm.SugarApp {
         alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 savePassword("");
+                UmbrellaUtil.resetDataToInitial();
                 Toast.makeText(activity, "Password reset and all data removed.", Toast.LENGTH_SHORT).show();
                 activity.startActivity(new Intent(activity, MainActivity.class));
             }

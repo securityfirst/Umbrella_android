@@ -57,6 +57,14 @@ public class UmbrellaUtil {
         }
     }
 
+    public static void resetDataToInitial() {
+        CheckItem.deleteAll(CheckItem.class);
+        Category.deleteAll(Category.class);
+        Segment.deleteAll(Segment.class);
+        Difficulty.deleteAll(Difficulty.class);
+        migrateData();
+    }
+
     public static void migrateData() {
 //        ArrayList<Segment> segments = InitialData.getSegmentList();
 //        List<Segment> fromDB = Segment.listAll(Segment.class);
