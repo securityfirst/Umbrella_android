@@ -66,13 +66,13 @@ public class UmbrellaUtil {
     }
 
     public static void migrateData() {
-//        ArrayList<Segment> segments = InitialData.getSegmentList();
-//        List<Segment> fromDB = Segment.listAll(Segment.class);
-//        if (fromDB.size()==0) {
-//            for (Segment segment : segments) {
-//                segment.save();
-//            }
-//        }
+        ArrayList<Segment> segments = InitialData.getSegmentList();
+        List<Segment> fromDB = Segment.listAll(Segment.class);
+        if (fromDB.size()==0) {
+            for (Segment segment : segments) {
+                segment.save();
+            }
+        }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
         List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
