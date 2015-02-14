@@ -172,7 +172,7 @@ public class UmbrellaUtil {
     }
 
     public static String checkPasswordStrength(String password) {
-        if (password.length()<6) {
+        if (password.length()<8) {
             return "Password too short";
         } else if(!Pattern.compile("\\d").matcher(password).find()) {
             return "Password must have at least one digit";

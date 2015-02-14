@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.InputType;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -73,8 +74,9 @@ public class Global extends com.orm.SugarApp {
     public void setPassword(final Activity activity) {
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle("Set your password");
-        alert.setMessage("Your password must be at least 4 characters long and must contain at least one digit and one capital letter");
+        alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter");
         final EditText pwInput = new EditText(activity);
+        pwInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         alert.setView(pwInput);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
