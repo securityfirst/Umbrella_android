@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 //            case 7:
 //                break;
 //        }
-                navArray = new String[] {title +" Beginner", title +" Intermediate", title +" Expert"};
+                navArray = new String[] {title +" Beginner", title +" Advanced", title +" Expert"};
         ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, navArray);
         titleSpinner.setVisibility(View.VISIBLE);
         titleSpinner.setAdapter(navAdapter);
