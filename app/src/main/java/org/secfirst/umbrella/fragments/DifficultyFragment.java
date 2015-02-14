@@ -72,28 +72,9 @@ public class DifficultyFragment extends Fragment {
                 onDifficultySelected(EXPERT);
             }
         });
-//        switch (childCategory.getDifficulties()) {
-//            case 1:
-//                btnExpert.setVisibility(View.GONE);
-//                btnIntermediate.setVisibility(View.GONE);
-//                break;
-//            case 2:
-//                btnBeginner.setVisibility(View.GONE);
-//                btnExpert.setVisibility(View.GONE);
-//                break;
-//            case 3:
-//                btnIntermediate.setVisibility(View.GONE);
-//                btnBeginner.setVisibility(View.GONE);
-//                break;
-//            case 4:
-//                btnIntermediate.setVisibility(View.GONE);
-//                break;
-//            case 5:
-//                btnBeginner.setVisibility(View.GONE);
-//                break;
-//            case 7:
-//                break;
-//        }
+        btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
+        btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
+        btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
         return v;
     }
 
