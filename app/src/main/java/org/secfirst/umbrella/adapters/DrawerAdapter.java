@@ -23,7 +23,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
     ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
     private Context mContext;
     private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_settings_phone_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_work_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_business_grey600_24dp, R.drawable.ic_home_grey600_24dp, R.drawable.ic_local_hospital_grey600_24dp, R.drawable.ic_content_cut_grey600_24dp, R.drawable.ic_list_grey600_24dp, R.drawable.ic_about};
-    private int[] childImages = {R.drawable.ic_supervisor_account_grey600_24dp, R.drawable.ic_bug_report_grey600_24dp, R.drawable.ic_lock_grey600_24dp, R.drawable.ic_security_grey600_24dp, R.drawable.ic_delete_grey600_24dp, R.drawable.ic_backup_grey600_24dp};
+    private int[][] childImages = {{}, {R.drawable.ic_supervisor_account_grey600_24dp, R.drawable.ic_bug_report_grey600_24dp, R.drawable.ic_lock_grey600_24dp, R.drawable.ic_security_grey600_24dp, R.drawable.ic_delete_grey600_24dp, R.drawable.ic_backup_grey600_24dp}, {R.drawable.ic_phones, R.drawable.ic_call, R.drawable.ic_message, R.drawable.ic_email, R.drawable.ic_internet, R.drawable.ic_social, R.drawable.ic_radio, R.drawable.ic_satellite}};
 
     public DrawerAdapter(Context context) {
         mContext = context;
@@ -59,8 +59,8 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (childImages.length > childPosition) {
-            holder.childIcon.setImageResource(childImages[childPosition]);
+        if (childImages.length > groupPosition && childImages[groupPosition].length > childPosition) {
+            holder.childIcon.setImageResource(childImages[groupPosition][childPosition]);
         }
         holder.childTitle.setText(tempChild.getTitle());
 
