@@ -232,15 +232,23 @@ public class InitialData {
         categoryList.add(new Category(7, 2, "Safely Deleting", true, false, false));
         categoryList.add(new Category(8, 2, "Backing Up", false, true, false));
         categoryList.add(new Category(9, 0, "Communications Security", false, false, false));
-        categoryList.add(new Category(10, 0, "Personal", false, false, false));
-        categoryList.add(new Category(11, 0, "Travel", false, false, false));
-        categoryList.add(new Category(12, 0, "Operations", false, false, false));
-        categoryList.add(new Category(13, 0, "Organisation", false, false, false));
-        categoryList.add(new Category(14, 0, "Home / Office", false, false, false));
-        categoryList.add(new Category(15, 0, "Emergency Response", false, false, false));
-        categoryList.add(new Category(16, 0, "Tools", false, false, false));
-        categoryList.add(new Category(17, 0, "Index / Glossary", false, false, false));
-        categoryList.add(new Category(18, 0, "About", false, false, false));
+        categoryList.add(new Category(10, 9, "Mobile Phones", true, false, true));
+        categoryList.add(new Category(11, 9, "Making a call", false, false, false));
+        categoryList.add(new Category(12, 9, "Sending a message", false, false, false));
+        categoryList.add(new Category(13, 9, "Email", false, false, false));
+        categoryList.add(new Category(14, 9, "The Internet", false, false, false));
+        categoryList.add(new Category(15, 9, "Social Media", false, false, false));
+        categoryList.add(new Category(16, 9, "Radios", false, false, false));
+        categoryList.add(new Category(17, 9, "Satellite phones", false, false, false));
+        categoryList.add(new Category(18, 0, "Personal", false, false, false));
+        categoryList.add(new Category(19, 0, "Travel", false, false, false));
+        categoryList.add(new Category(20, 0, "Operations", false, false, false));
+        categoryList.add(new Category(21, 0, "Organisation", false, false, false));
+        categoryList.add(new Category(22, 0, "Home / Office", false, false, false));
+        categoryList.add(new Category(23, 0, "Emergency Response", false, false, false));
+        categoryList.add(new Category(24, 0, "Tools", false, false, false));
+        categoryList.add(new Category(25, 0, "Index / Glossary", false, false, false));
+        categoryList.add(new Category(26, 0, "About", false, false, false));
         return categoryList;
     }
 
