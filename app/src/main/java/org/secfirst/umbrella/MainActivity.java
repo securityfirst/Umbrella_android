@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (fragType == 0) {
-            fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).commit();
+            fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).addToBackStack(null).commit();
             drawer.closeDrawer(drawerList);
             titleSpinner.setVisibility(View.GONE);
             setTitle(groupName);
@@ -162,14 +162,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             drawer.closeDrawer(drawerList);
             setNavItems(childItem.getTitle());
             if (hasDifficulty.size() > 0) {
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).commit();
+                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).addToBackStack(null).commit();
                 if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
                 } else {
                     titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
                 }
             } else {
-                fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).commit();
+                fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).addToBackStack(null).commit();
             }
         }
     }
