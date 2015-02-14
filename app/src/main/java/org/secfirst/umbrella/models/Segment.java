@@ -3,41 +3,16 @@ package org.secfirst.umbrella.models;
 import com.orm.SugarRecord;
 
 public class Segment extends SugarRecord<Segment> {
-    private String title;
-    private String subtitle;
     private String body;
     private int category;
+    private int difficulty;
 
     public Segment(){}
 
-    public Segment(String title, String subtitle, String body, int category) {
-        this.title = title;
-        this.subtitle = subtitle;
+    public Segment(int category, int difficulty, String body) {
         this.body = body;
+        this.difficulty = difficulty;
         this.category = category;
-    }
-
-    public Segment(String body, int category) {
-        this.title = "";
-        this.subtitle = "";
-        this.body = body;
-        this.category = category;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
     }
 
     public String getBody() {
@@ -54,5 +29,13 @@ public class Segment extends SugarRecord<Segment> {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 }
