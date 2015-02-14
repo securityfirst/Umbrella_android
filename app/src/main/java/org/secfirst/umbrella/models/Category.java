@@ -8,15 +8,19 @@ public class Category extends SugarRecord<Category> {
     private long id;
     private int parent;
     private String category;
-    private int difficulties;
+    private int difficultyBeginner;
+    private int difficultyAdvanced;
+    private int difficultyExpert;
 
     public Category() {}
 
-    public Category(int id, int parent, String category, int difficulties) {
+    public Category(int id, int parent, String category, boolean difficultyBeginner, boolean difficultyAdvanced, boolean difficultyExpert) {
         this.id = id;
         this.parent = parent;
         this.category = category;
-        this.difficulties = difficulties;
+        this.difficultyBeginner = difficultyBeginner ? 1 : 0;
+        this.difficultyAdvanced = difficultyAdvanced ? 1 : 0;
+        this.difficultyExpert = difficultyExpert ? 1 : 0;
     }
 
     public int getParent() {
@@ -43,11 +47,15 @@ public class Category extends SugarRecord<Category> {
         this.parent = parent;
     }
 
-    public int getDifficulties() {
-        return difficulties;
+    public boolean getDifficultyBeginner() {
+        return difficultyBeginner != 0;
     }
 
-    public void setDifficulties(int difficulties) {
-        this.difficulties = difficulties;
+    public boolean getDifficultyAdvanced() {
+        return difficultyAdvanced != 0;
+    }
+
+    public boolean getDifficultyExpert() {
+        return difficultyExpert != 0;
     }
 }

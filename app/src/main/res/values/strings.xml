@@ -34,6 +34,7 @@
     <string name="beginner_description">Have you Sum eossime nobisinvenet eos ellatiae audaeceror sedianias cuptia con?</string>
     <string name="beginner">Beginner</string>
     <string name="expert">Expert</string>
-    <string name="intermediate">Intermediate</string>
+    <string name="intermediate">Advanced</string>
+    <string name="action_export_checklist">Export Checklist</string>
 
 </resources>
