@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -108,11 +109,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         };
 
         drawer.setDrawerListener(actionBarDrawerToggle);
-        if (global.hasPasswordSet()) {
-            setFragment(0, "My Security");
-        } else {
-            onNavigationDrawerItemSelected(new DrawerChildItem("Managing Information", getIntent().getIntExtra("search", 3)));
-        }
+        setFragment(0, "My Security");
+        drawer.openDrawer(Gravity.LEFT);
     }
 
     @Override
