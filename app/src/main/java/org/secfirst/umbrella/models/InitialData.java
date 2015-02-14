@@ -223,24 +223,24 @@ public class InitialData {
     }
 
     public static ArrayList<Category> getCategoryList() {
-        categoryList.add(new Category(1, 0, "My Security", 0));
-        categoryList.add(new Category(2, 0, "Information Security", 0));
-        categoryList.add(new Category(3, 2, "Managing Information", 1));
-        categoryList.add(new Category(4, 2, "Malware", 3));
-        categoryList.add(new Category(5, 2, "Passwords", 7));
-        categoryList.add(new Category(6, 2, "Protecting Files", 2));
-        categoryList.add(new Category(7, 2, "Safely Deleting", 1));
-        categoryList.add(new Category(8, 2, "Backing Up", 2));
-        categoryList.add(new Category(9, 0, "Communications Security", 0));
-        categoryList.add(new Category(10, 0, "Personal", 0));
-        categoryList.add(new Category(11, 0, "Travel", 0));
-        categoryList.add(new Category(12, 0, "Operations", 0));
-        categoryList.add(new Category(13, 0, "Organisation", 0));
-        categoryList.add(new Category(14, 0, "Home / Office", 0));
-        categoryList.add(new Category(15, 0, "Emergency Response", 0));
-        categoryList.add(new Category(16, 0, "Tools", 0));
-        categoryList.add(new Category(17, 0, "Index / Glossary", 0));
-        categoryList.add(new Category(18, 0, "About", 0));
+        categoryList.add(new Category(1, 0, "My Security", false, false, false));
+        categoryList.add(new Category(2, 0, "Information Security", false, false, false));
+        categoryList.add(new Category(3, 2, "Managing Information", true, false, false));
+        categoryList.add(new Category(4, 2, "Malware", true, true, false));
+        categoryList.add(new Category(5, 2, "Passwords", true, true, true));
+        categoryList.add(new Category(6, 2, "Protecting Files", false, true, false));
+        categoryList.add(new Category(7, 2, "Safely Deleting", true, false, false));
+        categoryList.add(new Category(8, 2, "Backing Up", false, true, false));
+        categoryList.add(new Category(9, 0, "Communications Security", false, false, false));
+        categoryList.add(new Category(10, 0, "Personal", false, false, false));
+        categoryList.add(new Category(11, 0, "Travel", false, false, false));
+        categoryList.add(new Category(12, 0, "Operations", false, false, false));
+        categoryList.add(new Category(13, 0, "Organisation", false, false, false));
+        categoryList.add(new Category(14, 0, "Home / Office", false, false, false));
+        categoryList.add(new Category(15, 0, "Emergency Response", false, false, false));
+        categoryList.add(new Category(16, 0, "Tools", false, false, false));
+        categoryList.add(new Category(17, 0, "Index / Glossary", false, false, false));
+        categoryList.add(new Category(18, 0, "About", false, false, false));
         return categoryList;
     }
 
