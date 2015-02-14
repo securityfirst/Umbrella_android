@@ -93,15 +93,17 @@ public class DashboardFragment extends Fragment {
         for (Difficulty difficulty : hasDifficulty) {
             List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(difficulty.getCategory()), String.valueOf(difficulty.getSelected() + 1));
             Category category = Category.findById(Category.class, difficulty.getCategory());
-            DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory());
-            for (CheckItem checkItem : mCheckList) {
-                if (checkItem.getValue()) {
-                    int val = dashCheckFinished.getChecked() + 1;
-                    dashCheckFinished.setChecked(val);
+            if (category!=null) {
+                DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory());
+                for (CheckItem checkItem : mCheckList) {
+                    if (checkItem.getValue()) {
+                        int val = dashCheckFinished.getChecked() + 1;
+                        dashCheckFinished.setChecked(val);
+                    }
+                    dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                 }
-                dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
+                if (dashCheckFinished.getChecked()>0) returned.add(dashCheckFinished);
             }
-            if (dashCheckFinished.getChecked()>0) returned.add(dashCheckFinished);
         }
         return returned;
     }
