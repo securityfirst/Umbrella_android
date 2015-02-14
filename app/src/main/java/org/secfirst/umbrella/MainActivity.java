@@ -33,6 +33,7 @@ import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -66,6 +67,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
                 if (hasDifficulty.size() > 0) {
+                    Category childCategory = Category.findById(Category.class, childItem.getPosition());
+                    if (!childCategory.getDifficultyAdvanced() && position > 0) {
+                        position++;
+                    }
+                    if (!childCategory.getDifficultyBeginner()) {
+                        position++;
+                    }
                     hasDifficulty.get(0).setSelected(position);
                     hasDifficulty.get(0).save();
                 }
@@ -123,27 +131,16 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     public void setNavItems(String title) {
         Category childCategory = Category.findById(Category.class, childItem.getPosition());
-        String[] navArray = new String[] {};
-//        switch (childCategory.getDifficulties()) {
-//            case 1:
-//                navArray = new String[] {title +" Beginner"};
-//                break;
-//            case 2:
-//                navArray = new String[] {title +" Intermediate"};
-//                break;
-//            case 3:
-//                navArray = new String[] {title +" Expert"};
-//                break;
-//            case 4:
-//                navArray = new String[] {title +" Beginner", title +" Expert"};
-//                break;
-//            case 5:
-//                navArray = new String[] {title +" Intermediate", title +" Expert"};
-//                break;
-//            case 7:
-//                break;
-//        }
-                navArray = new String[] {title +" Beginner", title +" Advanced", title +" Expert"};
+        ArrayList<String> navArray = new ArrayList<String>();
+        if (childCategory.getDifficultyBeginner()) {
+            navArray.add(title +" Beginner");
+        }
+        if (childCategory.getDifficultyAdvanced()) {
+            navArray.add(title +" Advanced");
+        }
+        if (childCategory.getDifficultyExpert()) {
+            navArray.add(title +" Expert");
+        }
         ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, navArray);
         titleSpinner.setVisibility(View.VISIBLE);
         titleSpinner.setAdapter(navAdapter);
