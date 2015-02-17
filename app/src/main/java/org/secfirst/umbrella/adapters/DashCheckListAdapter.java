@@ -62,4 +62,9 @@ public class DashCheckListAdapter extends BaseAdapter {
         public TextView categoryName;
         public TextView percent;
     }
+
+    public void updateData(ArrayList<DashCheckFinished> list) {
+        this.checkItems = list;
+        notifyDataSetChanged();
+    }
 }

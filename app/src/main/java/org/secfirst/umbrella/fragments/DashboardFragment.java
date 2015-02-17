@@ -29,6 +29,9 @@ import java.util.List;
 public class DashboardFragment extends Fragment {
 
     private Global global;
+    private ListView checkListView;
+    private ArrayList<DashCheckFinished> checkLists;
+    private DashCheckListAdapter mAdapter;
 
     public static DashboardFragment newInstance(Global global) {
         DashboardFragment fragment = new DashboardFragment();
@@ -52,22 +55,20 @@ public class DashboardFragment extends Fragment {
         TextView checkCategory = (TextView) view.findViewById(R.id.check_category);
         TextView percentDone = (TextView) view.findViewById(R.id.check_percent);
 
-
-        getChecklistProgress();
-        ArrayList<DashCheckFinished> checkLists = getChecklistProgress();
+        checkLists = getChecklistProgress();
 
         checkCategory.setText("Total done");
         percentDone.setText(String.valueOf(getTotalCheckListPercentage(checkLists))+"%");
-        DashCheckListAdapter mAdapter = new DashCheckListAdapter(getActivity(), checkLists);
-        ListView mListView = (ListView) view.findViewById(R.id.check_list);
+        mAdapter = new DashCheckListAdapter(getActivity(), checkLists);
+        checkListView = (ListView) view.findViewById(R.id.check_list);
         if (checkLists.size()==0) {
-            mListView.setVisibility(View.GONE);
+            checkListView.setVisibility(View.GONE);
             CardView noView = (CardView) view.findViewById(R.id.check_list_no_view);
             noView.setVisibility(View.VISIBLE);
         }
-        mListView.setDividerHeight(10);
-        mListView.setAdapter(mAdapter);
-        setListViewHeightBasedOnChildren(mListView);
+        checkListView.setDividerHeight(10);
+        checkListView.setAdapter(mAdapter);
+        setListViewHeightBasedOnChildren(checkListView);
 
         ArrayList<FeedItem> forFeed = new ArrayList<>();
         forFeed.add(new FeedItem("First title", "subtitle1", "1info about...", ""));
@@ -80,6 +81,16 @@ public class DashboardFragment extends Fragment {
         feedListView.setAdapter(feedAdapter);
 //        setListViewHeightBasedOnChildren(feedListView);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        checkLists = getChecklistProgress();
+        if (checkLists.size()>0 && mAdapter!=null) {
+            mAdapter.updateData(checkLists);
+            setListViewHeightBasedOnChildren(checkListView);
+        }
     }
 
     @Override
