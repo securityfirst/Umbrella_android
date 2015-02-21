@@ -66,8 +66,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory());
         if (mSubtitles.size()>current.getCategory() && mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
             forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
-            holder.mTitle.setText(forTitle);
         }
+        holder.mTitle.setText(forTitle);
         holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), mQueries.get(0))));
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
