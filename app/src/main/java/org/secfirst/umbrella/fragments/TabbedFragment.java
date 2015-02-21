@@ -224,10 +224,14 @@ public class TabbedFragment extends Fragment {
             }
             if (mCheckList.size() > 0) {
                 int selected = 0;
+                int total = 0;
                 for (CheckItem checkItem : mCheckList) {
-                    if (checkItem.getValue()) selected++;
+                    if (!checkItem.getNoCheck()) {
+                        total++;
+                        if (checkItem.getValue()) selected++;
+                    }
                 }
-                setProgressBarTo((int) Math.round(selected * 100.0 / mCheckList.size()));
+                setProgressBarTo((int) Math.round(selected * 100.0 / total));
             }
         }
 

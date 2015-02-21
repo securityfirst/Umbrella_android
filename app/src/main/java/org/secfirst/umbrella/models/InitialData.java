@@ -43,7 +43,7 @@ public class InitialData {
 
         checkList.add(new CheckItem("Note what you are you willing to go through in order to try to prevent them", "", false, 0, 3, 1));
 
-        checkList.add(new CheckItem("Protect your computer", "", false, 0, 4, 1));
+        checkList.add(new CheckItem("Protect your computer", "", false, 0, 4, 1, true));
 
         checkList.add(new CheckItem("Protect your computer", "Install antivirus on all your devices", false, 10, 4, 1));
 
@@ -65,7 +65,7 @@ public class InitialData {
 
         checkList.add(new CheckItem("Protect your computer", "Use a platform like Ubuntu or Chrome", false, 10, 4, 1));
 
-        checkList.add(new CheckItem("If you find malware", "", false, 0, 4, 1));
+        checkList.add(new CheckItem("If you find malware", "", false, 0, 4, 1, true));
 
         checkList.add(new CheckItem("If you find malware", "Unplug your computer", false, 21, 4, 1));
 
@@ -79,7 +79,7 @@ public class InitialData {
 
         checkList.add(new CheckItem("If you find malware", "Only reinstall files from before date of infection", false, 21, 4, 1));
 
-        checkList.add(new CheckItem("Running anti-virus", "", false, 0, 4, 2));
+        checkList.add(new CheckItem("Running anti-virus", "", false, 0, 4, 2, true));
 
         checkList.add(new CheckItem("Running anti-virus", "Run only one anti-virus at a time", false, 28, 4, 2));
 
@@ -89,7 +89,7 @@ public class InitialData {
 
         checkList.add(new CheckItem("Running anti-virus", "Scan your files regularly", false, 28, 4, 2));
 
-        checkList.add(new CheckItem("Preventing infection", "", false, 0, 4, 2));
+        checkList.add(new CheckItem("Preventing infection", "", false, 0, 4, 2, true));
 
         checkList.add(new CheckItem("Preventing infection", "Open attachments via applications",  false, 33, 4, 2));
 
@@ -105,13 +105,13 @@ public class InitialData {
 
         checkList.add(new CheckItem("Preventing infection", "Use open-source operating platform", false, 33, 4, 2));
 
-        checkList.add(new CheckItem("Preventing untrusted connections", "", false, 0, 4, 2));
+        checkList.add(new CheckItem("Preventing untrusted connections", "", false, 0, 4, 2, true));
 
         checkList.add(new CheckItem("Preventing untrusted connections", "Turn on your firewall",  false, 41, 4, 2));
 
         checkList.add(new CheckItem("Preventing untrusted connections", "Keep only essential programs", false, 41, 4, 2));
 
-        checkList.add(new CheckItem("Create a strong password", "", false, 0, 5, 1));
+        checkList.add(new CheckItem("Create a strong password", "", false, 0, 5, 1, true));
 
         checkList.add(new CheckItem("Create a strong password", "Make it long", false, 44, 5, 1));
 
@@ -163,7 +163,7 @@ public class InitialData {
 
         checkList.add(new CheckItem("Rename the TrueCrypt program", "", false, 0, 6, 2));
 
-        checkList.add(new CheckItem("If encryption is illegal…", "", false, 0, 6, 2));
+        checkList.add(new CheckItem("If encryption is illegal…", "", false, 0, 6, 2, true));
 
         checkList.add(new CheckItem("If encryption is illegal…", "Store only non-confidential information", false, 70, 6, 2));
 

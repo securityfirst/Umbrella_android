@@ -79,15 +79,16 @@ public class CheckListAdapter extends BaseAdapter {
         }
         holder.checkBox.setChecked(checkList.get(i).getValue());
         holder.checkBox.setEnabled(!checkList.get(i).isDisabled());
+        holder.checkBox.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
 
         holder.checkView.setCardElevation(checkList.get(i).getValue()? 0 : 4);
-        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(checkList.get(i).getValue() ? R.color.white : R.color.umbrella_yellow));
+        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor((checkList.get(i).getNoCheck() || checkList.get(i).getValue()) ? R.color.white : R.color.umbrella_yellow));
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean isChecked = ((CheckBox) v).isChecked();
-                setChecked(true, i);
+                setChecked(isChecked, i);
                 holder.checkView.setCardElevation(isChecked ? 0 : 4);
                 if (!checkList.get(i).isCustom()) {
                     holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(isChecked ? R.color.white : R.color.umbrella_yellow));

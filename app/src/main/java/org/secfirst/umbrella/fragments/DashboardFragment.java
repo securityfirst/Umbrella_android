@@ -107,11 +107,13 @@ public class DashboardFragment extends Fragment {
             if (category!=null) {
                 DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory());
                 for (CheckItem checkItem : mCheckList) {
-                    if (checkItem.getValue()) {
-                        int val = dashCheckFinished.getChecked() + 1;
-                        dashCheckFinished.setChecked(val);
+                    if (!checkItem.getNoCheck()) {
+                        if (checkItem.getValue()) {
+                            int val = dashCheckFinished.getChecked() + 1;
+                            dashCheckFinished.setChecked(val);
+                        }
+                        dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                     }
-                    dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                 }
                 if (dashCheckFinished.getChecked()>0) returned.add(dashCheckFinished);
             }
