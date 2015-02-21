@@ -2,6 +2,8 @@ package org.secfirst.umbrella.adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +43,7 @@ public class DashCheckListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        DashCheckFinished current = checkItems.get(position);
+        final DashCheckFinished current = checkItems.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.dash_check_item, null);
@@ -52,6 +54,14 @@ public class DashCheckListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("umbrella://checklist/" + current.getCategory().replace(' ', '-')));
+                mContext.startActivity(i);
+            }
+        });
         holder.categoryName.setText(current.getCategory());
         holder.percent.setText(String.valueOf(current.getPercent())+"%");
 
