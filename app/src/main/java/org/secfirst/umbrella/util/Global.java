@@ -74,7 +74,7 @@ public class Global extends com.orm.SugarApp {
     public void setPassword(final Activity activity) {
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle("Set your password");
-        alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter");
+        alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n");
         final EditText pwInput = new EditText(activity);
         pwInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         alert.setView(pwInput);
@@ -102,7 +102,7 @@ public class Global extends com.orm.SugarApp {
     public void resetPassword(final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setTitle("Confirm reset password");
-        alertDialogBuilder.setMessage("Are you sure you want to reset your password? This also means losing any data you might have entered so far");
+        alertDialogBuilder.setMessage("Are you sure you want to reset your password? This also means losing any data you might have entered so far\n");
         alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int id) {
                 savePassword("");
