@@ -163,11 +163,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void setFragment(int fragType, String groupName) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        setTitle(groupName);
         if (fragType == 0) {
             fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).addToBackStack(null).commit();
             drawer.closeDrawer(drawerList);
             titleSpinner.setVisibility(View.GONE);
-            setTitle(groupName);
         } else {
             List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
             drawerItem = childItem.getPosition();
