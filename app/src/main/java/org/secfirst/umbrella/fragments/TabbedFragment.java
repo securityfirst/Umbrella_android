@@ -39,9 +39,10 @@ public class TabbedFragment extends Fragment {
     public static int difficulty;
     public long sectionNumber;
 
-    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber) {
+    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber, boolean checklist) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
+        args.putBoolean("checklist", checklist);
         tabbedFragment.sectionNumber = sectionNumber;
         difficulty = spinnerNumber;
         tabbedFragment.setArguments(args);
@@ -60,6 +61,7 @@ public class TabbedFragment extends Fragment {
         mSectionsPagerAdapter.difficulty = difficulty;
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? 1 : 0);
         return v;
     }
 

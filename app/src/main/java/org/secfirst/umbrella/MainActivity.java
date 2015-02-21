@@ -120,8 +120,22 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         };
 
         drawer.setDrawerListener(actionBarDrawerToggle);
-        setFragment(0, "My Security");
-        drawer.openDrawer(Gravity.LEFT);
+        if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getLastPathSegment() != null) {
+            for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems()) {
+                for (DrawerChildItem childItem : groupItem) {
+                    if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getLastPathSegment().replace('-', ' '))) {
+                        this.childItem = childItem;
+                    }
+                }
+            }
+            if (childItem != null) {
+                setFragment(1, "");
+                drawer.closeDrawer(Gravity.LEFT);
+            }
+        } else {
+            setFragment(0, "My Security");
+            drawer.openDrawer(Gravity.LEFT);
+        }
     }
 
     @Override
@@ -159,8 +173,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             drawerItem = childItem.getPosition();
             drawer.closeDrawer(drawerList);
             setNavItems(childItem.getTitle());
+            boolean checklist = false;
+            if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
+                checklist = true;
+            }
             if (hasDifficulty.size() > 0) {
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected()), childItem.getTitle()).addToBackStack(null).commit();
+                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected(), checklist), childItem.getTitle()).addToBackStack(null).commit();
                 if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
                 } else {
