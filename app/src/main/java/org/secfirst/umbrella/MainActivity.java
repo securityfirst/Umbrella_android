@@ -32,7 +32,6 @@ import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -295,7 +294,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 for (CheckItem checkItem : items) {
                     body += "\n" + (checkItem.getValue() ? "☑" : "☐") + " " + checkItem.getTitle();
                 }
-                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + URLEncoder.encode(body)));
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
