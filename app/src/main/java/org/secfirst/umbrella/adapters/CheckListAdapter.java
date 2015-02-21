@@ -104,19 +104,20 @@ public class CheckListAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 if (checkList.get(i).isCustom()) {
-                    CharSequence menuChoiceCustom[] = new CharSequence[]{"Delete"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Select an action");
-                    builder.setItems(menuChoiceCustom, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) {
-                                checkList.get(i).delete();
-                                checkList.remove(i);
-                                notifyDataSetChanged();
-                            } else {
-                                // edit to come
-                            }
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkList.get(i).delete();
+                            checkList.remove(i);
+                            notifyDataSetChanged();
                         }
                     });
                     builder.show();
