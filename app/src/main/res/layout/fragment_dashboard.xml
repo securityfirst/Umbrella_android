@@ -59,6 +59,7 @@
                         android:textColor="@color/dark_grey"
                         android:layout_width="wrap_content"
                         android:layout_weight="5"
+                        android:gravity="center_vertical"
                         android:layout_height="match_parent" />
 
                     <TextView
@@ -66,7 +67,8 @@
                         android:textSize="@dimen/text_size_xlarge"
                         android:textColor="@color/dashboard_light_blue"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent" />
 
                 </LinearLayout>
 

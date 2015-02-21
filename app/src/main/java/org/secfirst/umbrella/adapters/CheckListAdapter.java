@@ -79,15 +79,16 @@ public class CheckListAdapter extends BaseAdapter {
         }
         holder.checkBox.setChecked(checkList.get(i).getValue());
         holder.checkBox.setEnabled(!checkList.get(i).isDisabled());
+        holder.checkBox.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
 
         holder.checkView.setCardElevation(checkList.get(i).getValue()? 0 : 4);
-        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(checkList.get(i).getValue() ? R.color.white : R.color.umbrella_yellow));
+        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor((checkList.get(i).getNoCheck() || checkList.get(i).getValue()) ? R.color.white : R.color.umbrella_yellow));
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean isChecked = ((CheckBox) v).isChecked();
-                setChecked(true, i);
+                setChecked(isChecked, i);
                 holder.checkView.setCardElevation(isChecked ? 0 : 4);
                 if (!checkList.get(i).isCustom()) {
                     holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(isChecked ? R.color.white : R.color.umbrella_yellow));
@@ -103,48 +104,45 @@ public class CheckListAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 if (checkList.get(i).isCustom()) {
-                    CharSequence menuChoiceCustom[] = new CharSequence[]{"Delete"};
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Select an action");
-                    builder.setItems(menuChoiceCustom, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (which == 0) {
-                                checkList.get(i).delete();
-                                checkList.remove(i);
-                                notifyDataSetChanged();
-                            } else {
-                                // edit to come
-                            }
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkList.get(i).delete();
+                            checkList.remove(i);
+                            notifyDataSetChanged();
                         }
                     });
                     builder.show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Select an action");
-                    if (checkList.get(i).isDisabled()) {
-                        CharSequence menuChoice[] = new CharSequence[]{"Enable"};
-                        builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton(checkList.get(i).isDisabled() ? "Enable" : "Disable", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (checkList.get(i).isDisabled()) {
                                 checkList.get(i).enable();
-                                checkList.get(i).save();
-                                checkList.set(i, checkList.get(i));
-                                notifyDataSetChanged();
-                            }
-                        });
-                    } else {
-                        CharSequence menuChoice[] = new CharSequence[]{"Disable"};
-                        builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            } else {
                                 checkList.get(i).disable();
-                                checkList.get(i).save();
-                                checkList.set(i, checkList.get(i));
-                                notifyDataSetChanged();
                             }
-                        });
-                    }
+                            checkList.get(i).save();
+                            checkList.set(i, checkList.get(i));
+                            notifyDataSetChanged();
+                        }
+                    });
                     builder.show();
                 }
                 return false;

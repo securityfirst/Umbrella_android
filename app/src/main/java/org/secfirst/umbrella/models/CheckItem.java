@@ -13,16 +13,9 @@ public class CheckItem extends SugarRecord<CheckItem> {
     private int difficulty;
     private int custom;
     private int disabled;
+    private int noCheck;
 
     public CheckItem(){}
-
-    public CheckItem(String title, String text, boolean value, long parent, int category) {
-        this.title = title;
-        this.text = text;
-        this.value = (value) ? 1 : 0;
-        this.parent = parent;
-        this.category = category;
-    }
 
     public CheckItem(String title, String text, boolean value, long parent, int category, int difficulty) {
         this.title = title;
@@ -31,6 +24,16 @@ public class CheckItem extends SugarRecord<CheckItem> {
         this.parent = parent;
         this.category = category;
         this.difficulty = difficulty;
+    }
+
+    public CheckItem(String title, String text, boolean value, long parent, int category, int difficulty, boolean noCheck) {
+        this.title = title;
+        this.text = text;
+        this.value = (value) ? 1 : 0;
+        this.parent = parent;
+        this.category = category;
+        this.difficulty = difficulty;
+        this.noCheck = noCheck ? 1 : 0;
     }
 
     public CheckItem(String title, int category) {
@@ -131,5 +134,13 @@ public class CheckItem extends SugarRecord<CheckItem> {
 
     public void enable() {
         disabled = 0;
+    }
+
+    public boolean getNoCheck() {
+        return noCheck != 0;
+    }
+
+    public void setNoCheck(boolean noCheck) {
+        this.noCheck = noCheck ? 1 : 0;
     }
 }

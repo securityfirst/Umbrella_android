@@ -32,7 +32,6 @@ import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +128,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             }
             if (childItem != null) {
-                setFragment(1, "");
+                setFragment(1, childItem.getTitle());
                 drawer.closeDrawer(Gravity.LEFT);
             }
         } else {
@@ -163,21 +162,22 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void setFragment(int fragType, String groupName) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        drawer.closeDrawer(drawerList);
         if (fragType == 0) {
-            fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).addToBackStack(null).commit();
-            drawer.closeDrawer(drawerList);
-            titleSpinner.setVisibility(View.GONE);
             setTitle(groupName);
+            fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).addToBackStack(null).commit();
+            titleSpinner.setVisibility(View.GONE);
         } else {
             List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
             drawerItem = childItem.getPosition();
-            drawer.closeDrawer(drawerList);
             setNavItems(childItem.getTitle());
-            boolean checklist = false;
-            if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
-                checklist = true;
-            }
             if (hasDifficulty.size() > 0) {
+                setTitle("");
+                boolean checklist = false;
+                if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
+                    checklist = true;
+                }
+                setIntent(null);
                 fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected(), checklist), childItem.getTitle()).addToBackStack(null).commit();
                 if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
@@ -185,6 +185,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
                 }
             } else {
+                setTitle(childItem.getTitle());
+                titleSpinner.setVisibility(View.GONE);
                 fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).addToBackStack(null).commit();
             }
         }
@@ -294,7 +296,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 for (CheckItem checkItem : items) {
                     body += "\n" + (checkItem.getValue() ? "☑" : "☐") + " " + checkItem.getTitle();
                 }
-                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + URLEncoder.encode(body)));
+                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }

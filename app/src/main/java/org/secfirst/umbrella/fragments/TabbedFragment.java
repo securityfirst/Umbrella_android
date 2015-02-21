@@ -181,7 +181,7 @@ public class TabbedFragment extends Fragment {
                     } else {
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                         alert.setTitle("Add a new check item");
-                        alert.setMessage("Set a meaningful message for the check item");
+                        alert.setMessage("Set a meaningful message for the check item\n");
                         final EditText pwInput = new EditText(getActivity());
                         alert.setView(pwInput);
                         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -224,10 +224,14 @@ public class TabbedFragment extends Fragment {
             }
             if (mCheckList.size() > 0) {
                 int selected = 0;
+                int total = 0;
                 for (CheckItem checkItem : mCheckList) {
-                    if (checkItem.getValue()) selected++;
+                    if (!checkItem.getNoCheck()) {
+                        total++;
+                        if (checkItem.getValue()) selected++;
+                    }
                 }
-                setProgressBarTo((int) Math.round(selected * 100.0 / mCheckList.size()));
+                setProgressBarTo((int) Math.round(selected * 100.0 / total));
             }
         }
 

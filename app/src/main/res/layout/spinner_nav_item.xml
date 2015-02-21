@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:textAppearance="?attr/textAppearanceListItemSmall"
     android:gravity="center_vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
     android:textColor="#fff"
     android:background="@color/umbrella_purple"
     android:minHeight="?attr/listPreferredItemHeightSmall"/>
