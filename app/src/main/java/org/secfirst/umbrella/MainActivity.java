@@ -173,11 +173,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             drawerItem = childItem.getPosition();
             drawer.closeDrawer(drawerList);
             setNavItems(childItem.getTitle());
-            boolean checklist = false;
-            if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
-                checklist = true;
-            }
             if (hasDifficulty.size() > 0) {
+                boolean checklist = false;
+                if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
+                    checklist = true;
+                }
+                setIntent(null);
                 fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected(), checklist), childItem.getTitle()).addToBackStack(null).commit();
                 if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
