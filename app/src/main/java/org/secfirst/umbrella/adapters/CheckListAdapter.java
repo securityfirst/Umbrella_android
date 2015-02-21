@@ -123,29 +123,25 @@ public class CheckListAdapter extends BaseAdapter {
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Select an action");
-                    if (checkList.get(i).isDisabled()) {
-                        CharSequence menuChoice[] = new CharSequence[]{"Enable"};
-                        builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.setPositiveButton(checkList.get(i).isDisabled() ? "Enable" : "Disable", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (checkList.get(i).isDisabled()) {
                                 checkList.get(i).enable();
-                                checkList.get(i).save();
-                                checkList.set(i, checkList.get(i));
-                                notifyDataSetChanged();
-                            }
-                        });
-                    } else {
-                        CharSequence menuChoice[] = new CharSequence[]{"Disable"};
-                        builder.setItems(menuChoice, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            } else {
                                 checkList.get(i).disable();
-                                checkList.get(i).save();
-                                checkList.set(i, checkList.get(i));
-                                notifyDataSetChanged();
                             }
-                        });
-                    }
+                            checkList.get(i).save();
+                            checkList.set(i, checkList.get(i));
+                            notifyDataSetChanged();
+                        }
+                    });
                     builder.show();
                 }
                 return false;
