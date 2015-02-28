@@ -107,7 +107,7 @@ public class DashboardFragment extends Fragment {
             if (category!=null) {
                 DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory());
                 for (CheckItem checkItem : mCheckList) {
-                    if (!checkItem.getNoCheck()) {
+                    if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
                         if (checkItem.getValue()) {
                             int val = dashCheckFinished.getChecked() + 1;
                             dashCheckFinished.setChecked(val);

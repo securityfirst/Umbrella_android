@@ -140,7 +140,8 @@ public class CheckListAdapter extends BaseAdapter {
                             }
                             checkList.get(i).save();
                             checkList.set(i, checkList.get(i));
-                            notifyDataSetChanged();
+                            CheckItem current = (CheckItem) getItem(i);
+                            mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
                         }
                     });
                     builder.show();
