@@ -215,32 +215,32 @@ public class InitialData {
     }
 
     public static ArrayList<Category> getCategoryList() {
-        categoryList.add(new Category(1, 0, "My Security", false, false, false));
-        categoryList.add(new Category(2, 0, "Information", false, false, false));
-        categoryList.add(new Category(3, 2, "Managing Information", true, false, false));
-        categoryList.add(new Category(4, 2, "Malware", true, true, false));
-        categoryList.add(new Category(5, 2, "Passwords", true, true, true));
-        categoryList.add(new Category(6, 2, "Protecting Files", false, true, false));
-        categoryList.add(new Category(7, 2, "Safely Deleting", true, false, false));
-        categoryList.add(new Category(8, 2, "Backing Up", false, true, false));
-        categoryList.add(new Category(9, 0, "Communications", false, false, false));
-        categoryList.add(new Category(10, 9, "Mobile Phones", true, false, true));
-        categoryList.add(new Category(11, 9, "Making a call", true, false, false));
-        categoryList.add(new Category(12, 9, "Sending a message", true, false, false));
-        categoryList.add(new Category(13, 9, "Email", true, true, false));
-        categoryList.add(new Category(14, 9, "The Internet", false, false, false));
-        categoryList.add(new Category(15, 9, "Social Media", false, false, false));
-        categoryList.add(new Category(16, 9, "Radios", false, false, false));
-        categoryList.add(new Category(17, 9, "Satellite phones", false, false, false));
-        categoryList.add(new Category(18, 0, "Personal", false, false, false));
-        categoryList.add(new Category(19, 0, "Travel", false, false, false));
-        categoryList.add(new Category(20, 0, "Operations", false, false, false));
-        categoryList.add(new Category(21, 0, "Organisation", false, false, false));
-        categoryList.add(new Category(22, 0, "Home / Office", false, false, false));
-        categoryList.add(new Category(23, 0, "Emergency Response", false, false, false));
-        categoryList.add(new Category(24, 0, "Tools", false, false, false));
-        categoryList.add(new Category(25, 0, "Index / Glossary", false, false, false));
-        categoryList.add(new Category(26, 0, "About", false, false, false));
+        categoryList.add(new Category(1, 0, "My Security", false, false, false, "", "", ""));
+        categoryList.add(new Category(2, 0, "Information", false, false, false, "", "", ""));
+        categoryList.add(new Category(3, 2, "Managing Information", true, false, false, "I am thinking about managing information for the first time.", "", ""));
+        categoryList.add(new Category(4, 2, "Malware", true, true, false, "I want some protection from the basic malware which effects everyone.", "People like me have been targeted with specialist malware. I want extra protection.", ""));
+        categoryList.add(new Category(5, 2, "Passwords", true, true, true, "I want to know how to make a strong password.", "I always have too many passwords, help me manage them.", "I need to know what to do in case people force me to hand over my passwords"));
+        categoryList.add(new Category(6, 2, "Protecting Files", false, true, false, "", "I need to store things securely on my computer", ""));
+        categoryList.add(new Category(7, 2, "Safely Deleting", true, false, false, "I want to delete things safely so people can't recover them.", "", ""));
+        categoryList.add(new Category(8, 2, "Backing Up", false, true, false, "", "I don't want to lose stuff on my computer and phone and want to know how to back things up.", ""));
+        categoryList.add(new Category(9, 0, "Communications", false, false, false, "", "", ""));
+        categoryList.add(new Category(10, 9, "Mobile Phones", true, false, true, "I need to know the dangers of using mobile phones.", "", "I need to sensitive information on my phone."));
+        categoryList.add(new Category(11, 9, "Making a call", true, false, false, "I want to make sure no one listens to the calls on my phone and computer.", "", ""));
+        categoryList.add(new Category(12, 9, "Sending a message", true, false, false, "I need to know how to make sure that people don't read my messages.", "", ""));
+        categoryList.add(new Category(13, 9, "Email", true, true, false, "I want to know the basic things I can do to increase my email security. I need to know what to do if I think my mail has been hacked.", "I send highly sensitive emails that I don't want malicious people to read.", ""));
+        categoryList.add(new Category(14, 9, "The Internet", false, false, false, "I want to get online but there is censorship in my country", "I need to stay anonymous online.", ""));
+        categoryList.add(new Category(15, 9, "Social Media", false, false, false, "I want to ensure my privacy when using social media", "", ""));
+        categoryList.add(new Category(16, 9, "Radios", false, false, false, "I need to know the different types of radio and they work", "", ""));
+        categoryList.add(new Category(17, 9, "Satellite phones", false, false, false, "", "", ""));
+        categoryList.add(new Category(18, 0, "Personal", false, false, false, "", "", ""));
+        categoryList.add(new Category(19, 0, "Travel", false, false, false, "", "", ""));
+        categoryList.add(new Category(20, 0, "Operations", false, false, false, "", "", ""));
+        categoryList.add(new Category(21, 0, "Organisation", false, false, false, "", "", ""));
+        categoryList.add(new Category(22, 0, "Home / Office", false, false, false, "", "", ""));
+        categoryList.add(new Category(23, 0, "Emergency Response", false, false, false, "", "", ""));
+        categoryList.add(new Category(24, 0, "Tools", false, false, false, "", "", ""));
+        categoryList.add(new Category(25, 0, "Index / Glossary", false, false, false, "", "", ""));
+        categoryList.add(new Category(26, 0, "About", false, false, false, "", "", ""));
         return categoryList;
     }
 

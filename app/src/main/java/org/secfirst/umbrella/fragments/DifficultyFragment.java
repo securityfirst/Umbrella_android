@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
@@ -72,6 +73,9 @@ public class DifficultyFragment extends Fragment {
                 onDifficultySelected(EXPERT);
             }
         });
+        ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
+        ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
+        ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
         btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
         btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
         btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
