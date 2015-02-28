@@ -226,7 +226,7 @@ public class TabbedFragment extends Fragment {
                 int selected = 0;
                 int total = 0;
                 for (CheckItem checkItem : mCheckList) {
-                    if (!checkItem.getNoCheck()) {
+                    if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
                         total++;
                         if (checkItem.getValue()) selected++;
                     }

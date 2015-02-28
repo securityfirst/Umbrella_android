@@ -65,9 +65,9 @@
                         android:layout_marginBottom="5dp"/>
 
                     <TextView
+                        android:id="@+id/beginner_description"
                         android:textSize="@dimen/text_size_small"
                         android:textColor="@color/text_grey"
-                        android:text="@string/beginner_description"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
@@ -113,9 +113,9 @@
                         android:layout_marginBottom="5dp"/>
 
                     <TextView
+                        android:id="@+id/advanced_description"
                         android:textSize="@dimen/text_size_small"
                         android:textColor="@color/text_grey"
-                        android:text="@string/beginner_description"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />
@@ -161,9 +161,9 @@
                         android:layout_marginBottom="5dp"/>
 
                     <TextView
+                        android:id="@+id/expert_description"
                         android:textSize="@dimen/text_size_small"
                         android:textColor="@color/text_grey"
-                        android:text="@string/beginner_description"
                         android:fontFamily="sans-serif-light"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content" />

@@ -2,6 +2,7 @@ package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -10,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.UmbrellaUtil;
@@ -72,9 +73,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toMain = new Intent(mContext, MainActivity.class);
-                toMain.putExtra("search", current.getCategory());
-                mContext.startActivity(toMain);
+                Category category = Category.findById(Category.class, (long)current.getCategory());
+                if (category == null) {
+                    return;
+                }
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("umbrella://lesson/" + category.getCategory().replace(' ', '-')));
+                mContext.startActivity(i);
             }
         });
     }
