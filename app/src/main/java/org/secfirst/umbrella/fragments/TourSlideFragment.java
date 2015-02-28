@@ -59,7 +59,7 @@ public class TourSlideFragment extends Fragment {
             case 0:
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_green));
                 headingTitle.setText("Welcome to Umbrella");
-                headingBody.setText("We help you feel safer by making security easier! We have gathered the best advice available and can help you do everything from planning a safe journey to sending a secure email.");
+                headingBody.setText("We help keep you safe by making security easier. We have gathered the best advice available and can help you do everything from planning a safe journey to sending a secure email.");
                 break;
             case 1:
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_purple));
@@ -94,7 +94,7 @@ public class TourSlideFragment extends Fragment {
                     }
                 });
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_yellow));
-                headingTitle.setText("Terms and conditions");
+                headingTitle.setText("Terms and Conditions");
                 break;
         }
 
