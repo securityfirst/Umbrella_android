@@ -216,14 +216,14 @@ public class InitialData {
 
     public static ArrayList<Category> getCategoryList() {
         categoryList.add(new Category(1, 0, "My Security", false, false, false));
-        categoryList.add(new Category(2, 0, "Information Security", false, false, false));
+        categoryList.add(new Category(2, 0, "Information", false, false, false));
         categoryList.add(new Category(3, 2, "Managing Information", true, false, false));
         categoryList.add(new Category(4, 2, "Malware", true, true, false));
         categoryList.add(new Category(5, 2, "Passwords", true, true, true));
         categoryList.add(new Category(6, 2, "Protecting Files", false, true, false));
         categoryList.add(new Category(7, 2, "Safely Deleting", true, false, false));
         categoryList.add(new Category(8, 2, "Backing Up", false, true, false));
-        categoryList.add(new Category(9, 0, "Communications Security", false, false, false));
+        categoryList.add(new Category(9, 0, "Communications", false, false, false));
         categoryList.add(new Category(10, 9, "Mobile Phones", true, false, true));
         categoryList.add(new Category(11, 9, "Making a call", true, false, false));
         categoryList.add(new Category(12, 9, "Sending a message", true, false, false));
