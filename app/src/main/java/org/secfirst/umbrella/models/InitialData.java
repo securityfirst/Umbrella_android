@@ -211,6 +211,50 @@ public class InitialData {
         checkList.add(new CheckItem("Consider using pseudonym with your public key", "", false, 0, 13, 2));
         checkList.add(new CheckItem("To disguise contact completely, both parties use anonymous email accounts, Tor and PGP", "", false, 0, 13, 2));
 
+        checkList.add(new CheckItem("Assess your threat model", "", false, 0, 14, 1));
+        checkList.add(new CheckItem("Download HTTPS everywhere", "", false, 0, 14, 1));
+        checkList.add(new CheckItem("Use domain name variations", "", false, 0, 14, 1));
+        checkList.add(new CheckItem("Use a web-based proxy", "", false, 0, 14, 1));
+        checkList.add(new CheckItem("Check which VPN is right for you", "", false, 0, 14, 1));
+        checkList.add(new CheckItem("Download and use Psiphon3", "", false, 0, 14, 1));
+        checkList.add(new CheckItem("For smartphones", "", true, 0, 14, 1));
+        checkList.add(new CheckItem("For smartphones", "Download Firefox mobile and Proxy Mobile", false, 176, 14, 1));
+        checkList.add(new CheckItem("For smartphones", "Download and use Psiphon3", false, 176, 14, 1));
+
+        checkList.add(new CheckItem("Install and use Tor", "", false, 0, 15, 2));
+        checkList.add(new CheckItem("On mobile install and use Orbot and Orweb", "", false, 0, 15, 2));
+
+        checkList.add(new CheckItem("Consider using a pseudonym", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Don’t provide more registration information than necessary", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Consider registering anonymously", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Consider separate accounts for campaigns", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Choose a strong password", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Use two-factor-authentication", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Use false answers to security questions", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Only connect to people you know", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Be aware of the privacy policy", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Opt out of data broker relationships", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Change default privacy settings", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Be careful about what you share", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Don’t post about people without their consent", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Use ObscuraCam for sensitive photos", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Agree with friends what they shouldn’t post about you", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Be careful about joining groups", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Don’t use social media for instant chats", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Never engage with people you don’t know", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Don’t rely on social media for storage", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Use https://", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Delete browsing history when using public computers", "", false, 0, 16, 1));
+
+        checkList.add(new CheckItem("Avoid radios for sensitive communications", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Ensure proper training in radio usage", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Use code words if necessary", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Pre-program distress signals", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Carefully consider use of GPS tracking software", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Do not identify organisations or individuals over radio", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Never transmit security-related information or travel plans", "", false, 0, 17, 1));
+        checkList.add(new CheckItem("Set duress code words", "", false, 0, 17, 1));
+
         return checkList;
     }
 
@@ -228,9 +272,9 @@ public class InitialData {
         categoryList.add(new Category(11, 9, "Making a call", true, false, false, "I want to make sure no one listens to the calls on my phone and computer.", "", ""));
         categoryList.add(new Category(12, 9, "Sending a message", true, false, false, "I need to know how to make sure that people don't read my messages.", "", ""));
         categoryList.add(new Category(13, 9, "Email", true, true, false, "I want to know the basic things I can do to increase my email security. I need to know what to do if I think my mail has been hacked.", "I send highly sensitive emails that I don't want malicious people to read.", ""));
-        categoryList.add(new Category(14, 9, "The Internet", false, false, false, "I want to get online but there is censorship in my country", "I need to stay anonymous online.", ""));
-        categoryList.add(new Category(15, 9, "Social Media", false, false, false, "I want to ensure my privacy when using social media", "", ""));
-        categoryList.add(new Category(16, 9, "Radios", false, false, false, "I need to know the different types of radio and they work", "", ""));
+        categoryList.add(new Category(14, 9, "The Internet", true, true, false, "I want to get online but there is censorship in my country", "I need to stay anonymous online.", ""));
+        categoryList.add(new Category(15, 9, "Social Media", true, false, false, "I want to ensure my privacy when using social media", "", ""));
+        categoryList.add(new Category(16, 9, "Radios", true, false, false, "I need to know the different types of radio and they work", "", ""));
         categoryList.add(new Category(17, 9, "Satellite phones", false, false, false, "", "", ""));
         categoryList.add(new Category(18, 0, "Personal", false, false, false, "", "", ""));
         categoryList.add(new Category(19, 0, "Travel", false, false, false, "", "", ""));

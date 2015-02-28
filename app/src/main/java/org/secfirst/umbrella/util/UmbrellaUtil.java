@@ -62,7 +62,15 @@ public class UmbrellaUtil {
         Category.deleteAll(Category.class);
         Segment.deleteAll(Segment.class);
         Difficulty.deleteAll(Difficulty.class);
-        migrateData();
+        for (Segment segment : InitialData.getSegmentList()) {
+            segment.save();
+        }
+        for (CheckItem checkItem : InitialData.getCheckList()) {
+            checkItem.save();
+        }
+        for (Category category : InitialData.getCategoryList()) {
+            category.save();
+        }
     }
 
     public static void migrateData() {
