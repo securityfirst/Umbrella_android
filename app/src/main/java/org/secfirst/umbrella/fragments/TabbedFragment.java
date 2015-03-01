@@ -125,7 +125,7 @@ public class TabbedFragment extends Fragment {
 
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             content = (TextView) rootView.findViewById(R.id.content);
-            int difficulty = getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1);
+            int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
             if (segments.size() > 0) {
                 String html = segments.get(0).getBody();

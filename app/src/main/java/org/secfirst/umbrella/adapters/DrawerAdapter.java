@@ -11,15 +11,16 @@ import android.widget.TextView;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class DrawerAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener {
+public class DrawerAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
 
-    public ArrayList<String> groupItem = new ArrayList<String>();
+    public ArrayList<Category> groupItem = new ArrayList<Category>();
     ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
     private Context mContext;
     private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_settings_phone_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_work_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_business_grey600_24dp, R.drawable.ic_home_grey600_24dp, R.drawable.ic_local_hospital_grey600_24dp, R.drawable.ic_content_cut_grey600_24dp, R.drawable.ic_list_grey600_24dp, R.drawable.ic_about};
@@ -94,7 +95,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupItem.get(groupPosition).getId();
     }
 
     @Override
@@ -107,12 +108,12 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
         }
 
         TextView tv = (TextView) convertView.findViewById(R.id.drawer_group_text);
-        tv.setText(groupItem.get(groupPosition));
+        tv.setText(groupItem.get(groupPosition).getCategory());
         if (groupPosition==0) {
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition));
+                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition).getCategory());
                 }
             });
         }
@@ -145,5 +146,14 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
         final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
         ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
         return true;
+    }
+
+    @Override
+    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+        if (getChildrenCount(groupPosition) == 0) {
+            ((MainActivity) mContext).onNavigationDrawerGroupItemSelected(groupItem.get(groupPosition));
+            return true;
+        }
+        return false;
     }
 }

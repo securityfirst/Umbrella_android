@@ -153,12 +153,12 @@ public class UmbrellaUtil {
         return ringProgressDialog;
     }
 
-    public static ArrayList<String> getParentCategories() {
+    public static ArrayList<Category> getParentCategories() {
         List<Category> categories = Category.listAll(Category.class);
-        ArrayList<String> parentCategories = new ArrayList<String>();
+        ArrayList<Category> parentCategories = new ArrayList<Category>();
         for (Category category : categories) {
             if (category.getParent()==0) {
-                parentCategories.add(category.getCategory());
+                parentCategories.add(category);
             }
         }
         return parentCategories;
