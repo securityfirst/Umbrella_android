@@ -111,6 +111,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         drawerList.addHeaderView(header);
         drawerList.setAdapter(adapter);
         drawerList.setOnChildClickListener(adapter);
+        drawerList.setOnGroupClickListener(adapter);
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
                 R.drawable.ic_drawer, R.string.open_drawer,
@@ -169,7 +170,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             setTitle(groupName);
             fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global)).addToBackStack(null).commit();
             titleSpinner.setVisibility(View.GONE);
-        } else {
+        } else if (fragType == 1) {
             List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
             drawerItem = childItem.getPosition();
             setNavItems(childItem.getTitle());
@@ -191,6 +192,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 titleSpinner.setVisibility(View.GONE);
                 fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle()).addToBackStack(null).commit();
             }
+        } else {
+            setTitle(groupName);
+            fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedContentFragment()).addToBackStack(null).commit();
+            titleSpinner.setVisibility(View.GONE);
         }
     }
 
@@ -317,5 +322,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             titleSpinner.setSelection(difficulty);
         }
         setFragment(1, "");
+    }
+
+    public void onNavigationDrawerGroupItemSelected(Category category) {
+        drawerItem = category.getId();
+        setFragment(2, category.getCategory());
     }
 }

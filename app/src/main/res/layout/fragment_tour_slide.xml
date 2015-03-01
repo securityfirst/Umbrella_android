@@ -65,11 +65,11 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Terms and conditions. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua."
+                android:id="@+id/text_terms"
                 android:textColor="@color/dark_grey"
                 android:background="@color/white"
                 android:padding="20dp"
-                android:textSize="@dimen/text_size_smaller"
+                android:textSize="@dimen/text_size_small"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 

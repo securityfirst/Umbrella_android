@@ -2,26 +2,19 @@ package org.secfirst.umbrella.models;
 
 public class DashCheckFinished {
 
+    private int difficulty;
     private int percent;
     private int total;
     private int checked;
     private String category;
 
-    public DashCheckFinished(String category) {
+    public DashCheckFinished(String category, int difficulty) {
         this.category = category;
-    }
-
-    public DashCheckFinished(String category, int percent) {
-        this.category = category;
-        this.percent = percent;
+        this.difficulty = difficulty;
     }
 
     public int getPercent() {
         return (int)((checked * 100.0f) / total);
-    }
-
-    public void setPercent(int percent) {
-        this.percent = percent;
     }
 
     public String getCategory() {
@@ -46,5 +39,9 @@ public class DashCheckFinished {
 
     public void setChecked(int checked) {
         this.checked = checked;
+    }
+
+    public int getDifficulty() {
+        return difficulty;
     }
 }

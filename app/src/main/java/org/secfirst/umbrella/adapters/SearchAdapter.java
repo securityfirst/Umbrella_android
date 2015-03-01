@@ -24,7 +24,7 @@ import java.util.Locale;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private List<Segment> mSegment = new ArrayList<>();
     private ArrayList<ArrayList<DrawerChildItem>> mSubtitles = new ArrayList<ArrayList<DrawerChildItem>>();
-    private ArrayList<String> mTitles = new ArrayList<String>();
+    private ArrayList<Category> mTitles = new ArrayList<Category>();
     private ArrayList<String> mQueries = new ArrayList<String>();
     private Context mContext;
 
@@ -64,7 +64,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + mQueries.get(0)+"</b>"));
         final Segment current = mSegment.get(position);
         String forTitle = "";
-        if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory());
+        if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory()).getCategory();
         if (mSubtitles.size()>current.getCategory() && mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
             forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
         }
