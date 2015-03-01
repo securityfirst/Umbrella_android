@@ -77,7 +77,9 @@ public class TourSlideFragment extends Fragment {
                     public void onScrollChanged() {
                         mOffset = termsView.getScrollY();
                         if (mOffset>70) {
-                            skipBtn.setTextColor(getActivity().getResources().getColor(R.color.white));
+                            if (skipBtn != null) {
+                                skipBtn.setTextColor(getActivity().getResources().getColor(R.color.white));
+                            }
                         }
                     }
                 });
