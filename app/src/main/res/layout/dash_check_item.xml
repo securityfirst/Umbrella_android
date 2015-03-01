@@ -15,10 +15,14 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:paddingTop="15dp"
-            android:paddingLeft="15dp"
             android:paddingBottom="15dp"
             android:paddingRight="10dp"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/check_icon" />
 
             <TextView
                 android:id="@+id/check_category"

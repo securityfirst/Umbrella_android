@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
@@ -48,6 +49,7 @@ public class DashCheckListAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.dash_check_item, null);
             holder = new ViewHolder();
+            holder.icon = (ImageView) convertView.findViewById(R.id.check_icon);
             holder.categoryName = (TextView) convertView.findViewById(R.id.check_category);
             holder.percent = (TextView) convertView.findViewById(R.id.check_percent);
             convertView.setTag(holder);
@@ -62,6 +64,9 @@ public class DashCheckListAdapter extends BaseAdapter {
                 mContext.startActivity(i);
             }
         });
+        if (current.getDifficulty() < 3) {
+            holder.icon.setImageResource(new int[]{R.drawable.ic_beginner, R.drawable.ic_advance, R.drawable.ic_expert}[current.getDifficulty()]);
+        }
         holder.categoryName.setText(current.getCategory());
         holder.percent.setText(String.valueOf(current.getPercent())+"%");
 
@@ -69,6 +74,7 @@ public class DashCheckListAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
+        public ImageView icon;
         public TextView categoryName;
         public TextView percent;
     }
