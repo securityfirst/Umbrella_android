@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -58,14 +59,15 @@ public class TourSlideFragment extends Fragment {
 
         switch (mPageNumber) {
             case 0:
-                slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_green));
+                slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_purple));
                 headingTitle.setText("Welcome to Umbrella");
                 headingBody.setText("We help keep you safe by making security easier. We have gathered the best advice available and can help you do everything from planning a safe journey to sending a secure email.");
                 break;
             case 1:
-                slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_purple));
-                headingTitle.setText("Security");
-                headingBody.setText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor liqua.");
+                ((ImageView) rootView.findViewById(R.id.tour_image)).setImageResource(R.drawable.walktrough2);
+                slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_green));
+                headingTitle.setText("How it works");
+                headingBody.setText("Select what you want from the menu.\nThe lesson explains how to do it.\nThe checklist helps you to remember. You can edit and save your progress securely if you want.");
                 break;
             case 2:
                 termsView.setVisibility(View.VISIBLE);
