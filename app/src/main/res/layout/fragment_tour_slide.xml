@@ -16,6 +16,7 @@
 
         <ImageView
             android:src="@drawable/umbrella190"
+            android:id="@+id/tour_image"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -31,6 +32,8 @@
             android:id="@+id/heading_title"
             android:textColor="@color/white"
             android:text="Title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:textSize="@dimen/text_size_large"
@@ -42,7 +45,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:orientation="vertical"
-        android:layout_weight="3"
+        android:layout_weight="4"
         android:layout_height="0dp">
 
         <TextView
