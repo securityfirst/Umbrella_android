@@ -8,6 +8,7 @@ public class Category extends SugarRecord<Category> {
     private long id;
     private int parent;
     private String category;
+    private int hasDifficulty;
     private int difficultyBeginner;
     private int difficultyAdvanced;
     private int difficultyExpert;
@@ -17,10 +18,11 @@ public class Category extends SugarRecord<Category> {
 
     public Category() {}
 
-    public Category(int id, int parent, String category, boolean difficultyBeginner, boolean difficultyAdvanced, boolean difficultyExpert, String textBeginner, String textAdvanced, String textExpert) {
+    public Category(int id, int parent, String category, boolean hasDifficulty, boolean difficultyBeginner, boolean difficultyAdvanced, boolean difficultyExpert, String textBeginner, String textAdvanced, String textExpert) {
         this.id = id;
         this.parent = parent;
         this.category = category;
+        this.hasDifficulty = hasDifficulty ? 1 : 0;
         this.difficultyBeginner = difficultyBeginner ? 1 : 0;
         this.difficultyAdvanced = difficultyAdvanced ? 1 : 0;
         this.difficultyExpert = difficultyExpert ? 1 : 0;
@@ -75,5 +77,9 @@ public class Category extends SugarRecord<Category> {
 
     public String getTextBeginner() {
         return textBeginner;
+    }
+
+    public boolean hasDifficulty() {
+        return hasDifficulty != 0;
     }
 }

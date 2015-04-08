@@ -206,8 +206,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
-        childItem = selectedItem;
-        setFragment(1, "");
+        Category category = Category.findById(Category.class, selectedItem.getPosition());
+        if (category.hasDifficulty()) {
+            childItem = selectedItem;
+            setFragment(1, "");
+        } else {
+            drawerItem = selectedItem.getPosition();
+            setFragment(2, category.getCategory());
+        }
     }
 
     @Override
@@ -220,7 +226,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             @Override
             public boolean onQueryTextSubmit(String s) {
                 Log.i("submit", s);
-                if (s.length()>2) {
+                if (s.length() > 2) {
                     Intent i = new Intent(MainActivity.this, SearchActivity.class);
                     i.setAction(Intent.ACTION_SEARCH);
                     i.putExtra(SearchManager.QUERY, s);
@@ -236,8 +242,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 return false;
             }
         });
-        MenuItemCompat.setOnActionExpandListener(_searchMenuItem,new MenuItemCompat.OnActionExpandListener()
-        {
+        MenuItemCompat.setOnActionExpandListener(_searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem menuItem) {
                 return false;
