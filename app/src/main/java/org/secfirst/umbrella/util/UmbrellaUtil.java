@@ -3,28 +3,28 @@ package org.secfirst.umbrella.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
-import android.util.Log;
+import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import org.secfirst.umbrella.data.CheckListDataSource;
-import org.secfirst.umbrella.data.InitialData;
-import org.secfirst.umbrella.data.SegmentsDataSource;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.regex.Pattern;
 
 public class UmbrellaUtil {
 
@@ -57,65 +57,78 @@ public class UmbrellaUtil {
         }
     }
 
-    public static void migrateDataOnStartup(Context context) {
-        ArrayList<Segment> segments = InitialData.getSegmentList();
-        SegmentsDataSource segmentDAO = new SegmentsDataSource(context);
-        segmentDAO.open();
-        List<Segment> fromDB = segmentDAO.getAllSegments();
+    public static void resetDataToInitial() {
+        CheckItem.deleteAll(CheckItem.class);
+        Category.deleteAll(Category.class);
+        Segment.deleteAll(Segment.class);
+        Difficulty.deleteAll(Difficulty.class);
+        for (Segment segment : InitialData.getSegmentList()) {
+            segment.save();
+        }
+        for (CheckItem checkItem : InitialData.getCheckList()) {
+            checkItem.save();
+        }
+        for (Category category : InitialData.getCategoryList()) {
+            category.save();
+        }
+    }
 
+    public static void migrateData() {
+        ArrayList<Segment> segments = InitialData.getSegmentList();
+        List<Segment> fromDB = Segment.listAll(Segment.class);
         if (fromDB.size()==0) {
-            syncSegments(segmentDAO, segments);
+            for (Segment segment : segments) {
+                segment.save();
+            }
         }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        CheckListDataSource checkListDataSource = new CheckListDataSource(context);
-        checkListDataSource.open();
-        List<CheckItem> listsFromDB = checkListDataSource.getAllItems();
+        List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
         if (listsFromDB.size()==0) {
-            syncCheckLists(checkListDataSource, checkList);
+            for (CheckItem checkItem : checkList) {
+                checkItem.save();
+            }
+        }
+
+        ArrayList<Category> categoryList = InitialData.getCategoryList();
+        List<Category> catFromDB = Category.listAll(Category.class);
+        if (catFromDB.size()==0) {
+            for (Category category : categoryList) {
+                category.save();
+            }
         }
     }
 
-    public static void syncSegments(SegmentsDataSource segmentDAO, ArrayList<Segment> segments) {
-        segmentDAO.deleteAllSegments();
+    public static void syncSegments(ArrayList<Segment> segments) {
+        Segment.deleteAll(Segment.class);
         for (Segment segment : segments) {
-            segmentDAO.insertSegment(segment);
+            segment.save();
         }
-        segmentDAO.close();
     }
 
-    public static void syncCheckLists(CheckListDataSource checkListDataSource, ArrayList<CheckItem> checkList) {
-        checkListDataSource.deleteAllItems();
+    public static void syncCategories(ArrayList<Category> categories) {
+        Category.deleteAll(Category.class);
+        for (Category item : categories) {
+            item.save();
+        }
+    }
+
+    public static void syncCheckLists(ArrayList<CheckItem> checkList) {
+        CheckItem.deleteAll(CheckItem.class);
         CheckItem previousItem = null;
         for (CheckItem checkItem : checkList) {
             if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
                 checkItem.setParent(previousItem.getId());
-                checkListDataSource.insertItem(checkItem);
+                checkItem.save();
             } else {
-                previousItem = checkListDataSource.insertItem(checkItem);
+                previousItem = checkItem;
             }
         }
-        checkListDataSource.close();
     }
 
     public static int dpToPix(int sizeInDp, Context context) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (sizeInDp*scale + 0.5f);
-    }
-
-    public static void dumpIntent(Intent i, Activity activity) {
-        String LOG_TAG = activity.getClass().getSimpleName();
-        Bundle bundle = i.getExtras();
-        if (bundle != null) {
-            Set<String> keys = bundle.keySet();
-            Iterator<String> it = keys.iterator();
-            Log.e("dump intent", "Dumping Intent start");
-            while (it.hasNext()) {
-                String key = it.next();
-                Log.e(LOG_TAG, "[" + key + "=" + bundle.get(key) + "]");
-            }
-            Log.e(LOG_TAG, "Dumping Intent end");
-        }
     }
 
     public static boolean isNetworkAvailable(Context context) {
@@ -138,6 +151,68 @@ public class UmbrellaUtil {
             }
         }).start();
         return ringProgressDialog;
+    }
+
+    public static ArrayList<Category> getParentCategories() {
+        List<Category> categories = Category.listAll(Category.class);
+        ArrayList<Category> parentCategories = new ArrayList<Category>();
+        for (Category category : categories) {
+            if (category.getParent()==0) {
+                parentCategories.add(category);
+            }
+        }
+        return parentCategories;
+    }
+
+    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems() {
+        List<Category> categories = Category.listAll(Category.class);
+        ArrayList<Category> parentCategories = new ArrayList<Category>();
+        for (Category category : categories) {
+            if (category.getParent()==0) {
+                parentCategories.add(category);
+            }
+        }
+
+        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
+        for (Category parentCategory : parentCategories) {
+            ArrayList<DrawerChildItem> child = new ArrayList<>();
+            for (Category category : categories) {
+                if (category.getParent() == parentCategory.getId()) {
+                    child.add(new DrawerChildItem(category.getCategory(), category.getMId()));
+                }
+            }
+            childItem.add(child);
+        }
+
+        return childItem;
+    }
+
+    public static String checkPasswordStrength(String password) {
+        if (password.length()<8) {
+            return "Password too short";
+        } else if(!Pattern.compile("\\d").matcher(password).find()) {
+            return "Password must have at least one digit";
+        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+            return "Password must have at least one capital letter";
+        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+            return "Password must have at least one small letter";
+        }
+        return "";
+
+    }
+
+    public static void setStatusBarColor(Activity activity, int colorResource) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(colorResource);
+        }
+    }
+
+    public static int getDifficulty(long itemNum) {
+        List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(itemNum));
+        return (hasDifficulty.size()>0) ? hasDifficulty.get(0).getSelected() : 0;
     }
 
 }

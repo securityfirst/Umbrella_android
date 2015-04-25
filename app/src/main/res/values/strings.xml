@@ -4,14 +4,13 @@
     <string name="app_name">Umbrella</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
     <string name="section1_tab_title1">Lesson</string>
     <string name="section1_tab_title2">Case Study</string>
     <string name="section1_tab_title3">Checklist</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="btn_login">Login</string>
-    <string name="btn_skip">Skip</string>
+    <string name="btn_skip">Accept</string>
     <string name="pw_hint">Password</string>
     <string name="title_activity_tour">Tour</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -23,5 +22,18 @@
     <string name="title_activity_search">Search results</string>
     <string name="no_results_label">No results found</string>
     <string name="no_network_message">No network connection available. Please try again later.</string>
+    <string name="login_password">Log in with your password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="incorrect_password">Password incorrect. Please try again.</string>
+    <string name="set_password">Set password</string>
+    <string name="my_checklists">My Checklists</string>
+    <string name="feeds">Feeds</string>
+    <string name="check_lists_total">Check lists total</string>
+    <string name="log_out">Log out</string>
+    <string name="log_in">Log In</string>
+    <string name="beginner">Beginner</string>
+    <string name="expert">Expert</string>
+    <string name="intermediate">Advanced</string>
+    <string name="action_export_checklist">Export Checklist</string>
 
 </resources>

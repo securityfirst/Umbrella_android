@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="300dp"
+    android:layout_height="wrap_content" android:background="@color/umbrella_yellow">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_account_circle_grey600_48dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:id="@+id/login_header"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="bottom"
+        android:text="@string/log_in"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/text_size_xlarge" />
+
+</LinearLayout>

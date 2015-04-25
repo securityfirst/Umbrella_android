@@ -5,29 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
-import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
 
 @SuppressWarnings("unchecked")
-public class DrawerAdapter extends BaseExpandableListAdapter {
+public class DrawerAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
 
-    public ArrayList<String> groupItem;
+    public ArrayList<Category> groupItem = new ArrayList<Category>();
     ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
-    private Context context;
+    private Context mContext;
+    private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_settings_phone_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_work_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_business_grey600_24dp, R.drawable.ic_home_grey600_24dp, R.drawable.ic_local_hospital_grey600_24dp, R.drawable.ic_content_cut_grey600_24dp, R.drawable.ic_list_grey600_24dp, R.drawable.ic_about};
+    private int[][] childImages = {{}, {R.drawable.ic_supervisor_account_grey600_24dp, R.drawable.ic_bug_report_grey600_24dp, R.drawable.ic_lock_grey600_24dp, R.drawable.ic_security_grey600_24dp, R.drawable.ic_delete_grey600_24dp, R.drawable.ic_backup_grey600_24dp}, {R.drawable.ic_phones, R.drawable.ic_call, R.drawable.ic_message, R.drawable.ic_email, R.drawable.ic_internet, R.drawable.ic_social, R.drawable.ic_radio, R.drawable.ic_satellite}, {R.drawable.ic_personal_protective, R.drawable.ic_personal_counter, R.drawable.ic_personal_arrests, R.drawable.ic_personal_stress}, {R.drawable.ic_travel_preparation, R.drawable.ic_travel_vehicles, R.drawable.ic_travel_checkpoints}, {R.drawable.ic_operations_meetings, R.drawable.ic_operations_protests, R.drawable.ic_operations_evacuation}};
 
     public DrawerAdapter(Context context) {
-        this.context = context;
-        Global global = (Global) context.getApplicationContext();
-        this.groupItem = new ArrayList<String>();
-        this.groupItem = global.getDrawerItems();
-        this.childItem = global.getDrawerChildItems();
+        mContext = context;
+        groupItem = UmbrellaUtil.getParentCategories();
+        childItem = UmbrellaUtil.getChildItems();
     }
 
     @Override
@@ -47,7 +49,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
         final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
 
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context
+            LayoutInflater mInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_child_item, null);
             holder = new ViewHolder();
@@ -58,34 +60,17 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        int iconDrawable = R.drawable.ic_lock_grey600_24dp;
-        switch (childPosition) {
-            case 1:
-                iconDrawable = R.drawable.ic_screen_lock_portrait_grey600_24dp;
-                break;
-            case 2:
-                iconDrawable = R.drawable.ic_email_grey600_24dp;
-                break;
-            case 3:
-                iconDrawable = R.drawable.ic_delete_grey600_24dp;
-                break;
+        if (childImages.length > groupPosition && childImages[groupPosition].length > childPosition) {
+            holder.childIcon.setImageResource(childImages[groupPosition][childPosition]);
         }
-
-        holder.childIcon.setImageDrawable(context.getResources().getDrawable(iconDrawable));
         holder.childTitle.setText(tempChild.getTitle());
-        holder.childTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) context).onNavigationDrawerItemSelected(tempChild);
-            }
-        });
 
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return (childItem.size()>groupPosition) ? (childItem.get(groupPosition)).size() : 0;
+        return (childItem.size() > groupPosition) ? (childItem.get(groupPosition)).size() : 0;
     }
 
     @Override
@@ -110,19 +95,33 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getGroupId(int groupPosition) {
-        return 0;
+        return groupItem.get(groupPosition).getId();
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
+    public View getGroupView(final int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater) context
+            LayoutInflater mInflater = (LayoutInflater) mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_group_item, null);
         }
+
         TextView tv = (TextView) convertView.findViewById(R.id.drawer_group_text);
-        tv.setText(groupItem.get(groupPosition));
+        tv.setText(groupItem.get(groupPosition).getCategory());
+        if (groupPosition==0) {
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition).getCategory());
+                }
+            });
+        }
+
+        ImageView iv = (ImageView) convertView.findViewById(R.id.drawer_group_image);
+        if (groupImages.length > groupPosition) {
+            iv.setImageResource(groupImages[groupPosition]);
+        }
 
         return convertView;
     }
@@ -142,4 +141,19 @@ public class DrawerAdapter extends BaseExpandableListAdapter {
         public ImageView childIcon;
     }
 
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+        final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
+        ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
+        return true;
+    }
+
+    @Override
+    public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+        if (getChildrenCount(groupPosition) == 0) {
+            ((MainActivity) mContext).onNavigationDrawerGroupItemSelected(groupItem.get(groupPosition));
+            return true;
+        }
+        return false;
+    }
 }

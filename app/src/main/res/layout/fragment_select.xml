@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@drawable/background"
+    android:layout_height="wrap_content"
+    tools:context="org.secfirst.umbrella.fragments.DashboardFragment">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_height="wrap_content"
+        tools:context="org.secfirst.umbrella.fragments.DashboardFragment">
+
+        <LinearLayout
+            android:id="@+id/checklist_total"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_beginner"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                card_view:cardCornerRadius="2dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:padding="15dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_beginner" />
+
+                    <TextView
+                        android:textSize="@dimen/text_size_large"
+                        android:textColor="@color/dashboard_light_blue"
+                        android:layout_width="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/beginner"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/divider_grey"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/beginner_description"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/text_grey"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_intermediate"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                card_view:cardCornerRadius="2dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:padding="15dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_advance" />
+
+                    <TextView
+                        android:textSize="@dimen/text_size_large"
+                        android:textColor="@color/dashboard_light_blue"
+                        android:layout_width="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/intermediate"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/divider_grey"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/advanced_description"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/text_grey"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_expert"
+                android:layout_gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                card_view:cardCornerRadius="2dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:padding="15dp"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_expert" />
+
+                    <TextView
+                        android:textSize="@dimen/text_size_large"
+                        android:textColor="@color/dashboard_light_blue"
+                        android:layout_width="fill_parent"
+                        android:gravity="center"
+                        android:text="@string/expert"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_height="match_parent" />
+
+                    <View
+                        android:layout_width="fill_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/divider_grey"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/expert_description"
+                        android:textSize="@dimen/text_size_small"
+                        android:textColor="@color/text_grey"
+                        android:fontFamily="sans-serif-light"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

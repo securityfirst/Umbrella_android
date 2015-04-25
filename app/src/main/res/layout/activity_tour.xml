@@ -19,15 +19,4 @@
         android:layout_width="fill_parent"
         />
 
-    <TextView
-        android:id="@+id/btn_skip"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/white"
-        android:text="@string/btn_skip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
 </FrameLayout>

@@ -2,6 +2,7 @@ package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -10,19 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
-import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
-    private ArrayList<Segment> mSegment = new ArrayList<Segment>();
+    private List<Segment> mSegment = new ArrayList<>();
     private ArrayList<ArrayList<DrawerChildItem>> mSubtitles = new ArrayList<ArrayList<DrawerChildItem>>();
-    private ArrayList<String> mTitles = new ArrayList<String>();
+    private ArrayList<Category> mTitles = new ArrayList<Category>();
     private ArrayList<String> mQueries = new ArrayList<String>();
     private Context mContext;
 
@@ -40,11 +42,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         }
     }
 
-    public SearchAdapter(Context context, ArrayList<Segment> segmentList, String query) {
+    public SearchAdapter(Context context, List<Segment> segmentList, String query) {
         mSegment = segmentList;
-        Global global = (Global) context.getApplicationContext();
-        mSubtitles = global.getDrawerChildItems();
-        mTitles = global.getDrawerItems();
+        mSubtitles = UmbrellaUtil.getChildItems();
+        mTitles = UmbrellaUtil.getParentCategories();
         mQueries.add(query);
         mContext = context;
     }
@@ -63,18 +64,22 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + mQueries.get(0)+"</b>"));
         final Segment current = mSegment.get(position);
         String forTitle = "";
-        if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory());
-        if (mSubtitles.get(1).size() >= current.getCategory()) {
-            forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(1).get(current.getCategory()-1).getTitle();
-            holder.mTitle.setText(forTitle);
+        if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory()).getCategory();
+        if (mSubtitles.size()>current.getCategory() && mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
+            forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
         }
+        holder.mTitle.setText(forTitle);
         holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), mQueries.get(0))));
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toMain = new Intent(mContext, MainActivity.class);
-                toMain.putExtra("search", current.getCategory());
-                mContext.startActivity(toMain);
+                Category category = Category.findById(Category.class, (long)current.getCategory());
+                if (category == null) {
+                    return;
+                }
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("umbrella://lesson/" + category.getCategory().replace(' ', '-')));
+                mContext.startActivity(i);
             }
         });
     }

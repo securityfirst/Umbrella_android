@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.secfirst.umbrella" >
+    package="org.secfirst.umbrella" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,23 +9,34 @@
     <application
         android:name="org.secfirst.umbrella.util.Global"
         android:allowBackup="true"
+        tools:replace="icon"
         android:icon="@drawable/ic_umbrella"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="org.secfirst.umbrella.StartActivity"
+            android:exported="true"
+            android:name="org.secfirst.umbrella.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="umbrella" android:host="lesson" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="umbrella" android:host="checklist" />
             </intent-filter>
         </activity>
         <activity
-            android:name="org.secfirst.umbrella.MainActivity"
-            android:label="@string/title_activity_main" >
-            <meta-data android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+            android:name=".LoginActivity"
+            android:label="@string/app_name" >
         </activity>
         <activity
             android:name="org.secfirst.umbrella.TourActivity"
@@ -34,9 +45,6 @@
         <activity
             android:name="org.secfirst.umbrella.SearchActivity"
             android:label="@string/title_activity_search" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
@@ -47,6 +55,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secfirst.umbrella.MainActivity" />
         </activity>
+        <meta-data android:name="DATABASE" android:value="umbrella_public.db" />
+        <meta-data android:name="VERSION" android:value="1" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="org.secfirst.umbrella" />
     </application>
 
 </manifest>

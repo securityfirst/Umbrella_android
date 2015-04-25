@@ -1,41 +1,50 @@
 package org.secfirst.umbrella.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
-import org.secfirst.umbrella.adapters.SegmentAdapter;
-import org.secfirst.umbrella.data.CheckListDataSource;
-import org.secfirst.umbrella.data.SegmentsDataSource;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.util.Global;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class TabbedFragment extends Fragment {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+    public static int difficulty;
+    public long sectionNumber;
 
-    public static TabbedFragment newInstance(int sectionNumber) {
+    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber, boolean checklist) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        args.putBoolean("checklist", checklist);
+        tabbedFragment.sectionNumber = sectionNumber;
+        difficulty = spinnerNumber;
         tabbedFragment.setArguments(args);
         return tabbedFragment;
     }
@@ -48,12 +57,11 @@ public class TabbedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(
-                getChildFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        mSectionsPagerAdapter.difficulty = difficulty;
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? 1 : 0);
         return v;
     }
 
@@ -64,22 +72,29 @@ public class TabbedFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        public int difficulty;
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = new TabbedContentFragment();
+            Fragment fragment;
             Bundle args = new Bundle();
-            args.putInt(TabbedContentFragment.ARG_SECTION_NUMBER, position + 1);
+            if (position==0) {
+                fragment = new TabbedContentFragment();
+            } else {
+                fragment = new CheckItemFragment();
+            }
+            args.putInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -89,8 +104,6 @@ public class TabbedFragment extends Fragment {
                 case 0:
                     return getString(R.string.section1_tab_title1).toUpperCase(l);
                 case 1:
-                    return getString(R.string.section1_tab_title2).toUpperCase(l);
-                case 2:
                     return getString(R.string.section1_tab_title3).toUpperCase(l);
             }
             return null;
@@ -99,11 +112,7 @@ public class TabbedFragment extends Fragment {
 
     public static class TabbedContentFragment extends Fragment {
 
-        public static final String ARG_SECTION_NUMBER = "section_number";
-        private ArrayList<Segment> mSegments;
-        private ArrayList<CheckItem> mCheckList;
-        private ProgressBar checkBar;
-        private TextView checkBarText;
+        private TextView content;
 
         public TabbedContentFragment() {
         }
@@ -114,56 +123,122 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
 
-
-            int drawerItem = ((MainActivity) getActivity()).drawerItem;
-            ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
-            LinearLayout checkBarLayout = (LinearLayout) rootView.findViewById(R.id.progress_checked);
-            checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
-            checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
-            setProgressBarTo(0);
-
-            checkBarLayout.setVisibility(getArguments().getInt(ARG_SECTION_NUMBER) == 3 ? View.VISIBLE : View.GONE);
-
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-                case 1:
-                    SegmentsDataSource dataSource = new SegmentsDataSource(getActivity());
-                    dataSource.open();
-                    mSegments = dataSource.getAllSegmentsByCategory(drawerItem);
-                    dataSource.close();
-                    contentBox.setAdapter(new SegmentAdapter(getActivity(), mSegments));
-                    contentBox.setDivider(null);
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    refreshCheckList(drawerItem);
-                    contentBox.setAdapter(new CheckListAdapter(getActivity(), mCheckList, this));
-                    contentBox.setDivider(null);
-                    break;
-                default:
-
+            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            content = (TextView) rootView.findViewById(R.id.content);
+            int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
+            List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
+            if (segments.size() > 0) {
+                String html = segments.get(0).getBody();
+                html = html.replaceAll("\\<h1\\>", "<p><font color=\"#33b5e5\"><big><big>");
+                html = html.replaceAll("\\</h1\\>", "</big></big></font></p>");
+                html = html.replaceAll("\\<h2\\>", "<p><font color=\"#9ABE2E\"><big>");
+                html = html.replaceAll("\\</h2\\>", "</big></font></p>");
+                content.setText(Html.fromHtml(html, new Html.ImageGetter() {
+                    @Override
+                    public Drawable getDrawable(String source) {
+                        Drawable d = getActivity().getResources().getDrawable(getActivity().getResources().getIdentifier(source, "drawable", BuildConfig.APPLICATION_ID));
+                        d.setBounds(0, 0, getActivity().getWindowManager().getDefaultDisplay().getWidth(), d.getIntrinsicHeight() * getActivity().getWindowManager().getDefaultDisplay().getWidth() / d.getIntrinsicWidth());
+                        return d;
+                    }
+                }, null));
+            } else {
+                content.setText("");
             }
             return rootView;
         }
 
-        public void refreshCheckList(int category) {
-            CheckListDataSource checkListDataSource = new CheckListDataSource(getActivity());
-            checkListDataSource.open();
-            mCheckList = checkListDataSource.getAllItemsByCategory(category);
-            if (mCheckList.size()>0) {
-                int selected = 0;
-                for (CheckItem checkItem : mCheckList) {
-                    if (checkItem.getValue()) selected++;
+    }
+
+    public static class CheckItemFragment extends Fragment {
+
+        private List<CheckItem> mCheckList;
+        private ProgressBar checkBar;
+        private TextView checkBarText;
+        private CheckListAdapter cLAdapter;
+
+        public CheckItemFragment() {}
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_check_item,
+                    container, false);
+
+
+            final long drawerItem = ((MainActivity) getActivity()).drawerItem;
+            ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
+            checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
+            checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
+            setProgressBarTo(0);
+            final int diffArg = getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1);
+            ImageButton addItem = (ImageButton) rootView.findViewById(R.id.fab);
+            addItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Global global = ((MainActivity) getActivity()).getGlobal();
+                    if (!global.hasPasswordSet()) {
+                        global.setPassword(getActivity());
+                    } else {
+                        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                        alert.setTitle("Add a new check item");
+                        alert.setMessage("Set a meaningful message for the check item\n");
+                        final EditText pwInput = new EditText(getActivity());
+                        alert.setView(pwInput);
+                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String pw = pwInput.getText().toString();
+                                if (pw.length()>4) {
+                                    CheckItem nItem = new CheckItem(pw, (int) drawerItem);
+                                    nItem.setCustom(1);
+                                    nItem.setDifficulty(diffArg);
+                                    nItem.save();
+                                    refreshCheckList(drawerItem, diffArg);
+                                    dialog.dismiss();
+                                    Toast.makeText(getActivity(), "You have added a new item.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getActivity(), "The item text has to be longer than that", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                            }
+                        });
+                        alert.show();
+                    }
                 }
-                setProgressBarTo((int) Math.round(selected * 100.0 / mCheckList.size()));
+            });
+
+            refreshCheckList(drawerItem, diffArg);
+            cLAdapter = new CheckListAdapter(getActivity(), mCheckList, this);
+            contentBox.setAdapter(cLAdapter);
+            contentBox.setDivider(null);
+            return rootView;
+        }
+
+        public void refreshCheckList(long category, int difficulty) {
+            mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(category), String.valueOf(difficulty));
+            if (cLAdapter != null) {
+                cLAdapter.updateData(mCheckList);
             }
-            checkListDataSource.close();
+            if (mCheckList.size() > 0) {
+                int selected = 0;
+                int total = 0;
+                for (CheckItem checkItem : mCheckList) {
+                    if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
+                        total++;
+                        if (checkItem.getValue()) selected++;
+                    }
+                }
+                setProgressBarTo((int) Math.round(selected * 100.0 / total));
+            }
         }
 
         public void setProgressBarTo(int percent) {
             if (percent>=0 && percent<=100) {
                 checkBar.setProgress(percent);
-                checkBarText.setText(percent + "% done.");
+                checkBarText.setText(percent + "% filled");
             }
         }
     }

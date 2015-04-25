@@ -3,13 +3,20 @@
     <color name="grey">#b4b4b4</color>
     <color name="medium_grey">#FF707070</color>
     <color name="dark_grey">#FF333333</color>
+    <color name="divider_grey">#FFD4D4D4</color>
+    <color name="text_grey">#FF616161</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green_transparent">#667ADEA7</color>
+    <color name="green_transparent">#AA7ADEA7</color>
+    <color name="green_button">#CC9BBF2E</color>
     <color name="white_transparent">#CCFFFFFF</color>
 
     <color name="umbrella_green">#FF9ABE2E</color>
     <color name="umbrella_yellow">#FFF2BC2B</color>
-    <color name="umbrella_purple">#FFB73657</color>
+    <color name="umbrella_purple">#FFB83657</color>
+    <color name="umbrella_purple_dark">#FF8D2A43</color>
     <color name="holo_dark_selected">#6633b5e5</color>
+    <color name="dashboard_light_blue">#FF76c3da</color>
     <color name="grey_600">#546e7a</color>
+    <color name="background_grey">#FFF2F2F2</color>
+    <color name="black">#FF000000</color>
 </resources>
