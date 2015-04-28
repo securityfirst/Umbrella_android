@@ -35,5 +35,6 @@
     <string name="expert">Expert</string>
     <string name="intermediate">Advanced</string>
     <string name="action_export_checklist">Export Checklist</string>
+    <string name="title_activity_lesson">LessonActivity</string>
 
 </resources>

@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.secfirst.umbrella.LessonActivity"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/umbrella_purple"/>
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_gravity="bottom"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/segment_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

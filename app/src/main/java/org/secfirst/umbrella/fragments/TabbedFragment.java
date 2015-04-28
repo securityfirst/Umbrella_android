@@ -3,27 +3,26 @@ package org.secfirst.umbrella.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
+import org.secfirst.umbrella.adapters.GridAdapter;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
@@ -124,23 +123,12 @@ public class TabbedFragment extends Fragment {
                     container, false);
 
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
-            content = (TextView) rootView.findViewById(R.id.content);
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
             if (segments.size() > 0) {
-                String html = segments.get(0).getBody();
-                html = html.replaceAll("\\<h1\\>", "<p><font color=\"#33b5e5\"><big><big>");
-                html = html.replaceAll("\\</h1\\>", "</big></big></font></p>");
-                html = html.replaceAll("\\<h2\\>", "<p><font color=\"#9ABE2E\"><big>");
-                html = html.replaceAll("\\</h2\\>", "</big></font></p>");
-                content.setText(Html.fromHtml(html, new Html.ImageGetter() {
-                    @Override
-                    public Drawable getDrawable(String source) {
-                        Drawable d = getActivity().getResources().getDrawable(getActivity().getResources().getIdentifier(source, "drawable", BuildConfig.APPLICATION_ID));
-                        d.setBounds(0, 0, getActivity().getWindowManager().getDefaultDisplay().getWidth(), d.getIntrinsicHeight() * getActivity().getWindowManager().getDefaultDisplay().getWidth() / d.getIntrinsicWidth());
-                        return d;
-                    }
-                }, null));
+                GridView gridView = (GridView) rootView.findViewById(R.id.grid_tiles);
+                GridAdapter gAdapter = new GridAdapter(getActivity(), segments, difficulty);
+                gridView.setAdapter(gAdapter);
             } else {
                 content.setText("");
             }
@@ -163,7 +151,6 @@ public class TabbedFragment extends Fragment {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_check_item,
                     container, false);
-
 
             final long drawerItem = ((MainActivity) getActivity()).drawerItem;
             ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);

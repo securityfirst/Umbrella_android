@@ -3,6 +3,7 @@ package org.secfirst.umbrella.models;
 import com.orm.SugarRecord;
 
 public class Segment extends SugarRecord<Segment> {
+    private String title;
     private String body;
     private int category;
     private int difficulty;
@@ -13,6 +14,21 @@ public class Segment extends SugarRecord<Segment> {
         this.body = body;
         this.difficulty = difficulty;
         this.category = category;
+    }
+
+    public Segment(int category, int difficulty, String title, String body) {
+        this.title = title;
+        this.body = body;
+        this.difficulty = difficulty;
+        this.category = category;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getBody() {
