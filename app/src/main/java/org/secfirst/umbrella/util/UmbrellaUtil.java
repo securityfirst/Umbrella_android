@@ -74,9 +74,10 @@ public class UmbrellaUtil {
     }
 
     public static void migrateData() {
+
         ArrayList<Segment> segments = InitialData.getSegmentList();
         List<Segment> fromDB = Segment.listAll(Segment.class);
-        if (fromDB.size()==0) {
+        if (fromDB.size() == 0) {
             for (Segment segment : segments) {
                 segment.save();
             }
@@ -84,7 +85,7 @@ public class UmbrellaUtil {
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
         List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
-        if (listsFromDB.size()==0) {
+        if (listsFromDB.size() == 0) {
             for (CheckItem checkItem : checkList) {
                 checkItem.save();
             }
@@ -92,7 +93,7 @@ public class UmbrellaUtil {
 
         ArrayList<Category> categoryList = InitialData.getCategoryList();
         List<Category> catFromDB = Category.listAll(Category.class);
-        if (catFromDB.size()==0) {
+        if (catFromDB.size() == 0) {
             for (Category category : categoryList) {
                 category.save();
             }
