@@ -91,6 +91,7 @@ public class Global extends com.orm.SugarApp {
                 }
             }
         });
+        alert.setCancelable(false);
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.cancel();
