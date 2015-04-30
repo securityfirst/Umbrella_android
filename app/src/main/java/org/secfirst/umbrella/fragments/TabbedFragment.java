@@ -3,16 +3,15 @@ package org.secfirst.umbrella.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -21,7 +20,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
@@ -149,7 +147,7 @@ public class TabbedFragment extends Fragment {
 
     public static class TabbedSegmentFragment extends Fragment {
 
-        private TextView content;
+        private WebView content;
 
         public TabbedSegmentFragment() {
         }
@@ -159,7 +157,7 @@ public class TabbedFragment extends Fragment {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_segment,
                     container, false);
-            content = (TextView) rootView.findViewById(R.id.segment_content);
+            content = (WebView) rootView.findViewById(R.id.segment_content);
 
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
@@ -168,18 +166,7 @@ public class TabbedFragment extends Fragment {
             if (segments.size() > 0 && segments.size()>=segmentInt+1) {
                 String html = segments.get(segmentInt).getBody();
                 if (html != null) {
-                    html = html.replaceAll("\\<h1\\>", "<p><font color=\"#33b5e5\"><big><big>");
-                    html = html.replaceAll("\\</h1\\>", "</big></big></font></p>");
-                    html = html.replaceAll("\\<h2\\>", "<p><font color=\"#9ABE2E\"><big>");
-                    html = html.replaceAll("\\</h2\\>", "</big></font></p>");
-                    content.setText(Html.fromHtml(html, new Html.ImageGetter() {
-                        @Override
-                        public Drawable getDrawable(String source) {
-                            Drawable d = getActivity().getResources().getDrawable(getActivity().getResources().getIdentifier(source, "drawable", BuildConfig.APPLICATION_ID));
-                            d.setBounds(0, 0, getActivity().getWindowManager().getDefaultDisplay().getWidth(), d.getIntrinsicHeight() * getActivity().getWindowManager().getDefaultDisplay().getWidth() / d.getIntrinsicWidth());
-                            return d;
-                        }
-                    }, null));
+                    content.loadDataWithBaseURL("file:///android_res/drawable/", "<style>img{width:100%}h1{color:#33b5e5}h2{color:#9ABE2E}</style>" + html, "text/html; charset=UTF-8", null, null);
                 }
             }
             return rootView;
