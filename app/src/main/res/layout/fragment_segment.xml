@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <WebView
             android:id="@+id/segment_content"
             android:textColor="@color/text_grey"
             android:textSize="@dimen/text_size_smaller"
@@ -17,7 +17,7 @@
             android:paddingRight="7dp"
             android:fontFamily="sans-serif-light"
             android:layout_width="fill_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
     </ScrollView>
 
