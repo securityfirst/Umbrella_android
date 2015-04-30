@@ -20,6 +20,10 @@ public class UmbrellaRestClient {
         if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public static void getFeed(String url, RequestParams params, Context context, AsyncHttpResponseHandler responseHandler) {
+        if (UmbrellaUtil.isNetworkAvailable(context)) client.get(url, params, responseHandler);
+    }
+
     public static void post(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
         if (isRequestReady(context, token)) client.post(getAbsoluteUrl(url), params, responseHandler);
     }

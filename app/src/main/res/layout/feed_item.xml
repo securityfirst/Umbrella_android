@@ -19,17 +19,9 @@
 
             <TextView
                 android:id="@+id/feed_title"
-                android:textSize="@dimen/text_size_larger"
+                android:textSize="@dimen/text_size_smaller"
                 android:textColor="@color/umbrella_purple"
                 android:gravity="center"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/feed_subtitle"
-                android:textSize="@dimen/text_size_normal"
-                android:gravity="center"
-                android:textColor="@color/umbrella_green"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 

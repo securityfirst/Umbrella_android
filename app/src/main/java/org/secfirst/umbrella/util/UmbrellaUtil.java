@@ -15,11 +15,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.InitialData;
+import org.secfirst.umbrella.models.Relief.Data;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
@@ -214,6 +219,18 @@ public class UmbrellaUtil {
     public static int getDifficulty(long itemNum) {
         List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(itemNum));
         return (hasDifficulty.size()>0) ? hasDifficulty.get(0).getSelected() : 0;
+    }
+
+    public static ArrayList<FeedItem> parseReliefWeb(List<Data> dataList) {
+        ArrayList<FeedItem> items = new ArrayList<>();
+        for (Data data : dataList) {
+            Document document = Jsoup.parse(data.getFields().getDescriptionhtml());
+            Element ul = document.select("ul").get(0);
+            for(Element li : ul.select("li")) {
+                items.add(new FeedItem(li.text(), "", li.select("a").get(0).attr("href")));
+            }
+        }
+        return items;
     }
 
 }

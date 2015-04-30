@@ -130,7 +130,6 @@
 
             <TextView
                 android:text="@string/feeds"
-                android:visibility="gone"
                 android:textStyle="bold"
                 android:gravity="center"
                 android:textSize="@dimen/text_size_normal"
@@ -142,7 +141,7 @@
             <ListView
                 android:id="@+id/feed_list"
                 android:layout_width="fill_parent"
-                android:layout_height="350dp" />
+                android:layout_height="850dp" />
 
         </LinearLayout>
 
