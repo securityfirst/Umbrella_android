@@ -181,7 +181,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     checklist = true;
                 }
                 setIntent(null);
-                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected(), checklist), childItem.getTitle()).addToBackStack(null).commit();
+                fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected(), checklist), "tabbed").addToBackStack(null).commit();
                 if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
                 } else {
@@ -194,7 +194,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else {
             setTitle(groupName);
-            fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedContentFragment()).addToBackStack(null).commit();
+            fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedContentFragment(), "tabbed").addToBackStack(null).commit();
             titleSpinner.setVisibility(View.GONE);
         }
     }

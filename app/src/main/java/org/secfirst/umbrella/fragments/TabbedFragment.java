@@ -3,11 +3,13 @@ package org.secfirst.umbrella.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
@@ -33,8 +36,9 @@ import java.util.Locale;
 public class TabbedFragment extends Fragment {
 
     public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
+    public static final String ARG_SEGMENT_INDEX = "segment_index";
     SectionsPagerAdapter mSectionsPagerAdapter;
-    ViewPager mViewPager;
+    public ViewPager mViewPager;
     public static int difficulty;
     public long sectionNumber;
 
@@ -72,9 +76,12 @@ public class TabbedFragment extends Fragment {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public int difficulty;
+        private List<Segment> segments;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty+1));
         }
 
         @Override
@@ -83,8 +90,11 @@ public class TabbedFragment extends Fragment {
             Bundle args = new Bundle();
             if (position==0) {
                 fragment = new TabbedContentFragment();
-            } else {
+            } else if (position==segments.size()+1) {
                 fragment = new CheckItemFragment();
+            } else {
+                fragment = new TabbedSegmentFragment();
+                args.putInt(TabbedFragment.ARG_SEGMENT_INDEX, position-1);
             }
             args.putInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
             fragment.setArguments(args);
@@ -93,25 +103,27 @@ public class TabbedFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 2;
+            return segments.size()+2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.section1_tab_title1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.section1_tab_title3).toUpperCase(l);
+            if (position==0) {
+                return getString(R.string.section1_tab_title1).toUpperCase(l);
+            } else if (position==segments.size()+1) {
+                return getString(R.string.section1_tab_title3).toUpperCase(l);
+            } else {
+                if (segments.get(position-1).getTitle()!=null) {
+                    return segments.get(position-1).getTitle().toUpperCase(l);
+                } else {
+                    return ("Slide " + position).toUpperCase(l);
+                }
             }
-            return null;
         }
     }
 
     public static class TabbedContentFragment extends Fragment {
-
-        private TextView content;
 
         public TabbedContentFragment() {
         }
@@ -127,10 +139,48 @@ public class TabbedFragment extends Fragment {
             List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
             if (segments.size() > 0) {
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid_tiles);
-                GridAdapter gAdapter = new GridAdapter(getActivity(), segments, difficulty);
+                GridAdapter gAdapter = new GridAdapter(getActivity(), segments);
                 gridView.setAdapter(gAdapter);
-            } else {
-                content.setText("");
+            }
+            return rootView;
+        }
+
+    }
+
+    public static class TabbedSegmentFragment extends Fragment {
+
+        private TextView content;
+
+        public TabbedSegmentFragment() {
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_segment,
+                    container, false);
+            content = (TextView) rootView.findViewById(R.id.segment_content);
+
+            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
+            int segmentInt = getArguments() != null ? getArguments().getInt(ARG_SEGMENT_INDEX, 0) : 0;
+            List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
+            if (segments.size() > 0 && segments.size()>=segmentInt+1) {
+                String html = segments.get(segmentInt).getBody();
+                if (html != null) {
+                    html = html.replaceAll("\\<h1\\>", "<p><font color=\"#33b5e5\"><big><big>");
+                    html = html.replaceAll("\\</h1\\>", "</big></big></font></p>");
+                    html = html.replaceAll("\\<h2\\>", "<p><font color=\"#9ABE2E\"><big>");
+                    html = html.replaceAll("\\</h2\\>", "</big></font></p>");
+                    content.setText(Html.fromHtml(html, new Html.ImageGetter() {
+                        @Override
+                        public Drawable getDrawable(String source) {
+                            Drawable d = getActivity().getResources().getDrawable(getActivity().getResources().getIdentifier(source, "drawable", BuildConfig.APPLICATION_ID));
+                            d.setBounds(0, 0, getActivity().getWindowManager().getDefaultDisplay().getWidth(), d.getIntrinsicHeight() * getActivity().getWindowManager().getDefaultDisplay().getWidth() / d.getIntrinsicWidth());
+                            return d;
+                        }
+                    }, null));
+                }
             }
             return rootView;
         }

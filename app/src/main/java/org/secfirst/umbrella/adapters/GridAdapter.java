@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
-import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.secfirst.umbrella.LessonActivity;
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.Segment;
 
 import java.util.ArrayList;
@@ -21,12 +22,10 @@ public class GridAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<Segment> mSegments;
     private int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
-    private int mDifficulty;
 
-    public GridAdapter(Context context, List<Segment> segmentList, int difficulty) {
+    public GridAdapter(Context context, List<Segment> segmentList) {
         mContext = context;
         mSegments = new ArrayList<>(segmentList);
-        mDifficulty = difficulty;
     }
 
     @Override
@@ -59,15 +58,14 @@ public class GridAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.title.setText("Part " + (position + 1));
+        holder.title.setText(current.getTitle());
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(mContext, LessonActivity.class);
-                i.putExtra("category", current.getCategory());
-                i.putExtra("difficulty", mDifficulty);
-                i.putExtra("to_slide", position);
-                mContext.startActivity(i);
+                Fragment frag = ((MainActivity) mContext).getSupportFragmentManager().findFragmentByTag("tabbed");
+                if (frag!=null) {
+                    ((TabbedFragment)frag).mViewPager.setCurrentItem(position+1);
+                }
             }
         });
 
@@ -81,4 +79,5 @@ public class GridAdapter extends BaseAdapter {
         public CardView cardView;
         public TextView title;
     }
+
 }
