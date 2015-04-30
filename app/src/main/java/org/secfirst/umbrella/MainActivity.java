@@ -194,7 +194,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else {
             setTitle(groupName);
-            fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedContentFragment(), "tabbed").addToBackStack(null).commit();
+            fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment()).addToBackStack(null).commit();
             titleSpinner.setVisibility(View.GONE);
         }
     }
