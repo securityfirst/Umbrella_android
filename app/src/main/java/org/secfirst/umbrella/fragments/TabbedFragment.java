@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -134,12 +135,27 @@ public class TabbedFragment extends Fragment {
 
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
-            List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
+            final List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
             if (segments.size() > 0) {
                 GridView gridView = (GridView) rootView.findViewById(R.id.grid_tiles);
                 GridAdapter gAdapter = new GridAdapter(getActivity(), segments);
                 gridView.setAdapter(gAdapter);
             }
+            TextView toChecklist = (TextView) rootView.findViewById(R.id.grid_title);
+            View checkListBox = rootView.findViewById(R.id.color_box);
+            toChecklist.setText("Checklist");
+            int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
+            checkListBox.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
+            CardView checklistCard = (CardView) rootView.findViewById(R.id.checklist_view);
+            checklistCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment frag = getActivity().getSupportFragmentManager().findFragmentByTag("tabbed");
+                    if (frag!=null) {
+                        ((TabbedFragment)frag).mViewPager.setCurrentItem(segments.size()+2);
+                    }
+                }
+            });
             return rootView;
         }
 
@@ -164,9 +180,14 @@ public class TabbedFragment extends Fragment {
             int segmentInt = getArguments() != null ? getArguments().getInt(ARG_SEGMENT_INDEX, 0) : 0;
             List<Segment> segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty));
             if (segments.size() > 0 && segments.size()>=segmentInt+1) {
-                String html = segments.get(segmentInt).getBody();
+                final String html = segments.get(segmentInt).getBody();
                 if (html != null) {
-                    content.loadDataWithBaseURL("file:///android_res/drawable/", "<style>img{width:100%}h1{color:#33b5e5}h2{color:#9ABE2E}</style>" + html, "text/html; charset=UTF-8", null, null);
+                    content.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            content.loadDataWithBaseURL("file:///android_res/drawable/", "<style>img{width:100%}h1{color:#33b5e5}h2{color:#9ABE2E}</style>" + html, "text/html", "UTF-8", "UTF-8");
+                        }
+                    }, 100);
                 }
             }
             return rootView;

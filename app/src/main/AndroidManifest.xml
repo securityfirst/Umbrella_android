@@ -80,10 +80,6 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.secfirst.umbrella" />
 
-        <activity
-            android:name=".LessonActivity"
-            android:label="@string/title_activity_lesson" >
-        </activity>
     </application>
 
 </manifest>
