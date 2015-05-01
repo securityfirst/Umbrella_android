@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.secfirst.umbrella.MainActivity;
@@ -76,9 +77,17 @@ public class Global extends com.orm.SugarApp {
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle("Set your password");
         alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n");
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
         final EditText pwInput = new EditText(activity);
         pwInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        alert.setView(pwInput);
+        pwInput.setHint("Password");
+        ll.addView(pwInput);
+        final EditText confirmInput = new EditText(activity);
+        confirmInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        confirmInput.setHint("Confirm");
+        ll.addView(confirmInput);
+        alert.setView(ll);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
@@ -97,7 +106,9 @@ public class Global extends com.orm.SugarApp {
             public void onClick(View v) {
                 String pw = pwInput.getText().toString();
                 String checkError = UmbrellaUtil.checkPasswordStrength(pw);
-                if (checkError.equals("")) {
+                if (!pw.equals(confirmInput.getText().toString())) {
+                    Toast.makeText(activity, "Passwords do no match.", Toast.LENGTH_LONG).show();
+                } else if (checkError.equals("")) {
                     savePassword(pw);
                     dialog.dismiss();
                     Toast.makeText(activity, "You have successfully set your password.", Toast.LENGTH_SHORT).show();
