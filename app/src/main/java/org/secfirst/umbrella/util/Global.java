@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.InputType;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -80,15 +81,7 @@ public class Global extends com.orm.SugarApp {
         alert.setView(pwInput);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String pw = pwInput.getText().toString();
-                String checkError = UmbrellaUtil.checkPasswordStrength(pw);
-                if (checkError.equals("")) {
-                    savePassword(pw);
-                    dialog.dismiss();
-                    Toast.makeText(activity, "You have successfully set your password.", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(activity, "You must choose a stronger password. " + checkError, Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
         alert.setCancelable(false);
@@ -97,7 +90,22 @@ public class Global extends com.orm.SugarApp {
                 dialog.cancel();
             }
         });
-        alert.show();
+        final AlertDialog dialog = alert.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pw = pwInput.getText().toString();
+                String checkError = UmbrellaUtil.checkPasswordStrength(pw);
+                if (checkError.equals("")) {
+                    savePassword(pw);
+                    dialog.dismiss();
+                    Toast.makeText(activity, "You have successfully set your password.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(activity, "You must choose a stronger password. " + checkError, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public void resetPassword(final Activity activity) {
