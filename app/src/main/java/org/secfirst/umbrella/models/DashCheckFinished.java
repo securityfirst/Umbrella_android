@@ -7,10 +7,17 @@ public class DashCheckFinished {
     private int total;
     private int checked;
     private String category;
+    private boolean noIcon, noPercent;
 
     public DashCheckFinished(String category, int difficulty) {
         this.category = category;
         this.difficulty = difficulty;
+    }
+
+    public DashCheckFinished(String category, int checked, int total) {
+        this.category = category;
+        this.checked = checked;
+        this.total = total;
     }
 
     public int getPercent() {
@@ -43,5 +50,21 @@ public class DashCheckFinished {
 
     public int getDifficulty() {
         return difficulty;
+    }
+
+    public boolean isNoIcon() {
+        return noIcon;
+    }
+
+    public void setNoIcon(boolean noIcon) {
+        this.noIcon = noIcon;
+    }
+
+    public boolean isNoPercent() {
+        return noPercent;
+    }
+
+    public void setNoPercent(boolean noPercent) {
+        this.noPercent = noPercent;
     }
 }
