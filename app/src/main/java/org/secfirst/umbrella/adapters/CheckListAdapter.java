@@ -82,7 +82,11 @@ public class CheckListAdapter extends BaseAdapter {
         holder.checkBox.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
 
         holder.checkView.setCardElevation(checkList.get(i).getValue()? 0 : 4);
-        holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor((checkList.get(i).getNoCheck() || checkList.get(i).getValue()) ? R.color.white : R.color.umbrella_yellow));
+        if (checkList.get(i).isDisabled()) {
+            holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(R.color.grey));
+        } else {
+            holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor((checkList.get(i).getNoCheck() || checkList.get(i).getValue()) ? R.color.white : R.color.umbrella_yellow));
+        }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +146,14 @@ public class CheckListAdapter extends BaseAdapter {
                             checkList.set(i, checkList.get(i));
                             CheckItem current = (CheckItem) getItem(i);
                             mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
+                        }
+                    });
+                    builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkList.get(i).delete();
+                            checkList.remove(i);
+                            notifyDataSetChanged();
                         }
                     });
                     builder.show();

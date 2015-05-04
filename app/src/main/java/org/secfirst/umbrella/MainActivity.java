@@ -131,8 +131,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             }
             if (childItem != null) {
-                setFragment(1, childItem.getTitle());
-                drawer.closeDrawer(Gravity.LEFT);
+                Category category = Category.findById(Category.class, childItem.getPosition());
+                if (category.hasDifficulty()) {
+                    setFragment(1, "");
+                } else {
+                    drawerItem = childItem.getPosition();
+                    setFragment(2, category.getCategory());
+                }
             }
         } else {
             setFragment(0, "My Security");
@@ -306,7 +311,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 String body = "";
                 List<CheckItem> items = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(childItem.getPosition()), String.valueOf(hasDifficulty.get(0).getSelected() + 1));
                 for (CheckItem checkItem : items) {
-                    body += "\n" + (checkItem.getValue() ? "☑" : "☐") + " " + checkItem.getTitle();
+                    body += "\n" + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + checkItem.getTitle();
                 }
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
                 if (intent.resolveActivity(getPackageManager()) != null) {

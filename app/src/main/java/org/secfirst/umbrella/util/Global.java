@@ -8,13 +8,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import org.secfirst.umbrella.MainActivity;
+import org.secfirst.umbrella.R;
 
 public class Global extends com.orm.SugarApp {
 
@@ -77,17 +77,10 @@ public class Global extends com.orm.SugarApp {
         AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle("Set your password");
         alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n");
-        LinearLayout ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        final EditText pwInput = new EditText(activity);
-        pwInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        pwInput.setHint("Password");
-        ll.addView(pwInput);
-        final EditText confirmInput = new EditText(activity);
-        confirmInput.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        confirmInput.setHint("Confirm");
-        ll.addView(confirmInput);
-        alert.setView(ll);
+        View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
+        final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
+        final EditText confirmInput = (EditText) view.findViewById(R.id.pwconfirm);
+        alert.setView(view);
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
