@@ -131,8 +131,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             }
             if (childItem != null) {
-                setFragment(1, childItem.getTitle());
-                drawer.closeDrawer(Gravity.LEFT);
+                Category category = Category.findById(Category.class, childItem.getPosition());
+                if (category.hasDifficulty()) {
+                    setFragment(1, "");
+                } else {
+                    drawerItem = childItem.getPosition();
+                    setFragment(2, category.getCategory());
+                }
             }
         } else {
             setFragment(0, "My Security");
