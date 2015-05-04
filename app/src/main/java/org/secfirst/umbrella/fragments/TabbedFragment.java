@@ -63,7 +63,7 @@ public class TabbedFragment extends Fragment {
         mSectionsPagerAdapter.difficulty = difficulty;
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? 1 : 0);
+        mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? mSectionsPagerAdapter.getCount() - 1 : 0);
         return v;
     }
 
