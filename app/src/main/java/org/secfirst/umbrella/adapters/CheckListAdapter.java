@@ -148,6 +148,14 @@ public class CheckListAdapter extends BaseAdapter {
                             mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
                         }
                     });
+                    builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkList.get(i).delete();
+                            checkList.remove(i);
+                            notifyDataSetChanged();
+                        }
+                    });
                     builder.show();
                 }
                 return false;
