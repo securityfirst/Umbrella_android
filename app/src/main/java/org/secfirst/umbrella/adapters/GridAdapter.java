@@ -51,7 +51,6 @@ public class GridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, null);
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.grid_title);
-            holder.box = convertView.findViewById(R.id.color_box);
             holder.cardView = (CardView) convertView.findViewById(R.id.card_view);
             convertView.setTag(holder);
         } else {
@@ -69,13 +68,12 @@ public class GridAdapter extends BaseAdapter {
             }
         });
 
-        holder.box.setBackgroundColor(mContext.getResources().getColor(colours[position%3]));
+        holder.title.setBackgroundColor(mContext.getResources().getColor(colours[position%3]));
 
         return convertView;
     }
 
     private static class ViewHolder {
-        public View box;
         public CardView cardView;
         public TextView title;
     }
