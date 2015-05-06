@@ -1,7 +1,9 @@
 package org.secfirst.umbrella.adapters;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.Gravity;
@@ -14,8 +16,10 @@ import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DashCheckFinished;
+import org.secfirst.umbrella.models.Favourite;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashCheckListAdapter extends BaseAdapter {
 
@@ -43,7 +47,7 @@ public class DashCheckListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         final DashCheckFinished current = checkItems.get(position);
 
@@ -64,6 +68,34 @@ public class DashCheckListAdapter extends BaseAdapter {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse("umbrella://checklist/" + current.getCategory().replace(' ', '-')));
                 mContext.startActivity(i);
+            }
+        });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!current.isFavourited()) {
+                    return false;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Select an action");
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Unfavourite", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        List<Favourite> favourites = Favourite.find(Favourite.class, "category = ? and difficulty = ?", String.valueOf(current.getCategory()), String.valueOf(current.getDifficulty()));
+                        favourites.clear();
+                        checkItems.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+                return true;
             }
         });
 

@@ -8,16 +8,19 @@ public class DashCheckFinished {
     private int checked;
     private String category;
     private boolean noIcon, noPercent;
+    private boolean favourited;
 
-    public DashCheckFinished(String category, int difficulty) {
+    public DashCheckFinished(String category, int difficulty, boolean favourited) {
         this.category = category;
         this.difficulty = difficulty;
+        this.favourited = favourited;
     }
 
-    public DashCheckFinished(String category, int checked, int total) {
+    public DashCheckFinished(String category, int checked, int total, boolean favourited) {
         this.category = category;
         this.checked = checked;
         this.total = total;
+        this.favourited = favourited;
     }
 
     public int getPercent() {
@@ -66,5 +69,13 @@ public class DashCheckFinished {
 
     public void setNoPercent(boolean noPercent) {
         this.noPercent = noPercent;
+    }
+
+    public boolean isFavourited() {
+        return favourited;
+    }
+
+    public void setFavourited(boolean favourited) {
+        this.favourited = favourited;
     }
 }
