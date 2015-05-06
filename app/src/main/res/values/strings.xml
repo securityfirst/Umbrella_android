@@ -36,5 +36,6 @@
     <string name="intermediate">Advanced</string>
     <string name="action_export_checklist">Export Checklist</string>
     <string name="title_activity_lesson">LessonActivity</string>
+    <string name="favourite">Favourite</string>
 
 </resources>

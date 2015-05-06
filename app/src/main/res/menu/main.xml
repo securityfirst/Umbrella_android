@@ -12,6 +12,12 @@
         android:title="@string/action_search">
     </item>
 
+    <item android:id="@+id/favourite"
+        android:title="@string/favourite"
+        android:orderInCategory="3"
+        android:icon="@drawable/abc_btn_rating_star_off_mtrl_alpha"
+        umbrella:showAsAction="ifRoom" />
+
     <item android:id="@+id/export_checklist"
         android:title="@string/action_export_checklist"
         android:orderInCategory="100"

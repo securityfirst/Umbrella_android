@@ -16,6 +16,7 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.models.Favourite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +66,12 @@ public class TabbedChecklistFragment extends Fragment {
 
     public ArrayList<DashCheckFinished> getChecklistProgress() {
         ArrayList<DashCheckFinished> returned = new ArrayList<>();
-        List<Difficulty> hasDifficulty = Select.from(Difficulty.class).list();
-        for (Difficulty difficulty : hasDifficulty) {
-            List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(difficulty.getCategory()), String.valueOf(difficulty.getSelected() + 1));
-            Category category = Category.findById(Category.class, difficulty.getCategory());
+        List<Favourite> favourites = Select.from(Favourite.class).list();
+        for (Favourite favourite : favourites) {
+            List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(favourite.getCategory()), String.valueOf(favourite.getDifficulty() + 1));
+            Category category = Category.findById(Category.class, favourite.getCategory());
             if (category!=null) {
-                DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected());
+                DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), favourite.getDifficulty(), true);
                 for (CheckItem checkItem : mCheckList) {
                     if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
                         if (checkItem.getValue()) {
@@ -80,14 +81,35 @@ public class TabbedChecklistFragment extends Fragment {
                         dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                     }
                 }
-                if (dashCheckFinished.getChecked()>0) returned.add(dashCheckFinished);
+                returned.add(dashCheckFinished);
             }
         }
-        DashCheckFinished totalDone = new DashCheckFinished("Total done", getTotalCheckListPercentage(returned), 100);
+        if (returned.size() == 0) {
+            List<Difficulty> hasDifficulty = Select.from(Difficulty.class).orderBy("created_at DESC").list();
+            for (Difficulty difficulty : hasDifficulty) {
+                List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(difficulty.getCategory()), String.valueOf(difficulty.getSelected() + 1));
+                Category category = Category.findById(Category.class, difficulty.getCategory());
+                if (category != null) {
+                    DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
+                    for (CheckItem checkItem : mCheckList) {
+                        if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
+                            if (checkItem.getValue()) {
+                                int val = dashCheckFinished.getChecked() + 1;
+                                dashCheckFinished.setChecked(val);
+                            }
+                            dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
+                        }
+                    }
+                    if (dashCheckFinished.getChecked() > 0) returned.add(dashCheckFinished);
+                    if (returned.size() > 4) break;
+                }
+            }
+        }
+        DashCheckFinished totalDone = new DashCheckFinished("Total done", getTotalCheckListPercentage(returned), 100, false);
         totalDone.setNoIcon(true);
         returned.add(0, totalDone);
         if (returned.size()<2) {
-            DashCheckFinished noItems = new DashCheckFinished("No check items started on yet", 0, 0);
+            DashCheckFinished noItems = new DashCheckFinished("No check items started on yet", 0, 0, false);
             noItems.setNoIcon(true);
             noItems.setNoPercent(true);
             returned.add(noItems);
