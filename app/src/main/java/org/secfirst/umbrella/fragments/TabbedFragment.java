@@ -143,10 +143,9 @@ public class TabbedFragment extends Fragment {
                 gridView.setAdapter(gAdapter);
             }
             TextView toChecklist = (TextView) rootView.findViewById(R.id.grid_title);
-            View checkListBox = rootView.findViewById(R.id.color_box);
             toChecklist.setText("Checklist");
             int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
-            checkListBox.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
+            toChecklist.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
             CardView checklistCard = (CardView) rootView.findViewById(R.id.checklist_view);
             checklistCard.setOnClickListener(new View.OnClickListener() {
                 @Override

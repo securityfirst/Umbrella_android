@@ -30,6 +30,7 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public long drawerItem;
     private Spinner titleSpinner;
     private DrawerChildItem childItem;
+    private int fragType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,8 +133,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             }
             if (childItem != null) {
-                setFragment(1, childItem.getTitle());
-                drawer.closeDrawer(Gravity.LEFT);
+                Category category = Category.findById(Category.class, childItem.getPosition());
+                if (category.hasDifficulty()) {
+                    setFragment(1, "");
+                } else {
+                    drawerItem = childItem.getPosition();
+                    setFragment(2, category.getCategory());
+                }
             }
         } else {
             setFragment(0, "My Security");
@@ -163,6 +170,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void setFragment(int fragType, String groupName) {
+        this.fragType = fragType;
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
@@ -197,6 +205,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment()).addToBackStack(null).commit();
             titleSpinner.setVisibility(View.GONE);
         }
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -270,6 +279,17 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
             itemExport.setVisible(hasDifficulty.size() > 0);
         }
+        MenuItem favouriteItem = menu.findItem(R.id.favourite);
+        if (fragType == 0 || fragType == 2) {
+            favouriteItem.setVisible(false);
+        } else if (fragType == 1 && childItem != null) {
+            List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+            favouriteItem.setVisible(hasDifficulty.size() > 0);
+            if (hasDifficulty.size() > 0) {
+                List<Favourite> favourites = Favourite.find(Favourite.class, "category = ? and difficulty = ?", String.valueOf(childItem.getPosition()), String.valueOf(hasDifficulty.get(0).getSelected()));
+                favouriteItem.setIcon(favourites.size() > 0 ? R.drawable.abc_btn_rating_star_on_mtrl_alpha : R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+            }
+        }
         return true;
     }
 
@@ -306,7 +326,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 String body = "";
                 List<CheckItem> items = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(childItem.getPosition()), String.valueOf(hasDifficulty.get(0).getSelected() + 1));
                 for (CheckItem checkItem : items) {
-                    body += "\n" + (checkItem.getValue() ? "☑" : "☐") + " " + checkItem.getTitle();
+                    body += "\n" + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + checkItem.getTitle();
                 }
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
                 if (intent.resolveActivity(getPackageManager()) != null) {
@@ -314,6 +334,19 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
                 return true;
             }
+        }
+        if (id == R.id.favourite) {
+            List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+            if (hasDifficulty.size() > 0) {
+                List<Favourite> favourites = Favourite.find(Favourite.class, "category = ? and difficulty = ?", String.valueOf(childItem.getPosition()), String.valueOf(hasDifficulty.get(0).getSelected()));
+                if (favourites.size() > 0) {
+                    favourites.clear();
+                } else {
+                    new Favourite(childItem.getPosition(), hasDifficulty.get(0).getSelected()).save();
+                }
+            }
+            invalidateOptionsMenu();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

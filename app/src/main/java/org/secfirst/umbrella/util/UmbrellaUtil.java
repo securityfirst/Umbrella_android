@@ -22,6 +22,7 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Relief.Data;
@@ -67,6 +68,7 @@ public class UmbrellaUtil {
         Category.deleteAll(Category.class);
         Segment.deleteAll(Segment.class);
         Difficulty.deleteAll(Difficulty.class);
+        Favourite.deleteAll(Favourite.class);
         for (Segment segment : InitialData.getSegmentList()) {
             segment.save();
         }

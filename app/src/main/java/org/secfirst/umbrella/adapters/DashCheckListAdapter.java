@@ -1,9 +1,12 @@
 package org.secfirst.umbrella.adapters;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +16,10 @@ import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DashCheckFinished;
+import org.secfirst.umbrella.models.Favourite;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashCheckListAdapter extends BaseAdapter {
 
@@ -42,13 +47,14 @@ public class DashCheckListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         final DashCheckFinished current = checkItems.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.dash_check_item, null);
             holder = new ViewHolder();
+            holder.checkHeader = (TextView) convertView.findViewById(R.id.check_header);
             holder.icon = (ImageView) convertView.findViewById(R.id.check_icon);
             holder.categoryName = (TextView) convertView.findViewById(R.id.check_category);
             holder.percent = (TextView) convertView.findViewById(R.id.check_percent);
@@ -64,10 +70,54 @@ public class DashCheckListAdapter extends BaseAdapter {
                 mContext.startActivity(i);
             }
         });
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!current.isFavourited()) {
+                    return false;
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Select an action");
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Unfavourite", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        List<Favourite> favourites = Favourite.find(Favourite.class, "category = ? and difficulty = ?", String.valueOf(current.getCategory()), String.valueOf(current.getDifficulty()));
+                        favourites.clear();
+                        checkItems.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+                return true;
+            }
+        });
+
+        if (position==0 || (position==1 && !current.isNoPercent())) {
+            holder.checkHeader.setVisibility(View.VISIBLE);
+            if (position==0) {
+                holder.checkHeader.setTextColor(mContext.getResources().getColor(R.color.umbrella_yellow));
+                holder.checkHeader.setText(mContext.getResources().getString(R.string.check_lists_total));
+            } else {
+                holder.checkHeader.setTextColor(mContext.getResources().getColor(R.color.umbrella_green));
+                holder.checkHeader.setText(mContext.getResources().getString(R.string.my_checklists));
+            }
+        } else {
+            holder.checkHeader.setVisibility(View.GONE);
+        }
+        holder.icon.setVisibility(current.isNoIcon() ? View.GONE : View.VISIBLE);
         if (current.getDifficulty() < 3) {
             holder.icon.setImageResource(new int[]{R.drawable.ic_beginner, R.drawable.ic_advance, R.drawable.ic_expert}[current.getDifficulty()]);
         }
         holder.categoryName.setText(current.getCategory());
+        holder.categoryName.setGravity(current.isNoPercent() ? Gravity.CENTER : Gravity.LEFT);
+        holder.percent.setVisibility(current.isNoPercent() ? View.GONE : View.VISIBLE);
         holder.percent.setText(String.valueOf(current.getPercent())+"%");
 
         return convertView;
@@ -76,6 +126,7 @@ public class DashCheckListAdapter extends BaseAdapter {
     private static class ViewHolder {
         public ImageView icon;
         public TextView categoryName;
+        public TextView checkHeader;
         public TextView percent;
     }
 
