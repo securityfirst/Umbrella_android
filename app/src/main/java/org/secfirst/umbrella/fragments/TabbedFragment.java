@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,7 @@ public class TabbedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-        mSectionsPagerAdapter.difficulty = difficulty;
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), difficulty);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? mSectionsPagerAdapter.getCount() - 1 : 0);
@@ -77,8 +77,9 @@ public class TabbedFragment extends Fragment {
         public int difficulty;
         private List<Segment> segments;
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        public SectionsPagerAdapter(FragmentManager fm, int difficulty) {
             super(fm);
+            this.difficulty = difficulty;
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             segments = Segment.find(Segment.class, "category = ? and difficulty = ?", String.valueOf(drawerItem), String.valueOf(difficulty+1));
         }
