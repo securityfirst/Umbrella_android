@@ -14,10 +14,92 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:background="@color/umbrella_purple"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/settings_list"
-        android:scrollbars="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/refresh_interval"
+                android:text="@string/refresh_interval_feeds"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <TextView
+                android:id="@+id/refresh_data"
+                android:text="@string/refresh_umbrella_data"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <AutoCompleteTextView
+                android:id="@+id/settings_autocomplete"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:singleLine="true"
+                android:hint="@string/set_location"
+                android:textColorHint="@color/white"
+                android:imeOptions="actionDone"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <TextView
+                android:id="@+id/feed_sources"
+                android:text="@string/feed_sources"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

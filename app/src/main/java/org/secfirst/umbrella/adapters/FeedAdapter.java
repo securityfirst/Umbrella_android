@@ -1,13 +1,15 @@
 package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.CardView;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.FeedItem;
@@ -16,11 +18,13 @@ import java.util.ArrayList;
 
 public class FeedAdapter extends BaseAdapter {
 
-    ArrayList<FeedItem> feedItems;
+    ArrayList<FeedItem> feedItems  = new ArrayList<>();
     Context mContext;
 
     public FeedAdapter(Context context, ArrayList<FeedItem> mItems) {
-        this.feedItems = mItems;
+        if (mItems!=null) {
+            this.feedItems = mItems;
+        }
         this.mContext = context;
     }
 
@@ -55,15 +59,28 @@ public class FeedAdapter extends BaseAdapter {
         }
 
         holder.title.setText(current.getTitle());
-        holder.body.setText(current.getUrl());
+        holder.body.setText(current.getBody());
+
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Link somewhere", Toast.LENGTH_SHORT).show();
+                if(Patterns.WEB_URL.matcher(current.getUrl()).matches()) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(current.getUrl()));
+                    mContext.startActivity(i);
+                }
             }
         });
         return convertView;
     }
+
+    public void updateData(ArrayList<FeedItem> updateItems) {
+        if (updateItems!=null) {
+            feedItems = updateItems;
+        }
+        notifyDataSetChanged();
+    }
+
 
     private static class ViewHolder {
         public TextView title;

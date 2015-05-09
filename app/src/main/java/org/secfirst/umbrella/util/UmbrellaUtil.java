@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,9 +16,17 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.apache.http.Header;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
@@ -25,10 +34,16 @@ import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.InitialData;
+import org.secfirst.umbrella.models.Registry;
+import org.secfirst.umbrella.models.Relief.Countries.RWCountries;
 import org.secfirst.umbrella.models.Relief.Data;
+import org.secfirst.umbrella.models.Relief.Response;
 import org.secfirst.umbrella.models.Segment;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -218,21 +233,97 @@ public class UmbrellaUtil {
         }
     }
 
-    public static int getDifficulty(long itemNum) {
-        List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(itemNum));
-        return (hasDifficulty.size()>0) ? hasDifficulty.get(0).getSelected() : 0;
+    public static boolean getFeeds(final Context context) {
+        final Global global = (Global) context.getApplicationContext();
+        List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
+        if (selCountry.size()>0) {
+            UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    Gson gson = new GsonBuilder().create();
+                    Type listType = new TypeToken<RWCountries>() {
+                    }.getType();
+                    RWCountries receivedSegments = gson.fromJson(response.toString(), listType);
+                    if (receivedSegments != null) {
+                        ArrayList<org.secfirst.umbrella.models.Relief.Countries.Data> results = receivedSegments.getData();
+                        if (results.size() > 0) {
+                            getReports(results.get(0).getId(), context, global);
+                        }
+                    }
+                }
+            });
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public static ArrayList<FeedItem> parseReliefWeb(List<Data> dataList) {
-        ArrayList<FeedItem> items = new ArrayList<>();
-        for (Data data : dataList) {
-            Document document = Jsoup.parse(data.getFields().getDescriptionhtml());
-            Element ul = document.select("ul").get(0);
-            for(Element li : ul.select("li")) {
-                items.add(new FeedItem(li.text(), "", li.select("a").get(0).attr("href")));
+    public static void getReports(String countryId, final Context context, final Global global) {
+        UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/" + countryId, null, context, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<Response>() {
+                }.getType();
+                Response receivedResponse = gson.fromJson(response.toString(), listType);
+                if (receivedResponse != null) {
+                    List<org.secfirst.umbrella.models.Relief.Data> dataList = Arrays.asList(receivedResponse.getData());
+                    for (Data data : dataList) {
+                        if (data.getFields().getDescriptionhtml()!=null) {
+                            Document document = Jsoup.parse(data.getFields().getDescriptionhtml());
+                            Element ul = document.select("ul").get(0);
+                            global.setFeedItems(new ArrayList<FeedItem>());
+                            for(Element li : ul.select("li")) {
+                                FeedItem toAdd = new FeedItem(li.text(), "Loading...", li.select("a").get(0).attr("href"));
+                                global.getFeedItems().add(toAdd);
+                                new GetRWBody(global.getFeedItems().size()-1, toAdd.getUrl(), global).execute();
+                            }
+                        }
+                    }
+                }
             }
+        });
+    }
+
+    private static class GetRWBody extends AsyncTask<String, Void, String> {
+        int index;
+        String url;
+        Global global;
+
+        GetRWBody(int index, String url, Global global) {
+            this.index = index;
+            this.url = url;
+            this.global = global;
         }
-        return items;
+
+        @Override
+        protected String doInBackground(String... params) {
+            String body ="";
+            Document doc;
+            try {
+                doc = Jsoup.connect(url).get();
+                Elements forBody = doc.select("div.body.field");
+                if (!forBody.isEmpty()) {
+                    global.getFeedItems().get(index).setBody(forBody.get(0).text());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return body;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            global.getFeedItems().get(index).setBody("");
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+        }
     }
 
 }

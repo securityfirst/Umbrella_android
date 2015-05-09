@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,9 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.FeedItem;
+
+import java.util.ArrayList;
 
 public class Global extends com.orm.SugarApp {
 
@@ -22,6 +26,8 @@ public class Global extends com.orm.SugarApp {
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn;
     private String _password = "";
+    private ArrayList<FeedItem> feedItems;
+    private long feeditemsRefreshed;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -54,6 +60,14 @@ public class Global extends com.orm.SugarApp {
     public boolean getTermsAccepted() {
         _termsAccepted = prefs.getBoolean("termsAccepted", false);
         return _termsAccepted;
+    }
+
+    public ArrayList<FeedItem> getFeedItems() {
+        return feedItems;
+    }
+
+    public void setFeedItems(ArrayList<FeedItem> feedItems) {
+        this.feedItems = feedItems;
     }
 
     public boolean checkPassword(String password) {

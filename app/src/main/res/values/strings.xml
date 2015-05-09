@@ -37,5 +37,10 @@
     <string name="action_export_checklist">Export Checklist</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
+    <string name="refresh_interval_feeds">Refresh interval for feeds</string>
+    <string name="refresh_umbrella_data">Refresh from the server</string>
+    <string name="set_location">Set your location</string>
+    <string name="feed_sources">Feed sources</string>
+    <string name="no_feed_updates">There was no news updates for your chosen country</string>
 
 </resources>
