@@ -62,12 +62,15 @@ public class DashCheckListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("umbrella://checklist/" + current.getCategory().replace(' ', '-')));
-                mContext.startActivity(i);
+                if (!current.isNoIcon()) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("umbrella://checklist/" + current.getCategory().replace(' ', '-')));
+                    mContext.startActivity(i);
+                }
             }
         });
 
