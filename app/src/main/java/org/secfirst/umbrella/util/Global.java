@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +15,7 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.models.FeedItem;
 
 import java.util.ArrayList;
@@ -37,6 +37,9 @@ public class Global extends com.orm.SugarApp {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
+        Intent i = new Intent(getApplicationContext(), RefreshService.class);
+        i.putExtra("refresh_feed", UmbrellaUtil.getRefreshValue());
+        startService(i);
     }
 
     public boolean isLoggedIn() {

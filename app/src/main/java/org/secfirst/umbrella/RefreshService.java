@@ -8,6 +8,7 @@ import android.os.IBinder;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class RefreshService extends Service
 {
@@ -25,10 +26,13 @@ public class RefreshService extends Service
     {
         feedTimer = new Timer();
         logoutTimer = new Timer();
-        setFeedRefreshTask();
+        refreshFeed = setFeedRefreshTask();
         setLogoutTimerTask();
-        logoutTimer.schedule(logoutTask, 1800000, 1800000);
-        feedTimer.schedule(refreshFeed, 1800000, 1800000);
+        logoutTimer.schedule(logoutTask, TimeUnit.MINUTES.toMillis(30), TimeUnit.MINUTES.toMillis(30));
+        int refreshFeedValue = intent.getIntExtra("refresh_feed", 0);
+        if (refreshFeedValue>0) {
+            feedTimer.schedule(refreshFeed, 1800000, 1800000);
+        }
         return START_STICKY;
     }
 
@@ -44,8 +48,8 @@ public class RefreshService extends Service
         }
     }
 
-    public void setFeedRefreshTask() {
-        refreshFeed = new TimerTask() {
+    public TimerTask setFeedRefreshTask() {
+        return new TimerTask() {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
@@ -77,8 +81,11 @@ public class RefreshService extends Service
 
     public void setRefresh(int interval) {
         refreshFeed.cancel();
-        receiver.callLogout(RefreshService.this);
-        feedTimer = new Timer();
-        feedTimer.schedule(refreshFeed, interval, interval);
+        feedTimer.cancel();
+        if (interval>0) {
+            feedTimer = new Timer();
+            refreshFeed = setFeedRefreshTask();
+            feedTimer.schedule(refreshFeed, interval, interval);
+        }
     }
 }

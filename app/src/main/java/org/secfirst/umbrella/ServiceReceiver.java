@@ -23,8 +23,5 @@ public class ServiceReceiver extends BroadcastReceiver
     public void callLogout(Context context) {
         Global global = (Global) context.getApplicationContext();
         global.setLoggedIn(false);
-        Intent i = new Intent(context, LoginActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
     }
 }

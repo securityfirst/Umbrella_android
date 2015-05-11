@@ -20,8 +20,6 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = new Intent(BaseActivity.this, RefreshService.class);
-        startService(i);
         global = (Global) getApplicationContext();
         setContentView(getLayoutResource());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

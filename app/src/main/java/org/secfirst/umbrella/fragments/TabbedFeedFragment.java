@@ -80,7 +80,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
 
     public void refreshFeed() {
         boolean isCountrySet = getFeeds(getActivity());
-        mSwipeRefreshLayout.setRefreshing(false);
         if (isCountrySet) {
             ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
             feedAdapter.updateData(items);
@@ -92,6 +91,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 feedListView.setVisibility(View.GONE);
             }
         } else {
+            mSwipeRefreshLayout.setRefreshing(false);
             Toast.makeText(getActivity(), "No location set, please do so in the settings you will find in the top menu", Toast.LENGTH_LONG).show();
             startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
@@ -156,6 +156,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                     List<org.secfirst.umbrella.models.Relief.Data> dataList = Arrays.asList(receivedResponse.getData());
                     parseReliefWeb(dataList);
                     ((BaseActivity) context).getGlobal().setFeedItems(items);
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });

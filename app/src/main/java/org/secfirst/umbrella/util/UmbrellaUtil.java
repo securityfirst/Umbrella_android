@@ -44,7 +44,10 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public class UmbrellaUtil {
@@ -120,6 +123,9 @@ public class UmbrellaUtil {
                 category.save();
             }
         }
+
+        Registry selRefresh = new Registry("refresh_value", String.valueOf(TimeUnit.MINUTES.toMillis(30)));
+        selRefresh.save();
     }
 
     public static void syncSegments(ArrayList<Segment> segments) {
@@ -323,6 +329,42 @@ public class UmbrellaUtil {
 
         @Override
         protected void onPostExecute(String result) {
+        }
+    }
+
+    public static HashMap<String, Integer> getRefreshValues() {
+        LinkedHashMap<String, Integer> refreshInterval =new LinkedHashMap<>();
+        refreshInterval.put("30 min", (int) TimeUnit.MINUTES.toMillis(30));
+        refreshInterval.put("1 hour",  (int) TimeUnit.HOURS.toMillis(1));
+        refreshInterval.put("2 hours", (int) TimeUnit.HOURS.toMillis(2));
+        refreshInterval.put("4 hours", (int) TimeUnit.HOURS.toMillis(4));
+        refreshInterval.put("6 hours", (int) TimeUnit.HOURS.toMillis(6));
+        refreshInterval.put("12 hours", (int) TimeUnit.HOURS.toMillis(12));
+        refreshInterval.put("24 hours", (int) TimeUnit.HOURS.toMillis(24));
+        refreshInterval.put("Manually", 0);
+        return refreshInterval;
+    }
+
+    public static int getRefreshValue() {
+        int retInterval = 0;
+        List<Registry> selInterval = Registry.find(Registry.class, "name = ?", "refresh_interval");
+        if (selInterval.size() > 0) {
+            try {
+                retInterval = Integer.parseInt(selInterval.get(0).getValue());
+            } catch(NumberFormatException nfe) {
+                nfe.printStackTrace();
+            }
+        }
+        return retInterval;
+    }
+
+    public static void setRefreshValue(int refreshValue) {
+        List<Registry> selInterval = Registry.find(Registry.class, "name = ?", "refresh_interval");
+        if (selInterval.size() > 0) {
+            selInterval.get(0).setValue(String.valueOf(refreshValue));
+            selInterval.get(0).save();
+        } else {
+             new Registry("refresh_interval", String.valueOf(refreshValue)).save();
         }
     }
 

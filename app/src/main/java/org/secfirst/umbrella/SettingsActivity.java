@@ -36,13 +36,13 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class SettingsActivity extends BaseActivity {
     private ProgressDialog mProgress;
     private static int syncDone;
-    private TextView refreshData, refreshInterval, feedSources;
     private AutoCompleteTextView mAutocompleteLocation;
     private ArrayList<Address> mAddressList;
     private Address mAddress;
@@ -51,23 +51,31 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refreshData = (TextView) findViewById(R.id.refresh_data);
-        refreshInterval = (TextView) findViewById(R.id.refresh_interval);
-        feedSources = (TextView) findViewById(R.id.feed_sources);
+        TextView refreshData = (TextView) findViewById(R.id.refresh_data);
+        TextView refreshInterval = (TextView) findViewById(R.id.refresh_interval);
+        TextView feedSources = (TextView) findViewById(R.id.feed_sources);
         mAutocompleteLocation = (AutoCompleteTextView) findViewById(R.id.settings_autocomplete);
+        refreshData.setVisibility(View.GONE); // enable when backend ready
         refreshData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.i("syncing", "now");
-//                syncApi();
+                if (global.hasPasswordSet()) {
+                    syncApi();
+                } else {
+                    global.setPassword(SettingsActivity.this);
+                }
             }
         });
-        refreshData.setVisibility(View.GONE);
 
+        refreshInterval.setVisibility(!global.isLoggedIn() ? View.GONE : View.VISIBLE);
         refreshInterval.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showRefresh();
+                if (global.hasPasswordSet()) {
+                    showRefresh();
+                } else {
+                    global.setPassword(SettingsActivity.this);
+                }
             }
         });
         feedSources.setOnClickListener(new View.OnClickListener() {
@@ -78,33 +86,45 @@ public class SettingsActivity extends BaseActivity {
         });
         mAutocompleteLocation.setHint("Set location");
         mAutocompleteLocation.setAdapter(new GeoCodingAutoCompleteAdapter(SettingsActivity.this, R.layout.autocomplete_list_item));
+        mAutocompleteLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (global.hasPasswordSet()) {
+                } else {
+                    global.setPassword(SettingsActivity.this);
+
+                }
+            }
+        });
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("location", "select");
-                UmbrellaUtil.hideSoftKeyboard(SettingsActivity.this);
-                if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
-                    mAddress = mAddressList.get(position - 1);
-                    Log.i("address selected", mAddress.toString());
-                    String chosenAddress = mAutocompleteLocation.getText().toString();
-                    mAutocompleteLocation.setText(chosenAddress);
-                    List<Registry> selLoc = Registry.find(Registry.class, "name = ?", "location");
-                    if (selLoc.size() > 0) {
-                        mLocation = selLoc.get(0);
-                        mLocation.setValue(chosenAddress);
+                if (global.hasPasswordSet()) {
+                    UmbrellaUtil.hideSoftKeyboard(SettingsActivity.this);
+                    if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
+                        mAddress = mAddressList.get(position - 1);
+                        String chosenAddress = mAutocompleteLocation.getText().toString();
+                        mAutocompleteLocation.setText(chosenAddress);
+                        List<Registry> selLoc = Registry.find(Registry.class, "name = ?", "location");
+                        if (selLoc.size() > 0) {
+                            mLocation = selLoc.get(0);
+                            mLocation.setValue(chosenAddress);
+                        } else {
+                            mLocation = new Registry("location", chosenAddress);
+                        }
+                        List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
+                        if (selCountry.size() > 0) {
+                            mCountry = selCountry.get(0);
+                            mLocation.setValue(mAddress.getCountryName());
+                        } else {
+                            mCountry = new Registry("country", mAddress.getCountryName());
+                        }
+                        mCountry.save();
                     } else {
-                        mLocation = new Registry("location", chosenAddress);
+                        mAddress = null;
                     }
-                    List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
-                    if (selCountry.size() > 0) {
-                        mCountry = selCountry.get(0);
-                        mLocation.setValue(mAddress.getCountryName());
-                    } else {
-                        mCountry = new Registry("country", mAddress.getCountryName());
-                    }
-                    mCountry.save();
                 } else {
-                    mAddress = null;
+                    global.setPassword(SettingsActivity.this);
                 }
             }
         });
@@ -124,17 +144,21 @@ public class SettingsActivity extends BaseActivity {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(
                 SettingsActivity.this);
         builderSingle.setTitle("Choose refresh interval:");
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 SettingsActivity.this,
                 android.R.layout.select_dialog_singlechoice);
-        arrayAdapter.add("30 min");
-        arrayAdapter.add("1 hour");
-        arrayAdapter.add("2 hours");
-        arrayAdapter.add("4 hour");
-        arrayAdapter.add("6 hours");
-        arrayAdapter.add("12 hours");
-        arrayAdapter.add("24 hours");
-        arrayAdapter.add("Manually");
+        int currentRefresh = UmbrellaUtil.getRefreshValue();
+        int selectedIndex = 0;
+        int i = 0;
+        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues();
+        for (Object key : refreshValues.keySet()) {
+            if (refreshValues.get(key).equals(currentRefresh)) {
+                selectedIndex = i;
+
+            }
+            arrayAdapter.add((String) key);
+            i++;
+        }
         builderSingle.setNegativeButton("cancel",
                 new DialogInterface.OnClickListener() {
 
@@ -144,12 +168,18 @@ public class SettingsActivity extends BaseActivity {
                     }
                 });
 
-        builderSingle.setAdapter(arrayAdapter,
+        builderSingle.setSingleChoiceItems(arrayAdapter, selectedIndex,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String strName = arrayAdapter.getItem(which);
-                        if (mBounded) mService.setRefresh(10000);
+                        String chosen = arrayAdapter.getItem(which);
+                        for (Object key : refreshValues.keySet()) {
+                            Integer value = refreshValues.get(key);
+                            if (key.equals(chosen)) {
+                                if (mBounded) mService.setRefresh(value);
+                                dialog.dismiss();
+                            }
+                        }
                     }
                 });
         builderSingle.show();
