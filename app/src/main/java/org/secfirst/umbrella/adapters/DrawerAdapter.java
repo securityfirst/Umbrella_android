@@ -113,7 +113,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition).getCategory());
+                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition).getCategory(), false);
                 }
             });
         }
