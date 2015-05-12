@@ -177,6 +177,7 @@ public class SettingsActivity extends BaseActivity {
                             Integer value = refreshValues.get(key);
                             if (key.equals(chosen)) {
                                 if (mBounded) mService.setRefresh(value);
+                                UmbrellaUtil.setRefreshValue(value);
                                 dialog.dismiss();
                             }
                         }
