@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -83,6 +82,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         if (isCountrySet) {
             ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
             feedAdapter.updateData(items);
+            noFeedItems.setText(R.string.no_feed_updates);
             if (items!=null) {
                 noFeedItems.setVisibility(items.size()>0?View.GONE:View.VISIBLE);
                 feedListView.setVisibility(items.size() > 0 ? View.VISIBLE : View.GONE);
@@ -91,8 +91,9 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 feedListView.setVisibility(View.GONE);
             }
         } else {
+            noFeedItems.setVisibility(View.VISIBLE);
+            noFeedItems.setText("Please set your location in the settings.");
             mSwipeRefreshLayout.setRefreshing(false);
-            Toast.makeText(getActivity(), "No location set, please do so in the settings you will find in the top menu", Toast.LENGTH_LONG).show();
             startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
     }

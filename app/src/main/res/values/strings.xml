@@ -41,6 +41,6 @@
     <string name="refresh_umbrella_data">Refresh from the server</string>
     <string name="set_location">Set your location</string>
     <string name="feed_sources">Feed sources</string>
-    <string name="no_feed_updates">There was no news updates for your chosen country</string>
+    <string name="no_feed_updates">There were no news updates for your chosen country, pull to refresh.</string>
 
 </resources>
