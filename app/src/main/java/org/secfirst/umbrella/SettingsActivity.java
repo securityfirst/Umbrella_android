@@ -189,17 +189,28 @@ public class SettingsActivity extends BaseActivity {
     public void showFeedSources() {
         final CharSequence[] items = {" ReliefWeb "," UN "," FCO "," CDC "};
         final ArrayList<Integer> selectedItems = new ArrayList<Integer>();
-
+        List<Registry> selections = Registry.find(Registry.class, "name = ?", "feed_sources");
+        boolean[] currentSelections = new boolean[items.length];
+        for (int i = 0; i < items.length; i++) {
+            currentSelections[i] = false;
+            for (Registry reg : selections) {
+                if (reg.getValue().equals(String.valueOf(i))) {
+                    currentSelections[i] = true;
+                    selectedItems.add(i);
+                    break;
+                }
+            }
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select The Feed Sources");
-        builder.setMultiChoiceItems(items, null,
+        builder.setMultiChoiceItems(items, currentSelections,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int indexSelected,
                                         boolean isChecked) {
                         if (isChecked) {
                             selectedItems.add(indexSelected);
-                        } else if (selectedItems.contains(indexSelected)) {
+                        } else {
                             selectedItems.remove(Integer.valueOf(indexSelected));
                         }
                     }
@@ -207,8 +218,14 @@ public class SettingsActivity extends BaseActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //save selected items
-                        Toast.makeText(SettingsActivity.this, "Save sources", Toast.LENGTH_SHORT).show();
+                        List<Registry> selections = Registry.find(Registry.class, "name = ?", "feed_sources");
+                        for (Registry selection : selections) {
+                            selection.delete();
+                        }
+                        for (Integer item : selectedItems) {
+                            new Registry("feed_sources", String.valueOf(item)).save();
+                        }
+                        Toast.makeText(SettingsActivity.this, "Saved sources", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
