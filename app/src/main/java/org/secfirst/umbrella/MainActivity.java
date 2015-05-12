@@ -124,10 +124,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         };
 
         drawer.setDrawerListener(actionBarDrawerToggle);
-        if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getLastPathSegment() != null) {
+        if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
             for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems()) {
                 for (DrawerChildItem childItem : groupItem) {
-                    if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getLastPathSegment().replace('-', ' '))) {
+                    if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' '))) {
                         this.childItem = childItem;
                     }
                 }
@@ -180,6 +180,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             titleSpinner.setVisibility(View.GONE);
         } else if (fragType == 1) {
             List<Difficulty> hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
+            if (hasDifficulty.size() > 0 && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+                hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
+                hasDifficulty.get(0).save();
+            } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+                new Difficulty(childItem.getPosition(), Integer.valueOf(getIntent().getData().getPathSegments().get(1))).save();
+            }
+            hasDifficulty = Difficulty.find(Difficulty.class, "category = ?", String.valueOf(childItem.getPosition()));
             drawerItem = childItem.getPosition();
             setNavItems(childItem.getTitle());
             if (hasDifficulty.size() > 0) {
