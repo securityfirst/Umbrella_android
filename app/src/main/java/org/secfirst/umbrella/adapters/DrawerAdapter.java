@@ -59,7 +59,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        holder.childIcon.setImageBitmap(null);
         if (childImages.length > groupPosition && childImages[groupPosition].length > childPosition) {
             holder.childIcon.setImageResource(childImages[groupPosition][childPosition]);
         }

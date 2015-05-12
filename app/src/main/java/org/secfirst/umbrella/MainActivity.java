@@ -340,7 +340,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             if (hasDifficulty.size() > 0) {
                 List<Favourite> favourites = Favourite.find(Favourite.class, "category = ? and difficulty = ?", String.valueOf(childItem.getPosition()), String.valueOf(hasDifficulty.get(0).getSelected()));
                 if (favourites.size() > 0) {
-                    favourites.clear();
+                    for (Favourite favourite : favourites) {
+                        favourite.delete();
+                    }
                 } else {
                     new Favourite(childItem.getPosition(), hasDifficulty.get(0).getSelected()).save();
                 }
