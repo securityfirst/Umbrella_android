@@ -225,7 +225,6 @@ public class SettingsActivity extends BaseActivity {
                         for (Integer item : selectedItems) {
                             new Registry("feed_sources", String.valueOf(item)).save();
                         }
-                        Toast.makeText(SettingsActivity.this, "Saved sources", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 })
