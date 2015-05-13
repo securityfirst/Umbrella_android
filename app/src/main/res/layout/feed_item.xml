@@ -8,7 +8,6 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:layout_width="fill_parent"
-        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         card_view:cardCornerRadius="2dp">
 

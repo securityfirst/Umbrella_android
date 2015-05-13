@@ -11,6 +11,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -69,6 +71,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         header.setTextColor(getResources().getColor(R.color.white));
         header.setGravity(Gravity.CENTER_HORIZONTAL);
         feedListView.addHeaderView(header);
+        LinearLayout footer = new LinearLayout(getActivity());
+        footer.setOrientation(LinearLayout.HORIZONTAL);
+        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 50);
+        footer.setLayoutParams(lp);
+        feedListView.addFooterView(footer);
         feedListView.setAdapter(feedAdapter);
         feedListView.setDividerHeight(10);
         getFeeds(getActivity());
