@@ -117,7 +117,7 @@ public class Global extends com.orm.SugarApp {
                 String pw = pwInput.getText().toString();
                 String checkError = UmbrellaUtil.checkPasswordStrength(pw);
                 if (!pw.equals(confirmInput.getText().toString())) {
-                    Toast.makeText(activity, "Passwords do no match.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, "Passwords do not match.", Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
                     savePassword(pw);
                     dialog.dismiss();

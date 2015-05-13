@@ -59,7 +59,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
+        holder.childIcon.setImageBitmap(null);
         if (childImages.length > groupPosition && childImages[groupPosition].length > childPosition) {
             holder.childIcon.setImageResource(childImages[groupPosition][childPosition]);
         }
@@ -113,7 +113,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition).getCategory());
+                    ((MainActivity) mContext).setFragment(0, groupItem.get(groupPosition).getCategory(), false);
                 }
             });
         }
