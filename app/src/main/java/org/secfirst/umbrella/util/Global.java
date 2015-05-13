@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -356,7 +355,6 @@ public class Global extends Application {
         int retInterval = 0;
         try {
             List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
-            Log.i("sel interval1", String.valueOf(selInterval));
             if (selInterval.size() > 0) {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
@@ -367,15 +365,6 @@ public class Global extends Application {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        try {
-            List<Registry> allReg = getDaoRegistry().queryForAll();
-            for (Registry registry : allReg) {
-                Log.d("reg", registry.toString());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         return retInterval;
     }
 

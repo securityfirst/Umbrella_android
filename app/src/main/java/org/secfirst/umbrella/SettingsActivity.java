@@ -8,7 +8,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -286,7 +285,6 @@ public class SettingsActivity extends BaseActivity {
                 ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
                 if (receivedSegments!=null && receivedSegments.size() > 0) {
                     global.syncSegments(receivedSegments);
-                    Log.i("segments", "synced");
                 }
                 checkDone();
             }
@@ -302,7 +300,6 @@ public class SettingsActivity extends BaseActivity {
                 ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems!=null && receivedItems.size() > 0) {
                     global.syncCheckLists(receivedItems);
-                    Log.i("check items", "synced");
                 }
                 checkDone();
             }
@@ -318,7 +315,6 @@ public class SettingsActivity extends BaseActivity {
                 ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems!=null && receivedItems.size() > 0) {
                     global.syncCategories(receivedItems);
-                    Log.i("categories", "synced");
                 }
                 checkDone();
             }

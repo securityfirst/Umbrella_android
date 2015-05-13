@@ -10,7 +10,6 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -306,7 +305,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Log.i("submit", s);
                 if (s.length() > 2) {
                     Intent i = new Intent(MainActivity.this, SearchActivity.class);
                     i.setAction(Intent.ACTION_SEARCH);
