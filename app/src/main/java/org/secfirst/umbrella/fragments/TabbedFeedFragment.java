@@ -7,9 +7,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,9 +41,13 @@ import org.secfirst.umbrella.util.UmbrellaRestClient;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+
 import java.sql.SQLException;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -48,6 +55,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     FeedAdapter feedAdapter;
     TextView noFeedItems;
     ListView feedListView;
+    TextView header;
     private ArrayList<FeedItem> items = new ArrayList<>();
 
     public TabbedFeedFragment() {
@@ -63,6 +71,15 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         feedListView = (ListView) rootView.findViewById(R.id.feed_list);
         noFeedItems = (TextView) rootView.findViewById(R.id.no_feed_items);
         feedAdapter = new FeedAdapter(getActivity(), items);
+        header = new TextView(getActivity());
+        header.setTextColor(getResources().getColor(R.color.white));
+        header.setGravity(Gravity.CENTER_HORIZONTAL);
+        feedListView.addHeaderView(header);
+        LinearLayout footer = new LinearLayout(getActivity());
+        footer.setOrientation(LinearLayout.HORIZONTAL);
+        AbsListView.LayoutParams lp = new AbsListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 50);
+        footer.setLayoutParams(lp);
+        feedListView.addFooterView(footer);
         feedListView.setAdapter(feedAdapter);
         feedListView.setDividerHeight(10);
         getFeeds(getActivity());
@@ -80,12 +97,16 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void refreshFeed() {
+        ((BaseActivity) getActivity()).getGlobal().setFeeditemsRefreshed(new Date().getTime());
+        header.setText("");
         boolean isCountrySet = getFeeds(getActivity());
         if (isCountrySet) {
             ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
             feedAdapter.updateData(items);
             noFeedItems.setText(R.string.no_feed_updates);
             if (items!=null) {
+                if (items.size() > 0)
+                    header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
                 noFeedItems.setVisibility(items.size()>0?View.GONE:View.VISIBLE);
                 feedListView.setVisibility(items.size() > 0 ? View.VISIBLE : View.GONE);
             } else {

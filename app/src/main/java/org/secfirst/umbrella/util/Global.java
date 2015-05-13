@@ -392,4 +392,13 @@ public class Global extends Application {
             e.printStackTrace();
         }
     }
+
+
+    public long getFeeditemsRefreshed() {
+        return feeditemsRefreshed;
+    }
+
+    public void setFeeditemsRefreshed(long feeditemsRefreshed) {
+        this.feeditemsRefreshed = feeditemsRefreshed;
+    }
 }
