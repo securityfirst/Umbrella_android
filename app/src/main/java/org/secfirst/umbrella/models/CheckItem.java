@@ -1,18 +1,32 @@
 package org.secfirst.umbrella.models;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.orm.SugarRecord;
 
-public class CheckItem extends SugarRecord<CheckItem> {
+import java.io.Serializable;
 
+public class CheckItem extends SugarRecord<CheckItem> implements Serializable {
+    @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
+    private int id;
+    @DatabaseField
     private int mid;
+    @DatabaseField
     private String title;
+    @DatabaseField
     private String text;
+    @DatabaseField
     private int value;
+    @DatabaseField
     private long parent;
+    @DatabaseField
     private int category;
+    @DatabaseField
     private int difficulty;
+    @DatabaseField
     private int custom;
+    @DatabaseField
     private int disabled;
+    @DatabaseField
     private int noCheck;
 
     public CheckItem(){}
@@ -142,5 +156,20 @@ public class CheckItem extends SugarRecord<CheckItem> {
 
     public void setNoCheck(boolean noCheck) {
         this.noCheck = noCheck ? 1 : 0;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Segment{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(",title='").append(title).append('\'');
+        sb.append(", text='").append(text).append('\'');
+        sb.append(", value='").append(value).append('\'');
+        sb.append(", parent='").append(parent).append('\'');
+        sb.append(", difficulty='").append(difficulty).append('\'');
+        sb.append(", category='").append(category).append('\'');
+        sb.append(", nocheck='").append(noCheck).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

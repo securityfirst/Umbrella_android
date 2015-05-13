@@ -50,9 +50,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        global.initializeSQLCipher();
+//        ArrayList<Segment> segments = InitialData.getSegmentList();
+//        for (Segment segment : segments) {
+//            Log.d("SQLCipher", "saving segment: " + segment);
+//            try {
+//                global.getDaoSegment().create(segment);
+//            } catch (SQLException e) {
+//                Log.e("SQLCipher", "can't save segment: " + segment);
+//            }
+//            Log.d("SQLCipher", "saved segment: " + segment);
+//        }
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
-        UmbrellaUtil.migrateData();
+        UmbrellaUtil.migrateData(global);
         if (global.hasPasswordSet() && !global.isLoggedIn()) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (!global.getTermsAccepted()) {
@@ -391,4 +403,5 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         drawerItem = category.getId();
         setFragment(2, category.getCategory(), false);
     }
+
 }

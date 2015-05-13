@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.dao.Dao;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -42,6 +43,7 @@ import org.secfirst.umbrella.models.Segment;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,34 +100,54 @@ public class UmbrellaUtil {
         }
     }
 
-    public static void migrateData() {
+    public static void migrateData(Global global) {
 
         ArrayList<Segment> segments = InitialData.getSegmentList();
-        List<Segment> fromDB = Segment.listAll(Segment.class);
-        if (fromDB.size() == 0) {
-            for (Segment segment : segments) {
-                segment.save();
+        Dao<Segment, String> segmentDao = global.getDaoSegment();
+
+        try {
+            List<Segment> fromDB = segmentDao.queryForAll();
+            if (fromDB.size() == 0) {
+                for (Segment segment : segments) {
+                    segmentDao.create(segment);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
-        if (listsFromDB.size() == 0) {
-            for (CheckItem checkItem : checkList) {
-                checkItem.save();
+        Dao<CheckItem, String> checkItemDao = global.getDaoCheckItem();
+        try {
+            List<CheckItem> listsFromDB = checkItemDao.queryForAll();
+            if (listsFromDB.size() == 0) {
+                for (CheckItem checkItem : checkList) {
+                    checkItemDao.create(checkItem);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         ArrayList<Category> categoryList = InitialData.getCategoryList();
-        List<Category> catFromDB = Category.listAll(Category.class);
-        if (catFromDB.size() == 0) {
-            for (Category category : categoryList) {
-                category.save();
+        Dao<Category, String> categoryDao = global.getDaoCategory();
+        try {
+            List<Category> catFromDB = categoryDao.queryForAll();
+            if (catFromDB.size() == 0) {
+                for (Category category : categoryList) {
+                    categoryDao.create(category);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         Registry selRefresh = new Registry("refresh_value", String.valueOf(TimeUnit.MINUTES.toMillis(30)));
-        selRefresh.save();
+        try {
+            global.getDaoRegistry().create(selRefresh);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void syncSegments(ArrayList<Segment> segments) {

@@ -13,11 +13,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.j256.ormlite.dao.Dao;
+
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
+import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.Registry;
+import org.secfirst.umbrella.models.Segment;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Global extends com.orm.SugarApp {
@@ -28,6 +37,11 @@ public class Global extends com.orm.SugarApp {
     private String _password = "";
     private ArrayList<FeedItem> feedItems;
     private long feeditemsRefreshed;
+    private OrmHelper dbHelper;
+    private Dao<Segment, String> daoSegment;
+    private Dao<CheckItem, String> daoCheckItem;
+    private Dao<Category, String> daoCategory;
+    private Dao<Registry, String> daoRegistry;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -133,8 +147,8 @@ public class Global extends com.orm.SugarApp {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setTitle("Confirm reset password");
         alertDialogBuilder.setMessage("Are you sure you want to reset your password? This also means losing any data you might have entered so far\n");
-        alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 savePassword("");
                 UmbrellaUtil.resetDataToInitial();
                 Toast.makeText(activity, "Password reset and all data removed.", Toast.LENGTH_SHORT).show();
@@ -148,5 +162,59 @@ public class Global extends com.orm.SugarApp {
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    public void initializeSQLCipher() {
+        SQLiteDatabase.loadLibs(this);
+        dbHelper = new OrmHelper(getApplicationContext());
+        dbHelper.getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
+        getDaoSegment();
+        getDaoCheckItem();
+        getDaoCategory();
+        getDaoRegistry();
+    }
+
+    public Dao<Segment, String> getDaoSegment() {
+        if (daoSegment==null) {
+            try {
+                daoSegment = dbHelper.getDao(Segment.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoSegment;
+    }
+
+    public Dao<CheckItem, String> getDaoCheckItem() {
+        if (daoCheckItem==null) {
+            try {
+                daoCheckItem = dbHelper.getDao(CheckItem.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoCheckItem;
+    }
+
+    public Dao<Category, String> getDaoCategory() {
+        if (daoCategory==null) {
+            try {
+                daoCategory = dbHelper.getDao(Category.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoCategory;
+    }
+
+    public Dao<Registry, String> getDaoRegistry() {
+        if (daoRegistry==null) {
+            try {
+                daoRegistry = dbHelper.getDao(Registry.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoRegistry;
     }
 }

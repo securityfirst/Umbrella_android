@@ -1,11 +1,20 @@
 package org.secfirst.umbrella.models;
 
+import com.j256.ormlite.field.DatabaseField;
 import com.orm.SugarRecord;
 
-public class Segment extends SugarRecord<Segment> {
+import java.io.Serializable;
+
+public class Segment extends SugarRecord<Registry> implements Serializable {
+    @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
+    private int id;
+    @DatabaseField
     private String title;
+    @DatabaseField
     private String body;
+    @DatabaseField
     private int category;
+    @DatabaseField
     private int difficulty;
 
     public Segment(){}
@@ -53,5 +62,17 @@ public class Segment extends SugarRecord<Segment> {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Segment{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(",title='").append(title).append('\'');
+        sb.append(", body='").append(body).append('\'');
+        sb.append(", difficulty='").append(difficulty).append('\'');
+        sb.append(", category='").append(category).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
