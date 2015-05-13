@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.j256.ormlite.dao.Dao;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -29,21 +28,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.CheckItem;
-import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
-import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
-import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Relief.Countries.RWCountries;
 import org.secfirst.umbrella.models.Relief.Data;
 import org.secfirst.umbrella.models.Relief.Response;
-import org.secfirst.umbrella.models.Segment;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -79,100 +72,6 @@ public class UmbrellaUtil {
                     View innerView = ((ViewGroup) view).getChildAt(i);
                     setupUItoHideKeyboard(innerView, activity);
                 }
-            }
-        }
-    }
-
-    public static void resetDataToInitial() {
-        CheckItem.deleteAll(CheckItem.class);
-        Category.deleteAll(Category.class);
-        Segment.deleteAll(Segment.class);
-        Difficulty.deleteAll(Difficulty.class);
-        Favourite.deleteAll(Favourite.class);
-        for (Segment segment : InitialData.getSegmentList()) {
-            segment.save();
-        }
-        for (CheckItem checkItem : InitialData.getCheckList()) {
-            checkItem.save();
-        }
-        for (Category category : InitialData.getCategoryList()) {
-            category.save();
-        }
-    }
-
-    public static void migrateData(Global global) {
-
-        ArrayList<Segment> segments = InitialData.getSegmentList();
-        Dao<Segment, String> segmentDao = global.getDaoSegment();
-
-        try {
-            List<Segment> fromDB = segmentDao.queryForAll();
-            if (fromDB.size() == 0) {
-                for (Segment segment : segments) {
-                    segmentDao.create(segment);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        Dao<CheckItem, String> checkItemDao = global.getDaoCheckItem();
-        try {
-            List<CheckItem> listsFromDB = checkItemDao.queryForAll();
-            if (listsFromDB.size() == 0) {
-                for (CheckItem checkItem : checkList) {
-                    checkItemDao.create(checkItem);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        ArrayList<Category> categoryList = InitialData.getCategoryList();
-        Dao<Category, String> categoryDao = global.getDaoCategory();
-        try {
-            List<Category> catFromDB = categoryDao.queryForAll();
-            if (catFromDB.size() == 0) {
-                for (Category category : categoryList) {
-                    categoryDao.create(category);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        Registry selRefresh = new Registry("refresh_value", String.valueOf(TimeUnit.MINUTES.toMillis(30)));
-        try {
-            global.getDaoRegistry().create(selRefresh);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void syncSegments(ArrayList<Segment> segments) {
-        Segment.deleteAll(Segment.class);
-        for (Segment segment : segments) {
-            segment.save();
-        }
-    }
-
-    public static void syncCategories(ArrayList<Category> categories) {
-        Category.deleteAll(Category.class);
-        for (Category item : categories) {
-            item.save();
-        }
-    }
-
-    public static void syncCheckLists(ArrayList<CheckItem> checkList) {
-        CheckItem.deleteAll(CheckItem.class);
-        CheckItem previousItem = null;
-        for (CheckItem checkItem : checkList) {
-            if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
-                checkItem.setParent(previousItem.getId());
-                checkItem.save();
-            } else {
-                previousItem = checkItem;
             }
         }
     }
@@ -365,29 +264,6 @@ public class UmbrellaUtil {
         refreshInterval.put("24 hours", (int) TimeUnit.HOURS.toMillis(24));
         refreshInterval.put("Manually", 0);
         return refreshInterval;
-    }
-
-    public static int getRefreshValue() {
-        int retInterval = 0;
-        List<Registry> selInterval = Registry.find(Registry.class, "name = ?", "refresh_interval");
-        if (selInterval.size() > 0) {
-            try {
-                retInterval = Integer.parseInt(selInterval.get(0).getValue());
-            } catch(NumberFormatException nfe) {
-                nfe.printStackTrace();
-            }
-        }
-        return retInterval;
-    }
-
-    public static void setRefreshValue(int refreshValue) {
-        List<Registry> selInterval = Registry.find(Registry.class, "name = ?", "refresh_interval");
-        if (selInterval.size() > 0) {
-            selInterval.get(0).setValue(String.valueOf(refreshValue));
-            selInterval.get(0).save();
-        } else {
-             new Registry("refresh_interval", String.valueOf(refreshValue)).save();
-        }
     }
 
 }

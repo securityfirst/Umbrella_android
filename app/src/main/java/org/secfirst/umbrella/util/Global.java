@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -23,11 +24,14 @@ import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Global extends com.orm.SugarApp {
 
@@ -51,8 +55,9 @@ public class Global extends com.orm.SugarApp {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
+        initializeSQLCipher();
         Intent i = new Intent(getApplicationContext(), RefreshService.class);
-        i.putExtra("refresh_feed", UmbrellaUtil.getRefreshValue());
+        i.putExtra("refresh_feed", getRefreshValue());
         startService(i);
     }
 
@@ -150,7 +155,7 @@ public class Global extends com.orm.SugarApp {
         alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 savePassword("");
-                UmbrellaUtil.resetDataToInitial();
+                resetDB();
                 Toast.makeText(activity, "Password reset and all data removed.", Toast.LENGTH_SHORT).show();
                 activity.startActivity(new Intent(activity, MainActivity.class));
             }
@@ -166,13 +171,24 @@ public class Global extends com.orm.SugarApp {
 
     public void initializeSQLCipher() {
         SQLiteDatabase.loadLibs(this);
-        dbHelper = new OrmHelper(getApplicationContext());
-        dbHelper.getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
+        if (dbHelper==null) {
+            dbHelper = new OrmHelper(getApplicationContext());
+            dbHelper.getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
+        }
         getDaoSegment();
         getDaoCheckItem();
         getDaoCategory();
         getDaoRegistry();
     }
+
+    public void resetDB() {
+        if (dbHelper!=null) {
+            dbHelper.dropTables(dbHelper.getConnectionSource());
+        }
+        migrateData();
+    }
+
+
 
     public Dao<Segment, String> getDaoSegment() {
         if (daoSegment==null) {
@@ -216,5 +232,114 @@ public class Global extends com.orm.SugarApp {
             }
         }
         return daoRegistry;
+    }
+
+    public void migrateData() {
+
+        ArrayList<Segment> segments = InitialData.getSegmentList();
+        try {
+            List<Segment> fromDB = getDaoSegment().queryForAll();
+            if (fromDB.size() == 0) {
+                for (Segment segment : segments) {
+                    getDaoSegment().create(segment);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<CheckItem> checkList = InitialData.getCheckList();
+        try {
+            List<CheckItem> listsFromDB = getDaoCheckItem().queryForAll();
+            if (listsFromDB.size() == 0) {
+                for (CheckItem checkItem : checkList) {
+                    getDaoCheckItem().create(checkItem);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Category> categoryList = InitialData.getCategoryList();
+        try {
+            List<Category> catFromDB = getDaoCategory().queryForAll();
+            if (catFromDB.size() == 0) {
+                for (Category category : categoryList) {
+                    getDaoCategory().create(category);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        setRefreshValue((int) TimeUnit.MINUTES.toMillis(30));
+    }
+
+    public void syncSegments(ArrayList<Segment> segments) {
+        Segment.deleteAll(Segment.class);
+        for (Segment segment : segments) {
+            segment.save();
+        }
+    }
+
+    public void syncCategories(ArrayList<Category> categories) {
+        Category.deleteAll(Category.class);
+        for (Category item : categories) {
+            item.save();
+        }
+    }
+
+    public void syncCheckLists(ArrayList<CheckItem> checkList) {
+        CheckItem.deleteAll(CheckItem.class);
+        CheckItem previousItem = null;
+        for (CheckItem checkItem : checkList) {
+            if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
+                checkItem.setParent(previousItem.getId());
+                checkItem.save();
+            } else {
+                previousItem = checkItem;
+            }
+        }
+    }
+
+    public int getRefreshValue() {
+        int retInterval = 0;
+        try {
+            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
+            Log.i("sel interval1", String.valueOf(selInterval));
+            if (selInterval.size() > 0) {
+                try {
+                    retInterval = Integer.parseInt(selInterval.get(0).getValue());
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            List<Registry> allReg = getDaoRegistry().queryForAll();
+            for (Registry registry : allReg) {
+                Log.d("reg", registry.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return retInterval;
+    }
+
+    public void setRefreshValue(int refreshValue) {
+        try {
+            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
+            if (selInterval.size() > 0) {
+                selInterval.get(0).setValue(String.valueOf(refreshValue));
+                getDaoRegistry().update(selInterval.get(0));
+            } else {
+                getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

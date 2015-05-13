@@ -6,11 +6,13 @@ import com.orm.SugarRecord;
 import java.io.Serializable;
 
 public class Registry extends SugarRecord<Registry> implements Serializable {
+    public static final String FIELD_NAME = "name";
+    public static final String FIELD_VALUE = "value";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_NAME)
     private String name;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_VALUE)
     private String value;
 
     public Registry() {

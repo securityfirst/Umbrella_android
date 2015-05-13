@@ -40,7 +40,7 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         super.close();
     }
 
-    private void createTables(ConnectionSource source) {
+    public void createTables(ConnectionSource source) {
         try {
             TableUtils.createTable(source, Segment.class);
         } catch (SQLException e) {
@@ -63,7 +63,7 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    private void dropTables(ConnectionSource source) {
+    public void dropTables(ConnectionSource source) {
         try {
             TableUtils.dropTable(source, Segment.class, true);
         } catch (SQLException e) {

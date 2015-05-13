@@ -17,7 +17,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -147,7 +146,7 @@ public class SettingsActivity extends BaseActivity {
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 SettingsActivity.this,
                 android.R.layout.select_dialog_singlechoice);
-        int currentRefresh = UmbrellaUtil.getRefreshValue();
+        int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
         final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues();
@@ -177,7 +176,7 @@ public class SettingsActivity extends BaseActivity {
                             Integer value = refreshValues.get(key);
                             if (key.equals(chosen)) {
                                 if (mBounded) mService.setRefresh(value);
-                                UmbrellaUtil.setRefreshValue(value);
+                                global.setRefreshValue(value);
                                 dialog.dismiss();
                             }
                         }
@@ -252,7 +251,7 @@ public class SettingsActivity extends BaseActivity {
                 }.getType();
                 ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
                 if (receivedSegments!=null && receivedSegments.size() > 0) {
-                    UmbrellaUtil.syncSegments(receivedSegments);
+                    global.syncSegments(receivedSegments);
                     Log.i("segments", "synced");
                 }
                 checkDone();
@@ -268,7 +267,7 @@ public class SettingsActivity extends BaseActivity {
                 }.getType();
                 ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems!=null && receivedItems.size() > 0) {
-                    UmbrellaUtil.syncCheckLists(receivedItems);
+                    global.syncCheckLists(receivedItems);
                     Log.i("check items", "synced");
                 }
                 checkDone();
@@ -284,7 +283,7 @@ public class SettingsActivity extends BaseActivity {
                 }.getType();
                 ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems!=null && receivedItems.size() > 0) {
-                    UmbrellaUtil.syncCategories(receivedItems);
+                    global.syncCategories(receivedItems);
                     Log.i("categories", "synced");
                 }
                 checkDone();
