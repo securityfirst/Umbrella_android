@@ -94,13 +94,15 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
 
     public void refreshFeed() {
         ((BaseActivity) getActivity()).getGlobal().setFeeditemsRefreshed(new Date().getTime());
-        header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
+        header.setText("");
         boolean isCountrySet = getFeeds(getActivity());
         if (isCountrySet) {
             ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
             feedAdapter.updateData(items);
             noFeedItems.setText(R.string.no_feed_updates);
             if (items!=null) {
+                if (items.size() > 0)
+                    header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
                 noFeedItems.setVisibility(items.size()>0?View.GONE:View.VISIBLE);
                 feedListView.setVisibility(items.size() > 0 ? View.VISIBLE : View.GONE);
             } else {
