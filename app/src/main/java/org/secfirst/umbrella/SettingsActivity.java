@@ -34,6 +34,7 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,21 +105,40 @@ public class SettingsActivity extends BaseActivity {
                         mAddress = mAddressList.get(position - 1);
                         String chosenAddress = mAutocompleteLocation.getText().toString();
                         mAutocompleteLocation.setText(chosenAddress);
-                        List<Registry> selLoc = Registry.find(Registry.class, "name = ?", "location");
-                        if (selLoc.size() > 0) {
+                        List<Registry> selLoc = null;
+                        try {
+                            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        if (selLoc!=null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
                         } else {
                             mLocation = new Registry("location", chosenAddress);
                         }
-                        List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
-                        if (selCountry.size() > 0) {
+                        List<Registry> selCountry = null;
+                        try {
+                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        if (selCountry!=null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
                             mLocation.setValue(mAddress.getCountryName());
+                            try {
+                                global.getDaoRegistry().update(mCountry);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             mCountry = new Registry("country", mAddress.getCountryName());
+                            try {
+                                global.getDaoRegistry().create(mCountry);
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        mCountry.save();
                     } else {
                         mAddress = null;
                     }
@@ -188,17 +208,22 @@ public class SettingsActivity extends BaseActivity {
     public void showFeedSources() {
         final CharSequence[] items = {" ReliefWeb "," UN "," FCO "," CDC "};
         final ArrayList<Integer> selectedItems = new ArrayList<Integer>();
-        List<Registry> selections = Registry.find(Registry.class, "name = ?", "feed_sources");
         boolean[] currentSelections = new boolean[items.length];
-        for (int i = 0; i < items.length; i++) {
-            currentSelections[i] = false;
-            for (Registry reg : selections) {
-                if (reg.getValue().equals(String.valueOf(i))) {
-                    currentSelections[i] = true;
-                    selectedItems.add(i);
-                    break;
+        List<Registry> selections = null;
+        try {
+            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+            for (int i = 0; i < items.length; i++) {
+                currentSelections[i] = false;
+                for (Registry reg : selections) {
+                    if (reg.getValue().equals(String.valueOf(i))) {
+                        currentSelections[i] = true;
+                        selectedItems.add(i);
+                        break;
+                    }
                 }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select The Feed Sources");
@@ -217,12 +242,21 @@ public class SettingsActivity extends BaseActivity {
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        List<Registry> selections = Registry.find(Registry.class, "name = ?", "feed_sources");
-                        for (Registry selection : selections) {
-                            selection.delete();
+                        List<Registry> selections = null;
+                        try {
+                            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                            for (Registry selection : selections) {
+                                global.getDaoRegistry().delete(selection);
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                         for (Integer item : selectedItems) {
-                            new Registry("feed_sources", String.valueOf(item)).save();
+                            try {
+                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(item)));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                         }
                         dialog.dismiss();
                     }

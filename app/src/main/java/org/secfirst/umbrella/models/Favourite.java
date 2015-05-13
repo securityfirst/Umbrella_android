@@ -1,10 +1,17 @@
 package org.secfirst.umbrella.models;
 
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
 
-public class Favourite extends SugarRecord<Favourite> {
+import java.io.Serializable;
 
+public class Favourite implements Serializable {
+    public static final String FIELD_CATEGORY = "category";
+    public static final String FIELD_DIFFICULTY = "difficulty";
+    @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
+    private int id;
+    @DatabaseField(columnName = FIELD_CATEGORY)
     private long category;
+    @DatabaseField(columnName = FIELD_DIFFICULTY)
     private int difficulty;
 
     public Favourite() {}
@@ -28,5 +35,15 @@ public class Favourite extends SugarRecord<Favourite> {
 
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Favourite{");
+        sb.append("id='").append(id).append('\'');
+        sb.append("category='").append(category).append('\'');
+        sb.append(",difficulty='").append(difficulty).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

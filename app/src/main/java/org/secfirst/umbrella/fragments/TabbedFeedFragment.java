@@ -25,6 +25,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.secfirst.umbrella.BaseActivity;
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.adapters.FeedAdapter;
@@ -37,6 +38,7 @@ import org.secfirst.umbrella.util.UmbrellaRestClient;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -119,8 +121,13 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public boolean getFeeds(final Context context) {
-        List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
-        if (selCountry.size()>0) {
+        List<Registry> selCountry = null;
+        try {
+            selCountry = ((MainActivity)getActivity()).getGlobal().getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (selCountry!=null && selCountry.size()>0) {
             UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

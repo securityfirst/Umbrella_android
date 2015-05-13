@@ -2,11 +2,10 @@ package org.secfirst.umbrella.models;
 
 
 import com.j256.ormlite.field.DatabaseField;
-import com.orm.SugarRecord;
 
 import java.io.Serializable;
 
-public class Category extends SugarRecord<Category> implements Serializable {
+public class Category implements Serializable {
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
     @DatabaseField
@@ -47,7 +46,7 @@ public class Category extends SugarRecord<Category> implements Serializable {
         return parent;
     }
 
-    public long getMId() {
+    public long getId() {
         return id;
     }
 
@@ -97,7 +96,7 @@ public class Category extends SugarRecord<Category> implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Segment{");
+        final StringBuilder sb = new StringBuilder("Category{");
         sb.append("id='").append(id).append('\'');
         sb.append(",parent='").append(parent).append('\'');
         sb.append(", category='").append(category).append('\'');

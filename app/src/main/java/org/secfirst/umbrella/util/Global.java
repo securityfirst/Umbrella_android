@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.table.TableUtils;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
@@ -23,6 +24,8 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Registry;
@@ -33,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class Global extends com.orm.SugarApp {
+public class Global extends Application {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
@@ -46,6 +49,8 @@ public class Global extends com.orm.SugarApp {
     private Dao<CheckItem, String> daoCheckItem;
     private Dao<Category, String> daoCategory;
     private Dao<Registry, String> daoRegistry;
+    private Dao<Favourite, String> daoFavourite;
+    private Dao<Difficulty, String> daoDifficulty;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -179,6 +184,8 @@ public class Global extends com.orm.SugarApp {
         getDaoCheckItem();
         getDaoCategory();
         getDaoRegistry();
+        getDaoFavourite();
+        getDaoDifficulty();
     }
 
     public void resetDB() {
@@ -234,6 +241,28 @@ public class Global extends com.orm.SugarApp {
         return daoRegistry;
     }
 
+    public Dao<Favourite, String> getDaoFavourite() {
+        if (daoFavourite==null) {
+            try {
+                daoFavourite = dbHelper.getDao(Favourite.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoFavourite;
+    }
+
+    public Dao<Difficulty, String> getDaoDifficulty() {
+        if (daoDifficulty==null) {
+            try {
+                daoDifficulty = dbHelper.getDao(Difficulty.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoDifficulty;
+    }
+
     public void migrateData() {
 
         ArrayList<Segment> segments = InitialData.getSegmentList();
@@ -276,28 +305,49 @@ public class Global extends com.orm.SugarApp {
     }
 
     public void syncSegments(ArrayList<Segment> segments) {
-        Segment.deleteAll(Segment.class);
-        for (Segment segment : segments) {
-            segment.save();
+        if (dbHelper!=null) {
+            try {
+                TableUtils.dropTable(dbHelper.getConnectionSource(), Segment.class, true);
+                TableUtils.createTable(dbHelper.getConnectionSource(), Segment.class);
+                for (Segment segment : segments) {
+                    getDaoSegment().create(segment);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void syncCategories(ArrayList<Category> categories) {
-        Category.deleteAll(Category.class);
-        for (Category item : categories) {
-            item.save();
+        if (dbHelper!=null) {
+            try {
+                TableUtils.dropTable(dbHelper.getConnectionSource(), Category.class, true);
+                TableUtils.createTable(dbHelper.getConnectionSource(), Category.class);
+                for (Category item : categories) {
+                    getDaoCategory().create(item);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void syncCheckLists(ArrayList<CheckItem> checkList) {
-        CheckItem.deleteAll(CheckItem.class);
-        CheckItem previousItem = null;
-        for (CheckItem checkItem : checkList) {
-            if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
-                checkItem.setParent(previousItem.getId());
-                checkItem.save();
-            } else {
-                previousItem = checkItem;
+        if (dbHelper!=null) {
+            try {
+                TableUtils.dropTable(dbHelper.getConnectionSource(), CheckItem.class, true);
+                TableUtils.createTable(dbHelper.getConnectionSource(), CheckItem.class);
+                CheckItem previousItem = null;
+                for (CheckItem checkItem : checkList) {
+                    if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
+                        checkItem.setParent(previousItem.getId());
+                        getDaoCheckItem().create(checkItem);
+                    } else {
+                        previousItem = checkItem;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }

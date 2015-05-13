@@ -1,30 +1,35 @@
 package org.secfirst.umbrella.models;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.orm.SugarRecord;
 
 import java.io.Serializable;
 
-public class CheckItem extends SugarRecord<CheckItem> implements Serializable {
+public class CheckItem implements Serializable {
+    public static final String FIELD_TITLE = "title";
+    public static final String FIELD_TEXT = "text";
+    public static final String FIELD_VALUE = "value";
+    public static final String FIELD_PARENT = "parent";
+    public static final String FIELD_CATEGORY = "category";
+    public static final String FIELD_DIFFICULTY = "difficulty";
+    public static final String FIELD_CUSTOM = "custom";
+    public static final String FIELD_DISABLED = "disabled";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
-    @DatabaseField
-    private int mid;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_TITLE)
     private String title;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_TEXT)
     private String text;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_VALUE)
     private int value;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_PARENT)
     private long parent;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_CATEGORY)
     private int category;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_DIFFICULTY)
     private int difficulty;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_CUSTOM)
     private int custom;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_DISABLED)
     private int disabled;
     @DatabaseField
     private int noCheck;
@@ -58,12 +63,12 @@ public class CheckItem extends SugarRecord<CheckItem> implements Serializable {
         this.category = category;
     }
 
-    public int getMId() {
-        return mid;
+    public int getId() {
+        return id;
     }
 
-    public void setMid(int mid) {
-        this.mid = mid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCategory() {

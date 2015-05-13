@@ -1,11 +1,10 @@
 package org.secfirst.umbrella.models;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.orm.SugarRecord;
 
 import java.io.Serializable;
 
-public class Registry extends SugarRecord<Registry> implements Serializable {
+public class Registry implements Serializable {
     public static final String FIELD_NAME = "name";
     public static final String FIELD_VALUE = "value";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
@@ -41,7 +40,7 @@ public class Registry extends SugarRecord<Registry> implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Segment{");
+        final StringBuilder sb = new StringBuilder("Registry{");
         sb.append("id='").append(id).append('\'');
         sb.append(",name='").append(name).append('\'');
         sb.append(",value='").append(value).append('\'');

@@ -10,6 +10,8 @@ import net.sqlcipher.database.SQLiteDatabase;
 
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -61,6 +63,16 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            TableUtils.createTable(source, Favourite.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.createTable(source, Difficulty.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void dropTables(ConnectionSource source) {
@@ -81,6 +93,16 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         }
         try {
             TableUtils.dropTable(source, Registry.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.dropTable(source, Favourite.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.dropTable(source, Difficulty.class, true);
         } catch (SQLException e) {
             e.printStackTrace();
         }

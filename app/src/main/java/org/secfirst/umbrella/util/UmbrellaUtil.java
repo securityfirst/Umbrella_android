@@ -37,6 +37,7 @@ import org.secfirst.umbrella.models.Relief.Response;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -103,35 +104,47 @@ public class UmbrellaUtil {
         return ringProgressDialog;
     }
 
-    public static ArrayList<Category> getParentCategories() {
-        List<Category> categories = Category.listAll(Category.class);
-        ArrayList<Category> parentCategories = new ArrayList<Category>();
-        for (Category category : categories) {
-            if (category.getParent()==0) {
-                parentCategories.add(category);
+    public static ArrayList<Category> getParentCategories(Context context) {
+        Global global = (Global) context.getApplicationContext();
+        ArrayList<Category> parentCategories = new ArrayList<>();
+        try {
+            List<Category> categories = global.getDaoCategory().queryForAll();
+            for (Category category : categories) {
+                if (category.getParent()==0) {
+                    parentCategories.add(category);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return parentCategories;
     }
 
-    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems() {
-        List<Category> categories = Category.listAll(Category.class);
+    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
+        Global global = (Global) context.getApplicationContext();
         ArrayList<Category> parentCategories = new ArrayList<Category>();
-        for (Category category : categories) {
-            if (category.getParent()==0) {
-                parentCategories.add(category);
-            }
-        }
-
         ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
-        for (Category parentCategory : parentCategories) {
-            ArrayList<DrawerChildItem> child = new ArrayList<>();
+        List<Category> categories = null;
+        try {
+            categories = global.getDaoCategory().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (categories!=null) {
             for (Category category : categories) {
-                if (category.getParent() == parentCategory.getId()) {
-                    child.add(new DrawerChildItem(category.getCategory(), category.getMId()));
+                if (category.getParent()==0) {
+                    parentCategories.add(category);
                 }
             }
-            childItem.add(child);
+            for (Category parentCategory : parentCategories) {
+                ArrayList<DrawerChildItem> child = new ArrayList<>();
+                for (Category category : categories) {
+                    if (category.getParent() == parentCategory.getId()) {
+                        child.add(new DrawerChildItem(category.getCategory(), category.getId()));
+                    }
+                }
+                childItem.add(child);
+            }
         }
 
         return childItem;
@@ -162,8 +175,13 @@ public class UmbrellaUtil {
 
     public static boolean getFeeds(final Context context) {
         final Global global = (Global) context.getApplicationContext();
-        List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
-        if (selCountry.size()>0) {
+        List<Registry> selCountry = null;
+        try {
+            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (selCountry!=null && selCountry.size()>0) {
             UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -199,14 +217,14 @@ public class UmbrellaUtil {
                 if (receivedResponse != null) {
                     List<org.secfirst.umbrella.models.Relief.Data> dataList = Arrays.asList(receivedResponse.getData());
                     for (Data data : dataList) {
-                        if (data.getFields().getDescriptionhtml()!=null) {
+                        if (data.getFields().getDescriptionhtml() != null) {
                             Document document = Jsoup.parse(data.getFields().getDescriptionhtml());
                             Element ul = document.select("ul").get(0);
                             global.setFeedItems(new ArrayList<FeedItem>());
-                            for(Element li : ul.select("li")) {
+                            for (Element li : ul.select("li")) {
                                 FeedItem toAdd = new FeedItem(li.text(), "Loading...", li.select("a").get(0).attr("href"));
                                 global.getFeedItems().add(toAdd);
-                                new GetRWBody(global.getFeedItems().size()-1, toAdd.getUrl(), global).execute();
+                                new GetRWBody(global.getFeedItems().size() - 1, toAdd.getUrl(), global).execute();
                             }
                         }
                     }

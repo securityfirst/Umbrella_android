@@ -1,20 +1,23 @@
 package org.secfirst.umbrella.models;
 
 import com.j256.ormlite.field.DatabaseField;
-import com.orm.SugarRecord;
 
 import java.io.Serializable;
 
-public class Segment extends SugarRecord<Registry> implements Serializable {
+public class Segment implements Serializable {
+    public static final String FIELD_TITLE = "title";
+    public static final String FIELD_BODY = "body";
+    public static final String FIELD_CATEGORY = "category";
+    public static final String FIELD_DIFFICULTY = "difficulty";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_TITLE)
     private String title;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_BODY)
     private String body;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_CATEGORY)
     private int category;
-    @DatabaseField
+    @DatabaseField(columnName = FIELD_DIFFICULTY)
     private int difficulty;
 
     public Segment(){}

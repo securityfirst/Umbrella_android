@@ -14,10 +14,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.Favourite;
+import org.secfirst.umbrella.util.Global;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,10 +96,18 @@ public class DashCheckListAdapter extends BaseAdapter {
                 builder.setPositiveButton("Unfavourite", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        List<Favourite> favourites = Favourite.find(Favourite.class, "category = ? and difficulty = ?", String.valueOf(current.getCategory()), String.valueOf(current.getDifficulty()));
-                        favourites.clear();
-                        checkItems.remove(position);
-                        notifyDataSetChanged();
+                        List<Favourite> favourites = null;
+                        try {
+                            QueryBuilder<Favourite, String> queryBuilder = ((Global) mContext.getApplicationContext()).getDaoFavourite().queryBuilder();
+                            Where<Favourite, String> where = queryBuilder.where();
+                            where.eq(Favourite.FIELD_CATEGORY, String.valueOf(current.getCategory())).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(current.getDifficulty()));
+                            favourites = queryBuilder.query();
+                            favourites.clear();
+                            checkItems.remove(position);
+                            notifyDataSetChanged();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 builder.show();

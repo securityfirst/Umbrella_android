@@ -28,8 +28,8 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
 
     public DrawerAdapter(Context context) {
         mContext = context;
-        groupItem = UmbrellaUtil.getParentCategories();
-        childItem = UmbrellaUtil.getChildItems();
+        groupItem = UmbrellaUtil.getParentCategories(mContext);
+        childItem = UmbrellaUtil.getChildItems(mContext);
     }
 
     @Override
