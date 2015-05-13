@@ -149,4 +149,12 @@ public class Global extends com.orm.SugarApp {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    public long getFeeditemsRefreshed() {
+        return feeditemsRefreshed;
+    }
+
+    public void setFeeditemsRefreshed(long feeditemsRefreshed) {
+        this.feeditemsRefreshed = feeditemsRefreshed;
+    }
 }

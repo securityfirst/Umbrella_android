@@ -20,6 +20,7 @@
             <TextView
                 android:id="@+id/feed_title"
                 android:textSize="@dimen/text_size_smaller"
+                android:layout_marginBottom="10dp"
                 android:textColor="@color/umbrella_purple"
                 android:gravity="center"
                 android:layout_width="fill_parent"
@@ -28,6 +29,8 @@
             <TextView
                 android:id="@+id/feed_body"
                 android:textSize="@dimen/text_size_smaller"
+                android:maxLines="3"
+                android:ellipsize="end"
                 android:textColor="@color/dark_grey"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
