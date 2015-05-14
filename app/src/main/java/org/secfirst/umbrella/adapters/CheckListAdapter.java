@@ -15,8 +15,10 @@ import android.widget.TextView;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,11 +26,13 @@ public class CheckListAdapter extends BaseAdapter {
 
     private List<CheckItem> checkList = new ArrayList<>();
     private Context mContext;
+    private Global global;
     private TabbedFragment.CheckItemFragment mFragment;
 
     public CheckListAdapter(Context context, List<CheckItem> mCheckList, TabbedFragment.CheckItemFragment fragment) {
         mFragment = fragment;
         mContext = context;
+        global  = (Global) mContext.getApplicationContext();
         checkList = mCheckList;
         notifyDataSetChanged();
     }
@@ -119,7 +123,11 @@ public class CheckListAdapter extends BaseAdapter {
                     builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            checkList.get(i).delete();
+                            try {
+                                global.getDaoCheckItem().delete(checkList.get(i));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                             checkList.remove(i);
                             notifyDataSetChanged();
                         }
@@ -142,7 +150,11 @@ public class CheckListAdapter extends BaseAdapter {
                             } else {
                                 checkList.get(i).disable();
                             }
-                            checkList.get(i).save();
+                            try {
+                                global.getDaoCheckItem().update(checkList.get(i));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                             checkList.set(i, checkList.get(i));
                             CheckItem current = (CheckItem) getItem(i);
                             mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
@@ -151,7 +163,11 @@ public class CheckListAdapter extends BaseAdapter {
                     builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            checkList.get(i).delete();
+                            try {
+                                global.getDaoCheckItem().delete(checkList.get(i));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                             checkList.remove(i);
                             notifyDataSetChanged();
                         }
@@ -169,7 +185,11 @@ public class CheckListAdapter extends BaseAdapter {
 
         CheckItem current = (CheckItem) getItem(i);
         current.setValue(b ? 1 : 0);
-        current.save();
+        try {
+            global.getDaoCheckItem().update(current);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         checkList.get(i).setValue(b ? 1 : 0);
         mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
     }

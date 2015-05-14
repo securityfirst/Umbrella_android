@@ -13,14 +13,29 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.table.TableUtils;
+
+import net.sqlcipher.database.SQLiteDatabase;
+
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
+import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.InitialData;
+import org.secfirst.umbrella.models.Registry;
+import org.secfirst.umbrella.models.Segment;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-public class Global extends com.orm.SugarApp {
+public class Global extends Application {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
@@ -28,6 +43,13 @@ public class Global extends com.orm.SugarApp {
     private String _password = "";
     private ArrayList<FeedItem> feedItems;
     private long feeditemsRefreshed;
+    private OrmHelper dbHelper;
+    private Dao<Segment, String> daoSegment;
+    private Dao<CheckItem, String> daoCheckItem;
+    private Dao<Category, String> daoCategory;
+    private Dao<Registry, String> daoRegistry;
+    private Dao<Favourite, String> daoFavourite;
+    private Dao<Difficulty, String> daoDifficulty;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -37,8 +59,9 @@ public class Global extends com.orm.SugarApp {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
+        initializeSQLCipher();
         Intent i = new Intent(getApplicationContext(), RefreshService.class);
-        i.putExtra("refresh_feed", UmbrellaUtil.getRefreshValue());
+        i.putExtra("refresh_feed", getRefreshValue());
         startService(i);
     }
 
@@ -133,10 +156,10 @@ public class Global extends com.orm.SugarApp {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setTitle("Confirm reset password");
         alertDialogBuilder.setMessage("Are you sure you want to reset your password? This also means losing any data you might have entered so far\n");
-        alertDialogBuilder.setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int id) {
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
                 savePassword("");
-                UmbrellaUtil.resetDataToInitial();
+                resetDB();
                 Toast.makeText(activity, "Password reset and all data removed.", Toast.LENGTH_SHORT).show();
                 activity.startActivity(new Intent(activity, MainActivity.class));
             }
@@ -149,6 +172,216 @@ public class Global extends com.orm.SugarApp {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    public void initializeSQLCipher() {
+        SQLiteDatabase.loadLibs(this);
+        if (dbHelper==null) {
+            dbHelper = new OrmHelper(getApplicationContext());
+            dbHelper.getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
+        }
+        getDaoSegment();
+        getDaoCheckItem();
+        getDaoCategory();
+        getDaoRegistry();
+        getDaoFavourite();
+        getDaoDifficulty();
+    }
+
+    public void resetDB() {
+        if (dbHelper!=null) {
+            dbHelper.dropTables(dbHelper.getConnectionSource());
+        }
+        migrateData();
+    }
+
+
+
+    public Dao<Segment, String> getDaoSegment() {
+        if (daoSegment==null) {
+            try {
+                daoSegment = dbHelper.getDao(Segment.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoSegment;
+    }
+
+    public Dao<CheckItem, String> getDaoCheckItem() {
+        if (daoCheckItem==null) {
+            try {
+                daoCheckItem = dbHelper.getDao(CheckItem.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoCheckItem;
+    }
+
+    public Dao<Category, String> getDaoCategory() {
+        if (daoCategory==null) {
+            try {
+                daoCategory = dbHelper.getDao(Category.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoCategory;
+    }
+
+    public Dao<Registry, String> getDaoRegistry() {
+        if (daoRegistry==null) {
+            try {
+                daoRegistry = dbHelper.getDao(Registry.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoRegistry;
+    }
+
+    public Dao<Favourite, String> getDaoFavourite() {
+        if (daoFavourite==null) {
+            try {
+                daoFavourite = dbHelper.getDao(Favourite.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoFavourite;
+    }
+
+    public Dao<Difficulty, String> getDaoDifficulty() {
+        if (daoDifficulty==null) {
+            try {
+                daoDifficulty = dbHelper.getDao(Difficulty.class);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return daoDifficulty;
+    }
+
+    public void migrateData() {
+
+        ArrayList<Segment> segments = InitialData.getSegmentList();
+        try {
+            List<Segment> fromDB = getDaoSegment().queryForAll();
+            if (fromDB.size() == 0) {
+                for (Segment segment : segments) {
+                    getDaoSegment().create(segment);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<CheckItem> checkList = InitialData.getCheckList();
+        try {
+            List<CheckItem> listsFromDB = getDaoCheckItem().queryForAll();
+            if (listsFromDB.size() == 0) {
+                for (CheckItem checkItem : checkList) {
+                    getDaoCheckItem().create(checkItem);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<Category> categoryList = InitialData.getCategoryList();
+        try {
+            List<Category> catFromDB = getDaoCategory().queryForAll();
+            if (catFromDB.size() == 0) {
+                for (Category category : categoryList) {
+                    getDaoCategory().create(category);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        setRefreshValue((int) TimeUnit.MINUTES.toMillis(30));
+    }
+
+    public void syncSegments(ArrayList<Segment> segments) {
+        if (dbHelper!=null) {
+            try {
+                TableUtils.dropTable(dbHelper.getConnectionSource(), Segment.class, true);
+                TableUtils.createTable(dbHelper.getConnectionSource(), Segment.class);
+                for (Segment segment : segments) {
+                    getDaoSegment().create(segment);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void syncCategories(ArrayList<Category> categories) {
+        if (dbHelper!=null) {
+            try {
+                TableUtils.dropTable(dbHelper.getConnectionSource(), Category.class, true);
+                TableUtils.createTable(dbHelper.getConnectionSource(), Category.class);
+                for (Category item : categories) {
+                    getDaoCategory().create(item);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void syncCheckLists(ArrayList<CheckItem> checkList) {
+        if (dbHelper!=null) {
+            try {
+                TableUtils.dropTable(dbHelper.getConnectionSource(), CheckItem.class, true);
+                TableUtils.createTable(dbHelper.getConnectionSource(), CheckItem.class);
+                CheckItem previousItem = null;
+                for (CheckItem checkItem : checkList) {
+                    if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
+                        checkItem.setParent(previousItem.getId());
+                        getDaoCheckItem().create(checkItem);
+                    } else {
+                        previousItem = checkItem;
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int getRefreshValue() {
+        int retInterval = 0;
+        try {
+            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
+            if (selInterval.size() > 0) {
+                try {
+                    retInterval = Integer.parseInt(selInterval.get(0).getValue());
+                } catch (NumberFormatException nfe) {
+                    nfe.printStackTrace();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return retInterval;
+    }
+
+    public void setRefreshValue(int refreshValue) {
+        try {
+            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
+            if (selInterval.size() > 0) {
+                selInterval.get(0).setValue(String.valueOf(refreshValue));
+                getDaoRegistry().update(selInterval.get(0));
+            } else {
+                getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public long getFeeditemsRefreshed() {
         return feeditemsRefreshed;

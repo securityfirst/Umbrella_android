@@ -15,8 +15,10 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -43,11 +45,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     public SearchAdapter(Context context, List<Segment> segmentList, String query) {
-        mSegment = segmentList;
-        mSubtitles = UmbrellaUtil.getChildItems();
-        mTitles = UmbrellaUtil.getParentCategories();
-        mQueries.add(query);
         mContext = context;
+        mSegment = segmentList;
+        mSubtitles = UmbrellaUtil.getChildItems(mContext);
+        mTitles = UmbrellaUtil.getParentCategories(mContext);
+        mQueries.add(query);
     }
 
     @Override
@@ -73,7 +75,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Category category = Category.findById(Category.class, (long)current.getCategory());
+                Category category = null;
+                try {
+                    category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 if (category == null) {
                     return;
                 }

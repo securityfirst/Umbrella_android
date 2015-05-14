@@ -11,9 +11,13 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
+
 import org.secfirst.umbrella.adapters.SearchAdapter;
 import org.secfirst.umbrella.models.Segment;
 
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -39,13 +43,19 @@ public class SearchActivity extends BaseActivity {
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if (query!=null) {
-                List<Segment> mSegments = Segment.find(Segment.class, "body LIKE ?", "%"+query+"%");
-                if (mSegments.size()>0) {
+                List<Segment> mSegments = null;
+                try {
+                    QueryBuilder<Segment, String> queryBuilder = global.getDaoSegment().queryBuilder();
+                    Where<Segment, String> where = queryBuilder.where();
+                    where.like(Segment.FIELD_BODY, "%"+query+"%");
+                    mSegments = queryBuilder.query();
                     RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments, query);
                     mRecyclerView.setAdapter(mAdapter);
                     noResults.setVisibility(View.GONE);
                     results.setVisibility(View.VISIBLE);
                     searchCount.setText(mSegments.size()+((mSegments.size()==1)?" search result":" results")+" found for this query");
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
         }

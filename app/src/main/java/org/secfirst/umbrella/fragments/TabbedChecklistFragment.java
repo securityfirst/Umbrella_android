@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.orm.query.Select;
+import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.Where;
 
+import org.secfirst.umbrella.BaseActivity;
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.DashCheckListAdapter;
 import org.secfirst.umbrella.models.Category;
@@ -17,7 +20,9 @@ import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
+import org.secfirst.umbrella.util.Global;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,39 +70,83 @@ public class TabbedChecklistFragment extends Fragment {
     }
 
     public ArrayList<DashCheckFinished> getChecklistProgress() {
+        final Global global = ((MainActivity) getActivity()).getGlobal();
         ArrayList<DashCheckFinished> returned = new ArrayList<>();
-        List<Favourite> favourites = Select.from(Favourite.class).list();
-        for (Favourite favourite : favourites) {
-            List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(favourite.getCategory()), String.valueOf(favourite.getDifficulty() + 1));
-            Category category = Category.findById(Category.class, favourite.getCategory());
-            if (category!=null) {
-                DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), favourite.getDifficulty(), true);
-                for (CheckItem checkItem : mCheckList) {
-                    if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
-                        if (checkItem.getValue()) {
-                            int val = dashCheckFinished.getChecked() + 1;
-                            dashCheckFinished.setChecked(val);
+        List<Favourite> favourites = null;
+        try {
+            favourites = global.getDaoFavourite().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (favourites!=null) {
+            for (Favourite favourite : favourites) {
+                List<CheckItem> mCheckList = null;
+                try {
+                    QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                    Where<CheckItem, String> where = queryBuilder.where();
+                    where.eq(CheckItem.FIELD_CATEGORY, favourite.getCategory()).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(favourite.getDifficulty() + 1));
+                    mCheckList = queryBuilder.query();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Category category = null;
+                try {
+                    category = global.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                if (category!=null) {
+                    DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), favourite.getDifficulty(), true);
+                    if (mCheckList!=null) {
+                        for (CheckItem checkItem : mCheckList) {
+                            if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
+                                if (checkItem.getValue()) {
+                                    int val = dashCheckFinished.getChecked() + 1;
+                                    dashCheckFinished.setChecked(val);
+                                }
+                                dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
+                            }
                         }
-                        dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
+                        returned.add(dashCheckFinished);
                     }
                 }
-                returned.add(dashCheckFinished);
             }
         }
         if (returned.size() == 0) {
-            List<Difficulty> hasDifficulty = Select.from(Difficulty.class).orderBy("created_at DESC").list();
+            List<Difficulty> hasDifficulty = null;
+            try {
+                QueryBuilder<Difficulty, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
+                hasDifficulty = queryBuilder.query();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             for (Difficulty difficulty : hasDifficulty) {
-                List<CheckItem> mCheckList = CheckItem.find(CheckItem.class, "category = ? and difficulty = ?", String.valueOf(difficulty.getCategory()), String.valueOf(difficulty.getSelected() + 1));
-                Category category = Category.findById(Category.class, difficulty.getCategory());
+                List<CheckItem> mCheckList = null;
+                try {
+                    QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                    Where<CheckItem, String> where = queryBuilder.where();
+                    where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(difficulty.getCategory())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty.getSelected() + 1));
+                    mCheckList = queryBuilder.query();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                Category category = null;
+                try {
+                    category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 if (category != null) {
                     DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
-                    for (CheckItem checkItem : mCheckList) {
-                        if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
-                            if (checkItem.getValue()) {
-                                int val = dashCheckFinished.getChecked() + 1;
-                                dashCheckFinished.setChecked(val);
+                    if (mCheckList!=null) {
+                        for (CheckItem checkItem : mCheckList) {
+                            if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
+                                if (checkItem.getValue()) {
+                                    int val = dashCheckFinished.getChecked() + 1;
+                                    dashCheckFinished.setChecked(val);
+                                }
+                                dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                             }
-                            dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                         }
                     }
                     if (dashCheckFinished.getChecked() > 0) returned.add(dashCheckFinished);

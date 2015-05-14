@@ -28,20 +28,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.CheckItem;
-import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
-import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
-import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Relief.Countries.RWCountries;
 import org.secfirst.umbrella.models.Relief.Data;
 import org.secfirst.umbrella.models.Relief.Response;
-import org.secfirst.umbrella.models.Segment;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -81,80 +77,6 @@ public class UmbrellaUtil {
         }
     }
 
-    public static void resetDataToInitial() {
-        CheckItem.deleteAll(CheckItem.class);
-        Category.deleteAll(Category.class);
-        Segment.deleteAll(Segment.class);
-        Difficulty.deleteAll(Difficulty.class);
-        Favourite.deleteAll(Favourite.class);
-        for (Segment segment : InitialData.getSegmentList()) {
-            segment.save();
-        }
-        for (CheckItem checkItem : InitialData.getCheckList()) {
-            checkItem.save();
-        }
-        for (Category category : InitialData.getCategoryList()) {
-            category.save();
-        }
-    }
-
-    public static void migrateData() {
-
-        ArrayList<Segment> segments = InitialData.getSegmentList();
-        List<Segment> fromDB = Segment.listAll(Segment.class);
-        if (fromDB.size() == 0) {
-            for (Segment segment : segments) {
-                segment.save();
-            }
-        }
-
-        ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        List<CheckItem> listsFromDB = CheckItem.listAll(CheckItem.class);
-        if (listsFromDB.size() == 0) {
-            for (CheckItem checkItem : checkList) {
-                checkItem.save();
-            }
-        }
-
-        ArrayList<Category> categoryList = InitialData.getCategoryList();
-        List<Category> catFromDB = Category.listAll(Category.class);
-        if (catFromDB.size() == 0) {
-            for (Category category : categoryList) {
-                category.save();
-            }
-        }
-
-        Registry selRefresh = new Registry("refresh_value", String.valueOf(TimeUnit.MINUTES.toMillis(30)));
-        selRefresh.save();
-    }
-
-    public static void syncSegments(ArrayList<Segment> segments) {
-        Segment.deleteAll(Segment.class);
-        for (Segment segment : segments) {
-            segment.save();
-        }
-    }
-
-    public static void syncCategories(ArrayList<Category> categories) {
-        Category.deleteAll(Category.class);
-        for (Category item : categories) {
-            item.save();
-        }
-    }
-
-    public static void syncCheckLists(ArrayList<CheckItem> checkList) {
-        CheckItem.deleteAll(CheckItem.class);
-        CheckItem previousItem = null;
-        for (CheckItem checkItem : checkList) {
-            if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
-                checkItem.setParent(previousItem.getId());
-                checkItem.save();
-            } else {
-                previousItem = checkItem;
-            }
-        }
-    }
-
     public static int dpToPix(int sizeInDp, Context context) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (sizeInDp*scale + 0.5f);
@@ -182,35 +104,47 @@ public class UmbrellaUtil {
         return ringProgressDialog;
     }
 
-    public static ArrayList<Category> getParentCategories() {
-        List<Category> categories = Category.listAll(Category.class);
-        ArrayList<Category> parentCategories = new ArrayList<Category>();
-        for (Category category : categories) {
-            if (category.getParent()==0) {
-                parentCategories.add(category);
+    public static ArrayList<Category> getParentCategories(Context context) {
+        Global global = (Global) context.getApplicationContext();
+        ArrayList<Category> parentCategories = new ArrayList<>();
+        try {
+            List<Category> categories = global.getDaoCategory().queryForAll();
+            for (Category category : categories) {
+                if (category.getParent()==0) {
+                    parentCategories.add(category);
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return parentCategories;
     }
 
-    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems() {
-        List<Category> categories = Category.listAll(Category.class);
+    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
+        Global global = (Global) context.getApplicationContext();
         ArrayList<Category> parentCategories = new ArrayList<Category>();
-        for (Category category : categories) {
-            if (category.getParent()==0) {
-                parentCategories.add(category);
-            }
-        }
-
         ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
-        for (Category parentCategory : parentCategories) {
-            ArrayList<DrawerChildItem> child = new ArrayList<>();
+        List<Category> categories = null;
+        try {
+            categories = global.getDaoCategory().queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (categories!=null) {
             for (Category category : categories) {
-                if (category.getParent() == parentCategory.getId()) {
-                    child.add(new DrawerChildItem(category.getCategory(), category.getMId()));
+                if (category.getParent()==0) {
+                    parentCategories.add(category);
                 }
             }
-            childItem.add(child);
+            for (Category parentCategory : parentCategories) {
+                ArrayList<DrawerChildItem> child = new ArrayList<>();
+                for (Category category : categories) {
+                    if (category.getParent() == parentCategory.getId()) {
+                        child.add(new DrawerChildItem(category.getCategory(), category.getId()));
+                    }
+                }
+                childItem.add(child);
+            }
         }
 
         return childItem;
@@ -241,8 +175,13 @@ public class UmbrellaUtil {
 
     public static boolean getFeeds(final Context context) {
         final Global global = (Global) context.getApplicationContext();
-        List<Registry> selCountry = Registry.find(Registry.class, "name = ?", "country");
-        if (selCountry.size()>0) {
+        List<Registry> selCountry = null;
+        try {
+            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (selCountry!=null && selCountry.size()>0) {
             UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -278,14 +217,14 @@ public class UmbrellaUtil {
                 if (receivedResponse != null) {
                     List<org.secfirst.umbrella.models.Relief.Data> dataList = Arrays.asList(receivedResponse.getData());
                     for (Data data : dataList) {
-                        if (data.getFields().getDescriptionhtml()!=null) {
+                        if (data.getFields().getDescriptionhtml() != null) {
                             Document document = Jsoup.parse(data.getFields().getDescriptionhtml());
                             Element ul = document.select("ul").get(0);
                             global.setFeedItems(new ArrayList<FeedItem>());
-                            for(Element li : ul.select("li")) {
+                            for (Element li : ul.select("li")) {
                                 FeedItem toAdd = new FeedItem(li.text(), "Loading...", li.select("a").get(0).attr("href"));
                                 global.getFeedItems().add(toAdd);
-                                new GetRWBody(global.getFeedItems().size()-1, toAdd.getUrl(), global).execute();
+                                new GetRWBody(global.getFeedItems().size() - 1, toAdd.getUrl(), global).execute();
                             }
                         }
                     }
@@ -343,29 +282,6 @@ public class UmbrellaUtil {
         refreshInterval.put("24 hours", (int) TimeUnit.HOURS.toMillis(24));
         refreshInterval.put("Manually", 0);
         return refreshInterval;
-    }
-
-    public static int getRefreshValue() {
-        int retInterval = 0;
-        List<Registry> selInterval = Registry.find(Registry.class, "name = ?", "refresh_interval");
-        if (selInterval.size() > 0) {
-            try {
-                retInterval = Integer.parseInt(selInterval.get(0).getValue());
-            } catch(NumberFormatException nfe) {
-                nfe.printStackTrace();
-            }
-        }
-        return retInterval;
-    }
-
-    public static void setRefreshValue(int refreshValue) {
-        List<Registry> selInterval = Registry.find(Registry.class, "name = ?", "refresh_interval");
-        if (selInterval.size() > 0) {
-            selInterval.get(0).setValue(String.valueOf(refreshValue));
-            selInterval.get(0).save();
-        } else {
-             new Registry("refresh_interval", String.valueOf(refreshValue)).save();
-        }
     }
 
 }

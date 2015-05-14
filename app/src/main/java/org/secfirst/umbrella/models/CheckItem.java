@@ -1,18 +1,37 @@
 package org.secfirst.umbrella.models;
 
-import com.orm.SugarRecord;
+import com.j256.ormlite.field.DatabaseField;
 
-public class CheckItem extends SugarRecord<CheckItem> {
+import java.io.Serializable;
 
-    private int mid;
+public class CheckItem implements Serializable {
+    public static final String FIELD_TITLE = "title";
+    public static final String FIELD_TEXT = "text";
+    public static final String FIELD_VALUE = "value";
+    public static final String FIELD_PARENT = "parent";
+    public static final String FIELD_CATEGORY = "category";
+    public static final String FIELD_DIFFICULTY = "difficulty";
+    public static final String FIELD_CUSTOM = "custom";
+    public static final String FIELD_DISABLED = "disabled";
+    @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
+    private int id;
+    @DatabaseField(columnName = FIELD_TITLE)
     private String title;
+    @DatabaseField(columnName = FIELD_TEXT)
     private String text;
+    @DatabaseField(columnName = FIELD_VALUE)
     private int value;
+    @DatabaseField(columnName = FIELD_PARENT)
     private long parent;
+    @DatabaseField(columnName = FIELD_CATEGORY)
     private int category;
+    @DatabaseField(columnName = FIELD_DIFFICULTY)
     private int difficulty;
+    @DatabaseField(columnName = FIELD_CUSTOM)
     private int custom;
+    @DatabaseField(columnName = FIELD_DISABLED)
     private int disabled;
+    @DatabaseField
     private int noCheck;
 
     public CheckItem(){}
@@ -44,12 +63,12 @@ public class CheckItem extends SugarRecord<CheckItem> {
         this.category = category;
     }
 
-    public int getMId() {
-        return mid;
+    public int getId() {
+        return id;
     }
 
-    public void setMid(int mid) {
-        this.mid = mid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCategory() {
@@ -142,5 +161,20 @@ public class CheckItem extends SugarRecord<CheckItem> {
 
     public void setNoCheck(boolean noCheck) {
         this.noCheck = noCheck ? 1 : 0;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Segment{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(",title='").append(title).append('\'');
+        sb.append(", text='").append(text).append('\'');
+        sb.append(", value='").append(value).append('\'');
+        sb.append(", parent='").append(parent).append('\'');
+        sb.append(", difficulty='").append(difficulty).append('\'');
+        sb.append(", category='").append(category).append('\'');
+        sb.append(", nocheck='").append(noCheck).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
