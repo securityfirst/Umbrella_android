@@ -726,6 +726,48 @@ public class InitialData {
         checkList.add(new CheckItem("If your email has been hacked", "Consider moving to more secure account", false, 156, 13, 1));
         checkList.add(new CheckItem("If your email has been hacked", "Avoid storing read emails", false, 156, 13, 1));
 
+        checkList.add(new CheckItem("To identify surveillance of your office", "", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Take a baseline", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Identify and record unusual activity", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Filter out coincidence", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Notify others", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Trust your senses", false, 166, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("If under surveillance", "Consider risks of confrontation", false, 172, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "Reduce the ability to watch you", false, 172, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "Increase protection", false, 172, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "Continue monitoring", false, 172, 19, 1));
+
+        checkList.add(new CheckItem("To identify on foot surveillance", "", false, 0, 19, 2, true));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Look for typical comfortable clothing and accessories", false, 177, 19, 2));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Don’t overlook atypical people", false, 177, 19, 2));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Look for behavioural tells that they’re concentrating or communicating", false, 177, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 19, 2, true));
+        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Identify the trigger", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to find the eyeball", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create a force-past", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Make 3 sides of a square", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Get on a bus/train/taxi", false, 181, 19, 2));
+
+        checkList.add(new CheckItem("To identify on mobile surveillance", "", false, 0, 19, 3, true));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Be aware of the most common types of vehicle", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Don’t overlook taxis or service vehicles", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for aerials or modifications", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people being in the car for long periods of time", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people communicating covertly", false, 190, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 19, 3, true));
+        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to stop", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Use your mirrors", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Use chokepoints", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Monitor several cars back", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Check for trackers", false, 196, 19, 3));
+
         checkList.add(new CheckItem("Install and use PGP", "", false, 0, 13, 2));
         checkList.add(new CheckItem("If you need to protect your metadata, use Tor", "", false, 0, 13, 2));
         checkList.add(new CheckItem("Consider using pseudonym with your public key", "", false, 0, 13, 2));
@@ -741,8 +783,8 @@ public class InitialData {
         checkList.add(new CheckItem("For smartphones", "Download Firefox mobile and Proxy Mobile", false, 176, 14, 1));
         checkList.add(new CheckItem("For smartphones", "Download and use Psiphon3", false, 176, 14, 1));
 
-        checkList.add(new CheckItem("Install and use Tor", "", false, 0, 15, 2));
-        checkList.add(new CheckItem("On mobile install and use Orbot and Orweb", "", false, 0, 15, 2));
+        checkList.add(new CheckItem("Install and use Tor", "", false, 0, 14, 2));
+        checkList.add(new CheckItem("On mobile install and use Orbot and Orweb", "", false, 0, 14, 2));
 
         checkList.add(new CheckItem("Consider using a pseudonym", "", false, 0, 16, 1));
         checkList.add(new CheckItem("Don’t provide more registration information than necessary", "", false, 0, 16, 1));
