@@ -479,7 +479,7 @@ public class InitialData {
 
         segmentList.add(new Segment(21, 1, "Chronic Stress – Causes", "<h1>Chronic Stress – Causes</h1><p>Chronic (or cumulative) stress occurs regularly among aid workers and activists, yet often goes unrecognised or unreported.</p><p>With healthy levels of stress, symptoms are generally mild and temporary – people return to normal functioning when the stress factor is removed. If exposure to stress is excessive or long-term however, symptoms can persist and multiply, resulting in chronic or cumulative stress. Not only is this worse for the body physically and mentally, but chronic stress can also erode coping mechanisms.</p><p>Chronic stress builds slowly and may be hard to notice in yourself or others. If not properly managed, chronic stress can lead to burnout.</p>"));
 
-        segmentList.add(new Segment(21, 1, "Effects", "<h1>Effects</h1><p>There is a wide range of possible symptoms of negative stress, and people differ in terms of the symptoms they exhibit.<p></p><ul><li>Physical symptoms may include:<ul><li>Exhaustion</li><li>Hyperactivity</li><li>Sleeping difficulties or excessive sleep</li><li>Slight flu-like symptoms</li><li>Headaches</li><li>Heightened blood pressure and heart rate</li><li>Nausea or vomiting</li></ul></li><li>Behavioural symptoms may include:<ul><li>Avoiding genuine social contact and relationships</li><li>Substance abuse (caffeine/ alcohol/ drugs)</li><li>A series of short and casual romantic/sexual relationships</li><li>Risk-taking</li><li>Withdrawal</li><li>Irritability or a constant tendency to pick quarrels</li><li>Aggression</li></ul></li><li>Work-related symptoms may include: <ul><li>Working very long hours</li><li>Lateness/ not coming in to work</li><li>Lack of concentration</li><li>Poor work performance</li><li>Loss of perspective</li><li>Pre-occupation with an idea, even if it is old or ineffective</li><li>Deterioration in judgment and logical thinking</li><li>Reduced creativity</li><li>Deteriorating communication</li></ul></li><li>Emotional effects may include:<ul><li>Low morale</li><li>Pessimism and cynicism</li><li>Anxiety</li><li>Guilt</li><li>Depression</li><li>Excitement/hyper-activity</li><li>A feeling of power and invulnerability</li><li>Intense identification with, OR lack of compassion for those you work with</li><li>Nightmares or flashbacks</li><li>Tendency to avoid/repress intense thoughts or feelings</li><li>Questioning of major life areas</li></ul></li></p><p>Engaging in some of these types of behaviours are security risks in and of themselves, so it is very important to both the individual affected and your organisation that it is dealt with properly.</p>"));
+        segmentList.add(new Segment(21, 1, "Effects", "<h1>Effects</h1><p>There is a wide range of possible symptoms of negative stress, and people differ in terms of the symptoms they exhibit.<p></p><ul><li>Physical symptoms may include:<ul><li>Exhaustion</li><li>Hyperactivity</li><li>Sleeping difficulties or excessive sleep</li><li>Slight flu-like symptoms</li><li>Headaches</li><li>Heightened blood pressure and heart rate</li><li>Nausea or vomiting</li></ul></li><li>Behavioural symptoms may include:<ul><li>Avoiding genuine social contact and relationships</li><li>Substance abuse (caffeine/ alcohol/ drugs)</li><li>A series of short and casual romantic/sexual relationships</li><li>Risk-taking</li><li>Withdrawal</li><li>Irritability or a constant tendency to pick quarrels</li><li>Aggression</li></ul></li><li>Work-related symptoms may include: <ul><li>Working very long hours</li><li>Lateness/ not coming in to work</li><li>Lack of concentration</li><li>Poor work performance</li><li>Loss of perspective</li><li>Pre-occupation with an idea, even if it is old or ineffective</li><li>Deterioration in judgment and logical thinking</li><li>Reduced creativity</li><li>Deteriorating communication</li></ul></li><li>Emotional effects may include:<ul><li>Low morale</li><li>Pessimism and cynicism</li><li>Anxiety</li><li>Guilt</li><li>Depression</li><li>Excitement/hyper-activity</li><li>A feeling of power and invulnerability</li><li>Intense identification with, OR lack of compassion for those you work with</li><li>Nightmares or flashbacks</li><li>Tendency to avoid/repress intense thoughts or feelings</li><li>Questioning of major life areas</li></ul></li></ul></p><p>Engaging in some of these types of behaviours are security risks in and of themselves, so it is very important to both the individual affected and your organisation that it is dealt with properly.</p>"));
 
 
         segmentList.add(new Segment(21, 1, "Dealing with it – For Individuals", "<h1>Dealing with it – For Individuals</h1><p>Stress management is an individual process. There is no one best set of techniques. For stress management to be effective, it must be consistent and comprise the techniques that work best for each person.</p><p>It is important to recognise that it is impossible to take care of others if you do not take care of yourself.</p><p><ul><li><b>Learn about stress.</b> Be aware of the signs and symptoms of stress.</li><li><b>Know yourself.</b> Learn to observe your feelings and attitudes before trying to control your behavior.</li><li><b>Eat well and exercise.</b> Establish a regular exercise program and stick to it. Beneficial exercise for stress reduction includes deep breathing and muscle relaxation exercises. Keep a healthy diet and eat regularly.</li><li>•<b>Get rest and relaxation.</b> Get adequate, regular sleep. Maintain your normal routines for relaxation, such as hobbies, reading, etc.</li><li><b>Practice belief systems.</b> Maintain spiritual health consistent with your personal beliefs.</li><li><b>Maintain a sense of humour and perspective.</b> Try to have contact with others outside of the work environment.</li><li><b>Be informed.</b> Knowledge of the work situation and environment provides an effective way of checking rumors and immediately addressing concerns.</li><li>•<b>Talk to people.</b> Sharing a problem with others may help you find a solution and will make you feel less isolated. If unable to talk to others about your feelings, keep a journal or diary or write letters.</li><li><b>Change a stressful environment as much as possible.</b> Refuse to see yourself as a helpless victim of circumstance. When faced with a difficult situation, identify the problem, think of alternatives, evaluate the alternatives, and finally select and implement the best alternative.</li><li><b>Think positive!</b></li></ul>"));
@@ -726,6 +726,85 @@ public class InitialData {
         checkList.add(new CheckItem("If your email has been hacked", "Consider moving to more secure account", false, 156, 13, 1));
         checkList.add(new CheckItem("If your email has been hacked", "Avoid storing read emails", false, 156, 13, 1));
 
+        checkList.add(new CheckItem("To identify surveillance of your office", "", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Take a baseline", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Identify and record unusual activity", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Filter out coincidence", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Notify others", false, 166, 19, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Trust your senses", false, 166, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("If under surveillance", "Consider risks of confrontation", false, 172, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "Reduce the ability to watch you", false, 172, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "Increase protection", false, 172, 19, 1));
+        checkList.add(new CheckItem("If under surveillance", "Continue monitoring", false, 172, 19, 1));
+
+        checkList.add(new CheckItem("To identify on foot surveillance", "", false, 0, 19, 2, true));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Look for typical comfortable clothing and accessories", false, 177, 19, 2));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Don’t overlook atypical people", false, 177, 19, 2));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Look for behavioural tells that they’re concentrating or communicating", false, 177, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 19, 2, true));
+        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Identify the trigger", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to find the eyeball", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create a force-past", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Make 3 sides of a square", false, 181, 19, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Get on a bus/train/taxi", false, 181, 19, 2));
+
+        checkList.add(new CheckItem("To identify on mobile surveillance", "", false, 0, 19, 3, true));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Be aware of the most common types of vehicle", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Don’t overlook taxis or service vehicles", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for aerials or modifications", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people being in the car for long periods of time", false, 190, 19, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people communicating covertly", false, 190, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 19, 3, true));
+        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to stop", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Use your mirrors", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Use chokepoints", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Monitor several cars back", false, 196, 19, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Check for trackers", false, 196, 19, 3));
+
+        checkList.add(new CheckItem("For individuals", "", false, 0, 21, 1, true));
+        checkList.add(new CheckItem("For individuals", "Learn about stress", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Know yourself", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Eat well and exercise", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Get rest and relaxation", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Practice belief systems", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Maintain humour and perspective", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Be informed", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Talk to people", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Change the stressful environment", false, 205, 21, 1));
+        checkList.add(new CheckItem("For individuals", "Think positive", false, 205, 21, 1));
+        checkList.add(new CheckItem("For managers", "", false, 0, 21, 1, true));
+        checkList.add(new CheckItem("For managers", "Acknowledge your limitations", false, 216, 21, 1));
+        checkList.add(new CheckItem("For managers", "Get support from your manager", false, 216, 21, 1));
+        checkList.add(new CheckItem("For managers", "Delegate", false, 216, 21, 1));
+        checkList.add(new CheckItem("For managers", "Buddy up", false, 216, 21, 1));
+        checkList.add(new CheckItem("For managers", "Recognise staff efforts", false, 216, 21, 1));
+        checkList.add(new CheckItem("For managers", "Regular time off", false, 216, 21, 1));
+        checkList.add(new CheckItem("For managers", "Provide a good example", false, 216, 21, 1));
+
+        checkList.add(new CheckItem("Get enough rest", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Eat as regularly as possible and drink water", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Talk and spend time with family and friends", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Discuss problems with someone you trust", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Do activities that help you relax", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Do physical exercise", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Find safe ways to help others", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Don’t take drugs, smoke or drink alcohol", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Don’t sleep all day", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Don’t work all the time without any rest or relaxation", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Don’t isolate yourself from friends and loved ones", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Don’t neglect basic personal hygiene", "", false, 0, 21, 2));
+        checkList.add(new CheckItem("Don’t be violent", "", false, 0, 21, 2));
+
+        checkList.add(new CheckItem("Monitor symptoms", "", false, 0, 21, 3));
+        checkList.add(new CheckItem("Consult a doctor", "", false, 0, 21, 3));
+
         checkList.add(new CheckItem("Install and use PGP", "", false, 0, 13, 2));
         checkList.add(new CheckItem("If you need to protect your metadata, use Tor", "", false, 0, 13, 2));
         checkList.add(new CheckItem("Consider using pseudonym with your public key", "", false, 0, 13, 2));
@@ -741,8 +820,8 @@ public class InitialData {
         checkList.add(new CheckItem("For smartphones", "Download Firefox mobile and Proxy Mobile", false, 176, 14, 1));
         checkList.add(new CheckItem("For smartphones", "Download and use Psiphon3", false, 176, 14, 1));
 
-        checkList.add(new CheckItem("Install and use Tor", "", false, 0, 15, 2));
-        checkList.add(new CheckItem("On mobile install and use Orbot and Orweb", "", false, 0, 15, 2));
+        checkList.add(new CheckItem("Install and use Tor", "", false, 0, 14, 2));
+        checkList.add(new CheckItem("On mobile install and use Orbot and Orweb", "", false, 0, 14, 2));
 
         checkList.add(new CheckItem("Consider using a pseudonym", "", false, 0, 16, 1));
         checkList.add(new CheckItem("Don’t provide more registration information than necessary", "", false, 0, 16, 1));
