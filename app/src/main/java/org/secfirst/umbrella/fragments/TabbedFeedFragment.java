@@ -149,7 +149,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             e.printStackTrace();
         }
         if (selCountry!=null && selCountry.size()>0) {
-            UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
+            UmbrellaRestClient.getFeed("https://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
@@ -172,7 +172,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void getReports(String countryId, final Context context) {
-        UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/" + countryId, null, context, new JsonHttpResponseHandler() {
+        UmbrellaRestClient.getFeed("https://api.rwlabs.org/v1/countries/" + countryId, null, context, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
