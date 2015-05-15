@@ -1,5 +1,7 @@
 package org.secfirst.umbrella;
 
+import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -41,6 +43,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
                     mPager.setChildId(0);
                 }
             }
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -49,6 +52,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
             public void onPageScrollStateChanged(int state) {
             }
         });
+        new MigrateData(this).execute();
     }
 
     @Override
@@ -76,6 +80,24 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
         @Override
         public int getCount() {
             return NUM_PAGES;
+        }
+    }
+
+    private class MigrateData extends AsyncTask<Void, Void, Void> {
+        Activity activity;
+
+        MigrateData(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            global.migrateData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
         }
     }
 }

@@ -62,8 +62,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (!global.getTermsAccepted()) {
             startActivity(new Intent(this, TourActivity.class));
         } else {
-            global.migrateData();
-
             titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
             titleSpinner.setTag(0);
             navItem = 0;

@@ -135,9 +135,8 @@ public class Global extends Application {
 
     public void logout(Context context) {
         OpenHelperManager.setHelper(null);
-        if (context.getClass().getSimpleName().equals("MainActivity")) {
-            context.startActivity(new Intent(context, LoginActivity.class));
-        }
+        setLoggedIn(false);
+        context.startActivity(new Intent(context, LoginActivity.class));
     }
 
     public void resetPassword(final Activity activity) {
@@ -202,7 +201,7 @@ public class Global extends Application {
             getDaoFavourite();
             getDaoDifficulty();
             startService();
-            isLoggedIn = true;
+            if (password.equals(OrmHelper.DATABASE_PASSWORD))setLoggedIn(true);
             return true;
         } catch (SQLiteException e) {
             e.printStackTrace();
