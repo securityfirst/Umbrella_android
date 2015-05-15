@@ -24,7 +24,6 @@ public class UmbrellaRestClient {
 
     public static AsyncHttpClient getTolerantClient() {
         AsyncHttpClient client = new AsyncHttpClient();
-        client
         SSLSocketFactory sslSocketFactory = (SSLSocketFactory) client.getHttpClient().getConnectionManager().getSchemeRegistry().getScheme("https")
                 .getSocketFactory();
         final X509HostnameVerifier delegate = sslSocketFactory.getHostnameVerifier();
