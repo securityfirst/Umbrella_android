@@ -136,7 +136,9 @@ public class Global extends Application {
     public void logout(Context context) {
         OpenHelperManager.setHelper(null);
         setLoggedIn(false);
-        context.startActivity(new Intent(context, LoginActivity.class));
+        if (context.getClass().getSimpleName().equals("MainActivity")) {
+            context.startActivity(new Intent(context, LoginActivity.class));
+        }
     }
 
     public void resetPassword(final Activity activity) {
