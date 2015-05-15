@@ -8,17 +8,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.table.TableUtils;
 
 import net.sqlcipher.database.SQLiteDatabase;
+import net.sqlcipher.database.SQLiteException;
 
-import org.secfirst.umbrella.MainActivity;
+import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.models.Category;
@@ -40,10 +43,9 @@ public class Global extends Application {
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn;
-    private String _password = "";
+    private boolean password;
     private ArrayList<FeedItem> feedItems;
     private long feeditemsRefreshed;
-    private OrmHelper dbHelper;
     private Dao<Segment, String> daoSegment;
     private Dao<CheckItem, String> daoCheckItem;
     private Dao<Category, String> daoCategory;
@@ -59,10 +61,6 @@ public class Global extends Application {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
-        initializeSQLCipher();
-        Intent i = new Intent(getApplicationContext(), RefreshService.class);
-        i.putExtra("refresh_feed", getRefreshValue());
-        startService(i);
     }
 
     public boolean isLoggedIn() {
@@ -71,11 +69,6 @@ public class Global extends Application {
 
     public void setLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn = isLoggedIn;
-    }
-
-    public void savePassword(String password) {
-        this._password = password;
-        sped.putString("password", password).commit();
     }
 
     public void set_termsAccepted(boolean terms) {
@@ -96,21 +89,8 @@ public class Global extends Application {
         this.feedItems = feedItems;
     }
 
-    public boolean checkPassword(String password) {
-        this._password = prefs.getString("password", "");
-        if (!this._password.equals("") && password.equals(this._password)) {
-            setLoggedIn(true);
-            return true;
-        }
-        return false;
-    }
-
     public boolean hasPasswordSet() {
-        if (this._password.equals("")) {
-            String password = prefs.getString("password", "");
-            return !password.equals("");
-        }
-        return true;
+        return password;
     }
 
     public void setPassword(final Activity activity) {
@@ -142,7 +122,8 @@ public class Global extends Application {
                 if (!pw.equals(confirmInput.getText().toString())) {
                     Toast.makeText(activity, "Passwords do not match.", Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
-                    savePassword(pw);
+                    getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + pw + "';");
+                    password = true;
                     dialog.dismiss();
                     Toast.makeText(activity, "You have successfully set your password.", Toast.LENGTH_SHORT).show();
                 } else {
@@ -152,19 +133,25 @@ public class Global extends Application {
         });
     }
 
+    public void logout(Context context) {
+        OpenHelperManager.setHelper(null);
+        if (context.getClass().getSimpleName().equals("MainActivity")) {
+            context.startActivity(new Intent(context, LoginActivity.class));
+        }
+    }
+
     public void resetPassword(final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setTitle("Confirm reset password");
-        alertDialogBuilder.setMessage("Are you sure you want to reset your password? This also means losing any data you might have entered so far\n");
-        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setTitle(getString(R.string.reset_password_title));
+        alertDialogBuilder.setMessage(getString(R.string.reset_password_text));
+        alertDialogBuilder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                savePassword("");
-                resetDB();
-                Toast.makeText(activity, "Password reset and all data removed.", Toast.LENGTH_SHORT).show();
-                activity.startActivity(new Intent(activity, MainActivity.class));
+                getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + OrmHelper.DATABASE_PASSWORD + "';");
+                getOrmHelper().getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
+                new ResetData(activity).execute();
             }
         });
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
@@ -173,33 +160,67 @@ public class Global extends Application {
         alertDialog.show();
     }
 
-    public void initializeSQLCipher() {
+    private class ResetData extends AsyncTask<Void, Void, Void> {
+        Activity activity;
+
+        ResetData(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            getOrmHelper().recreateTables(getOrmHelper().getConnectionSource());
+            password = false;
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            Toast.makeText(activity, getString(R.string.password_reset_notification), Toast.LENGTH_SHORT).show();
+            set_termsAccepted(false);
+            activity.finish();
+            startActivity(activity.getIntent());
+        }
+    }
+
+    public OrmHelper getOrmHelper() {
+        return OpenHelperManager.getHelper(getApplicationContext(), OrmHelper.class);
+    }
+
+    public boolean initializeSQLCipher(String password) {
         SQLiteDatabase.loadLibs(this);
-        if (dbHelper==null) {
-            dbHelper = new OrmHelper(getApplicationContext());
-            dbHelper.getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
+        if (OpenHelperManager.getHelper(getApplicationContext(), OrmHelper.class)==null) {
+            OpenHelperManager.setHelper(new OrmHelper(getApplicationContext()));
         }
-        getDaoSegment();
-        getDaoCheckItem();
-        getDaoCategory();
-        getDaoRegistry();
-        getDaoFavourite();
-        getDaoDifficulty();
+        try {
+            if (password.equals("")) password = OrmHelper.DATABASE_PASSWORD;
+            getOrmHelper().getWritableDatabase(password);
+            getDaoSegment();
+            getDaoCheckItem();
+            getDaoCategory();
+            getDaoRegistry();
+            getDaoFavourite();
+            getDaoDifficulty();
+            startService();
+            isLoggedIn = true;
+            return true;
+        } catch (SQLiteException e) {
+            e.printStackTrace();
+        }
+        this.password = true;
+        return false;
     }
 
-    public void resetDB() {
-        if (dbHelper!=null) {
-            dbHelper.dropTables(dbHelper.getConnectionSource());
-        }
-        migrateData();
+    public void startService() {
+        Intent i = new Intent(getApplicationContext(), RefreshService.class);
+        i.putExtra("refresh_feed", getRefreshValue());
+        startService(i);
     }
-
-
 
     public Dao<Segment, String> getDaoSegment() {
         if (daoSegment==null) {
             try {
-                daoSegment = dbHelper.getDao(Segment.class);
+                daoSegment = getOrmHelper().getDao(Segment.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -210,7 +231,7 @@ public class Global extends Application {
     public Dao<CheckItem, String> getDaoCheckItem() {
         if (daoCheckItem==null) {
             try {
-                daoCheckItem = dbHelper.getDao(CheckItem.class);
+                daoCheckItem = getOrmHelper().getDao(CheckItem.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -221,7 +242,7 @@ public class Global extends Application {
     public Dao<Category, String> getDaoCategory() {
         if (daoCategory==null) {
             try {
-                daoCategory = dbHelper.getDao(Category.class);
+                daoCategory = getOrmHelper().getDao(Category.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -232,7 +253,8 @@ public class Global extends Application {
     public Dao<Registry, String> getDaoRegistry() {
         if (daoRegistry==null) {
             try {
-                daoRegistry = dbHelper.getDao(Registry.class);
+                if (getOrmHelper().isOpen())
+                daoRegistry = getOrmHelper().getDao(Registry.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -243,7 +265,7 @@ public class Global extends Application {
     public Dao<Favourite, String> getDaoFavourite() {
         if (daoFavourite==null) {
             try {
-                daoFavourite = dbHelper.getDao(Favourite.class);
+                daoFavourite = getOrmHelper().getDao(Favourite.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -254,7 +276,7 @@ public class Global extends Application {
     public Dao<Difficulty, String> getDaoDifficulty() {
         if (daoDifficulty==null) {
             try {
-                daoDifficulty = dbHelper.getDao(Difficulty.class);
+                daoDifficulty = getOrmHelper().getDao(Difficulty.class);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -304,10 +326,10 @@ public class Global extends Application {
     }
 
     public void syncSegments(ArrayList<Segment> segments) {
-        if (dbHelper!=null) {
+        if (getOrmHelper()!=null) {
             try {
-                TableUtils.dropTable(dbHelper.getConnectionSource(), Segment.class, true);
-                TableUtils.createTable(dbHelper.getConnectionSource(), Segment.class);
+                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Segment.class, true);
+                TableUtils.createTable(getOrmHelper().getConnectionSource(), Segment.class);
                 for (Segment segment : segments) {
                     getDaoSegment().create(segment);
                 }
@@ -318,10 +340,10 @@ public class Global extends Application {
     }
 
     public void syncCategories(ArrayList<Category> categories) {
-        if (dbHelper!=null) {
+        if (getOrmHelper()!=null) {
             try {
-                TableUtils.dropTable(dbHelper.getConnectionSource(), Category.class, true);
-                TableUtils.createTable(dbHelper.getConnectionSource(), Category.class);
+                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
+                TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
                 for (Category item : categories) {
                     getDaoCategory().create(item);
                 }
@@ -332,10 +354,10 @@ public class Global extends Application {
     }
 
     public void syncCheckLists(ArrayList<CheckItem> checkList) {
-        if (dbHelper!=null) {
+        if (getOrmHelper()!=null) {
             try {
-                TableUtils.dropTable(dbHelper.getConnectionSource(), CheckItem.class, true);
-                TableUtils.createTable(dbHelper.getConnectionSource(), CheckItem.class);
+                TableUtils.dropTable(getOrmHelper().getConnectionSource(), CheckItem.class, true);
+                TableUtils.createTable(getOrmHelper().getConnectionSource(), CheckItem.class);
                 CheckItem previousItem = null;
                 for (CheckItem checkItem : checkList) {
                     if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {

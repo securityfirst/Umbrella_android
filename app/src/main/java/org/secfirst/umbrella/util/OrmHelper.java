@@ -18,8 +18,8 @@ import org.secfirst.umbrella.models.Segment;
 import java.sql.SQLException;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABASE_NAME = "database.db";
-    public static final String DATABASE_PASSWORD = "funnybunny";
+    public static final String DATABASE_NAME = "database.db";
+    public static final String DATABASE_PASSWORD = "umbrella";
     private static final int DATABASE_VERSION = 1;
 
     public OrmHelper(Context context) {
@@ -40,6 +40,59 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void close() {
         super.close();
+    }
+
+    public void recreateTables(ConnectionSource source) {
+        try {
+            TableUtils.dropTable(source, Segment.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.dropTable(source, CheckItem.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.dropTable(source, Registry.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.dropTable(source, Favourite.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.dropTable(source, Difficulty.class, true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.createTable(source, Segment.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.createTable(source, CheckItem.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.createTable(source, Registry.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.createTable(source, Favourite.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            TableUtils.createTable(source, Difficulty.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createTables(ConnectionSource source) {

@@ -29,7 +29,8 @@ public class RefreshService extends Service
         refreshFeed = setFeedRefreshTask();
         setLogoutTimerTask();
         logoutTimer.schedule(logoutTask, TimeUnit.MINUTES.toMillis(30), TimeUnit.MINUTES.toMillis(30));
-        int refreshFeedValue = intent.getIntExtra("refresh_feed", 0);
+        int refreshFeedValue = 0;
+        if (intent!=null) refreshFeedValue = intent.getIntExtra("refresh_feed", 0);
         if (refreshFeedValue>0) {
             feedTimer.schedule(refreshFeed, 1800000, 1800000);
         }
@@ -73,10 +74,11 @@ public class RefreshService extends Service
     }
 
     public void resetLogoutTimer() {
-        logoutTask.cancel();
-        setLogoutTimerTask();
-        logoutTimer.schedule(logoutTask, 1800000);
-
+        if (logoutTask!=null) {
+            logoutTask.cancel();
+            setLogoutTimerTask();
+            logoutTimer.schedule(logoutTask, 1800000);
+        }
     }
 
     public void setRefresh(int interval) {

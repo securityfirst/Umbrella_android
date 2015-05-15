@@ -86,8 +86,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void tryLogin() {
-        boolean isPasswordOk = global.checkPassword(inputPassword.getText().toString().trim());
-        if (isPasswordOk) {
+        if (global.initializeSQLCipher(inputPassword.getText().toString().trim())) {
             goToMain();
         } else {
             inputPassword.setText("");

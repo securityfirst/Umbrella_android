@@ -42,5 +42,10 @@
     <string name="set_location">Set your location</string>
     <string name="feed_sources">Feed sources</string>
     <string name="no_feed_updates">There were no news updates for your chosen country, pull to refresh.</string>
+    <string name="reset_password_title">Confirm reset password</string>
+    <string name="reset_password_text">Are you sure you want to reset your password? This also means losing any data you might have entered so far\n</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="password_reset_notification">Password reset and all data removed.</string>
 
 </resources>

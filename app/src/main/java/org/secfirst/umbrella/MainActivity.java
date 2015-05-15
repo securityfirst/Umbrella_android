@@ -56,116 +56,118 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
         super.onCreate(savedInstanceState);
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
-        global.migrateData();
-        if (global.hasPasswordSet() && !global.isLoggedIn()) {
+        boolean hasOpened = global.initializeSQLCipher("");
+        if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (!global.getTermsAccepted()) {
             startActivity(new Intent(this, TourActivity.class));
-        }
-
-        titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
-        titleSpinner.setTag(0);
-        navItem = 0;
-        groupItem = -1;
-        titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<Difficulty> hasDifficulty = null;
-                try {
-                    hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                if (hasDifficulty!=null && hasDifficulty.size() > 0) {
-                    Category childCategory = null;
-                    try {
-                        childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
-                        if (!childCategory.getDifficultyAdvanced() && position > 0) {
-                            position++;
-                        }
-                        if (!childCategory.getDifficultyBeginner()) {
-                            position++;
-                        }
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    hasDifficulty.get(0).setSelected(position);
-                    try {
-                        global.getDaoDifficulty().update(hasDifficulty.get(0));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (((Integer) titleSpinner.getTag()) == position) {
-                    return;
-                }
-                titleSpinner.setTag(position);
-                setFragment(1, childItem.getTitle(), false);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
-        DrawerAdapter adapter = new DrawerAdapter(this);
-        View header = View.inflate(this, R.layout.drawer_header, null);
-        final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (global.hasPasswordSet()) {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                } else {
-                    global.setPassword(MainActivity.this);
-                }
-                loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
-            }
-        });
-        loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
-        drawerList.addHeaderView(header);
-        drawerList.setAdapter(adapter);
-        drawerList.setOnChildClickListener(adapter);
-        drawerList.setOnGroupClickListener(adapter);
-
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
-                R.drawable.ic_drawer, R.string.open_drawer,
-                R.string.close_drawer) {
-            public void onDrawerClosed(View view) {}
-
-            public void onDrawerOpened(View drawerView) {}
-        };
-
-        drawer.setDrawerListener(actionBarDrawerToggle);
-        if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
-            for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
-                for (DrawerChildItem childItem : groupItem) {
-                    if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' '))) {
-                        this.childItem = childItem;
-                    }
-                }
-            }
-            if (childItem != null) {
-                try {
-                    Category category = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
-                    if (category.hasDifficulty()) {
-                        setFragment(1, "", true);
-                    } else {
-                        drawerItem = childItem.getPosition();
-                        setFragment(2, category.getCategory(), true);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         } else {
-            setFragment(0, "My Security", true);
-            drawer.openDrawer(Gravity.LEFT);
+            global.migrateData();
+
+            titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
+            titleSpinner.setTag(0);
+            navItem = 0;
+            groupItem = -1;
+            titleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    List<Difficulty> hasDifficulty = null;
+                    try {
+                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    if (hasDifficulty!=null && hasDifficulty.size() > 0) {
+                        Category childCategory = null;
+                        try {
+                            childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                            if (!childCategory.getDifficultyAdvanced() && position > 0) {
+                                position++;
+                            }
+                            if (!childCategory.getDifficultyBeginner()) {
+                                position++;
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        hasDifficulty.get(0).setSelected(position);
+                        try {
+                            global.getDaoDifficulty().update(hasDifficulty.get(0));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (((Integer) titleSpinner.getTag()) == position) {
+                        return;
+                    }
+                    titleSpinner.setTag(position);
+                    setFragment(1, childItem.getTitle(), false);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+            DrawerAdapter adapter = new DrawerAdapter(this);
+            View header = View.inflate(this, R.layout.drawer_header, null);
+            final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
+            header.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (global.hasPasswordSet()) {
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    } else {
+                        global.setPassword(MainActivity.this);
+                    }
+                    loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+                }
+            });
+            loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+            drawerList.addHeaderView(header);
+            drawerList.setAdapter(adapter);
+            drawerList.setOnChildClickListener(adapter);
+            drawerList.setOnGroupClickListener(adapter);
+
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
+                    R.drawable.ic_drawer, R.string.open_drawer,
+                    R.string.close_drawer) {
+                public void onDrawerClosed(View view) {}
+
+                public void onDrawerOpened(View drawerView) {}
+            };
+
+            drawer.setDrawerListener(actionBarDrawerToggle);
+            if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
+                for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
+                    for (DrawerChildItem childItem : groupItem) {
+                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' '))) {
+                            this.childItem = childItem;
+                        }
+                    }
+                }
+                if (childItem != null) {
+                    try {
+                        Category category = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                        if (category.hasDifficulty()) {
+                            setFragment(1, "", true);
+                        } else {
+                            drawerItem = childItem.getPosition();
+                            setFragment(2, category.getCategory(), true);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else {
+                setFragment(0, "My Security", true);
+                drawer.openDrawer(Gravity.LEFT);
+            }
         }
     }
 
@@ -277,7 +279,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        actionBarDrawerToggle.syncState();
+        if (actionBarDrawerToggle!=null) actionBarDrawerToggle.syncState();
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
@@ -397,7 +399,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_logout) {
-            startActivity(new Intent(this, LoginActivity.class));
+            global.logout(this);
             return true;
         }
         if (id == R.id.action_set_password) {
