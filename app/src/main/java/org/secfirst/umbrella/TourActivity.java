@@ -1,10 +1,12 @@
 package org.secfirst.umbrella;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
@@ -14,19 +16,19 @@ import com.viewpagerindicator.CirclePageIndicator;
 import org.secfirst.umbrella.fragments.TourSlideFragment;
 import org.secfirst.umbrella.util.TourViewPager;
 
-public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener {
+public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener, TourSlideFragment.OnNavigateToMainListener {
 
     private static final int NUM_PAGES = 6;
     private TourViewPager mPager;
-    private PagerAdapter mPagerAdapter;
     private CirclePageIndicator mIndicator;
+    private boolean migrationDone, navigateToMainRequested;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mPager = (TourViewPager) findViewById(R.id.myCustomViewPager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
         mPager.setOnSwipeOutListener(this);
 
@@ -67,6 +69,21 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
         }
     }
 
+    @Override
+    public void onNavigationRequested() {
+        if (migrationDone) {
+            navigateToMain();
+        } else {
+            navigateToMainRequested = true;
+        }
+    }
+
+    private void navigateToMain() {
+        Intent toMain = new Intent(this, MainActivity.class);
+        toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(toMain);
+    }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm);
@@ -98,6 +115,8 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
         @Override
         protected void onPostExecute(Void result) {
+            migrationDone = true;
+            if (navigateToMainRequested) navigateToMain();
         }
     }
 }
