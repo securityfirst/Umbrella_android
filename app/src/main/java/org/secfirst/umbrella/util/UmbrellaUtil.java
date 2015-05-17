@@ -143,6 +143,10 @@ public class UmbrellaUtil {
                         child.add(new DrawerChildItem(category.getCategory(), category.getId()));
                     }
                 }
+                if (parentCategory.getId() == 1) {
+                    child.add(new DrawerChildItem("My Checklists", -1));
+                    child.add(new DrawerChildItem("Dashboard", -2));
+                }
                 childItem.add(child);
             }
         }

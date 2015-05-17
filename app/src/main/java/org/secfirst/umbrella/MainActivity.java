@@ -201,9 +201,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
-        if (fragType == 0) {
+        if (fragType == 0 || fragType == -1) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global));
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global, (fragType == -1 ? true : false)));
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
