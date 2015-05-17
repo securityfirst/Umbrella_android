@@ -27,7 +27,7 @@
     <string name="incorrect_password">Password incorrect. Please try again.</string>
     <string name="set_password">Set password</string>
     <string name="my_checklists">My Checklists</string>
-    <string name="feeds">Feeds</string>
+    <string name="feeds">Dashboard</string>
     <string name="check_lists_total">Check lists total</string>
     <string name="log_out">Log out</string>
     <string name="log_in">Log In</string>

@@ -18,8 +18,9 @@
             android:src="@drawable/umbrella190"
             android:id="@+id/tour_image"
             android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="20dp"/>
 
     </LinearLayout>
 
@@ -32,6 +33,7 @@
             android:id="@+id/heading_title"
             android:textColor="@color/white"
             android:text="Title"
+            android:visibility="gone"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"

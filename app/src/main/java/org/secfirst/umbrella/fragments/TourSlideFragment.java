@@ -20,6 +20,7 @@ import android.widget.Toast;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 public class TourSlideFragment extends Fragment {
 
@@ -58,23 +59,37 @@ public class TourSlideFragment extends Fragment {
         TextView termsText = ((TextView) rootView.findViewById(R.id.text_terms));
         final Button skipBtn = (Button) rootView.findViewById(R.id.btn_skip);
         final ScrollView termsView = (ScrollView) rootView.findViewById(R.id.scroll_terms);
+        headingBody.setPadding(UmbrellaUtil.dpToPix(25, getActivity()), UmbrellaUtil.dpToPix(40, getActivity()),UmbrellaUtil.dpToPix(25, getActivity()),0);
 
         switch (mPageNumber) {
             case 0:
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_purple));
-                headingTitle.setText("Welcome to Umbrella");
-                headingBody.setText("We help keep you safe by making security easier. We have gathered the best advice available and can help you do everything from planning a safe journey to sending a secure email.");
+                headingBody.setText("Umbrella makes your security simple");
+                headingTitle.setVisibility(View.GONE);
                 break;
             case 1:
                 ((ImageView) rootView.findViewById(R.id.tour_image)).setImageResource(R.drawable.walktrough2);
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_green));
-                headingTitle.setText("How it works");
-                headingBody.setText("Select what you want from the menu.\nThe lesson explains how to do it.\nThe checklist helps you to remember. You can edit and save your progress securely if you want.");
+                headingTitle.setVisibility(View.GONE);
+                headingBody.setText("Get advice on everything from sending an secure email to safe travel");
                 break;
             case 2:
+                ((ImageView) rootView.findViewById(R.id.tour_image)).setImageResource(R.drawable.walktrough3);
+                slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_yellow));
+                headingTitle.setVisibility(View.GONE);
+                headingBody.setText("Use checklists to mark your progress");
+                break;
+            case 3:
+                ((ImageView) rootView.findViewById(R.id.tour_image)).setImageResource(R.drawable.walktrough2);
+                slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_purple));
+                headingTitle.setVisibility(View.GONE);
+                headingBody.setText("Stay up to date with the latest information on where you are");
+                break;
+            case 4:
                 termsView.setVisibility(View.VISIBLE);
                 umbrellaLayout.setVisibility(View.GONE);
                 headingBody.setVisibility(View.GONE);
+                headingTitle.setVisibility(View.VISIBLE);
                 skipBtn.setVisibility(View.VISIBLE);
                 skipBtn.setEnabled(false);
                 skipBtn.setText("");
@@ -85,10 +100,11 @@ public class TourSlideFragment extends Fragment {
                 termsText.setTextColor(getResources().getColor(R.color.white));
                 termsText.setBackgroundResource(android.R.color.transparent);
                 break;
-            case 3:
+            case 5:
                 termsView.setVisibility(View.VISIBLE);
                 umbrellaLayout.setVisibility(View.GONE);
                 headingBody.setVisibility(View.GONE);
+                headingTitle.setVisibility(View.VISIBLE);
                 skipBtn.setVisibility(View.VISIBLE);
                 termsView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
