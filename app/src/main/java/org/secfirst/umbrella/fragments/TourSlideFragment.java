@@ -1,9 +1,8 @@
 package org.secfirst.umbrella.fragments;
 
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.IntentCompat;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
@@ -26,6 +24,11 @@ public class TourSlideFragment extends Fragment {
 
     private int mPageNumber, mOffset;
     private Global global;
+    OnNavigateToMainListener mCallback;
+
+    public interface OnNavigateToMainListener {
+        void onNavigationRequested();
+    }
 
     public static TourSlideFragment create(int pageNumber, Global global) {
         TourSlideFragment fragment = new TourSlideFragment();
@@ -34,6 +37,17 @@ public class TourSlideFragment extends Fragment {
         args.putInt("page", pageNumber);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mCallback = (OnNavigateToMainListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnNavigateToMainListener");
+        }
     }
 
     public TourSlideFragment() {
@@ -110,7 +124,7 @@ public class TourSlideFragment extends Fragment {
                     @Override
                     public void onScrollChanged() {
                         mOffset = termsView.getScrollY();
-                        if (mOffset>70) {
+                        if (mOffset > 70) {
                             if (skipBtn != null) {
                                 skipBtn.setTextColor(getActivity().getResources().getColor(R.color.white));
                             }
@@ -120,11 +134,9 @@ public class TourSlideFragment extends Fragment {
                 skipBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mOffset>70) {
+                        if (mOffset > 70) {
                             global.set_termsAccepted(true);
-                            Intent toMain = new Intent(getActivity(), MainActivity.class);
-                            toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(toMain);
+                            mCallback.onNavigationRequested();
                         } else {
                             Toast.makeText(getActivity(), "You have to read and accept terms and conditions to continue", Toast.LENGTH_SHORT).show();
                         }
