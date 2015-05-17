@@ -34,7 +34,7 @@
     <string name="beginner">Beginner</string>
     <string name="expert">Expert</string>
     <string name="intermediate">Advanced</string>
-    <string name="action_export_checklist">Export Checklist</string>
+    <string name="action_export_checklist">Share checklist</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
     <string name="refresh_interval_feeds">Refresh interval for feeds</string>
