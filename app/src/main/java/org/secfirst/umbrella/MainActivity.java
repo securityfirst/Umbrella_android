@@ -265,7 +265,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
+            android.support.v4.app.FragmentTransaction trans;
+            if (drawerItem == 56) { // index into pageviewer
+                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, 0, false), "tabbed");
+            } else {
+                trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
+            }
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
