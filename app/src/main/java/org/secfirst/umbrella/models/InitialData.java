@@ -471,6 +471,16 @@ public class InitialData {
         segmentList.add(new Segment(19, 3, "What now?", "<p>Swipe right for this lesson's checklist</p><p>Go to the Beginner Lesson for advice on how to identify and deal with surveillance of your office.</p><p>Go to the Advanced Lesson for advice on how to practice counter-surveillance when you are out on foot.</p><h3>RELATED LESSONS/TOOLS</h3><p><ul><li><a href=\"umbrella://lesson/meetings\">Meetings</a></li></ul></p>"));
 
 
+        segmentList.add(new Segment(20, 1, "Prevention", "<h1>Prevention</h1><p>Human rights workers, journalists and humanitarian staff are sometimes arrested or detained.  The risk of this happening can be significantly reduced by:<ul><li>Good relations with local authorities and groups where possible</li><li>Appropriate behaviour, on and off duty</li><li>Obeying local laws and customs</li><li>Ensuring that all legal documentation is correct, and carried by all staff and vehicles as required</li><li>Training and briefing staff before they begin their assignments</li></ul></p><p>Be aware of which areas and groups benefit from aid and which do not, and therefore might feel discriminated against, and make sure that as many people as possible in the area of operations understand your organisation and the role it is playing. Transparency, good communications, integrity, even-handedness and respectful attitudes help as well.</p>"));
+
+        segmentList.add(new Segment(20, 1, "Organisational Response", "<h1>Organisational Response</h1><p><ul><li>If a staff member is arrested and their whereabouts are unknown, the first priority is to establish where they are and under whose authority. Be assertive and visit all relevant local authorities, inform the embassy (in the case of an international staff member) and be very persistent and insistent in seeking information.</li><li>Remember that a staff member may be arrested for legitimate reasons and may have to account for their actions. Either way, engage a good local lawyer, who knows the local languages and the local system, has experience with this type of situation and perhaps has useful connections.</li><li>When it is clear who has arrested the staff member and where they are, seek to ensure that their rights are protected. Insist on their right to be visited and to medical and legal assistance, and request improvements in the conditions in which they are being kept, if these are not acceptable. Protest if these requests are not met. It is important to find out from them exactly what happened.</li><li>People are often arrested without formal charges being brought, in which case insist that a charge is articulated within a specified period of time. The charge may relate to the individual (for example they are accused of being involved in a crime) or the organisation (for example an accusation of spying under cover of humanitarian work). In any scenario the main priority is to work towards the safe and speedy release of the staff member. In most circumstances, only once a staff member is freed from wrongful charges should efforts be made to clear the name of the individual or the organisation.</li><li>Liaise with, and manage, the staff member’s family. Tell them the steps being taken, maintain a direct regular line of communication, remain aware of what steps the family intends or has taken, and warn them if what they plan to do looks like it may be counter-productive.</li><li>Inform other humanitarian organisations, such as the ICRC, and ask their advice, if appropriate. In many cases, the knowledge that other international organisations are aware of the detention may be enough to persuade the authorities to release the detainee.</li></li></p>"));
+
+        segmentList.add(new Segment(20, 1, "What to do if Arrested", "<h1>What to do if Arrested</h1><p>Below are some useful pointers to remember if you are ever arrested. If travelling, your protocol for conduct during questioning should be agreed during the planning of the trip.<ul><li>Identify yourself clearly as a representative of your organisation where appropriate.</li><li>The most important consideration is to ensure outside help is aware of what is occurring. The Panic Button app can be helpful in letting your friends or colleagues know you are in trouble with just the press of a button.</li><li>Prepare yourself mentally for what might be coming. It requires patience on your part and the ability to keep calm. You might be threatened, assaulted, cuffed, put in a confined space such as a cell, mistreated, intimidated, sleep/food/water deprived etc. In general highlight these issues immediately to the authorities who made the arrest and also your legal support - and make sure they are noted.</li><li>Even in the environments most hostile to the work of HRDs, authorities generally still seek to have a confession (even if it is false or gotten through force) before they take further action. If you remain calm and don’t give this to them, it makes it much harder for them to make false allegations against you.</li><li>Never sign anything you don’t agree with or in a language you don’t understand.</li><li>Know your legal rights and be persistent in requesting that they you are granted them. E.g. to see a lawyer, speak to the embassy, medical treatment etc.</li><li>Be co-operative, calm and helpful but don’t volunteer information unnecessarily. Think about what information is unimportant, such as the general activities of your organisation, and what is high-risk, such as the sensitive data you were recently passed by a whistle-blower.</li><li>Attempt to understand at an early point<ul><li>Who arrested you?</li><li>Where are they taking you?</li><li>What type of organisation is behind it? (Local police might have a very different agenda then a national intelligence agency)</li><li>Who else was arrested?</li><li>Why were you arrested? What is their agenda?</li><li>How much do they actually know?</li><li>How long can they keep you?</li></ul></li></ul></p>"));
+
+        segmentList.add(new Segment(20, 1, "Questioning Techniques", "<h1>Questioning Techniques</h1><p>Questioning techniques to be aware of include:<ul><li>Asking trivial information to get you talking and then shifting to more sensitive information when they feel you are co-operative;</li><li>Threatening, then reducing the threat (known commonly as “good cop”, “bad cop”);</li><li>Physical intimidation;</li><li>Asking you the same questions repeatedly to see if there is any inconsistency in what you are saying. You may be asked to give the same timeline backwards to look for inconsistencies;</li><li>Claiming that your co-workers or others have made allegations against you or that they have specific evidence against you. Their aim is to get you to confirm things they are suspicious about. Don’t voluntarily confirm what might just be their suspicions.</li></ul></p>"));
+
+        segmentList.add(new Segment(20, 1, "What now?", "<p>Swipe right for this lesson’s checklist</p><h3>RELATED LESSONS/TOOLS</h3><p><ul><li>Travel Prep lesson</li></ul></p><h3>FURTHER READING</h3><p><ul><li><a href=\"https://www.odihpn.org/download/gpr_8_revised2pdf\">Good Practice Review Number 8: Operational security management in violent environments (Revised Ed.)</a></li><li><a href=\"https://www.google.co.uk/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0CCEQFjAA&url=http%3A%2F%2Fec.europa.eu%2Fecho%2Ffiles%2Fevaluation%2Fwatsan2005%2Fannex_files%2FECHO%2FECHO12%20-%20echo_generic_security_guide_en.doc&ei=kLxAVc6LOILuUP2SgbAE&usg=AFQjCNEXEOcbLeV24f3WolHmDwLq7KJzlQ&sig2=hbnI7wfdrGIHS7mmikBRWA\">ECHO Generic Security Guide for Humanitarian Organisations</a></li><li><a href=\"http://protectioninternational.org/publication/new-protection-manual-for-human-rights-defenders-3rd-edition/\">Protection International: New Protection Manual for Human Rights Defenders (3rd Ed.)</a></li></ul></p>"));
+
 
 
 
@@ -843,7 +853,7 @@ public class InitialData {
 
         segmentList.add(new Segment(56, 1, "Zero day", "<h1>Zero day</h1><p>A flaw in a piece of software or hardware that was previously unknown to the maker of the product. Until the manufacturers hear of the flaw and fix it, attackers can use it for their own purposes.</p>"));
 
-        
+
         return segmentList;
     }
 
@@ -1102,6 +1112,31 @@ public class InitialData {
         checkList.add(new CheckItem("Don’t neglect basic personal hygiene", "", false, 0, 21, 2));
         checkList.add(new CheckItem("Don’t be violent", "", false, 0, 21, 2));
 
+        checkList.add(new CheckItem("Prevent arrest", "", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("Prevent arrest", "Maintain good relations with local authorities", false, 237, 20, 1));
+        checkList.add(new CheckItem("Prevent arrest", "Observe local laws and customs on and off duty", false, 237, 20, 1));
+        checkList.add(new CheckItem("Prevent arrest", "Carry correct legal documentation", false, 237, 20, 1));
+        checkList.add(new CheckItem("Prevent arrest", "Train and brief staff", false, 237, 20, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("If staff member is arrested", "Find out where they are held", false, 243, 20, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Establish the facts", false, 243, 20, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Engage a local lawyer", false, 243, 20, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Advocate for their rights", false, 243, 20, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Liaise with their family", false, 243, 20, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Inform other organisations", false, 243, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("If you are arrested", "Identify yourself", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Inform your colleagues", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Prepare yourself mentally", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Stay calm", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Do not give false confessions", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Don’t sign anything you don’t understand", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Request your legal rights", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Be cooperative when appropriate", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Don’t volunteer sensitive information", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Establish the facts", false, 250, 20, 1));
+        checkList.add(new CheckItem("If you are arrested", "Be alert to questioning techniques used", false, 250, 20, 1));
+
         checkList.add(new CheckItem("Monitor symptoms", "", false, 0, 21, 3));
         checkList.add(new CheckItem("Consult a doctor", "", false, 0, 21, 3));
 
@@ -1177,7 +1212,7 @@ public class InitialData {
         categoryList.add(new Category(17, 0, "Personal", true, false, false, false, "", "", ""));
         categoryList.add(new Category(18, 17, "Protective Equipment", true, false, false, false, "", "", ""));
         categoryList.add(new Category(19, 17, "Counter-Surveillance", true, true, true, true, "", "", ""));
-        categoryList.add(new Category(20, 17, "Arrests", true, false, false, false, "", "", ""));
+        categoryList.add(new Category(20, 17, "Arrests", true, true, false, false, "", "", ""));
         categoryList.add(new Category(21, 17, "Stress", true, true, true, true, "", "", ""));
         categoryList.add(new Category(22, 0, "Travel", true, false, false, false, "", "", ""));
         categoryList.add(new Category(23, 22, "Preparation", true, false, false, false, "", "", ""));
