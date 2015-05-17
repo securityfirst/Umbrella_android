@@ -45,6 +45,7 @@ public class TabbedFragment extends Fragment {
     public ViewPager mViewPager;
     public static int difficulty;
     public long sectionNumber;
+    public static boolean hasChecklist;
 
     public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber, boolean checklist) {
         TabbedFragment tabbedFragment = new TabbedFragment();
@@ -67,6 +68,7 @@ public class TabbedFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), difficulty);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        hasChecklist = getArguments().getBoolean("checklist", false);
         mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? mSectionsPagerAdapter.getCount() - 1 : 0);
         return v;
     }
@@ -158,6 +160,7 @@ public class TabbedFragment extends Fragment {
                     gridView.setAdapter(gAdapter);
                 }
                 TextView toChecklist = (TextView) rootView.findViewById(R.id.grid_title);
+                toChecklist.setVisibility((TabbedFragment.hasChecklist) ? View.VISIBLE : View.GONE);
                 toChecklist.setText("Checklist");
                 int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
                 toChecklist.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
