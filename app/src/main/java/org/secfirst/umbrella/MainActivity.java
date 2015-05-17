@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private Spinner titleSpinner;
     private DrawerChildItem childItem;
     private int fragType = 0;
+    public MenuItem favouriteItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -354,10 +355,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             itemExport.setVisible(hasDifficulty!=null && hasDifficulty.size()>0);
         }
-        MenuItem favouriteItem = menu.findItem(R.id.favourite);
-        if (fragType == 0 || fragType == 2) {
-            favouriteItem.setVisible(false);
-        } else if (fragType == 1 && childItem != null) {
+        favouriteItem = menu.findItem(R.id.favourite);
+        if (fragType == 1 && childItem != null) {
             List<Difficulty> hasDifficulty = null;
             try {
                 hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
@@ -378,6 +377,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             favouriteItem.setVisible(hasDifficulty!=null && hasDifficulty.size() > 0);
         }
+        favouriteItem.setVisible(false);
         return true;
     }
 

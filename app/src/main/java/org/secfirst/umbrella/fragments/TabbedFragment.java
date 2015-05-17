@@ -293,6 +293,16 @@ public class TabbedFragment extends Fragment {
             return rootView;
         }
 
+        @Override
+        public void setMenuVisibility(boolean menuVisible) {
+            super.setMenuVisibility(menuVisible);
+            if (menuVisible) {
+               if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(true);
+            } else {
+               if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(false);
+            }
+        }
+
         public void refreshCheckList(long category, int difficulty) {
             try {
                 QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
