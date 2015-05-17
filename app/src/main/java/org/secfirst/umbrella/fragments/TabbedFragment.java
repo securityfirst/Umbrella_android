@@ -212,7 +212,7 @@ public class TabbedFragment extends Fragment {
                     content.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            content.loadDataWithBaseURL("file:///android_res/drawable/", "<style>img{width:100%}h1{color:#33b5e5}h2{color:#9ABE2E}</style>" + html, "text/html", "UTF-8", "UTF-8");
+                            content.loadDataWithBaseURL("file:///android_res/drawable/", "<style>body{color:#444444}img{width:100%}h1{color:#33b5e5; font-weight:normal;}h2{color:#9ABE2E; font-weight:normal;}a{color:#33b5e5}</style>" + html, "text/html", "UTF-8", "UTF-8");
                         }
                     }, 100);
                 }
