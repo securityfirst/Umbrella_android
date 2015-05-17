@@ -20,9 +20,13 @@ public class DashboardFragment extends Fragment {
     SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
-    public static DashboardFragment newInstance(Global global) {
+    public static DashboardFragment newInstance(Global global, boolean toDash) {
         DashboardFragment fragment = new DashboardFragment();
+
         fragment.global = global;
+        Bundle args = new Bundle();
+        args.putBoolean("dashboard", toDash);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -41,7 +45,7 @@ public class DashboardFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-//        mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? 1 : 0);
+        mViewPager.setCurrentItem(getArguments().getBoolean("dashboard", false) ? 1 : 0);
         return v;
     }
 
