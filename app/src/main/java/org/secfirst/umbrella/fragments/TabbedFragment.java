@@ -256,7 +256,7 @@ public class TabbedFragment extends Fragment {
                     } else {
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                         alert.setTitle("Add a new check item");
-                        alert.setMessage("Set a meaningful message for the check item\n");
+                        alert.setMessage("Add your own checklist item\n");
                         final EditText pwInput = new EditText(getActivity());
                         alert.setView(pwInput);
                         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
