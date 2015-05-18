@@ -160,11 +160,11 @@ public class TabbedFragment extends Fragment {
                     gridView.setAdapter(gAdapter);
                 }
                 TextView toChecklist = (TextView) rootView.findViewById(R.id.grid_title);
-                toChecklist.setVisibility((TabbedFragment.hasChecklist) ? View.VISIBLE : View.GONE);
                 toChecklist.setText("Checklist");
                 int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
                 toChecklist.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
                 CardView checklistCard = (CardView) rootView.findViewById(R.id.checklist_view);
+                if (drawerItem == 56) checklistCard.setVisibility(View.GONE);
                 checklistCard.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -172,6 +172,7 @@ public class TabbedFragment extends Fragment {
                         if (frag!=null) {
                             ((TabbedFragment)frag).mViewPager.setCurrentItem(segments.size()+2);
                         }
+                        if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(true);
                     }
                 });
             } catch (SQLException e) {
