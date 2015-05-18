@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -40,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected {
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -141,7 +143,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 public void onDrawerOpened(View drawerView) {}
             };
 
-            drawer.setDrawerListener(actionBarDrawerToggle);
+            drawer.setDrawerListener(this);
             if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
                 for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
                     for (DrawerChildItem childItem : groupItem) {
@@ -497,4 +499,32 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         setFragment(2, category.getCategory(), false);
     }
 
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+        actionBarDrawerToggle.onDrawerSlide(drawerView, slideOffset);
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        actionBarDrawerToggle.onDrawerOpened(drawerView);
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        actionBarDrawerToggle.onDrawerClosed(drawerView);
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            new ShowcaseView.Builder(this)
+                    .setTarget(new PointTarget(0, 0))
+                    .setContentText("Click here or swipe from the side of your screen to view the menu at any time")
+                    .setStyle(R.style.CustomShowcaseTheme4)
+                    .hideOnTouchOutside()
+                    .singleShot(1)
+                    .build();
+        }
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+        actionBarDrawerToggle.onDrawerStateChanged(newState);
+    }
 }
