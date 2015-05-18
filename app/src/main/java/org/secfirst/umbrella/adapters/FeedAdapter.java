@@ -17,6 +17,8 @@ import org.secfirst.umbrella.util.Global;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class FeedAdapter extends BaseAdapter {
@@ -27,6 +29,7 @@ public class FeedAdapter extends BaseAdapter {
     public FeedAdapter(Context context, ArrayList<FeedItem> mItems) {
         if (mItems!=null) {
             this.feedItems = mItems;
+            sortFeedItems(true);
         }
         this.mContext = context;
     }
@@ -85,13 +88,28 @@ public class FeedAdapter extends BaseAdapter {
     public void updateData(ArrayList<FeedItem> updateItems) {
         if (updateItems!=null) {
             feedItems = updateItems;
+            sortFeedItems(true);
         }
         notifyDataSetChanged();
+    }
+
+    private void sortFeedItems(final boolean reverse) {
+        Collections.sort(feedItems, new Comparator<FeedItem>() {
+            @Override
+            public int compare(FeedItem f1, FeedItem f2) {
+                if (f1.getDate() > f2.getDate())
+                    return (reverse? -1 : 1);
+                if (f1.getDate() < f2.getDate())
+                    return (reverse? 1 : -1);
+                return 0;
+            }
+        });
     }
 
     public void updateData() {
         Global global = (Global) mContext.getApplicationContext();
         feedItems = global.getFeedItems();
+        sortFeedItems(true);
         notifyDataSetChanged();
     }
 
