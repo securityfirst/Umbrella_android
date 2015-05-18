@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -85,14 +87,13 @@ public class SettingsActivity extends BaseActivity {
         });
         mAutocompleteLocation.setHint("Set location");
         mAutocompleteLocation.setAdapter(new GeoCodingAutoCompleteAdapter(SettingsActivity.this, R.layout.autocomplete_list_item));
-        mAutocompleteLocation.setOnClickListener(new View.OnClickListener() {
+        mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                if (global.hasPasswordSet()) {
-                } else {
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus && !global.hasPasswordSet()) {
                     global.setPassword(SettingsActivity.this);
-
                 }
+
             }
         });
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -134,6 +135,13 @@ public class SettingsActivity extends BaseActivity {
                             mCountry = new Registry("country", mAddress.getCountryName());
                             try {
                                 global.getDaoRegistry().create(mCountry);
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(SettingsActivity.this, "Please review sources you want for your feed", Toast.LENGTH_SHORT).show();
+                                        showFeedSources();
+                                    }
+                                }, 500);
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }

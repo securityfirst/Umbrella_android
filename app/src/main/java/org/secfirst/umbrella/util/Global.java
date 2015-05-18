@@ -44,7 +44,7 @@ public class Global extends Application {
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn;
     private boolean password;
-    private ArrayList<FeedItem> feedItems;
+    private ArrayList<FeedItem> feedItems = new ArrayList<>();
     private long feeditemsRefreshed;
     private Dao<Segment, String> daoSegment;
     private Dao<CheckItem, String> daoCheckItem;
@@ -87,6 +87,17 @@ public class Global extends Application {
 
     public void setFeedItems(ArrayList<FeedItem> feedItems) {
         this.feedItems = feedItems;
+    }
+
+    public void addToFeedItems(ArrayList<FeedItem> feedItems) {
+        for (FeedItem feedItem : feedItems) {
+            addFeedItem(feedItem);
+        }
+    }
+
+    public void addFeedItem(FeedItem feedItem) {
+        if (this.feedItems==null) this.feedItems = new ArrayList<>();
+        this.feedItems.add(feedItem);
     }
 
     public boolean hasPasswordSet() {

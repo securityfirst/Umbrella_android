@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_marginBottom="20dp"
-    android:layout_marginTop="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:background="@drawable/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,30 +13,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <FrameLayout
+        <ListView
+            android:id="@+id/feed_list"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <TextView
-                android:id="@+id/no_feed_items"
-                android:layout_width="fill_parent"
-                android:visibility="gone"
-                android:textColor="@color/white"
-                android:text="@string/no_feed_updates"
-                android:layout_height="wrap_content" />
-
-            <ListView
-                android:id="@+id/feed_list"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent" />
-
-        </FrameLayout>
+            android:layout_height="fill_parent" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:paddingTop="20dp"
+        android:layout_width="fill_parent"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="2dp">
+
+        <TextView
+            android:id="@+id/no_feed_items"
+            android:layout_width="fill_parent"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="@dimen/text_size_smaller"
+            android:visibility="visible"
+            android:text="@string/no_feed_updates"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.CardView>
 
 
 </LinearLayout>

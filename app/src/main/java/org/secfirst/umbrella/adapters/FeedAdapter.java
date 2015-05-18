@@ -13,8 +13,11 @@ import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.util.Global;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FeedAdapter extends BaseAdapter {
 
@@ -52,6 +55,7 @@ public class FeedAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.feed_title);
             holder.body = (TextView) convertView.findViewById(R.id.feed_body);
+            holder.date = (TextView) convertView.findViewById(R.id.feed_date);
             holder.card = (CardView) convertView.findViewById(R.id.card_view);
             convertView.setTag(holder);
         } else {
@@ -60,6 +64,10 @@ public class FeedAdapter extends BaseAdapter {
 
         holder.title.setText(current.getTitle());
         holder.body.setText(current.getBody());
+
+        if (current.getDate()>0) {
+            holder.date.setText(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(current.getDate() * 1000)));
+        }
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,10 +89,17 @@ public class FeedAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void updateData() {
+        Global global = (Global) mContext.getApplicationContext();
+        feedItems = global.getFeedItems();
+        notifyDataSetChanged();
+    }
+
 
     private static class ViewHolder {
         public TextView title;
         public TextView body;
+        public TextView date;
         public CardView card;
     }
 }

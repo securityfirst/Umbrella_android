@@ -17,6 +17,7 @@
             android:padding="15dp"
             android:layout_height="wrap_content">
 
+
             <TextView
                 android:id="@+id/feed_title"
                 android:textSize="@dimen/text_size_smaller"
@@ -32,6 +33,14 @@
                 android:maxLines="3"
                 android:ellipsize="end"
                 android:textColor="@color/dark_grey"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/feed_date"
+                android:textSize="@dimen/text_size_smallest"
+                android:textColor="@color/dark_grey"
+                android:gravity="bottom|right"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
 

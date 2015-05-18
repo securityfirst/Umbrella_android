@@ -7,6 +7,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.SaxAsyncHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
@@ -37,13 +40,12 @@ import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Relief.Countries.RWCountries;
 import org.secfirst.umbrella.models.Relief.Data;
 import org.secfirst.umbrella.models.Relief.Response;
+import org.secfirst.umbrella.util.SaxHandler;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-
 import java.sql.SQLException;
-
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +56,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     SwipeRefreshLayout mSwipeRefreshLayout;
     FeedAdapter feedAdapter;
     TextView noFeedItems;
+    CardView noFeedCard;
     ListView feedListView;
     TextView header;
     private ArrayList<FeedItem> items = new ArrayList<>();
@@ -70,6 +73,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         mSwipeRefreshLayout.setOnRefreshListener(this);
         feedListView = (ListView) rootView.findViewById(R.id.feed_list);
         noFeedItems = (TextView) rootView.findViewById(R.id.no_feed_items);
+        noFeedCard = (CardView) rootView.findViewById(R.id.card_view);
         feedAdapter = new FeedAdapter(getActivity(), items);
         header = new TextView(getActivity());
         header.setTextColor(getResources().getColor(R.color.white));
@@ -96,28 +100,36 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         refreshFeed();
     }
 
+    public void refreshView() {
+        ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
+        feedAdapter.updateData(items);
+        noFeedItems.setText(R.string.no_feed_updates);
+        if (items!=null) {
+            if (items.size() > 0)
+                header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
+            noFeedCard.setVisibility(items.size()>0?View.GONE:View.VISIBLE);
+            feedListView.setVisibility(items.size() > 0 ? View.VISIBLE : View.GONE);
+        } else {
+            noFeedCard.setVisibility(View.VISIBLE);
+            feedListView.setVisibility(View.GONE);
+        }
+    }
+
     public void refreshFeed() {
         ((BaseActivity) getActivity()).getGlobal().setFeeditemsRefreshed(new Date().getTime());
-        header.setText("");
         boolean isCountrySet = getFeeds(getActivity());
         if (isCountrySet) {
-            ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
-            feedAdapter.updateData(items);
-            noFeedItems.setText(R.string.no_feed_updates);
-            if (items!=null) {
-                if (items.size() > 0)
-                    header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
-                noFeedItems.setVisibility(items.size()>0?View.GONE:View.VISIBLE);
-                feedListView.setVisibility(items.size() > 0 ? View.VISIBLE : View.GONE);
-            } else {
-                noFeedItems.setVisibility(View.VISIBLE);
-                feedListView.setVisibility(View.GONE);
-            }
+            refreshView();
         } else {
             noFeedItems.setVisibility(View.VISIBLE);
             noFeedItems.setText("Please set your location in the settings.");
+            new android.os.Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                }
+            }, 1000);
             mSwipeRefreshLayout.setRefreshing(false);
-            startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
     }
 
@@ -128,14 +140,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 Element ul = document.select("ul").get(0);
                 items = new ArrayList<>();
                 if (ul.childNodeSize()>0) {
-                    for(Element li : ul.select("li")) {
+                    for (Element li : ul.select("li")) {
                         FeedItem toAdd = new FeedItem(li.text(), "Loading...", li.select("a").get(0).attr("href"));
                         items.add(toAdd);
-                        new GetRWBody(items.size()-1, toAdd.getUrl()).execute();
+                        new GetRWBody(items.size() - 1, toAdd.getUrl()).execute();
                     }
-                    noFeedItems.setVisibility(View.GONE);
-                } else {
-                    noFeedItems.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -149,30 +158,63 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             e.printStackTrace();
         }
         if (selCountry!=null && selCountry.size()>0) {
-            UmbrellaRestClient.getFeed("https://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    Gson gson = new GsonBuilder().create();
-                    Type listType = new TypeToken<RWCountries>() {
-                    }.getType();
-                    RWCountries receivedSegments = gson.fromJson(response.toString(), listType);
-                    if (receivedSegments != null) {
-                        ArrayList<org.secfirst.umbrella.models.Relief.Countries.Data> results = receivedSegments.getData();
-                        if (results.size() > 0) {
-                            getReports(results.get(0).getId(), context);
-                        }
-                    }
-                }
-            });
+            noFeedCard.setVisibility(View.GONE);
+            noFeedItems.setText(getResources().getString(R.string.no_feed_updates));
+            getReliefWeb(selCountry, context);
+            getCDC(context);
             return true;
         } else {
+            noFeedCard.setVisibility(View.VISIBLE);
             return false;
         }
     }
 
+    public void getCDC(final Context context) {
+        UmbrellaRestClient.getFeed("http://www2c.cdc.gov/podcasts/createrss.asp?t=r&c=66", null, context, new SaxAsyncHttpResponseHandler<SaxHandler>(new SaxHandler()) {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, SaxHandler saxHandler) {
+                List<FeedItem> feedItems = saxHandler.getFeeditems();
+                if (feedItems!=null && feedItems.size()>0) {
+                    Log.i("sax size", String.valueOf(feedItems.size()));
+                    ((BaseActivity) context).getGlobal().addToFeedItems(new ArrayList<>(feedItems));
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    refreshView();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, SaxHandler saxHandler) {
+            }
+        });
+    }
+
+
+    public void getReliefWeb(List<Registry> selCountry, final Context context) {
+        UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<RWCountries>() {
+                }.getType();
+                RWCountries receivedSegments = gson.fromJson(response.toString(), listType);
+                if (receivedSegments != null) {
+                    ArrayList<org.secfirst.umbrella.models.Relief.Countries.Data> results = receivedSegments.getData();
+                    if (results.size() > 0) {
+                        getReports(results.get(0).getId(), context);
+                    } else {
+                        noFeedCard.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    noFeedCard.setVisibility(View.VISIBLE);
+                }
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
     public void getReports(String countryId, final Context context) {
-        UmbrellaRestClient.getFeed("https://api.rwlabs.org/v1/countries/" + countryId, null, context, new JsonHttpResponseHandler() {
+        UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/" + countryId, null, context, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -184,7 +226,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 if (receivedResponse != null) {
                     List<org.secfirst.umbrella.models.Relief.Data> dataList = Arrays.asList(receivedResponse.getData());
                     parseReliefWeb(dataList);
-                    ((BaseActivity) context).getGlobal().setFeedItems(items);
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
@@ -220,12 +261,13 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         protected void onCancelled() {
             super.onCancelled();
             items.get(index).setBody("");
-            feedAdapter.updateData(items);
+            feedAdapter.updateData();
         }
 
         @Override
         protected void onPostExecute(String result) {
-            feedAdapter.updateData(items);
+            ((BaseActivity) getActivity()).getGlobal().addFeedItem(items.get(index));
+            feedAdapter.updateData();
         }
     }
 

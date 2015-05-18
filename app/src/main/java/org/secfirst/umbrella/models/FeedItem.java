@@ -6,6 +6,10 @@ public class FeedItem {
     private String title;
     private String body;
     private String url;
+    private long date;
+
+    public FeedItem() {
+    }
 
     public FeedItem(String title, String body, String url) {
         this.title = title;
@@ -41,5 +45,13 @@ public class FeedItem {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 }
