@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.R;
@@ -100,7 +101,7 @@ public class DashCheckListAdapter extends BaseAdapter {
                         try {
                             QueryBuilder<Favourite, String> queryBuilder = ((Global) mContext.getApplicationContext()).getDaoFavourite().queryBuilder();
                             Where<Favourite, String> where = queryBuilder.where();
-                            where.eq(Favourite.FIELD_CATEGORY, String.valueOf(current.getCategory())).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(current.getDifficulty()));
+                            where.eq(Favourite.FIELD_CATEGORY, new SelectArg(current.getCategory())).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(current.getDifficulty()));
                             favourites = queryBuilder.query();
                             favourites.clear();
                             checkItems.remove(position);
