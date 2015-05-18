@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.dao.Dao;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.SaxAsyncHttpResponseHandler;
 
@@ -40,6 +40,7 @@ import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Relief.Countries.RWCountries;
 import org.secfirst.umbrella.models.Relief.Data;
 import org.secfirst.umbrella.models.Relief.Response;
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.SaxHandler;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
 
@@ -151,18 +152,30 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public boolean getFeeds(final Context context) {
+        Global global = ((MainActivity) getActivity()).getGlobal();
+        global.setFeedItems(new ArrayList<FeedItem>());
+        Dao<Registry, String> regDao = global.getDaoRegistry();
         List<Registry> selCountry = null;
         try {
-            selCountry = ((MainActivity)getActivity()).getGlobal().getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+            selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
             e.printStackTrace();
         }
         if (selCountry!=null && selCountry.size()>0) {
-            noFeedCard.setVisibility(View.GONE);
-            noFeedItems.setText(getResources().getString(R.string.no_feed_updates));
-            getReliefWeb(selCountry, context);
-            getCDC(context);
-            return true;
+            List<Registry> selections = null;
+            try {
+                selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
+                for (Registry selection : selections) {
+                    if (selection.getValue().equals("0")) getReliefWeb(selCountry, context);
+                    if (selection.getValue().equals("3")) getCDC(context);
+                }
+                noFeedCard.setVisibility(View.GONE);
+                noFeedItems.setText(getResources().getString(R.string.no_feed_updates));
+                return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return false;
         } else {
             noFeedCard.setVisibility(View.VISIBLE);
             return false;
@@ -175,7 +188,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             public void onSuccess(int statusCode, Header[] headers, SaxHandler saxHandler) {
                 List<FeedItem> feedItems = saxHandler.getFeeditems();
                 if (feedItems!=null && feedItems.size()>0) {
-                    Log.i("sax size", String.valueOf(feedItems.size()));
                     ((BaseActivity) context).getGlobal().addToFeedItems(new ArrayList<>(feedItems));
                     mSwipeRefreshLayout.setRefreshing(false);
                     refreshView();
