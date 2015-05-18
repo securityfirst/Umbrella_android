@@ -1213,9 +1213,9 @@ public class InitialData {
         categoryList.add(new Category(16, 9, "Radios and Satellite Phones", true, true, false, false, "I need to know the different types of radio and they work", "", ""));
         categoryList.add(new Category(17, 0, "Personal", true, false, false, false, "", "", ""));
         categoryList.add(new Category(18, 17, "Protective Equipment", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(19, 17, "Counter-Surveillance", true, true, true, true, "", "", ""));
-        categoryList.add(new Category(20, 17, "Arrests", true, true, false, false, "", "", ""));
-        categoryList.add(new Category(21, 17, "Stress", true, true, true, true, "", "", ""));
+        categoryList.add(new Category(19, 17, "Counter-Surveillance", true, true, true, true, "I want to know how to identify surveillance at my office or home", "I want to know how to identify surveillance when walking", "I want to know how to identify surveillance when travelling in a vehicle"));
+        categoryList.add(new Category(20, 17, "Arrests", true, true, false, false, "I want to know how to deal with myself or colleagues being arrested", "", ""));
+        categoryList.add(new Category(21, 17, "Stress", true, true, true, true, "I want to know how to deal with chronic stress", "I want to know how to deal with traumatic stress", "I want to know how to deal with post-traumatic stress"));
         categoryList.add(new Category(22, 0, "Travel", true, false, false, false, "", "", ""));
         categoryList.add(new Category(23, 22, "Preparation", true, false, false, false, "", "", ""));
         categoryList.add(new Category(24, 22, "Vehicles", true, false, false, false, "", "", ""));
