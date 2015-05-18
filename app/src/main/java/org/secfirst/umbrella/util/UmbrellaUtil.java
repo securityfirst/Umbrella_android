@@ -38,12 +38,18 @@ import org.secfirst.umbrella.models.Relief.Response;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UmbrellaUtil {
@@ -287,5 +293,30 @@ public class UmbrellaUtil {
         refreshInterval.put("Manually", 0);
         return refreshInterval;
     }
+
+    public static long parseReliefTitleForDate(String title) {
+        long timestamp = 0;
+        Pattern p = Pattern.compile(".*,\\s*(.*)");
+        Matcher m = p.matcher(title);
+        if (m.find()) {
+            Pattern p1 = Pattern.compile(".*-\\s*(.*)");
+            Matcher m1 = p1.matcher(m.group(1));
+            String stringDate = "";
+            if (m1.find()) {
+                stringDate = m1.group(1);
+            } else {
+                stringDate = m.group(1);
+            }
+            try {
+                DateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+                Date date = formatter.parse(stringDate);
+                return date.getTime()/1000;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return timestamp;
+    }
+
 
 }

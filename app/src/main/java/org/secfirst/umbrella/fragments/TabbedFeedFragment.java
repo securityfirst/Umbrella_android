@@ -43,6 +43,7 @@ import org.secfirst.umbrella.models.Relief.Response;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.SaxHandler;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -142,6 +143,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 if (ul.childNodeSize()>0) {
                     for (Element li : ul.select("li")) {
                         FeedItem toAdd = new FeedItem(li.text(), "Loading...", li.select("a").get(0).attr("href"));
+                        toAdd.setDate(UmbrellaUtil.parseReliefTitleForDate(li.text()));
                         items.add(toAdd);
                         new GetRWBody(items.size() - 1, toAdd.getUrl()).execute();
                     }
