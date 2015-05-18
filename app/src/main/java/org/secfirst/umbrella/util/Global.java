@@ -35,6 +35,7 @@ import org.secfirst.umbrella.models.Segment;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -87,6 +88,7 @@ public class Global extends Application {
 
     public void setFeedItems(ArrayList<FeedItem> feedItems) {
         this.feedItems = feedItems;
+        setFeeditemsRefreshed(new Date().getTime());
     }
 
     public void addToFeedItems(ArrayList<FeedItem> feedItems) {
@@ -98,6 +100,7 @@ public class Global extends Application {
     public void addFeedItem(FeedItem feedItem) {
         if (this.feedItems==null) this.feedItems = new ArrayList<>();
         this.feedItems.add(feedItem);
+        setFeeditemsRefreshed(new Date().getTime());
     }
 
     public boolean hasPasswordSet() {

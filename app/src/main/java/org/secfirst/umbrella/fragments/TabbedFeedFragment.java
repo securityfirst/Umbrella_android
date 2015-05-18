@@ -117,7 +117,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void refreshFeed() {
-        ((BaseActivity) getActivity()).getGlobal().setFeeditemsRefreshed(new Date().getTime());
         boolean isCountrySet = getFeeds(getActivity());
         if (isCountrySet) {
             refreshView();
