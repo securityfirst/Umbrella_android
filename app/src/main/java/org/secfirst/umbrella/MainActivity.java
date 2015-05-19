@@ -435,7 +435,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
                 if (items!=null) {
                     for (CheckItem checkItem : items) {
-                        body += "\n" + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + checkItem.getTitle();
+                        body += "\n" + (checkItem.getParent()==0 ? "" : "   ") + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + ((checkItem.getParent()==0) ? checkItem.getTitle() : checkItem.getText());
                     }
                 }
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
