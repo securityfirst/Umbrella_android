@@ -21,8 +21,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.PointTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -42,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener {
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -53,6 +55,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private DrawerChildItem childItem;
     private int fragType = 0;
     public MenuItem favouriteItem;
+    public boolean shownCoachmark = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -492,6 +495,37 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             titleSpinner.setSelection(difficulty);
         }
         setFragment(1, "", false);
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            new ShowcaseView.Builder(this)
+                    .setTarget(new ViewTarget(R.id.spinner_nav, this))
+                    .setContentText("Click here to change level")
+                    .setStyle(R.style.CustomShowcaseTheme4)
+                    .hideOnTouchOutside()
+                    .singleShot(2)
+                    .setShowcaseEventListener(new OnShowcaseEventListener() {
+                        @Override
+                        public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                            new ShowcaseView.Builder(MainActivity.this)
+                                    .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
+                                    .setContentText("Swipe left to read through the lesson or click on a tab to go straight to that - section\n\nYou can also skip straight to the checklist")
+                                    .setStyle(R.style.CustomShowcaseTheme4)
+                                    .hideOnTouchOutside()
+                                    .singleShot(3)
+                                    .build();
+                        }
+
+                        @Override
+                        public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                        }
+
+                        @Override
+                        public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                        }
+                    })
+                    .build();
+        }
     }
 
     public void onNavigationDrawerGroupItemSelected(Category category) {
@@ -519,12 +553,37 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .setStyle(R.style.CustomShowcaseTheme4)
                     .hideOnTouchOutside()
                     .singleShot(1)
+                    .setShowcaseEventListener(this)
                     .build();
+            if (!shownCoachmark)
+               onShowcaseViewHide(null);
         }
     }
 
     @Override
     public void onDrawerStateChanged(int newState) {
         actionBarDrawerToggle.onDrawerStateChanged(newState);
+    }
+
+    @Override
+    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+        if (fragType == 0)
+            new ShowcaseView.Builder(MainActivity.this)
+                    .setTarget(new ViewTarget(R.id.pager_title_strip, this))
+                    .setContentText("View all the checklists you’ve started and see your progress")
+                    .setStyle(R.style.CustomShowcaseTheme4)
+                    .hideOnTouchOutside()
+                    .singleShot(7)
+                    .build();
+    }
+
+    @Override
+    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+    }
+
+    @Override
+    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+        shownCoachmark = true;
     }
 }

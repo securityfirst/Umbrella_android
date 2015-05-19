@@ -21,6 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.PointTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -68,6 +72,76 @@ public class TabbedFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), difficulty);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == mSectionsPagerAdapter.getCount() - 1 && positionOffset == 0) {
+                    if (android.os.Build.VERSION.SDK_INT >= 11) {
+                        new ShowcaseView.Builder(getActivity())
+                                .setTarget(new ViewTarget(R.id.check_value, getActivity()))
+                                .setContentText("Mark off tasks as you complete them\n\nHold down on a task to delete or disable it")
+                                .setStyle(R.style.CustomShowcaseTheme4)
+                                .hideOnTouchOutside()
+                                .singleShot(4)
+                                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                                    @Override
+                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                                        new ShowcaseView.Builder(getActivity())
+                                                .setTarget(new ViewTarget(R.id.fab, getActivity()))
+                                                .setContentText("Click here to add new tasks – you’ll need to create a password for this!")
+                                                .setStyle(R.style.CustomShowcaseTheme4)
+                                                .hideOnTouchOutside()
+                                                .singleShot(5)
+                                                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                                                    @Override
+                                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                                                        new ShowcaseView.Builder(getActivity())
+                                                                .setTarget(new PointTarget(getView().getWidth(), 0))
+                                                                .setContentText("Star this checklist to make it one of your favourites\n\nClick here to share checklist")
+                                                                .setStyle(R.style.CustomShowcaseTheme4)
+                                                                .hideOnTouchOutside()
+                                                                .singleShot(6)
+                                                                .build();
+                                                    }
+
+                                                    @Override
+                                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                                                    }
+                                                })
+                                                .build();
+                                    }
+
+                                    @Override
+                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+
+                                    }
+
+                                    @Override
+                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                                    }
+                                })
+                                .build();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         hasChecklist = getArguments().getBoolean("checklist", false);
         mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? mSectionsPagerAdapter.getCount() - 1 : 0);
         return v;
