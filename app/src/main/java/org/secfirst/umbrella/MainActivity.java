@@ -36,7 +36,6 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
-import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
@@ -54,7 +53,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private Spinner titleSpinner;
     private DrawerChildItem childItem;
     private int fragType = 0;
-    public MenuItem favouriteItem;
+    public MenuItem favouriteItem, unfavouriteItem;
     public boolean shownCoachmark = false;
     private TextView loginHeader;
     private View header;
@@ -374,28 +373,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             itemExport.setVisible(hasDifficulty!=null && hasDifficulty.size()>0);
         }
         favouriteItem = menu.findItem(R.id.favourite);
-        if (fragType == 1 && childItem != null) {
-            List<Difficulty> hasDifficulty = null;
-            try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
-                if (hasDifficulty.size() > 0) {
-                    List<Favourite> favourites = null;
-                    try {
-                        QueryBuilder<Favourite, String> queryBuilder = global.getDaoFavourite().queryBuilder();
-                        Where<Favourite, String> where = queryBuilder.where();
-                        where.eq(Favourite.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected()));
-                        favourites = queryBuilder.query();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    favouriteItem.setIcon(favourites!=null && favourites.size() > 0 ? R.drawable.abc_btn_rating_star_on_mtrl_alpha : R.drawable.abc_btn_rating_star_off_mtrl_alpha);
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            favouriteItem.setVisible(hasDifficulty!=null && hasDifficulty.size() > 0);
-        }
-        favouriteItem.setVisible(false);
         return true;
     }
 
@@ -455,42 +432,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
                 return true;
             }
-        }
-        if (id == R.id.favourite) {
-            List<Difficulty> hasDifficulty = null;
-            try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            if (hasDifficulty!=null && hasDifficulty.size() > 0) {
-                List<Favourite> favourites = null;
-                try {
-                    QueryBuilder<Favourite, String> queryBuilder = global.getDaoFavourite().queryBuilder();
-                    Where<Favourite, String> where = queryBuilder.where();
-                    where.eq(Favourite.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected()));
-                    favourites = queryBuilder.query();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                if (favourites!=null && favourites.size() > 0) {
-                    for (Favourite favourite : favourites) {
-                        try {
-                            global.getDaoFavourite().delete(favourite);
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    try {
-                        global.getDaoFavourite().create(new Favourite(childItem.getPosition(), hasDifficulty.get(0).getSelected()));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-            invalidateOptionsMenu();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
