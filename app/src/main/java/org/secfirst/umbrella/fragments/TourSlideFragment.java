@@ -106,7 +106,7 @@ public class TourSlideFragment extends Fragment {
                 headingBody.setText("Use checklists to mark your progress");
                 break;
             case 3:
-                tourImage.setImageResource(R.drawable.walktrough2);
+                tourImage.setImageResource(R.drawable.walktrough4);
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_purple));
                 headingBody.setText("Stay up to date with the latest information on where you are");
                 break;
