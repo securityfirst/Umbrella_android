@@ -62,6 +62,30 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
         super.onCreate(savedInstanceState);
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+        View header = View.inflate(this, R.layout.drawer_header, null);
+        final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
+        header.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (global.hasPasswordSet()) {
+                    global.logout(MainActivity.this);
+                } else {
+                    global.setPassword(MainActivity.this);
+                }
+                loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+            }
+        });
+        loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+        drawerList.addHeaderView(header);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         boolean hasOpened = global.initializeSQLCipher("");
         if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -114,26 +138,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             });
 
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
             DrawerAdapter adapter = new DrawerAdapter(this);
-            View header = View.inflate(this, R.layout.drawer_header, null);
-            final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
-            header.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (global.hasPasswordSet()) {
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    } else {
-                        global.setPassword(MainActivity.this);
-                    }
-                    loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
-                }
-            });
-            loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
-            drawerList.addHeaderView(header);
             drawerList.setAdapter(adapter);
             drawerList.setOnChildClickListener(adapter);
             drawerList.setOnGroupClickListener(adapter);

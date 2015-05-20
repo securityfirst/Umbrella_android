@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.content.IntentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -150,8 +151,17 @@ public class Global extends Application {
     public void logout(Context context) {
         OpenHelperManager.setHelper(null);
         setLoggedIn(false);
+
+
+
+        if (OpenHelperManager.getHelper(context, OrmHelper.class) != null) {
+            OpenHelperManager.getHelper(context, OrmHelper.class).close();
+            OpenHelperManager.setHelper(null);
+        }
         if (context.getClass().getSimpleName().equals("MainActivity")) {
-            context.startActivity(new Intent(context, LoginActivity.class));
+            Intent i = new Intent(context, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(i);
         }
     }
 
