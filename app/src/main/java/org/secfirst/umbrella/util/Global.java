@@ -2,13 +2,14 @@ package org.secfirst.umbrella.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.support.v4.content.IntentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
 import org.secfirst.umbrella.LoginActivity;
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.models.Category;
@@ -54,6 +56,7 @@ public class Global extends Application {
     private Dao<Registry, String> daoRegistry;
     private Dao<Favourite, String> daoFavourite;
     private Dao<Difficulty, String> daoDifficulty;
+    private OrmHelper dbHelper;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -152,11 +155,10 @@ public class Global extends Application {
         OpenHelperManager.setHelper(null);
         setLoggedIn(false);
 
-
-
         if (OpenHelperManager.getHelper(context, OrmHelper.class) != null) {
             OpenHelperManager.getHelper(context, OrmHelper.class).close();
             OpenHelperManager.setHelper(null);
+            dbHelper = null;
         }
         if (context.getClass().getSimpleName().equals("MainActivity")) {
             Intent i = new Intent(context, LoginActivity.class);
@@ -165,15 +167,18 @@ public class Global extends Application {
         }
     }
 
-    public void resetPassword(final Activity activity) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+    public void resetPassword(final Context context) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setTitle(getString(R.string.reset_password_title));
         alertDialogBuilder.setMessage(getString(R.string.reset_password_text));
         alertDialogBuilder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + OrmHelper.DATABASE_PASSWORD + "';");
-                getOrmHelper().getWritableDatabase(OrmHelper.DATABASE_PASSWORD);
-                new ResetData(activity).execute();
+                context.deleteDatabase(OrmHelper.DATABASE_NAME);
+                set_termsAccepted(false);
+                Intent mStartActivity = new Intent(context, MainActivity.class);
+                AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT));
+                System.exit(0);
             }
         });
         alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -185,40 +190,17 @@ public class Global extends Application {
         alertDialog.show();
     }
 
-    private class ResetData extends AsyncTask<Void, Void, Void> {
-        Activity activity;
-
-        ResetData(Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            getOrmHelper().recreateTables(getOrmHelper().getConnectionSource());
-            password = false;
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            Toast.makeText(activity, getString(R.string.password_reset_notification), Toast.LENGTH_SHORT).show();
-            set_termsAccepted(false);
-            activity.finish();
-            startActivity(activity.getIntent());
-        }
-    }
-
     public OrmHelper getOrmHelper() {
-        return OpenHelperManager.getHelper(getApplicationContext(), OrmHelper.class);
+        return dbHelper;
     }
 
     public boolean initializeSQLCipher(String password) {
+        if (password.equals("")) password = OrmHelper.DATABASE_PASSWORD;
         SQLiteDatabase.loadLibs(this);
-        if (OpenHelperManager.getHelper(getApplicationContext(), OrmHelper.class)==null) {
-            OpenHelperManager.setHelper(new OrmHelper(getApplicationContext()));
+        if (dbHelper==null || !dbHelper.isOpen()) {
+            dbHelper = new OrmHelper(getApplicationContext());
         }
         try {
-            if (password.equals("")) password = OrmHelper.DATABASE_PASSWORD;
             getOrmHelper().getWritableDatabase(password);
             getDaoSegment();
             getDaoCheckItem();

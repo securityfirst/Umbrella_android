@@ -18,7 +18,7 @@ import org.secfirst.umbrella.models.Segment;
 import java.sql.SQLException;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
-    private static final String DATABASE_NAME = "database.db";
+    public static final String DATABASE_NAME = "database.db";
     public static final String DATABASE_PASSWORD = "umbrella";
     private static final int DATABASE_VERSION = 1;
 

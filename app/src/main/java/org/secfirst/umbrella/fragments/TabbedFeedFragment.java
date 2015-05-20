@@ -279,7 +279,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
 
         @Override
         protected void onPostExecute(String result) {
-            ((BaseActivity) getActivity()).getGlobal().addFeedItem(items.get(index));
+            if (getActivity()!=null) ((BaseActivity) getActivity()).getGlobal().addFeedItem(items.get(index));
             feedAdapter.updateData();
         }
     }

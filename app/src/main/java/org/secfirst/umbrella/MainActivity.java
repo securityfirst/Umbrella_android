@@ -56,6 +56,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private int fragType = 0;
     public MenuItem favouriteItem;
     public boolean shownCoachmark = false;
+    private TextView loginHeader;
+    private View header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,20 +67,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
-        View header = View.inflate(this, R.layout.drawer_header, null);
-        final TextView loginHeader = (TextView) header.findViewById(R.id.login_header);
-        header.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (global.hasPasswordSet()) {
-                    global.logout(MainActivity.this);
-                } else {
-                    global.setPassword(MainActivity.this);
-                }
-                loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
-            }
-        });
-        loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+        header = View.inflate(this, R.layout.drawer_header, null);
+        loginHeader = (TextView) header.findViewById(R.id.login_header);
         drawerList.addHeaderView(header);
     }
 
@@ -92,6 +82,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (!global.getTermsAccepted()) {
             startActivity(new Intent(this, TourActivity.class));
         } else {
+            global.migrateData();
             titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
             titleSpinner.setTag(0);
             navItem = 0;
@@ -150,6 +141,18 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
                 public void onDrawerOpened(View drawerView) {}
             };
+            loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+            header.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (global.hasPasswordSet()) {
+                        global.logout(MainActivity.this);
+                    } else {
+                        global.setPassword(MainActivity.this);
+                    }
+                    loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+                }
+            });
 
             drawer.setDrawerListener(this);
             if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
