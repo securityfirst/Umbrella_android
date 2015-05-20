@@ -72,7 +72,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         }
     };
 
-    public void setLogoutTimerTask() {
+    private void setLogoutTimerTask() {
         logoutTask = new TimerTask() {
             public void run() {
                 handler.post(new Runnable() {
@@ -84,7 +84,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         };
     }
 
-    public void resetLogoutTimer() {
+    private void resetLogoutTimer() {
         if (logoutTask!=null) {
             logoutTask.cancel();
             setLogoutTimerTask();

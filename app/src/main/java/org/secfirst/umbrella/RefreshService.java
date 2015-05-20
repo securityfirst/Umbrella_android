@@ -25,7 +25,7 @@ public class RefreshService extends Service
     {
         feedTimer = new Timer();
 //        logoutTimer = new Timer();
-//        refreshFeed = setFeedRefreshTask();
+        refreshFeed = setFeedRefreshTask();
 //        setLogoutTimerTask();
 //        logoutTimer.schedule(logoutTask, TimeUnit.MINUTES.toMillis(30), TimeUnit.MINUTES.toMillis(30));
         int refreshFeedValue = 0;
