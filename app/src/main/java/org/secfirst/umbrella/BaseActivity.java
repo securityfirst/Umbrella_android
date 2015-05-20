@@ -5,17 +5,24 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
 import org.secfirst.umbrella.util.Global;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public abstract class BaseActivity extends ActionBarActivity {
 
     protected Global global;
     protected boolean mBounded;
     protected RefreshService mService;
+    private static TimerTask logoutTask;
+    private Timer logoutTimer;
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +56,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
-        if(mBounded) mService.resetLogoutTimer();
+        resetLogoutTimer();
     }
 
     public Global getGlobal() {
@@ -64,6 +71,26 @@ public abstract class BaseActivity extends ActionBarActivity {
             mBounded = false;
         }
     };
+
+    public void setLogoutTimerTask() {
+        logoutTask = new TimerTask() {
+            public void run() {
+                handler.post(new Runnable() {
+                    public void run() {
+                        global.logout(BaseActivity.this);
+                    }
+                });
+            }
+        };
+    }
+
+    public void resetLogoutTimer() {
+        if (logoutTask!=null) {
+            logoutTask.cancel();
+            setLogoutTimerTask();
+            logoutTimer.schedule(logoutTask, 1800000);
+        }
+    }
 
     @Override
     protected void onDestroy() {

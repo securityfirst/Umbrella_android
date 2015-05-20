@@ -8,7 +8,6 @@ import android.os.IBinder;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 public class RefreshService extends Service
 {
@@ -25,10 +24,10 @@ public class RefreshService extends Service
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         feedTimer = new Timer();
-        logoutTimer = new Timer();
-        refreshFeed = setFeedRefreshTask();
-        setLogoutTimerTask();
-        logoutTimer.schedule(logoutTask, TimeUnit.MINUTES.toMillis(30), TimeUnit.MINUTES.toMillis(30));
+//        logoutTimer = new Timer();
+//        refreshFeed = setFeedRefreshTask();
+//        setLogoutTimerTask();
+//        logoutTimer.schedule(logoutTask, TimeUnit.MINUTES.toMillis(30), TimeUnit.MINUTES.toMillis(30));
         int refreshFeedValue = 0;
         if (intent!=null) refreshFeedValue = intent.getIntExtra("refresh_feed", 0);
         if (refreshFeedValue>0) {
