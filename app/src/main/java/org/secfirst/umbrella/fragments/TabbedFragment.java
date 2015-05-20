@@ -2,7 +2,9 @@ package org.secfirst.umbrella.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +12,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -34,6 +38,8 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
 import org.secfirst.umbrella.adapters.GridAdapter;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
 
@@ -310,6 +316,12 @@ public class TabbedFragment extends Fragment {
         public CheckItemFragment() {}
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_check_item,
@@ -375,9 +387,77 @@ public class TabbedFragment extends Fragment {
         public void setMenuVisibility(boolean menuVisible) {
             super.setMenuVisibility(menuVisible);
             if (menuVisible) {
-               if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(true);
+                if (getActivity()!=null) setFavouriteIcon(getActivity());
             } else {
                if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(false);
+            }
+        }
+
+        @Override
+        public void onPrepareOptionsMenu(Menu menu) {
+            super.onPrepareOptionsMenu(menu);
+            if (getActivity()!=null) setFavouriteIcon(getActivity());
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (getActivity()!=null) {
+                final Global global = ((MainActivity) getActivity()).getGlobal();
+                final long drawerItem = ((MainActivity) getActivity()).drawerItem;
+                if (id == R.id.favourite) {
+                    List<Difficulty> hasDifficulty = null;
+                    try {
+                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(drawerItem));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    if (hasDifficulty!=null && hasDifficulty.size() > 0) {
+                        try {
+                            QueryBuilder<Favourite, String> queryBuilder = global.getDaoFavourite().queryBuilder();
+                            Where<Favourite, String> where = queryBuilder.where();
+                            where.eq(Favourite.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected()));
+                            Favourite favourite = queryBuilder.queryForFirst();
+                            if (favourite!=null) {
+                                try {
+                                    global.getDaoFavourite().delete(favourite);
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                try {
+                                    global.getDaoFavourite().create(new Favourite(drawerItem, hasDifficulty.get(0).getSelected()));
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    setFavouriteIcon(getActivity());
+                    if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+                        getActivity().supportInvalidateOptionsMenu();
+                    } else {
+                        getActivity().invalidateOptionsMenu();
+                    }
+                    return true;
+                }
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
+        public void setFavouriteIcon(Context context) {
+            final long drawerItem = ((MainActivity) context).drawerItem;
+            try {
+                QueryBuilder<Favourite, String> queryBuilder = ((BaseActivity) context).getGlobal().getDaoFavourite().queryBuilder();
+                Where<Favourite, String> where = queryBuilder.where();
+                where.eq(Favourite.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(difficulty));
+                Favourite favourite = queryBuilder.queryForFirst();
+                ((MainActivity) context).favouriteItem.setIcon(favourite != null ? R.drawable.abc_btn_rating_star_on_mtrl_alpha : R.drawable.abc_btn_rating_star_off_mtrl_alpha);
+                ((MainActivity) context).favouriteItem.setVisible(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 

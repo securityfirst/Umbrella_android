@@ -15,6 +15,7 @@
     <item android:id="@+id/favourite"
         android:title="@string/favourite"
         android:orderInCategory="3"
+        android:visible="false"
         android:icon="@drawable/abc_btn_rating_star_off_mtrl_alpha"
         umbrella:showAsAction="ifRoom" />
 
