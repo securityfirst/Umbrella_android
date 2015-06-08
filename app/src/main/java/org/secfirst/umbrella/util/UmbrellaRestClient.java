@@ -23,7 +23,7 @@ public class UmbrellaRestClient {
     }
 
     public static AsyncHttpClient getTolerantClient() {
-        AsyncHttpClient client = new AsyncHttpClient();
+        AsyncHttpClient client = new AsyncHttpClient(true, 80, 443);
         SSLSocketFactory sslSocketFactory = (SSLSocketFactory) client.getHttpClient().getConnectionManager().getSchemeRegistry().getScheme("https")
                 .getSocketFactory();
         final X509HostnameVerifier delegate = sslSocketFactory.getHostnameVerifier();
@@ -38,7 +38,7 @@ public class UmbrellaRestClient {
     }
 
     public static void getFeed(String url, RequestParams params, Context context, AsyncHttpResponseHandler responseHandler) {
-        if (client==null) client = getTolerantClient();
+        client = getTolerantClient();
         if (UmbrellaUtil.isNetworkAvailable(context)) client.get(url, params, responseHandler);
     }
 
