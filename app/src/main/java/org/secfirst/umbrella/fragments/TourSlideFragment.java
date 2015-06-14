@@ -98,7 +98,7 @@ public class TourSlideFragment extends Fragment {
             case 1:
                 tourImage.setImageResource(R.drawable.walktrough2);
                 slideLayout.setBackgroundColor(getResources().getColor(R.color.umbrella_green));
-                headingBody.setText("Get advice on everything from sending an secure email to safe travel");
+                headingBody.setText("Get advice on everything from sending a secure email to safe travel");
                 break;
             case 2:
                 tourImage.setImageResource(R.drawable.walktrough3);

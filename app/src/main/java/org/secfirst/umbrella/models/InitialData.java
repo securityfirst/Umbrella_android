@@ -1255,6 +1255,88 @@ public class InitialData {
         checkList.add(new CheckItem("Never transmit security-related information or travel plans", "", false, 0, 17, 1));
         checkList.add(new CheckItem("Set duress code words", "", false, 0, 17, 1));
 
+        checkList.add(new CheckItem("Meet in an area one of you is comfortable with", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Avoid partner offices/homes/hotels or spots frequented by human rights defenders", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Research the meeting spot", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Think through what you’d do in various scenarios", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Remove batteries from mobile phones before you leave", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Arrive early and conduct counter-surveillance on your way", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Have a colleague observe from afar", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Sit with back to wall, good observation of the location, and clear path to escape route", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Observe others who enter", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Agree security precautions with person you meet", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Avoid ordering big meals and pay straight away in cash", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Trust your instincts and leave immediately if you feel something’s not right", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Avoid writing sensitive notes on paper", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Do not let staff/ waiters over hear you", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Be unpredictable", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("If in private room – unplug unnecessary devices and use masking sounds", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Leave last so that you can observe any third party reactions", "", false, 0, 27, 1));
+
+        checkList.add(new CheckItem("Prepare emergency plans", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Pack protective equipment", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Pack a first aid kit and remind yourself of the basics", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Select appropriate broadcast equipment", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Talk to your Safety Adviser if possible", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Get training in dealing with civil unrest", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Conduct risk assessment", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Ensure working communications", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Cover from safe vantage point if possible", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Park vehicles in accessible location for easy departure", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Take second person into crowd to monitor changes", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Wear appropriate clothing and footwear", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Trust your instincts", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Withdraw if faced with aggression", "", false, 0, 28, 1));
+        checkList.add(new CheckItem("Take riot kits", "", false, 0, 28, 1));
+
+        checkList.add(new CheckItem("Don’t take your phone unless you really need to", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Consider bringing something to hide your face", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Consider bringing a throwaway phone", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Password protect your phone", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Consider encrypting your phone", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Download secure apps in advance", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Back up your data", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Write down an emergency number", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Make an emergency plan with a friend", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Prepare Panic Button app", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Understand legalities and risks", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Use TextSecure and RedPhone, or Signal to communicate", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Use ObscuraCam and InformaCam for photos or videos", "", false, 0, 28, 2));
+
+        checkList.add(new CheckItem("Phase One", "", false, 0, 29, 1, true));
+        checkList.add(new CheckItem("Phase One", "Plan the who/what/when/where/how of potential evacuation", false, 353, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "", false, 0, 29, 1, true));
+        checkList.add(new CheckItem("Phase Two", "Brief staff", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Test communications system", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Prepare all payments", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Back up/ safely delete files", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Staff and families should carry personal documentation", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Prepare grab bags", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Stock the safe-house", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Inventory assets", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Two", "Assign and prepare vehicles", false, 356, 29, 1));
+        checkList.add(new CheckItem("Phase Three", "", false, 0, 29, 1, true));
+        checkList.add(new CheckItem("Phase Three", "Keep staff informed", false, 366, 29, 1));
+        checkList.add(new CheckItem("Phase Three", "Coordinate with embassies and agencies", false, 366, 29, 1));
+        checkList.add(new CheckItem("Phase Three", "Pay all salaries", false, 366, 29, 1));
+        checkList.add(new CheckItem("Phase Three", "Hide high-value assets", false, 366, 29, 1));
+        checkList.add(new CheckItem("Phase Three", "Remove logos from vehicles remaining", false, 366, 29, 1));
+        checkList.add(new CheckItem("Phase Three", "Give clear responsibility to staff staying", false, 366, 29, 1));
+        checkList.add(new CheckItem("Phase Four", "", false, 0, 29, 1, true));
+        checkList.add(new CheckItem("Phase Four", "Consider disabling equipment", false, 373, 29, 1));
+        checkList.add(new CheckItem("Phase Four", "Leave safes empty and open", false, 373, 29, 1));
+        checkList.add(new CheckItem("Phase Four", "Ensure effective communication with national staff", false, 373, 29, 1));
+        checkList.add(new CheckItem("Phase Four", "Evacuate by safest means possible", false, 373, 29, 1));
+        checkList.add(new CheckItem("Phase Four", "Upon evacuation, inform national staff, embassies etc", false, 373, 29, 1));
+        checkList.add(new CheckItem("Safe-houses", "", false, 0, 29, 1, true));
+        checkList.add(new CheckItem("Safe-houses", "Should be secure building in safe neighbourhood", false, 379, 29, 1));
+        checkList.add(new CheckItem("Safe-houses", "Should be lived in / serviced", false, 379, 29, 1));
+        checkList.add(new CheckItem("Safe-houses", "Should be stocked with emergency goods", false, 379, 29, 1));
+        checkList.add(new CheckItem("Safe-houses", "Waste should be securely disposed of", false, 379, 29, 1));
+        checkList.add(new CheckItem("Safe-houses", "Grab bags should be placed by escape routes", false, 379, 29, 1));
+
+
+
         return checkList;
     }
 
