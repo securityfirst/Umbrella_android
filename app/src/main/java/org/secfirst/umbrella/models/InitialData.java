@@ -1367,9 +1367,9 @@ public class InitialData {
         categoryList.add(new Category(24, 22, "Vehicles", true, false, false, false, "", "", ""));
         categoryList.add(new Category(25, 22, "Checkpoints", true, false, false, false, "", "", ""));
         categoryList.add(new Category(26, 0, "Operations", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(27, 26, "Meetings", true, true, false, false, "", "", ""));
-        categoryList.add(new Category(28, 26, "Protests", true, true, true, false, "", "", ""));
-        categoryList.add(new Category(29, 26, "Evacuation", true, true, false, false, "", "", ""));
+        categoryList.add(new Category(27, 26, "Meetings", true, true, false, false, "I want to know how to meet people safely", "", ""));
+        categoryList.add(new Category(28, 26, "Protests", true, true, true, false, "I want to know how to stay safe at a protest", "I might be monitored by hostile adversaries at a protest", ""));
+        categoryList.add(new Category(29, 26, "Evacuation", true, true, false, false, "I may need to hibernate, relocate or evacuate from my location", "", ""));
         categoryList.add(new Category(30, 0, "Organisation", true, false, false, false, "", "", ""));
         categoryList.add(new Category(31, 0, "Home / Office", true, false, false, false, "", "", ""));
         categoryList.add(new Category(32, 0, "Emergency Response", true, false, false, false, "", "", ""));
