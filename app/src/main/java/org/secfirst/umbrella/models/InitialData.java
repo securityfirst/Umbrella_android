@@ -1363,12 +1363,12 @@ public class InitialData {
         categoryList.add(new Category(20, 17, "Arrests", true, true, false, false, "I want to know how to deal with myself or colleagues being arrested", "", ""));
         categoryList.add(new Category(21, 17, "Stress", true, true, true, true, "I want to know how to deal with chronic stress", "I want to know how to deal with traumatic stress", "I want to know how to deal with post-traumatic stress"));
         categoryList.add(new Category(22, 0, "Travel", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(23, 22, "Preparation", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(24, 22, "Vehicles", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(25, 22, "Checkpoints", true, false, false, false, "", "", ""));
+        categoryList.add(new Category(23, 22, "Preparation", true, false, false, false, "I want to know how I should prepare in order to travel safely", "", ""));
+        categoryList.add(new Category(24, 22, "Vehicles", true, false, false, false, "I want to know to use vehicles safely and prepare for safe journeys", "", ""));
+        categoryList.add(new Category(25, 22, "Checkpoints", true, false, false, false, " I want to know how to navigate checkpoints safely", "", ""));
         categoryList.add(new Category(26, 0, "Operations", true, false, false, false, "", "", ""));
         categoryList.add(new Category(27, 26, "Meetings", true, true, false, false, "I want to know how to meet people safely", "", ""));
-        categoryList.add(new Category(28, 26, "Protests", true, true, true, false, "I want to know how to stay safe at a protest", "I might be monitored by hostile adversaries at a protest", ""));
+        categoryList.add(new Category(28, 26, "Protests", true, true, true, false, "I want to know how to safely cover a protest as a journalist", "I want to know how to safely take part in a protest as an activist", ""));
         categoryList.add(new Category(29, 26, "Evacuation", true, true, false, false, "I may need to hibernate, relocate or evacuate from my location", "", ""));
         categoryList.add(new Category(30, 0, "Organisation", true, false, false, false, "", "", ""));
         categoryList.add(new Category(31, 0, "Home / Office", true, false, false, false, "", "", ""));
