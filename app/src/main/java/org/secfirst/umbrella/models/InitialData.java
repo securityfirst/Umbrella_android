@@ -1414,11 +1414,11 @@ public class InitialData {
 
 
         categoryList.add(new Category(17, 0, "Travel", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(18, 17, "Preparation", true, false, false, false, "I want to know how I should prepare in order to travel safely", "", ""));
-        categoryList.add(new Category(19, 17, "Borders", true, false, false, false, "", "", ""));
-        categoryList.add(new Category(20, 17, "Vehicles", true, false, false, false, "I want to know to use vehicles safely and prepare for safe journeys", "", ""));
-        categoryList.add(new Category(21, 17, "Checkpoints", true, false, false, false, " I want to know how to navigate checkpoints safely", "", ""));
-        categoryList.add(new Category(22, 17, "Kidnapping", true, false, false, false, "", "", ""));
+        categoryList.add(new Category(18, 17, "Preparation", true, true, false, false, "I want to know how I should prepare in order to travel safely", "", ""));
+        categoryList.add(new Category(19, 17, "Borders", true, true, false, false, "I want to know what I can do to enter and exit a country safely", "", ""));
+        categoryList.add(new Category(20, 17, "Vehicles", true, true, false, false, "I want to know to use vehicles safely and prepare for safe journeys", "", ""));
+        categoryList.add(new Category(21, 17, "Checkpoints", true, true, false, false, " I want to know how to navigate checkpoints safely", "", ""));
+        categoryList.add(new Category(22, 17, "Kidnapping", true, true, true, true, "I want to know what I can do to avoid kidnapping", "I want to know what I should do if I’m kidnapped", "I want to know what to do if a member of my team is kidnapped"));
 
 
         categoryList.add(new Category(23, 0, "Operations", true, false, false, false, "", "", ""));
