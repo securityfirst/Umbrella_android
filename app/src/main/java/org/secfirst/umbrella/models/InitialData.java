@@ -620,7 +620,14 @@ public class InitialData {
 
 
 
-        segmentList.add(new Segment(31, 1, "Personal - Protective equipment", ""));
+        segmentList.add(new Segment(31, 1, "Grab Bags", "<p>Grab bags are bags filled with an individual’s survival essentials in case they need to move rapidly. They should be prepared for high-risk activists, journalists and humanitarians at times of heightened risk and kept close to an exit in their residence – somewhere easy to grab and run.</p><p>You should plan out several potential escape routes in case of emergency. Remember that the best escape route may vary depending on the time of day (e.g. across the roof at night-time, via a garden fence in the day time) so it is important to move the location of the grab bags as necessary.</p>"));
+
+
+        segmentList.add(new Segment(31, 1, "What to Pack", "<p>A grab bag might include:<ul><li>Passport/ID – with multi-entry visas</li><li>Copies of other key personal and travel documents  (e.g. driving licence)</li><li>List of emergency contacts and addresses</li><li>First aid kit including prescription medicines and medical prescriptions</li><li>Swiss army knife</li><li>Spare clothes (ensure appropriate for the context)</li><li>Map/compass (if appropriate to carry maps)</li><li>Water bottle  (with water filter/ water purification tablets)</li><li>High-energy food (nuts/ snack bars/ chocolate etc.)</li><li>Mobile phone, charger and pre-paid scratch cards if necessary</li><li>Torch and batteries</li><li>Candle</li><li>Strong string/wire</li><li>Money (local currency and US dollars; credit cards)</li><li>Travelling tooth brush/paste and soap</li><li>Waterproof clothing</li><li>Insect repellent/Sun-cream</li><li>Pen and paper</li><li>Prescription glasses (if needed) and sun glasses</li><li>Matches</li><li>Condoms – can be useful for keeping things dry</li><li>Phrase book (for foreign language speakers)</li><li>A head covering</li><li>Hand-held mirror</li><li>Radio</li><li>Satellite phone and charger (if issued)</li></ul></p>"));
+
+        segmentList.add(new Segment(31, 1, "Limitations", "<p>If involved in an emergency evacuation by air remember that you may be weight-limited to 15 kilograms or even less. Ensure you prioritise carefully what you decide to take or you will be forced to leave items at the airstrip.</p><p>See the Evacuation lesson for details on what to do in cases of hibernation, relocation or evacuation.</p>"));
+
+        segmentList.add(new Segment(31,1, "What now?", "<p>Swipe right for this lesson’s checklist</p><p>Go to the Advanced lesson for advice on what protective gear to wear in combat zones or civil unrest.</p><h3>RELATED LESSONS/TOOLS</h3><p><ul><li>Evacuation lesson</li></ul></p>"));
 
 
 
