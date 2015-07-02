@@ -1,5 +1,8 @@
 package org.secfirst.umbrella.util;
 
+import android.util.Log;
+
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.models.FeedItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -53,7 +56,8 @@ public class SaxHandler extends DefaultHandler {
                 Date date = formatter.parse(tempVal);
                 tempFeedItem.setDate(date.getTime()/1000);
             } catch (ParseException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
     }

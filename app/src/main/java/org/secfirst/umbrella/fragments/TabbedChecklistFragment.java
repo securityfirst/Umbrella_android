@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -76,7 +78,7 @@ public class TabbedChecklistFragment extends Fragment {
         try {
             favourites = global.getDaoFavourite().queryForAll();
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
         }
         if (favourites!=null) {
             for (Favourite favourite : favourites) {
@@ -87,13 +89,13 @@ public class TabbedChecklistFragment extends Fragment {
                     where.eq(CheckItem.FIELD_CATEGORY, favourite.getCategory()).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(favourite.getDifficulty() + 1));
                     mCheckList = queryBuilder.query();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
                 }
                 Category category = null;
                 try {
                     category = global.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
                 }
                 if (category!=null) {
                     DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), favourite.getDifficulty(), true);
@@ -118,7 +120,7 @@ public class TabbedChecklistFragment extends Fragment {
                 QueryBuilder<Difficulty, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
                 hasDifficulty = queryBuilder.query();
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
             }
             for (Difficulty difficulty : hasDifficulty) {
                 List<CheckItem> mCheckList = null;
@@ -128,13 +130,13 @@ public class TabbedChecklistFragment extends Fragment {
                     where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(difficulty.getCategory())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty.getSelected() + 1));
                     mCheckList = queryBuilder.query();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
                 }
                 Category category = null;
                 try {
                     category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
                 }
                 if (category != null) {
                     DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);

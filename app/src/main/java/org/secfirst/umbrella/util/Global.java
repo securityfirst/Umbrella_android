@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.content.IntentCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -23,6 +24,7 @@ import com.j256.ormlite.table.TableUtils;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
@@ -212,7 +214,8 @@ public class Global extends Application {
             if (password.equals(OrmHelper.DATABASE_PASSWORD))setLoggedIn(true);
             return true;
         } catch (SQLiteException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         this.password = true;
         return false;
@@ -229,7 +232,8 @@ public class Global extends Application {
             try {
                 daoSegment = getOrmHelper().getDao(Segment.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return daoSegment;
@@ -240,7 +244,8 @@ public class Global extends Application {
             try {
                 daoCheckItem = getOrmHelper().getDao(CheckItem.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return daoCheckItem;
@@ -251,7 +256,8 @@ public class Global extends Application {
             try {
                 daoCategory = getOrmHelper().getDao(Category.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return daoCategory;
@@ -263,7 +269,8 @@ public class Global extends Application {
                 if (getOrmHelper().isOpen())
                 daoRegistry = getOrmHelper().getDao(Registry.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return daoRegistry;
@@ -274,7 +281,8 @@ public class Global extends Application {
             try {
                 daoFavourite = getOrmHelper().getDao(Favourite.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return daoFavourite;
@@ -285,7 +293,8 @@ public class Global extends Application {
             try {
                 daoDifficulty = getOrmHelper().getDao(Difficulty.class);
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return daoDifficulty;
@@ -302,7 +311,8 @@ public class Global extends Application {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
@@ -314,7 +324,8 @@ public class Global extends Application {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
 
         ArrayList<Category> categoryList = InitialData.getCategoryList();
@@ -326,7 +337,8 @@ public class Global extends Application {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
 
         setRefreshValue((int) TimeUnit.MINUTES.toMillis(30));
@@ -341,7 +353,8 @@ public class Global extends Application {
                     getDaoSegment().create(segment);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
     }
@@ -355,7 +368,8 @@ public class Global extends Application {
                     getDaoCategory().create(item);
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
     }
@@ -375,7 +389,8 @@ public class Global extends Application {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
     }
@@ -388,11 +403,13 @@ public class Global extends Application {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
                 } catch (NumberFormatException nfe) {
-                    nfe.printStackTrace();
+                    if (BuildConfig.BUILD_TYPE.equals("debug"))
+                        Log.getStackTraceString(nfe.getCause().getCause());
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         return retInterval;
     }
@@ -407,7 +424,8 @@ public class Global extends Application {
                 getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
     }
 

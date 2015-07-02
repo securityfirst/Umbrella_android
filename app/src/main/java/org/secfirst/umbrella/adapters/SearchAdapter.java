@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,7 +80,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 try {
                     category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
                 }
                 if (category == null) {
                     return;

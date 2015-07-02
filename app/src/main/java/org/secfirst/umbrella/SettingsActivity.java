@@ -9,6 +9,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -109,7 +110,7 @@ public class SettingsActivity extends BaseActivity {
                         try {
                             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                         }
                         if (selLoc!=null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
@@ -121,7 +122,7 @@ public class SettingsActivity extends BaseActivity {
                         try {
                             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                         }
                         if (selCountry!=null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
@@ -129,7 +130,7 @@ public class SettingsActivity extends BaseActivity {
                             try {
                                 global.getDaoRegistry().update(mCountry);
                             } catch (SQLException e) {
-                                e.printStackTrace();
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                             }
                         } else {
                             mCountry = new Registry("country", mAddress.getCountryName());
@@ -143,7 +144,7 @@ public class SettingsActivity extends BaseActivity {
                                     }
                                 }, 500);
                             } catch (SQLException e) {
-                                e.printStackTrace();
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                             }
                         }
                     } else {
@@ -230,7 +231,7 @@ public class SettingsActivity extends BaseActivity {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select The Feed Sources");
@@ -256,13 +257,13 @@ public class SettingsActivity extends BaseActivity {
                                 global.getDaoRegistry().delete(selection);
                             }
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                         }
                         for (Integer item : selectedItems) {
                             try {
                                 global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(item)));
                             } catch (SQLException e) {
-                                e.printStackTrace();
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                             }
                         }
                         dialog.dismiss();
@@ -362,7 +363,7 @@ public class SettingsActivity extends BaseActivity {
                 foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
                 mAddressList = new ArrayList<>(foundGeocode);
             } catch (IOException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
             }
 
             return foundGeocode;

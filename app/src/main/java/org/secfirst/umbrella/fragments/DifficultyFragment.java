@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -84,7 +86,7 @@ public class DifficultyFragment extends Fragment {
             btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
             btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
         }
         return v;
     }
@@ -95,7 +97,7 @@ public class DifficultyFragment extends Fragment {
         try {
             df = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(mSection));
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
         }
         Difficulty d;
         if (df!=null && df.size()>0) {
@@ -104,13 +106,13 @@ public class DifficultyFragment extends Fragment {
             try {
                 global.getDaoDifficulty().update(d);
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
             }
         } else {
             try {
                 global.getDaoDifficulty().create(new Difficulty(mSection, difficulty));
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
             }
         }
         if (mListener != null) {

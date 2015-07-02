@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.adapters.SearchAdapter;
 import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -55,7 +57,7 @@ public class SearchActivity extends BaseActivity {
                     results.setVisibility(View.VISIBLE);
                     searchCount.setText(mSegments.size()+((mSegments.size()==1)?" search result":" results")+" found for this query");
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
                 }
             }
         }

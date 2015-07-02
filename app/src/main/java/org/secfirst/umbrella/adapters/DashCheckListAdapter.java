@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -107,7 +109,7 @@ public class DashCheckListAdapter extends BaseAdapter {
                             checkItems.remove(position);
                             notifyDataSetChanged();
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
                         }
                     }
                 });
