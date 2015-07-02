@@ -1213,12 +1213,12 @@ public class InitialData {
         checkList.add(new CheckItem("Use Ostel or Redphone for calls on your phone", "", false, 0, 11, 1));
         checkList.add(new CheckItem("Use Jitsi instead of Skype on your computer", "", false, 0, 11, 1));
         checkList.add(new CheckItem("If you must use Skype", "", false, 0, 11, 1, true));
-        checkList.add(new CheckItem("If you must use Skype", "Download from official website", false, 133, 11, 1));
-        checkList.add(new CheckItem("If you must use Skype", "Change password regularly", false, 133, 11, 1));
-        checkList.add(new CheckItem("If you must use Skype", "Adjust settings so you don’t keep chat history", false, 33, 11, 1));
-        checkList.add(new CheckItem("If you must use Skype", "Verify who you’re speaking to", false, 133, 11, 1));
-        checkList.add(new CheckItem("If you must use Skype", "Consider using anonymous username", false, 133, 11, 1));
-        checkList.add(new CheckItem("If you must use Skype", "Use codes for sensitive topics", false, 133, 11, 1));
+        checkList.add(new CheckItem("If you must use Skype", "Download from official website", false, 132, 11, 1));
+        checkList.add(new CheckItem("If you must use Skype", "Change password regularly", false, 132, 11, 1));
+        checkList.add(new CheckItem("If you must use Skype", "Adjust settings so you don’t keep chat history", false, 132, 11, 1));
+        checkList.add(new CheckItem("If you must use Skype", "Verify who you’re speaking to", false, 132, 11, 1));
+        checkList.add(new CheckItem("If you must use Skype", "Consider using anonymous username", false, 132, 11, 1));
+        checkList.add(new CheckItem("If you must use Skype", "Use codes for sensitive topics", false, 132, 11, 1));
 
         checkList.add(new CheckItem("Avoid regular SMS messages for sensitive texts", "", false, 0, 12, 1));
         checkList.add(new CheckItem("Use TextSecure or ChatSecure for messages on your phone", "", false, 0, 12, 1));
@@ -1238,119 +1238,16 @@ public class InitialData {
         checkList.add(new CheckItem("Protect your computer from malware", "", false, 0, 13, 1));
         checkList.add(new CheckItem("Do not use phone as primary means for email", "", false, 0, 13, 1));
         checkList.add(new CheckItem("If your email has been hacked", "", false, 0, 13, 1, true));
-        checkList.add(new CheckItem("If your email has been hacked", "Don’t send any sensitive information", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Change your password", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Reclaim your account", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Determine who to alert/what to cancel", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Find out how you were compromised", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Review security on all devices", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Consider reporting it", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Consider moving to more secure account", false, 156, 13, 1));
-        checkList.add(new CheckItem("If your email has been hacked", "Avoid storing read emails", false, 156, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Don’t send any sensitive information", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Change your password", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Reclaim your account", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Determine who to alert/what to cancel", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Find out how you were compromised", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Review security on all devices", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Consider reporting it", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Consider moving to more secure account", false, 155, 13, 1));
+        checkList.add(new CheckItem("If your email has been hacked", "Avoid storing read emails", false, 155, 13, 1));
 
-        checkList.add(new CheckItem("To identify surveillance of your office", "", false, 0, 19, 1, true));
-        checkList.add(new CheckItem("To identify surveillance of your office", "Take a baseline", false, 166, 19, 1));
-        checkList.add(new CheckItem("To identify surveillance of your office", "Identify and record unusual activity", false, 166, 19, 1));
-        checkList.add(new CheckItem("To identify surveillance of your office", "Filter out coincidence", false, 166, 19, 1));
-        checkList.add(new CheckItem("To identify surveillance of your office", "Notify others", false, 166, 19, 1));
-        checkList.add(new CheckItem("To identify surveillance of your office", "Trust your senses", false, 166, 19, 1));
-        checkList.add(new CheckItem("If under surveillance", "", false, 0, 19, 1, true));
-        checkList.add(new CheckItem("If under surveillance", "Consider risks of confrontation", false, 172, 19, 1));
-        checkList.add(new CheckItem("If under surveillance", "Reduce the ability to watch you", false, 172, 19, 1));
-        checkList.add(new CheckItem("If under surveillance", "Increase protection", false, 172, 19, 1));
-        checkList.add(new CheckItem("If under surveillance", "Continue monitoring", false, 172, 19, 1));
-
-        checkList.add(new CheckItem("To identify on foot surveillance", "", false, 0, 19, 2, true));
-        checkList.add(new CheckItem("To identify on foot surveillance", "Look for typical comfortable clothing and accessories", false, 177, 19, 2));
-        checkList.add(new CheckItem("To identify on foot surveillance", "Don’t overlook atypical people", false, 177, 19, 2));
-        checkList.add(new CheckItem("To identify on foot surveillance", "Look for behavioural tells that they’re concentrating or communicating", false, 177, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 19, 2, true));
-        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "Identify the trigger", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to find the eyeball", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "Create a force-past", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "Make 3 sides of a square", false, 181, 19, 2));
-        checkList.add(new CheckItem("Actions to help you spot them", "Get on a bus/train/taxi", false, 181, 19, 2));
-
-        checkList.add(new CheckItem("To identify on mobile surveillance", "", false, 0, 19, 3, true));
-        checkList.add(new CheckItem("To identify on mobile surveillance", "Be aware of the most common types of vehicle", false, 190, 19, 3));
-        checkList.add(new CheckItem("To identify on mobile surveillance", "Don’t overlook taxis or service vehicles", false, 190, 19, 3));
-        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for aerials or modifications", false, 190, 19, 3));
-        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people being in the car for long periods of time", false, 190, 19, 3));
-        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people communicating covertly", false, 190, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 19, 3, true));
-        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to stop", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "Use your mirrors", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "Use chokepoints", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "Monitor several cars back", false, 196, 19, 3));
-        checkList.add(new CheckItem("Actions to help you spot them", "Check for trackers", false, 196, 19, 3));
-
-        checkList.add(new CheckItem("For individuals", "", false, 0, 21, 1, true));
-        checkList.add(new CheckItem("For individuals", "Learn about stress", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Know yourself", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Eat well and exercise", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Get rest and relaxation", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Practice belief systems", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Maintain humour and perspective", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Be informed", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Talk to people", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Change the stressful environment", false, 205, 21, 1));
-        checkList.add(new CheckItem("For individuals", "Think positive", false, 205, 21, 1));
-        checkList.add(new CheckItem("For managers", "", false, 0, 21, 1, true));
-        checkList.add(new CheckItem("For managers", "Acknowledge your limitations", false, 216, 21, 1));
-        checkList.add(new CheckItem("For managers", "Get support from your manager", false, 216, 21, 1));
-        checkList.add(new CheckItem("For managers", "Delegate", false, 216, 21, 1));
-        checkList.add(new CheckItem("For managers", "Buddy up", false, 216, 21, 1));
-        checkList.add(new CheckItem("For managers", "Recognise staff efforts", false, 216, 21, 1));
-        checkList.add(new CheckItem("For managers", "Regular time off", false, 216, 21, 1));
-        checkList.add(new CheckItem("For managers", "Provide a good example", false, 216, 21, 1));
-
-        checkList.add(new CheckItem("Get enough rest", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Eat as regularly as possible and drink water", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Talk and spend time with family and friends", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Discuss problems with someone you trust", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Do activities that help you relax", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Do physical exercise", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Find safe ways to help others", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Don’t take drugs, smoke or drink alcohol", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Don’t sleep all day", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Don’t work all the time without any rest or relaxation", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Don’t isolate yourself from friends and loved ones", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Don’t neglect basic personal hygiene", "", false, 0, 21, 2));
-        checkList.add(new CheckItem("Don’t be violent", "", false, 0, 21, 2));
-
-        checkList.add(new CheckItem("Prevent arrest", "", false, 0, 20, 1, true));
-        checkList.add(new CheckItem("Prevent arrest", "Maintain good relations with local authorities", false, 237, 20, 1));
-        checkList.add(new CheckItem("Prevent arrest", "Observe local laws and customs on and off duty", false, 237, 20, 1));
-        checkList.add(new CheckItem("Prevent arrest", "Carry correct legal documentation", false, 237, 20, 1));
-        checkList.add(new CheckItem("Prevent arrest", "Train and brief staff", false, 237, 20, 1));
-        checkList.add(new CheckItem("If staff member is arrested", "", false, 0, 20, 1, true));
-        checkList.add(new CheckItem("If staff member is arrested", "Find out where they are held", false, 243, 20, 1));
-        checkList.add(new CheckItem("If staff member is arrested", "Establish the facts", false, 243, 20, 1));
-        checkList.add(new CheckItem("If staff member is arrested", "Engage a local lawyer", false, 243, 20, 1));
-        checkList.add(new CheckItem("If staff member is arrested", "Advocate for their rights", false, 243, 20, 1));
-        checkList.add(new CheckItem("If staff member is arrested", "Liaise with their family", false, 243, 20, 1));
-        checkList.add(new CheckItem("If staff member is arrested", "Inform other organisations", false, 243, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "", false, 0, 20, 1, true));
-        checkList.add(new CheckItem("If you are arrested", "Identify yourself", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Inform your colleagues", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Prepare yourself mentally", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Stay calm", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Do not give false confessions", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Don’t sign anything you don’t understand", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Request your legal rights", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Be cooperative when appropriate", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Don’t volunteer sensitive information", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Establish the facts", false, 250, 20, 1));
-        checkList.add(new CheckItem("If you are arrested", "Be alert to questioning techniques used", false, 250, 20, 1));
-
-        checkList.add(new CheckItem("Monitor symptoms", "", false, 0, 21, 3));
-        checkList.add(new CheckItem("Consult a doctor", "", false, 0, 21, 3));
 
         checkList.add(new CheckItem("Install and use PGP", "", false, 0, 13, 2));
         checkList.add(new CheckItem("If you need to protect your metadata, use Tor", "", false, 0, 13, 2));
@@ -1364,8 +1261,8 @@ public class InitialData {
         checkList.add(new CheckItem("Check which VPN is right for you", "", false, 0, 14, 1));
         checkList.add(new CheckItem("Download and use Psiphon3", "", false, 0, 14, 1));
         checkList.add(new CheckItem("For smartphones", "", true, 0, 14, 1));
-        checkList.add(new CheckItem("For smartphones", "Download Firefox mobile and Proxy Mobile", false, 176, 14, 1));
-        checkList.add(new CheckItem("For smartphones", "Download and use Psiphon3", false, 176, 14, 1));
+        checkList.add(new CheckItem("For smartphones", "Download Firefox mobile and Proxy Mobile", false, 175, 14, 1));
+        checkList.add(new CheckItem("For smartphones", "Download and use Psiphon3", false, 175, 14, 1));
 
         checkList.add(new CheckItem("Install and use Tor", "", false, 0, 14, 2));
         checkList.add(new CheckItem("On mobile install and use Orbot and Orweb", "", false, 0, 14, 2));
@@ -1375,7 +1272,7 @@ public class InitialData {
         checkList.add(new CheckItem("Consider registering anonymously", "", false, 0, 15, 1));
         checkList.add(new CheckItem("Consider separate accounts for campaigns", "", false, 0, 15, 1));
         checkList.add(new CheckItem("Choose a strong password", "", false, 0, 15, 1));
-        checkList.add(new CheckItem("Use two-factor-authentication", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Use two-factor-authentication", "", false, 0, 15, 1));
         checkList.add(new CheckItem("Use false answers to security questions", "", false, 0, 15, 1));
         checkList.add(new CheckItem("Only connect to people you know", "", false, 0, 15, 1));
         checkList.add(new CheckItem("Be aware of the privacy policy", "", false, 0, 15, 1));
@@ -1392,94 +1289,540 @@ public class InitialData {
         checkList.add(new CheckItem("Use https://", "", false, 0, 15, 1));
         checkList.add(new CheckItem("Delete browsing history when using public computers", "", false, 0, 15, 1));
 
-        checkList.add(new CheckItem("Avoid radios for sensitive communications", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Ensure proper training in radio usage", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Use code words if necessary", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Pre-program distress signals", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Carefully consider use of GPS tracking software", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Do not identify organisations or individuals over radio", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Never transmit security-related information or travel plans", "", false, 0, 17, 1));
-        checkList.add(new CheckItem("Set duress code words", "", false, 0, 17, 1));
 
-        checkList.add(new CheckItem("Meet in an area one of you is comfortable with", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Avoid partner offices/homes/hotels or spots frequented by human rights defenders", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Research the meeting spot", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Think through what you’d do in various scenarios", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Remove batteries from mobile phones before you leave", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Arrive early and conduct counter-surveillance on your way", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Have a colleague observe from afar", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Sit with back to wall, good observation of the location, and clear path to escape route", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Observe others who enter", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Agree security precautions with person you meet", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Avoid ordering big meals and pay straight away in cash", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Trust your instincts and leave immediately if you feel something’s not right", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Avoid writing sensitive notes on paper", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Do not let staff/ waiters over hear you", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Be unpredictable", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("If in private room – unplug unnecessary devices and use masking sounds", "", false, 0, 27, 1));
-        checkList.add(new CheckItem("Leave last so that you can observe any third party reactions", "", false, 0, 27, 1));
+        checkList.add(new CheckItem("Avoid radios for sensitive communications", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Ensure proper training in radio usage", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Use code words if necessary", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Pre-program distress signals", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Carefully consider use of GPS tracking software", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Do not identify organisations or individuals over radio", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Never transmit security-related information or travel plans", "", false, 0, 16, 1));
+        checkList.add(new CheckItem("Set duress code words", "", false, 0, 16, 1));
 
-        checkList.add(new CheckItem("Prepare emergency plans", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Pack protective equipment", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Pack a first aid kit and remind yourself of the basics", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Select appropriate broadcast equipment", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Talk to your Safety Adviser if possible", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Get training in dealing with civil unrest", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Conduct risk assessment", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Ensure working communications", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Cover from safe vantage point if possible", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Park vehicles in accessible location for easy departure", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Take second person into crowd to monitor changes", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Wear appropriate clothing and footwear", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Trust your instincts", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Withdraw if faced with aggression", "", false, 0, 28, 1));
-        checkList.add(new CheckItem("Take riot kits", "", false, 0, 28, 1));
 
-        checkList.add(new CheckItem("Don’t take your phone unless you really need to", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Consider bringing something to hide your face", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Consider bringing a throwaway phone", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Password protect your phone", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Consider encrypting your phone", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Download secure apps in advance", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Back up your data", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Write down an emergency number", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Make an emergency plan with a friend", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Prepare Panic Button app", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Understand legalities and risks", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Use TextSecure and RedPhone, or Signal to communicate", "", false, 0, 28, 2));
-        checkList.add(new CheckItem("Use ObscuraCam and InformaCam for photos or videos", "", false, 0, 28, 2));
+        checkList.add(new CheckItem("Avoid using from the same location more than once", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Avoid using from a location that cannot be easily evacuated in case of attack", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Keep transmission under 10 minutes", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Turn off and remove battery as soon as the transmission is over and before traveling", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Avoid having multiple parties transmit from the same location", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Use code words in highly sensitive transmissions, or avoid satellite phones entirely", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Routinely delete call logs and sent folders", "", false, 0, 16, 2));
+        checkList.add(new CheckItem("Keep the sim card separate from the phone when not transmitting", "", false, 0, 16, 2));
 
-        checkList.add(new CheckItem("Phase One", "", false, 0, 29, 1, true));
-        checkList.add(new CheckItem("Phase One", "Plan the who/what/when/where/how of potential evacuation", false, 353, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "", false, 0, 29, 1, true));
-        checkList.add(new CheckItem("Phase Two", "Brief staff", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Test communications system", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Prepare all payments", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Back up/ safely delete files", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Staff and families should carry personal documentation", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Prepare grab bags", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Stock the safe-house", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Inventory assets", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Two", "Assign and prepare vehicles", false, 356, 29, 1));
-        checkList.add(new CheckItem("Phase Three", "", false, 0, 29, 1, true));
-        checkList.add(new CheckItem("Phase Three", "Keep staff informed", false, 366, 29, 1));
-        checkList.add(new CheckItem("Phase Three", "Coordinate with embassies and agencies", false, 366, 29, 1));
-        checkList.add(new CheckItem("Phase Three", "Pay all salaries", false, 366, 29, 1));
-        checkList.add(new CheckItem("Phase Three", "Hide high-value assets", false, 366, 29, 1));
-        checkList.add(new CheckItem("Phase Three", "Remove logos from vehicles remaining", false, 366, 29, 1));
-        checkList.add(new CheckItem("Phase Three", "Give clear responsibility to staff staying", false, 366, 29, 1));
-        checkList.add(new CheckItem("Phase Four", "", false, 0, 29, 1, true));
-        checkList.add(new CheckItem("Phase Four", "Consider disabling equipment", false, 373, 29, 1));
-        checkList.add(new CheckItem("Phase Four", "Leave safes empty and open", false, 373, 29, 1));
-        checkList.add(new CheckItem("Phase Four", "Ensure effective communication with national staff", false, 373, 29, 1));
-        checkList.add(new CheckItem("Phase Four", "Evacuate by safest means possible", false, 373, 29, 1));
-        checkList.add(new CheckItem("Phase Four", "Upon evacuation, inform national staff, embassies etc", false, 373, 29, 1));
-        checkList.add(new CheckItem("Safe-houses", "", false, 0, 29, 1, true));
-        checkList.add(new CheckItem("Safe-houses", "Should be secure building in safe neighbourhood", false, 379, 29, 1));
-        checkList.add(new CheckItem("Safe-houses", "Should be lived in / serviced", false, 379, 29, 1));
-        checkList.add(new CheckItem("Safe-houses", "Should be stocked with emergency goods", false, 379, 29, 1));
-        checkList.add(new CheckItem("Safe-houses", "Waste should be securely disposed of", false, 379, 29, 1));
-        checkList.add(new CheckItem("Safe-houses", "Grab bags should be placed by escape routes", false, 379, 29, 1));
+
+
+
+        checkList.add(new CheckItem("Ensure clear objectives for trip","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Gather information from partners","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Conduct a risk assessment","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Establish threshold of acceptable risk","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Bring working burner phone and sim with funds","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Bring satellite phone if appropriate","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Program essential numbers into phone, but keep sensitive ones coded","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Keep key numbers on paper also","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Note emergency number","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Ensure valid passport, visa, insurance etc. and securely email to yourself and trusted colleague","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Consider bringing an org identity card","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Understand Standard Operating Procedures and Security policy","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Agree itinerary and comms schedule","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Carry your ‘constant companion’","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Bring minimal data","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Plan what to say at borders","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Plan sensitive meetings in advance","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Plan for an emergency exit","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Follow advice for driving in vehicles","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Understand advice for situations of arrest or kidnapping","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Inform appropriate authorities/embassies","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Ensure you have all vaccine/ medicines required","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Inform org of potentially serious medical concerns","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Carry medical emergency card and check area’s hospitals","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Bring adequate cash","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Bring locks, door wedge, security tape, mosquito net etc.","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Ensure digital equipment is wiped ‘clean’","", false, 0, 18, 1));
+        checkList.add(new CheckItem("Keep advance knowledge of your trip need to know","", false, 0, 18, 1));
+
+
+
+        checkList.add(new CheckItem("Before you go","", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("Before you go","Identify all sensitive information and where its carried", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Bring minimal data", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Bring clean equipment", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Carry equipment in hand luggage", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Bring small encrypted storage devices", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Bring notebook that you can rip pages from", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Bring tamper proof scotch tape", false, 245, 19, 1));
+        checkList.add(new CheckItem("Before you go","Check bag/wallets before travelling", false, 245, 19, 1));
+
+        checkList.add(new CheckItem("Entering country","", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("Entering country","Agree what you’ll say/ not say", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Say nothing sensitive on plane", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Consider approaching immigration separately", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Provide only minimal info on activities", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Be prepared to be questioned on passport", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Be polite but firm", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Decide on which accommodation to report", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","If separated from equipment, assume it’s compromised", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Keep phones and Wi-Fi off till out of airport", false, 254, 19, 1));
+        checkList.add(new CheckItem("Entering country","Agree meeting point with colleagues", false, 254, 19, 1));
+
+        checkList.add(new CheckItem("In country","", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("In country","Use codes for sensitive written info", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Be careful with receipts that could link you to activists", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Avoid collecting paper reports", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Keep sensitive info separately/ encrypted", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Dispose of sensitive notes ASAP", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Minimize sensitive info you share", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Change up your travel routes", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Avoid walking alone at night", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Ask hotel staff not to share info about you", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Memorize emergency phone numbers", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Agree emergency signal with colleagues", false, 265, 19, 1));
+        checkList.add(new CheckItem("In country","Always wear seatbelts!", false, 265, 19, 1));
+
+        checkList.add(new CheckItem("Exiting country","", false, 0, 19, 1, true));
+        checkList.add(new CheckItem("Exiting country","Prepare for stop and search", false, 278, 19, 1));
+        checkList.add(new CheckItem("Exiting country","Make sure all sensitive notes are remote/encrypted", false, 278, 19, 1));
+        checkList.add(new CheckItem("Exiting country","Back up all equipment remotely", false, 278, 19, 1));
+        checkList.add(new CheckItem("Exiting country","Check room/pockets/wallet for sensitive papers", false, 278, 19, 1));
+        checkList.add(new CheckItem("Exiting country","Soak sensitive waste papers in water ", false, 278, 19, 1));
+        checkList.add(new CheckItem("Exiting country","Agree what to say at border with colleagues", false, 278, 19, 1));
+        checkList.add(new CheckItem("Exiting country","Keep equipment with you at all times", false, 278, 19, 1));
+
+
+        checkList.add(new CheckItem("WEAR A SEATBELT","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Park in well lit, busy places","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Close windows and lock doors on leaving","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Have keys in hand returning to vehicle","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Lock doors on entry","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Open windows no more than 5cm","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Do not speed","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Observe local driving regulations","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Avoid driving at night/alone","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Avoid letting fuel tank fall below half full","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Keep spare key in office","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Don’t carry unauthorized passengers unless threatened","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Meet incoming staff on arrival","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Vary regular journey times/routes","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Have alternate routes planned","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Avoid criminal areas and chokepoints","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Consult with other agencies","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Notify team of travel plans","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Mark vehicles appropriately","", false, 0, 20, 1));
+        checkList.add(new CheckItem("Avoid transporting sensitive items through volatile areas","", false, 0, 20, 1));
+
+        checkList.add(new CheckItem("Journey considerations","", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("Journey considerations","Recent incidents", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Weather", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Length", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Communications", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Checkpoints/ other dangerous points", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Safe ‘waypoints’", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Refuelling stops", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Food stops", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Plan in case of breakdown", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Appropriate vehicle type", false, 306, 20, 1));
+        checkList.add(new CheckItem("Journey considerations","Ethnicity of driver if dangerous area", false, 306, 20, 1));
+
+        checkList.add(new CheckItem("Checks","", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("Checks","Tyres", false, 318, 20, 1));
+        checkList.add(new CheckItem("Checks","Seatbelts", false, 318, 20, 1));
+        checkList.add(new CheckItem("Checks","Fuel", false, 318, 20, 1));
+        checkList.add(new CheckItem("Checks","Brakes", false, 318, 20, 1));
+        checkList.add(new CheckItem("Checks","Oil", false, 318, 20, 1));
+        checkList.add(new CheckItem("Checks","Steering", false, 318, 20, 1));
+        checkList.add(new CheckItem("Checks","Loading", false, 318, 20, 1));
+
+        checkList.add(new CheckItem("Keep in vehicle","", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("Keep in vehicle","Communication equipment and key telephone numbers", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Additional fuel & oil", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Water", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Maps", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","GPS", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Spare parts for car", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Spare wheel (x2) and jack", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Basic tools", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Fluorescent warning triangle", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Tow rope", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","First aid kit", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Torch", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Permission to travel, if required", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Visas", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Car documents", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Driver’s licence & insurance", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Personal ID", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Organisational ID if possible", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Medical vaccination certificates ", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Food", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Water", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Cold/ hot weather clothing", false, 326, 20, 1));
+        checkList.add(new CheckItem("Keep in vehicle","Blankets/ shade structure", false, 326, 20, 1));
+
+        checkList.add(new CheckItem("In case of accident","", false, 0, 20, 1, true));
+        checkList.add(new CheckItem("In case of accident","Ascertain risk of staying", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Do not leave site unless at risk", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","If at risk, drive to nearest police/military post", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Make site safe and visible to others", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Provide assistance as appropriate", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Contact and cooperate with authorities", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Contact your office", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Take pictures of scene and details of those involved", false, 350, 20, 1));
+        checkList.add(new CheckItem("In case of accident","Complete accident report form in log book if applicable", false, 350, 20, 1));
+
+        checkList.add(new CheckItem("Assess nature of checkpoint","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Slow down","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Turn off radios","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Roll down windows","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Remove sunglasses/turn off headlights & turn on interior light","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Get travel documents ready","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Nominate spokesperson","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Keep distance between vehicles/ barrier","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Keep engine running","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Remain in vehicle","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Keep hands visible","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Avoid sudden movements","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Comply with vehicle search","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Be friendly, co-operative & alert","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Firmly but politely refuse inappropriate requests","", false, 0, 21, 1));
+        checkList.add(new CheckItem("If threatened with a weapon, calmly comply","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Refuse lifts to personnel if possible","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Don’t look back","", false, 0, 21, 1));
+        checkList.add(new CheckItem("Once out of sight, report back to your base","", false, 0, 21, 1));
+
+
+
+        checkList.add(new CheckItem("Understand local kidnapping threat","", false, 0, 22, 1));
+        checkList.add(new CheckItem("Reduce promoting factors","", false, 0, 22, 1, true));
+        checkList.add(new CheckItem("Reduce promoting factors","Stay low profile", false, 380, 22, 1));
+        checkList.add(new CheckItem("Reduce promoting factors","Build key relationships", false, 380, 22, 1));
+        checkList.add(new CheckItem("Reduce promoting factors","Be aware of how work is received", false, 380, 22, 1));
+        checkList.add(new CheckItem("Reduce promoting factors","Have public policy of no ransom", false, 380, 22, 1));
+
+        checkList.add(new CheckItem("Reduce opportunity","", false, 0, 22, 1, true));
+        checkList.add(new CheckItem("Reduce opportunity","Be cautious", false, 385, 22, 1));
+        checkList.add(new CheckItem("Reduce opportunity","Avoid predictability", false, 385, 22, 1));
+        checkList.add(new CheckItem("Reduce opportunity","Reduce visibility", false, 385, 22, 1));
+        checkList.add(new CheckItem("Reduce opportunity","Ensure good site security", false, 385, 22, 1));
+
+        checkList.add(new CheckItem("Practice counter-surveillance","", false, 0, 22, 1, true));
+        checkList.add(new CheckItem("Practice counter-surveillance","Be observant", false, 390, 22, 1));
+        checkList.add(new CheckItem("Practice counter-surveillance","Note unusual interest", false, 390, 22, 1));
+        checkList.add(new CheckItem("Practice counter-surveillance","Maintain situational awareness", false, 390, 22, 1));
+        checkList.add(new CheckItem("Practice counter-surveillance","Know choke points on route", false, 390, 22, 1));
+        checkList.add(new CheckItem("Practice counter-surveillance","Look out for multiple sightings", false, 390, 22, 1));
+        checkList.add(new CheckItem("Practice counter-surveillance","Practice counter-surveillance techniques and watch for response", false, 390, 22, 1));
+
+
+        checkList.add(new CheckItem("Capture","", false, 0, 22, 2, true));
+        checkList.add(new CheckItem("Capture","Be calm & cooperative", false, 397, 22, 2));
+        checkList.add(new CheckItem("Capture","Try not to be separated", false, 397, 22, 2));
+        checkList.add(new CheckItem("Capture","Do not attempt escape", false, 397, 22, 2));
+        checkList.add(new CheckItem("Capture","Do not make eye contact", false, 397, 22, 2));
+        checkList.add(new CheckItem("Capture","Accept that fear and shock are normal", false, 397, 22, 2));
+
+        checkList.add(new CheckItem("Transport","", false, 0, 22, 2, true));
+        checkList.add(new CheckItem("Transport","Do not resist efforts to make you more submissive", false, 403, 22, 2));
+        checkList.add(new CheckItem("Transport","Use time to compose yourself & mentally prepare", false, 403, 22, 2));
+
+        checkList.add(new CheckItem("Confinement","", false, 0, 22, 2, true));
+        checkList.add(new CheckItem("Confinement","Anticipate isolation", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Do not believe everything you’re told", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Advocate for contact", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Build relationship of respect", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Try to retain personal belongings", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Be aware of body language", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Do not threaten abductors", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Eat and drink even if you don’t want to", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Exercise daily", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Maintain hygiene", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Keep track of time", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Maintain personal values", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Meditate", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Reconstruct positive memories or stories", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Keep a low profile", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Watch behaviour for indicators of intentions", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Agree to demands if not doing so will endanger you or others Release", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Obey all instructions", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","If force is used, lie on floor with hands over your head", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Escape should ONLY be considered if necessary to save your life", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Cooperate with authorities", false, 406, 22, 2));
+        checkList.add(new CheckItem("Confinement","Manage your mental health", false, 406, 22, 2));
+
+
+        checkList.add(new CheckItem("Read detailed advice manuals","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Set up crisis management team","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Inform authorities","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Inform all of incident manager","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Contact next of kin","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Answer enquiries from press","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Keep contact with relevant staff & agencies","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Provide 24 communication channels","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Log decisions and events","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Ensure wellbeing of crisis management team","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Make a negotiation plan","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Consider specialist advice","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Allocate all resources needed","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Carry out plan","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Keep morale high","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Ensure confidentiality","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Avoid payment of ransom","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Attend to needs of victim","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Arrange meeting with authorities","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Manage the press","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Arrange debrief with organisation","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Arrange time off","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Arrange professional counseling","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Prepare for possibility of negative outcome","", false, 0, 22, 3));
+        checkList.add(new CheckItem("Conduct a review","", false, 0, 22, 3));
+
+
+
+
+        checkList.add(new CheckItem("Meet in an area one of you is comfortable with", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Avoid partner offices/homes/hotels or spots frequented by human rights defenders", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Research the meeting spot", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Think through what you’d do in various scenarios", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Remove batteries from mobile phones before you leave", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Arrive early and conduct counter-surveillance on your way", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Have a colleague observe from afar", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Sit with back to wall, good observation of the location, and clear path to escape route", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Observe others who enter", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Agree security precautions with person you meet", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Avoid ordering big meals and pay straight away in cash", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Trust your instincts and leave immediately if you feel something’s not right", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Avoid writing sensitive notes on paper", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Do not let staff/ waiters over hear you", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Be unpredictable", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("If in private room – unplug unnecessary devices and use masking sounds", "", false, 0, 24, 1));
+        checkList.add(new CheckItem("Leave last so that you can observe any third party reactions", "", false, 0, 24, 1));
+
+
+
+
+
+        checkList.add(new CheckItem("To identify surveillance of your office", "", false, 0, 25, 1, true));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Take a baseline", false, 471, 25, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Identify and record unusual activity", false, 471, 25, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Filter out coincidence", false, 471, 25, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Notify others", false, 471, 25, 1));
+        checkList.add(new CheckItem("To identify surveillance of your office", "Trust your senses", false, 471, 25, 1));
+        checkList.add(new CheckItem("If under surveillance", "", false, 0, 25, 1, true));
+        checkList.add(new CheckItem("If under surveillance", "Consider risks of confrontation", false, 477, 25, 1));
+        checkList.add(new CheckItem("If under surveillance", "Reduce the ability to watch you", false, 477, 25, 1));
+        checkList.add(new CheckItem("If under surveillance", "Increase protection", false, 477, 25, 1));
+        checkList.add(new CheckItem("If under surveillance", "Continue monitoring", false, 477, 25, 1));
+
+        checkList.add(new CheckItem("To identify on foot surveillance", "", false, 0, 25, 2, true));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Look for typical comfortable clothing and accessories", false, 482, 25, 2));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Don’t overlook atypical people", false, 482, 25, 2));
+        checkList.add(new CheckItem("To identify on foot surveillance", "Look for behavioural tells that they’re concentrating or communicating", false, 482, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 25, 2, true));
+        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Identify the trigger", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to find the eyeball", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create a force-past", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Make 3 sides of a square", false, 486, 25, 2));
+        checkList.add(new CheckItem("Actions to help you spot them", "Get on a bus/train/taxi", false, 486, 25, 2));
+
+        checkList.add(new CheckItem("To identify on mobile surveillance", "", false, 0, 25, 3, true));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Be aware of the most common types of vehicle", false, 495, 25, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Don’t overlook taxis or service vehicles", false, 495, 25, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for aerials or modifications", false, 495, 25, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people being in the car for long periods of time", false, 495, 25, 3));
+        checkList.add(new CheckItem("To identify on mobile surveillance", "Look for signs of people communicating covertly", false, 495, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "", false, 0, 25, 3, true));
+        checkList.add(new CheckItem("Actions to help you spot them", "Be discreet", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Look for 3 sightings", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "If being followed you should change plans", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Create situations to stop", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Use your mirrors", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Use chokepoints", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Monitor several cars back", false, 501, 25, 3));
+        checkList.add(new CheckItem("Actions to help you spot them", "Check for trackers", false, 501, 25, 3));
+
+
+
+
+        checkList.add(new CheckItem("Prepare emergency plans", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Pack protective equipment", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Pack a first aid kit and remind yourself of the basics", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Select appropriate broadcast equipment", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Talk to your Safety Adviser if possible", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Get training in dealing with civil unrest", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Conduct risk assessment", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Ensure working communications", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Cover from safe vantage point if possible", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Park vehicles in accessible location for easy departure", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Take second person into crowd to monitor changes", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Wear appropriate clothing and footwear", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Trust your instincts", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Withdraw if faced with aggression", "", false, 0, 26, 1));
+        checkList.add(new CheckItem("Take riot kits", "", false, 0, 26, 1));
+
+        checkList.add(new CheckItem("Don’t take your phone unless you really need to", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Consider bringing something to hide your face", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Consider bringing a throwaway phone", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Password protect your phone", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Consider encrypting your phone", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Download secure apps in advance", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Back up your data", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Write down an emergency number", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Make an emergency plan with a friend", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Prepare Panic Button app", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Understand legalities and risks", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Use TextSecure and RedPhone, or Signal to communicate", "", false, 0, 26, 2));
+        checkList.add(new CheckItem("Use ObscuraCam and InformaCam for photos or videos", "", false, 0, 26, 2));
+
+
+
+        checkList.add(new CheckItem("Prevent arrest", "", false, 0, 27, 1, true));
+        checkList.add(new CheckItem("Prevent arrest", "Maintain good relations with local authorities", false, 539, 27, 1));
+        checkList.add(new CheckItem("Prevent arrest", "Observe local laws and customs on and off duty", false, 539, 27, 1));
+        checkList.add(new CheckItem("Prevent arrest", "Carry correct legal documentation", false, 539, 27, 1));
+        checkList.add(new CheckItem("Prevent arrest", "Train and brief staff", false, 539, 27, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "", false, 0, 27, 1, true));
+        checkList.add(new CheckItem("If staff member is arrested", "Find out where they are held", false, 544, 27, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Establish the facts", false, 544, 27, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Engage a local lawyer", false, 544, 27, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Advocate for their rights", false, 544, 27, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Liaise with their family", false, 544, 27, 1));
+        checkList.add(new CheckItem("If staff member is arrested", "Inform other organisations", false, 544, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "", false, 0, 27, 1, true));
+        checkList.add(new CheckItem("If you are arrested", "Identify yourself", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Inform your colleagues", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Prepare yourself mentally", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Stay calm", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Do not give false confessions", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Don’t sign anything you don’t understand", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Request your legal rights", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Be cooperative when appropriate", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Don’t volunteer sensitive information", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Establish the facts", false, 551, 27, 1));
+        checkList.add(new CheckItem("If you are arrested", "Be alert to questioning techniques used", false, 551, 27, 1));
+
+
+
+        checkList.add(new CheckItem("Phase One", "", false, 0, 28, 1, true));
+        checkList.add(new CheckItem("Phase One", "Plan the who/what/when/where/how of potential evacuation", false, 563, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "", false, 0, 28, 1, true));
+        checkList.add(new CheckItem("Phase Two", "Brief staff", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Test communications system", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Prepare all payments", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Back up/ safely delete files", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Staff and families should carry personal documentation", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Prepare grab bags", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Stock the safe-house", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Inventory assets", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Two", "Assign and prepare vehicles", false, 565, 28, 1));
+        checkList.add(new CheckItem("Phase Three", "", false, 0, 28, 1, true));
+        checkList.add(new CheckItem("Phase Three", "Keep staff informed", false, 575, 28, 1));
+        checkList.add(new CheckItem("Phase Three", "Coordinate with embassies and agencies", false, 575, 28, 1));
+        checkList.add(new CheckItem("Phase Three", "Pay all salaries", false, 575, 28, 1));
+        checkList.add(new CheckItem("Phase Three", "Hide high-value assets", false, 575, 28, 1));
+        checkList.add(new CheckItem("Phase Three", "Remove logos from vehicles remaining", false, 575, 28, 1));
+        checkList.add(new CheckItem("Phase Three", "Give clear responsibility to staff staying", false, 575, 28, 1));
+        checkList.add(new CheckItem("Phase Four", "", false, 0, 28, 1, true));
+        checkList.add(new CheckItem("Phase Four", "Consider disabling equipment", false, 582, 28, 1));
+        checkList.add(new CheckItem("Phase Four", "Leave safes empty and open", false, 582, 28, 1));
+        checkList.add(new CheckItem("Phase Four", "Ensure effective communication with national staff", false, 582, 28, 1));
+        checkList.add(new CheckItem("Phase Four", "Evacuate by safest means possible", false, 582, 28, 1));
+        checkList.add(new CheckItem("Phase Four", "Upon evacuation, inform national staff, embassies etc", false, 582, 28, 1));
+        checkList.add(new CheckItem("Safe-houses", "", false, 0, 28, 1, true));
+        checkList.add(new CheckItem("Safe-houses", "Should be secure building in safe neighbourhood", false, 588, 28, 1));
+        checkList.add(new CheckItem("Safe-houses", "Should be lived in / serviced", false, 588, 28, 1));
+        checkList.add(new CheckItem("Safe-houses", "Should be stocked with emergency goods", false, 588, 28, 1));
+        checkList.add(new CheckItem("Safe-houses", "Waste should be securely disposed of", false, 588, 28, 1));
+        checkList.add(new CheckItem("Safe-houses", "Grab bags should be placed by escape routes", false, 588, 28, 1));
+
+
+
+
+
+        checkList.add(new CheckItem("For individuals", "", false, 0, 30, 1, true));
+        checkList.add(new CheckItem("For individuals", "Learn about stress", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Know yourself", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Eat well and exercise", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Get rest and relaxation", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Practice belief systems", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Maintain humour and perspective", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Be informed", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Talk to people", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Change the stressful environment", false, 594, 30, 1));
+        checkList.add(new CheckItem("For individuals", "Think positive", false, 594, 30, 1));
+        checkList.add(new CheckItem("For managers", "", false, 0, 30, 1, true));
+        checkList.add(new CheckItem("For managers", "Acknowledge your limitations", false, 605, 30, 1));
+        checkList.add(new CheckItem("For managers", "Get support from your manager", false, 605, 30, 1));
+        checkList.add(new CheckItem("For managers", "Delegate", false, 605, 30, 1));
+        checkList.add(new CheckItem("For managers", "Buddy up", false, 605, 30, 1));
+        checkList.add(new CheckItem("For managers", "Recognise staff efforts", false, 605, 30, 1));
+        checkList.add(new CheckItem("For managers", "Regular time off", false, 605, 30, 1));
+        checkList.add(new CheckItem("For managers", "Provide a good example", false, 605, 30, 1));
+
+        checkList.add(new CheckItem("Get enough rest", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Eat as regularly as possible and drink water", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Talk and spend time with family and friends", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Discuss problems with someone you trust", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Do activities that help you relax", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Do physical exercise", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Find safe ways to help others", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Don’t take drugs, smoke or drink alcohol", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Don’t sleep all day", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Don’t work all the time without any rest or relaxation", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Don’t isolate yourself from friends and loved ones", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Don’t neglect basic personal hygiene", "", false, 0, 30, 2));
+        checkList.add(new CheckItem("Don’t be violent", "", false, 0, 30, 2));
+
+
+
+        checkList.add(new CheckItem("Monitor symptoms", "", false, 0, 30, 3));
+        checkList.add(new CheckItem("Consult a doctor", "", false, 0, 30, 3));
+
+
+
+
+        checkList.add(new CheckItem("Pack grab bag in time of heightened risk", "", false, 0, 31, 1));
+        checkList.add(new CheckItem("Plan day/night escape routes", "", false, 0, 31, 1));
+        checkList.add(new CheckItem("Leave grab bag next to planned escape route", "", false, 0, 31, 1));
+        checkList.add(new CheckItem("Try to keep under 15kg", "", false, 0, 31, 1));
+
+
+        checkList.add(new CheckItem("To Pack", "", false, 0, 31, 1, true));
+        checkList.add(new CheckItem("To Pack", "Passport/ID – with multi-entry visas", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Copies of other key personal and travel documents  (e.g. driving licence)", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "List of emergency contacts and addresses", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "First aid kit including prescription medicines and medical prescriptions", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Swiss army knife", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Spare clothes (ensure appropriate for the context)", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Map/compass (if appropriate to carry maps)", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Water bottle  (with water filter/ water purification tablets)", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "High-energy food (nuts/ snack bars/ chocolate etc.)", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Mobile phone, charger and pre-paid scratch cards if necessary", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Torch and batteries", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Candle", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Strong string/wire", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Money (local currency and US dollars; credit cards)", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Travelling tooth brush/paste and soap", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Waterproof clothing", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Insect repellent/Sun-cream", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Pen and paper", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Prescription glasses (if needed) and sun glasses", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Matches", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Condoms – can be useful for keeping things dry", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Phrase book", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "A head covering", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Hand-held mirror", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Radio", false, 632, 31, 1));
+        checkList.add(new CheckItem("To Pack", "Satellite phone and charger", false, 632, 31, 1));
+
+
+
+        checkList.add(new CheckItem("Choose a vest rated according to your expected threat", "", false, 0, 31, 2));
+        checkList.add(new CheckItem("Get a helmet if operating in a war zone", "", false, 0, 31, 2));
+        checkList.add(new CheckItem("Wear body armor if embedded", "", false, 0, 31, 2));
+        checkList.add(new CheckItem("Take proper care of armor according to instructions", "", false, 0, 31, 2));
+        checkList.add(new CheckItem("Wear stab vest if needed in areas of civil unrest", "", false, 0, 31, 2));
+        checkList.add(new CheckItem("Have access to gas mask but be cautious of being mistaken for protester", "", false, 0, 31, 2));
 
 
 
