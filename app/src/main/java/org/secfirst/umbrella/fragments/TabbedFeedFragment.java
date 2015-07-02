@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,7 +161,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         try {
             selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
         }
         if (selCountry!=null && selCountry.size()>0) {
             List<Registry> selections = null;
@@ -174,7 +175,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 noFeedItems.setText(getResources().getString(R.string.no_feed_updates));
                 return true;
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
             }
             return false;
         } else {
@@ -265,7 +266,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                     items.get(index).setBody(forBody.get(0).text());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
             }
             return body;
         }

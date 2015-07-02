@@ -6,11 +6,14 @@ import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
@@ -63,15 +66,20 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + mQueries.get(0)+"</b>"));
+        String queryText = "";
+        if (mQueries != null && mQueries.size() > 0) {
+            queryText = Jsoup.clean(mQueries.get(0), Whitelist.simpleText());
+        }
+        holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + queryText + "</b>"));
         final Segment current = mSegment.get(position);
         String forTitle = "";
-        if (mTitles.size()>current.getCategory()) forTitle += mTitles.get(current.getCategory()).getCategory();
-        if (mSubtitles.size()>current.getCategory() && mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
-            forTitle += ((forTitle.length()>0)?" - ":"")+mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
+        if (mTitles.size() > current.getCategory())
+            forTitle += mTitles.get(current.getCategory()).getCategory();
+        if (mSubtitles.size() > current.getCategory() && mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
+            forTitle += ((forTitle.length() > 0) ? " - " : "") + mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
         }
         holder.mTitle.setText(forTitle);
-        holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), mQueries.get(0))));
+        holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), queryText)));
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +87,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 try {
                     category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
                 }
                 if (category == null) {
                     return;

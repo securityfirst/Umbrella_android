@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -8,6 +9,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
@@ -46,52 +48,62 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.dropTable(source, Segment.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, CheckItem.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Registry.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Favourite.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Difficulty.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Segment.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, CheckItem.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Registry.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Favourite.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Difficulty.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
     }
 
@@ -99,32 +111,38 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.createTable(source, Segment.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, CheckItem.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Category.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Registry.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Favourite.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.createTable(source, Difficulty.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
     }
 
@@ -132,32 +150,38 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         try {
             TableUtils.dropTable(source, Segment.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, CheckItem.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Category.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Registry.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Favourite.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         try {
             TableUtils.dropTable(source, Difficulty.class, true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
     }
 }

@@ -10,6 +10,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,7 +94,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     try {
                         hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        UmbrellaUtil.logIt(MainActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                     }
                     if (hasDifficulty!=null && hasDifficulty.size() > 0) {
                         Category childCategory = null;
@@ -106,13 +107,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                                 position++;
                             }
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                                Log.getStackTraceString(e.getCause().getCause());
                         }
                         hasDifficulty.get(0).setSelected(position);
                         try {
                             global.getDaoDifficulty().update(hasDifficulty.get(0));
                         } catch (SQLException e) {
-                            e.printStackTrace();
+                            UmbrellaUtil.logIt(MainActivity.this, Log.getStackTraceString(e.getCause().getCause()));
                         }
                     }
                     if (((Integer) titleSpinner.getTag()) == position) {
@@ -172,7 +174,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                             setFragment(2, category.getCategory(), true);
                         }
                     } catch (SQLException e) {
-                        e.printStackTrace();
+                        UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
                     }
                 }
             } else {
@@ -201,7 +203,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 navArray.add(title +" Expert");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
         }
         ArrayAdapter<String> navAdapter = new ArrayAdapter<>(this, R.layout.spinner_nav_item, android.R.id.text1, navArray);
         titleSpinner.setVisibility(View.VISIBLE);
@@ -226,26 +228,26 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             try {
                 hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
             }
             if (hasDifficulty!=null && hasDifficulty.size() > 0 && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
                     global.getDaoDifficulty().update(hasDifficulty.get(0));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
                 }
             } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 try {
                     global.getDaoDifficulty().create(new Difficulty(childItem.getPosition(), Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
                 }
             }
             try {
                 hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
             }
             drawerItem = childItem.getPosition();
             setNavItems(childItem.getTitle());
@@ -266,16 +268,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 } else {
                     titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
                 }
-            } else {
-                setTitle(childItem.getTitle());
-                titleSpinner.setVisibility(View.GONE);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
-                if (!isFirst) {
-                    trans.addToBackStack(null);
-                }
-                trans.commit();
             }
-        } else {
+        } else if (fragType == 2) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans;
             if (drawerItem == 56) { // index into pageviewer
@@ -288,6 +282,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             trans.commit();
             titleSpinner.setVisibility(View.GONE);
+        } else if (fragType == 3) {
+            setTitle(childItem.getTitle());
+            titleSpinner.setVisibility(View.GONE);
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
+            if (!isFirst) {
+                trans.addToBackStack(null);
+            }
+            trans.commit();
         }
         invalidateOptionsMenu();
     }
@@ -304,13 +306,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
                 childItem = selectedItem;
-                setFragment(1, "", false);
+                setFragment(3, "", false);
             } else {
                 drawerItem = selectedItem.getPosition();
                 setFragment(2, category.getCategory(), false);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
         }
     }
 
@@ -368,7 +370,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             try {
                 hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
             }
             itemExport.setVisible(hasDifficulty!=null && hasDifficulty.size()>0);
         }
@@ -408,7 +410,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             try {
                 hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
-                e.printStackTrace();
+                UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
             }
             if (hasDifficulty!=null && hasDifficulty.size() > 0) {
                 String body = "";
@@ -419,7 +421,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected() + 1));
                     items = queryBuilder.query();
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    if (BuildConfig.BUILD_TYPE.equals("debug"))
+                        Log.getStackTraceString(e.getCause().getCause());
                 }
                 if (items!=null) {
                     for (CheckItem checkItem : items) {
@@ -438,8 +441,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     @Override
     public void onDifficultySelected(int difficulty) {
+        setNavItems(childItem.getTitle());
         if (difficulty >= titleSpinner.getAdapter().getCount()) {
-            titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
+            titleSpinner.setSelection(titleSpinner.getAdapter().getCount() - 1);
         } else {
             titleSpinner.setSelection(difficulty);
         }

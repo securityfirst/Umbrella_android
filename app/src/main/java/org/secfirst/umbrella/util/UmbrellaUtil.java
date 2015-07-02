@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
@@ -121,7 +123,8 @@ public class UmbrellaUtil {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         return parentCategories;
     }
@@ -134,7 +137,8 @@ public class UmbrellaUtil {
         try {
             categories = global.getDaoCategory().queryForAll();
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         if (categories!=null) {
             for (Category category : categories) {
@@ -189,7 +193,8 @@ public class UmbrellaUtil {
         try {
             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause().getCause());
         }
         if (selCountry!=null && selCountry.size()>0) {
             UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
@@ -212,6 +217,11 @@ public class UmbrellaUtil {
         } else {
             return false;
         }
+    }
+
+    public static void logIt(Context context, String message) {
+        if (BuildConfig.BUILD_TYPE.equals("debug") && message != null && message.length() > 0)
+            Log.i(context.getClass().getSimpleName(), message);
     }
 
     public static void getReports(String countryId, final Context context, final Global global) {
@@ -265,7 +275,8 @@ public class UmbrellaUtil {
                     global.getFeedItems().get(index).setBody(forBody.get(0).text());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
             return body;
         }
@@ -312,7 +323,8 @@ public class UmbrellaUtil {
                 Date date = formatter.parse(stringDate);
                 return date.getTime()/1000;
             } catch (ParseException e) {
-                e.printStackTrace();
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause().getCause());
             }
         }
         return timestamp;

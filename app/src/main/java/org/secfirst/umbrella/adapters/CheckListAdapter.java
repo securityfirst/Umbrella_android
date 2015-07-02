@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,7 +127,7 @@ public class CheckListAdapter extends BaseAdapter {
                             try {
                                 global.getDaoCheckItem().delete(checkList.get(i));
                             } catch (SQLException e) {
-                                e.printStackTrace();
+                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
                             }
                             checkList.remove(i);
                             notifyDataSetChanged();
@@ -153,7 +154,7 @@ public class CheckListAdapter extends BaseAdapter {
                             try {
                                 global.getDaoCheckItem().update(checkList.get(i));
                             } catch (SQLException e) {
-                                e.printStackTrace();
+                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
                             }
                             checkList.set(i, checkList.get(i));
                             CheckItem current = (CheckItem) getItem(i);
@@ -166,7 +167,7 @@ public class CheckListAdapter extends BaseAdapter {
                             try {
                                 global.getDaoCheckItem().delete(checkList.get(i));
                             } catch (SQLException e) {
-                                e.printStackTrace();
+                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
                             }
                             checkList.remove(i);
                             notifyDataSetChanged();
@@ -188,7 +189,7 @@ public class CheckListAdapter extends BaseAdapter {
         try {
             global.getDaoCheckItem().update(current);
         } catch (SQLException e) {
-            e.printStackTrace();
+            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
         }
         checkList.get(i).setValue(b ? 1 : 0);
         mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
