@@ -42,7 +42,7 @@ public class SearchActivity extends BaseActivity {
         TextView searchCount = (TextView) findViewById(R.id.search_count_text);
 
         Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+        if (intent!=null && Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if (query!=null) {
                 List<Segment> mSegments = null;
