@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.models;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
@@ -31,6 +32,7 @@ public class CheckItem implements Serializable {
     private int custom;
     @DatabaseField(columnName = FIELD_DISABLED)
     private int disabled;
+    @SerializedName("no_check")
     @DatabaseField
     private int noCheck;
 

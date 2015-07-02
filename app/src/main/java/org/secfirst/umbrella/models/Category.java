@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.models;
 
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
@@ -12,19 +13,26 @@ public class Category implements Serializable {
     private int parent;
     @DatabaseField
     private String category;
+    @SerializedName("has_difficulty")
     @DatabaseField
     private int hasDifficulty;
     @DatabaseField
+    @SerializedName("difficulty_beginner")
     private int difficultyBeginner;
     @DatabaseField
+    @SerializedName("difficulty_advanced")
     private int difficultyAdvanced;
+    @SerializedName("difficulty_expert")
     @DatabaseField
     private int difficultyExpert;
     @DatabaseField
+    @SerializedName("difficulty_beginner")
     private String textBeginner;
     @DatabaseField
+    @SerializedName("difficulty_advanced")
     private String textAdvanced;
     @DatabaseField
+    @SerializedName("difficulty_expert")
     private String textExpert;
 
     public Category() {}
