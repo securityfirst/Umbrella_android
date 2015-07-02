@@ -10,6 +10,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -213,6 +214,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
+        Log.i("fragtype", String.valueOf(fragType));
         if (fragType == 0 || fragType == -1) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global, fragType == -1));
@@ -266,16 +268,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 } else {
                     titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
                 }
-            } else {
-                setTitle(childItem.getTitle());
-                titleSpinner.setVisibility(View.GONE);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
-                if (!isFirst) {
-                    trans.addToBackStack(null);
-                }
-                trans.commit();
             }
-        } else {
+        } else if (fragType == 2) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans;
             if (drawerItem == 56) { // index into pageviewer
@@ -288,6 +282,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             trans.commit();
             titleSpinner.setVisibility(View.GONE);
+        } else if (fragType == 3) {
+            setTitle(childItem.getTitle());
+            titleSpinner.setVisibility(View.GONE);
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
+            if (!isFirst) {
+                trans.addToBackStack(null);
+            }
+            trans.commit();
         }
         invalidateOptionsMenu();
     }
@@ -304,7 +306,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
                 childItem = selectedItem;
-                setFragment(1, "", false);
+                setFragment(3, "", false);
             } else {
                 drawerItem = selectedItem.getPosition();
                 setFragment(2, category.getCategory(), false);
@@ -438,8 +440,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     @Override
     public void onDifficultySelected(int difficulty) {
+        setNavItems(childItem.getTitle());
         if (difficulty >= titleSpinner.getAdapter().getCount()) {
-            titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
+            titleSpinner.setSelection(titleSpinner.getAdapter().getCount() - 1);
         } else {
             titleSpinner.setSelection(difficulty);
         }
