@@ -58,7 +58,7 @@
             android:text="Body"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_smaller"
+            android:textSize="@dimen/text_size_large"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
