@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -33,6 +36,7 @@ import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import org.secfirst.umbrella.AboutActivity;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
@@ -276,9 +280,30 @@ public class TabbedFragment extends Fragment {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_segment,
+            final View rootView = inflater.inflate(R.layout.fragment_segment,
                     container, false);
+            WebViewClient interceptUrlLicences = new WebViewClient(){
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView  view, String  url){
+                    if (url.contains("umbrella://") && !url.equals("umbrella://licences/")) {
+                        return false;
+                    } else if (url.equals("umbrella://licences/")) {
+                        rootView.getContext().startActivity(
+                                new Intent(getActivity(), AboutActivity.class));
+                        return true;
+                    } else {
+                        rootView.getContext().startActivity(
+                                new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                        return true;
+                    }
+                }
+
+                @Override
+                public void onLoadResource(WebView  view, String  url){
+                }
+            };
             content = (WebView) rootView.findViewById(R.id.segment_content);
+            content.setWebViewClient(interceptUrlLicences);
 
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;

@@ -16,9 +16,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="icon" >
+        <service
+            android:name=".RefreshService"
+            android:exported="false" />
 
-        <service android:name=".RefreshService" android:exported="false"/>
-        <receiver android:process=":remote" android:name=".ServiceReceiver"></receiver>
+        <receiver
+            android:name=".ServiceReceiver"
+            android:process=":remote" />
 
         <activity
             android:name=".MainActivity"
@@ -86,6 +90,10 @@
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="org.secfirst.umbrella" />
 
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about">
+        </activity>
     </application>
 
 </manifest>
