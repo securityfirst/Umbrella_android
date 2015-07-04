@@ -867,7 +867,7 @@ public class InitialData {
 
         segmentList.add(new Segment(56, 1, "PGP", "<h1>PGP</h1><p>PGP or Pretty Good Privacy was one of the first popular implementations of public key cryptography. Phil Zimmermann, its creator, wrote the program in 1991 to help activists and others protect their communications. The US government formally investigated him when the program spread outside the United States. At the time, exporting tools that included strong public key encryption was a violation of US law. PGP continues to exist as a commercial software product. A free implementation of the same underlying standard that PGP uses called GnuPG (or GPG) is also available. Because both use the same interchangeable approach, people will refer to using a “PGP key ” or sending a “PGP message”, even if they are using GnuPG.</p>"));
 
-        segmentList.add(new Segment(56, 1, "Physical threat<", "<h1>Physical threat<</h1><p>In this context, any threat to your sensitive information that results from other people having direct physical access your computer hardware or from other physical risks, such as breakage, accidents or natural disasters</p>"));
+        segmentList.add(new Segment(56, 1, "Physical threat", "<h1>Physical threat</h1><p>In this context, any threat to your sensitive information that results from other people having direct physical access your computer hardware or from other physical risks, such as breakage, accidents or natural disasters</p>"));
 
         segmentList.add(new Segment(56, 1, "Pidgin", "<h1>Pidgin</h1><p>A FOSS instant messaging tool that supports an encryption plugin called Off the Record (OTR)</p>"));
 
