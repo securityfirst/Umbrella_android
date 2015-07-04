@@ -47,6 +47,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="password_reset_notification">Password reset and all data removed.</string>
-    <string name="title_activity_about">About2</string>
+    <string name="title_activity_about">Licences</string>
 
 </resources>
