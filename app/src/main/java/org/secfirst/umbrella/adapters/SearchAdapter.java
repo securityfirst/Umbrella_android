@@ -87,7 +87,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 try {
                     category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
+                    UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
                 }
                 if (category == null) {
                     return;

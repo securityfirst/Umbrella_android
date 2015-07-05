@@ -57,7 +57,7 @@ public class SearchActivity extends BaseActivity {
                     results.setVisibility(View.VISIBLE);
                     searchCount.setText(mSegments.size()+((mSegments.size()==1)?" search result":" results")+" found for this query");
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause().getCause()));
+                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
                 }
             }
         }

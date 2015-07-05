@@ -127,7 +127,7 @@ public class CheckListAdapter extends BaseAdapter {
                             try {
                                 global.getDaoCheckItem().delete(checkList.get(i));
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
+                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
                             }
                             checkList.remove(i);
                             notifyDataSetChanged();
@@ -154,7 +154,7 @@ public class CheckListAdapter extends BaseAdapter {
                             try {
                                 global.getDaoCheckItem().update(checkList.get(i));
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
+                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
                             }
                             checkList.set(i, checkList.get(i));
                             CheckItem current = (CheckItem) getItem(i);
@@ -167,7 +167,7 @@ public class CheckListAdapter extends BaseAdapter {
                             try {
                                 global.getDaoCheckItem().delete(checkList.get(i));
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
+                                UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
                             }
                             checkList.remove(i);
                             notifyDataSetChanged();
@@ -189,7 +189,7 @@ public class CheckListAdapter extends BaseAdapter {
         try {
             global.getDaoCheckItem().update(current);
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
         }
         checkList.get(i).setValue(b ? 1 : 0);
         mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());

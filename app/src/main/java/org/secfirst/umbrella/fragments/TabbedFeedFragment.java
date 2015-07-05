@@ -161,7 +161,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         try {
             selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         if (selCountry!=null && selCountry.size()>0) {
             List<Registry> selections = null;
@@ -175,7 +175,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 noFeedItems.setText(getResources().getString(R.string.no_feed_updates));
                 return true;
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
             }
             return false;
         } else {
@@ -266,7 +266,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                     items.get(index).setBody(forBody.get(0).text());
                 }
             } catch (IOException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
             }
             return body;
         }

@@ -214,8 +214,9 @@ public class Global extends Application {
             if (password.equals(OrmHelper.DATABASE_PASSWORD))setLoggedIn(true);
             return true;
         } catch (SQLiteException e) {
+            UmbrellaUtil.logIt(getApplicationContext(), e.toString());
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
         this.password = true;
         return false;
@@ -233,7 +234,7 @@ public class Global extends Application {
                 daoSegment = getOrmHelper().getDao(Segment.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return daoSegment;
@@ -245,7 +246,7 @@ public class Global extends Application {
                 daoCheckItem = getOrmHelper().getDao(CheckItem.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return daoCheckItem;
@@ -257,7 +258,7 @@ public class Global extends Application {
                 daoCategory = getOrmHelper().getDao(Category.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return daoCategory;
@@ -270,7 +271,7 @@ public class Global extends Application {
                 daoRegistry = getOrmHelper().getDao(Registry.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return daoRegistry;
@@ -282,7 +283,7 @@ public class Global extends Application {
                 daoFavourite = getOrmHelper().getDao(Favourite.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return daoFavourite;
@@ -294,7 +295,7 @@ public class Global extends Application {
                 daoDifficulty = getOrmHelper().getDao(Difficulty.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return daoDifficulty;
@@ -312,7 +313,7 @@ public class Global extends Application {
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
 
         ArrayList<CheckItem> checkList = InitialData.getCheckList();
@@ -325,7 +326,7 @@ public class Global extends Application {
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
 
         ArrayList<Category> categoryList = InitialData.getCategoryList();
@@ -338,7 +339,7 @@ public class Global extends Application {
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
 
         setRefreshValue((int) TimeUnit.MINUTES.toMillis(30));
@@ -354,7 +355,7 @@ public class Global extends Application {
                 }
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
     }
@@ -369,7 +370,7 @@ public class Global extends Application {
                 }
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
     }
@@ -390,7 +391,7 @@ public class Global extends Application {
                 }
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
     }
@@ -404,12 +405,12 @@ public class Global extends Application {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
                 } catch (NumberFormatException nfe) {
                     if (BuildConfig.BUILD_TYPE.equals("debug"))
-                        Log.getStackTraceString(nfe.getCause().getCause());
+                        Log.getStackTraceString(nfe.getCause());
                 }
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
         return retInterval;
     }
@@ -425,7 +426,7 @@ public class Global extends Application {
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
     }
 
