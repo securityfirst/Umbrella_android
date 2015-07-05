@@ -17,7 +17,7 @@ public class UmbrellaRestClient {
     private static final String BASE_URL = "https://api.secfirst.org";
     private static final String VERSION = "v1";
 
-    private static AsyncHttpClient client;
+    private static AsyncHttpClient client = new AsyncHttpClient();
 
     public UmbrellaRestClient() {
         client = getTolerantClient();
