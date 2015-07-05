@@ -197,7 +197,7 @@ public class Global extends Application {
     }
 
     public boolean initializeSQLCipher(String password) {
-        if (password.equals("")) password = OrmHelper.DATABASE_PASSWORD;
+        if (password.equals("")) password = getString(R.string.default_db_password);
         SQLiteDatabase.loadLibs(this);
         if (dbHelper==null || !dbHelper.isOpen()) {
             dbHelper = new OrmHelper(getApplicationContext());
@@ -211,7 +211,7 @@ public class Global extends Application {
             getDaoFavourite();
             getDaoDifficulty();
             startService();
-            if (password.equals(OrmHelper.DATABASE_PASSWORD))setLoggedIn(true);
+            if (password.equals(getString(R.string.default_db_password)))setLoggedIn(true);
             return true;
         } catch (SQLiteException e) {
             UmbrellaUtil.logIt(getApplicationContext(), e.toString());

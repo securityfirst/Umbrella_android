@@ -10,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 import net.sqlcipher.database.SQLiteDatabase;
 
 import org.secfirst.umbrella.BuildConfig;
+import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
@@ -21,11 +22,10 @@ import java.sql.SQLException;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    public static final String DATABASE_PASSWORD = "umbrella";
     private static final int DATABASE_VERSION = 1;
 
     public OrmHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION, DATABASE_PASSWORD);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION, context.getString(R.string.default_db_password));
     }
 
     @Override

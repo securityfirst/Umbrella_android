@@ -48,5 +48,6 @@
     <string name="no">No</string>
     <string name="password_reset_notification">Password reset and all data removed.</string>
     <string name="title_activity_about">Licences</string>
+    <string name="default_db_password">umbrella</string>
 
 </resources>
