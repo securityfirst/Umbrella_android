@@ -251,22 +251,24 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             drawerItem = childItem.getPosition();
             setNavItems(childItem.getTitle());
-            if (hasDifficulty!=null && hasDifficulty.size() > 0) {
+            if (hasDifficulty!=null) {
+                int spinnerNumber = 0;
+                if (hasDifficulty.size() > 0) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
                 boolean checklist = false;
                 if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
                     checklist = true;
                 }
                 setIntent(null);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), hasDifficulty.get(0).getSelected(), checklist), "tabbed");
+                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
                 trans.commit();
-                if (hasDifficulty.get(0).getSelected() >= titleSpinner.getAdapter().getCount()) {
+                if (spinnerNumber >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
                 } else {
-                    titleSpinner.setSelection(hasDifficulty.get(0).getSelected());
+                    titleSpinner.setSelection(spinnerNumber);
                 }
             }
         } else if (fragType == 2) {
