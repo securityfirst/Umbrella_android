@@ -106,7 +106,10 @@ public class UmbrellaUtil {
                 try {
                     Thread.sleep(30000);
                     if (!activity.isFinishing()) ringProgressDialog.dismiss();
-                } catch (Exception e) { }
+                } catch (Exception e) {
+                    if (BuildConfig.BUILD_TYPE.equals("debug"))
+                        Log.getStackTraceString(e.getCause());
+                }
             }
         }).start();
         return ringProgressDialog;
@@ -124,21 +127,21 @@ public class UmbrellaUtil {
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
         return parentCategories;
     }
 
     public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
         Global global = (Global) context.getApplicationContext();
-        ArrayList<Category> parentCategories = new ArrayList<Category>();
-        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
+        ArrayList<Category> parentCategories = new ArrayList<>();
+        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
             categories = global.getDaoCategory().queryForAll();
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
         if (categories!=null) {
             for (Category category : categories) {
@@ -194,7 +197,7 @@ public class UmbrellaUtil {
             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause().getCause());
+                Log.getStackTraceString(e.getCause());
         }
         if (selCountry!=null && selCountry.size()>0) {
             UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
@@ -276,7 +279,7 @@ public class UmbrellaUtil {
                 }
             } catch (IOException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
             return body;
         }
@@ -312,7 +315,7 @@ public class UmbrellaUtil {
         if (m.find()) {
             Pattern p1 = Pattern.compile(".*-\\s*(.*)");
             Matcher m1 = p1.matcher(m.group(1));
-            String stringDate = "";
+            String stringDate;
             if (m1.find()) {
                 stringDate = m1.group(1);
             } else {
@@ -324,7 +327,7 @@ public class UmbrellaUtil {
                 return date.getTime()/1000;
             } catch (ParseException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
         return timestamp;

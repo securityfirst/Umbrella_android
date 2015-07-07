@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.util;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -16,7 +17,7 @@ public class UmbrellaRestClient {
     private static final String BASE_URL = "https://api.secfirst.org";
     private static final String VERSION = "v1";
 
-    private static AsyncHttpClient client;
+    private static AsyncHttpClient client = new AsyncHttpClient();
 
     public UmbrellaRestClient() {
         client = getTolerantClient();
@@ -34,7 +35,9 @@ public class UmbrellaRestClient {
     }
 
     public static void get(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
-        if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
+        Log.i("client", String.valueOf(client));
+        if (isRequestReady(context, token))
+            client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
     public static void getFeed(String url, RequestParams params, Context context, AsyncHttpResponseHandler responseHandler) {

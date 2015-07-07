@@ -57,7 +57,7 @@ public class SaxHandler extends DefaultHandler {
                 tempFeedItem.setDate(date.getTime()/1000);
             } catch (ParseException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause().getCause());
+                    Log.getStackTraceString(e.getCause());
             }
         }
     }

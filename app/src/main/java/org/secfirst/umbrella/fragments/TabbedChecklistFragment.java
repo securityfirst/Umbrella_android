@@ -78,7 +78,7 @@ public class TabbedChecklistFragment extends Fragment {
         try {
             favourites = global.getDaoFavourite().queryForAll();
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         if (favourites!=null) {
             for (Favourite favourite : favourites) {
@@ -89,13 +89,13 @@ public class TabbedChecklistFragment extends Fragment {
                     where.eq(CheckItem.FIELD_CATEGORY, favourite.getCategory()).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(favourite.getDifficulty() + 1));
                     mCheckList = queryBuilder.query();
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                 }
                 Category category = null;
                 try {
                     category = global.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                 }
                 if (category != null) {
                     DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), favourite.getDifficulty(), true);
@@ -126,7 +126,7 @@ public class TabbedChecklistFragment extends Fragment {
                     where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(difficulty.getCategory())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty.getSelected() + 1));
                     mCheckList = queryBuilder1.query();
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                 }
                 try {
                     Category category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
@@ -150,11 +150,11 @@ public class TabbedChecklistFragment extends Fragment {
                     if (dashCheckFinished.getChecked() > 0 && !isAlreadyPresent) returned.add(dashCheckFinished);
 //                    if (returned.size() - favReturnedSize > 4) break;
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                 }
             }
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         DashCheckFinished totalDone = new DashCheckFinished("Total done", getTotalCheckListPercentage(returned), 100, false);
         totalDone.setNoIcon(true);

@@ -86,7 +86,7 @@ public class DifficultyFragment extends Fragment {
             btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
             btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         return v;
     }
@@ -97,7 +97,7 @@ public class DifficultyFragment extends Fragment {
         try {
             df = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(mSection));
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         Difficulty d;
         if (df!=null && df.size()>0) {
@@ -106,13 +106,13 @@ public class DifficultyFragment extends Fragment {
             try {
                 global.getDaoDifficulty().update(d);
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
             }
         } else {
             try {
                 global.getDaoDifficulty().create(new Difficulty(mSection, difficulty));
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause().getCause()));
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
             }
         }
         if (mListener != null) {

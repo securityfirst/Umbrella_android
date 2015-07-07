@@ -26,13 +26,13 @@ public class Category implements Serializable {
     @DatabaseField
     private int difficultyExpert;
     @DatabaseField
-    @SerializedName("difficulty_beginner")
+    @SerializedName("text_beginner")
     private String textBeginner;
     @DatabaseField
-    @SerializedName("difficulty_advanced")
+    @SerializedName("text_advanced")
     private String textAdvanced;
     @DatabaseField
-    @SerializedName("difficulty_expert")
+    @SerializedName("text_expert")
     private String textExpert;
 
     public Category() {}

@@ -18,8 +18,8 @@ import java.util.TimerTask;
 public abstract class BaseActivity extends ActionBarActivity {
 
     protected Global global;
-    protected boolean mBounded;
-    protected RefreshService mService;
+    public boolean mBounded;
+    public RefreshService mService;
     private static TimerTask logoutTask;
     private Timer logoutTimer;
     final Handler handler = new Handler();

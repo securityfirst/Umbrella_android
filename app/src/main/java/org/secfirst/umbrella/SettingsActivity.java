@@ -57,7 +57,7 @@ public class SettingsActivity extends BaseActivity {
         TextView refreshInterval = (TextView) findViewById(R.id.refresh_interval);
         TextView feedSources = (TextView) findViewById(R.id.feed_sources);
         mAutocompleteLocation = (AutoCompleteTextView) findViewById(R.id.settings_autocomplete);
-        refreshData.setVisibility(View.GONE); // enable when backend ready
+//        refreshData.setVisibility(View.GONE); // enable when backend ready
         refreshData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,7 +110,7 @@ public class SettingsActivity extends BaseActivity {
                         try {
                             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
                         if (selLoc!=null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
@@ -122,7 +122,7 @@ public class SettingsActivity extends BaseActivity {
                         try {
                             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
                         if (selCountry!=null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
@@ -130,7 +130,7 @@ public class SettingsActivity extends BaseActivity {
                             try {
                                 global.getDaoRegistry().update(mCountry);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         } else {
                             mCountry = new Registry("country", mAddress.getCountryName());
@@ -144,7 +144,7 @@ public class SettingsActivity extends BaseActivity {
                                     }
                                 }, 500);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         }
                     } else {
@@ -231,7 +231,7 @@ public class SettingsActivity extends BaseActivity {
                 }
             }
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select The Feed Sources");
@@ -257,13 +257,13 @@ public class SettingsActivity extends BaseActivity {
                                 global.getDaoRegistry().delete(selection);
                             }
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
                         for (Integer item : selectedItems) {
                             try {
                                 global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(item)));
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         }
                         dialog.dismiss();
@@ -363,7 +363,7 @@ public class SettingsActivity extends BaseActivity {
                 foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
                 mAddressList = new ArrayList<>(foundGeocode);
             } catch (IOException e) {
-                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause().getCause()));
+                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
             }
 
             return foundGeocode;

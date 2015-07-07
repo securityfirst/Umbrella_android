@@ -109,7 +109,7 @@ public class DashCheckListAdapter extends BaseAdapter {
                             checkItems.remove(position);
                             notifyDataSetChanged();
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause().getCause()));
+                            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
                         }
                     }
                 });
