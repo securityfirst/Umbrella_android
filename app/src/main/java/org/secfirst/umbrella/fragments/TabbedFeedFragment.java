@@ -3,7 +3,6 @@ package org.secfirst.umbrella.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -25,6 +24,7 @@ import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,7 +42,6 @@ import org.jsoup.select.Elements;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.adapters.FeedAdapter;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
@@ -179,7 +178,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             mCountry = new Registry("country", mAddress.getCountryName());
                             try {
                                 global.getDaoRegistry().create(mCountry);
-                                isFeedSet();
+                                if (isFeedSet()) getFeeds(getActivity());
                             } catch (SQLException e) {
                                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                             }
@@ -224,20 +223,13 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void refreshFeed() {
-        boolean isCountrySet = getFeeds(getActivity());
-        if (isCountrySet) {
-            refreshView();
+        refreshView();
+        if (isFeedSet()) {
+            getFeeds(getActivity());
         } else {
-            noFeedItems.setVisibility(View.VISIBLE);
-            noFeedItems.setText("Please set your location in the settings.");
-            new android.os.Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    startActivity(new Intent(getActivity(), SettingsActivity.class));
-                }
-            }, 1000);
-            mSwipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(getActivity(), "Please set sources and location in the settings", Toast.LENGTH_SHORT).show();
         }
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     public void parseReliefWeb(List<Data> dataList) {
@@ -432,7 +424,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 global.setRefreshValue(value);
                                 refreshIntervalValue.setText(global.getRefreshLabel());
-                                isFeedSet();
+                                if (isFeedSet()) getFeeds(getActivity());
                                 dialog.dismiss();
                             }
                         }
@@ -495,7 +487,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             }
                         }
                         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
-                        isFeedSet();
+                        if (isFeedSet()) getFeeds(getActivity());
                         dialog.dismiss();
                     }
                 })
@@ -510,10 +502,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         dialog.show();
     }
 
-    public void isFeedSet() {
+    public boolean isFeedSet() {
         if (!global.getSelectedFeedSourcesLabel().equals("") && !global.getRefreshLabel().equals("") && !global.getChosenCountry().equals("")) {
-            getFeeds(getActivity());
+            return true;
         }
+        return false;
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
