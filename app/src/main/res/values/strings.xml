@@ -51,5 +51,6 @@
     <string name="default_db_password">umbrella</string>
     <string name="no_feed_settings">You haven\'t set the country and the sources for the feed yet. You have to do it in order for the feed to start displaying, and you can change it any time later in the settings.</string>
     <string name="feed_location_label">Set the location for your feeds</string>
+    <string name="no_feed_items_label">There is currently no results with your chosen settings. Please tap to revise and change them</string>
 
 </resources>

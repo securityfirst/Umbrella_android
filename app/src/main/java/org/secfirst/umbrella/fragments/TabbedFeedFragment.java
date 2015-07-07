@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,6 +25,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +45,7 @@ import org.jsoup.select.Elements;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.adapters.FeedAdapter;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
@@ -66,10 +70,13 @@ import java.util.List;
 public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
     FeedAdapter feedAdapter;
-    TextView noFeedItems;
-    LinearLayout noFeedCard;
+    TextView noFeedSettings;
+    ScrollView noFeedCard;
     ListView feedListView;
-    TextView header, refreshIntervalValue, feedSourcesValue;
+    TextView header;
+    TextView refreshIntervalValue;
+    TextView feedSourcesValue;
+    CardView noFeedItems;
     Global global;
     private AutoCompleteTextView mAutocompleteLocation;
     private ArrayList<Address> mAddressList;
@@ -89,10 +96,17 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         feedListView = (ListView) rootView.findViewById(R.id.feed_list);
-        noFeedItems = (TextView) rootView.findViewById(R.id.no_feed_items);
+        noFeedSettings = (TextView) rootView.findViewById(R.id.no_feed_settings);
+        noFeedItems = (CardView) rootView.findViewById(R.id.no_feed_items);
+        noFeedItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+            }
+        });
         refreshIntervalValue = (TextView) rootView.findViewById(R.id.refresh_interval_value);
         feedSourcesValue = (TextView) rootView.findViewById(R.id.feed_sources_value);
-        noFeedCard = (LinearLayout) rootView.findViewById(R.id.no_feed_list);
+        noFeedCard = (ScrollView) rootView.findViewById(R.id.no_feed_list);
         feedAdapter = new FeedAdapter(getActivity(), items);
         header = new TextView(getActivity());
         header.setTextColor(getResources().getColor(R.color.white));
@@ -194,6 +208,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         refreshIntervalValue.setText(global.getRefreshLabel());
         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
         getFeeds(getActivity());
+        refreshView();
         return rootView;
     }
 
@@ -210,15 +225,19 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     public void refreshView() {
         ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
         feedAdapter.updateData(items);
-        noFeedItems.setText(R.string.no_feed_updates);
         if (items!=null) {
             if (items.size() > 0)
                 header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
-            noFeedCard.setVisibility(items.size()>0?View.GONE:View.VISIBLE);
-            mSwipeRefreshLayout.setVisibility(items.size() > 0 ? View.VISIBLE : View.GONE);
+            mSwipeRefreshLayout.setVisibility(isFeedSet() && items.size()>0 ?View.VISIBLE:View.GONE);
+            noFeedCard.setVisibility(isFeedSet()?View.GONE:View.VISIBLE);
+            if (isFeedSet()) {
+                noFeedItems.setVisibility(items.size() > 0 ? View.GONE : View.VISIBLE);
+            } else {
+                noFeedItems.setVisibility(View.GONE);
+            }
         } else {
-            noFeedCard.setVisibility(View.VISIBLE);
-            mSwipeRefreshLayout.setVisibility(View.GONE);
+            noFeedItems.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
+            noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -226,6 +245,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         refreshView();
         if (isFeedSet()) {
             getFeeds(getActivity());
+            refreshView();
         } else {
             Toast.makeText(getActivity(), "Please set sources and location in the settings", Toast.LENGTH_SHORT).show();
         }
@@ -269,7 +289,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                     if (selection.getValue().equals("3")) getCDC(context);
                 }
                 noFeedCard.setVisibility(View.GONE);
-                noFeedItems.setText(getResources().getString(R.string.no_feed_updates));
+                noFeedSettings.setText(getResources().getString(R.string.no_feed_updates));
                 mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 return true;
             } catch (SQLException e) {
@@ -424,7 +444,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 global.setRefreshValue(value);
                                 refreshIntervalValue.setText(global.getRefreshLabel());
-                                if (isFeedSet()) getFeeds(getActivity());
+                                refreshFeed();
                                 dialog.dismiss();
                             }
                         }
@@ -487,7 +507,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             }
                         }
                         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
-                        if (isFeedSet()) getFeeds(getActivity());
+                        refreshFeed();
                         dialog.dismiss();
                     }
                 })
