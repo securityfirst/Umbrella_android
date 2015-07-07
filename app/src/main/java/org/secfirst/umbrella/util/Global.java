@@ -42,6 +42,7 @@ import org.secfirst.umbrella.models.Segment;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -395,6 +396,66 @@ public class Global extends Application {
                     Log.getStackTraceString(e.getCause());
             }
         }
+    }
+
+    public String getRefreshLabel() {
+        String refreshValueLabel = "";
+        int refreshValue = getRefreshValue();
+        HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues();
+        for (Object key : refreshValues.keySet()) {
+            if (refreshValues.get(key).equals(refreshValue)) {
+                refreshValueLabel = (String) key;
+            }
+        }
+        return refreshValueLabel;
+    }
+
+    public ArrayList<Integer> getSelectedFeedSources() {
+        final CharSequence[] items = {" ReliefWeb "," UN "," FCO "," CDC "};
+        final ArrayList<Integer> selectedItems = new ArrayList<>();
+        List<Registry> selections;
+        try {
+            selections = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+            for (int i = 0; i < items.length; i++) {
+                for (Registry reg : selections) {
+                    if (reg.getValue().equals(String.valueOf(i))) {
+                        selectedItems.add(i);
+                        break;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause());
+        }
+        return selectedItems;
+    }
+
+    public String getSelectedFeedSourcesLabel() {
+        String feedSourcesLabel = "";
+        final CharSequence[] items = {" ReliefWeb ", " UN ", " FCO ", " CDC "};
+        final ArrayList<Integer> selectedItems = getSelectedFeedSources();
+        for (Integer selectedItem : selectedItems) {
+            if (!selectedItem.equals(selectedItems.get(0))) feedSourcesLabel += "\n";
+            feedSourcesLabel += " - "+items[selectedItem];
+        }
+        return feedSourcesLabel;
+    }
+
+    public String getChosenCountry() {
+        String selectedCountry = "";
+        Dao<Registry, String> regDao = getDaoRegistry();
+        List<Registry> selCountry = null;
+        try {
+            selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
+        } catch (SQLException e) {
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause());
+        }
+        if (selCountry != null && selCountry.size() > 0) {
+            selectedCountry = selCountry.get(0).getValue();
+        }
+        return selectedCountry;
     }
 
     public int getRefreshValue() {

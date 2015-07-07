@@ -39,7 +39,7 @@
     <string name="favourite">Favourite</string>
     <string name="refresh_interval_feeds">Refresh interval for feeds</string>
     <string name="refresh_umbrella_data">Refresh from the server</string>
-    <string name="set_location">Set your location</string>
+    <string name="set_location">Your location</string>
     <string name="feed_sources">Feed sources</string>
     <string name="no_feed_updates">There were no news updates for your chosen country, pull to refresh.</string>
     <string name="reset_password_title">Confirm reset password</string>
@@ -49,5 +49,7 @@
     <string name="password_reset_notification">Password reset and all data removed.</string>
     <string name="title_activity_about">Licences</string>
     <string name="default_db_password">umbrella</string>
+    <string name="no_feed_settings">You haven\'t set the country and the sources for the feed yet. You have to do it in order for the feed to start displaying, and you can change it any time later in the settings.</string>
+    <string name="feed_location_label">Set the location for your feeds</string>
 
 </resources>
