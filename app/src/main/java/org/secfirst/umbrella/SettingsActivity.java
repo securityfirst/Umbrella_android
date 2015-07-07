@@ -27,6 +27,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
@@ -297,35 +299,35 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
-//        UmbrellaRestClient.get("check_items", null, null, SettingsActivity.this, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-//                Gson gson = new GsonBuilder().create();
-//                Type listType = new TypeToken<ArrayList<CheckItem>>() {
-//                }.getType();
-//                ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
-//                if (receivedItems!=null && receivedItems.size() > 0) {
-//                    global.syncCheckLists(receivedItems);
-//                }
-//                checkDone();
-//            }
-//        });
-//
-//        UmbrellaRestClient.get("categories", null, null, SettingsActivity.this, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                super.onSuccess(statusCode, headers, response);
-//                Gson gson = new GsonBuilder().create();
-//                Type listType = new TypeToken<ArrayList<Category>>() {
-//                }.getType();
-//                ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
-//                if (receivedItems!=null && receivedItems.size() > 0) {
-//                    global.syncCategories(receivedItems);
-//                }
-//                checkDone();
-//            }
-//        });
+        UmbrellaRestClient.get("check_items", null, null, SettingsActivity.this, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<CheckItem>>() {
+                }.getType();
+                ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
+                if (receivedItems!=null && receivedItems.size() > 0) {
+                    global.syncCheckLists(receivedItems);
+                }
+                checkDone();
+            }
+        });
+
+        UmbrellaRestClient.get("categories", null, null, SettingsActivity.this, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<Category>>() {
+                }.getType();
+                ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
+                if (receivedItems!=null && receivedItems.size() > 0) {
+                    global.syncCategories(receivedItems);
+                }
+                checkDone();
+            }
+        });
     }
 
     @Override

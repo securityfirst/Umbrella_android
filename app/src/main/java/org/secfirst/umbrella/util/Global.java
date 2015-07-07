@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.table.TableUtils;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -348,8 +349,7 @@ public class Global extends Application {
     public void syncSegments(ArrayList<Segment> segments) {
         if (getOrmHelper()!=null) {
             try {
-                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Segment.class, true);
-                TableUtils.createTable(getOrmHelper().getConnectionSource(), Segment.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Segment.class);
                 for (Segment segment : segments) {
                     getDaoSegment().create(segment);
                 }
@@ -378,8 +378,9 @@ public class Global extends Application {
     public void syncCheckLists(ArrayList<CheckItem> checkList) {
         if (getOrmHelper()!=null) {
             try {
-                TableUtils.dropTable(getOrmHelper().getConnectionSource(), CheckItem.class, true);
-                TableUtils.createTable(getOrmHelper().getConnectionSource(), CheckItem.class);
+                DeleteBuilder<CheckItem, String> deleteBuilder = getDaoCheckItem().deleteBuilder();
+                deleteBuilder.where().not().eq(CheckItem.FIELD_CUSTOM, "1");
+                deleteBuilder.delete();
                 CheckItem previousItem = null;
                 for (CheckItem checkItem : checkList) {
                     if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {

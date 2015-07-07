@@ -106,7 +106,10 @@ public class UmbrellaUtil {
                 try {
                     Thread.sleep(30000);
                     if (!activity.isFinishing()) ringProgressDialog.dismiss();
-                } catch (Exception e) { }
+                } catch (Exception e) {
+                    if (BuildConfig.BUILD_TYPE.equals("debug"))
+                        Log.getStackTraceString(e.getCause());
+                }
             }
         }).start();
         return ringProgressDialog;
@@ -131,8 +134,8 @@ public class UmbrellaUtil {
 
     public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
         Global global = (Global) context.getApplicationContext();
-        ArrayList<Category> parentCategories = new ArrayList<Category>();
-        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<ArrayList<DrawerChildItem>>();
+        ArrayList<Category> parentCategories = new ArrayList<>();
+        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
             categories = global.getDaoCategory().queryForAll();
@@ -312,7 +315,7 @@ public class UmbrellaUtil {
         if (m.find()) {
             Pattern p1 = Pattern.compile(".*-\\s*(.*)");
             Matcher m1 = p1.matcher(m.group(1));
-            String stringDate = "";
+            String stringDate;
             if (m1.find()) {
                 stringDate = m1.group(1);
             } else {

@@ -1294,7 +1294,7 @@ public class InitialData {
         checkList.add(new CheckItem("Use a web-based proxy", "", false, 0, 14, 1));
         checkList.add(new CheckItem("Check which VPN is right for you", "", false, 0, 14, 1));
         checkList.add(new CheckItem("Download and use Psiphon3", "", false, 0, 14, 1));
-        checkList.add(new CheckItem("For smartphones", "", true, 0, 14, 1));
+        checkList.add(new CheckItem("For smartphones", "", false, 0, 14, 1));
         checkList.add(new CheckItem("For smartphones", "Download Firefox mobile and Proxy Mobile", false, 175, 14, 1));
         checkList.add(new CheckItem("For smartphones", "Download and use Psiphon3", false, 175, 14, 1));
 
