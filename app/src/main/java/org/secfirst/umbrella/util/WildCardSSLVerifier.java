@@ -1,7 +1,10 @@
 package org.secfirst.umbrella.util;
 
+import android.util.Log;
+
 import org.apache.http.conn.ssl.AbstractVerifier;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.secfirst.umbrella.BuildConfig;
 
 import javax.net.ssl.SSLException;
 
@@ -26,7 +29,10 @@ class WildCardSSLVerifier extends AbstractVerifier {
                         delegate.verify(host, new String[] {
                                 cn.substring(2) }, subjectAlts);
                         ok = true;
-                    } catch (Exception e1) { }
+                    } catch (Exception e1) {
+                        if (BuildConfig.BUILD_TYPE.equals("debug"))
+                            Log.getStackTraceString(e.getCause());
+                    }
                 }
             }
             if(!ok) throw e;

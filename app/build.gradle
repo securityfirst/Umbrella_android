@@ -31,6 +31,7 @@ dependencies {
     compile 'com.android.support:support-v4:22.1.1'
     compile 'com.viewpagerindicator:library:2.4.1'
     compile 'org.apache.commons:commons-collections4:4.0'
+    compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
     compile 'com.android.support:cardview-v7:22.1.1'
     compile 'com.android.support:recyclerview-v7:22.1.1'
     compile 'com.loopj.android:android-async-http:1.4.6'

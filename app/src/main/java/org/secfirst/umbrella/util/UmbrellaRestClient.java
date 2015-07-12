@@ -10,7 +10,14 @@ import com.loopj.android.http.RequestParams;
 
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
+import org.thoughtcrime.ssl.pinning.PinningSSLSocketFactory;
+
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 
 public class UmbrellaRestClient {
 
@@ -34,10 +41,21 @@ public class UmbrellaRestClient {
         return client;
     }
 
+    public static AsyncHttpClient getClientForApiUpdates(Context context) {
+        AsyncHttpClient client = new AsyncHttpClient();
+        String[] pins                 = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78"};
+        try {
+            client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
+        } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause());
+        }
+        return client;
+    }
+
     public static void get(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
-        Log.i("client", String.valueOf(client));
-        if (isRequestReady(context, token))
-            client.get(getAbsoluteUrl(url), params, responseHandler);
+        client = getClientForApiUpdates(context);
+        if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
     public static void getFeed(String url, RequestParams params, Context context, AsyncHttpResponseHandler responseHandler) {
@@ -46,14 +64,17 @@ public class UmbrellaRestClient {
     }
 
     public static void post(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
+        client = getClientForApiUpdates(context);
         if (isRequestReady(context, token)) client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
     public static void put(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
+        client = getClientForApiUpdates(context);
         if (isRequestReady(context, token)) client.put(getAbsoluteUrl(url), params, responseHandler);
     }
 
     public static void delete(String url, String token, Context context, AsyncHttpResponseHandler responseHandler) {
+        client = getClientForApiUpdates(context);
         if (isRequestReady(context, token)) client.delete(getAbsoluteUrl(url), responseHandler);
     }
 
