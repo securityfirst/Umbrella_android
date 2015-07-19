@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
                 for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
                     for (DrawerChildItem childItem : groupItem) {
-                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' '))) {
+                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
                             this.childItem = childItem;
                         }
                     }
