@@ -76,7 +76,7 @@ public class DashCheckListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if (!current.isNoIcon()) {
                     Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("umbrella://checklist/" + current.getCategory().replace(' ', '-')));
+                    i.setData(Uri.parse("umbrella://checklist/" + current.getCategory().replace(' ', '-').toLowerCase()));
                     mContext.startActivity(i);
                 }
             }
