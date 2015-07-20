@@ -12,7 +12,7 @@
     <application
         android:name=".util.Global"
         android:allowBackup="true"
-        android:icon="@drawable/ic_umbrella"
+        android:icon="@drawable/launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:replace="icon" >
