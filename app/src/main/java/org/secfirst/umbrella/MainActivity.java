@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private TextView loginHeader;
     private View header;
     private boolean ran = false;
+    private int page = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -260,11 +261,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 if (hasDifficulty.size() > 0) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
                 boolean checklist = false;
-                if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null && getIntent().getData().getHost().equalsIgnoreCase("checklist")) {
-                    checklist = true;
+                if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null) {
+                    if (getIntent().getData().getHost().equalsIgnoreCase("checklist"))
+                        checklist = true;
+                    else if (getIntent().getData().getHost().equalsIgnoreCase("lesson") && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 2)
+                        page = Integer.valueOf(getIntent().getData().getPathSegments().get(2));
                 }
                 setIntent(null);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist), "tabbed");
+                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
@@ -279,7 +283,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans;
             if (drawerItem == 58) { // index into pageviewer
-                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, 0, false), "tabbed");
+                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, 0, false, 0), "tabbed");
             } else {
                 trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
             }

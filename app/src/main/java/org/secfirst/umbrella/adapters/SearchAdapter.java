@@ -65,7 +65,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         String queryText = "";
         if (mQueries != null && mQueries.size() > 0) {
             queryText = Jsoup.clean(mQueries.get(0), Whitelist.simpleText());
@@ -73,30 +73,40 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + queryText + "</b>"));
         final Segment current = mSegment.get(position);
         String forTitle = "";
-        if (mTitles.size() > current.getCategory())
-            forTitle += mTitles.get(current.getCategory()).getCategory();
-        if (mSubtitles.size() > current.getCategory() && mSubtitles.get(current.getCategory()).size() >= current.getCategory()) {
-            forTitle += ((forTitle.length() > 0) ? " - " : "") + mSubtitles.get(current.getCategory()).get(current.getCategory() - 1).getTitle();
-        }
-        holder.mTitle.setText(forTitle);
-        holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), queryText)));
-        holder.mCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Category category = null;
-                try {
-                    category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
-                } catch (SQLException e) {
-                    UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
-                }
-                if (category == null) {
-                    return;
-                }
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("umbrella://lesson/" + category.getCategory().replace('-', '_').replace(' ', '-')));
-                mContext.startActivity(i);
+        try {
+            final Category category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
+            if (category == null) {
+                return;
             }
-        });
+            Category parent = null;
+            try {
+                parent = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(category.getParent()));
+            } catch (SQLException e) {}
+            if (parent != null && parent.getCategory() != null)
+                forTitle = parent.getCategory();
+            forTitle += ((forTitle.length() > 0) ? " - " : "") + category.getCategory();
+            holder.mTitle.setText(forTitle);
+            holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), queryText)));
+            holder.mCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int page = 0;
+                    try {
+                        List<Segment> segments = ((Global) mContext.getApplicationContext()).getDaoSegment().queryForEq("category", current.getCategory());
+                        for (int i = 0; i < segments.size(); i++) {
+                            if (segments.get(i).getTitle().equals(current.getTitle())) {
+                                page = ++i;
+                            }
+                        }
+                    } catch (SQLException e) {}
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("umbrella://lesson/" + category.getCategory().toLowerCase().replace('-', '_').replace(' ', '-') + "/" + (current.getDifficulty() - 1) + "/" + page));
+                    mContext.startActivity(i);
+                }
+            });
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
+        }
     }
 
     private String searchBody(String body, String query) {

@@ -64,10 +64,11 @@ public class TabbedFragment extends Fragment {
     public long sectionNumber;
     public static boolean hasChecklist;
 
-    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber, boolean checklist) {
+    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber, boolean checklist, int page) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
         args.putBoolean("checklist", checklist);
+        args.putInt("page", page);
         tabbedFragment.sectionNumber = sectionNumber;
         difficulty = spinnerNumber;
         tabbedFragment.setArguments(args);
@@ -174,7 +175,8 @@ public class TabbedFragment extends Fragment {
             }
         });
         hasChecklist = getArguments().getBoolean("checklist", false);
-        mViewPager.setCurrentItem(getArguments().getBoolean("checklist", false) ? mSectionsPagerAdapter.getCount() - 1 : 0);
+        int page = getArguments().getInt("page", 0);
+        mViewPager.setCurrentItem(hasChecklist ? mSectionsPagerAdapter.getCount() - 1 : page);
         return v;
     }
 
