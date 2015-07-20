@@ -26,6 +26,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,6 +90,11 @@ public class TabbedFragment extends Fragment {
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position == mSectionsPagerAdapter.getCount() - 1 && positionOffset == 0) {
                     if (android.os.Build.VERSION.SDK_INT >= 11) {
+                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                        lps.setMargins(margin, margin, margin * 5, margin * 5);
                         new ShowcaseView.Builder(getActivity())
                                 .setTarget(new ViewTarget(R.id.check_value, getActivity()))
                                 .setContentText("Mark off tasks as you complete them\n\nHold down on a task to delete or disable it")
@@ -98,6 +104,11 @@ public class TabbedFragment extends Fragment {
                                 .setShowcaseEventListener(new OnShowcaseEventListener() {
                                     @Override
                                     public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                                        lps.setMargins(margin, margin, margin * 5, margin * 5);
                                         new ShowcaseView.Builder(getActivity())
                                                 .setTarget(new ViewTarget(R.id.fab, getActivity()))
                                                 .setContentText("Click here to add new tasks – you’ll need to create a password for this!")
@@ -107,13 +118,19 @@ public class TabbedFragment extends Fragment {
                                                 .setShowcaseEventListener(new OnShowcaseEventListener() {
                                                     @Override
                                                     public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                                                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                                                        lps.setMargins(margin, margin, margin * 5, margin * 5);
                                                         new ShowcaseView.Builder(getActivity())
                                                                 .setTarget(new PointTarget(getView().getWidth(), 0))
                                                                 .setContentText("Star this checklist to make it one of your favourites\n\nClick here to share checklist")
                                                                 .setStyle(R.style.CustomShowcaseTheme4)
                                                                 .hideOnTouchOutside()
                                                                 .singleShot(6)
-                                                                .build();
+                                                                .build()
+                                                                .setButtonPosition(lps);
                                                     }
 
                                                     @Override
@@ -126,7 +143,8 @@ public class TabbedFragment extends Fragment {
 
                                                     }
                                                 })
-                                                .build();
+                                                .build()
+                                                .setButtonPosition(lps);
                                     }
 
                                     @Override
@@ -139,7 +157,8 @@ public class TabbedFragment extends Fragment {
 
                                     }
                                 })
-                                .build();
+                                .build()
+                                .setButtonPosition(lps);
                     }
                 }
             }

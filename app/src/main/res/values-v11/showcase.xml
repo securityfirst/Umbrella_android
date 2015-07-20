@@ -45,7 +45,7 @@
         <item name="sv_backgroundColor">#BB000000</item>
         <item name="sv_showcaseColor">@color/umbrella_green</item>
         <item name="sv_buttonText">Close</item>
-        <item name="sv_titleTextAppearance">@style/CustomTitle</item>
+        <item name="sv_detailTextAppearance">@style/CustomDetail</item>
     </style>
 
     <style name="SampleTheme" parent="Theme.AppCompat.Light">
@@ -63,6 +63,11 @@
     <style name="CustomTitle2" parent="TextAppearance.ShowcaseView.Title">
         <item name="android:textColor">#25467A</item>
     </style>
+
+    <style name="CustomDetail" parent="TextAppearance.ShowcaseView.Detail">
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
     <style name="ListItemBigtext">
         <item name="android:textColor">#25467A</item>

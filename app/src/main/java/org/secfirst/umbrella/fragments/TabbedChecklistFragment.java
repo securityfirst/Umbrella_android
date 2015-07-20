@@ -68,7 +68,7 @@ public class TabbedChecklistFragment extends Fragment {
             checked = checked + checkList.getChecked();
             total = total + checkList.getTotal();
         }
-        return (int)((checked * 100.0f) / total);
+        return Math.round((checked * 100.0f) / total);
     }
 
     public ArrayList<DashCheckFinished> getChecklistProgress() {
