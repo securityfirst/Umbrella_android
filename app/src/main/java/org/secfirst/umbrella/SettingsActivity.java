@@ -83,7 +83,7 @@ public class SettingsActivity extends BaseActivity {
         feedSources.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showFeedSources();
+                showWarning();
             }
         });
         mAutocompleteLocation.setHint("Set location");
@@ -211,6 +211,29 @@ public class SettingsActivity extends BaseActivity {
                     }
                 });
         builderSingle.show();
+    }
+
+    public void showWarning() {
+        if (!global.wasWarned()) {
+            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(SettingsActivity.this);
+            alertDialogBuilder.setTitle("Non Encrypted content or SSL configurations missing");
+            alertDialogBuilder.setMessage("We are retrieving this content from third party sources, some of which have settings configured in such a way that your privacy and security cannot be guaranteed. Please proceed with caution.");
+            alertDialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    global.set_wasWarned(true);
+                    showFeedSources();
+                }
+            });
+            alertDialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        } else {
+            showFeedSources();
+        }
     }
 
     public void showFeedSources() {

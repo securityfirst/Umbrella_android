@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.adapters.SearchAdapter;
@@ -49,7 +50,7 @@ public class SearchActivity extends BaseActivity {
                 try {
                     QueryBuilder<Segment, String> queryBuilder = global.getDaoSegment().queryBuilder();
                     Where<Segment, String> where = queryBuilder.where();
-                    where.like(Segment.FIELD_BODY, "%"+query+"%");
+                    where.like(Segment.FIELD_BODY, new SelectArg("%"+query+"%"));
                     mSegments = queryBuilder.query();
                     RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments, query);
                     mRecyclerView.setAdapter(mAdapter);

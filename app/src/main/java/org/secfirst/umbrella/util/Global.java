@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
 
 import net.sqlcipher.database.SQLiteDatabase;
@@ -51,7 +52,7 @@ public class Global extends Application {
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn;
-    private boolean password;
+    private boolean password, warning;
     private ArrayList<FeedItem> feedItems = new ArrayList<>();
     private long feeditemsRefreshed;
     private Dao<Segment, String> daoSegment;
@@ -88,6 +89,16 @@ public class Global extends Application {
     public boolean getTermsAccepted() {
         _termsAccepted = prefs.getBoolean("termsAccepted", false);
         return _termsAccepted;
+    }
+
+    public void set_wasWarned(boolean warned) {
+        warning = warned;
+        sped.putBoolean("wasWarned", warning).commit();
+    }
+
+    public boolean wasWarned() {
+        warning = prefs.getBoolean("wasWarned", false);
+        return warning;
     }
 
     public ArrayList<FeedItem> getFeedItems() {
@@ -144,7 +155,7 @@ public class Global extends Application {
                 if (!pw.equals(confirmInput.getText().toString())) {
                     Toast.makeText(activity, "Passwords do not match.", Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
-                    getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + pw + "';");
+                    getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
                     password = true;
                     dialog.dismiss();
                     Toast.makeText(activity, "You have successfully set your password.", Toast.LENGTH_SHORT).show();
