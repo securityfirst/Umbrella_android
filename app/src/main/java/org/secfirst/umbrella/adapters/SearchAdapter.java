@@ -93,7 +93,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     return;
                 }
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse("umbrella://lesson/" + category.getCategory().replace(' ', '-')));
+                i.setData(Uri.parse("umbrella://lesson/" + category.getCategory().replace('-', '_').replace(' ', '-')));
                 mContext.startActivity(i);
             }
         });
