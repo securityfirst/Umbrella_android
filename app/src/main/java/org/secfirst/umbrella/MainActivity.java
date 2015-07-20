@@ -60,6 +60,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public boolean shownCoachmark = false;
     private TextView loginHeader;
     private View header;
+    private boolean ran = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +120,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                             UmbrellaUtil.logIt(MainActivity.this, Log.getStackTraceString(e.getCause()));
                         }
                     }
-                    if (((Integer) titleSpinner.getTag()) == position) {
+                    if (!ran || ((Integer) titleSpinner.getTag()) == position) {
+                        ran = true;
                         return;
                     }
                     titleSpinner.setTag(position);
