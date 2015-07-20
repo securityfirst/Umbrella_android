@@ -15,9 +15,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -451,6 +453,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         }
         setFragment(1, "", false);
         if (android.os.Build.VERSION.SDK_INT >= 11) {
+            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+            lps.setMargins(margin, margin, margin * 5, margin * 5);
             new ShowcaseView.Builder(this)
                     .setTarget(new ViewTarget(R.id.spinner_nav, this))
                     .setContentText("Click here to change level")
@@ -460,13 +467,19 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .setShowcaseEventListener(new OnShowcaseEventListener() {
                         @Override
                         public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                            lps.setMargins(margin, margin, margin * 5, margin * 5);
                             new ShowcaseView.Builder(MainActivity.this)
                                     .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
                                     .setContentText("Swipe left to read through the lesson or click on a tab to go straight to that - section\n\nYou can also skip straight to the checklist")
                                     .setStyle(R.style.CustomShowcaseTheme4)
                                     .hideOnTouchOutside()
                                     .singleShot(3)
-                                    .build();
+                                    .build()
+                                    .setButtonPosition(lps);
                         }
 
                         @Override
@@ -479,7 +492,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
                         }
                     })
-                    .build();
+                    .build()
+                    .setButtonPosition(lps);
         }
     }
 
@@ -502,6 +516,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onDrawerClosed(View drawerView) {
         actionBarDrawerToggle.onDrawerClosed(drawerView);
         if (android.os.Build.VERSION.SDK_INT >= 11) {
+            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+            lps.setMargins(margin, margin, margin * 5, margin * 5);
             new ShowcaseView.Builder(this)
                     .setTarget(new PointTarget(0, 0))
                     .setContentText("Click here or swipe from the side of your screen to view the menu at any time")
@@ -509,7 +528,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .hideOnTouchOutside()
                     .singleShot(1)
                     .setShowcaseEventListener(this)
-                    .build();
+                    .build()
+                    .setButtonPosition(lps);
             if (!shownCoachmark)
                onShowcaseViewHide(null);
         }
@@ -522,14 +542,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     @Override
     public void onShowcaseViewHide(ShowcaseView showcaseView) {
-        if (fragType == 0)
+        if (fragType == 0) {
+            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+            lps.setMargins(margin, margin, margin * 5, margin * 5);
             new ShowcaseView.Builder(MainActivity.this)
                     .setTarget(new ViewTarget(R.id.pager_title_strip, this))
                     .setContentText("View all the checklists you’ve started and see your progress")
                     .setStyle(R.style.CustomShowcaseTheme4)
                     .hideOnTouchOutside()
                     .singleShot(7)
-                    .build();
+                    .build()
+                    .setButtonPosition(lps);
+        }
     }
 
     @Override
