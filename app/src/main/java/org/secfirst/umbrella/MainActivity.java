@@ -474,7 +474,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                             lps.setMargins(margin, margin, margin * 5, margin * 5);
                             new ShowcaseView.Builder(MainActivity.this)
                                     .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
-                                    .setContentText("Swipe left to read through the lesson or click on a tab to go straight to that - section\n\nYou can also skip straight to the checklist")
+                                    .setContentText("Swipe left to read through the lesson or click on a tab to go straight to that section\n\nYou can also skip straight to the checklist")
                                     .setStyle(R.style.CustomShowcaseTheme4)
                                     .hideOnTouchOutside()
                                     .singleShot(3)
