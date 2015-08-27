@@ -31,6 +31,7 @@ public class UmbrellaRestClient {
     }
 
     public static AsyncHttpClient getTolerantClient() {
+        //The true in the below constructor disables SSL certificate validation.  No code is using this function, and it's non-intuitive, so may be best to remove it.
         AsyncHttpClient client = new AsyncHttpClient(true, 80, 443);
         SSLSocketFactory sslSocketFactory = (SSLSocketFactory) client.getHttpClient().getConnectionManager().getSchemeRegistry().getScheme("https")
                 .getSocketFactory();
