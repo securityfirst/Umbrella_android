@@ -225,9 +225,19 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     public void refreshView() {
         ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
         feedAdapter.updateData(items);
+        List<Registry> selCountry = null;
+        String headerText = "";
+        try {
+            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+            if (selCountry!=null && selCountry.size() > 0) {
+                headerText = "Country selected: " + selCountry.get(0).getValue() + "\n";
+            }
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+        }
         if (items!=null) {
             if (items.size() > 0)
-                header.setText("Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed())));
+                headerText += "Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed()));
             mSwipeRefreshLayout.setVisibility(isFeedSet() && items.size()>0 ?View.VISIBLE:View.GONE);
             noFeedCard.setVisibility(isFeedSet()?View.GONE:View.VISIBLE);
             if (isFeedSet()) {
@@ -239,6 +249,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             noFeedItems.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
             noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
         }
+        header.setText(headerText);
     }
 
     public void refreshFeed() {
