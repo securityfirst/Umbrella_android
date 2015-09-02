@@ -37,7 +37,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.BaseActivity;
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.adapters.FeedAdapter;
@@ -236,9 +235,9 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void refreshView() {
-        ArrayList<FeedItem> items = ((BaseActivity) getActivity()).getGlobal().getFeedItems();
+        ArrayList<FeedItem> items = global.getFeedItems();
         feedAdapter.updateData(items);
-        List<Registry> selCountry = null;
+        List<Registry> selCountry;
         String headerText = "";
         try {
             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
@@ -250,7 +249,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         }
         if (items!=null) {
             if (items.size() > 0)
-                headerText += "Last updated: " + DateFormat.getDateTimeInstance().format(new Date(((BaseActivity) getActivity()).getGlobal().getFeeditemsRefreshed()));
+                headerText += "Last updated: " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
             feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
             noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
             if (isFeedSet()) {
@@ -269,7 +268,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         refreshView();
         if (isFeedSet()) {
             getFeeds(getActivity());
-            refreshView();
         } else {
             Toast.makeText(getActivity(), "Please set sources and location in the settings", Toast.LENGTH_SHORT).show();
         }
@@ -277,7 +275,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public boolean getFeeds(final Context context) {
-        Global global = ((MainActivity) getActivity()).getGlobal();
         global.setFeedItems(new ArrayList<FeedItem>());
         Dao<Registry, String> regDao = global.getDaoRegistry();
         List<Registry> selISO2 = null;
@@ -290,10 +287,37 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             List<Registry> selections;
             try {
                 selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
-                getFeed(selISO2.get(0).getValue(), selections, context);
-                noFeedCard.setVisibility(View.GONE);
-                noFeedSettings.setText(getResources().getString(R.string.no_feed_updates));
-                feedListView.setVisibility(View.VISIBLE);
+                if (selections.size()>0) {
+                    String separator = ",";
+                    int total = selections.size() * separator.length();
+                    for (Registry item : selections) {
+                        total += item.getValue().length();
+                    }
+                    StringBuilder sb = new StringBuilder(total);
+                    for (Registry item : selections) {
+                        sb.append(separator).append(item.getValue());
+                    }
+                    String sources = sb.substring(separator.length());
+                    String mUrl = "feed?country=" + selISO2.get(0).getValue() + "&sources=" + sources + "&since=0";
+                    UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Gson gson = new GsonBuilder().create();
+                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                            }.getType();
+                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
+                            if (receivedItems != null && receivedItems.size() > 0) {
+                                global.setFeedItems(receivedItems);
+                                refreshView();
+                                mSwipeRefreshLayout.setRefreshing(false);
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(getActivity(), "No sources selected", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             } catch (SQLException e) {
                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
@@ -303,40 +327,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             noFeedCard.setVisibility(View.VISIBLE);
             feedListView.setVisibility(View.GONE);
             return false;
-        }
-    }
-
-    public void getFeed(String countryId, List<Registry> sourceItems, Context context) {
-        if (sourceItems.size()>0) {
-            String separator = ",";
-            int total = sourceItems.size() * separator.length();
-            for (Registry item : sourceItems) {
-                total += item.getValue().length();
-            }
-            StringBuilder sb = new StringBuilder(total);
-            for (Registry item : sourceItems) {
-                sb.append(separator).append(item.getValue());
-            }
-            String sources = sb.substring(separator.length());
-            String mUrl = "feed?country=" + countryId + "&sources=" + sources + "&since=0";
-            UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                    super.onSuccess(statusCode, headers, response);
-                    Gson gson = new GsonBuilder().create();
-                    Type listType = new TypeToken<ArrayList<FeedItem>>() {
-                    }.getType();
-                    ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                    if (receivedItems != null && receivedItems.size() > 0) {
-                        feedAdapter.updateData(receivedItems);
-                        feedListView.setVisibility(View.VISIBLE);
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-            });
-        } else {
-            Toast.makeText(getActivity(), "No sources selected", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -459,10 +449,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public boolean isFeedSet() {
-        if (!global.getSelectedFeedSourcesLabel().equals("") && !global.getRefreshLabel().equals("") && !global.getChosenCountry().equals("")) {
-            return true;
-        }
-        return false;
+        return !global.getSelectedFeedSourcesLabel().equals("") && !global.getRefreshLabel().equals("") && !global.getChosenCountry().equals("");
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
