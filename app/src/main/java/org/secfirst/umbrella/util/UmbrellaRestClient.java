@@ -41,10 +41,6 @@ public class UmbrellaRestClient {
         if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void getFeed(String url, RequestParams params, Context context, AsyncHttpResponseHandler responseHandler) {
-        if (UmbrellaUtil.isNetworkAvailable(context)) client.get(url, params, responseHandler);
-    }
-
     private static boolean isRequestReady(Context context, String token) {
         boolean isReady = UmbrellaUtil.isNetworkAvailable(context);
         if (isReady) {

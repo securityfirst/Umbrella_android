@@ -1,11 +1,17 @@
 package org.secfirst.umbrella.models;
 
 
+import com.google.gson.annotations.SerializedName;
+
 public class FeedItem {
 
+    @SerializedName("title")
     private String title;
+    @SerializedName("description")
     private String body;
+    @SerializedName("url")
     private String url;
+    @SerializedName("updated_at")
     private long date;
 
     public FeedItem() {

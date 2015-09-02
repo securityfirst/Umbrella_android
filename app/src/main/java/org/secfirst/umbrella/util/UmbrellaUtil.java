@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -20,38 +19,24 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.j256.ormlite.dao.Dao;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.json.JSONArray;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
-import org.secfirst.umbrella.models.Relief.Countries.RWCountries;
-import org.secfirst.umbrella.models.Relief.Data;
-import org.secfirst.umbrella.models.Relief.Response;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UmbrellaUtil {
@@ -192,107 +177,58 @@ public class UmbrellaUtil {
 
     public static boolean getFeeds(final Context context) {
         final Global global = (Global) context.getApplicationContext();
-        List<Registry> selCountry = null;
+        global.setFeedItems(new ArrayList<FeedItem>());
+        Dao<Registry, String> regDao = global.getDaoRegistry();
+        List<Registry> selISO2 = null;
         try {
-            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+            selISO2 = regDao.queryForEq(Registry.FIELD_NAME, "iso2");
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
         }
-        if (selCountry!=null && selCountry.size()>0) {
-            UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/?query[value]=" + selCountry.get(0).getValue(), null, context, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    Gson gson = new GsonBuilder().create();
-                    Type listType = new TypeToken<RWCountries>() {
-                    }.getType();
-                    RWCountries receivedSegments = gson.fromJson(response.toString(), listType);
-                    if (receivedSegments != null) {
-                        ArrayList<org.secfirst.umbrella.models.Relief.Countries.Data> results = receivedSegments.getData();
-                        if (results.size() > 0) {
-                            getReports(results.get(0).getId(), context, global);
-                        }
+        if (selISO2!=null && selISO2.size()>0) {
+            List<Registry> selections;
+            try {
+                selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
+                if (selections.size()>0) {
+                    String separator = ",";
+                    int total = selections.size() * separator.length();
+                    for (Registry item : selections) {
+                        total += item.getValue().length();
                     }
+                    StringBuilder sb = new StringBuilder(total);
+                    for (Registry item : selections) {
+                        sb.append(separator).append(item.getValue());
+                    }
+                    String sources = sb.substring(separator.length());
+                    String mUrl = "feed?country=" + selISO2.get(0).getValue() + "&sources=" + sources + "&since=0";
+                    UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Gson gson = new GsonBuilder().create();
+                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                            }.getType();
+                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
+                            if (receivedItems != null && receivedItems.size() > 0) {
+                                global.setFeedItems(receivedItems);
+                            }
+                        }
+                    });
+                } else {
+                    return false;
                 }
-            });
-            return true;
-        } else {
-            return false;
+                return true;
+            } catch (SQLException e) {
+                UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
+            }
         }
+        return false;
     }
 
     public static void logIt(Context context, String message) {
         if (BuildConfig.BUILD_TYPE.equals("debug") && message != null && message.length() > 0)
             Log.i(context.getClass().getSimpleName(), message);
-    }
-
-    public static void getReports(String countryId, final Context context, final Global global) {
-        UmbrellaRestClient.getFeed("http://api.rwlabs.org/v1/countries/" + countryId, null, context, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<Response>() {
-                }.getType();
-                Response receivedResponse = gson.fromJson(response.toString(), listType);
-                if (receivedResponse != null) {
-                    List<org.secfirst.umbrella.models.Relief.Data> dataList = Arrays.asList(receivedResponse.getData());
-                    for (Data data : dataList) {
-                        if (data.getFields().getDescriptionhtml() != null) {
-                            Document document = Jsoup.parse(data.getFields().getDescriptionhtml());
-                            Element ul = document.select("ul").get(0);
-                            global.setFeedItems(new ArrayList<FeedItem>());
-                            for (Element li : ul.select("li")) {
-                                FeedItem toAdd = new FeedItem(li.text(), "Loading...", li.select("a").get(0).attr("href"));
-                                global.getFeedItems().add(toAdd);
-                                new GetRWBody(global.getFeedItems().size() - 1, toAdd.getUrl(), global).execute();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private static class GetRWBody extends AsyncTask<String, Void, String> {
-        int index;
-        String url;
-        Global global;
-
-        GetRWBody(int index, String url, Global global) {
-            this.index = index;
-            this.url = url;
-            this.global = global;
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String body ="";
-            Document doc;
-            try {
-                doc = Jsoup.connect(url).get();
-                Elements forBody = doc.select("div.body.field");
-                if (!forBody.isEmpty()) {
-                    global.getFeedItems().get(index).setBody(forBody.get(0).text());
-                }
-            } catch (IOException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
-            }
-            return body;
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            global.getFeedItems().get(index).setBody("");
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-        }
     }
 
     public static HashMap<String, Integer> getRefreshValues() {
@@ -307,31 +243,5 @@ public class UmbrellaUtil {
         refreshInterval.put("Manually", 0);
         return refreshInterval;
     }
-
-    public static long parseReliefTitleForDate(String title) {
-        long timestamp = 0;
-        Pattern p = Pattern.compile(".*,\\s*(.*)");
-        Matcher m = p.matcher(title);
-        if (m.find()) {
-            Pattern p1 = Pattern.compile(".*-\\s*(.*)");
-            Matcher m1 = p1.matcher(m.group(1));
-            String stringDate;
-            if (m1.find()) {
-                stringDate = m1.group(1);
-            } else {
-                stringDate = m.group(1);
-            }
-            try {
-                DateFormat formatter = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
-                Date date = formatter.parse(stringDate);
-                return date.getTime()/1000;
-            } catch (ParseException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
-            }
-        }
-        return timestamp;
-    }
-
 
 }

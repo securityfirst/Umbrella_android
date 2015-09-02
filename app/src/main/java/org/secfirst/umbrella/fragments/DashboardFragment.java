@@ -22,7 +22,6 @@ public class DashboardFragment extends Fragment {
 
     public static DashboardFragment newInstance(Global global, boolean toDash) {
         DashboardFragment fragment = new DashboardFragment();
-
         fragment.global = global;
         Bundle args = new Bundle();
         args.putBoolean("dashboard", toDash);

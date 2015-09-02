@@ -22,28 +22,28 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/no_feed_items"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_gravity="top"
-        android:layout_marginTop="20dp"
-        android:paddingTop="20dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        card_view:cardCornerRadius="2dp">
-
-        <TextView
-            android:text="@string/no_feed_items_label"
-            android:textSize="@dimen/text_size_smallest"
+        <android.support.v7.widget.CardView
+            android:id="@+id/no_feed_items"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="top"
+            android:layout_marginTop="20dp"
+            android:paddingTop="20dp"
             android:layout_width="fill_parent"
-            android:padding="10dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="2dp">
 
-    </android.support.v7.widget.CardView>
+            <TextView
+                android:text="@string/no_feed_items_label"
+                android:textSize="@dimen/text_size_smallest"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.CardView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <ScrollView
         android:id="@+id/no_feed_list"
