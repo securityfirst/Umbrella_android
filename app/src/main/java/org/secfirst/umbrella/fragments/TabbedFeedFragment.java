@@ -149,7 +149,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
                     if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
                         mAddress = mAddressList.get(position - 1);
-                        Log.e("iso2", mAddress.getCountryCode());
                         String chosenAddress = mAutocompleteLocation.getText().toString();
                         mAutocompleteLocation.setText(chosenAddress);
                         List<Registry> selLoc = null;
@@ -173,14 +172,14 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                         if (selISO2!=null && selISO2.size() > 0) {
                             iso2 = selISO2.get(0);
-                            iso2.setValue(mAddress.getCountryCode());
+                            iso2.setValue(mAddress.getCountryCode().toLowerCase());
                             try {
                                 global.getDaoRegistry().update(iso2);
                             } catch (SQLException e) {
                                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                             }
                         } else {
-                            iso2 = new Registry("iso2", mAddress.getCountryCode());
+                            iso2 = new Registry("iso2", mAddress.getCountryCode().toLowerCase());
                             try {
                                 global.getDaoRegistry().create(iso2);
                                 if (isFeedSet()) getFeeds(getActivity());
@@ -320,13 +319,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             }
             String sources = sb.substring(separator.length());
             String mUrl = "feed?country=" + countryId + "&sources=" + sources + "&since=0";
-            Log.e("murl", mUrl);
             UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                     super.onSuccess(statusCode, headers, response);
-                    Log.e("response", response.toString());
                     Gson gson = new GsonBuilder().create();
                     Type listType = new TypeToken<ArrayList<FeedItem>>() {
                     }.getType();
