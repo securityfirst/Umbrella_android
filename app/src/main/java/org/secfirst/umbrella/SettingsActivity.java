@@ -57,7 +57,7 @@ public class SettingsActivity extends BaseActivity {
         TextView refreshInterval = (TextView) findViewById(R.id.refresh_interval);
         TextView feedSources = (TextView) findViewById(R.id.feed_sources);
         mAutocompleteLocation = (AutoCompleteTextView) findViewById(R.id.settings_autocomplete);
-//        refreshData.setVisibility(View.GONE); // enable when backend ready
+        refreshData.setVisibility(View.GONE); // enable when backend ready
         refreshData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
