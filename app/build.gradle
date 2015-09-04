@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'idea'
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
@@ -28,15 +28,15 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile 'com.android.support:support-v4:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.android.support:support-v4:23.0.1'
     compile 'com.viewpagerindicator:library:2.4.1'
     compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
-    compile 'com.android.support:cardview-v7:23.0.0'
-    compile 'com.android.support:recyclerview-v7:23.0.0'
+    compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.loopj.android:android-async-http:1.4.8'
     compile 'com.google.code.gson:gson:2.3'
-    compile 'com.android.support:gridlayout-v7:23.0.0'
+    compile 'com.android.support:gridlayout-v7:23.0.1'
     compile 'com.github.amlcurran.showcaseview:library:5.0.0'
     compile 'org.apache.commons:commons-collections4:4.0'
     compile 'org.jsoup:jsoup:1.8.2'
