@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.CardView;
+import android.text.Html;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +67,7 @@ public class FeedAdapter extends BaseAdapter {
         }
 
         holder.title.setText(current.getTitle());
-        holder.body.setText(current.getBody());
+        holder.body.setText(Html.fromHtml(current.getBody()));
 
         if (current.getDate()>0) {
             holder.date.setText(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(current.getDate() * 1000)));
