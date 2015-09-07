@@ -26,7 +26,7 @@ public class UmbrellaRestClient {
 
     public static AsyncHttpClient getClientForApiUpdates(Context context) {
         AsyncHttpClient client = new AsyncHttpClient();
-        String[] pins                 = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78"};
+        String[] pins                 = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78", "852627ad032bf9ab22e416cbbf9e32bc1187366f"};
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
         } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
