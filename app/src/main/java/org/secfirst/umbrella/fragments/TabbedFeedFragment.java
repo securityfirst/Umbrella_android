@@ -251,6 +251,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             if (items.size() > 0)
                 headerText += "Last updated: " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
             feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
+            mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
             noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
             if (isFeedSet()) {
                 noFeedItems.setVisibility(items.size() > 0 ? View.GONE : View.VISIBLE);

@@ -10,6 +10,7 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
         android:paddingTop="20dp"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,6 +18,7 @@
             android:id="@+id/feed_list"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
+            android:visibility="gone"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:layout_width="fill_parent"
