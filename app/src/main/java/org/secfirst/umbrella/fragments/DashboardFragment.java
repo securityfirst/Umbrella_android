@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.Global;
 
@@ -46,6 +47,15 @@ public class DashboardFragment extends Fragment {
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(getArguments().getBoolean("dashboard", false) ? 1 : 0);
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getActivity()!=null) {
+            ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
+            getActivity().setTitle("My Security");
+        }
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

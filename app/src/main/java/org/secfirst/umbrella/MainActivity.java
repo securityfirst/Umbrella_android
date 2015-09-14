@@ -53,7 +53,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private ActionBarDrawerToggle actionBarDrawerToggle;
     public int groupItem, navItem;
     public long drawerItem;
-    private Spinner titleSpinner;
+    public Spinner titleSpinner;
     private DrawerChildItem childItem;
     private int fragType = 0;
     public MenuItem favouriteItem, unfavouriteItem;
@@ -79,7 +79,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onResume() {
         super.onResume();
-
         boolean hasOpened = global.initializeSQLCipher("");
         if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
