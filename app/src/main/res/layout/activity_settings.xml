@@ -16,6 +16,7 @@
 
     <ScrollView
         android:layout_width="fill_parent"
+        android:paddingTop="5dp"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -25,6 +26,37 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:id="@+id/skip_password_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/skip_password"
+                    android:focusable="false"
+                    android:buttonTint="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="@string/disable_password"
+                    android:textSize="@dimen/text_size_normal"
+                    android:padding="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
             <TextView
                 android:id="@+id/refresh_interval"
                 android:text="@string/refresh_interval_feeds"
@@ -32,6 +64,7 @@
                 android:textColor="@color/white"
                 android:layout_width="fill_parent"
                 android:padding="10dp"
+                android:visibility="gone"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
                 android:layout_height="wrap_content" />

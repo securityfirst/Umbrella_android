@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +51,7 @@ public class SettingsActivity extends BaseActivity {
     private ArrayList<Address> mAddressList;
     private Address mAddress;
     private Registry mLocation, mCountry;
+    private CheckBox skipPw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,8 @@ public class SettingsActivity extends BaseActivity {
         TextView refreshInterval = (TextView) findViewById(R.id.refresh_interval);
         TextView feedSources = (TextView) findViewById(R.id.feed_sources);
         mAutocompleteLocation = (AutoCompleteTextView) findViewById(R.id.settings_autocomplete);
+        LinearLayout skipPWLayout = (LinearLayout) findViewById(R.id.skip_password_layout);
+        skipPw = (CheckBox) findViewById(R.id.skip_password);
         refreshData.setVisibility(View.GONE); // enable when backend ready
         refreshData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +88,7 @@ public class SettingsActivity extends BaseActivity {
         feedSources.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showWarning();
+                showFeedSources();
             }
         });
         mAutocompleteLocation.setHint("Set location");
@@ -112,7 +117,7 @@ public class SettingsActivity extends BaseActivity {
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        if (selLoc!=null && selLoc.size() > 0) {
+                        if (selLoc != null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
                         } else {
@@ -124,7 +129,7 @@ public class SettingsActivity extends BaseActivity {
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        if (selCountry!=null && selCountry.size() > 0) {
+                        if (selCountry != null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
                             mLocation.setValue(mAddress.getCountryName());
                             try {
@@ -153,6 +158,16 @@ public class SettingsActivity extends BaseActivity {
                 } else {
                     global.setPassword(SettingsActivity.this);
                 }
+            }
+        });
+
+        skipPw.setChecked(global.getSkipPassword());
+        skipPWLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean toChange = !global.getSkipPassword();
+                skipPw.setChecked(toChange);
+                global.setSkipPassword(toChange);
             }
         });
     }
@@ -211,29 +226,6 @@ public class SettingsActivity extends BaseActivity {
                     }
                 });
         builderSingle.show();
-    }
-
-    public void showWarning() {
-        if (!global.wasWarned()) {
-            android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(SettingsActivity.this);
-            alertDialogBuilder.setTitle("Non Encrypted content or SSL configurations missing");
-            alertDialogBuilder.setMessage("We are retrieving this content from third party sources, some of which have settings configured in such a way that your privacy and security cannot be guaranteed. Please proceed with caution.");
-            alertDialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    global.set_wasWarned(true);
-                    showFeedSources();
-                }
-            });
-            alertDialogBuilder.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-        } else {
-            showFeedSources();
-        }
     }
 
     public void showFeedSources() {

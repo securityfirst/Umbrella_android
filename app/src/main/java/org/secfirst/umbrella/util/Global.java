@@ -52,7 +52,7 @@ public class Global extends Application {
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn;
-    private boolean password, warning;
+    private boolean password;
     private ArrayList<FeedItem> feedItems = new ArrayList<>();
     private long feeditemsRefreshed;
     private Dao<Segment, String> daoSegment;
@@ -91,16 +91,6 @@ public class Global extends Application {
         return _termsAccepted;
     }
 
-    public void set_wasWarned(boolean warned) {
-        warning = warned;
-        sped.putBoolean("wasWarned", warning).commit();
-    }
-
-    public boolean wasWarned() {
-        warning = prefs.getBoolean("wasWarned", false);
-        return warning;
-    }
-
     public ArrayList<FeedItem> getFeedItems() {
         return feedItems;
     }
@@ -122,12 +112,20 @@ public class Global extends Application {
         setFeeditemsRefreshed(new Date().getTime());
     }
 
+    public boolean getSkipPassword() {
+        return prefs.getBoolean("skipPassword", false);
+    }
+
+    public void setSkipPassword(boolean skipPassword) {
+        sped.putBoolean("skipPassword", skipPassword).commit();
+    }
+
     public boolean hasPasswordSet() {
-        return password;
+        return password || prefs.getBoolean("skipPassword", false);
     }
 
     public void setPassword(final Activity activity) {
-        AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
         alert.setTitle("Set your password");
         alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n");
         View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
@@ -137,6 +135,28 @@ public class Global extends Application {
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
+            }
+        });
+        alert.setNeutralButton("Skip", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final AlertDialog.Builder alert2 = new AlertDialog.Builder(activity);
+                alert2.setTitle("Skip setting password");
+                alert2.setMessage("Are you sure you want to continue using the app without setting the password?\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella");
+                alert2.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setPassword(activity);
+                    }
+                });
+                alert2.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setSkipPassword(true);
+                    }
+                });
+                final AlertDialog dialog2 = alert2.create();
+                dialog2.show();
             }
         });
         alert.setCancelable(false);

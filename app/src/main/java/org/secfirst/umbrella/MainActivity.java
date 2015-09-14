@@ -154,7 +154,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (global.hasPasswordSet()) {
+                    if (global.hasPasswordSet() && !global.getSkipPassword()) {
                         global.logout(MainActivity.this);
                     } else {
                         global.setPassword(MainActivity.this);
@@ -374,9 +374,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
         MenuItem itemLogout = menu.findItem(R.id.action_logout);
         MenuItem itemExport = menu.findItem(R.id.export_checklist);
-        itemSetPw.setVisible(!global.hasPasswordSet());
-        itemResetPw.setVisible(global.hasPasswordSet());
-        itemLogout.setVisible(global.hasPasswordSet());
+        itemSetPw.setVisible(!global.hasPasswordSet() || !global.getSkipPassword());
+        itemResetPw.setVisible(global.hasPasswordSet() && !global.getSkipPassword());
+        itemLogout.setVisible(global.hasPasswordSet() && !global.getSkipPassword());
         itemExport.setVisible(false);
         if (childItem != null) {
             List<Difficulty> hasDifficulty = null;
