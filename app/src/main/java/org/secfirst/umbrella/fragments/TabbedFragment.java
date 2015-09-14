@@ -305,10 +305,14 @@ public class TabbedFragment extends Fragment {
                     container, false);
             WebViewClient interceptUrlLicences = new WebViewClient(){
                 @Override
-                public boolean shouldOverrideUrlLoading(WebView  view, String  url){
+                public boolean shouldOverrideUrlLoading(WebView  view, String  url) {
+                    Intent i = new Intent(getActivity(), AboutActivity.class);
                     if (url.equals("umbrella://licences/")) {
-                        rootView.getContext().startActivity(
-                                new Intent(getActivity(), AboutActivity.class));
+                        i.putExtra("topic", "licences");
+                        rootView.getContext().startActivity(i);
+                    } else if (url.equals("umbrella://thankyou/")) {
+                        i.putExtra("topic", "thankyou");
+                        rootView.getContext().startActivity(i);
                     } else {
                         rootView.getContext().startActivity(
                                 new Intent(Intent.ACTION_VIEW, Uri.parse(url)));

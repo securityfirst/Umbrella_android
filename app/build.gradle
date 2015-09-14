@@ -29,6 +29,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile files('libs/org.apache.http.legacy.jar')
+    compile files('libs/sqlcipher-3.1.0.jar')
+    compile files('libs/guava-r09.jar')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.viewpagerindicator:library:2.4.1'
@@ -42,7 +45,5 @@ dependencies {
     compile 'org.apache.commons:commons-collections4:4.0'
     compile 'org.jsoup:jsoup:1.8.2'
     compile 'com.j256.ormlite:ormlite-core:4.46'
-    compile files('libs/org.apache.http.legacy.jar')
-    compile files('libs/sqlcipher-3.1.0.jar')
-    compile files('libs/guava-r09.jar')
+    compile 'com.android.support:design:23.0.1'
 }

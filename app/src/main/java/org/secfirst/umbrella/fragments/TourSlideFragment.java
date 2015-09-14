@@ -116,21 +116,6 @@ public class TourSlideFragment extends Fragment {
                 headingBody.setVisibility(View.GONE);
                 titleLayout.setVisibility(View.VISIBLE);
                 skipBtn.setVisibility(View.VISIBLE);
-                skipBtn.setEnabled(false);
-                skipBtn.setText("");
-                slideLayout.setBackgroundColor(getResources().getColor(R.color.dashboard_light_blue));
-                headingTitle.setText("Thank you");
-                headingTitle.setGravity(Gravity.LEFT);
-                termsText.setText("Umbrella would not be possible without the work, advice, friendship and cups of tea from our friends at:\n\nAmnesty International\nAshoka Foundation\nCARE International\nCentre for Safety and Development\nCommittee to Project Journalists\nDart Center for Journalism and Trauma\nElectronic Frontier Foundation\nEuropean Commission's Humanitarian Aid and Civil Protection Department\nEuropean Interagency Security Forum\nFrontline Defenders\nHumanitarian Response\niiLab\nInternews\nLevelUp\nOpen Technology Fund\nOverseas Development Institute\nProtection International\nRory Peck Trust\nSmall World News\nTactical Technology Collective\nThe Engine Room\nThe Guardian Project\nVidere\nAnd many other wonderful people!");
-                termsText.setTextColor(getResources().getColor(R.color.white));
-                termsText.setBackgroundResource(android.R.color.transparent);
-                break;
-            case 5:
-                termsView.setVisibility(View.VISIBLE);
-                umbrellaLayout.setVisibility(View.GONE);
-                headingBody.setVisibility(View.GONE);
-                titleLayout.setVisibility(View.VISIBLE);
-                skipBtn.setVisibility(View.VISIBLE);
                 termsView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
                     @Override
                     public void onScrollChanged() {
