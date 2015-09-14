@@ -18,7 +18,7 @@ import org.secfirst.umbrella.util.TourViewPager;
 
 public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener, TourSlideFragment.OnNavigateToMainListener {
 
-    private static final int NUM_PAGES = 6;
+    private static final int NUM_PAGES = 5;
     private TourViewPager mPager;
     private CirclePageIndicator mIndicator;
     private boolean migrationDone, navigateToMainRequested;

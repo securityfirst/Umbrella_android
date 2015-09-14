@@ -237,7 +237,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
             }
-            if (hasDifficulty!=null && hasDifficulty.size() > 0 && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+            if (hasDifficulty != null && hasDifficulty.size() > 0 && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
                     global.getDaoDifficulty().update(hasDifficulty.get(0));
@@ -258,7 +258,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             drawerItem = childItem.getPosition();
             setNavItems(childItem.getTitle());
-            if (hasDifficulty!=null) {
+            if (hasDifficulty != null) {
                 int spinnerNumber = 0;
                 if (hasDifficulty.size() > 0) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
@@ -276,7 +276,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
                 trans.commit();
                 if (spinnerNumber >= titleSpinner.getAdapter().getCount()) {
-                    titleSpinner.setSelection(titleSpinner.getAdapter().getCount()-1);
+                    titleSpinner.setSelection(titleSpinner.getAdapter().getCount() - 1);
                 } else {
                     titleSpinner.setSelection(spinnerNumber);
                 }
