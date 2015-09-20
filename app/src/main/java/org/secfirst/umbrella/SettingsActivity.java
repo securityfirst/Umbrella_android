@@ -117,11 +117,21 @@ public class SettingsActivity extends BaseActivity {
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        if (selLoc != null && selLoc.size() > 0) {
+                        if (selLoc!=null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
+                            try {
+                                global.getDaoRegistry().update(mLocation);
+                            } catch (SQLException e) {
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                            }
                         } else {
                             mLocation = new Registry("location", chosenAddress);
+                            try {
+                                global.getDaoRegistry().create(mLocation);
+                            } catch (SQLException e) {
+                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                            }
                         }
                         List<Registry> selCountry = null;
                         try {
@@ -226,6 +236,21 @@ public class SettingsActivity extends BaseActivity {
                     }
                 });
         builderSingle.show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        List<Registry> selLoc;
+        try {
+            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+            if (selLoc.size() > 0) {
+                String loc = selLoc.get(0).getValue();
+                mAutocompleteLocation.setText(loc);
+            }
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+        }
     }
 
     public void showFeedSources() {

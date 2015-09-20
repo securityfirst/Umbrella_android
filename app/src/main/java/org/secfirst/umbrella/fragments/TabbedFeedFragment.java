@@ -159,8 +159,18 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         if (selLoc!=null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
+                            try {
+                                global.getDaoRegistry().update(mLocation);
+                            } catch (SQLException e) {
+                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            }
                         } else {
                             mLocation = new Registry("location", chosenAddress);
+                            try {
+                                global.getDaoRegistry().create(mLocation);
+                            } catch (SQLException e) {
+                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            }
                         }
                         List<Registry> selISO2 = null;
                         Registry iso2;
@@ -227,6 +237,16 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onResume() {
         super.onResume();
+        List<Registry> selLoc;
+        try {
+            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+            if (selLoc.size() > 0) {
+                String loc = selLoc.get(0).getValue();
+                mAutocompleteLocation.setText(loc);
+            }
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+        }
     }
 
     @Override
