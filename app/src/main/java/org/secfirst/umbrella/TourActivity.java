@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -60,17 +59,17 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
     @Override
     public void onSwipeOutAtEnd() {
-        if(!global.getTermsAccepted()) {
-            Toast.makeText(this, "You have to read and accept terms and conditions to continue", Toast.LENGTH_SHORT).show();
-        }
+        global.set_termsAccepted(true);
+        navigateToMain();
     }
 
     @Override
     public void onNavigationRequested() {
+        global.set_termsAccepted(true);
         navigateToMain();
     }
 
-    private void navigateToMain() {
+    public void navigateToMain() {
         Intent toMain = new Intent(this, MainActivity.class);
         toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toMain);

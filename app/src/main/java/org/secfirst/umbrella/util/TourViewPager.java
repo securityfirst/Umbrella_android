@@ -34,12 +34,11 @@ public class TourViewPager extends ViewPager {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     if (mStartDragX > x) {
-                        mListener.onSwipeOutAtEnd();
-                        return false;
+                        super.setCurrentItem(getCurrentItem() - 1);
                     } else {
-                        super.setCurrentItem(getCurrentItem()-1);
-                        return false;
+                        mListener.onSwipeOutAtEnd();
                     }
+                    return false;
                 default:
                     return super.onTouchEvent(event);
             }
@@ -49,7 +48,7 @@ public class TourViewPager extends ViewPager {
     }
 
     public interface OnSwipeOutListener {
-        public void onSwipeOutAtEnd();
+        void onSwipeOutAtEnd();
     }
 
     public void setChildId(int id) {

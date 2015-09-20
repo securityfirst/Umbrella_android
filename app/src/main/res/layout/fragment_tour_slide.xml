@@ -62,40 +62,35 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
 
-        <ScrollView
-            android:id="@+id/scroll_terms"
+        <WebView
+            android:id="@+id/terms_content"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/text_size_smaller"
+            android:paddingLeft="7dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:visibility="gone"
+            android:paddingRight="7dp"
+            android:fontFamily="sans-serif-light"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/text_terms"
-                android:textColor="@color/dark_grey"
-                android:background="@color/white"
-                android:padding="20dp"
-                android:textSize="@dimen/text_size_small"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-        </ScrollView>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_skip"
-        android:visibility="gone"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="right"
         android:padding="5dp"
+        android:layout_marginTop="20dp"
         android:paddingTop="25dp"
         android:gravity="top"
-        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:minHeight="80dp"
         android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/white_transparent"
+        android:textColor="@color/white"
         android:text="@string/btn_skip"
         android:background="@null"
         android:layout_width="wrap_content"

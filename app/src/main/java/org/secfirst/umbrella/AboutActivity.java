@@ -21,7 +21,7 @@ public class AboutActivity extends BaseActivity {
         }
 
         content = (WebView) findViewById(R.id.about_content);
-        if (Build.VERSION.SDK_INT >= 19) // avoiding 5.0 webview issues
+        if (Build.VERSION.SDK_INT >= 19) // avoiding 5.0 WebView issues
         {
             content.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
