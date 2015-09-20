@@ -2,10 +2,8 @@ package org.secfirst.umbrella.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Application;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,9 +27,9 @@ import net.sqlcipher.database.SQLiteException;
 
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.LoginActivity;
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
+import org.secfirst.umbrella.TourActivity;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
@@ -41,6 +39,7 @@ import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -57,8 +56,7 @@ public class Global extends Application {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
-    private boolean _termsAccepted, isLoggedIn;
-    private boolean password;
+    private boolean _termsAccepted, isLoggedIn, password;
     private ArrayList<FeedItem> feedItems = new ArrayList<>();
     private long feeditemsRefreshed;
     private Dao<Segment, String> daoSegment;
@@ -126,8 +124,9 @@ public class Global extends Application {
         sped.putBoolean("skipPassword", skipPassword).commit();
     }
 
-    public boolean hasPasswordSet() {
-        return password || prefs.getBoolean("skipPassword", false);
+    public boolean hasPasswordSet(boolean withoutSkip) {
+        if (withoutSkip) return password;
+        else return password || prefs.getBoolean("skipPassword", false);
     }
 
     public void setPassword(final Activity activity) {
@@ -214,12 +213,16 @@ public class Global extends Application {
         alertDialogBuilder.setMessage(getString(R.string.reset_password_text));
         alertDialogBuilder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                context.deleteDatabase(OrmHelper.DATABASE_NAME);
-                set_termsAccepted(false);
-                Intent mStartActivity = new Intent(context, MainActivity.class);
-                AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT));
-                System.exit(0);
+                closeDbAndDAOs();
+                deleteDatabase(getApplicationContext().getDatabasePath(OrmHelper.DATABASE_NAME));
+                removeSharedPreferences();
+                Intent i = new Intent(context, TourActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Toast.makeText(context, "Content reset to default", Toast.LENGTH_SHORT).show();
+                        ((Activity) context).finish();
+                ;
+                password = isLoggedIn = false;
+                startActivity(i);
             }
         });
         alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
@@ -534,17 +537,60 @@ public class Global extends Application {
     }
 
     private void copyDataBase(File destFile) throws IOException {
-        if (destFile.getParentFile().mkdirs()) {
-            InputStream externalDbStream = getAssets().open(OrmHelper.DATABASE_NAME);
-            String outFileName = destFile.getPath();
-            OutputStream localDbStream = new FileOutputStream(outFileName);
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = externalDbStream.read(buffer)) > 0) {
-                localDbStream.write(buffer, 0, bytesRead);
-            }
-            localDbStream.close();
-            externalDbStream.close();
+        destFile.getParentFile().mkdirs();
+        InputStream externalDbStream = getAssets().open(OrmHelper.DATABASE_NAME);
+        String outFileName = destFile.getPath();
+        OutputStream localDbStream = new FileOutputStream(outFileName);
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = externalDbStream.read(buffer)) > 0) {
+            localDbStream.write(buffer, 0, bytesRead);
         }
+        localDbStream.close();
+        externalDbStream.close();
+    }
+
+    public static boolean deleteDatabase(File file) {
+        if (file == null) {
+            throw new IllegalArgumentException("file must not be null");
+        }
+
+        boolean deleted = file.delete();
+        deleted |= new File(file.getPath() + "-journal").delete();
+        deleted |= new File(file.getPath() + "-shm").delete();
+        deleted |= new File(file.getPath() + "-wal").delete();
+
+        File dir = file.getParentFile();
+        if (dir != null) {
+            final String prefix = file.getName() + "-mj";
+            final FileFilter filter = new FileFilter() {
+                @Override
+                public boolean accept(File candidate) {
+                    return candidate.getName().startsWith(prefix);
+                }
+            };
+            for (File masterJournal : dir.listFiles(filter)) {
+                deleted |= masterJournal.delete();
+            }
+        }
+        return deleted;
+    }
+
+    public void removeSharedPreferences() {
+        File sharedPreferenceFile = new File(getFilesDir().getPath().replaceFirst("/files$", "/shared_prefs/"));
+        File[] listFiles = sharedPreferenceFile.listFiles();
+        for (File file : listFiles) {
+            file.delete();
+        }
+    }
+
+    public void closeDbAndDAOs() {
+        getOrmHelper().close();
+        daoSegment = null;
+        daoCheckItem = null;
+        daoCategory = null;
+        daoRegistry = null;
+        daoFavourite = null;
+        daoDifficulty = null;
     }
 }
