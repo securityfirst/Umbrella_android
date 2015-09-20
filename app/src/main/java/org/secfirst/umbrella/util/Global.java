@@ -37,7 +37,6 @@ import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
-import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -53,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Global extends Application {
 
@@ -341,50 +339,6 @@ public class Global extends Application {
             }
         }
         return daoDifficulty;
-    }
-
-    public void migrateData() {
-
-        ArrayList<Segment> segments = InitialData.getSegmentList();
-        try {
-            List<Segment> fromDB = getDaoSegment().queryForAll();
-            if (fromDB.size() == 0) {
-                for (Segment segment : segments) {
-                    getDaoSegment().create(segment);
-                }
-            }
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-
-        ArrayList<CheckItem> checkList = InitialData.getCheckList();
-        try {
-            List<CheckItem> listsFromDB = getDaoCheckItem().queryForAll();
-            if (listsFromDB.size() == 0) {
-                for (CheckItem checkItem : checkList) {
-                    getDaoCheckItem().create(checkItem);
-                }
-            }
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-
-        ArrayList<Category> categoryList = InitialData.getCategoryList();
-        try {
-            List<Category> catFromDB = getDaoCategory().queryForAll();
-            if (catFromDB.size() == 0) {
-                for (Category category : categoryList) {
-                    getDaoCategory().create(category);
-                }
-            }
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-
-        setRefreshValue((int) TimeUnit.MINUTES.toMillis(30));
     }
 
     public void syncSegments(ArrayList<Segment> segments) {
