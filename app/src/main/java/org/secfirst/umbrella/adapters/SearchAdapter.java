@@ -16,7 +16,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
@@ -28,8 +27,6 @@ import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private List<Segment> mSegment = new ArrayList<>();
-    private ArrayList<ArrayList<DrawerChildItem>> mSubtitles = new ArrayList<ArrayList<DrawerChildItem>>();
-    private ArrayList<Category> mTitles = new ArrayList<Category>();
     private ArrayList<String> mQueries = new ArrayList<String>();
     private Context mContext;
 
@@ -50,8 +47,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public SearchAdapter(Context context, List<Segment> segmentList, String query) {
         mContext = context;
         mSegment = segmentList;
-        mSubtitles = UmbrellaUtil.getChildItems(mContext);
-        mTitles = UmbrellaUtil.getParentCategories(mContext);
         mQueries.add(query);
     }
 
@@ -94,7 +89,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                     try {
                         List<Segment> segments = ((Global) mContext.getApplicationContext()).getDaoSegment().queryForEq("category", current.getCategory());
                         for (int i = 0; i < segments.size(); i++) {
-                            if (segments.get(i).getTitle().equals(current.getTitle())) {
+                            if (segments.get(i).getTitle()!=null && segments.get(i).getTitle().equals(current.getTitle())) {
                                 page = ++i;
                             }
                         }
