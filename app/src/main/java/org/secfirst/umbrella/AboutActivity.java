@@ -1,11 +1,9 @@
 package org.secfirst.umbrella;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.webkit.WebView;
 
 public class AboutActivity extends BaseActivity {
@@ -21,10 +19,6 @@ public class AboutActivity extends BaseActivity {
         }
 
         content = (WebView) findViewById(R.id.about_content);
-        if (Build.VERSION.SDK_INT >= 19) // avoiding 5.0 WebView issues
-        {
-            content.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
 
         String html = "";
         Intent i  = getIntent();

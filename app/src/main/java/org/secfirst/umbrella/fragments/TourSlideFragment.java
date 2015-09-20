@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.fragments;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -73,10 +72,6 @@ public class TourSlideFragment extends Fragment {
         TextView headingTitle = (TextView) rootView.findViewById(R.id.heading_title);
         TextView headingBody = (TextView) rootView.findViewById(R.id.heading_body);
         final WebView terms = (WebView) rootView.findViewById(R.id.terms_content);
-        if (Build.VERSION.SDK_INT >= 19) // avoiding 5.0 WebView issues
-        {
-            terms.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
         ImageView tourImage = (ImageView) rootView.findViewById(R.id.tour_image);
         final Button skipBtn = (Button) rootView.findViewById(R.id.btn_skip);
         headingBody.setPadding(UmbrellaUtil.dpToPix(25, getActivity()), UmbrellaUtil.dpToPix(40, getActivity()), UmbrellaUtil.dpToPix(25, getActivity()), 0);

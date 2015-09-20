@@ -326,10 +326,6 @@ public class TabbedFragment extends Fragment {
             };
             content = (WebView) rootView.findViewById(R.id.segment_content);
             content.setWebViewClient(interceptUrlLicences);
-            if (Build.VERSION.SDK_INT >= 19) // avoiding 5.0 webview issues
-            {
-                content.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            }
 
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
