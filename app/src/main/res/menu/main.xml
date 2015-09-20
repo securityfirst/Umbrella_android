@@ -1,0 +1,46 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:umbrella="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.secfirst.umbrella.MainActivity" >
+
+    <item
+        android:id="@+id/action_search_view"
+        umbrella:actionViewClass="android.support.v7.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:orderInCategory="2"
+        umbrella:showAsAction="always"
+        android:title="@string/action_search">
+    </item>
+
+    <item android:id="@+id/favourite"
+        android:title="@string/favourite"
+        android:orderInCategory="3"
+        android:visible="false"
+        android:icon="@drawable/abc_btn_rating_star_off_mtrl_alpha"
+        umbrella:showAsAction="ifRoom" />
+
+    <item android:id="@+id/export_checklist"
+        android:title="@string/action_export_checklist"
+        android:orderInCategory="100"
+        umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="101"
+        umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_logout"
+        android:title="@string/log_out"
+        android:orderInCategory="102"
+        umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_set_password"
+        android:title="@string/set_password"
+        android:orderInCategory="103"
+        umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_reset_password"
+        android:title="@string/reset_password"
+        android:orderInCategory="9"
+        umbrella:showAsAction="never" />
+</menu>

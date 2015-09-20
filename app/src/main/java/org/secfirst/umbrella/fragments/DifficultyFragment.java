@@ -1,0 +1,144 @@
+package org.secfirst.umbrella.fragments;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.secfirst.umbrella.BaseActivity;
+import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.Difficulty;
+import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
+
+import java.sql.SQLException;
+import java.util.List;
+
+
+public class DifficultyFragment extends Fragment {
+
+    private static final String SECTION_NUMBER = "section_number";
+    private static final int BEGINNER = 0;
+    private static final int INTERMEDIATE = 1;
+    private static final int EXPERT = 2;
+
+    private long mSection;
+
+    private OnDifficultySelected mListener;
+
+    public static DifficultyFragment newInstance(long sectionNumber) {
+        DifficultyFragment fragment = new DifficultyFragment();
+        Bundle args = new Bundle();
+        args.putLong(SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    public DifficultyFragment() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mSection = getArguments().getLong(SECTION_NUMBER);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_select, container, false);
+        Global global = ((BaseActivity) getActivity()).getGlobal();
+        try {
+            final Category childCategory = global.getDaoCategory().queryForId(String.valueOf(mSection));
+            View btnBeginner = v.findViewById(R.id.card_beginner);
+            btnBeginner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onDifficultySelected(BEGINNER);
+                }
+            });
+            View btnIntermediate = v.findViewById(R.id.card_intermediate);
+            btnIntermediate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onDifficultySelected(INTERMEDIATE);
+                }
+            });
+            View btnExpert = v.findViewById(R.id.card_expert);
+            btnExpert.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onDifficultySelected(EXPERT);
+                }
+            });
+            ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
+            ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
+            ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
+            btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
+            btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
+            btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+        }
+        return v;
+    }
+
+    public void onDifficultySelected(int difficulty) {
+        Global global = ((BaseActivity) getActivity()).getGlobal();
+        List<Difficulty> df = null;
+        try {
+            df = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(mSection));
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+        }
+        Difficulty d;
+        if (df!=null && df.size()>0) {
+            d = df.get(0);
+            d.setSelected(difficulty);
+            try {
+                global.getDaoDifficulty().update(d);
+            } catch (SQLException e) {
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            }
+        } else {
+            try {
+                global.getDaoDifficulty().create(new Difficulty(mSection, difficulty));
+            } catch (SQLException e) {
+                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            }
+        }
+        if (mListener != null) {
+            mListener.onDifficultySelected(difficulty);
+        }
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnDifficultySelected) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnDifficultySelected {
+        public void onDifficultySelected(int difficulty);
+    }
+
+}

@@ -1,0 +1,22 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:background="@android:color/transparent"
+    android:layout_height="fill_parent">
+
+    <org.secfirst.umbrella.util.TourViewPager
+        android:id="@+id/myCustomViewPager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_gravity="bottom"
+        android:layout_margin="45dp"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        />
+
+</FrameLayout>

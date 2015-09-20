@@ -1,0 +1,99 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/slide_layout"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/umbrella_green"
+    tools:context="org.secfirst.umbrella.fragments.TourSlideFragment">
+
+    <LinearLayout
+        android:id="@+id/umbrella_layout"
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="5"
+        android:layout_height="0dp">
+
+        <ImageView
+            android:src="@drawable/umbrella190"
+            android:id="@+id/tour_image"
+            android:layout_gravity="center"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginTop="40dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_title"
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/heading_title"
+            android:textColor="@color/white"
+            android:text="Title"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textSize="@dimen/text_size_large"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_weight="4"
+        android:layout_height="0dp">
+
+        <TextView
+            android:id="@+id/heading_body"
+            android:gravity="center"
+            android:text="Body"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <WebView
+            android:id="@+id/terms_content"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/text_size_smaller"
+            android:paddingLeft="7dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            android:paddingRight="7dp"
+            android:fontFamily="sans-serif-light"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_skip"
+        android:layout_gravity="right"
+        android:padding="5dp"
+        android:layout_marginTop="20dp"
+        android:paddingTop="25dp"
+        android:gravity="top"
+        android:visibility="gone"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:minHeight="80dp"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/white"
+        android:text="@string/btn_skip"
+        android:background="@null"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

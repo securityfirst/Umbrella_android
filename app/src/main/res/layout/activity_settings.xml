@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="org.secfirst.umbrella.SearchActivity"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="@color/umbrella_purple"/>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:paddingTop="5dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/skip_password_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/skip_password"
+                    android:focusable="false"
+                    android:buttonTint="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="@string/disable_password"
+                    android:textSize="@dimen/text_size_normal"
+                    android:padding="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <TextView
+                android:id="@+id/refresh_interval"
+                android:text="@string/refresh_interval_feeds"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:visibility="gone"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <TextView
+                android:id="@+id/refresh_data"
+                android:text="@string/refresh_umbrella_data"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <AutoCompleteTextView
+                android:id="@+id/settings_autocomplete"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:singleLine="true"
+                android:hint="@string/set_location"
+                android:textColorHint="@color/white"
+                android:imeOptions="actionDone"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <TextView
+                android:id="@+id/feed_sources"
+                android:text="@string/feed_sources"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

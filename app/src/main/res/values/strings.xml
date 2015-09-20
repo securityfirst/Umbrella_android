@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Umbrella</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="section1_tab_title1">Lesson</string>
+    <string name="section1_tab_title2">Case Study</string>
+    <string name="section1_tab_title3">Checklist</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="btn_login">Login</string>
+    <string name="btn_skip">Accept</string>
+    <string name="pw_hint">Password</string>
+    <string name="title_activity_tour">Tour</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_finish">Finish</string>
+    <string name="action_next">Next</string>
+    <string name="action_search">Search</string>
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Open</string>
+    <string name="title_activity_search">Search results</string>
+    <string name="no_results_label">No results found</string>
+    <string name="no_network_message">No network connection available. Please try again later.</string>
+    <string name="login_password">Log in with your password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="incorrect_password">Password incorrect. Please try again.</string>
+    <string name="set_password">Set password</string>
+    <string name="my_checklists">My Checklists</string>
+    <string name="feeds">Dashboard</string>
+    <string name="check_lists_total">Check lists total</string>
+    <string name="log_out">Log out</string>
+    <string name="log_in">Log In</string>
+    <string name="beginner">Beginner</string>
+    <string name="expert">Expert</string>
+    <string name="intermediate">Advanced</string>
+    <string name="action_export_checklist">Share checklist</string>
+    <string name="title_activity_lesson">LessonActivity</string>
+    <string name="favourite">Favourite</string>
+    <string name="refresh_interval_feeds">Refresh interval for feeds</string>
+    <string name="refresh_umbrella_data">Refresh from the server</string>
+    <string name="set_location">Your location</string>
+    <string name="feed_sources">Feed sources</string>
+    <string name="no_feed_updates">There were no news updates for your chosen country, pull to refresh.</string>
+    <string name="reset_password_title">Confirm reset password</string>
+    <string name="reset_password_text">Are you sure you want to reset your password? This also means losing any data you might have entered so far\n</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="password_reset_notification">Password reset and all data removed.</string>
+    <string name="title_activity_about">Licences</string>
+    <string name="default_db_password">umbrella</string>
+    <string name="no_feed_settings">You haven\'t set the country and the sources for the feed yet. You have to do it in order for the feed to start displaying, and you can change it any time later in the settings.</string>
+    <string name="feed_location_label">Set the location for your feeds</string>
+    <string name="no_feed_items_label">There is currently no results with your chosen settings. Please tap to revise and change them</string>
+    <string name="disable_password">Don\'t ask for password again</string>
+    <string name="terms_conditions">Terms and Conditions</string>
+    <string name="tour_slide_1_text">Umbrella makes your security simple</string>
+    <string name="tour_slide_2_text">Get advice on everything from sending a secure email to safe travel</string>
+    <string name="tour_slide_3_text">Use checklists to mark your progress</string>
+    <string name="tour_slide_4_text">Stay up to date with the latest information on where you are</string>
+
+</resources>

@@ -1,0 +1,4 @@
+<resources>
+    <item type="id" name="action_next" />
+    <item type="id" name="action_finish" />
+</resources>
