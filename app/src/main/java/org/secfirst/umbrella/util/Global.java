@@ -235,6 +235,10 @@ public class Global extends Application {
     }
 
     public OrmHelper getOrmHelper() {
+        if (dbHelper==null || !dbHelper.isOpen()) {
+            createDatabaseIfNotExists();
+            dbHelper = new OrmHelper(getApplicationContext());
+        }
         return dbHelper;
     }
 
@@ -310,7 +314,6 @@ public class Global extends Application {
     public Dao<Registry, String> getDaoRegistry() {
         if (daoRegistry==null) {
             try {
-                if (getOrmHelper().isOpen())
                 daoRegistry = getOrmHelper().getDao(Registry.class);
             } catch (SQLException e) {
                 if (BuildConfig.BUILD_TYPE.equals("debug"))
