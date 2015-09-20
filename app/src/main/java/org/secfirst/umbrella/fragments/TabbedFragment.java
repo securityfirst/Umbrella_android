@@ -387,7 +387,7 @@ public class TabbedFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     final Global global = ((MainActivity) getActivity()).getGlobal();
-                    if (!global.hasPasswordSet()) {
+                    if (!global.hasPasswordSet(false)) {
                         global.setPassword(getActivity());
                     } else {
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());

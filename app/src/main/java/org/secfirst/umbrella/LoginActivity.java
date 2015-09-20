@@ -23,9 +23,9 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        if (!global.hasPasswordSet()) {
+        if (!global.hasPasswordSet(false)) {
             goToMain();
         }
 
@@ -67,8 +67,8 @@ public class LoginActivity extends BaseActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem itemResetPw = menu.findItem(R.id.action_reset_password);
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
-        itemSetPw.setVisible(!global.hasPasswordSet());
-        itemResetPw.setVisible(global.hasPasswordSet());
+        itemSetPw.setVisible(!global.hasPasswordSet(true));
+        itemResetPw.setVisible(global.hasPasswordSet(false));
         return true;
     }
 

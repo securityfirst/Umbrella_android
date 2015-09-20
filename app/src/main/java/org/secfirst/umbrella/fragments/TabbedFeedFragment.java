@@ -115,7 +115,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && !global.hasPasswordSet()) {
+                if (hasFocus && !global.hasPasswordSet(false)) {
                     global.setPassword(getActivity());
                 }
 
@@ -133,7 +133,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         refreshInterval.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (global.hasPasswordSet()) {
+                if (global.hasPasswordSet(false)) {
                     showRefresh();
                 } else {
                     global.setPassword(getActivity());
@@ -144,7 +144,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (global.hasPasswordSet()) {
+                if (global.hasPasswordSet(false)) {
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
                     if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
                         mAddress = mAddressList.get(position - 1);
