@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.support.v4.content.IntentCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,6 +41,13 @@ import org.secfirst.umbrella.models.InitialData;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -211,7 +219,7 @@ public class Global extends Application {
                 context.deleteDatabase(OrmHelper.DATABASE_NAME);
                 set_termsAccepted(false);
                 Intent mStartActivity = new Intent(context, MainActivity.class);
-                AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+                AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                 mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 100, PendingIntent.getActivity(context, 123456, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT));
                 System.exit(0);
             }
@@ -233,6 +241,7 @@ public class Global extends Application {
         if (password.equals("")) password = getString(R.string.default_db_password);
         SQLiteDatabase.loadLibs(this);
         if (dbHelper==null || !dbHelper.isOpen()) {
+            createDatabaseIfNotExists();
             dbHelper = new OrmHelper(getApplicationContext());
         }
         try {
@@ -530,5 +539,58 @@ public class Global extends Application {
 
     public void setFeeditemsRefreshed(long feeditemsRefreshed) {
         this.feeditemsRefreshed = feeditemsRefreshed;
+    }
+
+    public void exportDatabase() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                String backupDBPath = OrmHelper.DATABASE_NAME;
+                String currentDBPath = "//data//"+getPackageName()+"//databases//"+backupDBPath+"";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                if (currentDB.exists()) {
+                    FileChannel src = new FileInputStream(currentDB).getChannel();
+                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    dst.transferFrom(src, 0, src.size());
+                    src.close();
+                    dst.close();
+                }
+            }
+        } catch (Exception e) {
+            Log.e("can't write", e.getLocalizedMessage());
+        }
+    }
+
+
+
+    public void createDatabaseIfNotExists() {
+        File destFile = getApplicationContext().getDatabasePath(OrmHelper.DATABASE_NAME);
+        if (!destFile.exists()) {
+            try {
+                copyDataBase(destFile);
+            } catch (IOException e) {
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause());
+            }
+        }
+    }
+
+    private void copyDataBase(File destFile) throws IOException {
+        if (destFile.getParentFile().mkdirs()) {
+            InputStream externalDbStream = getAssets().open(OrmHelper.DATABASE_NAME);
+            String outFileName = destFile.getPath();
+            OutputStream localDbStream = new FileOutputStream(outFileName);
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = externalDbStream.read(buffer)) > 0) {
+                localDbStream.write(buffer, 0, bytesRead);
+            }
+            localDbStream.close();
+            externalDbStream.close();
+        }
     }
 }

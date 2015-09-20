@@ -1,8 +1,6 @@
 package org.secfirst.umbrella;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -21,7 +19,6 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
     private static final int NUM_PAGES = 5;
     private TourViewPager mPager;
     private CirclePageIndicator mIndicator;
-    private boolean migrationDone, navigateToMainRequested;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,6 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
             public void onPageScrollStateChanged(int state) {
             }
         });
-        new MigrateData(this).execute();
     }
 
     @Override
@@ -71,11 +67,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
     @Override
     public void onNavigationRequested() {
-        if (migrationDone) {
-            navigateToMain();
-        } else {
-            navigateToMainRequested = true;
-        }
+        navigateToMain();
     }
 
     private void navigateToMain() {
@@ -100,23 +92,4 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
         }
     }
 
-    private class MigrateData extends AsyncTask<Void, Void, Void> {
-        Activity activity;
-
-        MigrateData(Activity activity) {
-            this.activity = activity;
-        }
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            global.migrateData();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            migrationDone = true;
-            if (navigateToMainRequested) navigateToMain();
-        }
-    }
 }

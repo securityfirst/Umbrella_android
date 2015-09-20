@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
 
@@ -85,7 +84,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (!global.getTermsAccepted()) {
             startActivity(new Intent(this, TourActivity.class));
         } else {
-            global.migrateData();
             if (titleSpinner!=null) {
                 return;
             }
