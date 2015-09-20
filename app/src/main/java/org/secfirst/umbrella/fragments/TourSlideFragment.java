@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,7 +118,6 @@ public class TourSlideFragment extends Fragment {
                 skipBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.e("click", "boom");
                         global.set_termsAccepted(true);
                         ((TourActivity) getActivity()).navigateToMain();
                         mCallback.onNavigationRequested();
