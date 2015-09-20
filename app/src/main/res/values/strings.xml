@@ -55,5 +55,10 @@
     <string name="feed_location_label">Set the location for your feeds</string>
     <string name="no_feed_items_label">There is currently no results with your chosen settings. Please tap to revise and change them</string>
     <string name="disable_password">Don\'t ask for password again</string>
+    <string name="terms_conditions">Terms and Conditions</string>
+    <string name="tour_slide_1_text">Umbrella makes your security simple</string>
+    <string name="tour_slide_2_text">Get advice on everything from sending a secure email to safe travel</string>
+    <string name="tour_slide_3_text">Use checklists to mark your progress</string>
+    <string name="tour_slide_4_text">Stay up to date with the latest information on where you are</string>
 
 </resources>
