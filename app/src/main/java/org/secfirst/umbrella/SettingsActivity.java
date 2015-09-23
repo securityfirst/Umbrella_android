@@ -91,7 +91,7 @@ public class SettingsActivity extends BaseActivity {
                 showFeedSources();
             }
         });
-        mAutocompleteLocation.setHint("Set location");
+
         mAutocompleteLocation.setAdapter(new GeoCodingAutoCompleteAdapter(SettingsActivity.this, R.layout.autocomplete_list_item));
         mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -99,9 +99,9 @@ public class SettingsActivity extends BaseActivity {
                 if (hasFocus && !global.hasPasswordSet(false)) {
                     global.setPassword(SettingsActivity.this);
                 }
-
             }
         });
+
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -241,15 +241,16 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        List<Registry> selLoc;
+        List<Registry> selLoc = null;
         try {
             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
-            if (selLoc.size() > 0) {
-                String loc = selLoc.get(0).getValue();
-                mAutocompleteLocation.setText(loc);
-            }
         } catch (SQLException e) {
             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+        }
+        if (selLoc!=null && selLoc.size() > 0) {
+            mAutocompleteLocation.setHint(selLoc.get(0).getValue());
+        } else {
+            mAutocompleteLocation.setHint("Set location");
         }
     }
 
