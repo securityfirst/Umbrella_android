@@ -110,7 +110,6 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
 
         mAutocompleteLocation = (AutoCompleteTextView) rootView.findViewById(R.id.settings_autocomplete);
 
-        mAutocompleteLocation.setHint("Set location");
         mAutocompleteLocation.setAdapter(new GeoCodingAutoCompleteAdapter(getActivity(), R.layout.autocomplete_list_item));
         mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -156,7 +155,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
-                        if (selLoc!=null && selLoc.size() > 0) {
+                        if (selLoc != null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
                             try {
@@ -179,7 +178,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
-                        if (selISO2!=null && selISO2.size() > 0) {
+                        if (selISO2 != null && selISO2.size() > 0) {
                             iso2 = selISO2.get(0);
                             iso2.setValue(mAddress.getCountryCode().toLowerCase());
                             try {
@@ -202,7 +201,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
-                        if (selCountry!=null && selCountry.size() > 0) {
+                        if (selCountry != null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
                             mLocation.setValue(mAddress.getCountryName());
                             try {
@@ -227,6 +226,17 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 }
             }
         });
+        mAutocompleteLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         refreshIntervalValue.setText(global.getRefreshLabel());
         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
         getFeeds(getActivity());
@@ -237,15 +247,16 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onResume() {
         super.onResume();
-        List<Registry> selLoc;
+        List<Registry> selLoc = null;
         try {
             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
-            if (selLoc.size() > 0) {
-                String loc = selLoc.get(0).getValue();
-                mAutocompleteLocation.setText(loc);
-            }
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            if (getActivity()!=null) UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+        }
+        if (selLoc!=null && selLoc.size() > 0) {
+            mAutocompleteLocation.setHint(selLoc.get(0).getValue());
+        } else {
+            mAutocompleteLocation.setHint("Set location");
         }
     }
 
