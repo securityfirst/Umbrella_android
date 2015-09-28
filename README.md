@@ -6,6 +6,10 @@ Umbrella is an Android mobile app developed by [Security First](https://www.secf
 
 Clone the repository, open it in Android Studio and compile, nothing special needed. Otherwise, the compiled app is currently available on the Google Play store. We intend to make it also available on the Amazon App Store and through the F-Droid Platform.
 
+<a href="https://play.google.com/store/apps/details?id=org.secfirst.umbrella">
+  <img alt="Umbrella on Google Play Store"
+       src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
+
 ## Requirements
 
 You need an Android phone with a minimum version of 2.3.6 (SDK 10 - GINGERBREAD_MR1)
