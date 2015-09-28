@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     } catch (SQLException e) {
                         UmbrellaUtil.logIt(MainActivity.this, Log.getStackTraceString(e.getCause()));
                     }
-                    if (hasDifficulty!=null && hasDifficulty.size() > 0) {
+                    if (hasDifficulty != null && hasDifficulty.size() > 0) {
                         Category childCategory = null;
                         try {
                             childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
@@ -140,13 +140,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             drawerList.setOnChildClickListener(adapter);
             drawerList.setOnGroupClickListener(adapter);
 
-            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer,
-                    R.drawable.ic_drawer, R.string.open_drawer,
-                    R.string.close_drawer) {
-                public void onDrawerClosed(View view) {}
-
-                public void onDrawerOpened(View drawerView) {}
-            };
+            actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, this.toolbar, R.string.open_drawer, R.string.close_drawer);
+            actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
+            actionBarDrawerToggle.syncState();
             loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
