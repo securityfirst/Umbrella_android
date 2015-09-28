@@ -35,6 +35,7 @@ import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.FeedSource;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -219,7 +220,7 @@ public class Global extends Application {
                 Intent i = new Intent(context, TourActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Toast.makeText(context, "Content reset to default", Toast.LENGTH_SHORT).show();
-                        ((Activity) context).finish();
+                ((Activity) context).finish();
                 ;
                 password = isLoggedIn = false;
                 startActivity(i);
@@ -585,6 +586,30 @@ public class Global extends Application {
         for (File file : listFiles) {
             file.delete();
         }
+    }
+
+    public ArrayList<FeedSource> getFeedSourcesList() {
+        ArrayList<FeedSource> sourcesList = new ArrayList<>();
+        sourcesList.add(new FeedSource("UN / ReliefWeb", 0));
+        sourcesList.add(new FeedSource("CDC", 3));
+        return sourcesList;
+    }
+
+    public CharSequence[] getFeedSourcesArray() {
+        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        ArrayList<String> sourcesList = new ArrayList<>();
+        for (FeedSource source : feedSources) {
+            sourcesList.add(source.getName());
+        }
+        return sourcesList.toArray(new CharSequence[sourcesList.size()]);
+    }
+
+    public int getFeedSourceCodeByIndex(int index) {
+        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        if (index < feedSources.size()) {
+            return feedSources.get(index).getCode();
+        }
+        return -1;
     }
 
     public void closeDbAndDAOs() {

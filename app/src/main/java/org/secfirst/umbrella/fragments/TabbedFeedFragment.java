@@ -412,7 +412,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void showFeedSources() {
-        final CharSequence[] items = {" ReliefWeb "," UN "," FCO "," CDC "};
+        final CharSequence[] items = global.getFeedSourcesArray();
         final ArrayList<Integer> selectedItems = new ArrayList<>();
         boolean[] currentSelections = new boolean[items.length];
         List<Registry> selections;
@@ -421,7 +421,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             for (int i = 0; i < items.length; i++) {
                 currentSelections[i] = false;
                 for (Registry reg : selections) {
-                    if (reg.getValue().equals(String.valueOf(i))) {
+                    if (reg.getValue().equals(String.valueOf(global.getFeedSourceCodeByIndex(i)))) {
                         currentSelections[i] = true;
                         selectedItems.add(i);
                         break;
@@ -459,7 +459,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                         for (Integer item : selectedItems) {
                             try {
-                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(item)));
+                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
                                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                             }
