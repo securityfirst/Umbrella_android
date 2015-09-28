@@ -19,13 +19,16 @@ import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
+    private Context context;
 
     public OrmHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION, context.getString(R.string.default_db_password));
+        this.context = context;
     }
 
     @Override
@@ -35,8 +38,33 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource source, int oldVersion, int newVersion) {
-        dropTables(source);
-        createTables(source);
+        try {
+            while (++oldVersion <= newVersion) {
+                switch (oldVersion) {
+                    case 2: {
+                        UpgradeHelper.addUpgrade(2);
+                        break;
+                    }
+                }
+            }
+            final List<String> availableUpdates = UpgradeHelper.availableUpdates(this.context.getResources());
+
+            for (final String statement : availableUpdates) {
+                database.beginTransaction();
+                try {
+                    database.execSQL(statement);
+                    database.setTransactionSuccessful();
+                }
+                finally {
+                    database.endTransaction();
+                }
+            }
+        }
+        catch (final Exception e) {
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause());
+            onCreate(database, connectionSource);
+        }
     }
 
     @Override
@@ -77,45 +105,6 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         }
         try {
             TableUtils.createTable(source, Difficulty.class);
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-    }
-
-    public void dropTables(ConnectionSource source) {
-        try {
-            TableUtils.dropTable(source, Segment.class, true);
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-        try {
-            TableUtils.dropTable(source, CheckItem.class, true);
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-        try {
-            TableUtils.dropTable(source, Category.class, true);
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-        try {
-            TableUtils.dropTable(source, Registry.class, true);
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-        try {
-            TableUtils.dropTable(source, Favourite.class, true);
-        } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
-        }
-        try {
-            TableUtils.dropTable(source, Difficulty.class, true);
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());

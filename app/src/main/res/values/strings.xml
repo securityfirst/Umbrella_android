@@ -60,5 +60,9 @@
     <string name="tour_slide_2_text">Get advice on everything from sending a secure email to safe travel</string>
     <string name="tour_slide_3_text">Use checklists to mark your progress</string>
     <string name="tour_slide_4_text">Stay up to date with the latest information on where you are</string>
+    <string name="skip_password_warning">Are you sure you want to continue using the app without setting the password?\n\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella</string>
+    <string name="skip_password_title">Skip setting password</string>
+    <string name="set_password_body">Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n</string>
+    <string name="set_password_title">Set your password</string>
 
 </resources>

@@ -35,6 +35,7 @@ import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.FeedSource;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -131,8 +132,8 @@ public class Global extends Application {
 
     public void setPassword(final Activity activity) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle("Set your password");
-        alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n");
+        alert.setTitle(R.string.set_password_title);
+        alert.setMessage(R.string.set_password_body);
         View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
         final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
         final EditText confirmInput = (EditText) view.findViewById(R.id.pwconfirm);
@@ -146,8 +147,8 @@ public class Global extends Application {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final AlertDialog.Builder alert2 = new AlertDialog.Builder(activity);
-                alert2.setTitle("Skip setting password");
-                alert2.setMessage("Are you sure you want to continue using the app without setting the password?\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella");
+                alert2.setTitle(R.string.skip_password_title);
+                alert2.setMessage(R.string.skip_password_warning);
                 alert2.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -219,7 +220,7 @@ public class Global extends Application {
                 Intent i = new Intent(context, TourActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Toast.makeText(context, "Content reset to default", Toast.LENGTH_SHORT).show();
-                        ((Activity) context).finish();
+                ((Activity) context).finish();
                 ;
                 password = isLoggedIn = false;
                 startActivity(i);
@@ -585,6 +586,30 @@ public class Global extends Application {
         for (File file : listFiles) {
             file.delete();
         }
+    }
+
+    public ArrayList<FeedSource> getFeedSourcesList() {
+        ArrayList<FeedSource> sourcesList = new ArrayList<>();
+        sourcesList.add(new FeedSource("UN / ReliefWeb", 0));
+        sourcesList.add(new FeedSource("CDC", 3));
+        return sourcesList;
+    }
+
+    public CharSequence[] getFeedSourcesArray() {
+        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        ArrayList<String> sourcesList = new ArrayList<>();
+        for (FeedSource source : feedSources) {
+            sourcesList.add(source.getName());
+        }
+        return sourcesList.toArray(new CharSequence[sourcesList.size()]);
+    }
+
+    public int getFeedSourceCodeByIndex(int index) {
+        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        if (index < feedSources.size()) {
+            return feedSources.get(index).getCode();
+        }
+        return -1;
     }
 
     public void closeDbAndDAOs() {

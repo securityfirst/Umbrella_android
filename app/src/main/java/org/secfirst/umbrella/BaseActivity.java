@@ -19,6 +19,7 @@ import java.util.TimerTask;
 public abstract class BaseActivity extends ActionBarActivity {
 
     protected Global global;
+    protected Toolbar toolbar;
     public boolean mBounded;
     public RefreshService mService;
     private static TimerTask logoutTask;
@@ -32,7 +33,7 @@ public abstract class BaseActivity extends ActionBarActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(getLayoutResource());
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
