@@ -132,8 +132,8 @@ public class Global extends Application {
 
     public void setPassword(final Activity activity) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle("Set your password");
-        alert.setMessage("Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n");
+        alert.setTitle(R.string.set_password_title);
+        alert.setMessage(R.string.set_password_body);
         View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
         final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
         final EditText confirmInput = (EditText) view.findViewById(R.id.pwconfirm);
@@ -147,8 +147,8 @@ public class Global extends Application {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final AlertDialog.Builder alert2 = new AlertDialog.Builder(activity);
-                alert2.setTitle("Skip setting password");
-                alert2.setMessage("Are you sure you want to continue using the app without setting the password?\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella");
+                alert2.setTitle(R.string.skip_password_title);
+                alert2.setMessage(R.string.skip_password_warning);
                 alert2.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
