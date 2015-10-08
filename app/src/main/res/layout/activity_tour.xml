@@ -10,13 +10,34 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 
-    <com.viewpagerindicator.CirclePageIndicator
-        android:id="@+id/indicator"
-        android:layout_gravity="bottom"
-        android:layout_margin="45dp"
-        android:padding="10dp"
-        android:layout_height="wrap_content"
+    <FrameLayout
         android:layout_width="fill_parent"
-        />
+        android:layout_gravity="bottom"
+        android:layout_height="wrap_content">
+
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_margin="45dp"
+            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            />
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_gravity="right"
+            android:paddingTop="22dp"
+            android:layout_margin="20dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/white"
+            android:text="@string/btn_skip"
+            android:background="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
 
 </FrameLayout>
