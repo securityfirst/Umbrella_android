@@ -23,7 +23,7 @@ import java.util.List;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private Context context;
 
     public OrmHelper(Context context) {
@@ -39,13 +39,8 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase database, ConnectionSource source, int oldVersion, int newVersion) {
         try {
-            while (++oldVersion <= newVersion) {
-                switch (oldVersion) {
-                    case 2: {
-                        UpgradeHelper.addUpgrade(2);
-                        break;
-                    }
-                }
+            while (++oldVersion <= newVersion && oldVersion>1) {
+                UpgradeHelper.addUpgrade(oldVersion);
             }
             final List<String> availableUpdates = UpgradeHelper.availableUpdates(this.context.getResources());
 
@@ -54,8 +49,7 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
                 try {
                     database.execSQL(statement);
                     database.setTransactionSuccessful();
-                }
-                finally {
+                } finally {
                     database.endTransaction();
                 }
             }
