@@ -179,7 +179,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     }
                 }
             } else {
-                setFragment(0, "My Security", true);
+                setFragment(0, getString(R.string.my_security), true);
                 drawer.openDrawer(Gravity.LEFT);
             }
         }
@@ -195,13 +195,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         try {
             Category childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
             if (childCategory.getDifficultyBeginner()) {
-                navArray.add(title +" Beginner");
+                navArray.add(title +" "+getString(R.string.beginner));
             }
             if (childCategory.getDifficultyAdvanced()) {
-                navArray.add(title +" Advanced");
+                navArray.add(title +" "+getString(R.string.advanced));
             }
             if (childCategory.getDifficultyExpert()) {
-                navArray.add(title +" Expert");
+                navArray.add(title +" "+getString(R.string.expert));
             }
         } catch (SQLException e) {
             UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
@@ -327,7 +327,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem _searchMenuItem = menu.findItem(R.id.action_search_view);
         android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(_searchMenuItem);
-        searchView.setQueryHint("Search");
+        searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -337,7 +337,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     i.putExtra(SearchManager.QUERY, s);
                     startActivity(i);
                 } else {
-                    Toast.makeText(MainActivity.this, "The search query needs to be at least 3 characters long", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, R.string.search_query_needs_to_be_at_least, Toast.LENGTH_SHORT).show();
                 }
                 return false;
             }
@@ -462,7 +462,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             lps.setMargins(margin, margin, margin * 5, margin * 5);
             new ShowcaseView.Builder(this)
                     .setTarget(new ViewTarget(R.id.spinner_nav, this))
-                    .setContentText("Click here to change level")
+                    .setContentText(getString(R.string.click_here_to_change_level))
                     .setStyle(R.style.CustomShowcaseTheme4)
                     .hideOnTouchOutside()
                     .singleShot(2)
@@ -476,7 +476,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                             lps.setMargins(margin, margin, margin * 5, margin * 5);
                             new ShowcaseView.Builder(MainActivity.this)
                                     .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
-                                    .setContentText("Swipe left to read through the lesson or click on a tab to go straight to that section\n\nYou can also skip straight to the checklist")
+                                    .setContentText(getString(R.string.swipe_left_to_read))
                                     .setStyle(R.style.CustomShowcaseTheme4)
                                     .hideOnTouchOutside()
                                     .singleShot(3)
@@ -525,7 +525,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             lps.setMargins(margin, margin, margin * 5, margin * 5);
             new ShowcaseView.Builder(this)
                     .setTarget(new PointTarget(0, 0))
-                    .setContentText("Click here or swipe from the side of your screen to view the menu at any time")
+                    .setContentText(getString(R.string.swipe_to_view_menu))
                     .setStyle(R.style.CustomShowcaseTheme4)
                     .hideOnTouchOutside()
                     .singleShot(1)
@@ -552,7 +552,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             lps.setMargins(margin, margin, margin * 5, margin * 5);
             new ShowcaseView.Builder(MainActivity.this)
                     .setTarget(new ViewTarget(R.id.pager_title_strip, this))
-                    .setContentText("View all the checklists you’ve started and see your progress")
+                    .setContentText(getString(R.string.view_all_checlists))
                     .setStyle(R.style.CustomShowcaseTheme4)
                     .hideOnTouchOutside()
                     .singleShot(7)

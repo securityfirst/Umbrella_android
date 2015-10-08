@@ -156,11 +156,11 @@ public class TabbedChecklistFragment extends Fragment {
         } catch (SQLException e) {
             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
-        DashCheckFinished totalDone = new DashCheckFinished("Total done", getTotalCheckListPercentage(returned), 100, false);
+        DashCheckFinished totalDone = new DashCheckFinished(global.getString(R.string.total_done), getTotalCheckListPercentage(returned), 100, false);
         totalDone.setNoIcon(true);
         returned.add(0, totalDone);
         if (returned.size()<2) {
-            DashCheckFinished noItems = new DashCheckFinished("No check items started on yet", 0, 0, false);
+            DashCheckFinished noItems = new DashCheckFinished(global.getString(R.string.no_check_items_started_on_yet), 0, 0, false);
             noItems.setNoIcon(true);
             noItems.setNoPercent(true);
             returned.add(noItems);

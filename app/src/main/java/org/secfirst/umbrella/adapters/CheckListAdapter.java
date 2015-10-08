@@ -114,14 +114,14 @@ public class CheckListAdapter extends BaseAdapter {
             public boolean onLongClick(View v) {
                 if (checkList.get(i).isCustom()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setTitle("Select an action");
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    builder.setTitle(mContext.getString(R.string.select_action));
+                    builder.setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
                     });
-                    builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(mContext.getString(R.string.delete), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
@@ -136,14 +136,14 @@ public class CheckListAdapter extends BaseAdapter {
                     builder.show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setTitle("Select an action");
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    builder.setTitle(mContext.getString(R.string.select_action));
+                    builder.setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
                         }
                     });
-                    builder.setPositiveButton(checkList.get(i).isDisabled() ? "Enable" : "Disable", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton(checkList.get(i).isDisabled() ? mContext.getString(R.string.enable) : mContext.getString(R.string.disable), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (checkList.get(i).isDisabled()) {
@@ -161,7 +161,7 @@ public class CheckListAdapter extends BaseAdapter {
                             mFragment.refreshCheckList(current.getCategory(), current.getDifficulty());
                         }
                     });
-                    builder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                    builder.setNeutralButton(mContext.getString(R.string.delete), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {

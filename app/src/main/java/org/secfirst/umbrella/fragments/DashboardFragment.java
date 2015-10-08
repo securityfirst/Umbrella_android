@@ -54,7 +54,7 @@ public class DashboardFragment extends Fragment {
         super.onResume();
         if (getActivity()!=null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
-            getActivity().setTitle("My Security");
+            getActivity().setTitle(global.getString(R.string.my_security));
         }
     }
 

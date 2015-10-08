@@ -133,34 +133,57 @@ public class SettingsActivity extends BaseActivity {
                                 UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         }
-                        List<Registry> selCountry = null;
+                        List<Registry> selISO2 = null;
+                        Registry iso2;
                         try {
-                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+                            selISO2 = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "iso2");
+                            if (selISO2.size() > 0) {
+                                iso2 = selISO2.get(0);
+                                iso2.setValue(mAddress.getCountryCode().toLowerCase());
+                                try {
+                                    global.getDaoRegistry().update(iso2);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
+                            } else {
+                                iso2 = new Registry("iso2", mAddress.getCountryCode().toLowerCase());
+                                try {
+                                    global.getDaoRegistry().create(iso2);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
+                            }
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        if (selCountry != null && selCountry.size() > 0) {
-                            mCountry = selCountry.get(0);
-                            mLocation.setValue(mAddress.getCountryName());
-                            try {
-                                global.getDaoRegistry().update(mCountry);
-                            } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                        List<Registry> selCountry = null;
+                        try {
+                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+                            if (selCountry.size() > 0) {
+                                mCountry = selCountry.get(0);
+                                mCountry.setValue(mAddress.getCountryName());
+                                try {
+                                    global.getDaoRegistry().update(mCountry);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
+                            } else {
+                                mCountry = new Registry("country", mAddress.getCountryName());
+                                try {
+                                    global.getDaoRegistry().create(mCountry);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(SettingsActivity.this, R.string.review_sources_for_feed, Toast.LENGTH_SHORT).show();
+                                            showFeedSources();
+                                        }
+                                    }, 500);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
                             }
-                        } else {
-                            mCountry = new Registry("country", mAddress.getCountryName());
-                            try {
-                                global.getDaoRegistry().create(mCountry);
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SettingsActivity.this, "Please review sources you want for your feed", Toast.LENGTH_SHORT).show();
-                                        showFeedSources();
-                                    }
-                                }, 500);
-                            } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
-                            }
+                        } catch (SQLException e) {
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
                     } else {
                         mAddress = null;
@@ -195,14 +218,14 @@ public class SettingsActivity extends BaseActivity {
     public void showRefresh() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(
                 SettingsActivity.this);
-        builderSingle.setTitle("Choose refresh interval:");
+        builderSingle.setTitle(R.string.choose_refresh_inteval);
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 SettingsActivity.this,
                 android.R.layout.select_dialog_singlechoice);
         int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues();
+        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(SettingsActivity.this);
         for (Object key : refreshValues.keySet()) {
             if (refreshValues.get(key).equals(currentRefresh)) {
                 selectedIndex = i;
@@ -211,7 +234,7 @@ public class SettingsActivity extends BaseActivity {
             arrayAdapter.add((String) key);
             i++;
         }
-        builderSingle.setNegativeButton("cancel",
+        builderSingle.setNegativeButton(R.string.cancel,
                 new DialogInterface.OnClickListener() {
 
                     @Override
@@ -250,7 +273,7 @@ public class SettingsActivity extends BaseActivity {
         if (selLoc!=null && selLoc.size() > 0) {
             mAutocompleteLocation.setHint(selLoc.get(0).getValue());
         } else {
-            mAutocompleteLocation.setHint("Set location");
+            mAutocompleteLocation.setHint(global.getString(R.string.set_location));
         }
     }
 
@@ -275,7 +298,7 @@ public class SettingsActivity extends BaseActivity {
             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Select The Feed Sources");
+        builder.setTitle(R.string.select_feed_sources);
         builder.setMultiChoiceItems(items, currentSelections,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -288,7 +311,7 @@ public class SettingsActivity extends BaseActivity {
                         }
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         List<Registry> selections = null;
@@ -310,7 +333,7 @@ public class SettingsActivity extends BaseActivity {
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -323,7 +346,7 @@ public class SettingsActivity extends BaseActivity {
 
     public void syncApi() {
         syncDone = 0;
-        mProgress = UmbrellaUtil.launchRingDialogWithText(SettingsActivity.this, "Checking for updates");
+        mProgress = UmbrellaUtil.launchRingDialogWithText(SettingsActivity.this, getString(R.string.checking_for_updates));
 
         UmbrellaRestClient.get("segments", null, null, SettingsActivity.this, new JsonHttpResponseHandler() {
             @Override
@@ -430,7 +453,7 @@ public class SettingsActivity extends BaseActivity {
                             }
                         }
                         resultList = toStrings;
-                        resultList.add(0, "Current location");
+                        resultList.add(0, global.getString(R.string.current_location));
 
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();
