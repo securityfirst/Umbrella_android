@@ -35,7 +35,6 @@
         <TextView
             android:id="@+id/heading_title"
             android:textColor="@color/white"
-            android:text="Title"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
@@ -55,7 +54,6 @@
         <TextView
             android:id="@+id/heading_body"
             android:gravity="center"
-            android:text="Body"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_large"
@@ -78,22 +76,9 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_skip"
-        android:layout_gravity="right"
-        android:padding="5dp"
-        android:layout_marginTop="20dp"
-        android:paddingTop="25dp"
-        android:gravity="top"
-        android:visibility="gone"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:minHeight="80dp"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/white"
-        android:text="@string/btn_skip"
-        android:background="@null"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <View
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"/>
 
 </LinearLayout>

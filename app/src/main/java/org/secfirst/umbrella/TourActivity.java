@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.IntentCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
 
 import com.viewpagerindicator.CirclePageIndicator;
 
@@ -23,6 +25,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final Button skipBtn = (Button) findViewById(R.id.btn_skip);
         mPager = (TourViewPager) findViewById(R.id.myCustomViewPager);
         PagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
@@ -44,10 +47,23 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (position == 4 && positionOffsetPixels == 0) {
+                    skipBtn.setVisibility(View.VISIBLE);
+                } else if (position != 4) {
+                    skipBtn.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        skipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                global.set_termsAccepted(true);
+                navigateToMain();
             }
         });
     }
