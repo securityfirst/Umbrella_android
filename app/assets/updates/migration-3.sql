@@ -1,0 +1,1 @@
+UPDATE segment SET body = replace( body, 'https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms', 'https://play.google.com/store/apps/details?id=org.witness.sscphase1' ) WHERE body LIKE '%https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms%';
