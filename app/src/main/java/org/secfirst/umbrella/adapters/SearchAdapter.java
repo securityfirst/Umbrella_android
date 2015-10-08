@@ -65,7 +65,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         if (mQueries != null && mQueries.size() > 0) {
             queryText = Jsoup.clean(mQueries.get(0), Whitelist.simpleText());
         }
-        holder.mSearchText.setText(Html.fromHtml("result while searching for: <b>" + queryText + "</b>"));
+        holder.mSearchText.setText(Html.fromHtml(mContext.getString(R.string.result_while_searching_for)+": <b>" + queryText + "</b>"));
         final Segment current = mSegment.get(position);
         String forTitle = "";
         try {

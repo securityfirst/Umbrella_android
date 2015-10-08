@@ -98,7 +98,7 @@ public class TabbedFragment extends Fragment {
                         lps.setMargins(margin, margin, margin * 5, margin * 5);
                         new ShowcaseView.Builder(getActivity())
                                 .setTarget(new ViewTarget(R.id.check_value, getActivity()))
-                                .setContentText("Mark off tasks as you complete them\n\nHold down on a task to delete or disable it")
+                                .setContentText(getActivity().getString(R.string.mark_off_tasks))
                                 .setStyle(R.style.CustomShowcaseTheme4)
                                 .hideOnTouchOutside()
                                 .singleShot(4)
@@ -112,7 +112,7 @@ public class TabbedFragment extends Fragment {
                                         lps.setMargins(margin, margin, margin * 5, margin * 5);
                                         new ShowcaseView.Builder(getActivity())
                                                 .setTarget(new ViewTarget(R.id.fab, getActivity()))
-                                                .setContentText("Click here to add new tasks – you’ll need to create a password for this!")
+                                                .setContentText(getActivity().getString(R.string.click_to_add_new_tasks))
                                                 .setStyle(R.style.CustomShowcaseTheme4)
                                                 .hideOnTouchOutside()
                                                 .singleShot(5)
@@ -126,7 +126,7 @@ public class TabbedFragment extends Fragment {
                                                         lps.setMargins(margin, margin, margin * 5, margin * 5);
                                                         new ShowcaseView.Builder(getActivity())
                                                                 .setTarget(new PointTarget(getView().getWidth(), 0))
-                                                                .setContentText("Star this checklist to make it one of your favourites\n\nClick here to share checklist")
+                                                                .setContentText(getActivity().getString(R.string.star_this_checklist))
                                                                 .setStyle(R.style.CustomShowcaseTheme4)
                                                                 .hideOnTouchOutside()
                                                                 .singleShot(6)
@@ -237,7 +237,7 @@ public class TabbedFragment extends Fragment {
                 if (segments.get(position-1).getTitle()!=null) {
                     return segments.get(position-1).getTitle().toUpperCase(l);
                 } else {
-                    return ("Slide " + position).toUpperCase(l);
+                    return (getActivity().getString(R.string.slide) + position).toUpperCase(l);
                 }
             }
         }
@@ -267,7 +267,7 @@ public class TabbedFragment extends Fragment {
                     gridView.setAdapter(gAdapter);
                 }
                 TextView toChecklist = (TextView) rootView.findViewById(R.id.grid_title);
-                toChecklist.setText("Checklist");
+                toChecklist.setText(getActivity().getString(R.string.checklist));
                 int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
                 toChecklist.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
                 CardView checklistCard = (CardView) rootView.findViewById(R.id.checklist_view);
@@ -391,11 +391,11 @@ public class TabbedFragment extends Fragment {
                         global.setPassword(getActivity());
                     } else {
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                        alert.setTitle("Add a new check item");
-                        alert.setMessage("Add your own checklist item\n");
+                        alert.setTitle(R.string.add_new_checkitem);
+                        alert.setMessage(R.string.add_own_checklist_item);
                         final EditText pwInput = new EditText(getActivity());
                         alert.setView(pwInput);
-                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String pw = pwInput.getText().toString();
                                 if (pw.length()>4) {
@@ -409,13 +409,13 @@ public class TabbedFragment extends Fragment {
                                     }
                                     refreshCheckList(drawerItem, diffArg);
                                     dialog.dismiss();
-                                    Toast.makeText(getActivity(), "You have added a new item.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), R.string.you_have_added_new_item, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getActivity(), "The item text has to be longer than that", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), R.string.text_item_has_to_be_longer, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.cancel();
                             }
@@ -541,7 +541,7 @@ public class TabbedFragment extends Fragment {
         public void setProgressBarTo(int percent) {
             if (percent>=0 && percent<=100) {
                 checkBar.setProgress(percent);
-                checkBarText.setText(percent + "% filled");
+                checkBarText.setText(percent + "% " + getActivity().getString(R.string.filled));
             }
         }
     }

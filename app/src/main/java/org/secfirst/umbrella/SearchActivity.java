@@ -50,13 +50,14 @@ public class SearchActivity extends BaseActivity {
                 try {
                     QueryBuilder<Segment, String> queryBuilder = global.getDaoSegment().queryBuilder();
                     Where<Segment, String> where = queryBuilder.where();
-                    where.like(Segment.FIELD_BODY, new SelectArg("%"+query+"%"));
+                    where.like(Segment.FIELD_BODY, new SelectArg("%" + query + "%"));
                     mSegments = queryBuilder.query();
                     RecyclerView.Adapter mAdapter = new SearchAdapter(this, mSegments, query);
                     mRecyclerView.setAdapter(mAdapter);
                     noResults.setVisibility(View.GONE);
                     results.setVisibility(View.VISIBLE);
-                    searchCount.setText(mSegments.size()+((mSegments.size()==1)?" search result":" results")+" found for this query");
+                    String searchCountText = mSegments.size()+" "+((mSegments.size()==1)?getString(R.string.search_result):getString(R.string.results))+" "+getString(R.string.found_for_this_query);
+                    searchCount.setText(searchCountText);
                 } catch (SQLException e) {
                     UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
                 }

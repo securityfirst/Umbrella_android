@@ -89,14 +89,14 @@ public class DashCheckListAdapter extends BaseAdapter {
                     return false;
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Select an action");
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setTitle(mContext.getString(R.string.select_action));
+                builder.setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 });
-                builder.setPositiveButton("Unfavourite", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(mContext.getString(R.string.unfauvorite), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         List<Favourite> favourites = null;

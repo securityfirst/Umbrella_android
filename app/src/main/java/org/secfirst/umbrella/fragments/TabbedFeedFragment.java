@@ -256,7 +256,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         if (selLoc!=null && selLoc.size() > 0) {
             mAutocompleteLocation.setHint(selLoc.get(0).getValue());
         } else {
-            mAutocompleteLocation.setHint("Set location");
+            mAutocompleteLocation.setHint(global.getString(R.string.set_location));
         }
     }
 
@@ -273,14 +273,14 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         try {
             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
             if (selCountry!=null && selCountry.size() > 0) {
-                headerText = "Country selected: " + selCountry.get(0).getValue() + "\n";
+                headerText = global.getString(R.string.country_selected)+": " + selCountry.get(0).getValue() + "\n";
             }
         } catch (SQLException e) {
             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         if (items!=null) {
             if (items.size() > 0)
-                headerText += "Last updated: " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
+                headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
             feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
             mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
             noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
@@ -301,7 +301,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         if (isFeedSet()) {
             getFeeds(getActivity());
         } else {
-            Toast.makeText(getActivity(), "Please set sources and location in the settings", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.set_location_source_in_settings, Toast.LENGTH_SHORT).show();
         }
         mSwipeRefreshLayout.setRefreshing(false);
     }
@@ -346,9 +346,10 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
                         }
+
                     });
                 } else {
-                    Toast.makeText(getActivity(), "No sources selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
                 }
                 return true;
             } catch (SQLException e) {
@@ -365,14 +366,14 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     public void showRefresh() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(
                 getActivity());
-        builderSingle.setTitle("Choose refresh interval:");
+        builderSingle.setTitle(global.getString(R.string.choose_refresh_inteval));
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.select_dialog_singlechoice);
         int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues();
+        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(global.getApplicationContext());
         for (Object key : refreshValues.keySet()) {
             if (refreshValues.get(key).equals(currentRefresh)) {
                 selectedIndex = i;
@@ -381,7 +382,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             arrayAdapter.add((String) key);
             i++;
         }
-        builderSingle.setNegativeButton("cancel",
+        builderSingle.setNegativeButton(global.getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
 
                     @Override
@@ -432,7 +433,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Select The Feed Sources");
+        builder.setTitle(global.getString(R.string.select_feed_sources));
         builder.setMultiChoiceItems(items, currentSelections,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -445,7 +446,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(global.getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         List<Registry> selections;
@@ -469,7 +470,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(global.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -534,7 +535,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             }
                         }
                         resultList = toStrings;
-                        resultList.add(0, "Current location");
+                        resultList.add(0, global.getString(R.string.current_location));
 
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();

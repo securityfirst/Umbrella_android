@@ -25,6 +25,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.BuildConfig;
+import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
@@ -142,8 +143,8 @@ public class UmbrellaUtil {
                     }
                 }
                 if (parentCategory.getId() == 1) {
-                    child.add(new DrawerChildItem("My Checklists", -1));
-                    child.add(new DrawerChildItem("Dashboard", -2));
+                    child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
+                    child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
                 }
                 childItem.add(child);
             }
@@ -152,15 +153,15 @@ public class UmbrellaUtil {
         return childItem;
     }
 
-    public static String checkPasswordStrength(String password) {
+    public static String checkPasswordStrength(String password, Context context) {
         if (password.length()<8) {
-            return "Password too short";
+            return context.getString(R.string.password_too_short);
         } else if(!Pattern.compile("\\d").matcher(password).find()) {
-            return "Password must have at least one digit";
+            return context.getString(R.string.password_one_digit);
         } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
-            return "Password must have at least one capital letter";
+            return context.getString(R.string.password_one_capital);
         } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
-            return "Password must have at least one small letter";
+            return context.getString(R.string.password_one_small);
         }
         return "";
 
@@ -231,16 +232,16 @@ public class UmbrellaUtil {
             Log.i(context.getClass().getSimpleName(), message);
     }
 
-    public static HashMap<String, Integer> getRefreshValues() {
+    public static HashMap<String, Integer> getRefreshValues(Context context) {
         LinkedHashMap<String, Integer> refreshInterval =new LinkedHashMap<>();
-        refreshInterval.put("30 min", (int) TimeUnit.MINUTES.toMillis(30));
-        refreshInterval.put("1 hour",  (int) TimeUnit.HOURS.toMillis(1));
-        refreshInterval.put("2 hours", (int) TimeUnit.HOURS.toMillis(2));
-        refreshInterval.put("4 hours", (int) TimeUnit.HOURS.toMillis(4));
-        refreshInterval.put("6 hours", (int) TimeUnit.HOURS.toMillis(6));
-        refreshInterval.put("12 hours", (int) TimeUnit.HOURS.toMillis(12));
-        refreshInterval.put("24 hours", (int) TimeUnit.HOURS.toMillis(24));
-        refreshInterval.put("Manually", 0);
+        refreshInterval.put(context.getString(R.string.half_hour), (int) TimeUnit.MINUTES.toMillis(30));
+        refreshInterval.put("1 "+context.getString(R.string.hour),  (int) TimeUnit.HOURS.toMillis(1));
+        refreshInterval.put("2 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(2));
+        refreshInterval.put("4 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(4));
+        refreshInterval.put("6 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(6));
+        refreshInterval.put("12 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(12));
+        refreshInterval.put("24 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(24));
+        refreshInterval.put(context.getString(R.string.manually), 0);
         return refreshInterval;
     }
 

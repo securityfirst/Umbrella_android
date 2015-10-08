@@ -138,24 +138,24 @@ public class Global extends Application {
         final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
         final EditText confirmInput = (EditText) view.findViewById(R.id.pwconfirm);
         alert.setView(view);
-        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
             }
         });
-        alert.setNeutralButton("Skip", new DialogInterface.OnClickListener() {
+        alert.setNeutralButton(R.string.skip, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 final AlertDialog.Builder alert2 = new AlertDialog.Builder(activity);
                 alert2.setTitle(R.string.skip_password_title);
                 alert2.setMessage(R.string.skip_password_warning);
-                alert2.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                alert2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setPassword(activity);
                     }
                 });
-                alert2.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                alert2.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         setSkipPassword(true);
@@ -166,7 +166,7 @@ public class Global extends Application {
             }
         });
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 dialog.cancel();
             }
@@ -177,16 +177,16 @@ public class Global extends Application {
             @Override
             public void onClick(View v) {
                 String pw = pwInput.getText().toString();
-                String checkError = UmbrellaUtil.checkPasswordStrength(pw);
+                String checkError = UmbrellaUtil.checkPasswordStrength(pw, getApplicationContext());
                 if (!pw.equals(confirmInput.getText().toString())) {
-                    Toast.makeText(activity, "Passwords do not match.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, R.string.passwords_do_not_match, Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
                     getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
                     password = true;
                     dialog.dismiss();
-                    Toast.makeText(activity, "You have successfully set your password.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(activity, "You must choose a stronger password. " + checkError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -219,7 +219,7 @@ public class Global extends Application {
                 removeSharedPreferences();
                 Intent i = new Intent(context, TourActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Toast.makeText(context, "Content reset to default", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.content_reset_to_default, Toast.LENGTH_SHORT).show();
                 ((Activity) context).finish();
                 ;
                 password = isLoggedIn = false;
@@ -402,7 +402,7 @@ public class Global extends Application {
     public String getRefreshLabel() {
         String refreshValueLabel = "";
         int refreshValue = getRefreshValue();
-        HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues();
+        HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
         for (Object key : refreshValues.keySet()) {
             if (refreshValues.get(key).equals(refreshValue)) {
                 refreshValueLabel = (String) key;
