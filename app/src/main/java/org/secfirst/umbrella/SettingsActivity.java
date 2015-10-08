@@ -133,34 +133,57 @@ public class SettingsActivity extends BaseActivity {
                                 UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         }
-                        List<Registry> selCountry = null;
+                        List<Registry> selISO2 = null;
+                        Registry iso2;
                         try {
-                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+                            selISO2 = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "iso2");
+                            if (selISO2.size() > 0) {
+                                iso2 = selISO2.get(0);
+                                iso2.setValue(mAddress.getCountryCode().toLowerCase());
+                                try {
+                                    global.getDaoRegistry().update(iso2);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
+                            } else {
+                                iso2 = new Registry("iso2", mAddress.getCountryCode().toLowerCase());
+                                try {
+                                    global.getDaoRegistry().create(iso2);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
+                            }
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        if (selCountry != null && selCountry.size() > 0) {
-                            mCountry = selCountry.get(0);
-                            mLocation.setValue(mAddress.getCountryName());
-                            try {
-                                global.getDaoRegistry().update(mCountry);
-                            } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                        List<Registry> selCountry = null;
+                        try {
+                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+                            if (selCountry.size() > 0) {
+                                mCountry = selCountry.get(0);
+                                mCountry.setValue(mAddress.getCountryName());
+                                try {
+                                    global.getDaoRegistry().update(mCountry);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
+                            } else {
+                                mCountry = new Registry("country", mAddress.getCountryName());
+                                try {
+                                    global.getDaoRegistry().create(mCountry);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(SettingsActivity.this, R.string.review_sources_for_feed, Toast.LENGTH_SHORT).show();
+                                            showFeedSources();
+                                        }
+                                    }, 500);
+                                } catch (SQLException e) {
+                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                }
                             }
-                        } else {
-                            mCountry = new Registry("country", mAddress.getCountryName());
-                            try {
-                                global.getDaoRegistry().create(mCountry);
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(SettingsActivity.this, R.string.review_sources_for_feed, Toast.LENGTH_SHORT).show();
-                                        showFeedSources();
-                                    }
-                                }, 500);
-                            } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
-                            }
+                        } catch (SQLException e) {
+                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
                     } else {
                         mAddress = null;

@@ -203,7 +203,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                         if (selCountry != null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
-                            mLocation.setValue(mAddress.getCountryName());
+                            mCountry.setValue(mAddress.getCountryName());
                             try {
                                 global.getDaoRegistry().update(mCountry);
                             } catch (SQLException e) {
@@ -278,21 +278,12 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         } catch (SQLException e) {
             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
-        if (items!=null) {
-            if (items.size() > 0)
-                headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
-            feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
-            mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
-            noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
-            if (isFeedSet()) {
-                noFeedItems.setVisibility(items.size() > 0 ? View.GONE : View.VISIBLE);
-            } else {
-                noFeedItems.setVisibility(View.GONE);
-            }
-        } else {
-            noFeedItems.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
-            noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
-        }
+        mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
+        noFeedItems.setVisibility((isFeedSet() && (items==null || items.size() == 0)) ? View.VISIBLE : View.GONE);
+        headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
+        feedListView.setVisibility(isFeedSet() && items!=null ? View.VISIBLE : View.GONE);
+        noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
+        noFeedCard.setVisibility( (items==null && isFeedSet()) ? View.GONE : View.VISIBLE);
         header.setText(headerText);
     }
 
@@ -347,6 +338,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             }
                         }
 
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            super.onFailure(statusCode, headers, responseString, throwable);
+                            refreshView();
+                        }
                     });
                 } else {
                     Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
