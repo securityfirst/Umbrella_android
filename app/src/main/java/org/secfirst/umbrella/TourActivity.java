@@ -15,7 +15,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import org.secfirst.umbrella.fragments.TourSlideFragment;
 import org.secfirst.umbrella.util.TourViewPager;
 
-public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener, TourSlideFragment.OnNavigateToMainListener {
+public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener {
 
     private static final int NUM_PAGES = 5;
     private TourViewPager mPager;
@@ -75,12 +75,6 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
     @Override
     public void onSwipeOutAtEnd() {
-        global.set_termsAccepted(true);
-        navigateToMain();
-    }
-
-    @Override
-    public void onNavigationRequested() {
         global.set_termsAccepted(true);
         navigateToMain();
     }
