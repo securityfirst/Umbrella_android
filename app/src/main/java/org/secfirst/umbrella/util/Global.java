@@ -236,6 +236,7 @@ public class Global extends Application {
     }
 
     public OrmHelper getOrmHelper() {
+        SQLiteDatabase.loadLibs(this);
         if (dbHelper==null || !dbHelper.isOpen()) {
             createDatabaseIfNotExists();
             dbHelper = new OrmHelper(getApplicationContext());

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.Global;
@@ -54,6 +55,7 @@ public class DashboardFragment extends Fragment {
         super.onResume();
         if (getActivity()!=null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
+            if (global==null) global = ((BaseActivity) getActivity()).getGlobal();
             getActivity().setTitle(global.getString(R.string.my_security));
         }
     }

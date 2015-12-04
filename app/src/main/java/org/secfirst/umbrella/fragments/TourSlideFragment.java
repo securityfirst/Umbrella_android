@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -13,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
@@ -21,11 +21,6 @@ public class TourSlideFragment extends Fragment {
 
     private int mPageNumber;
     private Global global;
-    OnNavigateToMainListener mCallback;
-
-    public interface OnNavigateToMainListener {
-        void onNavigationRequested();
-    }
 
     public static TourSlideFragment create(int pageNumber, Global global) {
         TourSlideFragment fragment = new TourSlideFragment();
@@ -34,17 +29,6 @@ public class TourSlideFragment extends Fragment {
         args.putInt("page", pageNumber);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mCallback = (OnNavigateToMainListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnNavigateToMainListener");
-        }
     }
 
     public TourSlideFragment() {
@@ -59,6 +43,7 @@ public class TourSlideFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (getActivity()!=null && global==null) global = ((BaseActivity) getActivity()).getGlobal();
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_tour_slide, container, false);
 

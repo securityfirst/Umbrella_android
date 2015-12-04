@@ -23,7 +23,7 @@ import java.util.List;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private Context context;
 
     public OrmHelper(Context context) {
