@@ -114,6 +114,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ExitActivity"
+            android:theme="@android:style/Theme.NoDisplay" />
     </application>
 
 </manifest>
