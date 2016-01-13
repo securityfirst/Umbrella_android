@@ -3,15 +3,15 @@ apply plugin: 'idea'
 apply plugin: 'witness'
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "org.secfirst.umbrella"
         minSdkVersion 10
         targetSdkVersion 23
-        versionCode 9
-        versionName "0.1.8"
+        versionCode 10
+        versionName "0.1.9"
     }
     buildTypes {
         release {
