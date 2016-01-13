@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'idea'
+apply plugin: 'witness'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -46,4 +47,25 @@ dependencies {
     compile 'org.jsoup:jsoup:1.8.2'
     compile 'com.j256.ormlite:ormlite-core:4.46'
     compile 'com.android.support:design:23.1.1'
+}
+
+// generate using: `gradle -q calculateChecksums | sort -V`
+dependencyVerification {
+    verify = [
+        'com.android.support:appcompat-v7:0a8762214382b7e8d4b989b4ac10b5c846b957d767ccb7bccbc6be5afa885a82',
+        'com.android.support:cardview-v7:5a5bc04a278662bfafdea5b11b2108a4b354dca6c68958b312f6f45cc5fe2e38',
+        'com.android.support:design:41a9cd75ca78f25df5f573db7cedf8bb66beae00c330943923ba9f3e2051736d',
+        'com.android.support:gridlayout-v7:53275c8915164d2af3ba2d5bd91109e081fe0c068861ae1896828c839b7d2106',
+        'com.android.support:recyclerview-v7:7606373da0931a1e62588335465a0e390cd676c98117edab29220317495faefd',
+        'com.android.support:support-annotations:f347a35b9748a4103b39a6714a77e2100f488d623fd6268e259c177b200e9d82',
+        'com.android.support:support-v4:5c7dceb6c824089fe80f502e5206264048ef8bffa4e8ddeab180b81723e79b7f',
+        'com.github.amlcurran.showcaseview:library:ec5d15ded6c2fa5596c55342596f6146bf0d78e783abe547a58e19de18df0dcf',
+        'com.google.code.gson:gson:a35abbcf689eb3d60a2959e83a624831658b023220cd2edb66350993ebfdc025',
+        'com.j256.ormlite:ormlite-core:418374109b11b62c824433dee31b686e43b5e321b1f14d4db8b3003e8c867d03',
+        'com.loopj.android:android-async-http:8ded08eaf313d1debfaa715f2952fe72135980cf146a5869f22cb5dddb41479d',
+        'com.viewpagerindicator:library:10670a99f8a30266f7c5a30c3af5dbf7e6419ba901184b37f44a877269f975e2',
+        'org.apache.commons:commons-collections4:93f8dfcd20831a28d092427723f696bceb70b28e7fb89d7914f14d5ea492ce5a',
+        'org.jsoup:jsoup:e87f0ee62a7592afc121dae468975d97ce47f432c965b5ba47350ca18ed6a473',
+        'org.thoughtcrime.ssl.pinning:AndroidPinning:afa1d74e699257fa75cb109ff29bac50726ef269c6e306bdeffe8223cee06ef4',
+    ]
 }
