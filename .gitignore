@@ -1,7 +1,13 @@
-.gradle
 /local.properties
-.idea
+
+# OSX files
 .DS_Store
-/build
+
+# Android Studio
+*.iml
+.idea/
+.gradle/
+build/
+
 app/app-debug.apk
 app/app-release.apk
