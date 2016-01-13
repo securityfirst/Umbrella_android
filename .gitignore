@@ -8,6 +8,7 @@
 .idea/
 .gradle/
 build/
+gradle.properties
 
 app/app-debug.apk
 app/app-release.apk
