@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Global extends Application {
 
@@ -403,7 +404,7 @@ public class Global extends Application {
     public String getRefreshLabel() {
         String refreshValueLabel = "";
         int refreshValue = getRefreshValue();
-        HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
+        Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
         for (Object key : refreshValues.keySet()) {
             if (refreshValues.get(key).equals(refreshValue)) {
                 refreshValueLabel = (String) key;
@@ -436,7 +437,7 @@ public class Global extends Application {
     public String getSelectedFeedSourcesLabel() {
         String feedSourcesLabel = "";
         final CharSequence[] items = {" ReliefWeb ", " UN ", " FCO ", " CDC "};
-        final ArrayList<Integer> selectedItems = getSelectedFeedSources();
+        final List<Integer> selectedItems = getSelectedFeedSources();
         for (Integer selectedItem : selectedItems) {
             if (!selectedItem.equals(selectedItems.get(0))) feedSourcesLabel += "\n";
             feedSourcesLabel += " - "+items[selectedItem];
@@ -597,8 +598,8 @@ public class Global extends Application {
     }
 
     public CharSequence[] getFeedSourcesArray() {
-        ArrayList<FeedSource> feedSources = getFeedSourcesList();
-        ArrayList<String> sourcesList = new ArrayList<>();
+        List<FeedSource> feedSources = getFeedSourcesList();
+        List<String> sourcesList = new ArrayList<>();
         for (FeedSource source : feedSources) {
             sourcesList.add(source.getName());
         }
@@ -606,7 +607,7 @@ public class Global extends Application {
     }
 
     public int getFeedSourceCodeByIndex(int index) {
-        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        List<FeedSource> feedSources = getFeedSourcesList();
         if (index < feedSources.size()) {
             return feedSources.get(index).getCode();
         }

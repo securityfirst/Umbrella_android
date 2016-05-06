@@ -32,7 +32,7 @@ import java.util.List;
 public class DashCheckListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<DashCheckFinished> checkItems;
+    private List<DashCheckFinished> checkItems;
 
     public DashCheckListAdapter(Context context, ArrayList<DashCheckFinished> checkItems) {
         this.checkItems = checkItems;

@@ -120,8 +120,8 @@ public class UmbrellaUtil {
 
     public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
         Global global = (Global) context.getApplicationContext();
-        ArrayList<Category> parentCategories = new ArrayList<>();
-        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
+        List<Category> parentCategories = new ArrayList<>();
+        List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
             categories = global.getDaoCategory().queryForAll();

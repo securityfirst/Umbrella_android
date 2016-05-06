@@ -42,13 +42,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class SettingsActivity extends BaseActivity {
     private ProgressDialog mProgress;
     private static int syncDone;
     private AutoCompleteTextView mAutocompleteLocation;
-    private ArrayList<Address> mAddressList;
+    private List<Address> mAddressList;
     private Address mAddress;
     private Registry mLocation, mCountry;
     private CheckBox skipPw;
@@ -225,7 +226,7 @@ public class SettingsActivity extends BaseActivity {
         int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(SettingsActivity.this);
+        final Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(SettingsActivity.this);
         for (Object key : refreshValues.keySet()) {
             if (refreshValues.get(key).equals(currentRefresh)) {
                 selectedIndex = i;
