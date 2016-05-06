@@ -186,11 +186,11 @@ public class UmbrellaUtil {
         } catch (SQLException e) {
             UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
         }
-        if (selISO2!=null && selISO2.size()>0) {
+        if (selISO2!=null && !selISO2.isEmpty()) {
             List<Registry> selections;
             try {
                 selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size()>0) {
+                if (!selections.isEmpty()) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
                     for (Registry item : selections) {
@@ -211,7 +211,7 @@ public class UmbrellaUtil {
                             Type listType = new TypeToken<ArrayList<FeedItem>>() {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                            if (receivedItems != null && receivedItems.size() > 0) {
+                            if (receivedItems != null && !receivedItems.isEmpty()) {
                                 global.setFeedItems(receivedItems);
                             }
                         }
@@ -228,7 +228,7 @@ public class UmbrellaUtil {
     }
 
     public static void logIt(Context context, String message) {
-        if (BuildConfig.BUILD_TYPE.equals("debug") && message != null && message.length() > 0)
+        if (BuildConfig.BUILD_TYPE.equals("debug") && message != null && !message.isEmpty())
             Log.i(context.getClass().getSimpleName(), message);
     }
 

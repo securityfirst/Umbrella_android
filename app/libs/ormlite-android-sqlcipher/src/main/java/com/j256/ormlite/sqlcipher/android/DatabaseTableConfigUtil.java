@@ -53,7 +53,7 @@ public class DatabaseTableConfigUtil {
 				}
 			}
 		}
-		if (fieldConfigs.size() == 0) {
+		if (fieldConfigs.isEmpty()) {
 			return null;
 		} else {
 			return new DatabaseTableConfig<T>(clazz, tableName, fieldConfigs);

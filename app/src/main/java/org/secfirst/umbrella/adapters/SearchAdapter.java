@@ -62,7 +62,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
         String queryText = "";
-        if (mQueries != null && mQueries.size() > 0) {
+        if (mQueries != null && !mQueries.isEmpty()) {
             queryText = Jsoup.clean(mQueries.get(0), Whitelist.simpleText());
         }
         holder.mSearchText.setText(Html.fromHtml(mContext.getString(R.string.result_while_searching_for)+": <b>" + queryText + "</b>"));
@@ -79,7 +79,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             } catch (SQLException e) {}
             if (parent != null && parent.getCategory() != null)
                 forTitle = parent.getCategory();
-            forTitle += ((forTitle.length() > 0) ? " - " : "") + category.getCategory();
+            forTitle += ((!forTitle.isEmpty()) ? " - " : "") + category.getCategory();
             holder.mTitle.setText(forTitle);
             holder.mBody.setText(Html.fromHtml(searchBody(current.getBody(), queryText)));
             holder.mCardView.setOnClickListener(new View.OnClickListener() {
