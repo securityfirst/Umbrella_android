@@ -504,6 +504,8 @@ public class Global extends Application {
     }
 
     public void exportDatabase() {
+        FileChannel src = null;
+        FileChannel dst = null;
         try {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
@@ -515,15 +517,26 @@ public class Global extends Application {
                 File backupDB = new File(sd, backupDBPath);
 
                 if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                    src = new FileInputStream(currentDB).getChannel();
+                    dst = new FileOutputStream(backupDB).getChannel();
                     dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
                 }
             }
         } catch (Exception e) {
             Log.e("can't write", e.getLocalizedMessage());
+        } finally {
+            try {
+                if (src != null)
+                    src.close();
+            } catch (IOException e) {
+                Log.e("can't close resource", e.getLocalizedMessage());
+            }
+            try {
+                if (dst != null)
+                    dst.close();
+            } catch (IOException e) {
+                Log.e("can't close resource", e.getLocalizedMessage());
+            }
         }
     }
 
