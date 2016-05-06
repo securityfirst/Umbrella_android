@@ -39,7 +39,7 @@ public class UpgradeHelper {
      * @return A list of SQL statements which have been included in the
      */
     public static List<String> availableUpdates(final Resources resources) {
-        final List<String> updates = new ArrayList<String>();
+        final List<String> updates = new ArrayList<>();
 
         for (final Integer version : VERSION) {
             final String fileName = String.format("updates/migration-%s.sql", version);

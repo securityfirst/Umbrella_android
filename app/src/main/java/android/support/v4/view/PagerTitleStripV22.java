@@ -324,7 +324,7 @@ public class PagerTitleStripV22 extends ViewGroup implements ViewPager.Decor {
         }
         if (newAdapter != null) {
             newAdapter.registerDataSetObserver(mPageListener);
-            mWatchingAdapter = new WeakReference<PagerAdapter>(newAdapter);
+            mWatchingAdapter = new WeakReference<>(newAdapter);
         }
         if (mPager != null) {
             mLastKnownCurrentPage = -1;

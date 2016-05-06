@@ -279,7 +279,7 @@ public class SettingsActivity extends BaseActivity {
 
     public void showFeedSources() {
         final CharSequence[] items = global.getFeedSourcesArray();
-        final ArrayList<Integer> selectedItems = new ArrayList<Integer>();
+        final ArrayList<Integer> selectedItems = new ArrayList<>();
         boolean[] currentSelections = new boolean[items.length];
         List<Registry> selections;
         try {
@@ -441,7 +441,7 @@ public class SettingsActivity extends BaseActivity {
                     FilterResults filterResults = new FilterResults();
                     if (constraint != null) {
                         List<Address> list = autoComplete(constraint.toString());
-                        ArrayList<String> toStrings = new ArrayList<String>();
+                        ArrayList<String> toStrings = new ArrayList<>();
                         for (Address current : list) {
                             if (!current.getAddressLine(0).equals("")) {
                                 String toAdd = current.getAddressLine(0);
