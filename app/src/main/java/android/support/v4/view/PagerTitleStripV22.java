@@ -435,7 +435,7 @@ public class PagerTitleStripV22 extends ViewGroup implements ViewPager.Decor {
 
         int childHeight = heightSize;
         int minHeight = getMinHeight();
-        int padding = 0;
+        int padding;
         padding = getPaddingTop() + getPaddingBottom();
         childHeight -= padding;
 

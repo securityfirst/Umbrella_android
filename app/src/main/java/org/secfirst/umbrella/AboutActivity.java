@@ -20,7 +20,7 @@ public class AboutActivity extends BaseActivity {
 
         content = (WebView) findViewById(R.id.about_content);
 
-        String html = "";
+        String html;
         Intent i  = getIntent();
         String topic = i.getStringExtra("topic");
         if (topic==null || topic.equals("licences")) {

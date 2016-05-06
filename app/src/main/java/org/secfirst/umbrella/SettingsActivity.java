@@ -133,7 +133,7 @@ public class SettingsActivity extends BaseActivity {
                                 UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         }
-                        List<Registry> selISO2 = null;
+                        List<Registry> selISO2;
                         Registry iso2;
                         try {
                             selISO2 = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "iso2");
@@ -156,7 +156,7 @@ public class SettingsActivity extends BaseActivity {
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        List<Registry> selCountry = null;
+                        List<Registry> selCountry;
                         try {
                             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
                             if (selCountry.size() > 0) {
@@ -314,7 +314,7 @@ public class SettingsActivity extends BaseActivity {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        List<Registry> selections = null;
+                        List<Registry> selections;
                         try {
                             selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                             for (Registry selection : selections) {
