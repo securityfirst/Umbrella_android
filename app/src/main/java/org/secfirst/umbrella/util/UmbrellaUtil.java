@@ -42,6 +42,9 @@ import java.util.regex.Pattern;
 
 public class UmbrellaUtil {
 
+    private UmbrellaUtil() {
+    }
+
     public static void hideSoftKeyboard(Activity activity) {
         if (activity!=null) {
             InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
