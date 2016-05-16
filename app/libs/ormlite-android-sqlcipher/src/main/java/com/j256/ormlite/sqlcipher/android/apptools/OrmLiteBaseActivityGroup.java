@@ -76,9 +76,7 @@ public abstract class OrmLiteBaseActivityGroup<H extends OrmLiteSqliteOpenHelper
 	 * </p>
 	 */
 	protected H getHelperInternal(Context context) {
-		@SuppressWarnings({ "unchecked", "deprecation" })
-		H newHelper = (H) OpenHelperManager.getHelper(context);
-		return newHelper;
+		return (H) OpenHelperManager.getHelper(context);
 	}
 
 	/**

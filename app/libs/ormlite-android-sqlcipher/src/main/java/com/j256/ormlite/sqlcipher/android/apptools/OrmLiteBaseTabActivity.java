@@ -72,9 +72,7 @@ public abstract class OrmLiteBaseTabActivity<H extends OrmLiteSqliteOpenHelper> 
 	 * @see OpenHelperManager#getHelper(Context)
 	 */
 	protected H getHelperInternal(Context context) {
-		@SuppressWarnings({ "unchecked", "deprecation" })
-		H newHelper = (H) OpenHelperManager.getHelper(context);
-		return newHelper;
+		return (H) OpenHelperManager.getHelper(context);
 	}
 
 	/**

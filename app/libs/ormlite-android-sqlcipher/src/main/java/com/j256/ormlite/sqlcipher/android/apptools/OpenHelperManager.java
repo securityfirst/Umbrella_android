@@ -198,8 +198,7 @@ public class OpenHelperManager {
 		instanceCount++;
 		logger.trace("returning helper {}, instance count = {} ", helper, instanceCount);
 		@SuppressWarnings("unchecked")
-		T castHelper = (T) helper;
-		return castHelper;
+		return (T) helper;
 	}
 
 	/**
@@ -233,10 +232,7 @@ public class OpenHelperManager {
 		if (resourceId != 0) {
 			String className = resources.getString(resourceId);
 			try {
-				@SuppressWarnings("unchecked")
-				Class<? extends OrmLiteSqliteOpenHelper> castClass =
-						(Class<? extends OrmLiteSqliteOpenHelper>) Class.forName(className);
-				return castClass;
+				return (Class<? extends OrmLiteSqliteOpenHelper>) Class.forName(className);
 			} catch (Exception e) {
 				throw new IllegalStateException("Could not create helper instance for class " + className, e);
 			}
@@ -262,10 +258,7 @@ public class OpenHelperManager {
 				}
 				Class<?> clazz = (Class<?>) type;
 				if (OrmLiteSqliteOpenHelper.class.isAssignableFrom(clazz)) {
-					@SuppressWarnings("unchecked")
-					Class<? extends OrmLiteSqliteOpenHelper> castOpenHelperClass =
-							(Class<? extends OrmLiteSqliteOpenHelper>) clazz;
-					return castOpenHelperClass;
+					return (Class<? extends OrmLiteSqliteOpenHelper>) clazz;
 				}
 			}
 		}
