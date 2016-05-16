@@ -14,6 +14,7 @@ import com.j256.ormlite.support.DatabaseResults;
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteStatement;
 
+import java.lang.String;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,7 @@ import static com.j256.ormlite.sqlcipher.android.compat.ApiCompatibility.Cancell
  */
 public class AndroidCompiledStatement implements CompiledStatement {
 
+	public static final String STATEMENT = " statement";
 	private static Logger logger = LoggerFactory.getLogger(AndroidCompiledStatement.class);
 
 	private static final String[] NO_STRING_ARGS = new String[0];
@@ -60,14 +62,14 @@ public class AndroidCompiledStatement implements CompiledStatement {
 	public DatabaseResults runQuery(ObjectCache objectCache) throws SQLException {
 		// this could come from DELETE or UPDATE, just not a SELECT
 		if (!type.isOkForQuery()) {
-			throw new IllegalArgumentException("Cannot call query on a " + type + " statement");
+			throw new IllegalArgumentException("Cannot call query on a " + type + STATEMENT);
 		}
 		return new AndroidDatabaseResults(getCursor(), objectCache);
 	}
 
 	public int runUpdate() throws SQLException {
 		if (!type.isOkForUpdate()) {
-			throw new IllegalArgumentException("Cannot call update on a " + type + " statement");
+			throw new IllegalArgumentException("Cannot call update on a " + type + STATEMENT);
 		}
 		String finalSql;
 		if (max == null) {
@@ -80,7 +82,7 @@ public class AndroidCompiledStatement implements CompiledStatement {
 
 	public int runExecute() throws SQLException {
 		if (!type.isOkForExecute()) {
-			throw new IllegalArgumentException("Cannot call execute on a " + type + " statement");
+			throw new IllegalArgumentException("Cannot call execute on a " + type + STATEMENT);
 		}
 		return execSql(db, "runExecute", sql, getArgArray());
 	}

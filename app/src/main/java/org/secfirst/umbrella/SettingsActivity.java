@@ -45,6 +45,8 @@ import java.util.List;
 
 
 public class SettingsActivity extends BaseActivity {
+    public static final String LOCATION = "location";
+    public static final String FEED_SOURCES = "feed_sources";
     private ProgressDialog mProgress;
     private static int syncDone;
     private AutoCompleteTextView mAutocompleteLocation;
@@ -113,7 +115,7 @@ public class SettingsActivity extends BaseActivity {
                         mAutocompleteLocation.setText(chosenAddress);
                         List<Registry> selLoc = null;
                         try {
-                            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+                            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, LOCATION);
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
@@ -126,7 +128,7 @@ public class SettingsActivity extends BaseActivity {
                                 UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }
                         } else {
-                            mLocation = new Registry("location", chosenAddress);
+                            mLocation = new Registry(LOCATION, chosenAddress);
                             try {
                                 global.getDaoRegistry().create(mLocation);
                             } catch (SQLException e) {
@@ -266,7 +268,7 @@ public class SettingsActivity extends BaseActivity {
         super.onResume();
         List<Registry> selLoc = null;
         try {
-            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, LOCATION);
         } catch (SQLException e) {
             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
         }
@@ -283,7 +285,7 @@ public class SettingsActivity extends BaseActivity {
         boolean[] currentSelections = new boolean[items.length];
         List<Registry> selections;
         try {
-            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, FEED_SOURCES);
             for (int i = 0; i < items.length; i++) {
                 currentSelections[i] = false;
                 for (Registry reg : selections) {
@@ -316,7 +318,7 @@ public class SettingsActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         List<Registry> selections = null;
                         try {
-                            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, FEED_SOURCES);
                             for (Registry selection : selections) {
                                 global.getDaoRegistry().delete(selection);
                             }
@@ -325,7 +327,7 @@ public class SettingsActivity extends BaseActivity {
                         }
                         for (Integer item : selectedItems) {
                             try {
-                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
+                                global.getDaoRegistry().create(new Registry(FEED_SOURCES, String.valueOf(global.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
                                 UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                             }

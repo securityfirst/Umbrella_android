@@ -56,6 +56,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    public static final String LOCATION = "location";
+    public static final String COUNTRY = "country";
+    public static final String FEED_SOURCES = "feed_sources";
     SwipeRefreshLayout mSwipeRefreshLayout;
     FeedAdapter feedAdapter;
     TextView noFeedSettings;
@@ -151,7 +154,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         mAutocompleteLocation.setText(chosenAddress);
                         List<Registry> selLoc = null;
                         try {
-                            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+                            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, LOCATION);
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
@@ -164,7 +167,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                             }
                         } else {
-                            mLocation = new Registry("location", chosenAddress);
+                            mLocation = new Registry(LOCATION, chosenAddress);
                             try {
                                 global.getDaoRegistry().create(mLocation);
                             } catch (SQLException e) {
@@ -197,7 +200,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                         List<Registry> selCountry = null;
                         try {
-                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, COUNTRY);
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
@@ -210,7 +213,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                             }
                         } else {
-                            mCountry = new Registry("country", mAddress.getCountryName());
+                            mCountry = new Registry(COUNTRY, mAddress.getCountryName());
                             try {
                                 global.getDaoRegistry().create(mCountry);
                                 if (isFeedSet()) getFeeds(getActivity());
@@ -249,7 +252,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         super.onResume();
         List<Registry> selLoc = null;
         try {
-            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
+            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, LOCATION);
         } catch (SQLException e) {
             if (getActivity()!=null) UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
@@ -271,7 +274,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         List<Registry> selCountry;
         String headerText = "";
         try {
-            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
+            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, COUNTRY);
             if (selCountry!=null && selCountry.size() > 0) {
                 headerText = global.getString(R.string.country_selected)+": " + selCountry.get(0).getValue() + "\n";
             }
@@ -309,7 +312,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         if (selISO2!=null && selISO2.size()>0) {
             List<Registry> selections;
             try {
-                selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = regDao.queryForEq(Registry.FIELD_NAME, FEED_SOURCES);
                 if (selections.size()>0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -414,7 +417,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         boolean[] currentSelections = new boolean[items.length];
         List<Registry> selections;
         try {
-            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, FEED_SOURCES);
             for (int i = 0; i < items.length; i++) {
                 currentSelections[i] = false;
                 for (Registry reg : selections) {
@@ -447,7 +450,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                     public void onClick(DialogInterface dialog, int id) {
                         List<Registry> selections;
                         try {
-                            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, FEED_SOURCES);
                             for (Registry selection : selections) {
                                 global.getDaoRegistry().delete(selection);
                             }
@@ -456,7 +459,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         }
                         for (Integer item : selectedItems) {
                             try {
-                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
+                                global.getDaoRegistry().create(new Registry(FEED_SOURCES, String.valueOf(global.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
                                 UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                             }
