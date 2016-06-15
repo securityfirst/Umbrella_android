@@ -4,11 +4,146 @@ Umbrella is an Android mobile app developed by [Security First](https://www.secf
 
 ## Installation
 
-Clone the repository, open it in Android Studio and compile, nothing special needed. Otherwise, the compiled app is currently available on the Google Play store. We intend to make it also available on the Amazon App Store and through the F-Droid Platform.
+
 
 <a href="https://play.google.com/store/apps/details?id=org.secfirst.umbrella">
   <img alt="Umbrella on Google Play Store"
-       src="https://developer.android.com/images/brand/en_app_rgb_wo_45.png" />
+       src="https://github.com/securityfirst/Umbrella_android/blob/master/GOOGLEPLAY1.png?raw=true" height="76" width="220"/></a href>
+       <a href="https://www.amazon.co.uk/Security-First-Umbrella-made-easy/dp/B01AKN9M1Y">
+  <img alt="Umbrella on Amazon App Store"
+       src="https://github.com/securityfirst/Umbrella_android/blob/master/AMAZON1.png?raw=true" height="80" width="220"/></a href>
+<a href="https://secfirst.org/fdroid/repo">
+  <img alt="Umbrella on FDroid"
+       src="https://github.com/securityfirst/Umbrella_android/blob/master/FDROID1.png?raw=true" height="80" width="220" /></a href>
+       
+F-Droid fingerprint: 39EB57052F8D684514176819D1645F6A0A7BD943DBC31AB101949006AC0BC228
+       
+
+##Example Usage
+Umbrella is designed for everyone (people looking to increase their security, folks living in high risk areas, regular travellers, business people, techies, journalists, NGO staff, aid workers, human rights defenders, social workers, environmental activists etc). 
+
+However, when we built Umbrella we tried to keep in mind the story of Glen Greenwald and Edward Snowden. Greenwald couldn't communicate with Snowden at the start because he found it cumbersome to setup encryption (he nearly missed the one of biggest storys of the decade because of this!). Also, when he (and Laura Poitras) travelled to Hong Kong - they didn't have much knowledge about how to meet securely with Snowden and detect surveillance. This is common problem for journalists and acitivists. Umbrella is designed to solve this problem (and others) by having nearly everything they would have needed to know in the one place - in their pocket.
+ 
+##Main Parts of Umbrella
+**Introduction:**
+This is the part the user sees first. It explains briefly how the app works and the basic terms and conditions.
+
+**Menu:** The menu is the main way for a user to navigate. It lists the dashboard, lessons and tool guides.
+
+**My Security:**
+This where you access checklists you have favourited in "My Checklists" and real time updates in "The Dashboard"
+
+**Lessons:**
+Lessons are where users can learn about topics and things that they can do to improve their security. Some of the lessons have different levels (Beginner, Advanced, Expert) depending on the your needs, ability and risk. Each lesson is broken down into sections. At the end of each lesson is a list for other resources and further reading.
+
+**Checklists:**
+Checklists are quick and easy references to help users implement the advice in the lessons. You can tick them off as you complete each item. Items can be added, disabled deleted and edited. If you favourite them by clicking the star, you will then see them in "My Checklists." Checklists can also be shared in through other apps such as your email.
+
+**Dashboard:**
+The dashboard contains security feeds from places like the UN Relief Web and the US Centers for Disease Control. You enter your location (and how often you want to be updated). Every a new update is released (e.g a disease outbreak in your location), the information comes up on the dashboard.
+
+**Tool Guides:**
+These are detailed guides about how to use software and apps mentioned in the lessons.
+
+##Lessons
+
+The general flow of lessons are presented in order to replicate the typical way that a user works. Protecting their own information -> Communicating with other people -> Arranging and travelling to a location -> Doing their operations and work -> Dealing with personal issues that may arise-> Seeking support if something goes wrong.
+
+***These are the lessons currently in Umbrella.***
+
+**Information:**
+These lessons mostly cover the security of information that is stored on your computers. 
+
+* Managing information
+* Malware
+* Passwords
+* Protecting Files
+* Safely Deleting
+* Backing Up
+
+**Communications:**
+These lessons mostly cover the security of information when it is sent or recieved.
+
+* Mobile Phones
+* Making a call
+* Sending a message
+* Email
+* The Internet
+* Social Media
+* Radios and Satelite Phones 
+
+
+**Travel:**
+These lessons cover security of travelling in high risk areas.
+
+* Preparation
+* Borders
+* Vehicles
+* Checkpoints
+* Kidnapping
+
+
+**Operations:**
+These lessons include topics that may affect you in your work.
+
+* Meetings
+* Counter-Surveillance
+* Protests
+* Arrests
+* Evacuation
+
+
+**Personal:**
+These lessons cover issues which may effect you personally.
+
+* Stress
+* Digital
+
+**Emergency Support:**
+Explains places to get extra help if you have a problem.
+
+* Physical
+* Digital
+
+
+##Tools
+These are the tools currrently covered in the tool guide. (A number of them are due to be changed, removed or updated.)
+
+* Adium
+* Android
+* Chatsecure
+* Cobian Backup
+* Facebook
+* Jitsi
+* K9 Mail & APG
+* KeePassX
+* ObscuraCam
+* Orbot & Orweb
+* PGP for Linux
+* PGP for Mac OS X
+* PGP for Windows
+* Pidgin
+* Psiphon
+* Rescuva
+* Signal
+* TextSecure
+* Tor for Mac OS X
+* Tor for Windows
+* TrueCrypt
+
+##Glossary
+Contains explanations of the various terms used in the app.
+
+##About
+Explains the licences that we use for and by Umbrella. Also says a big THANKYOU to everyone who's work we built on to make it happen.
+
+##Settings
+The three vertical dots in the top of the app. Here you can:
+
+* Set a password
+* Change the refresh interval for the security feeds
+* Change your location
+* Change your feed sources
 
 ## Requirements
 
