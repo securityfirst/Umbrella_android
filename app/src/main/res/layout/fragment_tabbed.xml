@@ -4,9 +4,9 @@ xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/pager"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
-tools:context=".TabbedFragment">
+tools:context=".fragments.TabbedFragment">
 
-    <android.support.v4.view.PagerTabStripV22
+    <android.support.v4.view.PagerTabStrip
         android:id="@+id/pager_title_strip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
