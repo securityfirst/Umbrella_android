@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
@@ -45,13 +48,19 @@ import java.util.List;
 
 
 public class SettingsActivity extends BaseActivity {
+    private static final int REQUEST_RINGTONE = 93;
+
     private ProgressDialog mProgress;
     private static int syncDone;
     private AutoCompleteTextView mAutocompleteLocation;
     private ArrayList<Address> mAddressList;
     private Address mAddress;
     private Registry mLocation, mCountry;
-    private CheckBox skipPw;
+    private CheckBox mSkipPw;
+    private CheckBox mShowNotifications;
+    private CheckBox mNotificationVibration;
+    private TextView mNotificationRingtone;
+    private LinearLayout mNotificationVibrationLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +68,14 @@ public class SettingsActivity extends BaseActivity {
         TextView refreshData = (TextView) findViewById(R.id.refresh_data);
         TextView refreshInterval = (TextView) findViewById(R.id.refresh_interval);
         TextView feedSources = (TextView) findViewById(R.id.feed_sources);
+        mNotificationRingtone = (TextView) findViewById(R.id.notification_ringtone);
         mAutocompleteLocation = (AutoCompleteTextView) findViewById(R.id.settings_autocomplete);
         LinearLayout skipPWLayout = (LinearLayout) findViewById(R.id.skip_password_layout);
-        skipPw = (CheckBox) findViewById(R.id.skip_password);
+        mSkipPw = (CheckBox) findViewById(R.id.skip_password);
+        LinearLayout showNotificationsLayout = (LinearLayout) findViewById(R.id.show_notifications_layout);
+        mShowNotifications = (CheckBox) findViewById(R.id.show_notifications);
+        mNotificationVibration = (CheckBox) findViewById(R.id.notification_vibration);
+        mNotificationVibrationLayout = (LinearLayout) findViewById(R.id.notification_vibration_layout);
         refreshData.setVisibility(View.GONE); // enable when backend ready
         refreshData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +103,13 @@ public class SettingsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 showFeedSources();
+            }
+        });
+        showRingtoneName();
+        mNotificationRingtone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showNotificationsType();
             }
         });
 
@@ -194,15 +215,56 @@ public class SettingsActivity extends BaseActivity {
             }
         });
 
-        skipPw.setChecked(global.getSkipPassword());
+        mSkipPw.setChecked(global.getSkipPassword());
+        mSkipPw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                global.setSkipPassword(isChecked);
+                buttonView.setChecked(isChecked);
+            }
+        });
         skipPWLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean toChange = !global.getSkipPassword();
-                skipPw.setChecked(toChange);
+                mSkipPw.setChecked(toChange);
                 global.setSkipPassword(toChange);
             }
         });
+        mShowNotifications.setChecked(global.getNotificationsEnabled());
+        mShowNotifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                global.setNotificationsEnabled(isChecked);
+                buttonView.setChecked(isChecked);
+                toggleNotificationPref();
+            }
+        });
+        showNotificationsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean toChange = !global.getNotificationsEnabled();
+                mShowNotifications.setChecked(toChange);
+                //global.setShowNotifications(toChange);
+            }
+        });
+        mNotificationVibration.setChecked(global.getNotificationVibrationEnabled());
+        mNotificationVibration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mNotificationVibration.setChecked(isChecked);
+                global.setNotificationVibrationEnabled(isChecked);
+            }
+        });
+        mNotificationVibrationLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean toChange = !global.getNotificationVibrationEnabled();
+                mNotificationVibration.setChecked(toChange);
+
+            }
+        });
+        toggleNotificationPref();
     }
 
     @Override
@@ -213,6 +275,14 @@ public class SettingsActivity extends BaseActivity {
     public void checkDone() {
         syncDone++;
         if (syncDone==2) mProgress.dismiss();
+    }
+
+    public void showNotificationsType() {
+        Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, R.string.select_ringtone);
+        intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, global.getNotificationRingtone());
+        SettingsActivity.this.startActivityForResult(intent, REQUEST_RINGTONE);
     }
 
     public void showRefresh() {
@@ -392,6 +462,39 @@ public class SettingsActivity extends BaseActivity {
                 checkDone();
             }
         });
+    }
+
+    public void toggleNotificationPref() {
+        boolean notificationAvailable = global.getNotificationsEnabled();
+        boolean visible = global.isLoggedIn() && notificationAvailable;
+        mNotificationRingtone.setVisibility(visible ? View.VISIBLE : View.GONE);
+        mNotificationVibrationLayout.setVisibility(visible ? View.VISIBLE : View.GONE);
+        findViewById(R.id.vibration_divider).setVisibility(visible ? View.VISIBLE : View.GONE);
+        findViewById(R.id.ringtone_divider).setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    public void showRingtoneName() {
+        mNotificationRingtone.setText(String.format(getString(R.string.notification_ringtone),
+            global.getNotificationRingtoneEnabled()
+                ? RingtoneManager.getRingtone(this, global.getNotificationRingtone()).getTitle(SettingsActivity.this)
+                : getString(R.string.none)));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_RINGTONE && resultCode == RESULT_OK) {
+            if(data != null) {
+                Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                if(uri != null) {
+                    global.setNotificationRingtoneEnabled(true);
+                    global.setNotificationRingtone(uri);
+                } else {
+                    global.setNotificationRingtoneEnabled(false);
+                }
+            }
+            showRingtoneName();
+        }
     }
 
     @Override
