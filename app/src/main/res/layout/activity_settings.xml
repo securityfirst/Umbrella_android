@@ -24,7 +24,8 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:animateLayoutChanges="true">
 
             <LinearLayout
                 android:id="@+id/skip_password_layout"
@@ -127,6 +128,88 @@
                 android:layout_height="wrap_content" />
 
             <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <LinearLayout
+                android:id="@+id/show_notifications_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/show_notifications"
+                    android:focusable="false"
+                    android:buttonTint="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="@string/show_notifications"
+                    android:textSize="@dimen/text_size_normal"
+                    android:padding="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <LinearLayout
+                android:id="@+id/notification_vibration_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/notification_vibration"
+                    android:focusable="false"
+                    android:buttonTint="@color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="@string/notification_vibration"
+                    android:textSize="@dimen/text_size_normal"
+                    android:padding="10dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    android:textColor="@color/white"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vibration_divider"
+                android:layout_width="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="1dp"
+                android:background="@color/dark_grey" />
+
+            <TextView
+                android:id="@+id/notification_ringtone"
+                android:text="@string/notification_ringtone"
+                android:textSize="@dimen/text_size_normal"
+                android:textColor="@color/white"
+                android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:id="@+id/ringtone_divider"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"

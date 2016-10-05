@@ -121,5 +121,10 @@
     <string name="found_for_this_query">found for this query</string>
     <string name="review_sources_for_feed">Please review sources you want for your feed</string>
     <string name="checking_for_updates">Checking for updates</string>
+    <string name="show_notifications">Show updates as notification</string>
+    <string name="notification_ringtone">Notification ringtone: %s</string>
+    <string name="none">None</string>
+    <string name="select_ringtone">Select ringtone</string>
+    <string name="notification_vibration">Notification vibration</string>
 
 </resources>

@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.content.IntentCompat;
 import android.util.Log;
@@ -115,6 +117,44 @@ public class Global extends Application {
         if (this.feedItems==null) this.feedItems = new ArrayList<>();
         this.feedItems.add(feedItem);
         setFeeditemsRefreshed(new Date().getTime());
+    }
+
+    public boolean getNotificationsEnabled() {
+        return prefs.getBoolean("notificationsEnabled", false);
+    }
+
+    public void setNotificationsEnabled(boolean enabled) {
+        sped.putBoolean("notificationsEnabled", enabled).commit();
+    }
+
+    public boolean getNotificationRingtoneEnabled() {
+        return prefs.getBoolean("notificationRingtoneEnabled", true);
+    }
+
+    public void setNotificationRingtoneEnabled(boolean enabled) {
+        sped.putBoolean("notificationRingtoneEnabled", enabled).commit();
+    }
+
+    public Uri getNotificationRingtone() {
+        String sound = prefs.getString("notificationRingtone", "");
+        if(sound.equals("")) {
+            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        } else {
+            return Uri.parse(sound);
+        }
+    }
+
+    public void setNotificationRingtone(Uri notificationRingtoneUri) {
+        if(notificationRingtoneUri== null) return;
+        sped.putString("notificationRingtone", notificationRingtoneUri.toString()).commit();
+    }
+
+    public boolean getNotificationVibrationEnabled() {
+        return prefs.getBoolean("notificationVibration", true);
+    }
+
+    public void setNotificationVibrationEnabled(boolean enabled) {
+        sped.putBoolean("notificationVibration", enabled).commit();
     }
 
     public boolean getSkipPassword() {
