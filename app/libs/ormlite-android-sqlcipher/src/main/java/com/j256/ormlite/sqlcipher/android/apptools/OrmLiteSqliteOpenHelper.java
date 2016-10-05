@@ -271,10 +271,7 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 	 */
 	public <D extends Dao<T, ?>, T> D getDao(Class<T> clazz) throws SQLException {
 		// special reflection fu is now handled internally by create dao calling the database type
-		Dao<T, ?> dao = DaoManager.createDao(getConnectionSource(), clazz);
-		@SuppressWarnings("unchecked")
-		D castDao = (D) dao;
-		return castDao;
+		return (D) DaoManager.createDao(getConnectionSource(), clazz);
 	}
 
 	/**
@@ -287,10 +284,7 @@ public abstract class OrmLiteSqliteOpenHelper extends SQLiteOpenHelper {
 	 */
 	public <D extends RuntimeExceptionDao<T, ?>, T> D getRuntimeExceptionDao(Class<T> clazz) {
 		try {
-			Dao<T, ?> dao = getDao(clazz);
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			D castDao = (D) new RuntimeExceptionDao(dao);
-			return castDao;
+			return (D) new RuntimeExceptionDao(dao);
 		} catch (SQLException e) {
 			throw new RuntimeException("Could not create RuntimeExcepitionDao for class " + clazz, e);
 		}
