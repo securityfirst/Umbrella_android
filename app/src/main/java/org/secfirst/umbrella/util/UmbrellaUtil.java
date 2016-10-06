@@ -3,6 +3,7 @@ package org.secfirst.umbrella.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -24,6 +25,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
@@ -37,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -212,6 +215,18 @@ public class UmbrellaUtil {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && receivedItems.size() > 0) {
+                                List<FeedItem> oldList = global.getFeedItems();
+                                List<FeedItem> notificationItems = new ArrayList<FeedItem>();
+                                if(global.getNotificationsEnabled()) {
+                                    for (FeedItem feedItem : receivedItems) {
+                                        if (!oldList.contains(feedItem)) {
+                                            notificationItems.add(feedItem);
+                                        }
+                                    }
+                                    if (notificationItems.size() != 0) {
+                                        context.sendOrderedBroadcast(BaseActivity.getNotificationIntent(notificationItems), null);
+                                    }
+                                }
                                 global.setFeedItems(receivedItems);
                             }
                         }
