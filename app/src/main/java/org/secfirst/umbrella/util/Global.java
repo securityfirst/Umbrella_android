@@ -55,6 +55,8 @@ import java.util.List;
 
 public class Global extends Application {
 
+    public static final String SKIP_PASSWORD = "skipPassword";
+    public static final String REFRESH_VALUE = "refresh_value";
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, isLoggedIn, password;
@@ -118,16 +120,16 @@ public class Global extends Application {
     }
 
     public boolean getSkipPassword() {
-        return prefs.getBoolean("skipPassword", false);
+        return prefs.getBoolean(SKIP_PASSWORD, false);
     }
 
     public void setSkipPassword(boolean skipPassword) {
-        sped.putBoolean("skipPassword", skipPassword).commit();
+        sped.putBoolean(SKIP_PASSWORD, skipPassword).commit();
     }
 
     public boolean hasPasswordSet(boolean withoutSkip) {
         if (withoutSkip) return password;
-        else return password || prefs.getBoolean("skipPassword", false);
+        else return password || prefs.getBoolean(SKIP_PASSWORD, false);
     }
 
     public void setPassword(final Activity activity) {
@@ -463,7 +465,7 @@ public class Global extends Application {
     public int getRefreshValue() {
         int retInterval = 0;
         try {
-            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
+            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, REFRESH_VALUE);
             if (selInterval.size() > 0) {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
@@ -481,12 +483,12 @@ public class Global extends Application {
 
     public void setRefreshValue(int refreshValue) {
         try {
-            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
+            List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, REFRESH_VALUE);
             if (selInterval.size() > 0) {
                 selInterval.get(0).setValue(String.valueOf(refreshValue));
                 getDaoRegistry().update(selInterval.get(0));
             } else {
-                getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
+                getDaoRegistry().create(new Registry(REFRESH_VALUE, String.valueOf(refreshValue)));
             }
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
