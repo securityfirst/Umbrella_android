@@ -1,7 +1,10 @@
 package org.secfirst.umbrella;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,12 +14,27 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.WindowManager;
 
-import org.secfirst.umbrella.util.Global;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.NotificationUtil;
+
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public abstract class BaseActivity extends ActionBarActivity {
+
+    public static final String NOTIFICATION_EVENT = "org.secfirst.umbrella.notification";
+    public static final String EXTRA_FEEDS = "feeds";
+
+    public static final Intent getNotificationIntent(List<FeedItem> extraFeeds) {
+        Intent intent = new Intent(NOTIFICATION_EVENT);
+        intent.putExtra(EXTRA_FEEDS, new Gson().toJson(extraFeeds));
+        return intent;
+    }
 
     protected Global global;
     protected Toolbar toolbar;
@@ -25,6 +43,17 @@ public abstract class BaseActivity extends ActionBarActivity {
     private static TimerTask logoutTask;
     private Timer logoutTimer;
     final Handler handler = new Handler();
+
+    private BroadcastReceiver mForegroundReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String json = intent.getStringExtra(EXTRA_FEEDS);
+            List<FeedItem> feeds = new Gson().fromJson(json, new TypeToken<List<FeedItem>>(){}.getType());
+            NotificationUtil.showNotificationForeground(context, global, feeds);
+            abortBroadcast();
+        }
+    };
+    private IntentFilter mFilter = new IntentFilter(NOTIFICATION_EVENT);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +69,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             toolbar.setTitle(R.string.app_name);
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
     }
 
     protected abstract int getLayoutResource();
@@ -47,6 +77,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        registerReceiver(mForegroundReceiver, mFilter);
         Intent mIntent = new Intent(this, RefreshService.class);
         bindService(mIntent, mConnection, BIND_AUTO_CREATE);
     };
@@ -70,6 +101,7 @@ public abstract class BaseActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        unregisterReceiver(mForegroundReceiver);
         if(mBounded) {
             unbindService(mConnection);
             mBounded = false;

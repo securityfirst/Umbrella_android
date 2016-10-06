@@ -126,5 +126,6 @@
     <string name="none">None</string>
     <string name="select_ringtone">Select ringtone</string>
     <string name="notification_vibration">Notification vibration</string>
+    <string name="new_feeds">%s new feeds</string>
 
 </resources>
