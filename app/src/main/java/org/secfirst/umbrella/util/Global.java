@@ -111,18 +111,6 @@ public class Global extends Application {
         setFeeditemsRefreshed(new Date().getTime());
     }
 
-    public void addToFeedItems(ArrayList<FeedItem> feedItems) {
-        for (FeedItem feedItem : feedItems) {
-            addFeedItem(feedItem);
-        }
-    }
-
-    public void addFeedItem(FeedItem feedItem) {
-        if (this.feedItems==null) this.feedItems = new ArrayList<>();
-        this.feedItems.add(feedItem);
-        setFeeditemsRefreshed(new Date().getTime());
-    }
-
     public boolean getNotificationsEnabled() {
         Registry r = getRegistry("notificationsEnabled");
         boolean enabled = false;
@@ -157,6 +145,7 @@ public class Global extends Application {
         } finally {
             if (registry!=null) {
                 try {
+                    registry.setValue(String.valueOf(value));
                     getDaoRegistry().update(registry);
                 } catch (SQLException e) {
                     Timber.e(e);
@@ -298,6 +287,7 @@ public class Global extends Application {
                     getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
                     password = true;
                     setLoggedIn(true);
+                    setSkipPassword(false);
                     dialog.dismiss();
                     activity.recreate();
                     Toast.makeText(activity, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
