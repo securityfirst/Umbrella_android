@@ -24,6 +24,13 @@
             android:name=".ServiceReceiver"
             android:process=":remote" />
 
+        <receiver
+            android:name=".BackgroundReceiver">
+            <intent-filter>
+                <action android:name="org.secfirst.umbrella.notification"/>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
