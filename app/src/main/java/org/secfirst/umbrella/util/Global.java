@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
 
@@ -120,41 +121,101 @@ public class Global extends Application {
     }
 
     public boolean getNotificationsEnabled() {
-        return prefs.getBoolean("notificationsEnabled", false);
+        Registry r = getRegistry("notificationsEnabled");
+        boolean enabled = false;
+        try {
+            if (r!=null) enabled = Boolean.valueOf(r.getValue());
+        } catch(NumberFormatException nfe) {
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+        }
+        return enabled;
+    }
+
+    public Registry getRegistry(String name) {
+        Registry registry = null;
+        try {
+            PreparedQuery<Registry> queryBuilder =
+                    getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
+            registry = getDaoRegistry().queryForFirst(queryBuilder);
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+        }
+        return registry;
+    }
+
+    public void setRegistry(String name, Object value) {
+        Registry registry = null;
+        try {
+            PreparedQuery<Registry> queryBuilder =
+                    getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
+            registry = getDaoRegistry().queryForFirst(queryBuilder);
+        } catch (SQLException e) {
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+        } finally {
+            if (registry!=null) {
+                try {
+                    getDaoRegistry().update(registry);
+                } catch (SQLException e) {
+                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+                }
+            } else {
+                try {
+                    getDaoRegistry().create(new Registry(name, String.valueOf(value)));
+                } catch (SQLException e) {
+                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+                }
+            }
+        }
     }
 
     public void setNotificationsEnabled(boolean enabled) {
-        sped.putBoolean("notificationsEnabled", enabled).commit();
+        setRegistry("notificationsEnabled", enabled);
     }
 
     public boolean getNotificationRingtoneEnabled() {
-        return prefs.getBoolean("notificationRingtoneEnabled", true);
+        Registry r = getRegistry("notificationRingtoneEnabled");
+        boolean enabled = true;
+        try {
+            if (r!=null) enabled = Boolean.valueOf(r.getValue());
+        } catch(NumberFormatException nfe) {
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+        }
+        return enabled;
     }
 
     public void setNotificationRingtoneEnabled(boolean enabled) {
-        sped.putBoolean("notificationRingtoneEnabled", enabled).commit();
+        setRegistry("notificationRingtoneEnabled", enabled);
     }
 
     public Uri getNotificationRingtone() {
-        String sound = prefs.getString("notificationRingtone", "");
-        if(sound.equals("")) {
-            return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        } else {
-            return Uri.parse(sound);
+        Registry r = getRegistry("notificationRingtone");
+        Uri ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        try {
+            if (r!=null && !r.getValue().equals("")) ringtone = Uri.parse(r.getValue());
+        } catch(IllegalArgumentException e) {
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
         }
+        return ringtone;
     }
 
     public void setNotificationRingtone(Uri notificationRingtoneUri) {
         if(notificationRingtoneUri== null) return;
-        sped.putString("notificationRingtone", notificationRingtoneUri.toString()).commit();
+        setRegistry("notificationRingtone", notificationRingtoneUri.toString());
     }
 
     public boolean getNotificationVibrationEnabled() {
-        return prefs.getBoolean("notificationVibration", true);
+        Registry r = getRegistry("notificationVibration");
+        boolean enabled = true;
+        try {
+            if (r!=null) enabled = Boolean.valueOf(r.getValue());
+        } catch(NumberFormatException nfe) {
+            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+        }
+        return enabled;
     }
 
     public void setNotificationVibrationEnabled(boolean enabled) {
-        sped.putBoolean("notificationVibration", enabled).commit();
+        setRegistry("notificationVibration", enabled);
     }
 
     public boolean getSkipPassword() {
