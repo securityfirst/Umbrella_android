@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId "org.secfirst.umbrella"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 24
-        versionCode 11
-        versionName "0.2.0"
+        versionCode 12
+        versionName "0.2.1"
     }
     buildTypes {
         release {
