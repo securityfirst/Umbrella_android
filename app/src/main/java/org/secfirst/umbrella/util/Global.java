@@ -56,6 +56,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class Global extends Application {
 
     private SharedPreferences prefs;
@@ -79,6 +81,7 @@ public class Global extends Application {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
+        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
 
     public boolean isLoggedIn() {
@@ -126,7 +129,7 @@ public class Global extends Application {
         try {
             if (r!=null) enabled = Boolean.valueOf(r.getValue());
         } catch(NumberFormatException nfe) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+            Timber.e(nfe);
         }
         return enabled;
     }
@@ -138,7 +141,7 @@ public class Global extends Application {
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         return registry;
     }
@@ -150,19 +153,19 @@ public class Global extends Application {
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         } finally {
             if (registry!=null) {
                 try {
                     getDaoRegistry().update(registry);
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+                    Timber.e(e);
                 }
             } else {
                 try {
                     getDaoRegistry().create(new Registry(name, String.valueOf(value)));
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+                    Timber.e(e);
                 }
             }
         }
@@ -178,7 +181,7 @@ public class Global extends Application {
         try {
             if (r!=null) enabled = Boolean.valueOf(r.getValue());
         } catch(NumberFormatException nfe) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+            Timber.e(nfe);
         }
         return enabled;
     }
@@ -193,7 +196,7 @@ public class Global extends Application {
         try {
             if (r!=null && !r.getValue().equals("")) ringtone = Uri.parse(r.getValue());
         } catch(IllegalArgumentException e) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         return ringtone;
     }
@@ -209,7 +212,7 @@ public class Global extends Application {
         try {
             if (r!=null) enabled = Boolean.valueOf(r.getValue());
         } catch(NumberFormatException nfe) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+            Timber.e(nfe);
         }
         return enabled;
     }
@@ -364,9 +367,7 @@ public class Global extends Application {
             if (password.equals(getString(R.string.default_db_password)))setLoggedIn(true);
             return true;
         } catch (SQLiteException e) {
-            UmbrellaUtil.logIt(getApplicationContext(), e.toString());
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         this.password = true;
         return false;

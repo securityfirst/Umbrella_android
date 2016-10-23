@@ -3,7 +3,6 @@ package org.secfirst.umbrella.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -39,9 +38,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import timber.log.Timber;
 
 public class UmbrellaUtil {
 
@@ -187,7 +187,7 @@ public class UmbrellaUtil {
         try {
             selISO2 = regDao.queryForEq(Registry.FIELD_NAME, "iso2");
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         if (selISO2!=null && selISO2.size()>0) {
             List<Registry> selections;
@@ -236,15 +236,10 @@ public class UmbrellaUtil {
                 }
                 return true;
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
         }
         return false;
-    }
-
-    public static void logIt(Context context, String message) {
-        if (BuildConfig.BUILD_TYPE.equals("debug") && message != null && message.length() > 0)
-            Log.i(context.getClass().getSimpleName(), message);
     }
 
     public static HashMap<String, Integer> getRefreshValues(Context context) {

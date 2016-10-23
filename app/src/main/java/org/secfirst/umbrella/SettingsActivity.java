@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -45,6 +44,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 
 public class SettingsActivity extends BaseActivity {
@@ -136,7 +137,7 @@ public class SettingsActivity extends BaseActivity {
                         try {
                             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         if (selLoc!=null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
@@ -144,14 +145,14 @@ public class SettingsActivity extends BaseActivity {
                             try {
                                 global.getDaoRegistry().update(mLocation);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         } else {
                             mLocation = new Registry("location", chosenAddress);
                             try {
                                 global.getDaoRegistry().create(mLocation);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         }
                         List<Registry> selISO2 = null;
@@ -164,18 +165,18 @@ public class SettingsActivity extends BaseActivity {
                                 try {
                                     global.getDaoRegistry().update(iso2);
                                 } catch (SQLException e) {
-                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                    Timber.e(e);
                                 }
                             } else {
                                 iso2 = new Registry("iso2", mAddress.getCountryCode().toLowerCase());
                                 try {
                                     global.getDaoRegistry().create(iso2);
                                 } catch (SQLException e) {
-                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                    Timber.e(e);
                                 }
                             }
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         List<Registry> selCountry = null;
                         try {
@@ -186,7 +187,7 @@ public class SettingsActivity extends BaseActivity {
                                 try {
                                     global.getDaoRegistry().update(mCountry);
                                 } catch (SQLException e) {
-                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                    Timber.e(e);
                                 }
                             } else {
                                 mCountry = new Registry("country", mAddress.getCountryName());
@@ -200,11 +201,11 @@ public class SettingsActivity extends BaseActivity {
                                         }
                                     }, 500);
                                 } catch (SQLException e) {
-                                    UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                    Timber.e(e);
                                 }
                             }
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                     } else {
                         mAddress = null;
@@ -338,7 +339,7 @@ public class SettingsActivity extends BaseActivity {
         try {
             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         if (selLoc!=null && selLoc.size() > 0) {
             mAutocompleteLocation.setHint(selLoc.get(0).getValue());
@@ -365,7 +366,7 @@ public class SettingsActivity extends BaseActivity {
                 }
             }
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.select_feed_sources);
@@ -391,13 +392,13 @@ public class SettingsActivity extends BaseActivity {
                                 global.getDaoRegistry().delete(selection);
                             }
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         for (Integer item : selectedItems) {
                             try {
                                 global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         }
                         dialog.dismiss();
@@ -530,7 +531,7 @@ public class SettingsActivity extends BaseActivity {
                 foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
                 mAddressList = new ArrayList<>(foundGeocode);
             } catch (IOException e) {
-                UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
 
             return foundGeocode;

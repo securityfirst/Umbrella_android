@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,11 +47,12 @@ import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 public class TabbedFragment extends Fragment {
 
@@ -202,7 +202,7 @@ public class TabbedFragment extends Fragment {
                 where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty + 1));
                 segments = queryBuilder.query();
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
         }
 
@@ -285,7 +285,7 @@ public class TabbedFragment extends Fragment {
                     }
                 });
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
 
             return rootView;
@@ -339,7 +339,7 @@ public class TabbedFragment extends Fragment {
                 where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 segments = queryBuilder.query();
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
             if (segments!=null && segments.size() > 0 && segments.size()>=segmentInt+1) {
                 final String html = segments.get(segmentInt).getBody();
@@ -407,7 +407,7 @@ public class TabbedFragment extends Fragment {
                                     try {
                                         global.getDaoCheckItem().create(nItem);
                                     } catch (SQLException e) {
-                                        UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                        Timber.e(e);
                                     }
                                     refreshCheckList(drawerItem, diffArg);
                                     dialog.dismiss();
@@ -461,7 +461,7 @@ public class TabbedFragment extends Fragment {
                     try {
                         hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(drawerItem));
                     } catch (SQLException e) {
-                        UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                        Timber.e(e);
                     }
                     if (hasDifficulty!=null && hasDifficulty.size() > 0) {
                         try {
@@ -473,17 +473,17 @@ public class TabbedFragment extends Fragment {
                                 try {
                                     global.getDaoFavourite().delete(favourite);
                                 } catch (SQLException e) {
-                                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                    Timber.e(e);
                                 }
                             } else {
                                 try {
                                     global.getDaoFavourite().create(new Favourite(drawerItem, hasDifficulty.get(0).getSelected()));
                                 } catch (SQLException e) {
-                                    UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                    Timber.e(e);
                                 }
                             }
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                     }
                     setFavouriteIcon(getActivity());
@@ -508,7 +508,7 @@ public class TabbedFragment extends Fragment {
                 ((MainActivity) context).favouriteItem.setIcon(favourite != null ? R.drawable.abc_btn_rating_star_on_mtrl_alpha : R.drawable.abc_btn_rating_star_off_mtrl_alpha);
                 ((MainActivity) context).favouriteItem.setVisible(true);
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
         }
 
@@ -519,7 +519,7 @@ public class TabbedFragment extends Fragment {
                 where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(category)).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 mCheckList = queryBuilder.query();
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
 
             if (mCheckList!=null) {

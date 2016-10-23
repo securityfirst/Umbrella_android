@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +53,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import timber.log.Timber;
 
 public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -153,7 +154,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         try {
                             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         if (selLoc != null && selLoc.size() > 0) {
                             mLocation = selLoc.get(0);
@@ -161,14 +162,14 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             try {
                                 global.getDaoRegistry().update(mLocation);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         } else {
                             mLocation = new Registry("location", chosenAddress);
                             try {
                                 global.getDaoRegistry().create(mLocation);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         }
                         List<Registry> selISO2 = null;
@@ -176,7 +177,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         try {
                             selISO2 = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "iso2");
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         if (selISO2 != null && selISO2.size() > 0) {
                             iso2 = selISO2.get(0);
@@ -184,7 +185,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             try {
                                 global.getDaoRegistry().update(iso2);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         } else {
                             iso2 = new Registry("iso2", mAddress.getCountryCode().toLowerCase());
@@ -192,14 +193,14 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 global.getDaoRegistry().create(iso2);
                                 if (isFeedSet()) getFeeds(getActivity());
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         }
                         List<Registry> selCountry = null;
                         try {
                             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         if (selCountry != null && selCountry.size() > 0) {
                             mCountry = selCountry.get(0);
@@ -207,7 +208,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             try {
                                 global.getDaoRegistry().update(mCountry);
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         } else {
                             mCountry = new Registry("country", mAddress.getCountryName());
@@ -215,7 +216,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 global.getDaoRegistry().create(mCountry);
                                 if (isFeedSet()) getFeeds(getActivity());
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         }
                     } else {
@@ -251,7 +252,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         try {
             selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
         } catch (SQLException e) {
-            if (getActivity()!=null) UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         if (selLoc!=null && selLoc.size() > 0) {
             mAutocompleteLocation.setHint(selLoc.get(0).getValue());
@@ -276,7 +277,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 headerText = global.getString(R.string.country_selected)+": " + selCountry.get(0).getValue() + "\n";
             }
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
         noFeedItems.setVisibility((isFeedSet() && (items==null || items.size() == 0)) ? View.VISIBLE : View.GONE);
@@ -304,7 +305,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         try {
             selISO2 = regDao.queryForEq(Registry.FIELD_NAME, "iso2");
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         if (selISO2!=null && selISO2.size()>0) {
             List<Registry> selections;
@@ -349,7 +350,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 }
                 return true;
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
             return false;
         } else {
@@ -426,7 +427,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 }
             }
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(global.getString(R.string.select_feed_sources));
@@ -452,13 +453,13 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 global.getDaoRegistry().delete(selection);
                             }
                         } catch (SQLException e) {
-                            UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                            Timber.e(e);
                         }
                         for (Integer item : selectedItems) {
                             try {
                                 global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
-                                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                                Timber.e(e);
                             }
                         }
                         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
@@ -505,7 +506,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
                 mAddressList = new ArrayList<>(foundGeocode);
             } catch (IOException e) {
-                UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
 
             return foundGeocode;
