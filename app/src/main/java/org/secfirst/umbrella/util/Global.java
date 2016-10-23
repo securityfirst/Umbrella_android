@@ -235,10 +235,16 @@ public class Global extends Application {
     }
 
     public void setPassword(final Activity activity) {
+        setPassword(activity, false);
+    }
+
+    public void setPassword(final Activity activity, final boolean change) {
         final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle(R.string.set_password_title);
+        alert.setTitle(change ? R.string.change_password_title : R.string.set_password_title);
         alert.setMessage(R.string.set_password_body);
         View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
+        final EditText pwOld = (EditText) view.findViewById(R.id.oldpw);
+        pwOld.setVisibility(change ? View.VISIBLE : View.GONE);
         final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
         final EditText confirmInput = (EditText) view.findViewById(R.id.pwconfirm);
         alert.setView(view);
@@ -256,7 +262,8 @@ public class Global extends Application {
                 alert2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setPassword(activity);
+                        if (password) getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(getString(R.string.default_db_password)) + "';");
+                        setPassword(activity, change);
                     }
                 });
                 alert2.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -282,7 +289,10 @@ public class Global extends Application {
             public void onClick(View v) {
                 String pw = pwInput.getText().toString();
                 String checkError = UmbrellaUtil.checkPasswordStrength(pw, getApplicationContext());
-                if (!pw.equals(confirmInput.getText().toString())) {
+                SQLiteDatabase.loadLibs(activity);
+                if (change && !checkSQLCipherPW(pwOld.getText().toString(), activity)) {
+                    Toast.makeText(activity, R.string.old_password_incorrect, Toast.LENGTH_LONG).show();
+                } else if (!pw.equals(confirmInput.getText().toString())) {
                     Toast.makeText(activity, R.string.passwords_do_not_match, Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
                     getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
@@ -299,9 +309,7 @@ public class Global extends Application {
     }
 
     public void logout(Context context) {
-        OpenHelperManager.setHelper(null);
         setLoggedIn(false);
-
         if (OpenHelperManager.getHelper(context, OrmHelper.class) != null) {
             OpenHelperManager.getHelper(context, OrmHelper.class).close();
             OpenHelperManager.setHelper(null);
@@ -350,15 +358,21 @@ public class Global extends Application {
         return dbHelper;
     }
 
+    public boolean checkSQLCipherPW(String password, Context context) {
+        SQLiteDatabase.loadLibs(this);
+        try {
+            OrmHelper oh = context!=null ? new OrmHelper(context) : getOrmHelper();
+            oh.getWritableDatabase(password);
+            return true;
+        } catch (SQLiteException e) {
+            Timber.e(e);
+        }
+        return false;
+    }
+
     public boolean initializeSQLCipher(String password) {
         if (password.equals("")) password = getString(R.string.default_db_password);
-        SQLiteDatabase.loadLibs(this);
-        if (dbHelper==null || !dbHelper.isOpen()) {
-            createDatabaseIfNotExists();
-            dbHelper = new OrmHelper(getApplicationContext());
-        }
-        try {
-            getOrmHelper().getWritableDatabase(password);
+        if (checkSQLCipherPW(password, null)) {
             getDaoSegment();
             getDaoCheckItem();
             getDaoCategory();
@@ -368,8 +382,6 @@ public class Global extends Application {
             startService();
             if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
-        } catch (SQLiteException e) {
-            Timber.e(e);
         }
         this.password = true;
         return false;

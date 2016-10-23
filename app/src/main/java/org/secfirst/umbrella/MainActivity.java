@@ -366,11 +366,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem itemResetPw = menu.findItem(R.id.action_reset_password);
+        MenuItem itemChangePw = menu.findItem(R.id.action_change_password);
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
         MenuItem itemLogout = menu.findItem(R.id.action_logout);
         MenuItem itemExport = menu.findItem(R.id.export_checklist);
         itemSetPw.setVisible(!global.hasPasswordSet(true));
         itemResetPw.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
+        itemChangePw.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
         itemLogout.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
         itemExport.setVisible(false);
         if (childItem != null) {
@@ -411,6 +413,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         }
         if (id == R.id.action_reset_password) {
             global.resetPassword(this);
+            return true;
+        }
+        if (id == R.id.action_change_password) {
+            global.setPassword(this, global.hasPasswordSet(true));
             return true;
         }
         if (id == R.id.export_checklist) {
