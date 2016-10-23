@@ -287,7 +287,9 @@ public class Global extends Application {
                 } else if (checkError.equals("")) {
                     getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
                     password = true;
+                    setLoggedIn(true);
                     dialog.dismiss();
+                    activity.recreate();
                     Toast.makeText(activity, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(activity, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
@@ -364,7 +366,7 @@ public class Global extends Application {
             getDaoFavourite();
             getDaoDifficulty();
             startService();
-            if (password.equals(getString(R.string.default_db_password)))setLoggedIn(true);
+            if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
         } catch (SQLiteException e) {
             Timber.e(e);

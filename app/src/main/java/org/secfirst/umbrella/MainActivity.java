@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (global.hasPasswordSet(false) && !global.getSkipPassword()) {
+                    if (global.isLoggedIn() && global.hasPasswordSet(false) && !global.getSkipPassword()) {
                         global.logout(MainActivity.this);
                     } else {
                         global.setPassword(MainActivity.this);
