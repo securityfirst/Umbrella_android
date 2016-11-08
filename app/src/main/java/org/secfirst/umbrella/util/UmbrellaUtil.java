@@ -255,4 +255,30 @@ public class UmbrellaUtil {
         return refreshInterval;
     }
 
+    public static CharSequence[] getRefreshEntries(Context context) {
+        List<String> listItems = new ArrayList<>();
+        listItems.add(context.getString(R.string.half_hour));
+        listItems.add("1 "+context.getString(R.string.hour));
+        listItems.add("2 "+context.getString(R.string.hours));
+        listItems.add("4 "+context.getString(R.string.hours));
+        listItems.add("6 "+context.getString(R.string.hours));
+        listItems.add("12 "+context.getString(R.string.hours));
+        listItems.add("24 "+context.getString(R.string.hours));
+        listItems.add(context.getString(R.string.manually));
+        return listItems.toArray(new CharSequence[listItems.size()]);
+    }
+
+    public static CharSequence[] getRefreshEntryValues(Context context) {
+        List<String> listItems = new ArrayList<>();
+        listItems.add(String.valueOf(TimeUnit.MINUTES.toMillis(30)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(1)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(2)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(4)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(6)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(12)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(24)));
+        listItems.add(String.valueOf(0));
+        return listItems.toArray(new CharSequence[listItems.size()]);
+    }
+
 }

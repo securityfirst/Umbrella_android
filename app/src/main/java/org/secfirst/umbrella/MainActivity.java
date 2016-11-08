@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     if (global.isLoggedIn() && global.hasPasswordSet(false) && !global.getSkipPassword()) {
                         global.logout(MainActivity.this);
                     } else {
-                        global.setPassword(MainActivity.this);
+                        global.setPassword(MainActivity.this, null);
                     }
                     loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
                 }
@@ -411,7 +411,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_set_password) {
-            global.setPassword(this);
+            global.setPassword(this, null);
             return true;
         }
         if (id == R.id.action_reset_password) {
@@ -419,7 +419,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_change_password) {
-            global.setPassword(this, global.hasPasswordSet(true));
+            global.setPassword(this, null, global.hasPasswordSet(true));
             return true;
         }
         if (id == R.id.export_checklist) {

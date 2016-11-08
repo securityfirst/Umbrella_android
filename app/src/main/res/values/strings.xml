@@ -29,9 +29,11 @@
     <string name="set_password">Set password</string>
     <string name="my_checklists">My Checklists</string>
     <string name="feeds">Dashboard</string>
+    <string name="feed">Feed</string>
     <string name="check_lists_total">Check lists total</string>
     <string name="log_out">Log out</string>
     <string name="log_in">Log In</string>
+    <string name="general">General</string>
     <string name="beginner">Beginner</string>
     <string name="expert">Expert</string>
     <string name="intermediate">Advanced</string>
@@ -62,6 +64,7 @@
     <string name="tour_slide_3_text">Use checklists to mark your progress</string>
     <string name="tour_slide_4_text">Stay up to date with the latest information on where you are</string>
     <string name="skip_password_warning">Are you sure you want to continue using the app without setting the password?\n\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella</string>
+    <string name="skip_password">Skip password</string>
     <string name="skip_password_title">Skip setting password</string>
     <string name="set_password_body">Your password must be at least 8 characters long and must contain at least one digit and one capital letter\n</string>
     <string name="set_password_title">Set your password</string>
@@ -126,6 +129,7 @@
     <string name="review_sources_for_feed">Please review sources you want for your feed</string>
     <string name="checking_for_updates">Checking for updates</string>
     <string name="show_notifications">Show updates as notification</string>
+    <string name="notifications">Notification</string>
     <string name="notification_ringtone">Notification ringtone: %s</string>
     <string name="none">None</string>
     <string name="select_ringtone">Select ringtone</string>

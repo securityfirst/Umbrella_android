@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v4.content.IntentCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,23 +32,23 @@ import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.TourActivity;
+import org.secfirst.umbrella.fragments.SettingsFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.FeedSource;
+import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -131,6 +130,16 @@ public class Global extends Application {
             Timber.e(nfe);
         }
         return enabled;
+    }
+
+    public void deleteRegistriesByName(String name) {
+        try {
+            DeleteBuilder<Registry, String> toDelete = getDaoRegistry().deleteBuilder();
+            toDelete.where().eq(Registry.FIELD_NAME, name);
+            toDelete.delete();
+        } catch (SQLException e) {
+            Timber.e(e);
+        }
     }
 
     public Registry getRegistry(String name) {
@@ -234,15 +243,15 @@ public class Global extends Application {
         else return password || prefs.getBoolean("skipPassword", false);
     }
 
-    public void setPassword(final Activity activity) {
-        setPassword(activity, false);
+    public void setPassword(final Context context, SettingsFragment fragment) {
+        setPassword(context, fragment, false);
     }
 
-    public void setPassword(final Activity activity, final boolean change) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
+    public void setPassword(final Context context, final SettingsFragment fragment, final boolean change) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
         alert.setTitle(change ? R.string.change_password_title : R.string.set_password_title);
         alert.setMessage(R.string.set_password_body);
-        View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.password_alert, null);
         final EditText pwOld = (EditText) view.findViewById(R.id.oldpw);
         pwOld.setVisibility(change ? View.VISIBLE : View.GONE);
         final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
@@ -256,14 +265,14 @@ public class Global extends Application {
         alert.setNeutralButton(R.string.skip, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final AlertDialog.Builder alert2 = new AlertDialog.Builder(activity);
+                final AlertDialog.Builder alert2 = new AlertDialog.Builder(context);
                 alert2.setTitle(R.string.skip_password_title);
                 alert2.setMessage(R.string.skip_password_warning);
                 alert2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (password) getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(getString(R.string.default_db_password)) + "';");
-                        setPassword(activity, change);
+                        setPassword(context, fragment, change);
                     }
                 });
                 alert2.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -289,21 +298,21 @@ public class Global extends Application {
             public void onClick(View v) {
                 String pw = pwInput.getText().toString();
                 String checkError = UmbrellaUtil.checkPasswordStrength(pw, getApplicationContext());
-                SQLiteDatabase.loadLibs(activity);
-                if (change && !checkSQLCipherPW(pwOld.getText().toString(), activity)) {
-                    Toast.makeText(activity, R.string.old_password_incorrect, Toast.LENGTH_LONG).show();
+                SQLiteDatabase.loadLibs(context);
+                if (change && !checkSQLCipherPW(pwOld.getText().toString(), context)) {
+                    Toast.makeText(context, R.string.old_password_incorrect, Toast.LENGTH_LONG).show();
                 } else if (!pw.equals(confirmInput.getText().toString())) {
-                    Toast.makeText(activity, R.string.passwords_do_not_match, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.passwords_do_not_match, Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
                     getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
                     password = true;
                     setLoggedIn(true);
                     setSkipPassword(false);
                     dialog.dismiss();
-                    activity.recreate();
-                    Toast.makeText(activity, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
+                    if (fragment!=null) fragment.onResume();
+                    Toast.makeText(context, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(activity, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -380,6 +389,7 @@ public class Global extends Application {
             getDaoRegistry();
             getDaoFavourite();
             getDaoDifficulty();
+            getDaoLanguage();
             startService();
             if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
@@ -537,15 +547,14 @@ public class Global extends Application {
                     }
                 }
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
     }
 
-    public String getRefreshLabel() {
+    public String getRefreshLabel(Integer refreshValue) {
         String refreshValueLabel = "";
-        int refreshValue = getRefreshValue();
+        if (refreshValue==null) refreshValue = getRefreshValue();
         HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
         for (Object key : refreshValues.keySet()) {
             if (refreshValues.get(key).equals(refreshValue)) {
@@ -556,7 +565,7 @@ public class Global extends Application {
     }
 
     public ArrayList<Integer> getSelectedFeedSources() {
-        final CharSequence[] items = {" ReliefWeb "," UN "," FCO "," CDC "};
+        final CharSequence[] items = {"ReliefWeb","UN","FCO","CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
         final ArrayList<Integer> selectedItems = new ArrayList<>();
         List<Registry> selections;
         try {
@@ -570,19 +579,20 @@ public class Global extends Application {
                 }
             }
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         return selectedItems;
     }
 
-    public String getSelectedFeedSourcesLabel() {
+    public String getSelectedFeedSourcesLabel(boolean inline) {
         String feedSourcesLabel = "";
-        final CharSequence[] items = {" ReliefWeb ", " UN ", " FCO ", " CDC "};
+        final CharSequence[] items = {"ReliefWeb","UN","FCO","CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
         final ArrayList<Integer> selectedItems = getSelectedFeedSources();
         for (Integer selectedItem : selectedItems) {
-            if (!selectedItem.equals(selectedItems.get(0))) feedSourcesLabel += "\n";
-            feedSourcesLabel += " - "+items[selectedItem];
+            if (!selectedItem.equals(selectedItems.get(0))) {
+                feedSourcesLabel += (inline) ? ", " : "\n";
+            }
+            feedSourcesLabel += (inline ? "" : " - " )+items[selectedItem];
         }
         return feedSourcesLabel;
     }
@@ -616,8 +626,7 @@ public class Global extends Application {
                 }
             }
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         return retInterval;
     }
@@ -645,32 +654,6 @@ public class Global extends Application {
     public void setFeeditemsRefreshed(long feeditemsRefreshed) {
         this.feeditemsRefreshed = feeditemsRefreshed;
     }
-
-    public void exportDatabase() {
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if (sd.canWrite()) {
-                String backupDBPath = OrmHelper.DATABASE_NAME;
-                String currentDBPath = "//data//"+getPackageName()+"//databases//"+backupDBPath+"";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
-            }
-        } catch (Exception e) {
-            Log.e("can't write", e.getLocalizedMessage());
-        }
-    }
-
-
 
     public void createDatabaseIfNotExists() {
         File destFile = getApplicationContext().getDatabasePath(OrmHelper.DATABASE_NAME);
@@ -736,6 +719,8 @@ public class Global extends Application {
         ArrayList<FeedSource> sourcesList = new ArrayList<>();
         sourcesList.add(new FeedSource("UN / ReliefWeb", 0));
         sourcesList.add(new FeedSource("CDC", 3));
+        sourcesList.add(new FeedSource("Global Disaster and Alert Coordination System", 4));
+        sourcesList.add(new FeedSource("US State Department Country Warnings", 5));
         return sourcesList;
     }
 

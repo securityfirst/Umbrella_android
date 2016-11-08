@@ -116,7 +116,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus && !global.hasPasswordSet(false)) {
-                    global.setPassword(getActivity());
+                    global.setPassword(getActivity(), null);
                 }
 
             }
@@ -136,7 +136,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                 if (global.hasPasswordSet(false)) {
                     showRefresh();
                 } else {
-                    global.setPassword(getActivity());
+                    global.setPassword(getActivity(), null);
                 }
             }
         });
@@ -223,7 +223,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         mAddress = null;
                     }
                 } else {
-                    global.setPassword(getActivity());
+                    global.setPassword(getActivity(), null);
                 }
             }
         });
@@ -238,8 +238,8 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
 
             }
         });
-        refreshIntervalValue.setText(global.getRefreshLabel());
-        feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
+        refreshIntervalValue.setText(global.getRefreshLabel(null));
+        feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
         getFeeds(getActivity());
         refreshView();
         return rootView;
@@ -399,7 +399,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 BaseActivity baseAct = ((BaseActivity) getActivity());
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 global.setRefreshValue(value);
-                                refreshIntervalValue.setText(global.getRefreshLabel());
+                                refreshIntervalValue.setText(global.getRefreshLabel(null));
                                 refreshFeed();
                                 dialog.dismiss();
                             }
@@ -462,7 +462,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                                 Timber.e(e);
                             }
                         }
-                        feedSourcesValue.setText(global.getSelectedFeedSourcesLabel());
+                        feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
                         refreshFeed();
                         dialog.dismiss();
                     }
@@ -479,7 +479,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public boolean isFeedSet() {
-        return !global.getSelectedFeedSourcesLabel().equals("") && !global.getRefreshLabel().equals("") && !global.getChosenCountry().equals("");
+        return !global.getSelectedFeedSourcesLabel(false).equals("") && !global.getRefreshLabel(null).equals("") && !global.getChosenCountry().equals("");
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {

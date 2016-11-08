@@ -390,7 +390,7 @@ public class TabbedFragment extends Fragment {
                 public void onClick(View v) {
                     final Global global = ((MainActivity) getActivity()).getGlobal();
                     if (!global.hasPasswordSet(false)) {
-                        global.setPassword(getActivity());
+                        global.setPassword(getActivity(), null);
                     } else {
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                         alert.setTitle(R.string.add_new_checkitem);
