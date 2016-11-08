@@ -71,6 +71,7 @@ public class Global extends Application {
     private Dao<Registry, String> daoRegistry;
     private Dao<Favourite, String> daoFavourite;
     private Dao<Difficulty, String> daoDifficulty;
+    private Dao<Language, String> daoLanguage;
     private OrmHelper dbHelper;
 
     @SuppressLint("CommitPrefEdits")
@@ -429,6 +430,19 @@ public class Global extends Application {
         return daoCategory;
     }
 
+    public Dao<Language, String> getDaoLanguage() {
+        if (daoLanguage==null) {
+            try {
+                daoLanguage = getOrmHelper().getDao(Language.class);
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), Language.class);
+            } catch (SQLException e) {
+                if (BuildConfig.BUILD_TYPE.equals("debug"))
+                    Log.getStackTraceString(e.getCause());
+            }
+        }
+        return daoLanguage;
+    }
+
     public Dao<Registry, String> getDaoRegistry() {
         if (daoRegistry==null) {
             try {
@@ -488,8 +502,21 @@ public class Global extends Application {
                     getDaoCategory().create(item);
                 }
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
+            }
+        }
+    }
+
+    public void syncLanguages(ArrayList<Language> languages) {
+        if (getOrmHelper()!=null) {
+            try {
+                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
+                TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
+                for (Language item : languages) {
+                    getDaoLanguage().create(item);
+                }
+            } catch (SQLException e) {
+                Timber.e(e);
             }
         }
     }

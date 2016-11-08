@@ -15,6 +15,7 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
+import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -99,6 +100,12 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
         }
         try {
             TableUtils.createTable(source, Difficulty.class);
+        } catch (SQLException e) {
+            if (BuildConfig.BUILD_TYPE.equals("debug"))
+                Log.getStackTraceString(e.getCause());
+        }
+        try {
+            TableUtils.createTable(source, Language.class);
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
