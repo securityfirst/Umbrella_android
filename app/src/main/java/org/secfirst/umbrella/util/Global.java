@@ -62,7 +62,7 @@ public class Global extends Application {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
-    private boolean _termsAccepted, isLoggedIn, password;
+    private boolean _termsAccepted, showNav, isLoggedIn, password;
     private ArrayList<FeedItem> feedItems = new ArrayList<>();
     private long feeditemsRefreshed;
     private Dao<Segment, String> daoSegment;
@@ -100,6 +100,16 @@ public class Global extends Application {
     public boolean getTermsAccepted() {
         _termsAccepted = prefs.getBoolean("termsAccepted", false);
         return _termsAccepted;
+    }
+
+    public boolean hasShownNavAlready() {
+        showNav = prefs.getBoolean("showNav", false);
+        return showNav;
+    }
+
+    public void navShown() {
+        this.showNav = true;
+        sped.putBoolean("showNav", showNav).commit();
     }
 
     public ArrayList<FeedItem> getFeedItems() {

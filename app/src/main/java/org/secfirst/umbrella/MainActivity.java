@@ -182,7 +182,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             } else {
                 setFragment(0, getString(R.string.my_security), true);
-                drawer.openDrawer(Gravity.LEFT);
+                if (!global.hasShownNavAlready()) {
+                    drawer.openDrawer(Gravity.LEFT);
+                    global.navShown();
+                }
             }
         }
     }
