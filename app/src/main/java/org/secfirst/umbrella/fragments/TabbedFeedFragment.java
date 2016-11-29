@@ -395,7 +395,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         for (Object key : refreshValues.keySet()) {
                             Integer value = refreshValues.get(key);
                             if (key.equals(chosen)) {
-                                BaseActivity baseAct = ((BaseActivity) getActivity());
+                                BaseActivity baseAct = (BaseActivity) getActivity();
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 global.setRefreshValue(value);
                                 refreshIntervalValue.setText(global.getRefreshLabel());
