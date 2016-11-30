@@ -200,9 +200,9 @@ have happened without you.
 
 *   [Rok Biderman – Security First Lead Developer](https://github.com/Coccodrillo)
 
-
 *   [Vesna Planko – Security First Lead UI/UX Designer](https://github.com/VesnaPlanko)
 
+*   [Alex Guerrieri – Security First Developer](https://github.com/klaidliadon)
 
 *   [Adam Hani Schakaki – Security First Developer](https://github.com/krzd)
 
@@ -221,7 +221,7 @@ information.
 
 **License**
 
-Copyright 2013-2015 Global Security First Ltd. (trading as Security
+Copyright 2013-2017 Global Security First Ltd. (trading as Security
 First)
 
 Licensed under the
