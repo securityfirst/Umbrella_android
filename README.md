@@ -15,15 +15,15 @@ Umbrella is an Android mobile app developed by [Security First](https://www.secf
 <a href="https://secfirst.org/fdroid/repo">
   <img alt="Umbrella on FDroid"
        src="https://github.com/securityfirst/Umbrella_android/blob/master/FDROID1.png?raw=true" height="80" width="220" /></a href>
-       
+
 F-Droid fingerprint: 39EB57052F8D684514176819D1645F6A0A7BD943DBC31AB101949006AC0BC228
-       
+
 
 ##Example Usage
-Umbrella is designed for everyone (people looking to increase their security, folks living in high risk areas, regular travellers, business people, techies, journalists, NGO staff, aid workers, human rights defenders, social workers, environmental activists etc). 
+Umbrella is designed for everyone (people looking to increase their security, folks living in high risk areas, regular travellers, business people, techies, journalists, NGO staff, aid workers, human rights defenders, social workers, environmental activists etc).
 
 However, when we built Umbrella we tried to keep in mind the story of Glen Greenwald and Edward Snowden. Greenwald couldn't communicate with Snowden at the start because he found it cumbersome to setup encryption (he nearly missed the one of biggest storys of the decade because of this!). Also, when he (and Laura Poitras) travelled to Hong Kong - they didn't have much knowledge about how to meet securely with Snowden and detect surveillance. This is common problem for journalists and acitivists. Umbrella is designed to solve this problem (and others) by having nearly everything they would have needed to know in the one place - in their pocket.
- 
+
 ##Main Parts of Umbrella
 **Introduction:**
 This is the part the user sees first. It explains briefly how the app works and the basic terms and conditions.
@@ -52,7 +52,7 @@ The general flow of lessons are presented in order to replicate the typical way 
 ***These are the lessons currently in Umbrella.***
 
 **Information:**
-These lessons mostly cover the security of information that is stored on your computers. 
+These lessons mostly cover the security of information that is stored on your computers.
 
 * Managing information
 * Malware
@@ -70,7 +70,7 @@ These lessons mostly cover the security of information when it is sent or reciev
 * Email
 * The Internet
 * Social Media
-* Radios and Satelite Phones 
+* Radios and Satelite Phones
 
 
 **Travel:**
@@ -190,6 +190,10 @@ basic advice.
 4.  Push to the branch: git push origin my-new-feature
 
 5.  Submit a pull request :D
+
+**Build Instructions**
+
+[Build it yourself](BUILD.md)
 
 ---
 
