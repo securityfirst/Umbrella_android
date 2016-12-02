@@ -16,6 +16,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
+import java.util.Locale;
 
 public class UmbrellaRestClient {
 
@@ -28,6 +29,7 @@ public class UmbrellaRestClient {
         String[] pins = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78", "852627ad032bf9ab22e416cbbf9e32bc1187366f", "1d2eb31886d384cf34986f57eb75a21d08f7aaef", "f1af49801d8c94bca49964c3b467b7a7b783880a"};
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
+            client.addHeader("Accept-Language", Locale.getDefault().toString());
         } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
