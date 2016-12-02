@@ -147,6 +147,6 @@
     <string name="string_not_valid_url">The string is not a valid URL</string>
     <string name="delete_external_sources">Delete external sources</string>
     <string name="no_external_sources_found">No external sources found</string>
-    <string name="select_language">Select language</string>
+    <string name="select_language">Seleccione el idioma</string>
 
 </resources>

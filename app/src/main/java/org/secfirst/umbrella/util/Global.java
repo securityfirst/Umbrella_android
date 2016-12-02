@@ -11,7 +11,6 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.content.IntentCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +20,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
 
@@ -51,7 +51,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,8 +61,6 @@ public class Global extends Application {
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, showNav, isLoggedIn, password;
-    private ArrayList<FeedItem> feedItems = new ArrayList<>();
-    private long feeditemsRefreshed;
     private Dao<Segment, String> daoSegment;
     private Dao<CheckItem, String> daoCheckItem;
     private Dao<Category, String> daoCategory;
@@ -71,6 +68,8 @@ public class Global extends Application {
     private Dao<Favourite, String> daoFavourite;
     private Dao<Difficulty, String> daoDifficulty;
     private Dao<Language, String> daoLanguage;
+    private Dao<FeedItem, String> daoFeedItem;
+    private Dao<FeedSource, String> daoFeedSource;
     private OrmHelper dbHelper;
 
     @SuppressLint("CommitPrefEdits")
@@ -112,13 +111,14 @@ public class Global extends Application {
         sped.putBoolean("showNav", showNav).commit();
     }
 
-    public ArrayList<FeedItem> getFeedItems() {
-        return feedItems;
-    }
-
-    public void setFeedItems(ArrayList<FeedItem> feedItems) {
-        this.feedItems = feedItems;
-        setFeeditemsRefreshed(new Date().getTime());
+    public List<FeedItem> getFeedItems() {
+        List<FeedItem> items = new ArrayList<>();
+        try {
+            items = daoFeedItem.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
     public boolean getNotificationsEnabled() {
@@ -390,6 +390,8 @@ public class Global extends Application {
             getDaoFavourite();
             getDaoDifficulty();
             getDaoLanguage();
+            getDaoFeedItem();
+            getDaoFeedSource();
             startService();
             if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
@@ -409,8 +411,7 @@ public class Global extends Application {
             try {
                 daoSegment = getOrmHelper().getDao(Segment.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoSegment;
@@ -421,8 +422,7 @@ public class Global extends Application {
             try {
                 daoCheckItem = getOrmHelper().getDao(CheckItem.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoCheckItem;
@@ -433,8 +433,7 @@ public class Global extends Application {
             try {
                 daoCategory = getOrmHelper().getDao(Category.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoCategory;
@@ -444,13 +443,41 @@ public class Global extends Application {
         if (daoLanguage==null) {
             try {
                 daoLanguage = getOrmHelper().getDao(Language.class);
-                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), Language.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoLanguage;
+    }
+
+    public Dao<FeedItem, String> getDaoFeedItem() {
+        if (daoFeedItem==null) {
+            try {
+                daoFeedItem = getOrmHelper().getDao(FeedItem.class);
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoFeedItem;
+    }
+
+    public Dao<FeedSource, String> getDaoFeedSource() {
+        if (daoFeedSource==null) {
+            try {
+                daoFeedSource = getOrmHelper().getDao(FeedSource.class);
+                if (daoFeedSource.countOf()<1) {
+                    daoFeedSource.create(new FeedSource("ReliefWeb", 0));
+                    daoFeedSource.create(new FeedSource("UN", 1));
+                    daoFeedSource.create(new FeedSource("FCO" ,2));
+                    daoFeedSource.create(new FeedSource("CDC", 3));
+                    daoFeedSource.create(new FeedSource("Global Disaster and Alert Coordination System", 4));
+                    daoFeedSource.create(new FeedSource("US State Department Country Warnings", 5));
+                }
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoFeedSource;
     }
 
     public Dao<Registry, String> getDaoRegistry() {
@@ -458,8 +485,7 @@ public class Global extends Application {
             try {
                 daoRegistry = getOrmHelper().getDao(Registry.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoRegistry;
@@ -470,8 +496,7 @@ public class Global extends Application {
             try {
                 daoFavourite = getOrmHelper().getDao(Favourite.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoFavourite;
@@ -482,8 +507,7 @@ public class Global extends Application {
             try {
                 daoDifficulty = getOrmHelper().getDao(Difficulty.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoDifficulty;
@@ -497,8 +521,7 @@ public class Global extends Application {
                     getDaoSegment().create(segment);
                 }
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
     }
@@ -520,8 +543,7 @@ public class Global extends Application {
     public void syncLanguages(ArrayList<Language> languages) {
         if (getOrmHelper()!=null) {
             try {
-                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
-                TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Language.class);
                 for (Language item : languages) {
                     getDaoLanguage().create(item);
                 }
@@ -604,8 +626,7 @@ public class Global extends Application {
         try {
             selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         if (selCountry != null && selCountry.size() > 0) {
             selectedCountry = selCountry.get(0).getValue();
@@ -621,8 +642,7 @@ public class Global extends Application {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
                 } catch (NumberFormatException nfe) {
-                    if (BuildConfig.BUILD_TYPE.equals("debug"))
-                        Log.getStackTraceString(nfe.getCause());
+                    Timber.e(nfe);
                 }
             }
         } catch (SQLException e) {
@@ -641,18 +661,23 @@ public class Global extends Application {
                 getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
             }
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
     }
 
-
-    public long getFeeditemsRefreshed() {
-        return feeditemsRefreshed;
-    }
-
-    public void setFeeditemsRefreshed(long feeditemsRefreshed) {
-        this.feeditemsRefreshed = feeditemsRefreshed;
+    public long getFeedItemsRefreshed() {
+        long feedItemsRefreshed = 0L;
+        QueryBuilder<FeedItem, String> qb = getDaoFeedItem().queryBuilder();
+        try {
+            qb.orderBy(FeedItem.FIELD_UPDATED_AT, false);
+            FeedItem firstFeedItem = qb.queryForFirst();
+            if (firstFeedItem!=null) {
+                feedItemsRefreshed = firstFeedItem.getDate()*1000;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return feedItemsRefreshed;
     }
 
     public void createDatabaseIfNotExists() {
@@ -661,8 +686,7 @@ public class Global extends Application {
             try {
                 copyDataBase(destFile);
             } catch (IOException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
     }
@@ -749,5 +773,8 @@ public class Global extends Application {
         daoRegistry = null;
         daoFavourite = null;
         daoDifficulty = null;
+        daoLanguage = null;
+        daoFeedItem = null;
+        daoFeedSource = null;
     }
 }

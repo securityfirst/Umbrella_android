@@ -35,6 +35,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Registry;
@@ -62,7 +63,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private Global global;
     private ArrayList<Address> mAddressList;
 
-    ListPreference refreshInterval;
+    ListPreference refreshInterval, selectLanguage;
     Preference serverRefresh, setLocation, feedSources, notificationRingtone;
     SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
     private Address mAddress;
@@ -81,6 +82,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object o) {
                 Timber.d("skip password %s", o);
                 global.setSkipPassword((Boolean) o);
+                return true;
+            }
+        });
+
+        selectLanguage = (ListPreference) findPreference("select_language");
+        selectLanguage.setEntries(UmbrellaUtil.getLanguageEntries());
+        selectLanguage.setEntryValues(UmbrellaUtil.getLanguageEntryValues());
+        selectLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                String languageToLoad = (String) newValue;
+                global.setRegistry("language", languageToLoad);
+                if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
+
                 return true;
             }
         });

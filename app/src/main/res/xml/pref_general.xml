@@ -16,6 +16,12 @@
             android:persistent="false"
             />
 
+        <ListPreference
+            android:persistent="false"
+            android:title="@string/select_language"
+            android:summary="@string/select_language"
+            android:key="select_language" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/feed">

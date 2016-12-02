@@ -7,12 +7,19 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.InputType;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -27,10 +34,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.stmt.DeleteBuilder;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -40,6 +49,7 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.adapters.FeedAdapter;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.FeedSource;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
@@ -56,7 +66,7 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class TabbedFeedFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     FeedAdapter feedAdapter;
     TextView noFeedSettings;
@@ -77,13 +87,25 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dashboard_feed,
                 container, false);
         global = ((BaseActivity) getActivity()).getGlobal();
         mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.activity_main_swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshFeed();
+            }
+        });
+        mSwipeRefreshLayout.setNestedScrollingEnabled(true);
         feedListView = (ListView) rootView.findViewById(R.id.feed_list);
         noFeedSettings = (TextView) rootView.findViewById(R.id.no_feed_settings);
         noFeedItems = (CardView) rootView.findViewById(R.id.no_feed_items);
@@ -150,75 +172,9 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         mAddress = mAddressList.get(position - 1);
                         String chosenAddress = mAutocompleteLocation.getText().toString();
                         mAutocompleteLocation.setText(chosenAddress);
-                        List<Registry> selLoc = null;
-                        try {
-                            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
-                        } catch (SQLException e) {
-                            Timber.e(e);
-                        }
-                        if (selLoc != null && selLoc.size() > 0) {
-                            mLocation = selLoc.get(0);
-                            mLocation.setValue(chosenAddress);
-                            try {
-                                global.getDaoRegistry().update(mLocation);
-                            } catch (SQLException e) {
-                                Timber.e(e);
-                            }
-                        } else {
-                            mLocation = new Registry("location", chosenAddress);
-                            try {
-                                global.getDaoRegistry().create(mLocation);
-                            } catch (SQLException e) {
-                                Timber.e(e);
-                            }
-                        }
-                        List<Registry> selISO2 = null;
-                        Registry iso2;
-                        try {
-                            selISO2 = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "iso2");
-                        } catch (SQLException e) {
-                            Timber.e(e);
-                        }
-                        if (selISO2 != null && selISO2.size() > 0) {
-                            iso2 = selISO2.get(0);
-                            iso2.setValue(mAddress.getCountryCode().toLowerCase());
-                            try {
-                                global.getDaoRegistry().update(iso2);
-                            } catch (SQLException e) {
-                                Timber.e(e);
-                            }
-                        } else {
-                            iso2 = new Registry("iso2", mAddress.getCountryCode().toLowerCase());
-                            try {
-                                global.getDaoRegistry().create(iso2);
-                                if (isFeedSet()) getFeeds(getActivity());
-                            } catch (SQLException e) {
-                                Timber.e(e);
-                            }
-                        }
-                        List<Registry> selCountry = null;
-                        try {
-                            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
-                        } catch (SQLException e) {
-                            Timber.e(e);
-                        }
-                        if (selCountry != null && selCountry.size() > 0) {
-                            mCountry = selCountry.get(0);
-                            mCountry.setValue(mAddress.getCountryName());
-                            try {
-                                global.getDaoRegistry().update(mCountry);
-                            } catch (SQLException e) {
-                                Timber.e(e);
-                            }
-                        } else {
-                            mCountry = new Registry("country", mAddress.getCountryName());
-                            try {
-                                global.getDaoRegistry().create(mCountry);
-                                if (isFeedSet()) getFeeds(getActivity());
-                            } catch (SQLException e) {
-                                Timber.e(e);
-                            }
-                        }
+                        global.setRegistry("location", chosenAddress);
+                        global.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
+                        global.setRegistry("country", mAddress.getCountryName());
                     } else {
                         mAddress = null;
                     }
@@ -248,43 +204,129 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     @Override
     public void onResume() {
         super.onResume();
-        List<Registry> selLoc = null;
-        try {
-            selLoc = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "location");
-        } catch (SQLException e) {
-            Timber.e(e);
-        }
-        if (selLoc!=null && selLoc.size() > 0) {
-            mAutocompleteLocation.setHint(selLoc.get(0).getValue());
-        } else {
-            mAutocompleteLocation.setHint(global.getString(R.string.set_location));
-        }
+        Registry selLoc = global.getRegistry("location");
+        mAutocompleteLocation.setHint(selLoc!=null ? selLoc.getValue() : global.getString(R.string.set_location));
     }
 
     @Override
-    public void onRefresh() {
-        refreshFeed();
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_sources, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.add_source:
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.add_feed_source_title)
+                        .content(R.string.add_feed_source_body)
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI)
+                        .input(getString(R.string.add_feed_source_hint), "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                if (Patterns.WEB_URL.matcher(input).matches()) {
+                                    try {
+                                        List<FeedSource> sourceExists = global.getDaoFeedSource().queryForEq(FeedSource.FIELD_URL, input);
+                                        if (sourceExists!=null && sourceExists.size()>0) {
+                                            Toast.makeText(getContext(), R.string.source_already_added, Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            global.getDaoFeedSource().create(new FeedSource(input.toString(), 0, input.toString()));
+                                            Toast.makeText(getContext(), String.format("Source %s was successfully added", input.toString()), Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Toast.makeText(getContext(), R.string.string_not_valid_url, Toast.LENGTH_SHORT).show();
+                                    dialog.show();
+                                }
+                            }
+                        }).show();
+                break;
+            case R.id.manage_sources:
+                try {
+                    List<FeedSource> externalSources = global.getDaoFeedSource().queryForAll();
+                    if (externalSources!=null && externalSources.size()>0) {
+                        ArrayList<String> sourceUrls = new ArrayList<String>();
+                        for (FeedSource externalSource : externalSources) {
+                            if (externalSource.getUrl()!=null && !externalSource.getUrl().equals("")) {
+                                sourceUrls.add(externalSource.getUrl());
+                            }
+                        }
+                        if (sourceUrls.size()>0) {
+                            new MaterialDialog.Builder(getContext())
+                                    .title(R.string.delete_external_sources)
+                                    .items(sourceUrls)
+                                    .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                        @Override
+                                        public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                            Timber.d("text %s", text);
+                                            try {
+                                                DeleteBuilder<FeedSource, String> toDelete = global.getDaoFeedSource().deleteBuilder();
+                                                toDelete.where().eq(FeedSource.FIELD_URL, text);
+                                                toDelete.delete();
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
+                                            }
+                                            return true;
+                                        }
+                                    })
+                                    .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                        @Override
+                                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .negativeText(R.string.cancel)
+                                    .show();
+                        } else {
+                            Toast.makeText(getContext(), R.string.no_external_sources_found, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), R.string.no_external_sources_found, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (SQLException e) {
+                    Timber.e(e);
+                    Toast.makeText(getContext(), R.string.no_external_sources_found, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.list_items:
+                try {
+                    for (FeedItem feedItem : global.getDaoFeedItem().queryForAll()) {
+                        Timber.d("fi %s", feedItem);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            case R.id.remove_items:
+                try {
+                    DeleteBuilder<FeedItem, String> db = global.getDaoFeedItem().deleteBuilder();
+                    db.delete();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                refreshView();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void refreshView() {
-        ArrayList<FeedItem> items = global.getFeedItems();
+        ArrayList<FeedItem> items = new ArrayList<>(global.getFeedItems());
         feedAdapter.updateData(items);
-        List<Registry> selCountry;
+        Registry selCountry = global.getRegistry("country");
         String headerText = "";
-        try {
-            selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
-            if (selCountry!=null && selCountry.size() > 0) {
-                headerText = global.getString(R.string.country_selected)+": " + selCountry.get(0).getValue() + "\n";
-            }
-        } catch (SQLException e) {
-            Timber.e(e);
-        }
+        if (selCountry!=null)
+            headerText = global.getString(R.string.country_selected)+": " + selCountry.getValue() + "\n";
         mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
-        noFeedItems.setVisibility((isFeedSet() && (items==null || items.size() == 0)) ? View.VISIBLE : View.GONE);
-        headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
-        feedListView.setVisibility(isFeedSet() && items!=null ? View.VISIBLE : View.GONE);
+        noFeedItems.setVisibility((isFeedSet() && (items.size() == 0)) ? View.VISIBLE : View.GONE);
+        headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeedItemsRefreshed()));
+        feedListView.setVisibility(isFeedSet() && items.size()>0 ? View.VISIBLE : View.GONE);
         noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
-        noFeedCard.setVisibility( (items==null && isFeedSet()) ? View.GONE : View.VISIBLE);
+        noFeedCard.setVisibility( (items.size()>0 && isFeedSet()) ? View.GONE : View.VISIBLE);
         header.setText(headerText);
     }
 
@@ -299,18 +341,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public boolean getFeeds(final Context context) {
-        global.setFeedItems(new ArrayList<FeedItem>());
-        Dao<Registry, String> regDao = global.getDaoRegistry();
-        List<Registry> selISO2 = null;
-        try {
-            selISO2 = regDao.queryForEq(Registry.FIELD_NAME, "iso2");
-        } catch (SQLException e) {
-            Timber.e(e);
-        }
-        if (selISO2!=null && selISO2.size()>0) {
+        Registry selISO2 = global.getRegistry("iso2");
+        if (selISO2!=null) {
             List<Registry> selections;
             try {
-                selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                 if (selections.size()>0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -322,7 +357,8 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.get(0).getValue() + "&sources=" + sources + "&since=0";
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
+                    Timber.d("url %s", mUrl);
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -333,8 +369,15 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && receivedItems.size() > 0) {
-                                global.setFeedItems(receivedItems);
+                                for (FeedItem receivedItem : receivedItems) {
+                                    try {
+                                        global.getDaoFeedItem().create(receivedItem);
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 refreshView();
+                                feedListView.smoothScrollToPosition(0);
                                 mSwipeRefreshLayout.setRefreshing(false);
                             }
                         }

@@ -24,4 +24,11 @@ public class SettingsActivity extends BaseActivity {
         return R.layout.activity_settings;
     }
 
+    @Override
+    public void setLocale(String languageToLoad) {
+        super.setLocale(languageToLoad);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content, new SettingsFragment())
+                .commit();
+    }
 }

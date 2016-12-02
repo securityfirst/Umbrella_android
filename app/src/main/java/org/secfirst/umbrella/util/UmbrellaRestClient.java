@@ -25,8 +25,7 @@ public class UmbrellaRestClient {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static AsyncHttpClient getClientForApiUpdates(Context context) {
-        AsyncHttpClient client = new AsyncHttpClient();
-        String[] pins = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78", "852627ad032bf9ab22e416cbbf9e32bc1187366f", "1d2eb31886d384cf34986f57eb75a21d08f7aaef"};
+        String[] pins = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78", "852627ad032bf9ab22e416cbbf9e32bc1187366f", "1d2eb31886d384cf34986f57eb75a21d08f7aaef", "f1af49801d8c94bca49964c3b467b7a7b783880a"};
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
         } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
@@ -39,6 +38,15 @@ public class UmbrellaRestClient {
     public static void get(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
         client = getClientForApiUpdates(context);
         if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static void getCustomFeed(String url, RequestParams params, Context context, AsyncHttpResponseHandler responseHandler) {
+        client = new AsyncHttpClient();
+        if (isRequestReady(context)) client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    private static boolean isRequestReady(Context context) {
+        return isRequestReady(context, null);
     }
 
     private static boolean isRequestReady(Context context, String token) {
