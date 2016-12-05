@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 public class UmbrellaUtil {
 
     private UmbrellaUtil() {
+        throw new AssertionError("Instantiating utility class.");
     }
 
     public static void hideSoftKeyboard(Activity activity) {

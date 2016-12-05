@@ -26,6 +26,7 @@ public class UpgradeHelper {
     }
 
     private UpgradeHelper() {
+        throw new AssertionError("Instantiating utility class.");
     }
 
     /**
