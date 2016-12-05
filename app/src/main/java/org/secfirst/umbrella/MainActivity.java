@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         UmbrellaUtil.logIt(MainActivity.this, Log.getStackTraceString(e.getCause()));
                     }
                     if (hasDifficulty != null && hasDifficulty.size() > 0) {
-                        Category childCategory = null;
+                        Category childCategory;
                         try {
                             childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
                             if (!childCategory.getDifficultyAdvanced() && position > 0) {
@@ -307,7 +307,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
-        Category category = null;
+        Category category;
         try {
             category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
