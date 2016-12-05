@@ -155,7 +155,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
-                        if (selLoc != null && selLoc.size() > 0) {
+                        if (selLoc != null && !selLoc.isEmpty()) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
                             try {
@@ -178,7 +178,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
-                        if (selISO2 != null && selISO2.size() > 0) {
+                        if (selISO2 != null && !selISO2.isEmpty()) {
                             iso2 = selISO2.get(0);
                             iso2.setValue(mAddress.getCountryCode().toLowerCase());
                             try {
@@ -201,7 +201,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
                         }
-                        if (selCountry != null && selCountry.size() > 0) {
+                        if (selCountry != null && !selCountry.isEmpty()) {
                             mCountry = selCountry.get(0);
                             mCountry.setValue(mAddress.getCountryName());
                             try {
@@ -253,7 +253,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         } catch (SQLException e) {
             if (getActivity()!=null) UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
-        if (selLoc!=null && selLoc.size() > 0) {
+        if (selLoc!=null && !selLoc.isEmpty()) {
             mAutocompleteLocation.setHint(selLoc.get(0).getValue());
         } else {
             mAutocompleteLocation.setHint(global.getString(R.string.set_location));
@@ -272,14 +272,14 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         String headerText = "";
         try {
             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
-            if (selCountry!=null && selCountry.size() > 0) {
+            if (selCountry!=null && !selCountry.isEmpty()) {
                 headerText = global.getString(R.string.country_selected)+": " + selCountry.get(0).getValue() + "\n";
             }
         } catch (SQLException e) {
             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
         mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
-        noFeedItems.setVisibility((isFeedSet() && (items==null || items.size() == 0)) ? View.VISIBLE : View.GONE);
+        noFeedItems.setVisibility((isFeedSet() && (items==null || items.isEmpty())) ? View.VISIBLE : View.GONE);
         headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeeditemsRefreshed()));
         feedListView.setVisibility(isFeedSet() && items!=null ? View.VISIBLE : View.GONE);
         noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
@@ -306,11 +306,11 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         } catch (SQLException e) {
             UmbrellaUtil.logIt(getActivity(), Log.getStackTraceString(e.getCause()));
         }
-        if (selISO2!=null && selISO2.size()>0) {
+        if (selISO2!=null && !selISO2.isEmpty()) {
             List<Registry> selections;
             try {
                 selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size()>0) {
+                if (!selections.isEmpty()) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
                     for (Registry item : selections) {
@@ -331,7 +331,7 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
                             Type listType = new TypeToken<ArrayList<FeedItem>>() {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                            if (receivedItems != null && receivedItems.size() > 0) {
+                            if (receivedItems != null && !receivedItems.isEmpty()) {
                                 global.setFeedItems(receivedItems);
                                 refreshView();
                                 mSwipeRefreshLayout.setRefreshing(false);

@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     } catch (SQLException e) {
                         UmbrellaUtil.logIt(MainActivity.this, Log.getStackTraceString(e.getCause()));
                     }
-                    if (hasDifficulty != null && hasDifficulty.size() > 0) {
+                    if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                         Category childCategory;
                         try {
                             childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
@@ -157,7 +157,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             });
 
             drawer.setDrawerListener(this);
-            if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments().size() > 0) {
+            if (getIntent() != null && getIntent().getData() != null && !getIntent().getData().getPathSegments().isEmpty()) {
                 for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
                     for (DrawerChildItem childItem : groupItem) {
                         if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
@@ -231,7 +231,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
             }
-            if (hasDifficulty != null && hasDifficulty.size() > 0 && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+            if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
                     global.getDaoDifficulty().update(hasDifficulty.get(0));
@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             setNavItems(childItem.getTitle());
             if (hasDifficulty != null) {
                 int spinnerNumber = 0;
-                if (hasDifficulty.size() > 0) spinnerNumber = hasDifficulty.get(0).getSelected();
+                if (!hasDifficulty.isEmpty()) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
                 boolean checklist = false;
                 if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null) {
@@ -378,7 +378,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
             }
-            itemExport.setVisible(hasDifficulty!=null && hasDifficulty.size()>0);
+            itemExport.setVisible(hasDifficulty!=null && !hasDifficulty.isEmpty());
         }
         favouriteItem = menu.findItem(R.id.favourite);
         return true;
@@ -418,7 +418,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
             }
-            if (hasDifficulty!=null && hasDifficulty.size() > 0) {
+            if (hasDifficulty!=null && !hasDifficulty.isEmpty()) {
                 String body = "";
                 List<CheckItem> items = null;
                 QueryBuilder<CheckItem, String> queryBuilder = global.getDaoCheckItem().queryBuilder();
