@@ -25,6 +25,9 @@ public class UpgradeHelper {
         VERSION = new LinkedHashSet<>();
     }
 
+    private UpgradeHelper() {
+    }
+
     /**
      * Add the given version to the list of available updates
      */
