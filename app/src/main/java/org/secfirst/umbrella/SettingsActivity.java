@@ -139,7 +139,7 @@ public class SettingsActivity extends BaseActivity {
                         } catch (SQLException e) {
                             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
                         }
-                        if (selLoc!=null && selLoc.size() > 0) {
+                        if (selLoc!=null && !selLoc.isEmpty()) {
                             mLocation = selLoc.get(0);
                             mLocation.setValue(chosenAddress);
                             try {
@@ -159,7 +159,7 @@ public class SettingsActivity extends BaseActivity {
                         Registry iso2;
                         try {
                             selISO2 = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "iso2");
-                            if (selISO2.size() > 0) {
+                            if (!selISO2.isEmpty()) {
                                 iso2 = selISO2.get(0);
                                 iso2.setValue(mAddress.getCountryCode().toLowerCase());
                                 try {
@@ -181,7 +181,7 @@ public class SettingsActivity extends BaseActivity {
                         List<Registry> selCountry;
                         try {
                             selCountry = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "country");
-                            if (selCountry.size() > 0) {
+                            if (!selCountry.isEmpty()) {
                                 mCountry = selCountry.get(0);
                                 mCountry.setValue(mAddress.getCountryName());
                                 try {
@@ -340,7 +340,7 @@ public class SettingsActivity extends BaseActivity {
         } catch (SQLException e) {
             UmbrellaUtil.logIt(SettingsActivity.this, Log.getStackTraceString(e.getCause()));
         }
-        if (selLoc!=null && selLoc.size() > 0) {
+        if (selLoc!=null && !selLoc.isEmpty()) {
             mAutocompleteLocation.setHint(selLoc.get(0).getValue());
         } else {
             mAutocompleteLocation.setHint(global.getString(R.string.set_location));
@@ -426,7 +426,7 @@ public class SettingsActivity extends BaseActivity {
                 Type listType = new TypeToken<ArrayList<Segment>>() {
                 }.getType();
                 ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
-                if (receivedSegments!=null && receivedSegments.size() > 0) {
+                if (receivedSegments!=null && !receivedSegments.isEmpty()) {
                     global.syncSegments(receivedSegments);
                 }
                 checkDone();
@@ -441,7 +441,7 @@ public class SettingsActivity extends BaseActivity {
                 Type listType = new TypeToken<ArrayList<CheckItem>>() {
                 }.getType();
                 ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
-                if (receivedItems!=null && receivedItems.size() > 0) {
+                if (receivedItems!=null && !receivedItems.isEmpty()) {
                     global.syncCheckLists(receivedItems);
                 }
                 checkDone();
@@ -456,7 +456,7 @@ public class SettingsActivity extends BaseActivity {
                 Type listType = new TypeToken<ArrayList<Category>>() {
                 }.getType();
                 ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
-                if (receivedItems!=null && receivedItems.size() > 0) {
+                if (receivedItems!=null && !receivedItems.isEmpty()) {
                     global.syncCategories(receivedItems);
                 }
                 checkDone();

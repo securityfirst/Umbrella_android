@@ -556,7 +556,7 @@ public class Global extends Application {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
         }
-        if (selCountry != null && selCountry.size() > 0) {
+        if (selCountry != null && !selCountry.isEmpty()) {
             selectedCountry = selCountry.get(0).getValue();
         }
         return selectedCountry;
@@ -566,7 +566,7 @@ public class Global extends Application {
         int retInterval = 0;
         try {
             List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
-            if (selInterval.size() > 0) {
+            if (!selInterval.isEmpty()) {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
                 } catch (NumberFormatException nfe) {
@@ -584,7 +584,7 @@ public class Global extends Application {
     public void setRefreshValue(int refreshValue) {
         try {
             List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
-            if (selInterval.size() > 0) {
+            if (!selInterval.isEmpty()) {
                 selInterval.get(0).setValue(String.valueOf(refreshValue));
                 getDaoRegistry().update(selInterval.get(0));
             } else {
