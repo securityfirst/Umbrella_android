@@ -46,7 +46,7 @@ public class SearchActivity extends BaseActivity {
         if (intent!=null && Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             if (query!=null) {
-                List<Segment> mSegments = null;
+                List<Segment> mSegments;
                 try {
                     QueryBuilder<Segment, String> queryBuilder = global.getDaoSegment().queryBuilder();
                     Where<Segment, String> where = queryBuilder.where();
