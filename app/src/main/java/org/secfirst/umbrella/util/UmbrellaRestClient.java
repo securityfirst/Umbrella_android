@@ -24,7 +24,11 @@ public class UmbrellaRestClient {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static AsyncHttpClient getClientForApiUpdates(Context context) {
+    private UmbrellaRestClient() {
+        throw new AssertionError("Instantiating utility class.");
+    }
+
+    private static AsyncHttpClient getClientForApiUpdates(Context context) {
         AsyncHttpClient client = new AsyncHttpClient();
         String[] pins = new String[] {"19ed92909228c6ffc29da6b79d05bc83bab15a78", "852627ad032bf9ab22e416cbbf9e32bc1187366f", "1d2eb31886d384cf34986f57eb75a21d08f7aaef"};
         try {

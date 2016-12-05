@@ -25,6 +25,10 @@ public class UpgradeHelper {
         VERSION = new LinkedHashSet<>();
     }
 
+    private UpgradeHelper() {
+        throw new AssertionError("Instantiating utility class.");
+    }
+
     /**
      * Add the given version to the list of available updates
      */
