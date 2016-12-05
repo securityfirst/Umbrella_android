@@ -3,7 +3,6 @@ package org.secfirst.umbrella.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -39,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -121,10 +119,10 @@ public class UmbrellaUtil {
         return parentCategories;
     }
 
-    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
+    public static List<ArrayList<DrawerChildItem>> getChildItems(Context context) {
         Global global = (Global) context.getApplicationContext();
-        ArrayList<Category> parentCategories = new ArrayList<>();
-        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
+        List<Category> parentCategories = new ArrayList<>();
+        List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
             categories = global.getDaoCategory().queryForAll();

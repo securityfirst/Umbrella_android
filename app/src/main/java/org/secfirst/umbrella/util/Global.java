@@ -508,7 +508,7 @@ public class Global extends Application {
         HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
         for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
             if (entry.getValue().equals(refreshValue)) {
-                refreshValueLabel = (String) entry.getKey();
+                refreshValueLabel = entry.getKey();
             }
         }
         return refreshValueLabel;
@@ -538,7 +538,7 @@ public class Global extends Application {
     public String getSelectedFeedSourcesLabel() {
         String feedSourcesLabel = "";
         final CharSequence[] items = {" ReliefWeb ", " UN ", " FCO ", " CDC "};
-        final ArrayList<Integer> selectedItems = getSelectedFeedSources();
+        final List<Integer> selectedItems = getSelectedFeedSources();
         for (Integer selectedItem : selectedItems) {
             if (!selectedItem.equals(selectedItems.get(0))) feedSourcesLabel += "\n";
             feedSourcesLabel += " - "+items[selectedItem];
@@ -699,8 +699,8 @@ public class Global extends Application {
     }
 
     public CharSequence[] getFeedSourcesArray() {
-        ArrayList<FeedSource> feedSources = getFeedSourcesList();
-        ArrayList<String> sourcesList = new ArrayList<>();
+        List<FeedSource> feedSources = getFeedSourcesList();
+        List<String> sourcesList = new ArrayList<>();
         for (FeedSource source : feedSources) {
             sourcesList.add(source.getName());
         }
@@ -708,7 +708,7 @@ public class Global extends Application {
     }
 
     public int getFeedSourceCodeByIndex(int index) {
-        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        List<FeedSource> feedSources = getFeedSourcesList();
         if (index < feedSources.size()) {
             return feedSources.get(index).getCode();
         }
