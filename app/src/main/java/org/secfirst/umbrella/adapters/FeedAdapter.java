@@ -21,13 +21,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class FeedAdapter extends BaseAdapter {
 
-    ArrayList<FeedItem> feedItems  = new ArrayList<>();
+    List<FeedItem> feedItems  = new ArrayList<>();
     Context mContext;
 
-    public FeedAdapter(Context context, ArrayList<FeedItem> mItems) {
+    public FeedAdapter(Context context, List<FeedItem> mItems) {
         if (mItems!=null) {
             this.feedItems = mItems;
             sortFeedItems(true);

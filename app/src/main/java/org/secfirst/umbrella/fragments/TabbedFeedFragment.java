@@ -52,7 +52,6 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,10 +67,10 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
     CardView noFeedItems;
     Global global;
     private AutoCompleteTextView mAutocompleteLocation;
-    private ArrayList<Address> mAddressList;
+    private List<Address> mAddressList;
     private Address mAddress;
     private Registry mLocation, mCountry;
-    private ArrayList<FeedItem> items = new ArrayList<>();
+    private List<FeedItem> items = new ArrayList<>();
 
     public TabbedFeedFragment() {
     }
@@ -370,13 +369,12 @@ public class TabbedFeedFragment extends Fragment implements SwipeRefreshLayout.O
         int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(global.getApplicationContext());
+        final Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(global.getApplicationContext());
         for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
             if (entry.getValue().equals(currentRefresh)) {
                 selectedIndex = i;
-
             }
-            arrayAdapter.add((String) entry.getKey());
+            arrayAdapter.add(entry.getKey());
             i++;
         }
         builderSingle.setNegativeButton(global.getString(R.string.cancel),

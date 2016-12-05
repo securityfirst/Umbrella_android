@@ -54,7 +54,7 @@ public class SettingsActivity extends BaseActivity {
     private ProgressDialog mProgress;
     private static int syncDone;
     private AutoCompleteTextView mAutocompleteLocation;
-    private ArrayList<Address> mAddressList;
+    private List<Address> mAddressList;
     private Address mAddress;
     private Registry mLocation, mCountry;
     private CheckBox mSkipPw;
@@ -296,13 +296,12 @@ public class SettingsActivity extends BaseActivity {
         int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(SettingsActivity.this);
+        final Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(SettingsActivity.this);
         for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
             if (entry.getValue().equals(currentRefresh)) {
                 selectedIndex = i;
-
             }
-            arrayAdapter.add((String) entry.getKey());
+            arrayAdapter.add(entry.getKey());
             i++;
         }
         builderSingle.setNegativeButton(R.string.cancel,
