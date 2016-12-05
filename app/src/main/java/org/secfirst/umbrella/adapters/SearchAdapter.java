@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private List<Segment> mSegment = new ArrayList<>();
-    private ArrayList<String> mQueries = new ArrayList<String>();
+    private ArrayList<String> mQueries = new ArrayList<>();
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
