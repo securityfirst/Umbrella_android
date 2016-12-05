@@ -55,6 +55,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Global extends Application {
 
@@ -505,9 +506,9 @@ public class Global extends Application {
         String refreshValueLabel = "";
         int refreshValue = getRefreshValue();
         HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
-        for (Object key : refreshValues.keySet()) {
-            if (refreshValues.get(key).equals(refreshValue)) {
-                refreshValueLabel = (String) key;
+        for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
+            if (entry.getValue().equals(refreshValue)) {
+                refreshValueLabel = (String) entry.getKey();
             }
         }
         return refreshValueLabel;
