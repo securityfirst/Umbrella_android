@@ -45,6 +45,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class SettingsActivity extends BaseActivity {
@@ -296,12 +297,12 @@ public class SettingsActivity extends BaseActivity {
         int selectedIndex = 0;
         int i = 0;
         final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(SettingsActivity.this);
-        for (Object key : refreshValues.keySet()) {
-            if (refreshValues.get(key).equals(currentRefresh)) {
+        for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
+            if (entry.getValue().equals(currentRefresh)) {
                 selectedIndex = i;
 
             }
-            arrayAdapter.add((String) key);
+            arrayAdapter.add((String) entry.getKey());
             i++;
         }
         builderSingle.setNegativeButton(R.string.cancel,
@@ -318,9 +319,9 @@ public class SettingsActivity extends BaseActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String chosen = arrayAdapter.getItem(which);
-                        for (Object key : refreshValues.keySet()) {
-                            Integer value = refreshValues.get(key);
-                            if (key.equals(chosen)) {
+                        for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
+                            Integer value = entry.getValue();
+                            if (entry.getKey().equals(chosen)) {
                                 if (mBounded) mService.setRefresh(value);
                                 global.setRefreshValue(value);
                                 dialog.dismiss();
