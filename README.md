@@ -1,5 +1,8 @@
 # Umbrella
 
+![](https://github.com/securityfirst/Umbrella_android/blob/master/howtouse.gif?raw=true)
+
+
 Umbrella is an Android mobile app developed by [Security First](https://www.secfirst.org) that provides human rights defenders with the information on what to do in any given security situation and the tools to do it. It allows the user to choose what they want to do, such as: protect data; securely make a call/email; securely access the internet; plan secure travel; protect their office/home; conduct counter-surveillance; or deal with kidnapping, arrest or evacuation. Once a situation is chosen, the app outlines what to do and what tools to use given your circumstances. This is followed by a simple checklist of recommended actions that can be customised, saved and shared securely. Umbrella’s dashboard also provides users with an up-to-the-minute account of potential risks in their chosen location.
 
 ## Installation
