@@ -68,7 +68,11 @@ public abstract class BaseActivity extends ActionBarActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         Registry language = global.getRegistry("language");
-        if (language!=null && !language.getValue().equals("")) setLocale(language.getValue());
+        if (language!=null && !language.getValue().equals("")) {
+            setLocale(language.getValue());
+        } else {
+            setScreen();
+        }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
     }
