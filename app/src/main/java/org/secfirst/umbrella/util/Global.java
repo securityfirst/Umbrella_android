@@ -10,9 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Environment;
 import android.support.v4.content.IntentCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -22,6 +20,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
 
@@ -33,43 +32,45 @@ import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.TourActivity;
+import org.secfirst.umbrella.fragments.SettingsFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.FeedSource;
+import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import timber.log.Timber;
 
 public class Global extends Application {
 
     private SharedPreferences prefs;
     private SharedPreferences.Editor sped;
-    private boolean _termsAccepted, isLoggedIn, password;
-    private ArrayList<FeedItem> feedItems = new ArrayList<>();
-    private long feeditemsRefreshed;
+    private boolean _termsAccepted, showNav, isLoggedIn, password;
     private Dao<Segment, String> daoSegment;
     private Dao<CheckItem, String> daoCheckItem;
     private Dao<Category, String> daoCategory;
     private Dao<Registry, String> daoRegistry;
     private Dao<Favourite, String> daoFavourite;
     private Dao<Difficulty, String> daoDifficulty;
+    private Dao<Language, String> daoLanguage;
+    private Dao<FeedItem, String> daoFeedItem;
+    private Dao<FeedSource, String> daoFeedSource;
     private OrmHelper dbHelper;
 
     @SuppressLint("CommitPrefEdits")
@@ -80,6 +81,7 @@ public class Global extends Application {
         prefs = mContext.getSharedPreferences(
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
+        if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
     }
 
     public boolean isLoggedIn() {
@@ -100,25 +102,24 @@ public class Global extends Application {
         return _termsAccepted;
     }
 
-    public ArrayList<FeedItem> getFeedItems() {
-        return feedItems;
+    public boolean hasShownNavAlready() {
+        showNav = prefs.getBoolean("showNav", false);
+        return showNav;
     }
 
-    public void setFeedItems(ArrayList<FeedItem> feedItems) {
-        this.feedItems = feedItems;
-        setFeeditemsRefreshed(new Date().getTime());
+    public void navShown() {
+        this.showNav = true;
+        sped.putBoolean("showNav", showNav).commit();
     }
 
-    public void addToFeedItems(ArrayList<FeedItem> feedItems) {
-        for (FeedItem feedItem : feedItems) {
-            addFeedItem(feedItem);
+    public List<FeedItem> getFeedItems() {
+        List<FeedItem> items = new ArrayList<>();
+        try {
+            items = daoFeedItem.queryForAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    }
-
-    public void addFeedItem(FeedItem feedItem) {
-        if (this.feedItems==null) this.feedItems = new ArrayList<>();
-        this.feedItems.add(feedItem);
-        setFeeditemsRefreshed(new Date().getTime());
+        return items;
     }
 
     public boolean getNotificationsEnabled() {
@@ -127,9 +128,19 @@ public class Global extends Application {
         try {
             if (r!=null) enabled = Boolean.valueOf(r.getValue());
         } catch(NumberFormatException nfe) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+            Timber.e(nfe);
         }
         return enabled;
+    }
+
+    public void deleteRegistriesByName(String name) {
+        try {
+            DeleteBuilder<Registry, String> toDelete = getDaoRegistry().deleteBuilder();
+            toDelete.where().eq(Registry.FIELD_NAME, name);
+            toDelete.delete();
+        } catch (SQLException e) {
+            Timber.e(e);
+        }
     }
 
     public Registry getRegistry(String name) {
@@ -139,7 +150,7 @@ public class Global extends Application {
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         return registry;
     }
@@ -151,19 +162,20 @@ public class Global extends Application {
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         } finally {
             if (registry!=null) {
                 try {
+                    registry.setValue(String.valueOf(value));
                     getDaoRegistry().update(registry);
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+                    Timber.e(e);
                 }
             } else {
                 try {
                     getDaoRegistry().create(new Registry(name, String.valueOf(value)));
                 } catch (SQLException e) {
-                    UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+                    Timber.e(e);
                 }
             }
         }
@@ -179,7 +191,7 @@ public class Global extends Application {
         try {
             if (r!=null) enabled = Boolean.valueOf(r.getValue());
         } catch(NumberFormatException nfe) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+            Timber.e(nfe);
         }
         return enabled;
     }
@@ -194,7 +206,7 @@ public class Global extends Application {
         try {
             if (r!=null && !r.getValue().equals("")) ringtone = Uri.parse(r.getValue());
         } catch(IllegalArgumentException e) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
         return ringtone;
     }
@@ -210,7 +222,7 @@ public class Global extends Application {
         try {
             if (r!=null) enabled = Boolean.valueOf(r.getValue());
         } catch(NumberFormatException nfe) {
-            UmbrellaUtil.logIt(this, Log.getStackTraceString(nfe.getCause()));
+            Timber.e(nfe);
         }
         return enabled;
     }
@@ -232,11 +244,17 @@ public class Global extends Application {
         else return password || prefs.getBoolean("skipPassword", false);
     }
 
-    public void setPassword(final Activity activity) {
-        final AlertDialog.Builder alert = new AlertDialog.Builder(activity);
-        alert.setTitle(R.string.set_password_title);
+    public void setPassword(final Context context, SettingsFragment fragment) {
+        setPassword(context, fragment, false);
+    }
+
+    public void setPassword(final Context context, final SettingsFragment fragment, final boolean change) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setTitle(change ? R.string.change_password_title : R.string.set_password_title);
         alert.setMessage(R.string.set_password_body);
-        View view = LayoutInflater.from(activity).inflate(R.layout.password_alert, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.password_alert, null);
+        final EditText pwOld = (EditText) view.findViewById(R.id.oldpw);
+        pwOld.setVisibility(change ? View.VISIBLE : View.GONE);
         final EditText pwInput = (EditText) view.findViewById(R.id.pwinput);
         final EditText confirmInput = (EditText) view.findViewById(R.id.pwconfirm);
         alert.setView(view);
@@ -248,13 +266,14 @@ public class Global extends Application {
         alert.setNeutralButton(R.string.skip, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                final AlertDialog.Builder alert2 = new AlertDialog.Builder(activity);
+                final AlertDialog.Builder alert2 = new AlertDialog.Builder(context);
                 alert2.setTitle(R.string.skip_password_title);
                 alert2.setMessage(R.string.skip_password_warning);
                 alert2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        setPassword(activity);
+                        if (password) getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(getString(R.string.default_db_password)) + "';");
+                        setPassword(context, fragment, change);
                     }
                 });
                 alert2.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -280,24 +299,28 @@ public class Global extends Application {
             public void onClick(View v) {
                 String pw = pwInput.getText().toString();
                 String checkError = UmbrellaUtil.checkPasswordStrength(pw, getApplicationContext());
-                if (!pw.equals(confirmInput.getText().toString())) {
-                    Toast.makeText(activity, R.string.passwords_do_not_match, Toast.LENGTH_LONG).show();
+                SQLiteDatabase.loadLibs(context);
+                if (change && !checkSQLCipherPW(pwOld.getText().toString(), context)) {
+                    Toast.makeText(context, R.string.old_password_incorrect, Toast.LENGTH_LONG).show();
+                } else if (!pw.equals(confirmInput.getText().toString())) {
+                    Toast.makeText(context, R.string.passwords_do_not_match, Toast.LENGTH_LONG).show();
                 } else if (checkError.equals("")) {
                     getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(pw) + "';");
                     password = true;
+                    setLoggedIn(true);
+                    setSkipPassword(false);
                     dialog.dismiss();
-                    Toast.makeText(activity, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
+                    if (fragment!=null) fragment.onResume();
+                    Toast.makeText(context, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(activity, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
     public void logout(Context context) {
-        OpenHelperManager.setHelper(null);
         setLoggedIn(false);
-
         if (OpenHelperManager.getHelper(context, OrmHelper.class) != null) {
             OpenHelperManager.getHelper(context, OrmHelper.class).close();
             OpenHelperManager.setHelper(null);
@@ -346,28 +369,33 @@ public class Global extends Application {
         return dbHelper;
     }
 
+    public boolean checkSQLCipherPW(String password, Context context) {
+        SQLiteDatabase.loadLibs(this);
+        try {
+            OrmHelper oh = context!=null ? new OrmHelper(context) : getOrmHelper();
+            oh.getWritableDatabase(password);
+            return true;
+        } catch (SQLiteException e) {
+            Timber.e(e);
+        }
+        return false;
+    }
+
     public boolean initializeSQLCipher(String password) {
         if (password.equals("")) password = getString(R.string.default_db_password);
-        SQLiteDatabase.loadLibs(this);
-        if (dbHelper==null || !dbHelper.isOpen()) {
-            createDatabaseIfNotExists();
-            dbHelper = new OrmHelper(getApplicationContext());
-        }
-        try {
-            getOrmHelper().getWritableDatabase(password);
+        if (checkSQLCipherPW(password, null)) {
             getDaoSegment();
             getDaoCheckItem();
             getDaoCategory();
             getDaoRegistry();
             getDaoFavourite();
             getDaoDifficulty();
+            getDaoLanguage();
+            getDaoFeedItem();
+            getDaoFeedSource();
             startService();
-            if (password.equals(getString(R.string.default_db_password)))setLoggedIn(true);
+            if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
-        } catch (SQLiteException e) {
-            UmbrellaUtil.logIt(getApplicationContext(), e.toString());
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
         }
         this.password = true;
         return false;
@@ -384,8 +412,7 @@ public class Global extends Application {
             try {
                 daoSegment = getOrmHelper().getDao(Segment.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoSegment;
@@ -396,8 +423,7 @@ public class Global extends Application {
             try {
                 daoCheckItem = getOrmHelper().getDao(CheckItem.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoCheckItem;
@@ -408,11 +434,51 @@ public class Global extends Application {
             try {
                 daoCategory = getOrmHelper().getDao(Category.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoCategory;
+    }
+
+    public Dao<Language, String> getDaoLanguage() {
+        if (daoLanguage==null) {
+            try {
+                daoLanguage = getOrmHelper().getDao(Language.class);
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoLanguage;
+    }
+
+    public Dao<FeedItem, String> getDaoFeedItem() {
+        if (daoFeedItem==null) {
+            try {
+                daoFeedItem = getOrmHelper().getDao(FeedItem.class);
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoFeedItem;
+    }
+
+    public Dao<FeedSource, String> getDaoFeedSource() {
+        if (daoFeedSource==null) {
+            try {
+                daoFeedSource = getOrmHelper().getDao(FeedSource.class);
+                if (daoFeedSource.countOf()<1) {
+                    daoFeedSource.create(new FeedSource("ReliefWeb", 0));
+                    daoFeedSource.create(new FeedSource("UN", 1));
+                    daoFeedSource.create(new FeedSource("FCO" ,2));
+                    daoFeedSource.create(new FeedSource("CDC", 3));
+                    daoFeedSource.create(new FeedSource("Global Disaster and Alert Coordination System", 4));
+                    daoFeedSource.create(new FeedSource("US State Department Country Warnings", 5));
+                }
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoFeedSource;
     }
 
     public Dao<Registry, String> getDaoRegistry() {
@@ -420,8 +486,7 @@ public class Global extends Application {
             try {
                 daoRegistry = getOrmHelper().getDao(Registry.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoRegistry;
@@ -432,8 +497,7 @@ public class Global extends Application {
             try {
                 daoFavourite = getOrmHelper().getDao(Favourite.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoFavourite;
@@ -444,8 +508,7 @@ public class Global extends Application {
             try {
                 daoDifficulty = getOrmHelper().getDao(Difficulty.class);
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
         return daoDifficulty;
@@ -459,8 +522,7 @@ public class Global extends Application {
                     getDaoSegment().create(segment);
                 }
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
     }
@@ -474,8 +536,20 @@ public class Global extends Application {
                     getDaoCategory().create(item);
                 }
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
+            }
+        }
+    }
+
+    public void syncLanguages(ArrayList<Language> languages) {
+        if (getOrmHelper()!=null) {
+            try {
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Language.class);
+                for (Language item : languages) {
+                    getDaoLanguage().create(item);
+                }
+            } catch (SQLException e) {
+                Timber.e(e);
             }
         }
     }
@@ -496,15 +570,14 @@ public class Global extends Application {
                     }
                 }
             } catch (SQLException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
     }
 
-    public String getRefreshLabel() {
+    public String getRefreshLabel(Integer refreshValue) {
         String refreshValueLabel = "";
-        int refreshValue = getRefreshValue();
+        if (refreshValue==null) refreshValue = getRefreshValue();
         HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
         for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
             if (entry.getValue().equals(refreshValue)) {
@@ -515,7 +588,7 @@ public class Global extends Application {
     }
 
     public ArrayList<Integer> getSelectedFeedSources() {
-        final CharSequence[] items = {" ReliefWeb "," UN "," FCO "," CDC "};
+        final CharSequence[] items = {"ReliefWeb","UN","FCO","CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
         final ArrayList<Integer> selectedItems = new ArrayList<>();
         List<Registry> selections;
         try {
@@ -529,19 +602,20 @@ public class Global extends Application {
                 }
             }
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         return selectedItems;
     }
 
-    public String getSelectedFeedSourcesLabel() {
+    public String getSelectedFeedSourcesLabel(boolean inline) {
         String feedSourcesLabel = "";
-        final CharSequence[] items = {" ReliefWeb ", " UN ", " FCO ", " CDC "};
-        final List<Integer> selectedItems = getSelectedFeedSources();
+        final CharSequence[] items = {"ReliefWeb","UN","FCO","CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
+        final ArrayList<Integer> selectedItems = getSelectedFeedSources();
         for (Integer selectedItem : selectedItems) {
-            if (!selectedItem.equals(selectedItems.get(0))) feedSourcesLabel += "\n";
-            feedSourcesLabel += " - "+items[selectedItem];
+            if (!selectedItem.equals(selectedItems.get(0))) {
+                feedSourcesLabel += (inline) ? ", " : "\n";
+            }
+            feedSourcesLabel += (inline ? "" : " - " )+items[selectedItem];
         }
         return feedSourcesLabel;
     }
@@ -553,8 +627,7 @@ public class Global extends Application {
         try {
             selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         if (selCountry != null && !selCountry.isEmpty()) {
             selectedCountry = selCountry.get(0).getValue();
@@ -570,13 +643,11 @@ public class Global extends Application {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
                 } catch (NumberFormatException nfe) {
-                    if (BuildConfig.BUILD_TYPE.equals("debug"))
-                        Log.getStackTraceString(nfe.getCause());
+                    Timber.e(nfe);
                 }
             }
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         return retInterval;
     }
@@ -591,45 +662,24 @@ public class Global extends Application {
                 getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
             }
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
     }
 
-
-    public long getFeeditemsRefreshed() {
-        return feeditemsRefreshed;
-    }
-
-    public void setFeeditemsRefreshed(long feeditemsRefreshed) {
-        this.feeditemsRefreshed = feeditemsRefreshed;
-    }
-
-    public void exportDatabase() {
+    public long getFeedItemsRefreshed() {
+        long feedItemsRefreshed = 0L;
+        QueryBuilder<FeedItem, String> qb = getDaoFeedItem().queryBuilder();
         try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if (sd.canWrite()) {
-                String backupDBPath = OrmHelper.DATABASE_NAME;
-                String currentDBPath = "//data//"+getPackageName()+"//databases//"+backupDBPath+"";
-                File currentDB = new File(data, currentDBPath);
-                File backupDB = new File(sd, backupDBPath);
-
-                if (currentDB.exists()) {
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-                }
+            qb.orderBy(FeedItem.FIELD_UPDATED_AT, false);
+            FeedItem firstFeedItem = qb.queryForFirst();
+            if (firstFeedItem!=null) {
+                feedItemsRefreshed = firstFeedItem.getDate()*1000;
             }
-        } catch (Exception e) {
-            Log.e("can't write", e.getLocalizedMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return feedItemsRefreshed;
     }
-
-
 
     public void createDatabaseIfNotExists() {
         File destFile = getApplicationContext().getDatabasePath(OrmHelper.DATABASE_NAME);
@@ -637,8 +687,7 @@ public class Global extends Application {
             try {
                 copyDataBase(destFile);
             } catch (IOException e) {
-                if (BuildConfig.BUILD_TYPE.equals("debug"))
-                    Log.getStackTraceString(e.getCause());
+                Timber.e(e);
             }
         }
     }
@@ -695,6 +744,8 @@ public class Global extends Application {
         ArrayList<FeedSource> sourcesList = new ArrayList<>();
         sourcesList.add(new FeedSource("UN / ReliefWeb", 0));
         sourcesList.add(new FeedSource("CDC", 3));
+        sourcesList.add(new FeedSource("Global Disaster and Alert Coordination System", 4));
+        sourcesList.add(new FeedSource("US State Department Country Warnings", 5));
         return sourcesList;
     }
 
@@ -723,5 +774,8 @@ public class Global extends Application {
         daoRegistry = null;
         daoFavourite = null;
         daoDifficulty = null;
+        daoLanguage = null;
+        daoFeedItem = null;
+        daoFeedSource = null;
     }
 }

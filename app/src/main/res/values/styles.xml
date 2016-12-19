@@ -1,6 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="UmbrellaTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="preferenceTheme">@style/UmbrellaTheme.SettingsTheme</item>
+    </style>
+    <style name="UmbrellaTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="theme">@style/MyToolbarStyle</item>
+    </style>
+    <style name="MyToolbarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="theme">@style/MyToolbarTextStyle</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+    <style name="MyToolbarTextStyle" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
     <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
@@ -34,6 +45,23 @@
     <style name="input_box_login" parent="input_box_small">
         <item name="android:layout_marginLeft">45dp</item>
         <item name="android:layout_marginRight">45dp</item>
+    </style>
+
+    <style name="PreferenceThemeOverlay">
+        <item name="preferenceScreenStyle">@style/Preference.PreferenceScreen</item>
+        <item name="preferenceFragmentCompatStyle">@style/PreferenceFragment</item>
+        <item name="preferenceCategoryStyle">@style/Preference.Category</item>"
+        <item name="preferenceStyle">@style/Preference</item>
+        <item name="preferenceInformationStyle">@style/Preference.Information</item>
+        <item name="checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference</item>
+        <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat</item>
+        <item name="dialogPreferenceStyle">@style/Preference.DialogPreference</item>
+        <item name="editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference</item>
+        <item name="preferenceFragmentListStyle">@style/PreferenceFragmentList</item>
+    </style>
+
+    <style name="UmbrellaTheme.SettingsTheme" parent="PreferenceThemeOverlay">
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

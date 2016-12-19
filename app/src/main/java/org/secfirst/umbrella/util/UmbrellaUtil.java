@@ -19,7 +19,6 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.j256.ormlite.dao.Dao;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -40,6 +39,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+
+import timber.log.Timber;
 
 public class UmbrellaUtil {
 
@@ -183,19 +184,12 @@ public class UmbrellaUtil {
 
     public static boolean getFeeds(final Context context) {
         final Global global = (Global) context.getApplicationContext();
-        global.setFeedItems(new ArrayList<FeedItem>());
-        Dao<Registry, String> regDao = global.getDaoRegistry();
-        List<Registry> selISO2 = null;
-        try {
-            selISO2 = regDao.queryForEq(Registry.FIELD_NAME, "iso2");
-        } catch (SQLException e) {
-            UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
-        }
-        if (selISO2!=null && !selISO2.isEmpty()) {
+        Registry selISO2 = global.getRegistry("iso2");
+        if (selISO2!=null) {
             List<Registry> selections;
             try {
-                selections = regDao.queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (!selections.isEmpty()) {
+                selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                if (selections.size()>0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
                     for (Registry item : selections) {
@@ -206,7 +200,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.get(0).getValue() + "&sources=" + sources + "&since=0";
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -222,6 +216,11 @@ public class UmbrellaUtil {
                                 if(global.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
+                                            try {
+                                                global.getDaoFeedItem().create(feedItem);
+                                            } catch (SQLException e) {
+                                                e.printStackTrace();
+                                            }
                                             notificationItems.add(feedItem);
                                         }
                                     }
@@ -229,7 +228,6 @@ public class UmbrellaUtil {
                                         context.sendOrderedBroadcast(BaseActivity.getNotificationIntent(notificationItems), null);
                                     }
                                 }
-                                global.setFeedItems(receivedItems);
                             }
                         }
                     });
@@ -238,15 +236,24 @@ public class UmbrellaUtil {
                 }
                 return true;
             } catch (SQLException e) {
-                UmbrellaUtil.logIt(context, Log.getStackTraceString(e.getCause()));
+                Timber.e(e);
             }
         }
         return false;
     }
 
-    public static void logIt(Context context, String message) {
-        if (BuildConfig.BUILD_TYPE.equals("debug") && message != null && !message.isEmpty())
-            Log.i(context.getClass().getSimpleName(), message);
+    public static CharSequence[] getLanguageEntries() {
+        List<String> languageLabels = new ArrayList<>();
+        languageLabels.add("English");
+        languageLabels.add("Español");
+        return languageLabels.toArray(new CharSequence[languageLabels.size()]);
+    }
+
+    public static CharSequence[] getLanguageEntryValues() {
+        List<String> languageLabels = new ArrayList<>();
+        languageLabels.add("en-gb");
+        languageLabels.add("es");
+        return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
     public static HashMap<String, Integer> getRefreshValues(Context context) {
@@ -260,6 +267,32 @@ public class UmbrellaUtil {
         refreshInterval.put("24 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(24));
         refreshInterval.put(context.getString(R.string.manually), 0);
         return refreshInterval;
+    }
+
+    public static CharSequence[] getRefreshEntries(Context context) {
+        List<String> listItems = new ArrayList<>();
+        listItems.add(context.getString(R.string.half_hour));
+        listItems.add("1 "+context.getString(R.string.hour));
+        listItems.add("2 "+context.getString(R.string.hours));
+        listItems.add("4 "+context.getString(R.string.hours));
+        listItems.add("6 "+context.getString(R.string.hours));
+        listItems.add("12 "+context.getString(R.string.hours));
+        listItems.add("24 "+context.getString(R.string.hours));
+        listItems.add(context.getString(R.string.manually));
+        return listItems.toArray(new CharSequence[listItems.size()]);
+    }
+
+    public static CharSequence[] getRefreshEntryValues(Context context) {
+        List<String> listItems = new ArrayList<>();
+        listItems.add(String.valueOf(TimeUnit.MINUTES.toMillis(30)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(1)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(2)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(4)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(6)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(12)));
+        listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(24)));
+        listItems.add(String.valueOf(0));
+        return listItems.toArray(new CharSequence[listItems.size()]);
     }
 
 }

@@ -79,7 +79,7 @@ public class LoginActivity extends BaseActivity {
             global.resetPassword(this);
             return true;
         } else if (id == R.id.action_set_password) {
-            global.setPassword(this);
+            global.setPassword(this, null);
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +17,13 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import timber.log.Timber;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private List<Segment> mSegment = new ArrayList<>();
@@ -100,7 +100,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 }
             });
         } catch (SQLException e) {
-            UmbrellaUtil.logIt(mContext, Log.getStackTraceString(e.getCause()));
+            Timber.e(e);
         }
     }
 

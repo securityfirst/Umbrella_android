@@ -9,48 +9,41 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
-        android:paddingTop="20dp"
         android:visibility="gone"
+        android:paddingTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <ListView
+            android:id="@+id/feed_list"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" />
 
-            <ListView
-                android:id="@+id/feed_list"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+        <android.support.v7.widget.CardView
+            android:id="@+id/no_feed_items"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="top"
+            android:layout_marginTop="20dp"
+            android:paddingTop="20dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            card_view:cardCornerRadius="2dp">
+
+            <TextView
+                android:text="@string/no_feed_items_label"
+                android:textSize="@dimen/text_size_smallest"
                 android:layout_width="fill_parent"
+                android:padding="10dp"
+                android:visibility="visible"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
                 android:layout_height="wrap_content" />
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/no_feed_items"
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="top"
-                android:layout_marginTop="20dp"
-                android:paddingTop="20dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="2dp">
-
-                <TextView
-                    android:text="@string/no_feed_items_label"
-                    android:textSize="@dimen/text_size_smallest"
-                    android:layout_width="fill_parent"
-                    android:padding="10dp"
-                    android:visibility="visible"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:layout_height="wrap_content" />
-
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

@@ -43,4 +43,10 @@
         android:title="@string/reset_password"
         android:orderInCategory="9"
         umbrella:showAsAction="never" />
+
+    <item android:id="@+id/action_change_password"
+        android:title="@string/change_password"
+        android:orderInCategory="10"
+        android:visible="false"
+        umbrella:showAsAction="never" />
 </menu>

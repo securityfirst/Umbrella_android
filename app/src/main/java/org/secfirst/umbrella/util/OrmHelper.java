@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.util;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.support.ConnectionSource;
@@ -9,21 +8,25 @@ import com.j256.ormlite.table.TableUtils;
 
 import net.sqlcipher.database.SQLiteDatabase;
 
-import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
+import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.FeedSource;
+import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
 import java.sql.SQLException;
 import java.util.List;
 
+import timber.log.Timber;
+
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private Context context;
 
     public OrmHelper(Context context) {
@@ -55,8 +58,7 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
             }
         }
         catch (final Exception e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
             onCreate(database, connectionSource);
         }
     }
@@ -68,40 +70,49 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
 
     public void createTables(ConnectionSource source) {
         try {
-            TableUtils.createTable(source, Segment.class);
+            TableUtils.createTableIfNotExists(source, Segment.class);
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         try {
-            TableUtils.createTable(source, CheckItem.class);
+            TableUtils.createTableIfNotExists(source, CheckItem.class);
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         try {
-            TableUtils.createTable(source, Category.class);
+            TableUtils.createTableIfNotExists(source, Category.class);
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         try {
-            TableUtils.createTable(source, Registry.class);
+            TableUtils.createTableIfNotExists(source, Registry.class);
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         try {
-            TableUtils.createTable(source, Favourite.class);
+            TableUtils.createTableIfNotExists(source, Favourite.class);
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
         }
         try {
-            TableUtils.createTable(source, Difficulty.class);
+            TableUtils.createTableIfNotExists(source, Difficulty.class);
         } catch (SQLException e) {
-            if (BuildConfig.BUILD_TYPE.equals("debug"))
-                Log.getStackTraceString(e.getCause());
+            Timber.e(e);
+        }
+        try {
+            TableUtils.createTableIfNotExists(source, Language.class);
+        } catch (SQLException e) {
+            Timber.e(e);
+        }
+        try {
+            TableUtils.createTableIfNotExists(source, FeedItem.class);
+        } catch (SQLException e) {
+            Timber.e(e);
+        }
+        try {
+            TableUtils.createTableIfNotExists(source, FeedSource.class);
+        } catch (SQLException e) {
+            Timber.e(e);
         }
     }
 }

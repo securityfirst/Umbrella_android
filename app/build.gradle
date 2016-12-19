@@ -3,15 +3,15 @@ apply plugin: 'idea'
 apply plugin: 'witness'
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.2"
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "org.secfirst.umbrella"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 24
-        versionCode 11
-        versionName "0.2.0"
+        versionCode 13
+        versionName "0.2.2"
     }
     buildTypes {
         release {
@@ -31,50 +31,65 @@ android {
 dependencies {
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
     compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:preference-v7:24.2.1'
     compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.viewpagerindicator:library:2.4.1'
-    compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.loopj.android:android-async-http:1.4.8'
-    compile 'com.google.code.gson:gson:2.4'
     compile 'com.android.support:gridlayout-v7:24.2.1'
-    compile 'com.github.amlcurran.showcaseview:library:5.0.0'
-    compile 'org.apache.commons:commons-collections4:4.0'
-    compile 'org.jsoup:jsoup:1.8.2'
-    compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.android.support:design:24.2.1'
+
+    compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'net.zetetic:android-database-sqlcipher:3.5.4@aar'
     compile 'com.google.guava:guava:19.0'
+
+    compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
+    compile 'com.loopj.android:android-async-http:1.4.8'
+
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'org.jsoup:jsoup:1.8.2'
+
+    compile 'com.viewpagerindicator:library:2.4.1'
+    compile 'com.github.amlcurran.showcaseview:library:5.0.0'
+
+    compile 'org.apache.commons:commons-collections4:4.0'
+    compile 'com.jakewharton.timber:timber:4.3.1'
+
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
 }
 
 // generate using: `gradle -q calculateChecksums`
 dependencyVerification {
     verify = [
-        'com.android.support:appcompat-v7:ead7ac8011fb40676df8adc2856cae934edab55fc4444654c0ac6ea443736088',
-        'com.android.support:support-v4:cac2956f5c4bb363cc0ba824ac16ea2a687d1c305d434416a34772a5f9375ed7',
-        'com.viewpagerindicator:library:10670a99f8a30266f7c5a30c3af5dbf7e6419ba901184b37f44a877269f975e2',
-        'org.thoughtcrime.ssl.pinning:AndroidPinning:afa1d74e699257fa75cb109ff29bac50726ef269c6e306bdeffe8223cee06ef4',
-        'com.android.support:cardview-v7:2303b351686d1db060b5fcf1a9c709c79b4a54a85bfda0fb3c4849e244606ee1',
-        'com.android.support:recyclerview-v7:9077766a1a0f4e89528fbf9dcdf6d5880a8686f0266fa852d58d803beeef18fa',
-        'com.loopj.android:android-async-http:8ded08eaf313d1debfaa715f2952fe72135980cf146a5869f22cb5dddb41479d',
-        'com.google.code.gson:gson:a35abbcf689eb3d60a2959e83a624831658b023220cd2edb66350993ebfdc025',
-        'com.android.support:gridlayout-v7:1a31c248d69faa815cc155883ddcb0ccc7ba8e14e69ec58dd18d8017e23d76f5',
-        'com.github.amlcurran.showcaseview:library:ec5d15ded6c2fa5596c55342596f6146bf0d78e783abe547a58e19de18df0dcf',
-        'org.apache.commons:commons-collections4:93f8dfcd20831a28d092427723f696bceb70b28e7fb89d7914f14d5ea492ce5a',
-        'org.jsoup:jsoup:e87f0ee62a7592afc121dae468975d97ce47f432c965b5ba47350ca18ed6a473',
-        'com.j256.ormlite:ormlite-core:2beb9bd890a705fe25f6d74c7b1fdb5667da09f7063ba8e8eb501cb899dd5002',
-        'com.android.support:design:89842bb1243507fe3079066ea4ea58795effe69cdf9a819e05274d21760adfc2',
-        'net.zetetic:android-database-sqlcipher:e1539774238a76fc1d95bfd6915ab0882e7284ebd5569e0bcbdb9f0bfed1cc4a',
-        'com.google.guava:guava:58d4cc2e05ebb012bbac568b032f75623be1cb6fb096f3c60c72a86f7f057de4',
-        'com.android.support:support-vector-drawable:6ee37a7f7b93c1df1294e6f6f97df3724ac989fcda0549faf677001085330548',
-        'com.android.support:animated-vector-drawable:5aa30f578e1daefb26bef0ce06414266fbb4cdf5d4259f42a92c7bd83dcd81b4',
-        'com.android.support:support-compat:8e4fe0078b68073e8f5bcb52aa5b6407fd456d47c51aa0f8e8d1e23c69da06c1',
-        'com.android.support:support-media-compat:fa29a23eadd685631584b2c0c624a36e3bb79a33e257b00304501ad682fa2be3',
-        'com.android.support:support-core-utils:0fbc508e41dd6e8c634f310ee88452aaf8f48b6a843a369b115130b80d2fc05f',
-        'com.android.support:support-core-ui:ecc9184b7f438980e1c4a08b089d62dbc53ff90091f442d91fec27322a02c73c',
-        'com.android.support:support-fragment:d8030f0bf0f64214a29dc4e14d5ccd225e59f66ed15eb37f3a5022e773dd1fda',
-        'com.android.support:support-annotations:1e4d471c5378b283d95abfb128e7ed3c6b3cb19bb6f0c317a9b75e48e99365ff',
+            'com.android.support:preference-v7:8a18b973692103921a2006c59c732cbf632759f44fbe06cfb6093a40f0c7e051',
+            'com.android.support:cardview-v7:2303b351686d1db060b5fcf1a9c709c79b4a54a85bfda0fb3c4849e244606ee1',
+            'com.android.support:gridlayout-v7:1a31c248d69faa815cc155883ddcb0ccc7ba8e14e69ec58dd18d8017e23d76f5',
+            'com.android.support:design:89842bb1243507fe3079066ea4ea58795effe69cdf9a819e05274d21760adfc2',
+            'com.j256.ormlite:ormlite-core:2beb9bd890a705fe25f6d74c7b1fdb5667da09f7063ba8e8eb501cb899dd5002',
+            'net.zetetic:android-database-sqlcipher:e1539774238a76fc1d95bfd6915ab0882e7284ebd5569e0bcbdb9f0bfed1cc4a',
+            'com.google.guava:guava:58d4cc2e05ebb012bbac568b032f75623be1cb6fb096f3c60c72a86f7f057de4',
+            'org.thoughtcrime.ssl.pinning:AndroidPinning:afa1d74e699257fa75cb109ff29bac50726ef269c6e306bdeffe8223cee06ef4',
+            'com.loopj.android:android-async-http:8ded08eaf313d1debfaa715f2952fe72135980cf146a5869f22cb5dddb41479d',
+            'com.google.code.gson:gson:a35abbcf689eb3d60a2959e83a624831658b023220cd2edb66350993ebfdc025',
+            'org.jsoup:jsoup:e87f0ee62a7592afc121dae468975d97ce47f432c965b5ba47350ca18ed6a473',
+            'com.viewpagerindicator:library:10670a99f8a30266f7c5a30c3af5dbf7e6419ba901184b37f44a877269f975e2',
+            'com.github.amlcurran.showcaseview:library:ec5d15ded6c2fa5596c55342596f6146bf0d78e783abe547a58e19de18df0dcf',
+            'org.apache.commons:commons-collections4:93f8dfcd20831a28d092427723f696bceb70b28e7fb89d7914f14d5ea492ce5a',
+            'com.jakewharton.timber:timber:94508005622528d41772a92e7ef09084c1ee0b7eecab1a9f6b7e902e704ee61a',
+            'com.afollestad.material-dialogs:core:e342ac686b173c0c8e76e11b77eb7f8f77524f7a19d67da5c339517fc553c76e',
+            'com.android.support:support-v13:418b230fc9bb07445839524127320b4c2bf156a6601c6afc56c551dd046630e0',
+            'me.zhanghai.android.materialprogressbar:library:2c4f5acfe071a11fcfc4fa5e86ed086dab47e6ea412aeef7a0b43c3a0ab0ef0b',
+            'com.android.support:appcompat-v7:bc0b13b1ba63ed226ae509044c880fdfe225cb86d21924ef19f2fb97a71c877e',
+            'com.android.support:recyclerview-v7:fc6d6a9b802ed3a26789812f29167135cac7b4d956f4deda54fc1f317721da64',
+            'com.android.support:support-annotations:18766c4a12f18a0d96a383bc8c84d7a9c31ba2d1721622e0af814f8413ff06ec',
+            'com.android.support:support-v4:c25c657954152c4315584572f5008a6780b086169519f67acd20c2617b9da325',
+            'com.android.support:support-vector-drawable:0758104bc324c1638705cd3cddf773639679bab5af28e3a63093655113d75d20',
+            'com.android.support:animated-vector-drawable:9539f5dd8a919692cef064f72658034bf921a19ec14a4ff4abdfa3b478f3a3f9',
+            'com.android.support:support-compat:94648aef50a1938b541465d6d126769f20e77e247c7bca10b9b8cb61caa43398',
+            'com.android.support:support-core-ui:cdd0e8ec4d82e30f4c8ff2897997d59330992b670023fd2793a89a226ac960d6',
+            'com.android.support:support-media-compat:8665ae69c74b2879bdce2bdea6d3b7296126487d0ea6fa2f9dd9ffdd5a5cee86',
+            'com.android.support:support-core-utils:1808deca97864e78066d93d998f71bf71b0a774b6ea39c4e91fc1376d090728d',
+            'com.android.support:support-fragment:e47441b6a0e01b20cf744e3a8383ab60d922badcfde37c0b35fb078c84f2eae0',
     ]
 }
