@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import org.secfirst.umbrella.fragments.SettingsFragment;
 
 public class SettingsActivity extends BaseActivity {
+
     Toolbar toolbar;
 
     @Override

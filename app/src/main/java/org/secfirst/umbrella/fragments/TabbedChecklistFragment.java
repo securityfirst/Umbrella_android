@@ -56,7 +56,7 @@ public class TabbedChecklistFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkLists = getChecklistProgress();
-        if (checkLists.size()>0 && mAdapter!=null) {
+        if (!checkLists.isEmpty() && mAdapter!=null) {
             mAdapter.updateData(checkLists);
         }
     }

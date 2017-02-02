@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import org.secfirst.umbrella.util.UmbrellaUtil;
+
 public class AboutActivity extends BaseActivity {
 
     private WebView content;
@@ -20,16 +22,16 @@ public class AboutActivity extends BaseActivity {
 
         content = (WebView) findViewById(R.id.about_content);
 
-        String html = "";
+        String html;
         Intent i  = getIntent();
         String topic = i.getStringExtra("topic");
         if (topic==null || topic.equals("licences")) {
             setTitle(getString(R.string.licences));
-            html = getString(R.string.licences_html)
+            html = UmbrellaUtil.getStringFromAssetFile(this, "licences.html");
                 ;
         } else {
             setTitle(getString(R.string.thank_you));
-            html = getString(R.string.thank_you_html);
+            html = UmbrellaUtil.getStringFromAssetFile(this, "thank_you.html");
         }
         final String finalHtml = html;
         content.postDelayed(new Runnable() {

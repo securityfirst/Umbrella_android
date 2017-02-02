@@ -31,6 +31,8 @@ import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,6 +45,10 @@ import java.util.regex.Pattern;
 import timber.log.Timber;
 
 public class UmbrellaUtil {
+
+    private UmbrellaUtil() {
+        throw new AssertionError("Instantiating utility class.");
+    }
 
     public static void hideSoftKeyboard(Activity activity) {
         if (activity!=null) {
@@ -120,10 +126,10 @@ public class UmbrellaUtil {
         return parentCategories;
     }
 
-    public static ArrayList<ArrayList<DrawerChildItem>> getChildItems(Context context) {
+    public static List<ArrayList<DrawerChildItem>> getChildItems(Context context) {
         Global global = (Global) context.getApplicationContext();
-        ArrayList<Category> parentCategories = new ArrayList<>();
-        ArrayList<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
+        List<Category> parentCategories = new ArrayList<>();
+        List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
             categories = global.getDaoCategory().queryForAll();
@@ -206,7 +212,7 @@ public class UmbrellaUtil {
                             Type listType = new TypeToken<ArrayList<FeedItem>>() {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                            if (receivedItems != null && receivedItems.size() > 0) {
+                            if (receivedItems != null && !receivedItems.isEmpty()) {
                                 List<FeedItem> oldList = global.getFeedItems();
                                 List<FeedItem> notificationItems = new ArrayList<FeedItem>();
                                 if(global.getNotificationsEnabled()) {
@@ -289,6 +295,23 @@ public class UmbrellaUtil {
         listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(24)));
         listItems.add(String.valueOf(0));
         return listItems.toArray(new CharSequence[listItems.size()]);
+    }
+
+    public static String getStringFromAssetFile(Context context, String fileName) {
+        String str = "";
+        InputStream is;
+        try {
+            is = context.getAssets().open(fileName);
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            str = new String(buffer);
+        } catch (IOException e) {
+            Timber.e(e);
+        }
+        return str;
     }
 
 }

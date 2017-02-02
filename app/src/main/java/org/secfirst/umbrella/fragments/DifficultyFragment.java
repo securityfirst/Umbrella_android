@@ -100,7 +100,7 @@ public class DifficultyFragment extends Fragment {
             Timber.e(e);
         }
         Difficulty d;
-        if (df!=null && df.size()>0) {
+        if (df!=null && !df.isEmpty()) {
             d = df.get(0);
             d.setSelected(difficulty);
             try {

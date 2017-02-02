@@ -61,8 +61,8 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -78,10 +78,10 @@ public class TabbedFeedFragment extends Fragment {
     CardView noFeedItems;
     Global global;
     private AutoCompleteTextView mAutocompleteLocation;
-    private ArrayList<Address> mAddressList;
+    private List<Address> mAddressList;
     private Address mAddress;
     private Registry mLocation, mCountry;
-    private ArrayList<FeedItem> items = new ArrayList<>();
+    private List<FeedItem> items = new ArrayList<>();
 
     public TabbedFeedFragment() {
     }
@@ -413,13 +413,12 @@ public class TabbedFeedFragment extends Fragment {
         int currentRefresh = global.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(global.getApplicationContext());
-        for (Object key : refreshValues.keySet()) {
-            if (refreshValues.get(key).equals(currentRefresh)) {
+        final Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(global.getApplicationContext());
+        for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
+            if (entry.getValue().equals(currentRefresh)) {
                 selectedIndex = i;
-
             }
-            arrayAdapter.add((String) key);
+            arrayAdapter.add(entry.getKey());
             i++;
         }
         builderSingle.setNegativeButton(global.getString(R.string.cancel),
@@ -436,9 +435,9 @@ public class TabbedFeedFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String chosen = arrayAdapter.getItem(which);
-                        for (Object key : refreshValues.keySet()) {
-                            Integer value = refreshValues.get(key);
-                            if (key.equals(chosen)) {
+                        for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
+                            Integer value = entry.getValue();
+                            if (entry.getKey().equals(chosen)) {
                                 BaseActivity baseAct = ((BaseActivity) getActivity());
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 global.setRefreshValue(value);

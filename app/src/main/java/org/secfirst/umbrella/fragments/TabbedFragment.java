@@ -263,7 +263,7 @@ public class TabbedFragment extends Fragment {
                 Where<Segment, String> where = queryBuilder.where();
                 where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 final List<Segment> segments = queryBuilder.query();
-                if (segments.size() > 0) {
+                if (!segments.isEmpty()) {
                     GridView gridView = (GridView) rootView.findViewById(R.id.grid_tiles);
                     GridAdapter gAdapter = new GridAdapter(getActivity(), segments);
                     gridView.setAdapter(gAdapter);
@@ -341,7 +341,7 @@ public class TabbedFragment extends Fragment {
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            if (segments!=null && segments.size() > 0 && segments.size()>=segmentInt+1) {
+            if (segments!=null && !segments.isEmpty() && segments.size()>=segmentInt+1) {
                 final String html = segments.get(segmentInt).getBody();
                 if (html != null) {
                     content.postDelayed(new Runnable() {
@@ -463,7 +463,7 @@ public class TabbedFragment extends Fragment {
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
-                    if (hasDifficulty!=null && hasDifficulty.size() > 0) {
+                    if (hasDifficulty!=null && !hasDifficulty.isEmpty()) {
                         try {
                             QueryBuilder<Favourite, String> queryBuilder = global.getDaoFavourite().queryBuilder();
                             Where<Favourite, String> where = queryBuilder.where();
@@ -526,7 +526,7 @@ public class TabbedFragment extends Fragment {
                 if (cLAdapter != null) {
                     cLAdapter.updateData(mCheckList);
                 }
-                if (mCheckList.size() > 0) {
+                if (!mCheckList.isEmpty()) {
                     int selected = 0;
                     int total = 0;
                     for (CheckItem checkItem : mCheckList) {

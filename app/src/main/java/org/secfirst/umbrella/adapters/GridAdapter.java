@@ -20,7 +20,7 @@ import java.util.List;
 public class GridAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<Segment> mSegments;
+    private List<Segment> mSegments;
     private int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
 
     public GridAdapter(Context context, List<Segment> segmentList) {

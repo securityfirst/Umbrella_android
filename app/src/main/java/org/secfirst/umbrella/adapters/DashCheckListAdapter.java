@@ -32,7 +32,7 @@ import timber.log.Timber;
 public class DashCheckListAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<DashCheckFinished> checkItems;
+    private List<DashCheckFinished> checkItems;
 
     public DashCheckListAdapter(Context context, ArrayList<DashCheckFinished> checkItems) {
         this.checkItems = checkItems;
@@ -99,7 +99,7 @@ public class DashCheckListAdapter extends BaseAdapter {
                 builder.setPositiveButton(mContext.getString(R.string.unfauvorite), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        List<Favourite> favourites = null;
+                        List<Favourite> favourites;
                         try {
                             QueryBuilder<Favourite, String> queryBuilder = ((Global) mContext.getApplicationContext()).getDaoFavourite().queryBuilder();
                             Where<Favourite, String> where = queryBuilder.where();

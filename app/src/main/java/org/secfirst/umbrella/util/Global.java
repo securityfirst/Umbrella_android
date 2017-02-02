@@ -53,6 +53,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -578,9 +579,9 @@ public class Global extends Application {
         String refreshValueLabel = "";
         if (refreshValue==null) refreshValue = getRefreshValue();
         HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
-        for (Object key : refreshValues.keySet()) {
-            if (refreshValues.get(key).equals(refreshValue)) {
-                refreshValueLabel = (String) key;
+        for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
+            if (entry.getValue().equals(refreshValue)) {
+                refreshValueLabel = entry.getKey();
             }
         }
         return refreshValueLabel;
@@ -628,7 +629,7 @@ public class Global extends Application {
         } catch (SQLException e) {
             Timber.e(e);
         }
-        if (selCountry != null && selCountry.size() > 0) {
+        if (selCountry != null && !selCountry.isEmpty()) {
             selectedCountry = selCountry.get(0).getValue();
         }
         return selectedCountry;
@@ -638,7 +639,7 @@ public class Global extends Application {
         int retInterval = 0;
         try {
             List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
-            if (selInterval.size() > 0) {
+            if (!selInterval.isEmpty()) {
                 try {
                     retInterval = Integer.parseInt(selInterval.get(0).getValue());
                 } catch (NumberFormatException nfe) {
@@ -654,7 +655,7 @@ public class Global extends Application {
     public void setRefreshValue(int refreshValue) {
         try {
             List<Registry> selInterval = getDaoRegistry().queryForEq(Registry.FIELD_NAME, "refresh_value");
-            if (selInterval.size() > 0) {
+            if (!selInterval.isEmpty()) {
                 selInterval.get(0).setValue(String.valueOf(refreshValue));
                 getDaoRegistry().update(selInterval.get(0));
             } else {
@@ -749,8 +750,8 @@ public class Global extends Application {
     }
 
     public CharSequence[] getFeedSourcesArray() {
-        ArrayList<FeedSource> feedSources = getFeedSourcesList();
-        ArrayList<String> sourcesList = new ArrayList<>();
+        List<FeedSource> feedSources = getFeedSourcesList();
+        List<String> sourcesList = new ArrayList<>();
         for (FeedSource source : feedSources) {
             sourcesList.add(source.getName());
         }
@@ -758,7 +759,7 @@ public class Global extends Application {
     }
 
     public int getFeedSourceCodeByIndex(int index) {
-        ArrayList<FeedSource> feedSources = getFeedSourcesList();
+        List<FeedSource> feedSources = getFeedSourcesList();
         if (index < feedSources.size()) {
             return feedSources.get(index).getCode();
         }
