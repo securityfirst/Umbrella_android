@@ -31,6 +31,8 @@ import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -293,6 +295,23 @@ public class UmbrellaUtil {
         listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(24)));
         listItems.add(String.valueOf(0));
         return listItems.toArray(new CharSequence[listItems.size()]);
+    }
+
+    public static String getStringFromAssetFile(Context context, String fileName) {
+        String str = "";
+        InputStream is;
+        try {
+            is = context.getAssets().open(fileName);
+            int size = is.available();
+
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            str = new String(buffer);
+        } catch (IOException e) {
+            Timber.e(e);
+        }
+        return str;
     }
 
 }
