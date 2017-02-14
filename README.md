@@ -156,7 +156,7 @@ The three vertical dots in the top of the app. Here you can:
 
 ## Requirements
 
-You need an Android phone with a minimum version of 2.3.6 (SDK 10 - GINGERBREAD_MR1)
+You need an Android phone with a minimum version of 4.0.3 (SDK 15 - ICE_CREAM_SANDWICH_MR1)
 
 ## Contributing Bug reports
 
