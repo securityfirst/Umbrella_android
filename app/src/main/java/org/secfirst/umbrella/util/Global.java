@@ -116,7 +116,7 @@ public class Global extends Application {
         List<FeedItem> items = new ArrayList<>();
         try {
             items = daoFeedItem.queryForAll();
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             e.printStackTrace();
         }
         return items;
@@ -138,7 +138,7 @@ public class Global extends Application {
             DeleteBuilder<Registry, String> toDelete = getDaoRegistry().deleteBuilder();
             toDelete.where().eq(Registry.FIELD_NAME, name);
             toDelete.delete();
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         }
     }
@@ -149,7 +149,7 @@ public class Global extends Application {
             PreparedQuery<Registry> queryBuilder =
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         }
         return registry;
@@ -161,20 +161,20 @@ public class Global extends Application {
             PreparedQuery<Registry> queryBuilder =
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         } finally {
             if (registry!=null) {
                 try {
                     registry.setValue(String.valueOf(value));
                     getDaoRegistry().update(registry);
-                } catch (SQLException e) {
+                } catch (SQLiteException | SQLException  e) {
                     Timber.e(e);
                 }
             } else {
                 try {
                     getDaoRegistry().create(new Registry(name, String.valueOf(value)));
-                } catch (SQLException e) {
+                } catch (SQLiteException | SQLException  e) {
                     Timber.e(e);
                 }
             }
@@ -411,7 +411,7 @@ public class Global extends Application {
         if (daoSegment==null) {
             try {
                 daoSegment = getOrmHelper().getDao(Segment.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -422,7 +422,7 @@ public class Global extends Application {
         if (daoCheckItem==null) {
             try {
                 daoCheckItem = getOrmHelper().getDao(CheckItem.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -433,7 +433,7 @@ public class Global extends Application {
         if (daoCategory==null) {
             try {
                 daoCategory = getOrmHelper().getDao(Category.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -444,7 +444,7 @@ public class Global extends Application {
         if (daoLanguage==null) {
             try {
                 daoLanguage = getOrmHelper().getDao(Language.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -455,7 +455,7 @@ public class Global extends Application {
         if (daoFeedItem==null) {
             try {
                 daoFeedItem = getOrmHelper().getDao(FeedItem.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -474,7 +474,7 @@ public class Global extends Application {
                     daoFeedSource.create(new FeedSource("Global Disaster and Alert Coordination System", 4));
                     daoFeedSource.create(new FeedSource("US State Department Country Warnings", 5));
                 }
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -485,7 +485,7 @@ public class Global extends Application {
         if (daoRegistry==null) {
             try {
                 daoRegistry = getOrmHelper().getDao(Registry.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -496,7 +496,7 @@ public class Global extends Application {
         if (daoFavourite==null) {
             try {
                 daoFavourite = getOrmHelper().getDao(Favourite.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -507,7 +507,7 @@ public class Global extends Application {
         if (daoDifficulty==null) {
             try {
                 daoDifficulty = getOrmHelper().getDao(Difficulty.class);
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -521,7 +521,7 @@ public class Global extends Application {
                 for (Segment segment : segments) {
                     getDaoSegment().create(segment);
                 }
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -535,7 +535,7 @@ public class Global extends Application {
                 for (Category item : categories) {
                     getDaoCategory().create(item);
                 }
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -548,7 +548,7 @@ public class Global extends Application {
                 for (Language item : languages) {
                     getDaoLanguage().create(item);
                 }
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -569,7 +569,7 @@ public class Global extends Application {
                         previousItem = checkItem;
                     }
                 }
-            } catch (SQLException e) {
+            } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
             }
         }
@@ -601,7 +601,7 @@ public class Global extends Application {
                     }
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         }
         return selectedItems;
@@ -626,7 +626,7 @@ public class Global extends Application {
         List<Registry> selCountry = null;
         try {
             selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         }
         if (selCountry != null && !selCountry.isEmpty()) {
@@ -646,7 +646,7 @@ public class Global extends Application {
                     Timber.e(nfe);
                 }
             }
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         }
         return retInterval;
@@ -661,7 +661,7 @@ public class Global extends Application {
             } else {
                 getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
             }
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             Timber.e(e);
         }
     }
@@ -675,7 +675,7 @@ public class Global extends Application {
             if (firstFeedItem!=null) {
                 feedItemsRefreshed = firstFeedItem.getDate()*1000;
             }
-        } catch (SQLException e) {
+        } catch (SQLiteException | SQLException  e) {
             e.printStackTrace();
         }
         return feedItemsRefreshed;

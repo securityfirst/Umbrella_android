@@ -2,12 +2,9 @@
 
 ![](https://github.com/securityfirst/Umbrella_android/blob/master/howtouse.gif?raw=true)
 
-
 Umbrella is an Android mobile app developed by [Security First](https://www.secfirst.org) that provides human rights defenders with the information on what to do in any given security situation and the tools to do it. It allows the user to choose what they want to do, such as: protect data; securely make a call/email; securely access the internet; plan secure travel; protect their office/home; conduct counter-surveillance; or deal with kidnapping, arrest or evacuation. Once a situation is chosen, the app outlines what to do and what tools to use given your circumstances. This is followed by a simple checklist of recommended actions that can be customised, saved and shared securely. Umbrella’s dashboard also provides users with an up-to-the-minute account of potential risks in their chosen location.
 
 ## Installation
-
-
 
 <a href="https://play.google.com/store/apps/details?id=org.secfirst.umbrella">
   <img alt="Umbrella on Google Play Store"
@@ -130,7 +127,7 @@ These are the tools currrently covered in the tool guide. (A number of them are 
 * Rescuva
 * Signal
 * TextSecure
-* Tor for Mac OS X
+* Tor for macOS
 * Tor for Windows
 * TrueCrypt
 
@@ -139,6 +136,15 @@ Contains explanations of the various terms used in the app.
 
 ##About
 Explains the licences that we use for and by Umbrella. Also says a big THANKYOU to everyone who's work we built on to make it happen.
+
+## Dashboard Feed Sources
+![](https://github.com/rorymbyrne/Umbrella_android/blob/master/DASHBOARDLOGOS.png?raw=true)
+
+These are the sources that we currently include for real-time updated security feeds. For privacy reasons, users never connect directly to these services. We are always looking for more useful sources that will help users keep updated on the move.
+* [Centers for Disease Control](https://www.cdc.gov): updates on disease and health warnings
+* [Global Disaster Alert and Coordination System](http://www.gdacs.org): updates on natural disaster issues such as floods, earthquakes and tsunamis
+* [UN / ReliefWeb](http://reliefweb.int): excellent physical security updates that amalgamate information from the UN and various NGOs - though not available in every country
+* [US State Department](https://www.state.gov/travel/): updates mainly focused on the security situation for travellers and internationals - available for every country
 
 ##Settings
 The three vertical dots in the top of the app. Here you can:
@@ -150,7 +156,7 @@ The three vertical dots in the top of the app. Here you can:
 
 ## Requirements
 
-You need an Android phone with a minimum version of 2.3.6 (SDK 10 - GINGERBREAD_MR1)
+You need an Android phone with a minimum version of 4.0.3 (SDK 15 - ICE_CREAM_SANDWICH_MR1)
 
 ## Contributing Bug reports
 
