@@ -22,6 +22,6 @@ public class ServiceReceiver extends BroadcastReceiver
 
     public void callLogout(Context context) {
         Global global = (Global) context.getApplicationContext();
-        global.logout(context);
+        global.logout(context, false);
     }
 }

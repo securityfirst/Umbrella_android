@@ -133,7 +133,7 @@ public abstract class BaseActivity extends ActionBarActivity {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        global.logout(BaseActivity.this);
+                        global.logout(BaseActivity.this, false);
                     }
                 });
             }

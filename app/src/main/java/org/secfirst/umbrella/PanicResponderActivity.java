@@ -20,7 +20,7 @@ public class PanicResponderActivity extends Activity {
         Intent intent = getIntent();
         if (intent != null && PANIC_TRIGGER_ACTION.equals(intent.getAction())) {
             Global global = (Global) getApplicationContext();
-            global.logout(this);
+            global.logout(this, false);
             ExitActivity.exitAndRemoveFromRecentApps(this);
         }
 

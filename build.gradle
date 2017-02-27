@@ -18,5 +18,6 @@ allprojects {
         maven { url "http://dl.bintray.com/populov/maven" }
         mavenCentral()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
