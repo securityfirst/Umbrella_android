@@ -12,7 +12,7 @@ import android.widget.TextView;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.fragments.TabbedFragment;
-import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.models.ItemsItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import java.util.List;
 public class GridAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<Segment> mSegments;
+    private ArrayList<ItemsItem> mSegments;
     private int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
 
-    public GridAdapter(Context context, List<Segment> segmentList) {
+    public GridAdapter(Context context, List<ItemsItem> segmentList) {
         mContext = context;
         mSegments = new ArrayList<>(segmentList);
     }
@@ -46,7 +46,7 @@ public class GridAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        final Segment current = mSegments.get(position);
+        final ItemsItem current = mSegments.get(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, null);
             holder = new ViewHolder();

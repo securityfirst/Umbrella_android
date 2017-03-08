@@ -8,9 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.PreparedQuery;
+
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CategoryItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.util.Global;
 
@@ -22,19 +24,19 @@ import timber.log.Timber;
 
 public class DifficultyFragment extends Fragment {
 
-    private static final String SECTION_NUMBER = "section_number";
-    private static final int BEGINNER = 0;
-    private static final int INTERMEDIATE = 1;
-    private static final int EXPERT = 2;
+    private static final String SECTION_VALUE = "section_value";
+    public static final String BEGINNER = "beginner";
+    public static final String INTERMEDIATE = "advanced";
+    public static final String EXPERT = "expert";
 
-    private long mSection;
+    private String mSection;
 
     private OnDifficultySelected mListener;
 
-    public static DifficultyFragment newInstance(long sectionNumber) {
+    public static DifficultyFragment newInstance(String sectionValue) {
         DifficultyFragment fragment = new DifficultyFragment();
         Bundle args = new Bundle();
-        args.putLong(SECTION_NUMBER, sectionNumber);
+        args.putString(SECTION_VALUE, sectionValue);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,7 +49,7 @@ public class DifficultyFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mSection = getArguments().getLong(SECTION_NUMBER);
+            mSection = getArguments().getString(SECTION_VALUE);
         }
     }
 
@@ -57,7 +59,10 @@ public class DifficultyFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_select, container, false);
         Global global = ((BaseActivity) getActivity()).getGlobal();
         try {
-            final Category childCategory = global.getDaoCategory().queryForId(String.valueOf(mSection));
+            PreparedQuery<CategoryItem> queryBuilder =
+                    global.getDaoCategoryItem().queryBuilder().where().eq(CategoryItem.FIELD_NAME, mSection).prepare();
+            Timber.d("msec %s", mSection);
+            final CategoryItem childCategory = global.getDaoCategoryItem().queryForFirst(queryBuilder);
             View btnBeginner = v.findViewById(R.id.card_beginner);
             btnBeginner.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,22 +81,22 @@ public class DifficultyFragment extends Fragment {
             btnExpert.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDifficultySelected(EXPERT);
+onDifficultySelected(EXPERT);
                 }
             });
-            ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
-            ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
-            ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
-            btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
-            btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
-            btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
+            ((TextView) v.findViewById(R.id.beginner_description)).setText("Beginner");
+            ((TextView) v.findViewById(R.id.advanced_description)).setText("Advanced");
+            ((TextView) v.findViewById(R.id.expert_description)).setText("Expert");
+            btnBeginner.setVisibility(childCategory.hasDifficulty(global, BEGINNER) ? View.VISIBLE : View.GONE);
+            btnIntermediate.setVisibility(childCategory.hasDifficulty(global, INTERMEDIATE) ? View.VISIBLE : View.GONE);
+            btnExpert.setVisibility(childCategory.hasDifficulty(global, EXPERT) ? View.VISIBLE : View.GONE);
         } catch (SQLException e) {
             Timber.e(e);
         }
         return v;
     }
 
-    public void onDifficultySelected(int difficulty) {
+    public void onDifficultySelected(String difficulty) {
         Global global = ((BaseActivity) getActivity()).getGlobal();
         List<Difficulty> df = null;
         try {
@@ -138,7 +143,7 @@ public class DifficultyFragment extends Fragment {
     }
 
     public interface OnDifficultySelected {
-        public void onDifficultySelected(int difficulty);
+        void onDifficultySelected(String difficulty);
     }
 
 }

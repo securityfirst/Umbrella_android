@@ -10,30 +10,30 @@ public class Favourite implements Serializable {
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
     @DatabaseField(columnName = FIELD_CATEGORY)
-    private long category;
+    private String category;
     @DatabaseField(columnName = FIELD_DIFFICULTY)
-    private int difficulty;
+    private String difficulty;
 
     public Favourite() {}
 
-    public Favourite(long category, int difficulty) {
+    public Favourite(String category, String difficulty) {
         this.category = category;
         this.difficulty = difficulty;
     }
 
-    public long getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 

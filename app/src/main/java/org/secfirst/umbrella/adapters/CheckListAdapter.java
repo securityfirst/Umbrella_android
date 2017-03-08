@@ -15,6 +15,7 @@ import android.widget.TextView;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.ChecksItem;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
@@ -26,12 +27,12 @@ import timber.log.Timber;
 
 public class CheckListAdapter extends BaseAdapter {
 
-    private List<CheckItem> checkList = new ArrayList<>();
+    private List<ChecksItem> checkList = new ArrayList<>();
     private Context mContext;
     private Global global;
     private TabbedFragment.CheckItemFragment mFragment;
 
-    public CheckListAdapter(Context context, List<CheckItem> mCheckList, TabbedFragment.CheckItemFragment fragment) {
+    public CheckListAdapter(Context context, List<ChecksItem> mCheckList, TabbedFragment.CheckItemFragment fragment) {
         mFragment = fragment;
         mContext = context;
         global  = (Global) mContext.getApplicationContext();
@@ -41,7 +42,7 @@ public class CheckListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return checkList.size();
+        return checkList!=null ? checkList.size() : 0;
     }
 
     @Override
@@ -71,8 +72,8 @@ public class CheckListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (checkList.get(i).getParent()==0) {
-            holder.checkItemTitle.setText(checkList.get(i).getTitle());
+        if (checkList.get(i).hasParent()) {
+            holder.checkItemTitle.setText(checkList.get(i).getText());
             holder.checkItemSubtitle.setVisibility(checkList.get(i).getText().equals("") ? View.GONE : View.VISIBLE);
             holder.checkItemTitle.setVisibility(View.VISIBLE);
             holder.checkItemSubtitle.setText(checkList.get(i).getText());
@@ -83,15 +84,15 @@ public class CheckListAdapter extends BaseAdapter {
             holder.checkItemSubtitle.setVisibility(View.VISIBLE);
             holder.checkItemLayout.setPadding(UmbrellaUtil.dpToPix(20, mContext), 0, 0, 0);
         }
-        holder.checkBox.setChecked(checkList.get(i).getValue());
+        holder.checkBox.setChecked(checkList.get(i).isChecked());
         holder.checkBox.setEnabled(!checkList.get(i).isDisabled());
-        holder.checkBox.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
+        holder.checkBox.setVisibility(checkList.get(i).isNoCheck() ? View.GONE : View.VISIBLE);
 
-        holder.checkView.setCardElevation(checkList.get(i).getValue()? 0 : 4);
+        holder.checkView.setCardElevation(checkList.get(i).isChecked()? 0 : 4);
         if (checkList.get(i).isDisabled()) {
             holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor(R.color.grey));
         } else {
-            holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor((checkList.get(i).getNoCheck() || checkList.get(i).getValue()) ? R.color.white : R.color.umbrella_yellow));
+            holder.checkView.setCardBackgroundColor(viewGroup.getResources().getColor((checkList.get(i).isNoCheck() || checkList.get(i).isChecked()) ? R.color.white : R.color.umbrella_yellow));
         }
 
         holder.checkBox.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +127,7 @@ public class CheckListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                global.getDaoCheckItem().delete(checkList.get(i));
+                                global.getDaoChecksItem().delete(checkList.get(i));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -153,7 +154,7 @@ public class CheckListAdapter extends BaseAdapter {
                                 checkList.get(i).disable();
                             }
                             try {
-                                global.getDaoCheckItem().update(checkList.get(i));
+                                global.getDaoChecksItem().update(checkList.get(i));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -166,7 +167,7 @@ public class CheckListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                global.getDaoCheckItem().delete(checkList.get(i));
+                                global.getDaoChecksItem().delete(checkList.get(i));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -197,14 +198,14 @@ public class CheckListAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-        public LinearLayout checkItemLayout;
-        public TextView checkItemTitle;
-        public TextView checkItemSubtitle;
-        public CheckBox checkBox;
-        public CardView checkView;
+        LinearLayout checkItemLayout;
+        TextView checkItemTitle;
+        TextView checkItemSubtitle;
+        CheckBox checkBox;
+        CardView checkView;
     }
 
-    public void updateData(List<CheckItem> items) {
+    public void updateData(List<ChecksItem> items) {
         checkList = items;
         notifyDataSetChanged();
     }

@@ -43,12 +43,12 @@ dependencies {
 
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'net.zetetic:android-database-sqlcipher:3.5.4@aar'
-    compile 'com.google.guava:guava:19.0'
+    compile 'com.google.guava:guava:20.0'
 
     compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
     compile 'com.loopj.android:android-async-http:1.4.8'
 
-    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'org.jsoup:jsoup:1.8.2'
 
     compile 'com.viewpagerindicator:library:2.4.1'
@@ -59,6 +59,7 @@ dependencies {
 
     compile 'com.afollestad.material-dialogs:core:0.9.1.0'
     compile 'com.squareup:seismic:1.0.2'
+    compile 'org.apache.commons:commons-lang3:3.5'
 }
 
 // generate using: `gradle -q calculateChecksums`
@@ -73,10 +74,10 @@ dependencyVerification {
             'com.android.support:design:bf92337c5d0931df50a0dcec81682186dc1fbcf14c2fa1c6d51976963379b64d',
             'com.j256.ormlite:ormlite-core:2beb9bd890a705fe25f6d74c7b1fdb5667da09f7063ba8e8eb501cb899dd5002',
             'net.zetetic:android-database-sqlcipher:e1539774238a76fc1d95bfd6915ab0882e7284ebd5569e0bcbdb9f0bfed1cc4a',
-            'com.google.guava:guava:58d4cc2e05ebb012bbac568b032f75623be1cb6fb096f3c60c72a86f7f057de4',
+            'com.google.guava:guava:36a666e3b71ae7f0f0dca23654b67e086e6c93d192f60ba5dfd5519db6c288c8',
             'org.thoughtcrime.ssl.pinning:AndroidPinning:afa1d74e699257fa75cb109ff29bac50726ef269c6e306bdeffe8223cee06ef4',
             'com.loopj.android:android-async-http:8ded08eaf313d1debfaa715f2952fe72135980cf146a5869f22cb5dddb41479d',
-            'com.google.code.gson:gson:a35abbcf689eb3d60a2959e83a624831658b023220cd2edb66350993ebfdc025',
+            'com.google.code.gson:gson:2d43eb5ea9e133d2ee2405cc14f5ee08951b8361302fdd93494a3a997b508d32',
             'org.jsoup:jsoup:e87f0ee62a7592afc121dae468975d97ce47f432c965b5ba47350ca18ed6a473',
             'com.viewpagerindicator:library:10670a99f8a30266f7c5a30c3af5dbf7e6419ba901184b37f44a877269f975e2',
             'com.github.amlcurran.showcaseview:library:ec5d15ded6c2fa5596c55342596f6146bf0d78e783abe547a58e19de18df0dcf',
@@ -84,7 +85,9 @@ dependencyVerification {
             'com.jakewharton.timber:timber:94508005622528d41772a92e7ef09084c1ee0b7eecab1a9f6b7e902e704ee61a',
             'com.afollestad.material-dialogs:core:e342ac686b173c0c8e76e11b77eb7f8f77524f7a19d67da5c339517fc553c76e',
             'com.squareup:seismic:4fc9984aed7a689d24ae2574e9239aec14cc4d5d587621091104c9a4c4a83774',
+            'org.apache.commons:commons-lang3:8ac96fc686512d777fca85e144f196cd7cfe0c0aec23127229497d1a38ff651c',
             'com.android.databinding:library:f172550208c2e86973271cdc1d9b527545d923527abed2daa894cf1499619869',
+            'com.android.databinding:baseLibrary:c2eca83e534f21019a95c3183303ca8880cb725ee414fbf3890810e1894209db',
             'com.android.databinding:adapters:9894e5c9f53f931360e9782ac95eb63534597bc57009d70ca68b841eb4b380d3',
             'com.android.support:support-annotations:47a2a30eab487a490a8a8f16678007c3d2b6dcae1e09b0485a12bbf921200ec3',
             'com.android.support:support-vector-drawable:d79752fd68db5a8f5c18125517dafb9e4d7b593c755d188986010e15edd62454',

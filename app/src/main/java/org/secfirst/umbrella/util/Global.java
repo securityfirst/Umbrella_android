@@ -34,11 +34,14 @@ import org.secfirst.umbrella.RefreshService;
 import org.secfirst.umbrella.TourActivity;
 import org.secfirst.umbrella.fragments.SettingsFragment;
 import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CategoryItem;
 import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.ChecksItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.FeedSource;
+import org.secfirst.umbrella.models.ItemsItem;
 import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
@@ -65,6 +68,9 @@ public class Global extends Application {
     private Dao<Segment, String> daoSegment;
     private Dao<CheckItem, String> daoCheckItem;
     private Dao<Category, String> daoCategory;
+    private Dao<CategoryItem, String> daoCategoryItem;
+    private Dao<ChecksItem, String> daoChecksItem;
+    private Dao<ItemsItem, String> daoItemsItem;
     private Dao<Registry, String> daoRegistry;
     private Dao<Favourite, String> daoFavourite;
     private Dao<Difficulty, String> daoDifficulty;
@@ -387,6 +393,9 @@ public class Global extends Application {
             getDaoSegment();
             getDaoCheckItem();
             getDaoCategory();
+            getDaoCategoryItem();
+            getDaoItemsItem();
+            getDaoChecksItem();
             getDaoRegistry();
             getDaoFavourite();
             getDaoDifficulty();
@@ -438,6 +447,42 @@ public class Global extends Application {
             }
         }
         return daoCategory;
+    }
+
+    public Dao<CategoryItem, String> getDaoCategoryItem() {
+        if (daoCategoryItem==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), CategoryItem.class);
+                daoCategoryItem = getOrmHelper().getDao(CategoryItem.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoCategoryItem;
+    }
+
+    public Dao<ItemsItem, String> getDaoItemsItem() {
+        if (daoItemsItem==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), ItemsItem.class);
+                daoItemsItem = getOrmHelper().getDao(ItemsItem.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoItemsItem;
+    }
+
+    public Dao<ChecksItem, String> getDaoChecksItem() {
+        if (daoChecksItem==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), ChecksItem.class);
+                daoChecksItem = getOrmHelper().getDao(ChecksItem.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoChecksItem;
     }
 
     public Dao<Language, String> getDaoLanguage() {

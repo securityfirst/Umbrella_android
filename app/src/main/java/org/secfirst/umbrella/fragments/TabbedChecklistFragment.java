@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -16,10 +17,12 @@ import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.DashCheckListAdapter;
 import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CategoryItem;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.DashCheckFinished;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
+import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.Global;
 
 import java.sql.SQLException;
@@ -129,8 +132,10 @@ public class TabbedChecklistFragment extends Fragment {
                     Timber.e(e);
                 }
                 try {
-                    Category category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
-                    DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
+                    PreparedQuery<CategoryItem> queryBuilder1 =
+                            global.getDaoCategoryItem().queryBuilder().where().eq(Registry.FIELD_NAME, difficulty.getCategory()).prepare();
+                    CategoryItem category = global.getDaoCategoryItem().queryForFirst(queryBuilder1);
+                    DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getName(), difficulty.getSelected(), false);
                     if (mCheckList!=null) {
                         for (CheckItem checkItem : mCheckList) {
                             if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {

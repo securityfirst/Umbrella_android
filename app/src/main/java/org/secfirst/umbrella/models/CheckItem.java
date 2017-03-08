@@ -25,9 +25,9 @@ public class CheckItem implements Serializable {
     @DatabaseField(columnName = FIELD_PARENT)
     private long parent;
     @DatabaseField(columnName = FIELD_CATEGORY)
-    private int category;
+    private String category;
     @DatabaseField(columnName = FIELD_DIFFICULTY)
-    private int difficulty;
+    private String difficulty;
     @DatabaseField(columnName = FIELD_CUSTOM)
     private int custom;
     @DatabaseField(columnName = FIELD_DISABLED)
@@ -38,7 +38,7 @@ public class CheckItem implements Serializable {
 
     public CheckItem(){}
 
-    public CheckItem(String title, String text, boolean value, long parent, int category, int difficulty) {
+    public CheckItem(String title, String text, boolean value, long parent, String category, String difficulty) {
         this.title = title;
         this.text = text;
         this.value = value ? 1 : 0;
@@ -47,7 +47,7 @@ public class CheckItem implements Serializable {
         this.difficulty = difficulty;
     }
 
-    public CheckItem(String title, String text, boolean value, long parent, int category, int difficulty, boolean noCheck) {
+    public CheckItem(String title, String text, boolean value, long parent, String category, String difficulty, boolean noCheck) {
         this.title = title;
         this.text = text;
         this.value = value ? 1 : 0;
@@ -57,7 +57,7 @@ public class CheckItem implements Serializable {
         this.noCheck = noCheck ? 1 : 0;
     }
 
-    public CheckItem(String title, int category) {
+    public CheckItem(String title, String category) {
         this.title = title;
         this.text = "";
         this.value = 0;
@@ -73,7 +73,7 @@ public class CheckItem implements Serializable {
         this.id = id;
     }
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -97,7 +97,7 @@ public class CheckItem implements Serializable {
         this.value = value;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -133,11 +133,11 @@ public class CheckItem implements Serializable {
         this.disabled = disabled;
     }
 
-    public int getDifficulty() {
+    public String getDifficulty() {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(String difficulty) {
         this.difficulty = difficulty;
     }
 

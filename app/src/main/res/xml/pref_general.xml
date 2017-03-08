@@ -16,6 +16,11 @@
             android:persistent="false"
             />
 
+        <Preference android:key="show_data"
+            android:title="Show Data"
+            android:persistent="false"
+            />
+
         <ListPreference
             android:persistent="false"
             android:title="@string/select_language"

@@ -11,8 +11,7 @@ import android.widget.TextView;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.CategoryItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ import java.util.List;
 @SuppressWarnings("unchecked")
 public class DrawerAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
 
-    public List<Category> groupItem = new ArrayList<Category>();
-    List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
+    private ArrayList<CategoryItem> groupItem = new ArrayList<>();
+    private List<ArrayList<CategoryItem>> childItem = new ArrayList<>();
     private Context mContext;
     private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_settings_phone_grey600_24dp, R.drawable.ic_work_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_business_grey600_24dp, R.drawable.ic_local_hospital_grey600_24dp, R.drawable.ic_content_cut_grey600_24dp, R.drawable.ic_about};
     private int[][] childImages = {{R.drawable.ic_checklists, R.drawable.ic_dashboard}, {R.drawable.ic_supervisor_account_grey600_24dp, R.drawable.ic_bug_report_grey600_24dp, R.drawable.ic_lock_grey600_24dp, R.drawable.ic_security_grey600_24dp, R.drawable.ic_delete_grey600_24dp, R.drawable.ic_backup_grey600_24dp}, {R.drawable.ic_phones, R.drawable.ic_call, R.drawable.ic_message, R.drawable.ic_email, R.drawable.ic_internet, R.drawable.ic_social, R.drawable.ic_radio, R.drawable.ic_satellite}, {R.drawable.ic_travel_preparation, R.drawable.ic_borders, R.drawable.ic_travel_vehicles, R.drawable.ic_travel_checkpoints, R.drawable.ic_kidnapping}, {R.drawable.ic_group, R.drawable.ic_personal_counter, R.drawable.ic_operations_protests, R.drawable.ic_personal_arrests, R.drawable.ic_operations_evacuation}, {R.drawable.ic_personal_stress, R.drawable.ic_security_grey600_24dp}, {R.drawable.ic_psyhical, R.drawable.ic_digital}};
@@ -47,7 +46,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
         ViewHolder holder;
-        final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
+        final CategoryItem tempChild = childItem.get(groupPosition).get(childPosition);
 
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater) mContext
@@ -64,8 +63,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
         if (childImages.length > groupPosition && childImages[groupPosition].length > childPosition) {
             holder.childIcon.setImageResource(childImages[groupPosition][childPosition]);
         }
-        holder.childTitle.setText(tempChild.getTitle());
-
+        holder.childTitle.setText(tempChild.getName());
         return convertView;
     }
 
@@ -109,7 +107,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
         }
 
         TextView tv = (TextView) convertView.findViewById(R.id.drawer_group_text);
-        tv.setText(groupItem.get(groupPosition).getCategory());
+        tv.setText(groupItem.get(groupPosition).getName());
 
         ImageView iv = (ImageView) convertView.findViewById(R.id.drawer_group_image);
         if (groupImages.length > groupPosition) {
@@ -137,9 +135,9 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         if (groupPosition == 0) {
-            ((MainActivity) mContext).setFragment((childPosition==0?0:-1), groupItem.get(groupPosition).getCategory(), false);
+            ((MainActivity) mContext).setFragment((childPosition==0?0:-1), groupItem.get(groupPosition).getName(), false);
         } else {
-            final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
+            final CategoryItem tempChild = childItem.get(groupPosition).get(childPosition);
             ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
         }
         return true;
