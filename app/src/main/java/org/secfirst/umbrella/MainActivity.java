@@ -290,8 +290,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (fragType == 2) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans;
-            if (drawerItem == 58) { // index into pageviewer
-                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, 0, false, 0), "tabbed");
+            if (!drawerItem.equals("Tools")) {
+                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, getString(R.string.beginner), false, 0), "tabbed");
             } else {
                 trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
             }

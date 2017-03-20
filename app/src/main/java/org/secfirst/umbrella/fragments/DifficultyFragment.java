@@ -62,29 +62,30 @@ public class DifficultyFragment extends Fragment {
             btnBeginner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDifficultySelected(BEGINNER);
+                    onDifficultySelected(getString(R.string.beginner));
                 }
             });
             View btnIntermediate = v.findViewById(R.id.card_intermediate);
             btnIntermediate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDifficultySelected(INTERMEDIATE);
+                    onDifficultySelected(getString(R.string.advanced));
                 }
             });
             View btnExpert = v.findViewById(R.id.card_expert);
             btnExpert.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDifficultySelected(EXPERT);
+
+onDifficultySelected(getString(R.string.expert));
                 }
             });
-            ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
-            ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
-            ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
-            btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
-            btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
-            btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
+            ((TextView) v.findViewById(R.id.beginner_description)).setText("Beginner");
+            ((TextView) v.findViewById(R.id.advanced_description)).setText("Advanced");
+            ((TextView) v.findViewById(R.id.expert_description)).setText("Expert");
+            btnBeginner.setVisibility(childCategory.hasDifficulty(global, getString(R.string.beginner)) ? View.VISIBLE : View.GONE);
+            btnIntermediate.setVisibility(childCategory.hasDifficulty(global, getString(R.string.advanced)) ? View.VISIBLE : View.GONE);
+            btnExpert.setVisibility(childCategory.hasDifficulty(global, getString(R.string.expert)) ? View.VISIBLE : View.GONE);
         } catch (SQLException e) {
             Timber.e(e);
         }

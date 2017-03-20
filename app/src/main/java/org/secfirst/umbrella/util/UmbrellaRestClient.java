@@ -33,6 +33,7 @@ public class UmbrellaRestClient {
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
             client.addHeader("Accept-Language", Locale.getDefault().toString());
+            client.addHeader("X-Tent-Language", Locale.getDefault().toString());
         } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
             Timber.e(e);
         }
@@ -42,6 +43,10 @@ public class UmbrellaRestClient {
     public static void get(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
         client = getClientForApiUpdates(context);
         if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    private static boolean isRequestReady(Context context) {
+        return isRequestReady(context, null);
     }
 
     private static boolean isRequestReady(Context context, String token) {

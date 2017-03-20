@@ -33,9 +33,9 @@
     <string name="log_out">Log out</string>
     <string name="log_in">Log In</string>
     <string name="general">General</string>
-    <string name="beginner">Beginner</string>
-    <string name="expert">Expert</string>
-    <string name="intermediate">Advanced</string>
+    <string name="beginner">Principiante</string>
+    <string name="expert">Experto</string>
+    <string name="intermediate">Avanzado</string>
     <string name="action_export_checklist">Share checklist</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
