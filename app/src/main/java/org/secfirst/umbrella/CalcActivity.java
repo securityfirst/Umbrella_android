@@ -31,6 +31,7 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
     private double valueTwo;
 
     private DecimalFormat decimalFormat;
+    private ShakeDetector sd;
 
 
     @Override
@@ -38,10 +39,6 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
         super.onCreate(savedInstanceState);
 
         decimalFormat = new DecimalFormat("#.##########");
-
-        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        ShakeDetector sd = new ShakeDetector(this);
-        sd.start(sensorManager);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_calc);
 
@@ -212,6 +209,19 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
                 Timber.e(e);
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (sd==null) sd = new ShakeDetector(this);
+        sd.start((SensorManager) getSystemService(SENSOR_SERVICE));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (sd!=null) sd.stop();
     }
 
     @Override
