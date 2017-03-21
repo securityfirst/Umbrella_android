@@ -16,8 +16,9 @@
             android:persistent="false"
             />
 
-        <Preference android:key="show_data"
-            android:title="Show Data"
+        <Preference android:key="mask_app"
+            android:title="@string/action_mask"
+            android:summary="@string/masking_mode_title"
             android:persistent="false"
             />
 

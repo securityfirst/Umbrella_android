@@ -26,17 +26,18 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.table.TableUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.models.CategoryItem;
@@ -84,7 +85,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         skipPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                Timber.d("skip password %s", o);
                 global.setSkipPassword((Boolean) o);
                 return true;
             }
@@ -117,23 +117,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-        Preference showData = findPreference("show_data");
+        Preference showData = findPreference("mask_app");
         showData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                try {
-                    List<CategoryItem> categories = global.getDaoCategoryItem().queryForAll();
-                    for (CategoryItem category : categories) {
-                        Timber.d("cat %s, child of %s", category.getName(), category.getParent());
-                        PreparedQuery<ItemsItem> queryBuilder =
-                                global.getDaoItemsItem().queryBuilder().where().eq(ItemsItem.FIELD_CATEGORY, category.getName()).prepare();
-                        List<ItemsItem> items = global.getDaoItemsItem().query(queryBuilder);
-                        Timber.d("category items for %s, %d", category.getName(), items.size());
-                    }
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.masking_mode_title)
+                        .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
+                        .positiveText(R.string.ok)
+                        .negativeText(R.string.cancel)
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                UmbrellaUtil.setMaskMode(getActivity(), true);
+                                if (global.hasPasswordSet(false)) global.logout(getActivity(), false);
+                                Intent i = new Intent(getActivity(), CalcActivity.class);
+                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(i);
+                                getActivity().finish();
+                            }
+                        })
+                        .show();
                 return true;
             }
         });
@@ -154,7 +158,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         refreshInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                Timber.d("ref change %s", o);
                 global.setRefreshValue(Integer.parseInt(o.toString()));
                 refreshInterval.setSummary(refreshInterval.getEntries()[refreshInterval.findIndexOfValue(o.toString())]);
                 return true;
