@@ -53,7 +53,7 @@ import java.util.List;
 import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener {
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener   {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -63,7 +63,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public Spinner titleSpinner;
     private CategoryItem childItem;
     private int fragType = 0;
-    public MenuItem favouriteItem, unfavouriteItem;
+    public MenuItem favouriteItem;
     public boolean shownCoachmark = false;
     private TextView loginHeader;
     private View header;
@@ -427,7 +427,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (id == R.id.action_mask) {
             new MaterialDialog.Builder(this)
                     .title(R.string.masking_mode_title)
-                    .content(R.string.masking_mode_body)
+                    .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
                     .positiveText(R.string.ok)
                     .negativeText(R.string.cancel)
                     .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -615,4 +615,5 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onShowcaseViewShow(ShowcaseView showcaseView) {
         shownCoachmark = true;
     }
+
 }

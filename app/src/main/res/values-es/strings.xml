@@ -145,8 +145,8 @@
     <string name="no_external_sources_found">No external sources found</string>
     <string name="select_language">Seleccione el idioma</string>
     <string name="app_normal">Umbrella_es</string>
-    <string name="app_calc">Calc_es</string>
+    <string name="app_calc">SimpleCalc_es</string>
     <string name="action_mask">Mask_es</string>
     <string name="masking_mode_title">Enable masking mode</string>
-    <string name="masking_mode_body">If you enable this, the app will be masked from casual viewers. To unmask it you need to shake the device.</string>
+    <string name="masking_mode_body">If you enable this, the app will be masked from casual viewers. To unmask it you need to shake the device. While the app is masked, you can find it under the name %1$s</string>
 </resources>
