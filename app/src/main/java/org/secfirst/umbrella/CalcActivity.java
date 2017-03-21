@@ -216,6 +216,7 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
         super.onResume();
         if (sd==null) sd = new ShakeDetector(this);
         sd.start((SensorManager) getSystemService(SENSOR_SERVICE));
+        sd.setSensitivity(ShakeDetector.SENSITIVITY_HARD);
     }
 
     @Override
