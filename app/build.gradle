@@ -57,7 +57,7 @@ dependencies {
     compile 'org.apache.commons:commons-collections4:4.0'
     compile 'com.jakewharton.timber:timber:4.3.1'
 
-    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.1'
     compile 'com.squareup:seismic:1.0.2'
     compile 'org.apache.commons:commons-lang3:3.5'
 }
@@ -83,7 +83,7 @@ dependencyVerification {
             'com.github.amlcurran.showcaseview:library:ec5d15ded6c2fa5596c55342596f6146bf0d78e783abe547a58e19de18df0dcf',
             'org.apache.commons:commons-collections4:93f8dfcd20831a28d092427723f696bceb70b28e7fb89d7914f14d5ea492ce5a',
             'com.jakewharton.timber:timber:94508005622528d41772a92e7ef09084c1ee0b7eecab1a9f6b7e902e704ee61a',
-            'com.afollestad.material-dialogs:core:e342ac686b173c0c8e76e11b77eb7f8f77524f7a19d67da5c339517fc553c76e',
+            'com.afollestad.material-dialogs:core:5c93554d11bd989b29b23991b255d23e8050a9ee72a023bd254bb4823a269885',
             'com.squareup:seismic:4fc9984aed7a689d24ae2574e9239aec14cc4d5d587621091104c9a4c4a83774',
             'org.apache.commons:commons-lang3:8ac96fc686512d777fca85e144f196cd7cfe0c0aec23127229497d1a38ff651c',
             'com.android.databinding:library:f172550208c2e86973271cdc1d9b527545d923527abed2daa894cf1499619869',
@@ -98,7 +98,7 @@ dependencyVerification {
             'com.android.support:support-core-ui:cf3c75fd9a1b1dcbb6042d610515cd79cd0d65d3efd272d2250727187e8ca2ed',
             'com.android.support:support-fragment:f12633dd4d418a4edeb5ecf3bf4393edd0770b1eaa5d1ee3078c5e7c174868fd',
             'com.android.support:transition:5a4adefb1b410b23ad62b4477bc612edc47d3dfc8efed488deb8223b70b510d7',
-            'com.android.support:support-v13:418b230fc9bb07445839524127320b4c2bf156a6601c6afc56c551dd046630e0',
+            'com.android.support:support-v13:4feca6bd0b6c1a0fb8e706d4315cedff70ec423613f6169ab838fafccb6d9643',
             'me.zhanghai.android.materialprogressbar:library:2c4f5acfe071a11fcfc4fa5e86ed086dab47e6ea412aeef7a0b43c3a0ab0ef0b',
     ]
 }
