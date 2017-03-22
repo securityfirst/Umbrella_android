@@ -204,26 +204,23 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
 
     @Override
     public void hearShake() {
-        if (materialDialog==null) {
-            materialDialog = new MaterialDialog.Builder(this)
-                    .title(R.string.masking_mode_title)
-                    .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            UmbrellaUtil.setMaskMode(BaseActivity.this, true);
-                            if (global.hasPasswordSet(false)) global.logout(BaseActivity.this, false);
-                            Intent i = new Intent(BaseActivity.this, CalcActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i);
-                            finish();
-                        }
-                    })
-                    .show();
-        } else if (!materialDialog.isShowing()) {
-            materialDialog.show();
-        }
+        if (materialDialog!=null) materialDialog.dismiss();
+        materialDialog = new MaterialDialog.Builder(this)
+                .title(R.string.masking_mode_title)
+                .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
+                .positiveText(R.string.ok)
+                .negativeText(R.string.cancel)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        UmbrellaUtil.setMaskMode(BaseActivity.this, true);
+                        if (global.hasPasswordSet(false)) global.logout(BaseActivity.this, false);
+                        Intent i = new Intent(BaseActivity.this, CalcActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        finish();
+                    }
+                })
+                .show();
     }
 }
