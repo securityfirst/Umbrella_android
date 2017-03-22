@@ -2,7 +2,7 @@ package org.secfirst.umbrella.models;
 
 public class DashCheckFinished {
 
-    private String difficulty;
+    private int difficulty;
     private int percent;
     private int total;
     private int checked;
@@ -10,7 +10,7 @@ public class DashCheckFinished {
     private boolean noIcon, noPercent;
     private boolean favourited;
 
-    public DashCheckFinished(String category, String difficulty, boolean favourited) {
+    public DashCheckFinished(String category, int difficulty, boolean favourited) {
         this.category = category;
         this.difficulty = difficulty;
         this.favourited = favourited;
@@ -51,7 +51,7 @@ public class DashCheckFinished {
         this.checked = checked;
     }
 
-    public String getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 

@@ -32,13 +32,10 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.PointTarget;
-import com.github.amlcurran.showcaseview.targets.Target;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-import org.apache.commons.collections4.ListUtils;
 import org.secfirst.umbrella.AboutActivity;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
@@ -46,10 +43,8 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
 import org.secfirst.umbrella.adapters.GridAdapter;
 import org.secfirst.umbrella.models.CheckItem;
-import org.secfirst.umbrella.models.ChecksItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
-import org.secfirst.umbrella.models.ItemsItem;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
 
@@ -61,22 +56,21 @@ import timber.log.Timber;
 
 public class TabbedFragment extends Fragment {
 
-    public static final String ARG_DIFFICULTY = "spinner_number";
-    public static final String ARG_SHOW_CHECK_LIST = "show_checklist";
+    public static final String ARG_DIFFICULTY_NUMBER = "spinner_number";
     public static final String ARG_SEGMENT_INDEX = "segment_index";
     SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
-    public static String difficulty;
-    public String sectionValue;
+    public static int difficulty;
+    public long sectionNumber;
     public static boolean hasChecklist;
 
-    public static TabbedFragment newInstance(String sectionValue, String spinnerValue, boolean checklist, int page) {
+    public static TabbedFragment newInstance(long sectionNumber, int spinnerNumber, boolean checklist, int page) {
         TabbedFragment tabbedFragment = new TabbedFragment();
         Bundle args = new Bundle();
         args.putBoolean("checklist", checklist);
         args.putInt("page", page);
-        tabbedFragment.sectionValue = sectionValue;
-        difficulty = spinnerValue;
+        tabbedFragment.sectionNumber = sectionNumber;
+        difficulty = spinnerNumber;
         tabbedFragment.setArguments(args);
         return tabbedFragment;
     }
@@ -89,7 +83,6 @@ public class TabbedFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
-        final View checkShown = v.findViewById(R.id.check_value);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), difficulty);
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -104,7 +97,7 @@ public class TabbedFragment extends Fragment {
                         int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
                         lps.setMargins(margin, margin, margin * 5, margin * 5);
                         new ShowcaseView.Builder(getActivity())
-                                .setTarget(checkShown!=null ? new ViewTarget(checkShown) : Target.NONE)
+                                .setTarget(new ViewTarget(R.id.check_value, getActivity()))
                                 .setContentText(getActivity().getString(R.string.mark_off_tasks))
                                 .setStyle(R.style.CustomShowcaseTheme4)
                                 .hideOnTouchOutside()
@@ -196,24 +189,18 @@ public class TabbedFragment extends Fragment {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private final Global global;
-        public String difficulty;
-        private List<ItemsItem> segments;
-        private List<ChecksItem> checkItems;
+        public int difficulty;
+        private List<Segment> segments;
 
-        public SectionsPagerAdapter(FragmentManager fm, String difficulty) {
+        public SectionsPagerAdapter(FragmentManager fm, int difficulty) {
             super(fm);
             this.difficulty = difficulty;
-            this.global = ((BaseActivity)getActivity()).getGlobal();
-            String drawerItem = ((MainActivity) getActivity()).drawerItem;
+            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             try {
-                QueryBuilder<ItemsItem, String> queryBuilder = global.getDaoItemsItem().queryBuilder();
-                Where<ItemsItem, String> where = queryBuilder.where();
-                where.eq(ItemsItem.FIELD_CATEGORY, drawerItem).and().like(ItemsItem.FIELD_DIFFICULTY, difficulty);
+                QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
+                Where<Segment, String> where = queryBuilder.where();
+                where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty + 1));
                 segments = queryBuilder.query();
-                PreparedQuery<ChecksItem> queryBuilder1 =
-                        global.getDaoChecksItem().queryBuilder().where().eq(ChecksItem.FIELD_CATEGORY, drawerItem).and().like(ChecksItem.FIELD_DIFFICULTY, difficulty).prepare();
-                checkItems = global.getDaoChecksItem().query(queryBuilder1);
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -223,29 +210,22 @@ public class TabbedFragment extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment;
             Bundle args = new Bundle();
-            boolean checkListShown = ListUtils.emptyIfNull(checkItems).size()>0;
             if (position==0) {
                 fragment = new TabbedContentFragment();
-            } else if (checkListShown && position==segments.size()+1) {
+            } else if (position==segments.size()+1) {
                 fragment = new CheckItemFragment();
             } else {
                 fragment = new TabbedSegmentFragment();
                 args.putInt(TabbedFragment.ARG_SEGMENT_INDEX, position-1);
             }
-            args.putString(TabbedFragment.ARG_DIFFICULTY, difficulty);
-            args.putBoolean(TabbedFragment.ARG_SHOW_CHECK_LIST, checkListShown);
+            args.putInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
             fragment.setArguments(args);
             return fragment;
         }
 
         @Override
-        public int getCount()
-        {
-            int count = segments.size()+1;
-            if (ListUtils.emptyIfNull(checkItems).size()>0) {
-                count++;
-            }
-            return count;
+        public int getCount() {
+            return segments.size()+2;
         }
 
         @Override
@@ -267,7 +247,8 @@ public class TabbedFragment extends Fragment {
 
     public static class TabbedContentFragment extends Fragment {
 
-        public TabbedContentFragment() {}
+        public TabbedContentFragment() {
+        }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -275,13 +256,13 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
 
-            String drawerItem = ((MainActivity) getActivity()).drawerItem;
-            String difficulty = getArguments() != null ? getArguments().getString(ARG_DIFFICULTY, "") : "";
+            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             try {
-                QueryBuilder<ItemsItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoItemsItem().queryBuilder();
-                Where<ItemsItem, String> where = queryBuilder.where();
-                where.eq(Segment.FIELD_CATEGORY, drawerItem).and().like(Segment.FIELD_DIFFICULTY, difficulty);
-                final List<ItemsItem> segments = queryBuilder.query();
+                QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
+                Where<Segment, String> where = queryBuilder.where();
+                where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty));
+                final List<Segment> segments = queryBuilder.query();
                 if (!segments.isEmpty()) {
                     GridView gridView = (GridView) rootView.findViewById(R.id.grid_tiles);
                     GridAdapter gAdapter = new GridAdapter(getActivity(), segments);
@@ -292,7 +273,7 @@ public class TabbedFragment extends Fragment {
                 int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
                 toChecklist.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
                 CardView checklistCard = (CardView) rootView.findViewById(R.id.checklist_view);
-                checklistCard.setVisibility(getArguments().getBoolean(TabbedFragment.ARG_SHOW_CHECK_LIST, false) ? View.VISIBLE : View.GONE);
+                if (drawerItem == 56) checklistCard.setVisibility(View.GONE);
                 checklistCard.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -348,15 +329,14 @@ public class TabbedFragment extends Fragment {
             content = (WebView) rootView.findViewById(R.id.segment_content);
             content.setWebViewClient(interceptUrlLicences);
 
-            String drawerItem = ((MainActivity) getActivity()).drawerItem;
-            String difficulty = getArguments() != null ? getArguments().getString(ARG_DIFFICULTY, "") : "";
+            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             int segmentInt = getArguments() != null ? getArguments().getInt(ARG_SEGMENT_INDEX, 0) : 0;
-            List<ItemsItem> segments = null;
+            List<Segment> segments = null;
             try {
-                QueryBuilder<ItemsItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoItemsItem().queryBuilder();
-                Where<ItemsItem, String> where = queryBuilder.where();
-                where.eq(Segment.FIELD_CATEGORY, drawerItem)
-                        .and().like(Segment.FIELD_DIFFICULTY, difficulty);
+                QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
+                Where<Segment, String> where = queryBuilder.where();
+                where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 segments = queryBuilder.query();
             } catch (SQLException e) {
                 Timber.e(e);
@@ -379,7 +359,7 @@ public class TabbedFragment extends Fragment {
 
     public static class CheckItemFragment extends Fragment {
 
-        private List<ChecksItem> mCheckList;
+        private List<CheckItem> mCheckList;
         private ProgressBar checkBar;
         private TextView checkBarText;
         private CheckListAdapter cLAdapter;
@@ -398,12 +378,12 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_check_item,
                     container, false);
 
-            final String drawerItem = ((MainActivity) getActivity()).drawerItem;
+            final long drawerItem = ((MainActivity) getActivity()).drawerItem;
             ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
             checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
             checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
             setProgressBarTo(0);
-            final String diffArg = getArguments().getString(ARG_DIFFICULTY, "");
+            final int diffArg = getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1);
             ImageButton addItem = (ImageButton) rootView.findViewById(R.id.fab);
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -421,11 +401,11 @@ public class TabbedFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String pw = pwInput.getText().toString();
                                 if (pw.length()>4) {
-                                    ChecksItem nItem = new ChecksItem(pw, drawerItem);
+                                    CheckItem nItem = new CheckItem(pw, (int) drawerItem);
                                     nItem.setCustom(1);
                                     nItem.setDifficulty(diffArg);
                                     try {
-                                        global.getDaoChecksItem().create(nItem);
+                                        global.getDaoCheckItem().create(nItem);
                                     } catch (SQLException e) {
                                         Timber.e(e);
                                     }
@@ -475,11 +455,11 @@ public class TabbedFragment extends Fragment {
             int id = item.getItemId();
             if (getActivity()!=null) {
                 final Global global = ((MainActivity) getActivity()).getGlobal();
-                final String drawerItem = ((MainActivity) getActivity()).drawerItem;
+                final long drawerItem = ((MainActivity) getActivity()).drawerItem;
                 if (id == R.id.favourite) {
                     List<Difficulty> hasDifficulty = null;
                     try {
-                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, drawerItem);
+                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(drawerItem));
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
@@ -519,11 +499,11 @@ public class TabbedFragment extends Fragment {
         }
 
         public void setFavouriteIcon(Context context) {
-            final String drawerItem = ((MainActivity) context).drawerItem;
+            final long drawerItem = ((MainActivity) context).drawerItem;
             try {
                 QueryBuilder<Favourite, String> queryBuilder = ((BaseActivity) context).getGlobal().getDaoFavourite().queryBuilder();
                 Where<Favourite, String> where = queryBuilder.where();
-                where.eq(Favourite.FIELD_CATEGORY, drawerItem).and().eq(Favourite.FIELD_DIFFICULTY, difficulty);
+                where.eq(Favourite.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 Favourite favourite = queryBuilder.queryForFirst();
                 ((MainActivity) context).favouriteItem.setIcon(favourite != null ? R.drawable.abc_btn_rating_star_on_mtrl_alpha : R.drawable.abc_btn_rating_star_off_mtrl_alpha);
                 ((MainActivity) context).favouriteItem.setVisible(true);
@@ -532,11 +512,11 @@ public class TabbedFragment extends Fragment {
             }
         }
 
-        public void refreshCheckList(String category, String difficulty) {
+        public void refreshCheckList(long category, int difficulty) {
             try {
-                QueryBuilder<ChecksItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoChecksItem().queryBuilder();
-                Where<ChecksItem, String> where = queryBuilder.where();
-                where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(category)).and().like(CheckItem.FIELD_DIFFICULTY, difficulty);
+                QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                Where<CheckItem, String> where = queryBuilder.where();
+                where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(category)).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 mCheckList = queryBuilder.query();
             } catch (SQLException e) {
                 Timber.e(e);
@@ -549,10 +529,10 @@ public class TabbedFragment extends Fragment {
                 if (!mCheckList.isEmpty()) {
                     int selected = 0;
                     int total = 0;
-                    for (ChecksItem checkItem : mCheckList) {
-                        if (!checkItem.isNoCheck() && !checkItem.isDisabled()) {
+                    for (CheckItem checkItem : mCheckList) {
+                        if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
                             total++;
-                            if (checkItem.isChecked()) selected++;
+                            if (checkItem.getValue()) selected++;
                         }
                     }
                     setProgressBarTo((int) Math.round(selected * 100.0 / total));

@@ -21,7 +21,7 @@ import java.util.Locale;
 public class UmbrellaRestClient {
 
     private static final String BASE_URL = "https://api.secfirst.org";
-    private static final String VERSION = "v2";
+    private static final String VERSION = "v1";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
@@ -30,7 +30,6 @@ public class UmbrellaRestClient {
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
             client.addHeader("Accept-Language", Locale.getDefault().toString());
-//            client.addHeader("X-Tent-Language", Locale.getDefault().toString());
         } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());

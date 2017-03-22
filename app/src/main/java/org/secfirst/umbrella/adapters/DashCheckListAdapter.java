@@ -131,9 +131,9 @@ public class DashCheckListAdapter extends BaseAdapter {
             holder.checkHeader.setVisibility(View.GONE);
         }
         holder.icon.setVisibility(current.isNoIcon() ? View.GONE : View.VISIBLE);
-//        if (current.getDifficulty() < 3) {
-//            holder.icon.setImageResource(new int[]{R.drawable.ic_beginner, R.drawable.ic_advance, R.drawable.ic_expert}[current.getDifficulty()]);
-//        }
+        if (current.getDifficulty() < 3) {
+            holder.icon.setImageResource(new int[]{R.drawable.ic_beginner, R.drawable.ic_advance, R.drawable.ic_expert}[current.getDifficulty()]);
+        }
         holder.categoryName.setText(current.getCategory());
         holder.categoryName.setGravity(current.isNoPercent() ? Gravity.CENTER : Gravity.LEFT);
         holder.percent.setVisibility(current.isNoPercent() ? View.GONE : View.VISIBLE);

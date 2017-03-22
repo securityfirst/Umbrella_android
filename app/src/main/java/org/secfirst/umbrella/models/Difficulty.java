@@ -12,34 +12,42 @@ public class Difficulty implements Serializable {
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
     @DatabaseField(columnName = FIELD_CATEGORY)
-    private String category;
+    private long category;
     @DatabaseField(columnName = FIELD_SELECTED)
-    private String selected;
+    private int selected;
     @DatabaseField(columnName = FIELD_CREATED_AT)
     private long createdAt;
 
     public Difficulty() { }
 
-    public Difficulty(String name, String selected) {
-        this.category = name;
+    public Difficulty(long category, int selected) {
+        this.category = category;
         this.selected = selected;
         this.createdAt = new Date().getTime();
     }
 
-    public String getCategory() {
+    public long getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
-    public String getSelected() {
+    public int getSelected() {
         return selected;
     }
 
-    public void setSelected(String selected) {
+    public void setSelected(int selected) {
         this.selected = selected;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override

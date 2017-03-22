@@ -23,14 +23,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.jsoup.helper.StringUtil;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.models.CategoryItem;
+import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
 
@@ -87,7 +86,7 @@ public class UmbrellaUtil {
         return (int) (sizeInDp*scale + 0.5f);
     }
 
-    static boolean isNetworkAvailable(Context context) {
+    public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -112,14 +111,13 @@ public class UmbrellaUtil {
         return ringProgressDialog;
     }
 
-    public static ArrayList<CategoryItem> getParentCategories(Context context) {
+    public static ArrayList<Category> getParentCategories(Context context) {
         Global global = (Global) context.getApplicationContext();
-        ArrayList<CategoryItem> parentCategories = new ArrayList<>();
+        ArrayList<Category> parentCategories = new ArrayList<>();
         try {
-            List<CategoryItem> categories = global.getDaoCategoryItem().queryForAll();
-            Timber.d("categories1 %d", categories.size());
-            for (CategoryItem category : categories) {
-                if (StringUtil.isBlank(category.getParent())) {
+            List<Category> categories = global.getDaoCategory().queryForAll();
+            for (Category category : categories) {
+                if (category.getParent()==0) {
                     parentCategories.add(category);
                 }
             }
@@ -127,42 +125,45 @@ public class UmbrellaUtil {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
         }
-        Timber.d("categories2 %d", parentCategories.size());
         return parentCategories;
     }
 
-    public static List<ArrayList<CategoryItem>> getChildItems(Context context) {
+    public static List<ArrayList<DrawerChildItem>> getChildItems(Context context) {
         Global global = (Global) context.getApplicationContext();
-        List<CategoryItem> parentCategories = new ArrayList<>();
-        List<ArrayList<CategoryItem>> childItem = new ArrayList<>();
+        List<Category> parentCategories = new ArrayList<>();
+        List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
+        List<Category> categories = null;
         try {
-            List<CategoryItem> categories = ListUtils.emptyIfNull(global.getDaoCategoryItem().queryForAll());
-            for (CategoryItem category : categories) {
-                if (StringUtil.isBlank(category.getParent())) {
-                    parentCategories.add(category);
-                }
-            }
-            for (CategoryItem parentCategory : parentCategories) {
-                ArrayList<CategoryItem> child = new ArrayList<>();
-                for (CategoryItem category : categories) {
-                    if (category.getParent()!=null && category.getParent().equals(parentCategory.getName())) {
-                        child.add(category);
-                    }
-                }
-                if (parentCategory.getId() == 1) {
-                    child.add(new CategoryItem(context.getString(R.string.my_checklists)));
-                    child.add(new CategoryItem(context.getString(R.string.dashboard)));
-                }
-                childItem.add(child);
-            }
+            categories = global.getDaoCategory().queryForAll();
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
         }
+        if (categories!=null) {
+            for (Category category : categories) {
+                if (category.getParent()==0) {
+                    parentCategories.add(category);
+                }
+            }
+            for (Category parentCategory : parentCategories) {
+                ArrayList<DrawerChildItem> child = new ArrayList<>();
+                for (Category category : categories) {
+                    if (category.getParent() == parentCategory.getId()) {
+                        child.add(new DrawerChildItem(category.getCategory(), category.getId()));
+                    }
+                }
+                if (parentCategory.getId() == 1) {
+                    child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
+                    child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
+                }
+                childItem.add(child);
+            }
+        }
+
         return childItem;
     }
 
-    static String checkPasswordStrength(String password, Context context) {
+    public static String checkPasswordStrength(String password, Context context) {
         if (password.length()<8) {
             return context.getString(R.string.password_too_short);
         } else if(!Pattern.compile("\\d").matcher(password).find()) {
@@ -215,7 +216,7 @@ public class UmbrellaUtil {
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && !receivedItems.isEmpty()) {
                                 List<FeedItem> oldList = global.getFeedItems();
-                                List<FeedItem> notificationItems = new ArrayList<>();
+                                List<FeedItem> notificationItems = new ArrayList<FeedItem>();
                                 if(global.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
@@ -254,7 +255,7 @@ public class UmbrellaUtil {
 
     public static CharSequence[] getLanguageEntryValues() {
         List<String> languageLabels = new ArrayList<>();
-        languageLabels.add("en");
+        languageLabels.add("en-gb");
         languageLabels.add("es");
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
@@ -285,7 +286,7 @@ public class UmbrellaUtil {
         return listItems.toArray(new CharSequence[listItems.size()]);
     }
 
-    public static CharSequence[] getRefreshEntryValues() {
+    public static CharSequence[] getRefreshEntryValues(Context context) {
         List<String> listItems = new ArrayList<>();
         listItems.add(String.valueOf(TimeUnit.MINUTES.toMillis(30)));
         listItems.add(String.valueOf(TimeUnit.HOURS.toMillis(1)));
@@ -351,27 +352,6 @@ public class UmbrellaUtil {
             }
         }
         return false;
-    }
-
-    public static int fromDifficulty(Context context, String difficulty) {
-        ArrayList<String> diffs = new ArrayList<>();
-        diffs.add(context.getString(R.string.beginner));
-        diffs.add(context.getString(R.string.advanced));
-        diffs.add(context.getString(R.string.expert));
-        for (int i = 0; i < diffs.size(); i ++) {
-            if (diffs.get(i).toLowerCase().equals(difficulty.toLowerCase())) {
-                return i;
-            }
-        }
-        return 0;
-    }
-
-    public static String fromDifficultyInt(Context context, int difficulty) {
-        ArrayList<String> diffs = new ArrayList<>();
-        diffs.add(context.getString(R.string.beginner));
-        diffs.add(context.getString(R.string.advanced));
-        diffs.add(context.getString(R.string.expert));
-        return diffs.get((difficulty>0 && diffs.size()>difficulty) ? difficulty : 0);
     }
 
 }

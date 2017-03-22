@@ -37,10 +37,6 @@ public class Category implements Serializable {
 
     public Category() {}
 
-    public Category(String name) {
-        this.category = name;
-    }
-
     public Category(int id, int parent, String category, boolean hasDifficulty, boolean difficultyBeginner, boolean difficultyAdvanced, boolean difficultyExpert, String textBeginner, String textAdvanced, String textExpert) {
         this.id = id;
         this.parent = parent;
@@ -104,10 +100,6 @@ public class Category implements Serializable {
 
     public boolean hasDifficulty() {
         return hasDifficulty != 0;
-    }
-
-    public void setHasDifficulty(boolean hasDifficulty) {
-        this.hasDifficulty = hasDifficulty ? 1 :0;
     }
 
     @Override

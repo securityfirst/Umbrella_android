@@ -31,19 +31,17 @@ import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.PointTarget;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-import org.jsoup.helper.StringUtil;
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.fragments.TabbedFragment;
-import org.secfirst.umbrella.models.CategoryItem;
+import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
-import org.secfirst.umbrella.models.Registry;
+import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
@@ -59,9 +57,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public ExpandableListView drawerList;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     public int groupItem, navItem;
-    public String drawerItem;
+    public long drawerItem;
     public Spinner titleSpinner;
-    private CategoryItem childItem;
+    private DrawerChildItem childItem;
     private int fragType = 0;
     public MenuItem favouriteItem;
     public boolean shownCoachmark = false;
@@ -111,27 +109,25 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     List<Difficulty> hasDifficulty = null;
                     try {
-                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, childItem.getName());
+                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
                     if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
-                        CategoryItem childCategory;
+                        Category childCategory;
                         try {
-                            PreparedQuery<CategoryItem> queryBuilder =
-                                    global.getDaoCategoryItem().queryBuilder().where().eq(CategoryItem.FIELD_NAME, childItem.getName()).prepare();
-                            childCategory = global.getDaoCategoryItem().queryForFirst(queryBuilder);
-                            if (!childCategory.hasDifficulty(global, getString(R.string.advanced)) && position > 0) {
+                            childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                            if (!childCategory.getDifficultyAdvanced() && position > 0) {
                                 position++;
                             }
-                            if (!childCategory.hasDifficulty(global, getString(R.string.beginner))) {
+                            if (!childCategory.getDifficultyBeginner()) {
                                 position++;
                             }
                         } catch (SQLException e) {
                             if (BuildConfig.BUILD_TYPE.equals("debug"))
                                 Log.getStackTraceString(e.getCause());
                         }
-                        hasDifficulty.get(0).setSelected(UmbrellaUtil.fromDifficultyInt(MainActivity.this, position));
+                        hasDifficulty.get(0).setSelected(position);
                         try {
                             global.getDaoDifficulty().update(hasDifficulty.get(0));
                         } catch (SQLException e) {
@@ -143,7 +139,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         return;
                     }
                     titleSpinner.setTag(position);
-                    setFragment(1, childItem.getName(), false);
+                    setFragment(1, childItem.getTitle(), false);
                 }
 
                 @Override
@@ -175,22 +171,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
             drawer.setDrawerListener(this);
             if (getIntent() != null && getIntent().getData() != null && !getIntent().getData().getPathSegments().isEmpty()) {
-                for (ArrayList<CategoryItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
-                    for (CategoryItem childItem : groupItem) {
-                        if (childItem.getName().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
+                for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
+                    for (DrawerChildItem childItem : groupItem) {
+                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
                             this.childItem = childItem;
                         }
                     }
                 }
                 if (childItem != null) {
                     try {
-                        PreparedQuery<CategoryItem> queryBuilder = global.getDaoCategoryItem().queryBuilder().where().eq(Registry.FIELD_NAME, childItem.getName()).prepare();
-                        CategoryItem category = global.getDaoCategoryItem().queryForFirst(queryBuilder);
-                        if (category.hasDifficulty(global)) {
+                        Category category = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                        if (category.hasDifficulty()) {
                             setFragment(1, "", true);
                         } else {
-                            drawerItem = childItem.getName();
-                            setFragment(2, category.getName(), true);
+                            drawerItem = childItem.getPosition();
+                            setFragment(2, category.getCategory(), true);
                         }
                     } catch (SQLException e) {
                         Timber.e(e);
@@ -214,16 +209,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void setNavItems(String title) {
         ArrayList<String> navArray = new ArrayList<>();
         try {
-            PreparedQuery<CategoryItem> queryBuilder =
-                    global.getDaoCategoryItem().queryBuilder().where().eq(CategoryItem.FIELD_NAME, childItem.getName()).prepare();
-            CategoryItem childCategory = global.getDaoCategoryItem().queryForFirst(queryBuilder);
-            if (childCategory.hasDifficulty(global, getString(R.string.beginner))) {
+            Category childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+            if (childCategory.getDifficultyBeginner()) {
                 navArray.add(title +" "+getString(R.string.beginner));
             }
-            if (childCategory.hasDifficulty(global, getString(R.string.advanced))) {
+            if (childCategory.getDifficultyAdvanced()) {
                 navArray.add(title +" "+getString(R.string.advanced));
             }
-            if (childCategory.hasDifficulty(global, getString(R.string.expert))) {
+            if (childCategory.getDifficultyExpert()) {
                 navArray.add(title +" "+getString(R.string.expert));
             }
         } catch (SQLException e) {
@@ -250,12 +243,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (fragType == 1) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, childItem.getName());
+                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
             if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
-                hasDifficulty.get(0).setSelected(getIntent().getData().getPathSegments().get(1));
+                hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
                     global.getDaoDifficulty().update(hasDifficulty.get(0));
                 } catch (SQLException e) {
@@ -263,21 +256,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 try {
-                    global.getDaoDifficulty().create(new Difficulty(childItem.getName(), getIntent().getData().getPathSegments().get(1)));
+                    global.getDaoDifficulty().create(new Difficulty(childItem.getPosition(), Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
             }
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, childItem.getName());
+                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            drawerItem = childItem.getName();
-            setNavItems(childItem.getName());
+            drawerItem = childItem.getPosition();
+            setNavItems(childItem.getTitle());
             if (hasDifficulty != null) {
-                String spinnerValue = "";
-                if (!hasDifficulty.isEmpty()) spinnerValue = hasDifficulty.get(0).getSelected();
+                int spinnerNumber = 0;
+                if (!hasDifficulty.isEmpty()) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
                 boolean checklist = false;
                 if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null) {
@@ -287,22 +280,22 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         page = Integer.valueOf(getIntent().getData().getPathSegments().get(2));
                 }
                 setIntent(null);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getName(), spinnerValue, checklist, page), "tabbed");
+                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
                 trans.commit();
-                if (StringUtil.isBlank(spinnerValue)) {
+                if (spinnerNumber >= titleSpinner.getAdapter().getCount()) {
                     titleSpinner.setSelection(titleSpinner.getAdapter().getCount() - 1);
                 } else {
-                    titleSpinner.setSelection(UmbrellaUtil.fromDifficulty(MainActivity.this, spinnerValue));
+                    titleSpinner.setSelection(spinnerNumber);
                 }
             }
         } else if (fragType == 2) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans;
-            if (!drawerItem.equals("Tools")) {
-                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
+            if (drawerItem == 58) { // index into pageviewer
+                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, 0, false, 0), "tabbed");
             } else {
                 trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
             }
@@ -312,9 +305,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             trans.commit();
             titleSpinner.setVisibility(View.GONE);
         } else if (fragType == 3) {
-            setTitle(childItem.getName());
+            setTitle(childItem.getTitle());
             titleSpinner.setVisibility(View.GONE);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getName()));
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
@@ -329,16 +322,16 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (actionBarDrawerToggle!=null) actionBarDrawerToggle.syncState();
     }
 
-    public void onNavigationDrawerItemSelected(CategoryItem selectedItem) {
-        CategoryItem category;
+    public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
+        Category category;
         try {
-            category = global.getDaoCategoryItem().queryForFirst(global.getDaoCategoryItem().queryBuilder().where().eq(CategoryItem.FIELD_NAME, selectedItem.getName()).prepare());
-            if (category.getSelectedDifficulty(global)==null) {
+            category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
+            if (category.hasDifficulty()) {
                 childItem = selectedItem;
                 setFragment(3, "", false);
             } else {
-                drawerItem = selectedItem.getName();
-                setFragment(2, category.getName(), false);
+                drawerItem = selectedItem.getPosition();
+                setFragment(2, category.getCategory(), false);
             }
         } catch (SQLException e) {
             Timber.e(e);
@@ -399,7 +392,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (childItem != null) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, childItem.getName());
+                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -462,7 +455,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (id == R.id.export_checklist) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, childItem.getName());
+                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -472,7 +465,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 QueryBuilder<CheckItem, String> queryBuilder = global.getDaoCheckItem().queryBuilder();
                 Where<CheckItem, String> where = queryBuilder.where();
                 try {
-                    where.eq(CheckItem.FIELD_CATEGORY, childItem.getName()).and().eq(CheckItem.FIELD_DIFFICULTY, hasDifficulty.get(0).getSelected());
+                    where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected() + 1));
                     items = queryBuilder.query();
                 } catch (SQLException e) {
                     if (BuildConfig.BUILD_TYPE.equals("debug"))
@@ -494,61 +487,62 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     @Override
-    public void onDifficultySelected(String difficulty) {
-        setNavItems(childItem.getName());
-        int diffInt = UmbrellaUtil.fromDifficulty(MainActivity.this, difficulty);
-        if ( diffInt >= titleSpinner.getAdapter().getCount()) {
+    public void onDifficultySelected(int difficulty) {
+        setNavItems(childItem.getTitle());
+        if (difficulty >= titleSpinner.getAdapter().getCount()) {
             titleSpinner.setSelection(titleSpinner.getAdapter().getCount() - 1);
         } else {
-            titleSpinner.setSelection(diffInt);
+            titleSpinner.setSelection(difficulty);
         }
         setFragment(1, "", false);
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin * 5, margin * 5);
-        new ShowcaseView.Builder(this)
-                .setTarget(new ViewTarget(R.id.spinner_nav, this))
-                .setContentText(getString(R.string.click_here_to_change_level))
-                .setStyle(R.style.CustomShowcaseTheme4)
-                .hideOnTouchOutside()
-                .singleShot(2)
-                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                        lps.setMargins(margin, margin, margin * 5, margin * 5);
-                        new ShowcaseView.Builder(MainActivity.this)
-                                .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
-                                .setContentText(getString(R.string.swipe_left_to_read))
-                                .setStyle(R.style.CustomShowcaseTheme4)
-                                .hideOnTouchOutside()
-                                .singleShot(3)
-                                .build()
-                                .setButtonPosition(lps);
-                    }
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+            lps.setMargins(margin, margin, margin * 5, margin * 5);
+            new ShowcaseView.Builder(this)
+                    .setTarget(new ViewTarget(R.id.spinner_nav, this))
+                    .setContentText(getString(R.string.click_here_to_change_level))
+                    .setStyle(R.style.CustomShowcaseTheme4)
+                    .hideOnTouchOutside()
+                    .singleShot(2)
+                    .setShowcaseEventListener(new OnShowcaseEventListener() {
+                        @Override
+                        public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                            lps.setMargins(margin, margin, margin * 5, margin * 5);
+                            new ShowcaseView.Builder(MainActivity.this)
+                                    .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
+                                    .setContentText(getString(R.string.swipe_left_to_read))
+                                    .setStyle(R.style.CustomShowcaseTheme4)
+                                    .hideOnTouchOutside()
+                                    .singleShot(3)
+                                    .build()
+                                    .setButtonPosition(lps);
+                        }
 
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+                        @Override
+                        public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
 
-                    }
+                        }
 
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
+                        @Override
+                        public void onShowcaseViewShow(ShowcaseView showcaseView) {
 
-                    }
-                })
-                .build()
-                .setButtonPosition(lps);
+                        }
+                    })
+                    .build()
+                    .setButtonPosition(lps);
+        }
     }
 
-    public void onNavigationDrawerGroupItemSelected(CategoryItem category) {
-        drawerItem = category.getName();
-        setFragment(2, category.getName(), false);
+    public void onNavigationDrawerGroupItemSelected(Category category) {
+        drawerItem = category.getId();
+        setFragment(2, category.getCategory(), false);
     }
 
     @Override
@@ -564,22 +558,24 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public void onDrawerClosed(View drawerView) {
         actionBarDrawerToggle.onDrawerClosed(drawerView);
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin * 5, margin * 5);
-        new ShowcaseView.Builder(this)
-                .setTarget(new PointTarget(0, 0))
-                .setContentText(getString(R.string.swipe_to_view_menu))
-                .setStyle(R.style.CustomShowcaseTheme4)
-                .hideOnTouchOutside()
-                .singleShot(1)
-                .setShowcaseEventListener(this)
-                .build()
-                .setButtonPosition(lps);
-        if (!shownCoachmark)
-           onShowcaseViewHide(null);
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+            lps.setMargins(margin, margin, margin * 5, margin * 5);
+            new ShowcaseView.Builder(this)
+                    .setTarget(new PointTarget(0, 0))
+                    .setContentText(getString(R.string.swipe_to_view_menu))
+                    .setStyle(R.style.CustomShowcaseTheme4)
+                    .hideOnTouchOutside()
+                    .singleShot(1)
+                    .setShowcaseEventListener(this)
+                    .build()
+                    .setButtonPosition(lps);
+            if (!shownCoachmark)
+               onShowcaseViewHide(null);
+        }
     }
 
     @Override

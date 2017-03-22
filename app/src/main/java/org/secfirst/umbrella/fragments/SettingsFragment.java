@@ -31,20 +31,17 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.j256.ormlite.table.TableUtils;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
-import org.secfirst.umbrella.models.CategoryItem;
-import org.secfirst.umbrella.models.ChecksItem;
-import org.secfirst.umbrella.models.Difficulty;
-import org.secfirst.umbrella.models.ItemsItem;
+import org.secfirst.umbrella.models.Category;
+import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Registry;
+import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
@@ -144,7 +141,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         refreshInterval = (ListPreference) findPreference("refresh_interval");
         refreshInterval.setEntries(UmbrellaUtil.getRefreshEntries(getContext()));
-        refreshInterval.setEntryValues(UmbrellaUtil.getRefreshEntryValues());
+        refreshInterval.setEntryValues(UmbrellaUtil.getRefreshEntryValues(getContext()));
         refreshInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -337,60 +334,48 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         syncDone = 0;
         progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), getString(R.string.checking_for_updates));
 
-        UmbrellaRestClient.get("api/tree?content=html", null, null, getContext(), new JsonHttpResponseHandler() {
+        UmbrellaRestClient.get("segments", null, null, getContext(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
                 Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<CategoryItem>>() {}.getType();
-                ArrayList<CategoryItem> receivedTree = gson.fromJson(response.toString(), listType);
-                try {
-                    TableUtils.dropTable(global.getOrmHelper().getConnectionSource(), CategoryItem.class, true);
-                    TableUtils.createTableIfNotExists(global.getOrmHelper().getConnectionSource(), CategoryItem.class);
-                    TableUtils.dropTable(global.getOrmHelper().getConnectionSource(), ItemsItem.class, true);
-                    TableUtils.createTableIfNotExists(global.getOrmHelper().getConnectionSource(), ItemsItem.class);
-                    TableUtils.dropTable(global.getOrmHelper().getConnectionSource(), ChecksItem.class, true);
-                    TableUtils.createTableIfNotExists(global.getOrmHelper().getConnectionSource(), ChecksItem.class);
-                    TableUtils.dropTable(global.getOrmHelper().getConnectionSource(), Difficulty.class, true);
-                    TableUtils.createTableIfNotExists(global.getOrmHelper().getConnectionSource(), Difficulty.class);
-                    CategoryItem myItem = new CategoryItem();
-                    myItem.setName("My Security");
-                    global.getDaoCategoryItem().create(myItem);
-                    for (CategoryItem categoryItem : receivedTree) {
-                        try {
-                            if (global.getDaoCategoryItem().create(categoryItem) > 0) {
-                                for (CategoryItem subCategoryItem : categoryItem.getSubcategories()) {
-                                    if (subCategoryItem.getName().equals("_")) {
-                                        subCategoryItem = categoryItem;
-                                    } else {
-                                        subCategoryItem.setParent(categoryItem.getName());
-                                        global.getDaoCategoryItem().create(subCategoryItem);
-                                    };
-                                    for (ItemsItem itemsItem : ListUtils.emptyIfNull(subCategoryItem.getItems())) {
-                                        itemsItem.setCategory(subCategoryItem.getName());
-                                        global.getDaoItemsItem().create(itemsItem);
-                                    }
-                                    for (ChecksItem checksItem : ListUtils.emptyIfNull(subCategoryItem.getChecks())) {
-                                        checksItem.setCategory(subCategoryItem.getName());
-                                        global.getDaoChecksItem().create(checksItem);
-                                    }
-                                }
-                                for (ItemsItem itemsItem : ListUtils.emptyIfNull(categoryItem.getItems())) {
-                                    itemsItem.setCategory(categoryItem.getName());
-                                    global.getDaoItemsItem().create(itemsItem);
-                                }
-                                for (ChecksItem checksItem : ListUtils.emptyIfNull(categoryItem.getChecks())) {
-                                    checksItem.setCategory(categoryItem.getName());
-                                    global.getDaoChecksItem().create(checksItem);
-                                }
-                            }
-                        } catch (SQLException e) {
-                            Timber.e(e);
-                        }
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                Type listType = new TypeToken<ArrayList<Segment>>() {
+                }.getType();
+                ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
+                if (receivedSegments!=null && receivedSegments.size() > 0) {
+                    global.syncSegments(receivedSegments);
                 }
-                progressDialog.dismiss();
+                checkDone();
+            }
+        });
+
+        UmbrellaRestClient.get("check_items", null, null, getContext(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<CheckItem>>() {
+                }.getType();
+                ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
+                if (receivedItems!=null && receivedItems.size() > 0) {
+                    global.syncCheckLists(receivedItems);
+                }
+                checkDone();
+            }
+        });
+
+        UmbrellaRestClient.get("categories", null, null, getContext(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<Category>>() {
+                }.getType();
+                ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
+                if (receivedItems!=null && receivedItems.size() > 0) {
+                    global.syncCategories(receivedItems);
+                }
+                checkDone();
             }
         });
     }
@@ -463,7 +448,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     public void updateSummaries() {
         skipPassword.setChecked(global.getSkipPassword());
-//        serverRefresh.setVisible(false);
+        serverRefresh.setVisible(false);
         int refValue = global.getRefreshValue();
         String refLabel = global.getRefreshLabel(refValue);
         refreshInterval.setValue(String.valueOf(refValue));
