@@ -454,6 +454,7 @@ public class Global extends Application {
     public Dao<FeedItem, String> getDaoFeedItem() {
         if (daoFeedItem==null) {
             try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FeedItem.class);
                 daoFeedItem = getOrmHelper().getDao(FeedItem.class);
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
