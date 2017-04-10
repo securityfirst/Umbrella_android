@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -24,6 +25,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.PointTarget;
@@ -48,7 +51,7 @@ import java.util.List;
 import timber.log.Timber;
 
 
-public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener {
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener   {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -58,7 +61,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public Spinner titleSpinner;
     private DrawerChildItem childItem;
     private int fragType = 0;
-    public MenuItem favouriteItem, unfavouriteItem;
+    public MenuItem favouriteItem;
     public boolean shownCoachmark = false;
     private TextView loginHeader;
     private View header;
@@ -68,6 +71,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -80,6 +84,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onResume() {
         super.onResume();
+        if (UmbrellaUtil.isAppMasked(MainActivity.this)) {
+            Intent i = new Intent(this, CalcActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            finish();
+            return;
+        }
         boolean hasOpened = global.initializeSQLCipher("");
         if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
@@ -150,7 +161,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 @Override
                 public void onClick(View v) {
                     if (global.isLoggedIn() && global.hasPasswordSet(false) && !global.getSkipPassword()) {
-                        global.logout(MainActivity.this);
+                        global.logout(MainActivity.this, true);
                     } else {
                         global.setPassword(MainActivity.this, null);
                     }
@@ -406,8 +417,27 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
+        if (id == R.id.action_mask) {
+            new MaterialDialog.Builder(this)
+                    .title(R.string.masking_mode_title)
+                    .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
+                    .positiveText(R.string.ok)
+                    .negativeText(R.string.cancel)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            UmbrellaUtil.setMaskMode(MainActivity.this, true);
+                            if (global.hasPasswordSet(false)) global.logout(MainActivity.this, false);
+                            Intent i = new Intent(MainActivity.this, CalcActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(i);
+                            finish();
+                        }
+                    })
+                    .show();
+        }
         if (id == R.id.action_logout) {
-            global.logout(this);
+            global.logout(this, true);
             return true;
         }
         if (id == R.id.action_set_password) {
@@ -581,4 +611,5 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onShowcaseViewShow(ShowcaseView showcaseView) {
         shownCoachmark = true;
     }
+
 }

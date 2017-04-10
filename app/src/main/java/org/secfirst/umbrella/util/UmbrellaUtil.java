@@ -2,7 +2,9 @@ package org.secfirst.umbrella.util;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -312,6 +314,44 @@ public class UmbrellaUtil {
             Timber.e(e);
         }
         return str;
+    }
+
+    public static void setMaskMode(Activity activity, boolean masked) {
+        String packageName = BuildConfig.APPLICATION_ID;
+        List<String> disableNames = new ArrayList<>();
+        disableNames.add("org.secfirst.umbrella.MainActivity-normal");
+        disableNames.add("org.secfirst.umbrella.MainActivity-calculator");
+        String activeName = disableNames.remove(masked ? 1 :0);
+
+        activity.getPackageManager().setComponentEnabledSetting(
+                new ComponentName(packageName, activeName),
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+
+        for (int i = 0; i < disableNames.size(); i++) {
+            try {
+                activity.getPackageManager().setComponentEnabledSetting(
+                        new ComponentName(packageName, disableNames.get(i)),
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static boolean isAppMasked(Activity activity) {
+        String packageName = BuildConfig.APPLICATION_ID;
+        List<String> disableNames = new ArrayList<>();
+        disableNames.add("org.secfirst.umbrella.MainActivity-normal");
+        disableNames.add("org.secfirst.umbrella.MainActivity-calculator");
+        for (int i = 0; i < disableNames.size(); i++) {
+            try {
+                int flag = activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, disableNames.get(i)));
+                return flag > 1 && i == 0;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
 }

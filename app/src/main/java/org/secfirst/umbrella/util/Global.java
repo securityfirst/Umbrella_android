@@ -319,14 +319,14 @@ public class Global extends Application {
         });
     }
 
-    public void logout(Context context) {
+    public void logout(Context context, boolean redirect) {
         setLoggedIn(false);
         if (OpenHelperManager.getHelper(context, OrmHelper.class) != null) {
             OpenHelperManager.getHelper(context, OrmHelper.class).close();
             OpenHelperManager.setHelper(null);
             dbHelper = null;
         }
-        if (context.getClass().getSimpleName().equals("MainActivity")) {
+        if (redirect) {
             Intent i = new Intent(context, LoginActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
             context.startActivity(i);
@@ -454,6 +454,7 @@ public class Global extends Application {
     public Dao<FeedItem, String> getDaoFeedItem() {
         if (daoFeedItem==null) {
             try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FeedItem.class);
                 daoFeedItem = getOrmHelper().getDao(FeedItem.class);
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);

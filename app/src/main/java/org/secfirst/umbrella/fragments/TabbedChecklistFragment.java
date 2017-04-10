@@ -130,24 +130,26 @@ public class TabbedChecklistFragment extends Fragment {
                 }
                 try {
                     Category category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
-                    DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
-                    if (mCheckList!=null) {
-                        for (CheckItem checkItem : mCheckList) {
-                            if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
-                                if (checkItem.getValue()) {
-                                    int val = dashCheckFinished.getChecked() + 1;
-                                    dashCheckFinished.setChecked(val);
+                    if (category != null) {
+                        DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
+                        if (mCheckList!=null) {
+                            for (CheckItem checkItem : mCheckList) {
+                                if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
+                                    if (checkItem.getValue()) {
+                                        int val = dashCheckFinished.getChecked() + 1;
+                                        dashCheckFinished.setChecked(val);
+                                    }
+                                    dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                                 }
-                                dashCheckFinished.setTotal(dashCheckFinished.getTotal() + 1);
                             }
                         }
+                        boolean isAlreadyPresent = false;
+                        for (DashCheckFinished retItem : returned) {
+                            if (retItem.getCategory().equals(dashCheckFinished.getCategory()) && retItem.getDifficulty() == dashCheckFinished.getDifficulty())
+                                isAlreadyPresent = true;
+                        }
+                        if (dashCheckFinished.getChecked() > 0 && !isAlreadyPresent) returned.add(dashCheckFinished);
                     }
-                    boolean isAlreadyPresent = false;
-                    for (DashCheckFinished retItem : returned) {
-                        if (retItem.getCategory().equals(dashCheckFinished.getCategory()) && retItem.getDifficulty() == dashCheckFinished.getDifficulty())
-                            isAlreadyPresent = true;
-                    }
-                    if (dashCheckFinished.getChecked() > 0 && !isAlreadyPresent) returned.add(dashCheckFinished);
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
