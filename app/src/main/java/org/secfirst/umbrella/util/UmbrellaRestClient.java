@@ -26,7 +26,10 @@ public class UmbrellaRestClient {
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static AsyncHttpClient getClientForApiUpdates(Context context) {
-        String[] pins = new String[] {"1d2eb31886d384cf34986f57eb75a21d08f7aaef", "f1af49801d8c94bca49964c3b467b7a7b783880a", "1212959a1fd001c80d152b1ee0410bbf90d1323e"};
+        String[] pins = new String[] {
+                "4374d7082697887f810d337bf6a913b6cb5c8b57",
+                "1212959a1fd001c80d152b1ee0410bbf90d1323e"
+        };
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
             client.addHeader("Accept-Language", Locale.getDefault().toString());
