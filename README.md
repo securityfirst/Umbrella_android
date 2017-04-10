@@ -19,12 +19,12 @@ Umbrella is an Android mobile app developed by [Security First](https://www.secf
 F-Droid fingerprint: 39EB57052F8D684514176819D1645F6A0A7BD943DBC31AB101949006AC0BC228
 
 
-##Example Usage
+## Example Usage
 Umbrella is designed for everyone (people looking to increase their security, folks living in high risk areas, regular travellers, business people, techies, journalists, NGO staff, aid workers, human rights defenders, social workers, environmental activists etc).
 
 However, when we built Umbrella we tried to keep in mind the story of Glen Greenwald and Edward Snowden. Greenwald couldn't communicate with Snowden at the start because he found it cumbersome to setup encryption (he nearly missed the one of biggest storys of the decade because of this!). Also, when he (and Laura Poitras) travelled to Hong Kong - they didn't have much knowledge about how to meet securely with Snowden and detect surveillance. This is common problem for journalists and acitivists. Umbrella is designed to solve this problem (and others) by having nearly everything they would have needed to know in the one place - in their pocket.
 
-##Main Parts of Umbrella
+## Main Parts of Umbrella
 **Introduction:**
 This is the part the user sees first. It explains briefly how the app works and the basic terms and conditions.
 
@@ -45,7 +45,7 @@ The dashboard contains security feeds from places like the UN Relief Web and the
 **Tool Guides:**
 These are detailed guides about how to use software and apps mentioned in the lessons.
 
-##Lessons
+## Lessons
 
 The general flow of lessons are presented in order to replicate the typical way that a user works. Protecting their own information -> Communicating with other people -> Arranging and travelling to a location -> Doing their operations and work -> Dealing with personal issues that may arise-> Seeking support if something goes wrong.
 
@@ -106,7 +106,7 @@ Explains places to get extra help if you have a problem.
 * Digital
 
 
-##Tools
+## Tools
 These are the tools currrently covered in the tool guide. (A number of them are due to be changed, removed or updated.)
 
 * Adium
@@ -131,10 +131,10 @@ These are the tools currrently covered in the tool guide. (A number of them are 
 * Tor for Windows
 * TrueCrypt
 
-##Glossary
+## Glossary
 Contains explanations of the various terms used in the app.
 
-##About
+## About
 Explains the licences that we use for and by Umbrella. Also says a big THANKYOU to everyone who's work we built on to make it happen.
 
 ## Dashboard Feed Sources
@@ -146,7 +146,7 @@ These are the sources that we currently include for real-time updated security f
 * [UN / ReliefWeb](http://reliefweb.int): excellent physical security updates that amalgamate information from the UN and various NGOs - though not available in every country
 * [US State Department](https://www.state.gov/travel/): updates mainly focused on the security situation for travellers and internationals - available for every country
 
-##Settings
+## Settings
 The three vertical dots in the top of the app. Here you can:
 
 * Set a password
