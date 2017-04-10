@@ -84,7 +84,7 @@ dependencyVerification {
             'com.jakewharton.timber:timber:94508005622528d41772a92e7ef09084c1ee0b7eecab1a9f6b7e902e704ee61a',
             'com.afollestad.material-dialogs:core:07f65eda0e9961ea749865c3ddf782530fd8a07f76dd6a39bf7c67b8f53e855f',
             'com.squareup:seismic:4fc9984aed7a689d24ae2574e9239aec14cc4d5d587621091104c9a4c4a83774',
-            'com.android.databinding:baseLibrary:c2eca83e534f21019a95c3183303ca8880cb725ee414fbf3890810e1894209db',
+            'com.android.databinding:baseLibrary:79681b09b2d7f2de24f2bd8b7454339fe5c7bed0b439188c3ce098cea1f06299',
             'com.android.databinding:adapters:9894e5c9f53f931360e9782ac95eb63534597bc57009d70ca68b841eb4b380d3',
             'com.android.support:support-annotations:faa89c445701dd0daf0031ceb2309fe5ffba0e019233acbba5f183ca8671a9a4',
             'com.android.support:support-vector-drawable:6b9f6c40827896e2a05703d40ddeadd3a8a4309cd388627c9c002b8145b53167',
