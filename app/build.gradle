@@ -11,8 +11,8 @@ android {
         applicationId "org.secfirst.umbrella"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 21
-        versionName "0.2.9"
+        versionCode 22
+        versionName "0.3.0"
     }
     buildTypes {
         release {
