@@ -220,7 +220,13 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
                         startActivity(i);
                         finish();
                     }
-                })
-                .show();
+                }).build();
+        if (!isFinishing()) {
+            try {
+                materialDialog.show();
+            } catch (WindowManager.BadTokenException e) {
+                Timber.e(e);
+            }
+        }
     }
 }
