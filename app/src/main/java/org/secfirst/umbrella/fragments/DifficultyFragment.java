@@ -23,9 +23,9 @@ import timber.log.Timber;
 public class DifficultyFragment extends Fragment {
 
     private static final String SECTION_NUMBER = "section_number";
-    private static final int BEGINNER = 0;
-    private static final int INTERMEDIATE = 1;
-    private static final int EXPERT = 2;
+    public static final int BEGINNER = 0;
+    public static final int INTERMEDIATE = 1;
+    public static final int EXPERT = 2;
 
     private long mSection;
 
@@ -62,30 +62,29 @@ public class DifficultyFragment extends Fragment {
             btnBeginner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDifficultySelected(getString(R.string.beginner));
+                    onDifficultySelected(BEGINNER);
                 }
             });
             View btnIntermediate = v.findViewById(R.id.card_intermediate);
             btnIntermediate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onDifficultySelected(getString(R.string.advanced));
+                    onDifficultySelected(INTERMEDIATE);
                 }
             });
             View btnExpert = v.findViewById(R.id.card_expert);
             btnExpert.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-onDifficultySelected(getString(R.string.expert));
+                    onDifficultySelected(EXPERT);
                 }
             });
             ((TextView) v.findViewById(R.id.beginner_description)).setText("Beginner");
             ((TextView) v.findViewById(R.id.advanced_description)).setText("Advanced");
             ((TextView) v.findViewById(R.id.expert_description)).setText("Expert");
-            btnBeginner.setVisibility(childCategory.hasDifficulty(global, getString(R.string.beginner)) ? View.VISIBLE : View.GONE);
-            btnIntermediate.setVisibility(childCategory.hasDifficulty(global, getString(R.string.advanced)) ? View.VISIBLE : View.GONE);
-            btnExpert.setVisibility(childCategory.hasDifficulty(global, getString(R.string.expert)) ? View.VISIBLE : View.GONE);
+            btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
+            btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
+            btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
         } catch (SQLException e) {
             Timber.e(e);
         }
