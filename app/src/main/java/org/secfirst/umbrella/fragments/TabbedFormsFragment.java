@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.fragments;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -35,6 +37,7 @@ import org.secfirst.umbrella.models.FormItem;
 import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,6 +58,7 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     List<Form> allForms = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefresh;
     LinearLayout filledOutHolder;
+    private ProgressDialog progressDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -100,6 +104,12 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     public void onResume() {
         super.onResume();
         onRefreshed();
+    }
+
+    @Override
+    public void onStop() {
+        if (progressDialog!=null && progressDialog.isShowing()) progressDialog.dismiss();
+        super.onStop();
     }
 
     public void onRefreshed() {
@@ -156,6 +166,7 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
 
     @Override
     public void onSessionsPdfCreated(long sessionId) {
+        progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), "");
         List<FormValue> formValues = null;
         Form form = null;
         try {
@@ -174,16 +185,31 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
             Document document = new Document();
             try {
                 File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName+".pdf");
-                PdfWriter.getInstance(document,
-                        new FileOutputStream(file));
+                FileOutputStream fos = new FileOutputStream(file);
+                PdfWriter pdfWriter = PdfWriter.getInstance(document, fos);
                 document.open();
                 for (FormScreen screen : form.getScreens()) {
                     document.add(new Paragraph(screen.getTitle()));
                     for (FormItem formItem : screen.getItems()) {
                         document.add(new Paragraph(formItem.getTitle()));
+
+                        switch (formItem.getType()) {
+                            case "text_input":
+//                                PdfAnnotation shape2 = PdfAnnotation.createLine(pdfWriter, new Rectangle(200f, 250f, 300f, 350f), "this is a line", 200, 250, 300, 350);
+//                                PdfFormField f2 = PdfFormField.createPushButton(pdfWriter);
+//                                pdfWriter.add(f2);
+//                                document.
+//                                pdfWriter.addAnnotation(shape2);
+//                                PdfFormField field = PdfFormField.createTextField(pdfWriter, false, false, 1000);
+//                                PdfAcroForm pForm = new PdfAcroForm(pdfWriter);
+//                                pForm.addFormField(field);
+                            case "text_area":
+                            case "multiple_choice":
+                            case "single_choice":
+                            case "toggle_button":
+                        }
                     }
                 }
-
                 document.close();
 
                 Intent intentShareFile = new Intent(Intent.ACTION_SEND);
@@ -193,12 +219,14 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
                     intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
                             getString(R.string.share_file));
                     startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
+//                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "application/pdf"));
+                    if (progressDialog.isShowing()) progressDialog.dismiss();
                 }
-//                file.delete();
+                file.delete();
             } catch (DocumentException | FileNotFoundException e) {
                 Timber.e(e);
             }
         }
-
+        if (progressDialog.isShowing()) progressDialog.dismiss();
     }
 }

@@ -106,7 +106,7 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
 
     @Override
     public void onStepSelected(int newStepPosition) {
-        Toast.makeText(this, "onStepSelected! -> " + newStepPosition, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "onStepSelected! -> " + newStepPosition, Toast.LENGTH_SHORT).show();
     }
 
     public Form getForm() {
