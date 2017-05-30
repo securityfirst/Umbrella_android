@@ -3,8 +3,7 @@
     android:background="@drawable/background"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:layout_height="match_parent"
-    tools:context=".TabbedActivity$DummySectionFragment">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:paddingLeft="5dp"
@@ -61,7 +60,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/round_button"
-            android:stateListAnimator="@anim/anim"
+            android:stateListAnimator="@animator/anim"
             android:src="@drawable/ic_add"
             android:elevation="4dp"
             />

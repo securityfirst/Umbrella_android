@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -39,6 +40,11 @@ import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.FeedSource;
+import org.secfirst.umbrella.models.Form;
+import org.secfirst.umbrella.models.FormItem;
+import org.secfirst.umbrella.models.FormOption;
+import org.secfirst.umbrella.models.FormScreen;
+import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
@@ -63,6 +69,11 @@ public class Global extends Application {
     private SharedPreferences.Editor sped;
     private boolean _termsAccepted, showNav, isLoggedIn, password;
     private Dao<Segment, String> daoSegment;
+    private Dao<Form, String> daoForm;
+    private Dao<FormScreen, String> daoFormScreen;
+    private Dao<FormItem, String> daoFormItem;
+    private Dao<FormOption, String> daoFormOption;
+    private Dao<FormValue, String> daoFormValue;
     private Dao<CheckItem, String> daoCheckItem;
     private Dao<Category, String> daoCategory;
     private Dao<Registry, String> daoRegistry;
@@ -393,6 +404,11 @@ public class Global extends Application {
             getDaoLanguage();
             getDaoFeedItem();
             getDaoFeedSource();
+            getDaoForm();
+            getDaoFormItem();
+            getDaoFormOption();
+            getDaoFormScreen();
+            getDaoFormValue();
             startService();
             if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
@@ -463,9 +479,73 @@ public class Global extends Application {
         return daoFeedItem;
     }
 
+    public Dao<Form, String> getDaoForm() {
+        if (daoForm==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), Form.class);
+                daoForm = getOrmHelper().getDao(Form.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoForm;
+    }
+
+    public Dao<FormScreen, String> getDaoFormScreen() {
+        if (daoFormScreen==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormScreen.class);
+                daoFormScreen = getOrmHelper().getDao(FormScreen.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoFormScreen;
+    }
+
+    public Dao<FormItem, String> getDaoFormItem() {
+        if (daoFormItem==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormItem.class);
+                daoFormItem = getOrmHelper().getDao(FormItem.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoFormItem;
+    }
+
+    public Dao<FormOption, String> getDaoFormOption() {
+        if (daoFormOption==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormOption.class);
+                daoFormOption = getOrmHelper().getDao(FormOption.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoFormOption;
+    }
+
+    public Dao<FormValue, String> getDaoFormValue() {
+        if (daoFormValue==null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormValue.class);
+                daoFormValue = getOrmHelper().getDao(FormValue.class);
+                if (getDaoForm().countOf()<1) {
+                    getForms();
+                }
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
+        return daoFormValue;
+    }
+
     public Dao<FeedSource, String> getDaoFeedSource() {
         if (daoFeedSource==null) {
             try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FeedSource.class);
                 daoFeedSource = getOrmHelper().getDao(FeedSource.class);
                 if (daoFeedSource.countOf()<1) {
                     daoFeedSource.create(new FeedSource("ReliefWeb", 0));
@@ -778,5 +858,160 @@ public class Global extends Application {
         daoLanguage = null;
         daoFeedItem = null;
         daoFeedSource = null;
+        daoForm = null;
+        daoFormScreen = null;
+        daoFormItem = null;
+        daoFormOption = null;
+        daoFormValue = null;
+    }
+
+    public ArrayList<Form> getForms() {
+        ArrayList<Form> forms = new ArrayList<>();
+
+        Form form = new Form("Digital Security Incident");
+        try {
+            getDaoForm().create(form);
+
+            try {
+                ForeignCollection<FormScreen> screens = getDaoForm().getEmptyForeignCollection("screens");
+
+                FormScreen screen1 = new FormScreen("Contact Information for this Incident", form);
+                screens.add(screen1);
+
+                ForeignCollection<FormItem> fItems = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems.add(new FormItem("Name:", "text_input", screen1));
+                fItems.add(new FormItem("Title:", "text_input", screen1));
+                fItems.add(new FormItem("Phone:", "text_input", screen1));
+                fItems.add(new FormItem("Email address:", "text_input", screen1));
+                fItems.add(new FormItem("Secure Communication Method (e.g Signal Safety Number, PGP Email ID):", "text_input", screen1));
+
+
+                FormScreen screen2 = new FormScreen("Incident Description", form);
+                screens.add(screen2);
+
+                ForeignCollection<FormItem> fItems2 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems2.add(new FormItem("Provide a brief description:", "text_area", screen2));
+
+                FormScreen screen3 = new FormScreen("Impact / Potential Impact Check all of the following that apply to this incident.", form);
+                screens.add(screen3);
+
+                ForeignCollection<FormItem> fItems3 = getDaoFormScreen().getEmptyForeignCollection("items");
+
+                FormItem fItem3_1 = new FormItem("", "multiple_choice", screen3);
+                fItems3.add(fItem3_1);
+                ForeignCollection<FormOption> fItem3_1Options1 = getDaoFormItem().getEmptyForeignCollection("options");
+                fItem3_1Options1.add(new FormOption("Outside access to data", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Loss of access to account", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Phishing / Malware attacks on contacts", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Loss / Compromise of Data", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Damage to Systems", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Website down", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Financial Loss", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Other Organizations’ Systems/ Data Affected", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Damage to the Integrity or Delivery of Critical Services or Information", fItem3_1));
+                fItem3_1Options1.add(new FormOption("Unknown at this time", fItem3_1));
+                fItem3_1.setOptions(fItem3_1Options1);
+
+                FormItem fItem3_2 = new FormItem("Provide a brief description", "text_area", screen3);
+                fItems3.add(fItem3_2);
+                screen3.setItems(fItems3);
+
+                FormScreen screen4 = new FormScreen("Sensitivity of Data/Information Involved Check all of the following that apply to this incident.", form);
+                screens.add(screen4);
+
+                ForeignCollection<FormItem> fItems4 = getDaoFormScreen().getEmptyForeignCollection("items");
+                FormItem fItem4_1 = new FormItem("", "multiple_choice", screen4);
+                ForeignCollection<FormOption> fItem4_1Options1 = getDaoFormItem().getEmptyForeignCollection("options");
+                fItem4_1Options1.add(new FormOption("Public", fItem3_1));
+                fItem4_1Options1.add(new FormOption("Internal Use Only", fItem3_1));
+                fItem4_1Options1.add(new FormOption("Restricted / Confidential (Privacy violation)", fItem3_1));
+                fItem4_1Options1.add(new FormOption("Unknown / Other – please describe:", fItem3_1));
+                fItem4_1.setOptions(fItem4_1Options1);
+                fItems4.add(fItem4_1);
+                fItems4.add(new FormItem("Provide a brief description of data that may be compromised:", "text_area", screen4));
+
+                FormScreen screen5 = new FormScreen("Are accounts possibly compromised? Please name all, including any individuals who maybe at risk and need to be contacted by the compromised account.", form);
+                screens.add(screen5);
+                ForeignCollection<FormItem> fItems5 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems5.add(new FormItem("", "text_area", screen5));
+
+                FormScreen screen6 = new FormScreen("Do You Have an Inclination As To What The Motive Was Or Who The Perpetrators Were?", form);
+                screens.add(screen6);
+                ForeignCollection<FormItem> fItems6 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems6.add(new FormItem("", "text_area", screen6));
+
+                FormScreen screen7 = new FormScreen("Who Else Has Been Notified? ", form);
+                screens.add(screen7);
+                ForeignCollection<FormItem> fItems7 = getDaoFormScreen().getEmptyForeignCollection("items");
+                FormItem fItems7_1 = new FormItem("", "text_area", screen7);
+                fItems7_1.setHint("Provide Person and Title:");
+                fItems7.add(fItems7_1);
+
+                FormScreen screen8 = new FormScreen("What Steps Have Been Taken So Far? Check all of the following that apply to this incident.", form);
+                screens.add(screen8);
+                ForeignCollection<FormItem> fItems8 = getDaoFormScreen().getEmptyForeignCollection("items");
+                FormItem fItem8_1 = new FormItem("", "multiple_choice", screen8);
+                fItems8.add(fItem8_1);
+
+                ForeignCollection<FormOption> fItem8_1Options1 = getDaoFormItem().getEmptyForeignCollection("options");
+                fItem8_1Options1.add(new FormOption("No action taken", fItem8_1));
+                fItem8_1Options1.add(new FormOption("System/ Device Disconnected from network & taken offline", fItem8_1));
+                fItem8_1Options1.add(new FormOption("Updated virus definitions & scanned system", fItem8_1));
+                fItem8_1Options1.add(new FormOption("Contacts alerted", fItem8_1));
+                fItem8_1Options1.add(new FormOption("Restored backup", fItem8_1));
+                fItem8_1Options1.add(new FormOption("Log files examined (saved & secured)", fItem8_1));
+                fItem8_1Options1.add(new FormOption("Account passwords of all on network changed", fItem8_1));
+                fItem8_1Options1.add(new FormOption("Other – please describe:", fItem8_1));
+                fItem8_1.setOptions(fItem8_1Options1);
+
+                fItems8.add(new FormItem("Provide a brief description:", "text_area", screen8));
+
+                FormScreen screen9 = new FormScreen("Incident Details", form);
+                screens.add(screen9);
+
+                ForeignCollection<FormItem> fItems9 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems9.add(new FormItem("Date and Time the Incident was discovered:", "text_input", screen9));
+                fItems9.add(new FormItem("Has the incident been resolved?", "text_input", screen9));
+                fItems9.add(new FormItem("Physical location of affected device/ system(s):", "text_input", screen9));
+                fItems9.add(new FormItem("Number of sites affected by the incident:", "text_input", screen9));
+                fItems9.add(new FormItem("Approximate number of users affected by the incident:", "text_input", screen9));
+                fItems9.add(new FormItem("Please provide any additional information that you feel is important but has not been provided elsewhere on this form.", "text_input", screen9));
+
+                FormScreen screen10 = new FormScreen("Do Your Security Guidelines Cover This Type Of Incident? Were The Guidelines Followed?", form);
+                screens.add(screen10);
+                ForeignCollection<FormItem> fItems10 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems10.add(new FormItem("", "text_area", screen10));
+
+                FormScreen screen11 = new FormScreen("Do The Guidelines Or Any Other Aspect Of Security Management Need To Be Revised In Any Way?", form);
+                screens.add(screen11);
+                ForeignCollection<FormItem> fItems11 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems11.add(new FormItem("", "text_area", screen11));
+
+                FormScreen screen12 = new FormScreen("Lessons Learnt?", form);
+                screens.add(screen12);
+                ForeignCollection<FormItem> fItems12 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems12.add(new FormItem("", "text_area", screen12));
+
+                FormScreen screen13 = new FormScreen("Any Action Requested?", form);
+                screens.add(screen13);
+                ForeignCollection<FormItem> fItems13 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems13.add(new FormItem("", "text_area", screen13));
+
+                FormScreen screen14 = new FormScreen("Any supporting information? (Screenshots, suspicious attachment, emails etc.)", form);
+                screens.add(screen14);
+                ForeignCollection<FormItem> fItems14 = getDaoFormScreen().getEmptyForeignCollection("items");
+                fItems14.add(new FormItem("", "text_area", screen14));
+
+                form.setScreens(screens);
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        forms.add(form);
+        return forms;
     }
 }

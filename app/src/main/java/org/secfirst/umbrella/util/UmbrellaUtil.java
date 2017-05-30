@@ -174,7 +174,14 @@ public class UmbrellaUtil {
             return context.getString(R.string.password_one_small);
         }
         return "";
+    }
 
+    public static String ellipsis(final String text, int length)
+    {
+        if (text.length() < length) {
+            return text;
+        }
+        return text.substring(0, length - 3) + "...";
     }
 
     public static void setStatusBarColor(Activity activity, int colorResource) {
