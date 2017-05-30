@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 import android.support.v4.content.IntentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +89,7 @@ public class Global extends Application {
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onCreate() {
+        MultiDex.install(this);
         super.onCreate();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());

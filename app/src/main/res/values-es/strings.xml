@@ -149,4 +149,9 @@
     <string name="action_mask">Mask_es</string>
     <string name="masking_mode_title">Enable masking mode</string>
     <string name="masking_mode_body">If you enable this, the app will be masked from casual viewers. To unmask it you need to shake the device. While the app is masked, you can find it under the name %1$s</string>
+    <string name="forms">Forms</string>
+    <string name="tab_title">Tab title</string>
+    <string name="available_forms">Available forms</string>
+    <string name="filled_out_forms">Filled out forms</string>
+    <string name="share_file">Share File</string>
 </resources>
