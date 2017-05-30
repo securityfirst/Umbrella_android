@@ -154,4 +154,5 @@
     <string name="tab_title">Tab title</string>
     <string name="available_forms">Available forms</string>
     <string name="filled_out_forms">Filled out forms</string>
+    <string name="share_file">Share File</string>
 </resources>

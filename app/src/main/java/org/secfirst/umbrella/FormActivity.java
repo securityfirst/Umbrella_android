@@ -15,6 +15,8 @@ import org.secfirst.umbrella.util.OnNavigationBarListener;
 
 import java.sql.SQLException;
 
+import timber.log.Timber;
+
 public class FormActivity extends BaseActivity implements StepperLayout.StepperListener,
         OnNavigationBarListener {
 
@@ -45,7 +47,11 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
             finish();
             return;
         }
-        sessionId = System.currentTimeMillis()/1000;
+        sessionId = getIntent().getExtras().getLong("session_id", -1);
+        if (sessionId<0) {
+            sessionId = System.currentTimeMillis()/1000;
+        }
+        Timber.d("sess %d", sessionId);
         setTitle(f.getTitle());
 
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;

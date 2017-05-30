@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'idea'
 apply plugin: 'witness'
+apply plugin: 'let'
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -53,6 +55,7 @@ dependencies {
     compile 'com.squareup:seismic:1.0.2'
     compile 'com.stepstone.stepper:material-stepper:3.2.0'
     compile 'org.apache.commons:commons-lang3:3.4'
+    compile group: 'com.itextpdf', name: 'itextg', version: '5.5.9'
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }
 
