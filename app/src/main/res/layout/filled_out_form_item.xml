@@ -21,7 +21,11 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/text_holder"
+                android:layout_width="match_parent"
+                android:layout_toStartOf="@+id/icon_holder"
+                android:layout_toLeftOf="@+id/icon_holder"
+                android:layout_alignParentLeft="true"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
 
@@ -35,35 +39,46 @@
 
                 <TextView
                     android:id="@+id/form_last_modified"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textColor="@color/dark_grey"
+                    android:layout_gravity="bottom"
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
 
-
-            <ImageButton
-                android:id="@+id/btn_share"
-                android:src="@drawable/ic_borders"
-                android:layout_toLeftOf="@+id/btn_edit"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
-            <ImageButton
-                android:id="@+id/btn_edit"
-                android:layout_toLeftOf="@+id/btn_delete"
-                android:src="@drawable/ic_borders"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
-            <ImageButton
-                android:id="@+id/btn_delete"
+            <LinearLayout
+                android:id="@+id/icon_holder"
+                android:orientation="horizontal"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_borders"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btn_share"
+                    android:src="@drawable/ic_share"
+                    android:background="@android:color/transparent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_edit"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_edit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_delete"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+            </LinearLayout>
+
+
 
         </RelativeLayout>
 

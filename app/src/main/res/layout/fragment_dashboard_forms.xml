@@ -18,6 +18,30 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+
+            <TextView
+                android:id="@+id/form_list_title"
+                android:text="@string/available_forms"
+                android:textColor="@color/umbrella_yellow"
+                android:layout_width="wrap_content"
+                android:textSize="@dimen/text_size_normal"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/form_list"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
             android:id="@+id/filled_out_holder"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
@@ -35,30 +59,6 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/filled_out_list"
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp">
-
-            <TextView
-                android:id="@+id/form_list_title"
-                android:text="@string/available_forms"
-                android:textColor="@color/umbrella_yellow"
-                android:layout_width="wrap_content"
-                android:textSize="@dimen/text_size_normal"
-                android:layout_height="wrap_content" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/form_list"
                 android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
