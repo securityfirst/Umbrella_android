@@ -21,14 +21,14 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.canelmas.let.AskPermission;
 import com.canelmas.let.DeniedPermission;
+import com.canelmas.let.Let;
 import com.canelmas.let.RuntimePermissionListener;
 import com.canelmas.let.RuntimePermissionRequest;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.j256.ormlite.stmt.PreparedQuery;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.FilledOutFormListAdapter;
 import org.secfirst.umbrella.adapters.FormListAdapter;
@@ -39,9 +39,10 @@ import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ import timber.log.Timber;
 
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class TabbedFormsFragment extends Fragment implements RuntimePermissionListener, SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionPdfCreate {
+public class TabbedFormsFragment extends Fragment implements RuntimePermissionListener, SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionHTMLCreate {
 
     private FormListAdapter formListAdapter;
     private FilledOutFormListAdapter filledOutAdapter;
@@ -103,7 +104,7 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     @Override
     public void onResume() {
         super.onResume();
-        onRefreshed();
+        onRefresh();
     }
 
     @Override
@@ -112,7 +113,8 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
         super.onStop();
     }
 
-    public void onRefreshed() {
+    @Override
+    public void onRefresh() {
         try {
             allForms = global.getDaoForm().queryForAll();
             PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().groupBy(FormValue.FIELD_SESSION).prepare();
@@ -127,16 +129,10 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     }
 
     @Override
-    @AskPermission(WRITE_EXTERNAL_STORAGE)
-    public void onRefresh() {
-        mSwipeRefresh.setRefreshing(false);
-    }
-
-    @Override
     public void onShowPermissionRationale(List<String> permissionList, final RuntimePermissionRequest permissionRequest) {
         new MaterialDialog.Builder(getContext())
-                .title("Write")
-                .content("Blah")
+                .title("Write permission")
+                .content("Allow writing to disk so we can send this file as an attachment")
                 .positiveText(R.string.ok)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
@@ -161,11 +157,12 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Let.handle(this, requestCode, permissions, grantResults);
     }
 
+    @AskPermission(WRITE_EXTERNAL_STORAGE)
     @Override
-    public void onSessionsPdfCreated(long sessionId) {
+    public void onSessionHTMLCreated(long sessionId) {
         progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), "");
         List<FormValue> formValues = null;
         Form form = null;
@@ -182,51 +179,43 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
         if (form!=null && formValues.size()>0) {
             String fileName = form.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
             if (fileName.length() > 50) fileName = fileName.substring(0, 50);
-            Document document = new Document();
-            try {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName+".pdf");
-                FileOutputStream fos = new FileOutputStream(file);
-                PdfWriter pdfWriter = PdfWriter.getInstance(document, fos);
-                document.open();
-                for (FormScreen screen : form.getScreens()) {
-                    document.add(new Paragraph(screen.getTitle()));
-                    for (FormItem formItem : screen.getItems()) {
-                        document.add(new Paragraph(formItem.getTitle()));
+            Document doc = Jsoup.parse("");
+            Element body = doc.body();
+            doc.title(fileName);
+            for (FormScreen screen : form.getScreens()) {
+                body.append("<h1>"+screen.getTitle()+"</h1>");
+                for (FormItem formItem : screen.getItems()) {
+                    body.append("<h3>"+formItem.getTitle()+"</h3>");
 
-                        switch (formItem.getType()) {
-                            case "text_input":
-//                                PdfAnnotation shape2 = PdfAnnotation.createLine(pdfWriter, new Rectangle(200f, 250f, 300f, 350f), "this is a line", 200, 250, 300, 350);
-//                                PdfFormField f2 = PdfFormField.createPushButton(pdfWriter);
-//                                pdfWriter.add(f2);
-//                                document.
-//                                pdfWriter.addAnnotation(shape2);
-//                                PdfFormField field = PdfFormField.createTextField(pdfWriter, false, false, 1000);
-//                                PdfAcroForm pForm = new PdfAcroForm(pdfWriter);
-//                                pForm.addFormField(field);
-                            case "text_area":
-                            case "multiple_choice":
-                            case "single_choice":
-                            case "toggle_button":
-                        }
+                    switch (formItem.getType()) {
+                        case "text_input":
+                        case "text_area":
+                        case "multiple_choice":
+                        case "single_choice":
+                        case "toggle_button":
                     }
                 }
-                document.close();
+            }
 
-                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                if(file.exists()) {
-                    intentShareFile.setType("application/pdf");
-                    intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-                    intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                            getString(R.string.share_file));
-                    startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
-//                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "application/pdf"));
-                    if (progressDialog.isShowing()) progressDialog.dismiss();
-                }
-                file.delete();
-            } catch (DocumentException | FileNotFoundException e) {
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName+".html");
+            try {
+                BufferedWriter writer = new BufferedWriter( new FileWriter(file));
+                writer.write(doc.toString());
+                writer.flush();
+                writer.close();
+            } catch ( IOException e) {
                 Timber.e(e);
             }
+            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+            intentShareFile.setType("text/html");
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                    getString(R.string.share_file));
+            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
+//                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "application/pdf"));
+            if (progressDialog.isShowing()) progressDialog.dismiss();
         }
         if (progressDialog.isShowing()) progressDialog.dismiss();
     }
+
 }

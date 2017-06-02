@@ -32,7 +32,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
     private List<FormValue> forms = new ArrayList<>();
     private Context context;
     private Global global;
-    private OnSessionPdfCreate pdfListener;
+    private OnSessionHTMLCreate sessionHTMLCreate;
 
     static class FilledOutFormViewHolder extends RecyclerView.ViewHolder {
         TextView formTitle;
@@ -55,7 +55,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
     public FilledOutFormListAdapter(Context context, TabbedFormsFragment fragment) {
         this.context = context;
         this.global = (Global) context.getApplicationContext();
-        this.pdfListener = fragment;
+        this.sessionHTMLCreate = fragment;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
         formViewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pdfListener.onSessionsPdfCreated(currentValue.getSessionID());
+                sessionHTMLCreate.onSessionHTMLCreated(currentValue.getSessionID());
             }
         });
         formViewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -136,8 +136,8 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
-    public interface OnSessionPdfCreate {
-        void onSessionsPdfCreated(long sessionId);
+    public interface OnSessionHTMLCreate {
+        void onSessionHTMLCreated(long sessionId);
     }
 
 }
