@@ -18,6 +18,7 @@
             android:layout_toLeftOf="@+id/btn_share"
             android:paddingBottom="15dp"
             android:paddingRight="10dp"
+            android:paddingLeft="10dp"
             android:layout_height="wrap_content">
 
             <LinearLayout
