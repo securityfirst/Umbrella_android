@@ -34,6 +34,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
@@ -49,6 +50,9 @@ import org.secfirst.umbrella.util.OnNavigationBarListener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -105,6 +109,7 @@ public class StepFragment extends Fragment implements Step {
         holderTitle.setText(fsc.getTitle());
         holderTitle.setTextSize(18);
         holderTitle.setGravity(Gravity.CENTER);
+        holderTitle.setVisibility(View.GONE);
         formHolder.addView(holderTitle);
         View separator = new View(getContext());
         LinearLayout.LayoutParams viewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1);
@@ -114,6 +119,12 @@ public class StepFragment extends Fragment implements Step {
         formHolder.addView(separator);
         for (int i = 0; i < fsc.getItems().size(); i++) {
             FormItem formItem = new ArrayList<>(fsc.getItems()).get(i);
+            try {
+                PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                formItem.setValues(global.getDaoFormValue().query(queryBuilder));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             switch (formItem.getType()) {
                 case "text_input":
                     if (!formItem.getTitle().equals("")) {
@@ -125,8 +136,7 @@ public class StepFragment extends Fragment implements Step {
                     EditText etTextInput = new EditText(getContext());
                     etTextInput.setHint(formItem.getHint());
                     etTextInput.setTag(i);
-
-                    if (formItem.getValues()!=null && formItem.getValues().size()>0) etTextInput.setText((CharSequence) new ArrayList<>(formItem.getValues()).get(0));
+                    if (formItem.getValues()!=null && formItem.getValues().size()>0) etTextInput.setText(new ArrayList<>(formItem.getValues()).get(0).getValue());
 
                     formHolder.addView(etTextInput);
                     break;
@@ -141,7 +151,7 @@ public class StepFragment extends Fragment implements Step {
                     taTextInput.setHint(formItem.getHint());
                     taTextInput.setTag(i);
                     taTextInput.setLines(4);
-                    if (formItem.getValues()!=null && formItem.getValues().size()>0) taTextInput.setText((CharSequence) new ArrayList<>(formItem.getValues()).get(0));
+                    if (formItem.getValues()!=null && formItem.getValues().size()>0) taTextInput.setText(new ArrayList<>(formItem.getValues()).get(0).getValue());
                     formHolder.addView(taTextInput);
                     break;
                 case "multiple_choice":
@@ -150,9 +160,17 @@ public class StepFragment extends Fragment implements Step {
                         mcTextInput.setText(formItem.getTitle());
                         formHolder.addView(mcTextInput);
                     }
+                    List<String> mcValList = new ArrayList<>();
+                    if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                        mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                    }
                     for (FormOption formOption : formItem.getOptions()) {
                         CheckBox mcCheck = new CheckBox(getContext());
                         mcCheck.setText(formOption.getOption());
+                        if (mcValList.size()>0) {
+                            mcCheck.setChecked(Boolean.parseBoolean(mcValList.get(0)));
+                            mcValList.remove(0);
+                        }
                         mcCheck.setTag(i);
                         formHolder.addView(mcCheck);
                     }
@@ -163,10 +181,18 @@ public class StepFragment extends Fragment implements Step {
                         scTextInput.setText(formItem.getTitle());
                         formHolder.addView(scTextInput);
                     }
+                    List<String> scValList = new ArrayList<>();
+                    if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                        scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                    }
                     for (FormOption formOption : formItem.getOptions()) {
                         RadioButton scCheck = new RadioButton(getContext());
                         scCheck.setTag(i);
                         scCheck.setText(formOption.getOption());
+                        if (scValList.size()>0) {
+                            scCheck.setChecked(Boolean.parseBoolean(scValList.get(0)));
+                            scValList.remove(0);
+                        }
                         formHolder.addView(scCheck);
                     }
                     break;
@@ -176,11 +202,13 @@ public class StepFragment extends Fragment implements Step {
                         toTextInput.setText(formItem.getTitle());
                         formHolder.addView(toTextInput);
                     }
-
                     for (FormOption formOption : formItem.getOptions()) {
                         ToggleButton toCheck = new ToggleButton(getContext());
                         toCheck.setText(formOption.getOption());
                         toCheck.setTag(i);
+                        if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                            toCheck.setChecked(Boolean.parseBoolean(formItem.getValues().get(0).getValue()));
+                        }
                         formHolder.addView(toCheck);
                     }
                     break;
@@ -200,7 +228,6 @@ public class StepFragment extends Fragment implements Step {
             final int childCount = formHolder.getChildCount();
             for (int j = 0; j < childCount; j++) {
                 View v = formHolder.getChildAt(j);
-                Timber.d("tag %s", v.getTag());
                 if (v.getTag()!=null && v.getTag().equals(i)) {
                     views.add(v);
                 }
@@ -216,16 +243,26 @@ public class StepFragment extends Fragment implements Step {
                     upsertFormValue(new FormValue(editText.getText().toString(), formItem, sessionId), formItem);
                     break;
                 case "multiple_choice":
+                    StringBuilder checkedMC = new StringBuilder();
                     for (View view : views) {
                         CheckBox checkBox = (CheckBox) view;
-                        upsertFormValue(new FormValue(String.valueOf(checkBox.isChecked()), formItem, sessionId), formItem);
+                        checkedMC.append(String.valueOf(checkBox.isChecked()));
+                        checkedMC.append(",");
                     }
+                    String mcVal = checkedMC.toString();
+                    mcVal = mcVal.length() > 0 ? mcVal.substring(0, mcVal.length() - 1): "";
+                    upsertFormValue(new FormValue(mcVal, formItem, sessionId), formItem);
                     break;
                 case "single_choice":
+                    StringBuilder checkedSC = new StringBuilder();
                     for (View view : views) {
                         RadioButton radio = (RadioButton) view;
-                        upsertFormValue(new FormValue(String.valueOf(radio.isChecked()), formItem, sessionId), formItem);
+                        checkedSC.append(String.valueOf(radio.isChecked()));
+                        checkedSC.append(",");
                     }
+                    String scVal = checkedSC.toString();
+                    scVal = scVal.length() > 0 ? scVal.substring(0, scVal.length() - 1): "";
+                    upsertFormValue(new FormValue(scVal, formItem, sessionId), formItem);
                     break;
                 case "toggle_button":
                     ToggleButton toggleButton = (ToggleButton) views.get(0);
@@ -239,8 +276,15 @@ public class StepFragment extends Fragment implements Step {
 
     private void upsertFormValue(FormValue formValue, FormItem formItem) {
         try {
-            global.getDaoFormValue().create(formValue);
-            formItem.addValue(formValue);
+            PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, formValue.getSessionID()).and().eq(FormValue.FIELD_FORM_ITEM_ID, formValue.getFormId()).prepare();
+            FormValue exists = global.getDaoFormValue().queryForFirst(queryBuilder);
+            if (exists!=null && exists.get_id()>0) {
+                exists.setValue(formValue.getValue());
+                global.getDaoFormValue().update(exists);
+            } else {
+                global.getDaoFormValue().create(formValue);
+                formItem.addValue(formValue);
+            }
         } catch (SQLException e) {
             Timber.e(e);
         }

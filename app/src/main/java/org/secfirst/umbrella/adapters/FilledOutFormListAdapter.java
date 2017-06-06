@@ -109,7 +109,6 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
             public void onClick(View v) {
                 Intent intent = new Intent(context, FormActivity.class);
                 intent.putExtra("form_id", current.get_id());
-                Timber.d("sess %d", forms.get(holder.getAdapterPosition()).getSessionID());
                 intent.putExtra("session_id", forms.get(holder.getAdapterPosition()).getSessionID());
                 context.startActivity(intent);
             }
@@ -119,7 +118,6 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
             public void onClick(View v) {
                 Intent intent = new Intent(context, FormActivity.class);
                 intent.putExtra("form_id", current.get_id());
-                Timber.d("sess %d", forms.get(holder.getAdapterPosition()).getSessionID());
                 intent.putExtra("session_id", forms.get(holder.getAdapterPosition()).getSessionID());
                 context.startActivity(intent);
             }

@@ -15,12 +15,11 @@ import org.secfirst.umbrella.util.OnNavigationBarListener;
 
 import java.sql.SQLException;
 
-import timber.log.Timber;
-
 public class FormActivity extends BaseActivity implements StepperLayout.StepperListener,
         OnNavigationBarListener {
 
     private static final String CURRENT_STEP_POSITION_KEY = "position";
+    public static final int REQUEST_ID = 4414;
 
     protected StepperLayout mStepperLayout;
     protected  FragmentStepAdapter adapter;
@@ -51,7 +50,6 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
         if (sessionId<0) {
             sessionId = System.currentTimeMillis()/1000;
         }
-        Timber.d("sess %d", sessionId);
         setTitle(f.getTitle());
 
         int startingStepPosition = savedInstanceState != null ? savedInstanceState.getInt(CURRENT_STEP_POSITION_KEY) : 0;
@@ -96,18 +94,14 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
 
     @Override
     public void onCompleted(View completeButton) {
-//        Toast.makeText(this, "onCompleted!", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     @Override
-    public void onError(VerificationError verificationError) {
-//        Toast.makeText(this, "onError! -> " + verificationError.getErrorMessage(), Toast.LENGTH_SHORT).show();
-    }
+    public void onError(VerificationError verificationError) {}
 
     @Override
-    public void onStepSelected(int newStepPosition) {
-//        Toast.makeText(this, "onStepSelected! -> " + newStepPosition, Toast.LENGTH_SHORT).show();
-    }
+    public void onStepSelected(int newStepPosition) {}
 
     public Form getForm() {
         return f;

@@ -11,6 +11,7 @@ import org.secfirst.umbrella.util.Global;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import timber.log.Timber;
 
@@ -36,7 +37,7 @@ public class FormItem {
     @ForeignCollectionField
     ForeignCollection<FormOption> options;
 
-    ArrayList<FormValue> values;
+    List<FormValue> values;
 
     public FormItem() {}
 
@@ -93,7 +94,7 @@ public class FormItem {
         return formScreen;
     }
 
-    public ArrayList<FormValue> getValues() {
+    public List<FormValue> getValues() {
         return values;
     }
 
@@ -102,7 +103,7 @@ public class FormItem {
         values.add(formValue);
     }
 
-    public void setValues(ArrayList<FormValue> values) {
+    public void setValues(List<FormValue> values) {
         this.values = values;
     }
 

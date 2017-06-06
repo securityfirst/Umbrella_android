@@ -15,9 +15,13 @@ import timber.log.Timber;
 
 @DatabaseTable(tableName = "form_values")
 public class FormValue {
+    public static final String FIELD_ID = "_id";
+    public static final String FIELD_FORM_ITEM_ID = "formItem_id";
     public static final String FIELD_VALUE = "value";
     public static final String FIELD_SESSION = "session_id";
-    @DatabaseField(canBeNull = true, foreign = true)
+    @DatabaseField(columnName = FIELD_ID, generatedId = true, allowGeneratedIdInsert = true)
+    private int _id;
+    @DatabaseField(canBeNull = true, foreign = true, columnName = FIELD_FORM_ITEM_ID)
     private FormItem formItem;
     @DatabaseField(canBeNull = true, persisted = false)
     private int formId;
@@ -34,8 +38,17 @@ public class FormValue {
     public FormValue(String value, FormItem formItem, Long sessionID) {
         this.value = value;
         this.formItem = formItem;
+        if (formItem!=null) setFormId(formItem.get_id());
         this.sessionID = sessionID;
         Timber.d("new fv %s, %s, %d", value, formItem, sessionID);
+    }
+
+    public int get_id() {
+        return _id;
+    }
+
+    public void set_id(int _id) {
+        this._id = _id;
     }
 
     public Long getSessionID() {

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -34,6 +35,7 @@ import org.secfirst.umbrella.adapters.FilledOutFormListAdapter;
 import org.secfirst.umbrella.adapters.FormListAdapter;
 import org.secfirst.umbrella.models.Form;
 import org.secfirst.umbrella.models.FormItem;
+import org.secfirst.umbrella.models.FormOption;
 import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.util.Global;
@@ -45,6 +47,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import timber.log.Timber;
@@ -57,6 +61,7 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     private FilledOutFormListAdapter filledOutAdapter;
     Global global;
     List<Form> allForms = new ArrayList<>();
+    List<FormValue> fValues = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefresh;
     LinearLayout filledOutHolder;
     private ProgressDialog progressDialog;
@@ -105,6 +110,13 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     public void onResume() {
         super.onResume();
         onRefresh();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                onRefresh();
+            }
+        }, 800);
     }
 
     @Override
@@ -118,7 +130,7 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
         try {
             allForms = global.getDaoForm().queryForAll();
             PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().groupBy(FormValue.FIELD_SESSION).prepare();
-            List<FormValue> fValues = global.getDaoFormValue().query(queryBuilder);
+            fValues = global.getDaoFormValue().query(queryBuilder);
             filledOutHolder.setVisibility((fValues==null || fValues.size()<1) ? View.GONE : View.VISIBLE);
             formListAdapter.updateData(allForms);
             filledOutAdapter.updateData(fValues);
@@ -181,20 +193,53 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
             if (fileName.length() > 50) fileName = fileName.substring(0, 50);
             Document doc = Jsoup.parse("");
             Element body = doc.body();
+            body.attr("style", "display:block;width:100%;");
             doc.title(fileName);
+            body.append("<h1>"+form.getTitle()+"</h1>");
             for (FormScreen screen : form.getScreens()) {
-                body.append("<h1>"+screen.getTitle()+"</h1>");
+                body.append("<h3>"+screen.getTitle()+"</h3>");
+                body.append("<form>");
                 for (FormItem formItem : screen.getItems()) {
-                    body.append("<h3>"+formItem.getTitle()+"</h3>");
-
+                    try {
+                        PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                        formItem.setValues(global.getDaoFormValue().query(queryBuilder));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    Element paragraph = body.append("<p></p>");
+                    paragraph.append("<h5>"+formItem.getTitle()+"</h5>");
                     switch (formItem.getType()) {
                         case "text_input":
+                            String textInput = "";
+                            if (formItem.getValues()!=null && formItem.getValues().size()>0) textInput = formItem.getValues().get(0).getValue();
+                            paragraph.append("<input type='text' value='"+textInput+"' readonly />");
+                            break;
                         case "text_area":
+                            String textArea = "";
+                            if (formItem.getValues()!=null && formItem.getValues().size()>0) textArea = formItem.getValues().get(0).getValue();
+                            paragraph.append("<textarea rows='4' cols='50' readonly>"+textArea+"</textarea>");
+                            break;
                         case "multiple_choice":
+                            List<String> mcValList = new ArrayList<>();
+                            if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                            }
+                            for (FormOption formOption : formItem.getOptions()) {
+                                boolean isChecked = false;
+                                if (mcValList.size()>0) {
+                                    isChecked = Boolean.parseBoolean(mcValList.get(0));
+                                    mcValList.remove(0);
+                                }
+                                paragraph.append("<label><input type='checkbox' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
+                            }
+                            break;
                         case "single_choice":
+                            break;
                         case "toggle_button":
+                            break;
                     }
                 }
+                body.append("</form>");
             }
 
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName+".html");
@@ -211,8 +256,8 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
             intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
                     getString(R.string.share_file));
-            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
-//                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "application/pdf"));
+//            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
+                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "text/html"));
             if (progressDialog.isShowing()) progressDialog.dismiss();
         }
         if (progressDialog.isShowing()) progressDialog.dismiss();
