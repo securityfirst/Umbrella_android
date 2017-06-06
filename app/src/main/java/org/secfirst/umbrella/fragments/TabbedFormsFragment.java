@@ -271,8 +271,8 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
             intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
                     getString(R.string.share_file));
-//            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
-                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "text/html"));
+            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
+//                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "text/html"));
             if (progressDialog.isShowing()) progressDialog.dismiss();
         }
         if (progressDialog.isShowing()) progressDialog.dismiss();
