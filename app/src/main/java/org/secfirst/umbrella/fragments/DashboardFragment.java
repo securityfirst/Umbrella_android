@@ -22,11 +22,11 @@ public class DashboardFragment extends Fragment {
     SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
-    public static DashboardFragment newInstance(Global global, boolean toDash) {
+    public static DashboardFragment newInstance(Global global, int toDash) {
         DashboardFragment fragment = new DashboardFragment();
         fragment.global = global;
         Bundle args = new Bundle();
-        args.putBoolean("dashboard", toDash);
+        args.putInt("dashboard", toDash);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +41,7 @@ public class DashboardFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(getArguments().getBoolean("dashboard", false) ? 1 : 0);
+        mViewPager.setCurrentItem(-1*getArguments().getInt("dashboard", 0));
         return v;
     }
 

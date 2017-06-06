@@ -137,7 +137,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         if (groupPosition == 0) {
-            ((MainActivity) mContext).setFragment((childPosition==0?0:-1), groupItem.get(groupPosition).getCategory(), false);
+            ((MainActivity) mContext).setFragment(childPosition*-1, groupItem.get(groupPosition).getCategory(), false);
         } else {
             final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
             ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
