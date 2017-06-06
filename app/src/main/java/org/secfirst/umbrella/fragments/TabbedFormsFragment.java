@@ -234,8 +234,23 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
                             }
                             break;
                         case "single_choice":
+                            List<String> scValList = new ArrayList<>();
+                            if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                            }
+                            for (FormOption formOption : formItem.getOptions()) {
+                                boolean isChecked = false;
+                                if (scValList.size()>0) {
+                                    isChecked = Boolean.parseBoolean(scValList.get(0));
+                                    scValList.remove(0);
+                                }
+                                paragraph.append("<label><input type='radio' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
+                            }
                             break;
                         case "toggle_button":
+                            String toggleText = "";
+                            if (formItem.getValues()!=null && formItem.getValues().size()>0) toggleText = formItem.getValues().get(0).getValue();
+                            paragraph.append("<br><span>"+toggleText+"</span><br>");
                             break;
                     }
                 }
