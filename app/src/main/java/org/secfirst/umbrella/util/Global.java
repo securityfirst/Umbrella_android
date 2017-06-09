@@ -415,6 +415,11 @@ public class Global extends Application {
             getDaoFormScreen();
             getDaoFormValue();
             startService();
+            SQLiteDatabase db  = getOrmHelper().getWritableDatabase(getOrmHelper().getPassword());
+            if (db!=null) {
+                if (db.getVersion() == 1) db.setVersion(5); // Fix for an old regression
+                getOrmHelper().onUpgrade(db, getOrmHelper().getConnectionSource(), db.getVersion(), OrmHelper.DATABASE_VERSION);
+            }
             if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
             return true;
         }
