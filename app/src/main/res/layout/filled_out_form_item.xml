@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="2dp">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:paddingTop="15dp"
+            android:layout_toLeftOf="@+id/btn_share"
+            android:paddingBottom="15dp"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/text_holder"
+                android:layout_width="match_parent"
+                android:layout_toStartOf="@+id/icon_holder"
+                android:layout_toLeftOf="@+id/icon_holder"
+                android:layout_alignParentLeft="true"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/form_title"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/dark_grey"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/form_last_modified"
+                    android:textSize="@dimen/text_size_smallest"
+                    android:textColor="@color/dark_grey"
+                    android:layout_gravity="bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/icon_holder"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/btn_share"
+                    android:src="@drawable/ic_share"
+                    android:background="@android:color/transparent"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_edit"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_edit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+                <ImageButton
+                    android:id="@+id/btn_delete"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_delete"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp" />
+
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

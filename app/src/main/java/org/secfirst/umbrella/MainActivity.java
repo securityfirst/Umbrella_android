@@ -232,9 +232,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
-        if (fragType == 0 || fragType == -1) {
+        if (fragType < 1) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global, fragType == -1));
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global, fragType));
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
@@ -495,49 +495,47 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             titleSpinner.setSelection(difficulty);
         }
         setFragment(1, "", false);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-            lps.setMargins(margin, margin, margin * 5, margin * 5);
-            new ShowcaseView.Builder(this)
-                    .setTarget(new ViewTarget(R.id.spinner_nav, this))
-                    .setContentText(getString(R.string.click_here_to_change_level))
-                    .setStyle(R.style.CustomShowcaseTheme4)
-                    .hideOnTouchOutside()
-                    .singleShot(2)
-                    .setShowcaseEventListener(new OnShowcaseEventListener() {
-                        @Override
-                        public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                            lps.setMargins(margin, margin, margin * 5, margin * 5);
-                            new ShowcaseView.Builder(MainActivity.this)
-                                    .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
-                                    .setContentText(getString(R.string.swipe_left_to_read))
-                                    .setStyle(R.style.CustomShowcaseTheme4)
-                                    .hideOnTouchOutside()
-                                    .singleShot(3)
-                                    .build()
-                                    .setButtonPosition(lps);
-                        }
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+        lps.setMargins(margin, margin, margin * 5, margin * 5);
+        new ShowcaseView.Builder(this)
+                .setTarget(new ViewTarget(R.id.spinner_nav, this))
+                .setContentText(getString(R.string.click_here_to_change_level))
+                .setStyle(R.style.CustomShowcaseTheme4)
+                .hideOnTouchOutside()
+                .singleShot(2)
+                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    @Override
+                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
+                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                        lps.setMargins(margin, margin, margin * 5, margin * 5);
+                        new ShowcaseView.Builder(MainActivity.this)
+                                .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
+                                .setContentText(getString(R.string.swipe_left_to_read))
+                                .setStyle(R.style.CustomShowcaseTheme4)
+                                .hideOnTouchOutside()
+                                .singleShot(3)
+                                .build()
+                                .setButtonPosition(lps);
+                    }
 
-                        @Override
-                        public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+                    @Override
+                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
 
-                        }
+                    }
 
-                        @Override
-                        public void onShowcaseViewShow(ShowcaseView showcaseView) {
+                    @Override
+                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
 
-                        }
-                    })
-                    .build()
-                    .setButtonPosition(lps);
-        }
+                    }
+                })
+                .build()
+                .setButtonPosition(lps);
     }
 
     public void onNavigationDrawerGroupItemSelected(Category category) {

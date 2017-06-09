@@ -155,6 +155,7 @@ public class UmbrellaUtil {
                 if (parentCategory.getId() == 1) {
                     child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
                     child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
+                    child.add(new DrawerChildItem(context.getString(R.string.forms), -3));
                 }
                 childItem.add(child);
             }
@@ -174,7 +175,14 @@ public class UmbrellaUtil {
             return context.getString(R.string.password_one_small);
         }
         return "";
+    }
 
+    public static String ellipsis(final String text, int length)
+    {
+        if (text.length() < length) {
+            return text;
+        }
+        return text.substring(0, length - 3) + "...";
     }
 
     public static void setStatusBarColor(Activity activity, int colorResource) {

@@ -22,11 +22,11 @@ public class DashboardFragment extends Fragment {
     SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
-    public static DashboardFragment newInstance(Global global, boolean toDash) {
+    public static DashboardFragment newInstance(Global global, int toDash) {
         DashboardFragment fragment = new DashboardFragment();
         fragment.global = global;
         Bundle args = new Bundle();
-        args.putBoolean("dashboard", toDash);
+        args.putInt("dashboard", toDash);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +41,7 @@ public class DashboardFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(getArguments().getBoolean("dashboard", false) ? 1 : 0);
+        mViewPager.setCurrentItem(-1*getArguments().getInt("dashboard", 0));
         return v;
     }
 
@@ -55,35 +55,43 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
             Fragment fragment;
-            if (position==0) {
-                fragment = new TabbedChecklistFragment();
-            } else {
-                fragment = new TabbedFeedFragment();
+            switch (position) {
+                case 1:
+                    fragment = new TabbedFeedFragment();
+                    break;
+                case 2:
+                    fragment = new TabbedFormsFragment();
+                    break;
+                default:
+                    fragment = new TabbedChecklistFragment();
             }
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            if (position==0) {
-                return getString(R.string.my_checklists).toUpperCase(l);
-            } else {
-                return getString(R.string.feeds).toUpperCase(l);
+            switch (position) {
+                case 1:
+                    return getString(R.string.feeds).toUpperCase(l);
+                case 2:
+                    return getString(R.string.forms).toUpperCase(l);
+                default:
+                    return getString(R.string.my_checklists).toUpperCase(l);
             }
         }
     }
