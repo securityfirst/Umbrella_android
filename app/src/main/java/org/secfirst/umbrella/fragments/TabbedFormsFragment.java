@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,13 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.canelmas.let.AskPermission;
-import com.canelmas.let.DeniedPermission;
-import com.canelmas.let.Let;
-import com.canelmas.let.RuntimePermissionListener;
-import com.canelmas.let.RuntimePermissionRequest;
 import com.j256.ormlite.stmt.PreparedQuery;
 
 import org.jsoup.Jsoup;
@@ -53,9 +44,9 @@ import java.util.List;
 
 import timber.log.Timber;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.support.v4.content.FileProvider.getUriForFile;
 
-public class TabbedFormsFragment extends Fragment implements RuntimePermissionListener, SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionHTMLCreate {
+public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionHTMLCreate {
 
     private FormListAdapter formListAdapter;
     private FilledOutFormListAdapter filledOutAdapter;
@@ -141,39 +132,6 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
     }
 
     @Override
-    public void onShowPermissionRationale(List<String> permissionList, final RuntimePermissionRequest permissionRequest) {
-        new MaterialDialog.Builder(getContext())
-                .title("Write permission")
-                .content("Allow writing to disk so we can send this file as an attachment")
-                .positiveText(R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        permissionRequest.retry();
-                    }
-                })
-                .negativeText(R.string.cancel)
-                .onNegative(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
-    @Override
-    public void onPermissionDenied(List<DeniedPermission> deniedPermissionList) {
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Let.handle(this, requestCode, permissions, grantResults);
-    }
-
-    @AskPermission(WRITE_EXTERNAL_STORAGE)
-    @Override
     public void onSessionHTMLCreated(long sessionId) {
         progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), "");
         List<FormValue> formValues = null;
@@ -257,22 +215,28 @@ public class TabbedFormsFragment extends Fragment implements RuntimePermissionLi
                 body.append("</form>");
             }
 
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName+".html");
             try {
-                BufferedWriter writer = new BufferedWriter( new FileWriter(file));
+                File file = File.createTempFile(fileName, ".html");
+                file.deleteOnExit();
+                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                 writer.write(doc.toString());
                 writer.flush();
                 writer.close();
-            } catch ( IOException e) {
+                Uri contentUri = getUriForFile(getContext(), "org.secfirst.umbrella.fileprovider", file);
+                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                intentShareFile.setType("text/html");
+                intentShareFile.putExtra(Intent.EXTRA_STREAM, contentUri);
+                intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                        getString(R.string.share_form));
+                intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
+
+//                Intent onlyView = new Intent(Intent.ACTION_VIEW).setDataAndType(contentUri, "text/html");
+//                onlyView.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                startActivity(onlyView);
+            } catch (IOException e) {
                 Timber.e(e);
             }
-            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-            intentShareFile.setType("text/html");
-            intentShareFile.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                    getString(R.string.share_file));
-            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_file)));
-//                    startActivity(new Intent(Intent.ACTION_VIEW).setDataAndType(Uri.fromFile(file), "text/html"));
             if (progressDialog.isShowing()) progressDialog.dismiss();
         }
         if (progressDialog.isShowing()) progressDialog.dismiss();

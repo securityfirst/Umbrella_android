@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'idea'
 apply plugin: 'witness'
-apply plugin: 'let'
 
 android {
     compileSdkVersion 25
@@ -64,9 +63,6 @@ dependencies {
 // generate using: `gradle -q calculateChecksums`
 dependencyVerification {
     verify = [
-            'com.canelmas.let:let-runtime:37fa16f7e1198edcadc86b242d9c7e3436d01407f007812bfcffc1284bad525c',
-            'org.aspectj:aspectjrt:6002ba556cf24c901e3a45aece9f0e63a2a26b495b69d43ef4abee48cf843d4e',
-            'com.canelmas.let:let-annotations:19a70fe905543213b038fe9c1c69e7fa74a6573b98ffa6c44616fbb6aa33974e',
             'com.android.support:appcompat-v7:ac1ebbc46589195dda3e0b1becfe410bafd75bdf3edd1cd9acf04850f3895830',
             'com.android.support:preference-v7:b37d8193c65cf8eb3c4ba9cbfc6d5c96042177901622717fb089290bef784a58',
             'com.android.support:support-v4:07d389154bcf73b47e514964df1578136b26cba78257b8a577a3ccb54beff0ae',
