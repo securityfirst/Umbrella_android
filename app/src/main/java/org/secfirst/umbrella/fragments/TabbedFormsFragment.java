@@ -30,11 +30,10 @@ import org.secfirst.umbrella.models.FormOption;
 import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.IOCipherContentProvider;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,9 +41,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileWriter;
+import info.guardianproject.iocipher.VirtualFileSystem;
 import timber.log.Timber;
 
-import static android.support.v4.content.FileProvider.getUriForFile;
+import static org.secfirst.umbrella.util.IOCipherContentProvider.SHARE_FILE;
 
 public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionHTMLCreate {
 
@@ -132,7 +134,7 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
     }
 
     @Override
-    public void onSessionHTMLCreated(long sessionId) {
+    public void onSessionHTMLCreated(final long sessionId) {
         progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), "");
         List<FormValue> formValues = null;
         Form form = null;
@@ -147,99 +149,118 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
             e.printStackTrace();
         }
         if (form!=null && formValues.size()>0) {
-            String fileName = form.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
-            if (fileName.length() > 50) fileName = fileName.substring(0, 50);
-            Document doc = Jsoup.parse("");
-            Element body = doc.body();
-            body.attr("style", "display:block;width:100%;");
-            doc.title(fileName);
-            body.append("<h1>"+form.getTitle()+"</h1>");
-            for (FormScreen screen : form.getScreens()) {
-                body.append("<h3>"+screen.getTitle()+"</h3>");
-                body.append("<form>");
-                for (FormItem formItem : screen.getItems()) {
+
+            final Form finalForm = form;
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    String fileName = finalForm.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
+                    if (fileName.length() > 50) fileName = fileName.substring(0, 50);
+                    final Document doc = Jsoup.parse("");
+                    Element head = doc.head();
+                    head.append("<meta charset='UTF-8'>");
+                    Element body = doc.body();
+                    body.attr("style", "display:block;width:100%;");
+                    doc.title(fileName);
+                    body.append("<h1>"+ finalForm.getTitle()+"</h1>");
+                    for (FormScreen screen : finalForm.getScreens()) {
+                        body.append("<h3>"+screen.getTitle()+"</h3>");
+                        body.append("<form>");
+                        for (FormItem formItem : screen.getItems()) {
+                            try {
+                                PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                                formItem.setValues(global.getDaoFormValue().query(queryBuilder));
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            Element paragraph = body.append("<p></p>");
+                            paragraph.append("<h5>"+formItem.getTitle()+"</h5>");
+                            switch (formItem.getType()) {
+                                case "text_input":
+                                    String textInput = "";
+                                    if (formItem.getValues()!=null && formItem.getValues().size()>0) textInput = formItem.getValues().get(0).getValue();
+                                    paragraph.append("<input type='text' value='"+textInput+"' readonly />");
+                                    break;
+                                case "text_area":
+                                    String textArea = "";
+                                    if (formItem.getValues()!=null && formItem.getValues().size()>0) textArea = formItem.getValues().get(0).getValue();
+                                    paragraph.append("<textarea rows='4' cols='50' readonly>"+textArea+"</textarea>");
+                                    break;
+                                case "multiple_choice":
+                                    List<String> mcValList = new ArrayList<>();
+                                    if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                        mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                                    }
+                                    for (FormOption formOption : formItem.getOptions()) {
+                                        boolean isChecked = false;
+                                        if (mcValList.size()>0) {
+                                            isChecked = Boolean.parseBoolean(mcValList.get(0));
+                                            mcValList.remove(0);
+                                        }
+                                        paragraph.append("<label><input type='checkbox' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
+                                    }
+                                    break;
+                                case "single_choice":
+                                    List<String> scValList = new ArrayList<>();
+                                    if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                        scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                                    }
+                                    for (FormOption formOption : formItem.getOptions()) {
+                                        boolean isChecked = false;
+                                        if (scValList.size()>0) {
+                                            isChecked = Boolean.parseBoolean(scValList.get(0));
+                                            scValList.remove(0);
+                                        }
+                                        paragraph.append("<label><input type='radio' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
+                                    }
+                                    break;
+                                case "toggle_button":
+                                    String toggleText = "";
+                                    if (formItem.getValues()!=null && formItem.getValues().size()>0) toggleText = formItem.getValues().get(0).getValue();
+                                    paragraph.append("<br><span>"+toggleText+"</span><br>");
+                                    break;
+                            }
+                        }
+                        body.append("</form>");
+                    }
+
+                    java.io.File f = new java.io.File(Global.INSTANCE.getCacheDir(), SHARE_FILE);
+                    String path = f.getPath();
+
+                    VirtualFileSystem vfs = VirtualFileSystem.get();
+                    vfs.setContainerPath(path);
                     try {
-                        PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
-                        formItem.setValues(global.getDaoFormValue().query(queryBuilder));
-                    } catch (SQLException e) {
-                        e.printStackTrace();
+                        if (!vfs.isMounted()) vfs.mount(global.getOrmHelper().getPassword());
+                        if (!vfs.isMounted()) vfs.createNewContainer(path, global.getOrmHelper().getPassword());
+                    } catch (IllegalStateException e) {
+                        Timber.e(e);
                     }
-                    Element paragraph = body.append("<p></p>");
-                    paragraph.append("<h5>"+formItem.getTitle()+"</h5>");
-                    switch (formItem.getType()) {
-                        case "text_input":
-                            String textInput = "";
-                            if (formItem.getValues()!=null && formItem.getValues().size()>0) textInput = formItem.getValues().get(0).getValue();
-                            paragraph.append("<input type='text' value='"+textInput+"' readonly />");
-                            break;
-                        case "text_area":
-                            String textArea = "";
-                            if (formItem.getValues()!=null && formItem.getValues().size()>0) textArea = formItem.getValues().get(0).getValue();
-                            paragraph.append("<textarea rows='4' cols='50' readonly>"+textArea+"</textarea>");
-                            break;
-                        case "multiple_choice":
-                            List<String> mcValList = new ArrayList<>();
-                            if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
-                                mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
-                            }
-                            for (FormOption formOption : formItem.getOptions()) {
-                                boolean isChecked = false;
-                                if (mcValList.size()>0) {
-                                    isChecked = Boolean.parseBoolean(mcValList.get(0));
-                                    mcValList.remove(0);
-                                }
-                                paragraph.append("<label><input type='checkbox' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
-                            }
-                            break;
-                        case "single_choice":
-                            List<String> scValList = new ArrayList<>();
-                            if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
-                                scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
-                            }
-                            for (FormOption formOption : formItem.getOptions()) {
-                                boolean isChecked = false;
-                                if (scValList.size()>0) {
-                                    isChecked = Boolean.parseBoolean(scValList.get(0));
-                                    scValList.remove(0);
-                                }
-                                paragraph.append("<label><input type='radio' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
-                            }
-                            break;
-                        case "toggle_button":
-                            String toggleText = "";
-                            if (formItem.getValues()!=null && formItem.getValues().size()>0) toggleText = formItem.getValues().get(0).getValue();
-                            paragraph.append("<br><span>"+toggleText+"</span><br>");
-                            break;
-                    }
-                }
-                body.append("</form>");
-            }
+                    File file = new File("/", fileName +".html");
+                    try {
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                        writer.write(doc.toString());
+                        writer.flush();
+                        writer.close();
+                        Uri uri = Uri.parse(IOCipherContentProvider.FILES_URI + file.getName());
+                        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                        intentShareFile.setType("text/html");
+                        intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
+                        intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                                getString(R.string.share_form));
+                        intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
 
-            try {
-                File file = File.createTempFile(fileName, ".html");
-                file.deleteOnExit();
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                writer.write(doc.toString());
-                writer.flush();
-                writer.close();
-                Uri contentUri = getUriForFile(getContext(), "org.secfirst.umbrella.fileprovider", file);
-                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                intentShareFile.setType("text/html");
-                intentShareFile.putExtra(Intent.EXTRA_STREAM, contentUri);
-                intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                        getString(R.string.share_form));
-                intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
-
-//                Intent onlyView = new Intent(Intent.ACTION_VIEW).setDataAndType(contentUri, "text/html");
+//                Intent onlyView = new Intent(Intent.ACTION_VIEW).setDataAndType(uri, "text/html");
 //                onlyView.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //                startActivity(onlyView);
-            } catch (IOException e) {
-                Timber.e(e);
-            }
-            if (progressDialog.isShowing()) progressDialog.dismiss();
+                    } catch (IOException e) {
+                        Timber.e(e);
+                    } finally {
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
+                    }
+                }
+            });
         }
-        if (progressDialog.isShowing()) progressDialog.dismiss();
     }
 
 }
