@@ -85,6 +85,7 @@ public class Global extends Application {
     private Dao<FeedItem, String> daoFeedItem;
     private Dao<FeedSource, String> daoFeedSource;
     private OrmHelper dbHelper;
+    public static Global INSTANCE;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -98,6 +99,7 @@ public class Global extends Application {
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
+        INSTANCE = this;
     }
 
     public boolean isLoggedIn() {
