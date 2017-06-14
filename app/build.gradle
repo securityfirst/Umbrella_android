@@ -55,8 +55,8 @@ dependencies {
     compile 'com.squareup:seismic:1.0.2'
     compile 'com.stepstone.stepper:material-stepper:3.2.0'
     compile 'org.apache.commons:commons-lang3:3.4'
-    compile group: 'com.itextpdf', name: 'itextg', version: '5.5.9'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'info.guardianproject.iocipher:IOCipher:0.4'
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }
 
@@ -85,11 +85,14 @@ dependencyVerification {
             'com.squareup:seismic:4fc9984aed7a689d24ae2574e9239aec14cc4d5d587621091104c9a4c4a83774',
             'com.stepstone.stepper:material-stepper:aa56f60220d3e8b8d46980291438702d47191a7cbbca474a87a94cd9fe17c837',
             'org.apache.commons:commons-lang3:734c8356420cc8e30c795d64fd1fcd5d44ea9d90342a2cc3262c5158fbc6d98b',
-            'com.itextpdf:itextg:9811a512339919b474fec2dbab5534e698b17a0704ec19fdf75abe3971f38f5d',
-            'com.android.databinding:library:f172550208c2e86973271cdc1d9b527545d923527abed2daa894cf1499619869',
-            'com.android.databinding:baseLibrary:71321e8cbe1593495b41b773c3c21b270932d13daad5b7e9c485ffb40d911344',
             'com.android.support:multidex:60df8e7153fabdcf3a6a48a2ce5980b599cf25cbeb3b689b7b615975ca731840',
+            'info.guardianproject.iocipher:IOCipher:ab7da0f23e256a2ced9492c73e37812c26e7beccc1a99815e6d65a75728ba6d3',
+            'com.android.databinding:library:f172550208c2e86973271cdc1d9b527545d923527abed2daa894cf1499619869',
+            'com.android.databinding:baseLibrary:a2755d1e00d3604d943ceff5f85739914d5e85872715d700407dc16e464b9a66',
             'com.android.databinding:adapters:9894e5c9f53f931360e9782ac95eb63534597bc57009d70ca68b841eb4b380d3',
+            'com.android.support:support-annotations:aedf76962584adfaed2bd3fcaa22406461c4310237fc27e301128edaa2dba2fa',
+            'com.android.support:support-vector-drawable:13728f337f36d1c02d52198a6c20724edb447a0875454d829f95cb9eb4aa293b',
+            'com.android.support:animated-vector-drawable:4bc46edf1946b32d518b41416d1734e915e0cbb28021de3b340527419b070691',
             'com.android.support:support-compat:e02d781268dc60aab6638d8dc20156ea11ca20b962d294b85e6f1e8418cabfa7',
             'com.android.support:support-media-compat:cbed07d07e0e84fdb4b75712f5fd946229a8af155933c9a92e41db64d00791e0',
             'com.android.support:support-core-utils:32fac02eb2c20a77fa3e3bc3ede62392a19613f72b8f8e10f5dfa84bb4c89ea1',
@@ -98,8 +101,5 @@ dependencyVerification {
             'com.android.support:transition:36c688825a8c0e6e879e18886de83dc90673322822d5b606ee302f70fb558e16',
             'com.android.support:support-v13:edd86bab8578e24443b56ee115b38023dacaacb8bb3188c9de3fdbb8e15023d3',
             'me.zhanghai.android.materialprogressbar:library:e9fe9ee50133da09e99d72323720a7afe3438adb89f76cc9244428634aba78cd',
-            'com.android.support:support-vector-drawable:13728f337f36d1c02d52198a6c20724edb447a0875454d829f95cb9eb4aa293b',
-            'com.android.support:animated-vector-drawable:4bc46edf1946b32d518b41416d1734e915e0cbb28021de3b340527419b070691',
-            'com.android.support:support-annotations:aedf76962584adfaed2bd3fcaa22406461c4310237fc27e301128edaa2dba2fa',
     ]
 }
