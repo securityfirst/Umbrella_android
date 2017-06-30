@@ -225,6 +225,13 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                     }
 
                     java.io.File f = new java.io.File(Global.INSTANCE.getCacheDir(), SHARE_FILE);
+                    if (!f.exists()) {
+                        try {
+                            f.createNewFile();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     String path = f.getPath();
 
                     VirtualFileSystem vfs = VirtualFileSystem.get();
@@ -232,31 +239,32 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                     try {
                         if (!vfs.isMounted()) vfs.mount(global.getOrmHelper().getPassword());
                         if (!vfs.isMounted()) vfs.createNewContainer(path, global.getOrmHelper().getPassword());
-                    } catch (IllegalStateException e) {
-                        Timber.e(e);
-                    }
-                    File file = new File("/", fileName +".html");
-                    try {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                        writer.write(doc.toString());
-                        writer.flush();
-                        writer.close();
-                        Uri uri = Uri.parse(IOCipherContentProvider.FILES_URI + file.getName());
-                        Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                        intentShareFile.setType("text/html");
-                        intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
-                        intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                                getString(R.string.share_form));
-                        intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
+
+                        File file = new File("/", fileName +".html");
+                        try {
+                            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                            writer.write(doc.toString());
+                            writer.flush();
+                            writer.close();
+                            Uri uri = Uri.parse(IOCipherContentProvider.FILES_URI + file.getName());
+                            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                            intentShareFile.setType("text/html");
+                            intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
+                            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
+                                    getString(R.string.share_form));
+                            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
 
 //                Intent onlyView = new Intent(Intent.ACTION_VIEW).setDataAndType(uri, "text/html");
 //                onlyView.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 //                startActivity(onlyView);
-                    } catch (IOException e) {
+                        } catch (IOException e) {
+                            Timber.e(e);
+                        } finally {
+                            if (progressDialog.isShowing()) progressDialog.dismiss();
+                        }
+                    } catch (IllegalStateException | IllegalArgumentException e) {
                         Timber.e(e);
-                    } finally {
-                        if (progressDialog.isShowing()) progressDialog.dismiss();
                     }
                 }
             });
