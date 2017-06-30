@@ -14,6 +14,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
+import android.text.format.DateUtils;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,6 +45,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
@@ -58,9 +60,7 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -170,11 +170,13 @@ public class TabbedFeedFragment extends Fragment {
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
                     if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
                         mAddress = mAddressList.get(position - 1);
-                        String chosenAddress = mAutocompleteLocation.getText().toString();
-                        mAutocompleteLocation.setText(chosenAddress);
-                        global.setRegistry("location", chosenAddress);
-                        global.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
-                        global.setRegistry("country", mAddress.getCountryName());
+                        if (mAddress!=null) {
+                            String chosenAddress = mAutocompleteLocation.getText().toString();
+                            mAutocompleteLocation.setText(chosenAddress);
+                            global.setRegistry("location", chosenAddress);
+                            global.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
+                            global.setRegistry("country", mAddress.getCountryName());
+                        }
                     } else {
                         mAddress = null;
                     }
@@ -323,7 +325,7 @@ public class TabbedFeedFragment extends Fragment {
             headerText = global.getString(R.string.country_selected)+": " + selCountry.getValue() + "\n";
         mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
         noFeedItems.setVisibility((isFeedSet() && (items.size() == 0)) ? View.VISIBLE : View.GONE);
-        headerText += global.getString(R.string.lat_updated)+": " + DateFormat.getDateTimeInstance().format(new Date(global.getFeedItemsRefreshed()));
+        headerText += global.getString(R.string.lat_updated)+": " + DateUtils.formatDateTime(getContext(), global.getFeedItemsRefreshed(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
         feedListView.setVisibility(isFeedSet() && items.size()>0 ? View.VISIBLE : View.GONE);
         noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
         noFeedCard.setVisibility( (items.size()>0 && isFeedSet()) ? View.GONE : View.VISIBLE);
@@ -383,10 +385,14 @@ public class TabbedFeedFragment extends Fragment {
                         }
 
                         @Override
-                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                            super.onFailure(statusCode, headers, responseString, throwable);
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+                                Toast.makeText(getContext(), "The SSL certificate pin is not valid. Most likely the certificate has expired and was renewed. Update the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                            }
                             refreshView();
                         }
+
                     });
                 } else {
                     Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();

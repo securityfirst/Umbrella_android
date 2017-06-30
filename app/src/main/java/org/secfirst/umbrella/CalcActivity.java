@@ -189,7 +189,11 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     private void computeCalculation() {
         if(!Double.isNaN(valueOne)) {
-            valueTwo = Double.parseDouble(binding.editText.getText().toString());
+            try {
+                valueTwo = Double.parseDouble(binding.editText.getText().toString());
+            } catch (NumberFormatException e) {
+                Timber.e(e, "Exception while parsing %s", binding.editText.getText().toString());
+            }
             binding.editText.setText(null);
 
             if(CURRENT_ACTION == ADDITION)

@@ -133,7 +133,7 @@ public class Global extends Application {
     public List<FeedItem> getFeedItems() {
         List<FeedItem> items = new ArrayList<>();
         try {
-            items = daoFeedItem.queryForAll();
+            items = getDaoFeedItem().queryForAll();
         } catch (SQLiteException | SQLException  e) {
             e.printStackTrace();
         }
