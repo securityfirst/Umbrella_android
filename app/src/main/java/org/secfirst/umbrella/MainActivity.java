@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -533,6 +534,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     public void onShowcaseViewShow(ShowcaseView showcaseView) {
 
                     }
+
+                    @Override
+                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                    }
                 })
                 .build()
                 .setButtonPosition(lps);
@@ -608,6 +614,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public void onShowcaseViewShow(ShowcaseView showcaseView) {
         shownCoachmark = true;
+    }
+
+    @Override
+    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
     }
 
 }
