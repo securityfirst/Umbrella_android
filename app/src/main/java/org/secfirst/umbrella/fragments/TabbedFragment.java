@@ -16,6 +16,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -145,6 +146,11 @@ public class TabbedFragment extends Fragment {
                                                     public void onShowcaseViewShow(ShowcaseView showcaseView) {
 
                                                     }
+
+                                                    @Override
+                                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
+
+                                                    }
                                                 })
                                                 .build()
                                                 .setButtonPosition(lps);
@@ -157,6 +163,11 @@ public class TabbedFragment extends Fragment {
 
                                     @Override
                                     public void onShowcaseViewShow(ShowcaseView showcaseView) {
+
+                                    }
+
+                                    @Override
+                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
 
                                     }
                                 })

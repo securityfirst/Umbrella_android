@@ -17,14 +17,10 @@
         android:theme="@style/UmbrellaTheme"
         tools:replace="icon">
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="org.secfirst.umbrella.fileprovider"
+            android:name="org.secfirst.umbrella.util.IOCipherContentProvider"
+            android:authorities="org.secfirst.umbrella"
             android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
-        </provider>
+            android:exported="true" />
         <service
             android:name=".RefreshService"
             android:exported="false" />

@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,8 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.secfirst.umbrella.FormActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Form;
@@ -126,6 +129,13 @@ public class StepFragment extends Fragment implements Step {
                 e.printStackTrace();
             }
             switch (formItem.getType()) {
+                case "label":
+                    if (!formItem.getTitle().equals("")) {
+                        TextView tvTextInput = new TextView(getContext());
+                        tvTextInput.setText(Html.fromHtml(Jsoup.clean(formItem.getTitle(), Whitelist.simpleText())));
+                        formHolder.addView(tvTextInput);
+                    }
+                    break;
                 case "text_input":
                     if (!formItem.getTitle().equals("")) {
                         TextView tvTextInput = new TextView(getContext());

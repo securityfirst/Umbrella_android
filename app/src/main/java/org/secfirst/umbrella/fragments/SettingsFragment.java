@@ -35,6 +35,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
@@ -57,12 +58,12 @@ import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.media.RingtoneManager.getRingtone;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private static final int REQUEST_RINGTONE = 93;
 
     private int syncDone;
-    private Global global;
     private ArrayList<Address> mAddressList;
 
     ListPreference refreshInterval, selectLanguage;
@@ -75,26 +76,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 
-        if (global==null) global = (Global) getContext().getApplicationContext();
         addPreferencesFromResource(R.xml.pref_general);
 
         skipPassword = (SwitchPreferenceCompat) findPreference("skip_password");
         skipPassword.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                global.setSkipPassword((Boolean) o);
+                Global.INSTANCE.setSkipPassword((Boolean) o);
                 return true;
             }
         });
 
         selectLanguage = (ListPreference) findPreference("select_language");
+        selectLanguage.setVisible(false);
         selectLanguage.setEntries(UmbrellaUtil.getLanguageEntries());
         selectLanguage.setEntryValues(UmbrellaUtil.getLanguageEntryValues());
         selectLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String languageToLoad = (String) newValue;
-                global.setRegistry("language", languageToLoad);
+                Global.INSTANCE.setRegistry("language", languageToLoad);
                 if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
 
                 return true;
@@ -105,10 +106,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         serverRefresh.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (global.hasPasswordSet(false)) {
+                if (Global.INSTANCE.hasPasswordSet(false)) {
                     syncApi();
                 } else {
-                    global.setPassword(getContext(), SettingsFragment.this);
+                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 }
                 return true;
             }
@@ -127,7 +128,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 UmbrellaUtil.setMaskMode(getActivity(), true);
-                                if (global.hasPasswordSet(false)) global.logout(getActivity(), false);
+                                if (Global.INSTANCE.hasPasswordSet(false)) Global.INSTANCE.logout(getActivity(), false);
                                 Intent i = new Intent(getActivity(), CalcActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i);
@@ -145,8 +146,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         refreshInterval.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (!global.hasPasswordSet(false)) {
-                    global.setPassword(getContext(), SettingsFragment.this);
+                if (!Global.INSTANCE.hasPasswordSet(false)) {
+                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                     return true;
                 }
                 return false;
@@ -155,7 +156,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         refreshInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                global.setRefreshValue(Integer.parseInt(o.toString()));
+                Global.INSTANCE.setRefreshValue(Integer.parseInt(o.toString()));
                 refreshInterval.setSummary(refreshInterval.getEntries()[refreshInterval.findIndexOfValue(o.toString())]);
                 return true;
             }
@@ -165,13 +166,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         setLocation.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (!global.hasPasswordSet(false)) {
-                    global.setPassword(getContext(), SettingsFragment.this);
+                if (!Global.INSTANCE.hasPasswordSet(false)) {
+                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 } else {
                     LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
                     View forDialog = inflater.inflate(R.layout.item_set_location, null);
                     final DelayAutoCompleteTextView cityPrediction = (DelayAutoCompleteTextView) forDialog.findViewById(R.id.set_location);
-                    Registry selLoc = global.getRegistry("location");
+                    Registry selLoc = Global.INSTANCE.getRegistry("location");
                     if (selLoc!=null) cityPrediction.setText(selLoc.getValue());
                     cityPrediction.setThreshold(1);
                     cityPrediction.setAdapter(new GeoCodingAutoCompleteAdapter(getContext(), R.layout.autocomplete_list_item));
@@ -181,7 +182,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
                         {
-                            if (global.hasPasswordSet(false)) {
+                            if (Global.INSTANCE.hasPasswordSet(false)) {
                                 if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
                                     mAddress = mAddressList.get(position - 1);
                                     String chosenAddress = (String) adapterView.getItemAtPosition(position);
@@ -189,47 +190,47 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                     cityPrediction.setSelection(cityPrediction.getText().length());
                                     setLocation.setSummary(chosenAddress);
 
-                                    Registry selLoc = global.getRegistry("location");
+                                    Registry selLoc = Global.INSTANCE.getRegistry("location");
                                     if (selLoc!=null) {
                                         selLoc.setValue(chosenAddress);
                                         try {
-                                            global.getDaoRegistry().update(selLoc);
+                                            Global.INSTANCE.getDaoRegistry().update(selLoc);
                                         } catch (SQLException e) {
                                             Timber.e(e);
                                         }
                                     } else {
                                         try {
-                                            global.getDaoRegistry().create(new Registry("location", chosenAddress));
+                                            Global.INSTANCE.getDaoRegistry().create(new Registry("location", chosenAddress));
                                         } catch (SQLException e) {
                                             Timber.e(e);
                                         }
                                     }
-                                    Registry iso2 = global.getRegistry("iso2");
+                                    Registry iso2 = Global.INSTANCE.getRegistry("iso2");
                                     if (iso2!=null) {
                                         iso2.setValue(mAddress.getCountryCode().toLowerCase());
                                         try {
-                                            global.getDaoRegistry().update(iso2);
+                                            Global.INSTANCE.getDaoRegistry().update(iso2);
                                         } catch (SQLException e) {
                                             Timber.e(e);
                                         }
                                     } else {
                                         try {
-                                            global.getDaoRegistry().create(new Registry("iso2", mAddress.getCountryCode().toLowerCase()));
+                                            Global.INSTANCE.getDaoRegistry().create(new Registry("iso2", mAddress.getCountryCode().toLowerCase()));
                                         } catch (SQLException e) {
                                             Timber.e(e);
                                         }
                                     }
-                                    Registry selCountry  = global.getRegistry("country");
+                                    Registry selCountry  = Global.INSTANCE.getRegistry("country");
                                     if (selCountry!=null) {
                                         selCountry.setValue(mAddress.getCountryName());
                                         try {
-                                            global.getDaoRegistry().update(selCountry);
+                                            Global.INSTANCE.getDaoRegistry().update(selCountry);
                                         } catch (SQLException e) {
                                             Timber.e(e);
                                         }
                                     } else {
                                         try {
-                                            global.getDaoRegistry().create(new Registry("country", mAddress.getCountryName()));
+                                            Global.INSTANCE.getDaoRegistry().create(new Registry("country", mAddress.getCountryName()));
                                             new Handler().postDelayed(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -245,7 +246,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                     mAddress = null;
                                 }
                             } else {
-                                global.setPassword(getContext(), SettingsFragment.this);
+                                Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                             }
                         }
                     });
@@ -264,8 +265,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         feedSources.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (!global.hasPasswordSet(false)) {
-                    global.setPassword(getContext(), SettingsFragment.this);
+                if (!Global.INSTANCE.hasPasswordSet(false)) {
+                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 } else {
                     showFeedSources();
                 }
@@ -278,7 +279,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 Boolean visible = (Boolean) newValue;
-                global.setNotificationsEnabled(visible);
+                Global.INSTANCE.setNotificationsEnabled(visible);
                 toggleNotificationPref(visible);
                 return true;
             }
@@ -290,9 +291,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 boolean visible = (Boolean) newValue;
                 if (visible) {
-                    global.setNotificationsEnabled(true);
+                    Global.INSTANCE.setNotificationsEnabled(true);
                 }
-                global.setNotificationVibrationEnabled(visible);
+                Global.INSTANCE.setNotificationVibrationEnabled(visible);
                 toggleVibrationPref(visible);
                 return true;
             }
@@ -307,7 +308,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
-                Uri existingRIngtone = global.getNotificationRingtone();
+                Uri existingRIngtone = Global.INSTANCE.getNotificationRingtone();
                 if (existingRIngtone!=null) {
                     if (existingRIngtone.toString().length() == 0) {
                         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
@@ -335,6 +336,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), getString(R.string.checking_for_updates));
 
         UmbrellaRestClient.get("segments", null, null, getContext(), new JsonHttpResponseHandler() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
@@ -343,7 +345,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }.getType();
                 ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
                 if (receivedSegments!=null && receivedSegments.size() > 0) {
-                    global.syncSegments(receivedSegments);
+                    Global.INSTANCE.syncSegments(receivedSegments);
                 }
                 checkDone();
             }
@@ -358,7 +360,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }.getType();
                 ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems!=null && receivedItems.size() > 0) {
-                    global.syncCheckLists(receivedItems);
+                    Global.INSTANCE.syncCheckLists(receivedItems);
                 }
                 checkDone();
             }
@@ -373,7 +375,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 }.getType();
                 ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
                 if (receivedItems!=null && receivedItems.size() > 0) {
-                    global.syncCategories(receivedItems);
+                    Global.INSTANCE.syncCategories(receivedItems);
                 }
                 checkDone();
             }
@@ -386,16 +388,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     public void showFeedSources() {
-        final CharSequence[] items = global.getFeedSourcesArray();
+        final CharSequence[] items = Global.INSTANCE.getFeedSourcesArray();
         final ArrayList<Integer> selectedItems = new ArrayList<>();
         boolean[] currentSelections = new boolean[items.length];
         List<Registry> selections;
         try {
-            selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+            selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
             for (int i = 0; i < items.length; i++) {
                 currentSelections[i] = false;
                 for (Registry reg : selections) {
-                    if (reg.getValue().equals(String.valueOf(global.getFeedSourceCodeByIndex(i)))) {
+                    if (reg.getValue().equals(String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(i)))) {
                         currentSelections[i] = true;
                         selectedItems.add(i);
                         break;
@@ -422,17 +424,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        global.deleteRegistriesByName("feed_sources");
+                        Global.INSTANCE.deleteRegistriesByName("feed_sources");
                         for (Integer item : selectedItems) {
-                            Timber.d("sel %s", String.valueOf(global.getFeedSourceCodeByIndex(item)));
+                            Timber.d("sel %s", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item)));
                             try {
-                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
+                                Global.INSTANCE.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
                         }
-                        String selectedFeedSources = global.getSelectedFeedSourcesLabel(true);
-                        feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources : global.getString(R.string.feed_sources));
+                        String selectedFeedSources = Global.INSTANCE.getSelectedFeedSourcesLabel(true);
+                        feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources : Global.INSTANCE.getString(R.string.feed_sources));
                         dialog.dismiss();
                     }
                 })
@@ -447,20 +449,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     public void updateSummaries() {
-        skipPassword.setChecked(global.getSkipPassword());
+        skipPassword.setChecked(Global.INSTANCE.getSkipPassword());
         serverRefresh.setVisible(false);
-        int refValue = global.getRefreshValue();
-        String refLabel = global.getRefreshLabel(refValue);
+        int refValue = Global.INSTANCE.getRefreshValue();
+        String refLabel = Global.INSTANCE.getRefreshLabel(refValue);
         refreshInterval.setValue(String.valueOf(refValue));
-        refreshInterval.setSummary(!refLabel.equals("") ? refLabel : global.getString(R.string.choose_refresh_inteval));
-        Registry selLoc = global.getRegistry("location");
-        setLocation.setSummary(selLoc!=null ? selLoc.getValue() : global.getString(R.string.set_location));
-        String selectedFeedSources = global.getSelectedFeedSourcesLabel(true);
-        feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources : global.getString(R.string.feed_sources));
+        refreshInterval.setSummary(!refLabel.equals("") ? refLabel : Global.INSTANCE.getString(R.string.choose_refresh_inteval));
+        Registry selLoc = Global.INSTANCE.getRegistry("location");
+        setLocation.setSummary(selLoc!=null ? selLoc.getValue() : Global.INSTANCE.getString(R.string.set_location));
+        String selectedFeedSources = Global.INSTANCE.getSelectedFeedSourcesLabel(true);
+        feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources : Global.INSTANCE.getString(R.string.feed_sources));
         toggleNotificationPref(null);
         toggleVibrationPref(null);
-        showNotifications.setChecked(global.getNotificationsEnabled());
-        notificationVibration.setChecked(global.getNotificationVibrationEnabled());
+        showNotifications.setChecked(Global.INSTANCE.getNotificationsEnabled());
+        notificationVibration.setChecked(Global.INSTANCE.getNotificationVibrationEnabled());
         showRingtoneName();
     }
 
@@ -472,10 +474,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
                 if(uri != null) {
 
-                    global.setNotificationRingtoneEnabled(true);
-                    global.setNotificationRingtone(uri);
+                    Global.INSTANCE.setNotificationRingtoneEnabled(true);
+                    Global.INSTANCE.setNotificationRingtone(uri);
                 } else {
-                    global.setNotificationRingtoneEnabled(false);
+                    Global.INSTANCE.setNotificationRingtoneEnabled(false);
                 }
             }
             showRingtoneName();
@@ -484,7 +486,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     public void toggleNotificationPref(Boolean visible) {
         if (visible==null) {
-            visible = global.hasPasswordSet(false) && global.getNotificationsEnabled();
+            visible = Global.INSTANCE.hasPasswordSet(false) && Global.INSTANCE.getNotificationsEnabled();
         }
         notificationVibration.setVisible(visible);
         if (!visible || (notificationVibration.isVisible() && notificationVibration.isChecked() )) notificationRingtone.setVisible(visible);
@@ -492,15 +494,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     public void toggleVibrationPref(Boolean visible) {
         if (visible==null) {
-            visible = global.hasPasswordSet(false) && global.getNotificationsEnabled() && global.getNotificationVibrationEnabled();
+            visible = Global.INSTANCE.hasPasswordSet(false) && Global.INSTANCE.getNotificationsEnabled() && Global.INSTANCE.getNotificationVibrationEnabled();
         }
         notificationRingtone.setVisible(visible);
     }
 
     public void showRingtoneName() {
         notificationRingtone.setSummary(String.format(getString(R.string.notification_ringtone),
-                global.getNotificationRingtoneEnabled()
-                        ? RingtoneManager.getRingtone(getContext(), global.getNotificationRingtone()).getTitle(getContext())
+                Global.INSTANCE.getNotificationRingtoneEnabled() && RingtoneManager.getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone())!=null
+                        ? getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone()).getTitle(getContext())
                         : getString(R.string.none)));
     }
 
@@ -555,7 +557,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                             }
                         }
                         resultList = toStrings;
-                        resultList.add(0, global.getString(R.string.current_location));
+                        resultList.add(0, Global.INSTANCE.getString(R.string.current_location));
 
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();

@@ -85,6 +85,7 @@ public class Global extends Application {
     private Dao<FeedItem, String> daoFeedItem;
     private Dao<FeedSource, String> daoFeedSource;
     private OrmHelper dbHelper;
+    public static Global INSTANCE;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -98,6 +99,7 @@ public class Global extends Application {
                 "org.secfirst.umbrella", Application.MODE_PRIVATE);
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
+        INSTANCE = this;
     }
 
     public boolean isLoggedIn() {
@@ -131,7 +133,7 @@ public class Global extends Application {
     public List<FeedItem> getFeedItems() {
         List<FeedItem> items = new ArrayList<>();
         try {
-            items = daoFeedItem.queryForAll();
+            items = getDaoFeedItem().queryForAll();
         } catch (SQLiteException | SQLException  e) {
             e.printStackTrace();
         }
@@ -542,8 +544,11 @@ public class Global extends Application {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormValue.class);
                 daoFormValue = getOrmHelper().getDao(FormValue.class);
-                if (getDaoForm().countOf()<1) {
-                    getForms();
+                long count = getDaoForm().countOf();
+                if (count<1) {
+                    getForms(true);
+                } else if(count<2) {
+                    getForms(false);
                 }
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
@@ -875,14 +880,14 @@ public class Global extends Application {
         daoFormValue = null;
     }
 
-    public ArrayList<Form> getForms() {
+    public ArrayList<Form> getForms(boolean alsoFirst) {
         ArrayList<Form> forms = new ArrayList<>();
 
-        Form form = new Form("Digital Security Incident");
-        try {
-            getDaoForm().create(form);
-
+        if (alsoFirst) {
+            Form form = new Form("Digital Security Incident");
             try {
+                getDaoForm().create(form);
+
                 ForeignCollection<FormScreen> screens = getDaoForm().getEmptyForeignCollection("screens");
 
                 FormScreen screen1 = new FormScreen("Contact Information for this Incident", form);
@@ -1017,11 +1022,258 @@ public class Global extends Application {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            forms.add(form);
+        }
+
+        Form form2 = new Form("Physical Security Incident");
+        try {
+            getDaoForm().create(form2);
+
+            ForeignCollection<FormScreen> screens2 = getDaoForm().getEmptyForeignCollection("screens");
+
+            // screen 1
+            FormScreen screen1 = new FormScreen("Contact Information", form2);
+            screens2.add(screen1);
+
+            ForeignCollection<FormItem> fItems = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems.add(new FormItem("Name:", "text_input", screen1));
+            fItems.add(new FormItem("Title:", "text_input", screen1));
+            fItems.add(new FormItem("Phone:", "text_input", screen1));
+            fItems.add(new FormItem("Email address:", "text_input", screen1));
+            fItems.add(new FormItem("Secure Communication Method (e.g Signal Safety Number, PGP Email ID):", "text_input", screen1));
+
+            form2.setScreens(screens2);
+
+            // screen 2
+            FormScreen screen2 = new FormScreen("Incident Description", form2);
+            screens2.add(screen2);
+
+            ForeignCollection<FormItem> fItems2 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems2.add(new FormItem("Provide a brief description:", "text_area", screen2));
+
+            // screen 3
+            FormScreen screen3 = new FormScreen("Type of Incident", form2);
+            screens2.add(screen3);
+            ForeignCollection<FormItem> fItems3 = getDaoFormScreen().getEmptyForeignCollection("items");
+            FormItem fItem3_1 = new FormItem("", "multiple_choice", screen3);
+            fItems3.add(fItem3_1);
+
+            ForeignCollection<FormOption> fItem3_1Options1 = getDaoFormItem().getEmptyForeignCollection("options");
+            fItem3_1Options1.add(new FormOption("Threat / Harassment", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Difficult encounter with authorities/ military forces", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Detention / Arrest", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Robbery / Ambush", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Carjacking", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Personal Assault", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Sexual Assault", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Kidnap / Abduction", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Shooting", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Bombardment / Crossfire", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Landmine", fItem3_1));
+            fItem3_1Options1.add(new FormOption("Other", fItem3_1));
+            fItem3_1.setOptions(fItem3_1Options1);
+
+            fItems3.add(new FormItem("", "text_input", screen3));
+
+            // screen 4
+            FormScreen screen4 = new FormScreen("Impact / Potential Impact", form2);
+            screens2.add(screen4);
+
+            ForeignCollection<FormItem> fItems4 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems4.add(new FormItem("Nature of injuries or damage/ threats made/ Property stolen etc.:", "text_area", screen4));
+
+            // screen 5
+            FormScreen screen5 = new FormScreen("Response Steps Taken?", form2);
+            screens2.add(screen5);
+
+            ForeignCollection<FormItem> fItems5 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems5.add(new FormItem("Provide a brief description:", "text_area", screen5));
+
+
+            // screen 6
+            FormScreen screen6 = new FormScreen("Motive Or Perpetrators?", form2);
+            screens2.add(screen6);
+
+            ForeignCollection<FormItem> fItems6 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems6.add(new FormItem("Provide a brief description:", "text_area", screen6));
+
+            // screen 7
+            FormScreen screen7 = new FormScreen("Who Has The Incident Been Reported To Locally?", form2);
+            screens2.add(screen7);
+
+            ForeignCollection<FormItem> fItems7 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems7.add(new FormItem("", "text_area", screen7));
+
+            // screen 8
+            FormScreen screen8 = new FormScreen("Do Your Security Guidelines Cover This Type Of Incident? Were The Guidelines Followed?", form2);
+            screens2.add(screen8);
+
+            ForeignCollection<FormItem> fItems8 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems8.add(new FormItem("", "text_area", screen8));
+
+            // screen 9
+            FormScreen screen9 = new FormScreen("Do The Guidelines Or Any Other Aspect Of Security Management Need To Be Revised In Any Way?", form2);
+            screens2.add(screen9);
+
+            ForeignCollection<FormItem> fItems9 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems9.add(new FormItem("", "text_area", screen9));
+
+            // screen 10
+            FormScreen screen10 = new FormScreen("Please suggest specific measures that may help avoid this type of incident in the future.", form2);
+            screens2.add(screen10);
+
+            ForeignCollection<FormItem> fItems10 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems10.add(new FormItem("Lessons learned:", "text_area", screen10));
+
+            // screen 11
+            FormScreen screen11 = new FormScreen("Any Action Requested?", form2);
+            screens2.add(screen11);
+
+            ForeignCollection<FormItem> fItems11 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems11.add(new FormItem("", "text_area", screen11));
+
+            // screen 12
+            FormScreen screen12 = new FormScreen("Any supporting information?", form2);
+            screens2.add(screen12);
+
+            ForeignCollection<FormItem> fItems12 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems12.add(new FormItem("", "text_area", screen12));
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        forms.add(form);
+        forms.add(form2);
+
+        Form form3 = new Form("Travel Security Memo");
+        try {
+            getDaoForm().create(form3);
+
+            ForeignCollection<FormScreen> screens3 = getDaoForm().getEmptyForeignCollection("screens");
+
+            // screen 1
+            FormScreen screen1 = new FormScreen("Names / Dates", form3);
+            screens3.add(screen1);
+
+            ForeignCollection<FormItem> fItems1 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems1.add(new FormItem("Name(s)", "text_area", screen1));
+            fItems1.add(new FormItem("Travel Dates", "text_area", screen1));
+
+            // screen 2
+            FormScreen screen2 = new FormScreen("Destination / Purpose", form3);
+            screens3.add(screen2);
+
+            ForeignCollection<FormItem> fItems2 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems2.add(new FormItem("Destination(s)", "text_area", screen2));
+            fItems2.add(new FormItem("Purpose", "text_area", screen2));
+
+            // screen 3
+            FormScreen screen3 = new FormScreen("Itinerary / Travel", form3);
+            screens3.add(screen3);
+
+            ForeignCollection<FormItem> fItems3 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems3.add(new FormItem("Itinerary", "text_area", screen3));
+            fItems3.add(new FormItem("Travel/Flight Information", "text_area", screen3));
+
+            // screen 4
+            FormScreen screen4 = new FormScreen("Immigration / Phones", form3);
+            screens3.add(screen4);
+
+            ForeignCollection<FormItem> fItems4 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems4.add(new FormItem("Immigration Requirements", "text_area", screen4));
+            fItems4.add(new FormItem("Important Phone Numbers", "text_area", screen4));
+
+            // screen 5
+            FormScreen screen5 = new FormScreen("Organisational / Procedures", form3);
+            screens3.add(screen5);
+
+            ForeignCollection<FormItem> fItems5 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems5.add(new FormItem("Organisational Emergency Contact(s)", "text_area", screen5));
+            fItems5.add(new FormItem("Check-in Procedure", "text_area", screen5));
+
+            // screen 6
+            FormScreen screen6 = new FormScreen("Personal / Medical", form3);
+            screens3.add(screen6);
+
+            ForeignCollection<FormItem> fItems6 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems6.add(new FormItem("Personal Emergency Contact(s)", "text_area", screen6));
+            fItems6.add(new FormItem("Medical Information", "text_area", screen6));
+
+            // screen 7
+            FormScreen screen7 = new FormScreen("Physical / Digital", form3);
+            screens3.add(screen7);
+
+            ForeignCollection<FormItem> fItems7 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems7.add(new FormItem("Physical Security Situation", "text_area", screen7));
+            fItems7.add(new FormItem("Digital Security Situation", "text_area", screen7));
+
+            // screen 8
+            FormScreen screen8 = new FormScreen("Key contacts / Other", form3);
+            screens3.add(screen8);
+
+            ForeignCollection<FormItem> fItems8 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems8.add(new FormItem("Key Contacts (Embassy, Insurance etc)", "text_area", screen8));
+            fItems8.add(new FormItem("Other/Notes", "text_area", screen8));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        forms.add(form3);
+
+        Form form4 = new Form("Proof of Life Form");
+        try {
+            getDaoForm().create(form4);
+
+            ForeignCollection<FormScreen> screens3 = getDaoForm().getEmptyForeignCollection("screens");
+
+            // screen 1
+            FormScreen screen1 = new FormScreen("", form4);
+            screens3.add(screen1);
+
+            ForeignCollection<FormItem> fItems1 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems1.add(new FormItem("Write down four questions known only to you or someone close to you", "label", screen1));
+            fItems1.add(new FormItem("Question 1:", "text_input", screen1));
+            fItems1.add(new FormItem("Answer 1:", "text_input", screen1));
+
+            // screen 2
+            FormScreen screen2 = new FormScreen("", form4);
+            screens3.add(screen2);
+
+            ForeignCollection<FormItem> fItems2 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems2.add(new FormItem("Question 2:", "text_input", screen2));
+            fItems2.add(new FormItem("Answer 2:", "text_input", screen2));
+
+            // screen 3
+            FormScreen screen3 = new FormScreen("", form4);
+            screens3.add(screen3);
+
+            ForeignCollection<FormItem> fItems3 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems3.add(new FormItem("Question 3:", "text_input", screen3));
+            fItems3.add(new FormItem("Answer 3:", "text_input", screen3));
+
+            // screen 4
+            FormScreen screen4 = new FormScreen("", form4);
+            screens3.add(screen4);
+
+            ForeignCollection<FormItem> fItems4 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems4.add(new FormItem("Question 4:", "text_input", screen4));
+            fItems4.add(new FormItem("Answer 4:", "text_input", screen4));
+
+            // screen 5
+            FormScreen screen5 = new FormScreen("", form4);
+            screens3.add(screen5);
+
+            ForeignCollection<FormItem> fItems5 = getDaoFormScreen().getEmptyForeignCollection("items");
+            fItems5.add(new FormItem("Personal Duress Word", "text_input", screen5));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        forms.add(form4);
+
         return forms;
     }
 }
