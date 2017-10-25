@@ -27,8 +27,8 @@ public class UmbrellaRestClient {
 
     public static AsyncHttpClient getClientForApiUpdates(Context context) {
         String[] pins = new String[] {
-                "1212959a1fd001c80d152b1ee0410bbf90d1323e",
-                "636c2f348d1a6a698c2bf17c3f6b3ee35c816f92"
+                "636c2f348d1a6a698c2bf17c3f6b3ee35c816f92",
+                "0097f6f605624bc344e26a9260316c23ff791515"
         };
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
