@@ -161,6 +161,15 @@ public class Global extends Application {
         }
     }
 
+    public boolean hasShownCoachMark(String name) {
+        Registry reg = getRegistry(name);
+        return reg!=null && Boolean.parseBoolean(reg.getValue());
+    }
+
+    public void setCoachMarkShown(String name, boolean shown) {
+        setRegistry(name, String.valueOf(shown));
+    }
+
     public Registry getRegistry(String name) {
         Registry registry = null;
         try {

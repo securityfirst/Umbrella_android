@@ -3,6 +3,7 @@ package org.secfirst.umbrella;
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -28,10 +28,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.PointTarget;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -43,6 +39,7 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
@@ -50,9 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 
-public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener   {
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -496,52 +494,41 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             titleSpinner.setSelection(difficulty);
         }
         setFragment(1, "", false);
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin * 5, margin * 5);
-        new ShowcaseView.Builder(this)
-                .setTarget(new ViewTarget(R.id.spinner_nav, this))
-                .setContentText(getString(R.string.click_here_to_change_level))
-                .setStyle(R.style.CustomShowcaseTheme4)
-                .hideOnTouchOutside()
-                .singleShot(2)
-                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                        lps.setMargins(margin, margin, margin * 5, margin * 5);
-                        new ShowcaseView.Builder(MainActivity.this)
-                                .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
-                                .setContentText(getString(R.string.swipe_left_to_read))
-                                .setStyle(R.style.CustomShowcaseTheme4)
-                                .hideOnTouchOutside()
-                                .singleShot(3)
-                                .build()
-                                .setButtonPosition(lps);
-                    }
-
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
-                    }
-                })
-                .build()
-                .setButtonPosition(lps);
+        if (!Global.INSTANCE.hasShownCoachMark("change_level")) {
+            new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                    .setTarget(R.id.spinner_nav)
+                    .setSecondaryText(getString(R.string.click_here_to_change_level))
+                    .setBackgroundColour(Color.parseColor("#BB000000"))
+                    .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                    {
+                        @Override
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                        {
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("change_level", true);;
+                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
+                                new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                        .setTarget(R.id.pager_title_strip)
+                                        .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                        .setBackgroundColour(Color.parseColor("#BB000000"))
+                                        .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                        {
+                                            @Override
+                                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                            {
+                                                if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                {
+                                                    Global.INSTANCE.setCoachMarkShown("swipe_lessons", true);
+                                                }
+                                            }
+                                        })
+                                        .show();
+                            }
+                        }
+                    })
+                    .show();
+        }
     }
 
     public void onNavigationDrawerGroupItemSelected(Category category) {
@@ -562,63 +549,58 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public void onDrawerClosed(View drawerView) {
         actionBarDrawerToggle.onDrawerClosed(drawerView);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-            lps.setMargins(margin, margin, margin * 5, margin * 5);
-            new ShowcaseView.Builder(this)
-                    .setTarget(new PointTarget(0, 0))
-                    .setContentText(getString(R.string.swipe_to_view_menu))
-                    .setStyle(R.style.CustomShowcaseTheme4)
-                    .hideOnTouchOutside()
-                    .singleShot(1)
-                    .setShowcaseEventListener(this)
-                    .build()
-                    .setButtonPosition(lps);
-            if (!shownCoachmark)
-               onShowcaseViewHide(null);
+        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+        lps.setMargins(margin, margin, margin * 5, margin * 5);
+        if (!Global.INSTANCE.hasShownCoachMark("swipe_side")) {
+            new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                    .setTarget(this.toolbar.getChildAt(2))
+                    .setSecondaryText(getString(R.string.swipe_to_view_menu))
+                    .setBackgroundColour(Color.parseColor("#BB000000"))
+                    .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                    {
+                        @Override
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                        {
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("swipe_side", true);;
+                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("check_lists")) {
+                                if (fragType == 0) {
+                                    RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                                    lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                                    int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
+                                    lps.setMargins(margin, margin, margin * 5, margin * 5);
+                                    new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                            .setTarget(R.id.pager_title_strip)
+                                            .setSecondaryText(getString(R.string.view_all_checlists))
+                                            .setBackgroundColour(Color.parseColor("#BB000000"))
+                                            .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                            {
+                                                @Override
+                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                                {
+                                                    if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                    {
+                                                        Global.INSTANCE.setCoachMarkShown("check_lists", true);
+                                                    }
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        }
+                    })
+                    .show();
         }
     }
 
     @Override
     public void onDrawerStateChanged(int newState) {
         actionBarDrawerToggle.onDrawerStateChanged(newState);
-    }
-
-    @Override
-    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-        if (fragType == 0) {
-            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-            lps.setMargins(margin, margin, margin * 5, margin * 5);
-            new ShowcaseView.Builder(MainActivity.this)
-                    .setTarget(new ViewTarget(R.id.pager_title_strip, this))
-                    .setContentText(getString(R.string.view_all_checlists))
-                    .setStyle(R.style.CustomShowcaseTheme4)
-                    .hideOnTouchOutside()
-                    .singleShot(7)
-                    .build()
-                    .setButtonPosition(lps);
-        }
-    }
-
-    @Override
-    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-    }
-
-    @Override
-    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-        shownCoachmark = true;
-    }
-
-    @Override
-    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
     }
 
 }

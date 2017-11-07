@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,6 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -26,14 +26,9 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.PointTarget;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -54,6 +49,7 @@ import java.util.List;
 import java.util.Locale;
 
 import timber.log.Timber;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class TabbedFragment extends Fragment {
 
@@ -91,88 +87,56 @@ public class TabbedFragment extends Fragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position == mSectionsPagerAdapter.getCount() - 1 && positionOffset == 0) {
-                    if (android.os.Build.VERSION.SDK_INT >= 11) {
-                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                        lps.setMargins(margin, margin, margin * 5, margin * 5);
-                        new ShowcaseView.Builder(getActivity())
-                                .setTarget(new ViewTarget(R.id.check_value, getActivity()))
-                                .setContentText(getActivity().getString(R.string.mark_off_tasks))
-                                .setStyle(R.style.CustomShowcaseTheme4)
-                                .hideOnTouchOutside()
-                                .singleShot(4)
-                                .setShowcaseEventListener(new OnShowcaseEventListener() {
+                    if (!Global.INSTANCE.hasShownCoachMark("mark_off_tasks")) {
+                        new MaterialTapTargetPrompt.Builder(getActivity())
+                                .setTarget(R.id.check_value)
+                                .setSecondaryText(getActivity().getString(R.string.mark_off_tasks))
+                                .setBackgroundColour(Color.parseColor("#BB000000"))
+                                .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                {
                                     @Override
-                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                                        lps.setMargins(margin, margin, margin * 5, margin * 5);
-                                        new ShowcaseView.Builder(getActivity())
-                                                .setTarget(new ViewTarget(R.id.fab, getActivity()))
-                                                .setContentText(getActivity().getString(R.string.click_to_add_new_tasks))
-                                                .setStyle(R.style.CustomShowcaseTheme4)
-                                                .hideOnTouchOutside()
-                                                .singleShot(5)
-                                                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                                                    @Override
-                                                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                                                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                                                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                                        if (isAdded() && getView() != null) {
-                                                            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                                                            lps.setMargins(margin, margin, margin * 5, margin * 5);
-                                                            new ShowcaseView.Builder(getActivity())
-                                                                    .setTarget(new PointTarget(getView().getWidth(), 0))
-                                                                    .setContentText(getActivity().getString(R.string.star_this_checklist))
-                                                                    .setStyle(R.style.CustomShowcaseTheme4)
-                                                                    .hideOnTouchOutside()
-                                                                    .singleShot(6)
-                                                                    .build()
-                                                                    .setButtonPosition(lps);
+                                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                    {
+                                        if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("mark_off_tasks", true);;
+                                        if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("add_new_tasks")) {
+                                            new MaterialTapTargetPrompt.Builder(getActivity())
+                                                    .setTarget(R.id.fab)
+                                                    .setSecondaryText(getActivity().getString(R.string.click_to_add_new_tasks))
+                                                    .setBackgroundColour(Color.parseColor("#BB000000"))
+                                                    .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                                    {
+                                                        @Override
+                                                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                                        {
+                                                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("add_new_tasks", true);
+                                                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("star_check_list") && isAdded() && getView() != null) {
+                                                                new MaterialTapTargetPrompt.Builder(getActivity())
+                                                                        .setTarget(getView())
+                                                                        .setSecondaryText(getActivity().getString(R.string.star_this_checklist))
+                                                                        .setBackgroundColour(Color.parseColor("#BB000000"))
+                                                                        .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                                                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
+                                                                        {
+                                                                            @Override
+                                                                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                                                                            {
+                                                                                if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                                                {
+                                                                                    Global.INSTANCE.setCoachMarkShown("star_check_list", true);
+                                                                                }
+                                                                            }
+                                                                        })
+                                                                        .show();
+                                                            }
                                                         }
-                                                    }
-
-                                                    @Override
-                                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                                                    }
-
-                                                    @Override
-                                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
-                                                    }
-                                                })
-                                                .build()
-                                                .setButtonPosition(lps);
-                                    }
-
-                                    @Override
-                                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                                    }
-
-                                    @Override
-                                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                                    }
-
-                                    @Override
-                                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
+                                                    })
+                                                    .show();
+                                        }
                                     }
                                 })
-                                .build()
-                                .setButtonPosition(lps);
+                                .show();
                     }
                 }
             }
