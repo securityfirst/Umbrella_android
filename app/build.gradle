@@ -4,7 +4,7 @@ apply plugin: 'witness'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion '26.0.2'
     dataBinding.enabled = true
     useLibrary 'org.apache.http.legacy'
 
@@ -41,65 +41,62 @@ dependencies {
     compile 'com.android.support:gridlayout-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'net.zetetic:android-database-sqlcipher:3.5.4@aar'
+    compile 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
     compile 'com.google.guava:guava:20.0'
     compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
     compile 'com.loopj.android:android-async-http:1.4.8'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'org.jsoup:jsoup:1.8.2'
     compile 'com.viewpagerindicator:library:2.4.1'
-    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
     compile 'org.apache.commons:commons-collections4:4.1'
     compile 'com.jakewharton.timber:timber:4.5.1'
-    compile 'com.afollestad.material-dialogs:core:0.9.4.3'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.squareup:seismic:1.0.2'
     compile 'com.stepstone.stepper:material-stepper:3.3.0'
     compile 'org.apache.commons:commons-lang3:3.6'
-    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:multidex:1.0.2'
     compile 'info.guardianproject.iocipher:IOCipher:0.4'
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
+    compile 'uk.co.samuelwall:material-tap-target-prompt:2.3.0'
 }
 
 // generate using: `gradle -q calculateChecksums`
 dependencyVerification {
     verify = [
-            'com.android.support:appcompat-v7:ac1ebbc46589195dda3e0b1becfe410bafd75bdf3edd1cd9acf04850f3895830',
             'com.android.support:preference-v7:b37d8193c65cf8eb3c4ba9cbfc6d5c96042177901622717fb089290bef784a58',
+            'com.android.support:design:a3e83064fe99d0a4369f9b46d8bfbe77d0c3022fffdee4be3ac3857b87cc89e3',
+            'com.afollestad.material-dialogs:core:2bee54ec5c541ff50880569b2227118bf4ba9d08a7bac053f6dbbeb756641746',
+            'com.stepstone.stepper:material-stepper:545a59792adf75232cf14db4296e54f6fea70a968ef103510cbdfc7f8d8c4a24',
+            'me.zhanghai.android.materialprogressbar:library:ecacc553410d6125c45a537763c0854a243be40c048085eb5f8bae8ebce971a2',
+            'com.android.support:appcompat-v7:ac1ebbc46589195dda3e0b1becfe410bafd75bdf3edd1cd9acf04850f3895830',
+            'com.android.support:transition:36c688825a8c0e6e879e18886de83dc90673322822d5b606ee302f70fb558e16',
+            'com.android.support:support-v13:edd86bab8578e24443b56ee115b38023dacaacb8bb3188c9de3fdbb8e15023d3',
             'com.android.support:support-v4:07d389154bcf73b47e514964df1578136b26cba78257b8a577a3ccb54beff0ae',
             'com.android.support:cardview-v7:defc17032ffa600a82e1c7d96bb574aa5ed64e2b57e28414a245da7d6db0c666',
             'com.android.support:recyclerview-v7:375974a8724e359d97d77fa8522c614f813a3ac4583c1807f154a3f9a054b0a1',
             'com.android.support:gridlayout-v7:de87a59472f19eb05429faf6b2683a09dd6995f5db562d3daf6033297c312388',
-            'com.android.support:design:a3e83064fe99d0a4369f9b46d8bfbe77d0c3022fffdee4be3ac3857b87cc89e3',
             'com.j256.ormlite:ormlite-core:2beb9bd890a705fe25f6d74c7b1fdb5667da09f7063ba8e8eb501cb899dd5002',
-            'net.zetetic:android-database-sqlcipher:e1539774238a76fc1d95bfd6915ab0882e7284ebd5569e0bcbdb9f0bfed1cc4a',
+            'net.zetetic:android-database-sqlcipher:20e9276aacd18f0fffe62221545046696460775af56736ddd33b8a04a78bc756',
             'com.google.guava:guava:36a666e3b71ae7f0f0dca23654b67e086e6c93d192f60ba5dfd5519db6c288c8',
             'org.thoughtcrime.ssl.pinning:AndroidPinning:afa1d74e699257fa75cb109ff29bac50726ef269c6e306bdeffe8223cee06ef4',
             'com.loopj.android:android-async-http:8ded08eaf313d1debfaa715f2952fe72135980cf146a5869f22cb5dddb41479d',
-            'com.google.code.gson:gson:2d43eb5ea9e133d2ee2405cc14f5ee08951b8361302fdd93494a3a997b508d32',
+            'com.google.code.gson:gson:c6221763bd79c4f1c3dc7f750b5f29a0bb38b367b81314c4f71896e340c40825',
             'org.jsoup:jsoup:e87f0ee62a7592afc121dae468975d97ce47f432c965b5ba47350ca18ed6a473',
             'com.viewpagerindicator:library:10670a99f8a30266f7c5a30c3af5dbf7e6419ba901184b37f44a877269f975e2',
-            'com.github.amlcurran.showcaseview:library:a52c34bcf4ab8118e28efd5a10dd16a7a56685556f77e5f532862b2de56c8c8a',
             'org.apache.commons:commons-collections4:b1fe8b5968b57d8465425357ed2d9dc695504518bed2df5b565c4b8e68c1c8a5',
             'com.jakewharton.timber:timber:d553d3d3e883ce7d061f1b21b95d6ee0840f3bfbf6d3bd51c5671f0b0f0b0091',
-            'com.afollestad.material-dialogs:core:6076053704084d5f313ae38de4f9b6a80718098d9d109b99ad3fa4cf673cae5e',
             'com.squareup:seismic:4fc9984aed7a689d24ae2574e9239aec14cc4d5d587621091104c9a4c4a83774',
-            'com.stepstone.stepper:material-stepper:545a59792adf75232cf14db4296e54f6fea70a968ef103510cbdfc7f8d8c4a24',
             'org.apache.commons:commons-lang3:89c27f03fff18d0b06e7afd7ef25e209766df95b6c1269d6c3ebbdea48d5f284',
-            'com.android.support:multidex:60df8e7153fabdcf3a6a48a2ce5980b599cf25cbeb3b689b7b615975ca731840',
+            'com.android.support:multidex:7cd48755c7cfdb6dd2d21cbb02236ec390f6ac91cde87eb62f475b259ab5301d',
             'info.guardianproject.iocipher:IOCipher:ab7da0f23e256a2ced9492c73e37812c26e7beccc1a99815e6d65a75728ba6d3',
-            'com.android.databinding:library:f172550208c2e86973271cdc1d9b527545d923527abed2daa894cf1499619869',
-            'com.android.databinding:baseLibrary:a2755d1e00d3604d943ceff5f85739914d5e85872715d700407dc16e464b9a66',
-            'com.android.databinding:adapters:9894e5c9f53f931360e9782ac95eb63534597bc57009d70ca68b841eb4b380d3',
-            'com.android.support:support-annotations:aedf76962584adfaed2bd3fcaa22406461c4310237fc27e301128edaa2dba2fa',
-            'com.android.support:support-vector-drawable:13728f337f36d1c02d52198a6c20724edb447a0875454d829f95cb9eb4aa293b',
+            'uk.co.samuelwall:material-tap-target-prompt:f4eaa1ccc7900c9d6145689c75ac258e511ba2d85e5051f9acf1b70cbcf70ea0',
             'com.android.support:animated-vector-drawable:4bc46edf1946b32d518b41416d1734e915e0cbb28021de3b340527419b070691',
-            'com.android.support:support-compat:e02d781268dc60aab6638d8dc20156ea11ca20b962d294b85e6f1e8418cabfa7',
+            'com.android.support:support-vector-drawable:13728f337f36d1c02d52198a6c20724edb447a0875454d829f95cb9eb4aa293b',
+            'com.android.support:support-fragment:541d6393c1e024453aca2a14f31bea0c7270ff4e2a02783f3528aa426367444d',
+            'com.android.support:support-core-ui:6182278a6653e6c111c888963626cbb16f2d0022571cb239760475119e0b92a8',
             'com.android.support:support-media-compat:cbed07d07e0e84fdb4b75712f5fd946229a8af155933c9a92e41db64d00791e0',
             'com.android.support:support-core-utils:32fac02eb2c20a77fa3e3bc3ede62392a19613f72b8f8e10f5dfa84bb4c89ea1',
-            'com.android.support:support-core-ui:6182278a6653e6c111c888963626cbb16f2d0022571cb239760475119e0b92a8',
-            'com.android.support:support-fragment:541d6393c1e024453aca2a14f31bea0c7270ff4e2a02783f3528aa426367444d',
-            'com.android.support:transition:36c688825a8c0e6e879e18886de83dc90673322822d5b606ee302f70fb558e16',
-            'com.android.support:support-v13:edd86bab8578e24443b56ee115b38023dacaacb8bb3188c9de3fdbb8e15023d3',
-            'me.zhanghai.android.materialprogressbar:library:e9fe9ee50133da09e99d72323720a7afe3438adb89f76cc9244428634aba78cd',
+            'com.android.support:support-compat:e02d781268dc60aab6638d8dc20156ea11ca20b962d294b85e6f1e8418cabfa7',
+            'com.android.support:support-annotations:08da4d68daa25824d18e42c5bf7a7cd76102c32eeaae02ed691a3688c6187755',
     ]
 }
