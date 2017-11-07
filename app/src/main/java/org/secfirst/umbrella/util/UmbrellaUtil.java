@@ -327,8 +327,8 @@ public class UmbrellaUtil {
     public static void setMaskMode(Activity activity, boolean masked) {
         String packageName = BuildConfig.APPLICATION_ID;
         List<String> disableNames = new ArrayList<>();
-        disableNames.add("org.secfirst.umbrella.MainActivity-normal");
-        disableNames.add("org.secfirst.umbrella.MainActivity-calculator");
+        disableNames.add("org.secfirst.umbrella.MainActivityNormal");
+        disableNames.add("org.secfirst.umbrella.MainActivityCalculator");
         String activeName = disableNames.remove(masked ? 1 :0);
 
         activity.getPackageManager().setComponentEnabledSetting(
@@ -349,8 +349,8 @@ public class UmbrellaUtil {
     public static boolean isAppMasked(Activity activity) {
         String packageName = BuildConfig.APPLICATION_ID;
         List<String> disableNames = new ArrayList<>();
-        disableNames.add("org.secfirst.umbrella.MainActivity-normal");
-        disableNames.add("org.secfirst.umbrella.MainActivity-calculator");
+        disableNames.add("org.secfirst.umbrella.MainActivityNormal");
+        disableNames.add("org.secfirst.umbrella.MainActivityCalculator");
         for (int i = 0; i < disableNames.size(); i++) {
             try {
                 int flag = activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, disableNames.get(i)));

@@ -37,7 +37,7 @@
         <activity android:name=".MainActivity" />
 
         <activity-alias
-            android:name=".MainActivity-normal"
+            android:name=".MainActivityNormal"
             android:enabled="true"
             android:icon="@drawable/ic_umbrella"
             android:label="@string/app_normal"
@@ -79,7 +79,7 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".MainActivity-calculator"
+            android:name=".MainActivityCalculator"
             android:enabled="false"
             android:icon="@drawable/calc"
             android:label="@string/app_calc"
