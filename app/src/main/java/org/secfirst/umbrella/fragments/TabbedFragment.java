@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,7 +91,10 @@ public class TabbedFragment extends Fragment {
                         new MaterialTapTargetPrompt.Builder(getActivity())
                                 .setTarget(R.id.check_value)
                                 .setSecondaryText(getActivity().getString(R.string.mark_off_tasks))
-                                .setBackgroundColour(Color.parseColor("#BB000000"))
+                                .setTextGravity(Gravity.CENTER)
+                                .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                                .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                                 .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
                                 .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                                 {
@@ -99,11 +102,14 @@ public class TabbedFragment extends Fragment {
                                     public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
                                     {
                                         if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("mark_off_tasks", true);;
-                                        if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("add_new_tasks")) {
+                                        if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("add_new_tasks")) {
                                             new MaterialTapTargetPrompt.Builder(getActivity())
                                                     .setTarget(R.id.fab)
                                                     .setSecondaryText(getActivity().getString(R.string.click_to_add_new_tasks))
-                                                    .setBackgroundColour(Color.parseColor("#BB000000"))
+                                                    .setTextGravity(Gravity.CENTER)
+                                                    .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                                                    .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                                    .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                                                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
                                                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                                                     {
@@ -111,18 +117,21 @@ public class TabbedFragment extends Fragment {
                                                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
                                                         {
                                                             if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("add_new_tasks", true);
-                                                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("star_check_list") && isAdded() && getView() != null) {
+                                                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("star_check_list") && isAdded()) {
                                                                 new MaterialTapTargetPrompt.Builder(getActivity())
-                                                                        .setTarget(getView())
+                                                                        .setTarget(getActivity().findViewById(R.id.favourite))
                                                                         .setSecondaryText(getActivity().getString(R.string.star_this_checklist))
-                                                                        .setBackgroundColour(Color.parseColor("#BB000000"))
+                                                                        .setTextGravity(Gravity.CENTER)
+                                                                        .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                                                                        .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                                                        .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                                                                         .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
                                                                         .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                                                                         {
                                                                             @Override
                                                                             public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
                                                                             {
-                                                                                if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                                                if (state == MaterialTapTargetPrompt.STATE_REVEALED)
                                                                                 {
                                                                                     Global.INSTANCE.setCoachMarkShown("star_check_list", true);
                                                                                 }

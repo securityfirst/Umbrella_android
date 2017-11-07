@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerTabStrip;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 
 public class TabbedChecklistFragment extends Fragment {
@@ -58,6 +61,32 @@ public class TabbedChecklistFragment extends Fragment {
         checkLists = getChecklistProgress();
         if (!checkLists.isEmpty() && mAdapter!=null) {
             mAdapter.updateData(checkLists);
+        }
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isAdded() && isVisibleToUser && Global.INSTANCE.hasShownCoachMark("swipe_side") && !Global.INSTANCE.hasShownCoachMark("check_lists")) {
+            PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pager_title_strip);
+            if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1 ) {
+                new MaterialTapTargetPrompt.Builder(getActivity())
+                        .setTarget(pagerTabStrip.getChildAt(1))
+                        .setSecondaryText(getString(R.string.view_all_checlists))
+                        .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
+                        .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                        .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                        .setPromptFocal(new RectanglePromptFocal())
+                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                            @Override
+                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                if (state == MaterialTapTargetPrompt.STATE_REVEALED) {
+                                    Global.INSTANCE.setCoachMarkShown("check_lists", true);
+                                }
+                            }
+                        })
+                        .show();
+            }
         }
     }
 
@@ -114,7 +143,6 @@ public class TabbedChecklistFragment extends Fragment {
                 }
             }
         }
-        int favReturnedSize = returned.size();
         try {
             QueryBuilder<Difficulty, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
             List<Difficulty> hasDifficulty = queryBuilder.query();

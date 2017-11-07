@@ -3,13 +3,13 @@ package org.secfirst.umbrella;
 import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
@@ -17,11 +17,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +46,8 @@ import java.util.List;
 
 import timber.log.Timber;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+import uk.co.samuelwall.materialtaptargetprompt.extras.backgrounds.RectanglePromptBackground;
+import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 
 public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener {
@@ -59,9 +59,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public long drawerItem;
     public Spinner titleSpinner;
     private DrawerChildItem childItem;
-    private int fragType = 0;
     public MenuItem favouriteItem;
-    public boolean shownCoachmark = false;
     private TextView loginHeader;
     private View header;
     private boolean ran = false;
@@ -227,7 +225,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void setFragment(int fragType, String groupName, boolean isFirst) {
-        this.fragType = fragType;
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
@@ -498,32 +495,41 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             new MaterialTapTargetPrompt.Builder(MainActivity.this)
                     .setTarget(R.id.spinner_nav)
                     .setSecondaryText(getString(R.string.click_here_to_change_level))
-                    .setBackgroundColour(Color.parseColor("#BB000000"))
+                    .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                    .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                    .setPromptFocal(new RectanglePromptFocal())
+                    .setPromptBackground(new RectanglePromptBackground())
                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                     {
                         @Override
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
                         {
                             if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("change_level", true);;
-                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
-                                new MaterialTapTargetPrompt.Builder(MainActivity.this)
-                                        .setTarget(R.id.pager_title_strip)
-                                        .setSecondaryText(getString(R.string.swipe_left_to_read))
-                                        .setBackgroundColour(Color.parseColor("#BB000000"))
-                                        .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                        {
-                                            @Override
-                                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
+                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
+                                PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
+                                if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1 ) {
+                                    new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                            .setTarget(pagerTabStrip.getChildAt(1))
+                                            .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                            .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                                            .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
+                                            .setPromptFocal(new RectanglePromptFocal())
+                                            .setPromptBackground(new RectanglePromptBackground())
+                                            .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                                             {
-                                                if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
+                                                @Override
+                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
                                                 {
-                                                    Global.INSTANCE.setCoachMarkShown("swipe_lessons", true);
+                                                    if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                                    {
+                                                        Global.INSTANCE.setCoachMarkShown("swipe_lessons", true);
+                                                    }
                                                 }
-                                            }
-                                        })
-                                        .show();
+                                            })
+                                            .show();
+                                }
                             }
                         }
                     })
@@ -549,49 +555,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public void onDrawerClosed(View drawerView) {
         actionBarDrawerToggle.onDrawerClosed(drawerView);
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin * 5, margin * 5);
         if (!Global.INSTANCE.hasShownCoachMark("swipe_side")) {
             new MaterialTapTargetPrompt.Builder(MainActivity.this)
                     .setTarget(this.toolbar.getChildAt(2))
                     .setSecondaryText(getString(R.string.swipe_to_view_menu))
-                    .setBackgroundColour(Color.parseColor("#BB000000"))
+                    .setTextGravity(Gravity.CENTER)
+                    .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                    .setSecondaryText(getString(R.string.swipe_left_to_read))
+                    .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
                     {
                         @Override
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
                         {
-                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("swipe_side", true);;
-                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && Global.INSTANCE.hasShownCoachMark("check_lists")) {
-                                if (fragType == 0) {
-                                    RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                                    lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                                    lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                                    int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                                    lps.setMargins(margin, margin, margin * 5, margin * 5);
-                                    new MaterialTapTargetPrompt.Builder(MainActivity.this)
-                                            .setTarget(R.id.pager_title_strip)
-                                            .setSecondaryText(getString(R.string.view_all_checlists))
-                                            .setBackgroundColour(Color.parseColor("#BB000000"))
-                                            .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                            {
-                                                @Override
-                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                                                {
-                                                    if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED)
-                                                    {
-                                                        Global.INSTANCE.setCoachMarkShown("check_lists", true);
-                                                    }
-                                                }
-                                            })
-                                            .show();
-                                }
-                            }
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("swipe_side", true);
                         }
                     })
                     .show();

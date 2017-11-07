@@ -19,4 +19,6 @@
     <color name="grey_600">#546e7a</color>
     <color name="background_grey">#FFF2F2F2</color>
     <color name="black">#FF000000</color>
+    <color name="coachmark_background_dark">#BB000000</color>
+    <color name="coachmark_focal_background">#AAF2BC2B</color>
 </resources>
