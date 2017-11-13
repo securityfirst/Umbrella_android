@@ -17,8 +17,10 @@ public class CheckItem implements Serializable {
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
     @DatabaseField(columnName = FIELD_TITLE)
+    @SerializedName("text")
     private String title;
     @DatabaseField(columnName = FIELD_TEXT)
+    @SerializedName("title")
     private String text;
     @DatabaseField(columnName = FIELD_VALUE)
     private int value;
@@ -27,14 +29,22 @@ public class CheckItem implements Serializable {
     @DatabaseField(columnName = FIELD_CATEGORY)
     private int category;
     @DatabaseField(columnName = FIELD_DIFFICULTY)
+    @SerializedName("difficulty_old")
     private int difficulty;
+    @SerializedName("difficulty")
+    private String difficultyString;
+
+    public String getDifficultyString() {
+        return difficultyString;
+    }
+
     @DatabaseField(columnName = FIELD_CUSTOM)
     private int custom;
     @DatabaseField(columnName = FIELD_DISABLED)
     private int disabled;
     @SerializedName("no_check")
     @DatabaseField
-    private int noCheck;
+    private boolean noCheck;
 
     public CheckItem(){}
 
@@ -54,7 +64,7 @@ public class CheckItem implements Serializable {
         this.parent = parent;
         this.category = category;
         this.difficulty = difficulty;
-        this.noCheck = noCheck ? 1 : 0;
+        this.noCheck = noCheck;
     }
 
     public CheckItem(String title, int category) {
@@ -158,22 +168,22 @@ public class CheckItem implements Serializable {
     }
 
     public boolean getNoCheck() {
-        return noCheck != 0;
+        return noCheck;
     }
 
     public void setNoCheck(boolean noCheck) {
-        this.noCheck = noCheck ? 1 : 0;
+        this.noCheck = noCheck;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Segment{");
+        final StringBuilder sb = new StringBuilder("CheckItem{");
         sb.append("id='").append(id).append('\'');
-        sb.append(",title='").append(title).append('\'');
         sb.append(", text='").append(text).append('\'');
         sb.append(", value='").append(value).append('\'');
         sb.append(", parent='").append(parent).append('\'');
         sb.append(", difficulty='").append(difficulty).append('\'');
+        sb.append(", difficultyString='").append(difficultyString).append('\'');
         sb.append(", category='").append(category).append('\'');
         sb.append(", nocheck='").append(noCheck).append('\'');
         sb.append('}');

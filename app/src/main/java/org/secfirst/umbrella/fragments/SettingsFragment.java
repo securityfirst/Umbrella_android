@@ -35,14 +35,11 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
-import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.CheckItem;
+import org.secfirst.umbrella.models.NewCategory;
 import org.secfirst.umbrella.models.Registry;
-import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
@@ -88,16 +85,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         selectLanguage = (ListPreference) findPreference("select_language");
-        selectLanguage.setVisible(false);
         selectLanguage.setEntries(UmbrellaUtil.getLanguageEntries());
         selectLanguage.setEntryValues(UmbrellaUtil.getLanguageEntryValues());
         selectLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                String languageToLoad = (String) newValue;
-                Global.INSTANCE.setRegistry("language", languageToLoad);
-                if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
-
+                if (Global.INSTANCE.hasPasswordSet(false)) {
+                    String languageToLoad = (String) newValue;
+                    Global.INSTANCE.setRegistry("language", languageToLoad);
+                    if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
+                    syncApi();
+                } else {
+                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
+                }
                 return true;
             }
         });
@@ -335,56 +335,21 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         syncDone = 0;
         progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), getString(R.string.checking_for_updates));
 
-        UmbrellaRestClient.get("segments", null, null, getContext(), new JsonHttpResponseHandler() {
+        UmbrellaRestClient.get("api/tree?content=html", null, null, getContext(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
                 Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<Segment>>() {
+                Type listType = new TypeToken<ArrayList<NewCategory>>() {
                 }.getType();
-                ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
-                if (receivedSegments!=null && receivedSegments.size() > 0) {
-                    Global.INSTANCE.syncSegments(receivedSegments);
+                ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
+                if (receivedCategories!=null && receivedCategories.size()>0) {
+                    Global.INSTANCE.syncNewCategories(receivedCategories);
                 }
-                checkDone();
+                if (progressDialog!=null) progressDialog.dismiss();
             }
         });
-
-        UmbrellaRestClient.get("check_items", null, null, getContext(), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<CheckItem>>() {
-                }.getType();
-                ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
-                if (receivedItems!=null && receivedItems.size() > 0) {
-                    Global.INSTANCE.syncCheckLists(receivedItems);
-                }
-                checkDone();
-            }
-        });
-
-        UmbrellaRestClient.get("categories", null, null, getContext(), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<Category>>() {
-                }.getType();
-                ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
-                if (receivedItems!=null && receivedItems.size() > 0) {
-                    Global.INSTANCE.syncCategories(receivedItems);
-                }
-                checkDone();
-            }
-        });
-    }
-
-    public void checkDone() {
-        syncDone++;
-        if (syncDone==2 && progressDialog!=null) progressDialog.dismiss();
     }
 
     public void showFeedSources() {
@@ -449,8 +414,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     public void updateSummaries() {
+        Registry language = Global.INSTANCE.getRegistry("language");
+        if (language!=null && !language.getValue().equals("")) {
+            selectLanguage.setSummary(UmbrellaUtil.getLanguageEntryByValue(language.getValue()));
+            selectLanguage.setValue(language.getValue());
+        }
         skipPassword.setChecked(Global.INSTANCE.getSkipPassword());
-        serverRefresh.setVisible(false);
         int refValue = Global.INSTANCE.getRefreshValue();
         String refLabel = Global.INSTANCE.getRefreshLabel(refValue);
         refreshInterval.setValue(String.valueOf(refValue));

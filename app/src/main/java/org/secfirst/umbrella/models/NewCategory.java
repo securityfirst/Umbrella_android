@@ -86,7 +86,11 @@ public class NewCategory implements Serializable {
     }
 
     public Category getCategory(Global global) {
-        return new Category(id, 0, getName(), hasDifficulty(), hasBeginner(), hasAdvanced(), hasExpert(), getName()+global.getString(R.string.beginner), getName()+global.getString(R.string.advanced), getName()+global.getString(R.string.expert));
+        boolean hasDifficulty = hasDifficulty();
+        if (getName().equals("_") && hasBeginner() && getSegments().size()==1) {
+            hasDifficulty = false;
+        }
+        return new Category(id, 0, getName(), hasDifficulty, hasBeginner(), hasAdvanced(), hasExpert(), getName()+global.getString(R.string.beginner), getName()+global.getString(R.string.advanced), getName()+global.getString(R.string.expert));
     }
 
     public boolean hasDifficulty() {

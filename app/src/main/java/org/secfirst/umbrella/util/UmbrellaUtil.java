@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -253,6 +254,24 @@ public class UmbrellaUtil {
             }
         }
         return false;
+    }
+
+    public static Map<String, String> getLanguageMap() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("en","English");
+        map.put("es","Español");
+        map.put("zh","Chinese");
+        return map;
+    }
+
+    public static CharSequence getLanguageEntryByValue(String languageValue) {
+        CharSequence[] elements = getLanguageEntryValues();
+        for( int i = 0; i < elements.length - 1; i++)
+        {
+            if (elements[i].equals(languageValue))
+                return UmbrellaUtil.getLanguageEntries()[i];
+        }
+        return "";
     }
 
     public static CharSequence[] getLanguageEntries() {
