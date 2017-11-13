@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
@@ -258,13 +259,15 @@ public class UmbrellaUtil {
         List<String> languageLabels = new ArrayList<>();
         languageLabels.add("English");
         languageLabels.add("Español");
+        languageLabels.add("Chinese");
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
     public static CharSequence[] getLanguageEntryValues() {
         List<String> languageLabels = new ArrayList<>();
-        languageLabels.add("en-gb");
+        languageLabels.add("en");
         languageLabels.add("es");
+        languageLabels.add("zh");
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
@@ -360,6 +363,15 @@ public class UmbrellaUtil {
             }
         }
         return false;
+    }
+
+    public static int getDifficultyFromString(Global global, String difficultyString) {
+        if (difficultyString.equals(global.getString(R.string.advanced))) {
+            return DifficultyFragment.INTERMEDIATE +1;
+        } else if (difficultyString.equals(global.getString(R.string.expert))) {
+            return DifficultyFragment.EXPERT +1;
+        }
+        return DifficultyFragment.BEGINNER +1;
     }
 
 }

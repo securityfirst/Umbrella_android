@@ -48,6 +48,7 @@ import org.secfirst.umbrella.models.FormOption;
 import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.models.Language;
+import org.secfirst.umbrella.models.NewCategory;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -619,26 +620,42 @@ public class Global extends Application {
         return daoDifficulty;
     }
 
-    public void syncSegments(ArrayList<Segment> segments) {
-        if (getOrmHelper()!=null) {
-            try {
-                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Segment.class);
-                for (Segment segment : segments) {
-                    getDaoSegment().create(segment);
-                }
-            } catch (SQLiteException | SQLException  e) {
-                Timber.e(e);
-            }
-        }
-    }
-
-    public void syncCategories(ArrayList<Category> categories) {
+    public void syncNewCategories(ArrayList<NewCategory> categories) {
         if (getOrmHelper()!=null) {
             try {
                 TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
                 TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
-                for (Category item : categories) {
-                    getDaoCategory().create(item);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Segment.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), CheckItem.class);
+                Category mySecurity = new Category();
+                mySecurity.setCategory(getString(R.string.my_security));
+                getDaoCategory().create(mySecurity);
+                for (NewCategory item : categories) {
+                    Category category = item.getCategory(Global.INSTANCE);
+                    getDaoCategory().create(category);
+                    for (NewCategory newCategory : item.getSubcategories()) {
+                        Category subCategory = newCategory.getCategory(Global.INSTANCE);
+                        if (subCategory.getCategory().equals("_")) {
+                            subCategory.setId(category.getId());
+                            subCategory.setCategory(category.getCategory());
+                            getDaoCategory().update(subCategory);
+                        } else {
+                            subCategory.setParent(category.getId());
+                            getDaoCategory().create(subCategory);
+                        }
+                        for (Segment segment : newCategory.getSegments()) {
+                            segment.setCategory(subCategory.getId());
+                            segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(Global.INSTANCE, segment.getDifficultyString()));
+                            getDaoSegment().create(segment);
+                        }
+                        for (CheckItem checkItem : newCategory.getCheckItems()) {
+                            checkItem.setCategory(subCategory.getId());
+                            checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(Global.INSTANCE, checkItem.getDifficultyString()));
+                            checkItem.setText("");
+                            getDaoCheckItem().create(checkItem);
+                        }
+
+                    }
                 }
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
@@ -652,27 +669,6 @@ public class Global extends Application {
                 TableUtils.clearTable(getOrmHelper().getConnectionSource(), Language.class);
                 for (Language item : languages) {
                     getDaoLanguage().create(item);
-                }
-            } catch (SQLiteException | SQLException  e) {
-                Timber.e(e);
-            }
-        }
-    }
-
-    public void syncCheckLists(ArrayList<CheckItem> checkList) {
-        if (getOrmHelper()!=null) {
-            try {
-                DeleteBuilder<CheckItem, String> deleteBuilder = getDaoCheckItem().deleteBuilder();
-                deleteBuilder.where().not().eq(CheckItem.FIELD_CUSTOM, "1");
-                deleteBuilder.delete();
-                CheckItem previousItem = null;
-                for (CheckItem checkItem : checkList) {
-                    if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
-                        checkItem.setParent(previousItem.getId());
-                        getDaoCheckItem().create(checkItem);
-                    } else {
-                        previousItem = checkItem;
-                    }
                 }
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);

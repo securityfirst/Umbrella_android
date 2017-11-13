@@ -225,6 +225,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void setFragment(int fragType, String groupName, boolean isFirst) {
+        titleSpinner.setVisibility(fragType == 1 ? View.VISIBLE : View.GONE);
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
@@ -235,7 +236,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 trans.addToBackStack(null);
             }
             trans.commit();
-            titleSpinner.setVisibility(View.GONE);
         } else if (fragType == 1) {
             List<Difficulty> hasDifficulty = null;
             try {
@@ -289,24 +289,18 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else if (fragType == 2) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans;
-            if (drawerItem != 53) {
-                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
-            } else {
-                trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
-            }
-            if (!isFirst) {
-                trans.addToBackStack(null);
-            }
+            android.support.v4.app.FragmentTransaction trans = trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
+            if (!isFirst) trans.addToBackStack(null);
             trans.commit();
-            titleSpinner.setVisibility(View.GONE);
         } else if (fragType == 3) {
             setTitle(childItem.getTitle());
-            titleSpinner.setVisibility(View.GONE);
             android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
-            if (!isFirst) {
-                trans.addToBackStack(null);
-            }
+            if (!isFirst) trans.addToBackStack(null);
+            trans.commit();
+        } else if (fragType == 4) {
+            setTitle(groupName);
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
+            if (!isFirst) trans.addToBackStack(null);
             trans.commit();
         }
         invalidateOptionsMenu();
@@ -320,6 +314,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
         Category category;
+        Timber.e("blah %s", selectedItem);
         try {
             category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
@@ -539,7 +534,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     public void onNavigationDrawerGroupItemSelected(Category category) {
         drawerItem = category.getId();
-        setFragment(2, category.getCategory(), false);
+        setFragment(category.hasDifficulty() ? 2 : 4, category.getCategory(), false);
     }
 
     @Override
