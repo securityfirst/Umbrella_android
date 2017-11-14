@@ -314,7 +314,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
         Category category;
-        Timber.e("blah %s", selectedItem);
         try {
             category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
@@ -327,6 +326,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } catch (SQLException e) {
             Timber.e(e);
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        invalidateOptionsMenu();
     }
 
     @Override
