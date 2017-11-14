@@ -664,7 +664,7 @@ public class Global extends Application {
                         for (CheckItem checkItem : newCategory.getCheckItems()) {
                             checkItem.setCategory(subCategory.getId());
                             checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(checkItem.getDifficultyString()));
-                            checkItem.setText(checkItem.getNoCheck() ? checkItem.getTitle() : "");
+                            checkItem.setText("");
                             getDaoCheckItem().create(checkItem);
                         }
 

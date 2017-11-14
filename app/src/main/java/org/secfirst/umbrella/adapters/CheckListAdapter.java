@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,6 +55,7 @@ public class CheckListAdapter extends BaseAdapter {
         return (checkList.size()>i) ? checkList.get(i).getId() : 0;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(final int i, View convertView, final ViewGroup viewGroup) {
         final ViewHolder holder;
@@ -71,21 +73,18 @@ public class CheckListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        if (checkList.get(i).getParent()==0) {
-            holder.checkItemTitle.setText(checkList.get(i).getTitle());
-            holder.checkItemSubtitle.setVisibility(checkList.get(i).getText().equals("") ? View.GONE : View.VISIBLE);
-            holder.checkItemTitle.setVisibility(View.VISIBLE);
-            holder.checkItemSubtitle.setText(checkList.get(i).getText());
+        holder.checkItemTitle.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
+        holder.checkItemSubtitle.setVisibility(checkList.get(i).getNoCheck() ? View.VISIBLE : View.GONE);
+        holder.checkBox.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
+        holder.checkItemSubtitle.setText(checkList.get(i).getTitle());
+        holder.checkItemTitle.setText(checkList.get(i).getTitle());
+        if (checkList.get(i).getNoCheck()) {
             holder.checkItemLayout.setPadding(0, 0, 0, 0);
         } else {
-            holder.checkItemSubtitle.setText(checkList.get(i).getText());
-            holder.checkItemTitle.setVisibility(View.GONE);
-            holder.checkItemSubtitle.setVisibility(View.VISIBLE);
             holder.checkItemLayout.setPadding(UmbrellaUtil.dpToPix(20, mContext), 0, 0, 0);
         }
         holder.checkBox.setChecked(checkList.get(i).getValue());
         holder.checkBox.setEnabled(!checkList.get(i).isDisabled());
-        holder.checkBox.setVisibility(checkList.get(i).getNoCheck() ? View.GONE : View.VISIBLE);
 
         holder.checkView.setCardElevation(checkList.get(i).getValue()? 0 : 4);
         if (checkList.get(i).isDisabled()) {
@@ -197,11 +196,11 @@ public class CheckListAdapter extends BaseAdapter {
     }
 
     private static class ViewHolder {
-        public LinearLayout checkItemLayout;
-        public TextView checkItemTitle;
-        public TextView checkItemSubtitle;
-        public CheckBox checkBox;
-        public CardView checkView;
+        LinearLayout checkItemLayout;
+        TextView checkItemTitle;
+        TextView checkItemSubtitle;
+        CheckBox checkBox;
+        CardView checkView;
     }
 
     public void updateData(List<CheckItem> items) {
