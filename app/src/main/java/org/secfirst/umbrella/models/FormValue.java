@@ -40,7 +40,6 @@ public class FormValue {
         this.formItem = formItem;
         if (formItem!=null) setFormId(formItem.get_id());
         this.sessionID = sessionID;
-        Timber.d("new fv %s, %s, %d", value, formItem, sessionID);
     }
 
     public int get_id() {

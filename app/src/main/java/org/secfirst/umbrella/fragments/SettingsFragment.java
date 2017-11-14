@@ -1,7 +1,5 @@
 package org.secfirst.umbrella.fragments;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,28 +26,17 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
-import org.secfirst.umbrella.models.Category;
-import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Registry;
-import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.UmbrellaRestClient;
+import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,18 +47,15 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.media.RingtoneManager.getRingtone;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements SyncProgressListener {
     private static final int REQUEST_RINGTONE = 93;
-
-    private int syncDone;
     private ArrayList<Address> mAddressList;
 
     ListPreference refreshInterval, selectLanguage;
     Preference serverRefresh, setLocation, feedSources, notificationRingtone;
     SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
     private Address mAddress;
-
-    private ProgressDialog progressDialog;
+    private MaterialDialog materialDialog;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -88,7 +72,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         });
 
         selectLanguage = (ListPreference) findPreference("select_language");
-        selectLanguage.setVisible(false);
         selectLanguage.setEntries(UmbrellaUtil.getLanguageEntries());
         selectLanguage.setEntryValues(UmbrellaUtil.getLanguageEntryValues());
         selectLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
@@ -98,6 +81,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 Global.INSTANCE.setRegistry("language", languageToLoad);
                 if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
 
+                materialDialog = new MaterialDialog.Builder(getContext())
+                        .title(R.string.update_from_server)
+                        .content(R.string.downloading)
+                        .cancelable(false)
+                        .autoDismiss(false)
+                        .progress(false, 100, false)
+                        .show();
+                Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
                 return true;
             }
         });
@@ -106,11 +97,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         serverRefresh.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (Global.INSTANCE.hasPasswordSet(false)) {
-                    syncApi();
-                } else {
-                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
-                }
+                materialDialog = new MaterialDialog.Builder(getContext())
+                        .title(R.string.update_from_server)
+                        .content(R.string.downloading)
+                        .cancelable(false)
+                        .autoDismiss(false)
+                        .progress(false, 100, false)
+                        .show();
+                Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
                 return true;
             }
         });
@@ -331,62 +325,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         updateSummaries();
     }
 
-    public void syncApi() {
-        syncDone = 0;
-        progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), getString(R.string.checking_for_updates));
-
-        UmbrellaRestClient.get("segments", null, null, getContext(), new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<Segment>>() {
-                }.getType();
-                ArrayList<Segment> receivedSegments = gson.fromJson(response.toString(), listType);
-                if (receivedSegments!=null && receivedSegments.size() > 0) {
-                    Global.INSTANCE.syncSegments(receivedSegments);
-                }
-                checkDone();
-            }
-        });
-
-        UmbrellaRestClient.get("check_items", null, null, getContext(), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<CheckItem>>() {
-                }.getType();
-                ArrayList<CheckItem> receivedItems = gson.fromJson(response.toString(), listType);
-                if (receivedItems!=null && receivedItems.size() > 0) {
-                    Global.INSTANCE.syncCheckLists(receivedItems);
-                }
-                checkDone();
-            }
-        });
-
-        UmbrellaRestClient.get("categories", null, null, getContext(), new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<Category>>() {
-                }.getType();
-                ArrayList<Category> receivedItems = gson.fromJson(response.toString(), listType);
-                if (receivedItems!=null && receivedItems.size() > 0) {
-                    Global.INSTANCE.syncCategories(receivedItems);
-                }
-                checkDone();
-            }
-        });
-    }
-
-    public void checkDone() {
-        syncDone++;
-        if (syncDone==2 && progressDialog!=null) progressDialog.dismiss();
-    }
-
     public void showFeedSources() {
         final CharSequence[] items = Global.INSTANCE.getFeedSourcesArray();
         final ArrayList<Integer> selectedItems = new ArrayList<>();
@@ -426,7 +364,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     public void onClick(DialogInterface dialog, int id) {
                         Global.INSTANCE.deleteRegistriesByName("feed_sources");
                         for (Integer item : selectedItems) {
-                            Timber.d("sel %s", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item)));
                             try {
                                 Global.INSTANCE.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
@@ -449,8 +386,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     public void updateSummaries() {
+        Registry language = Global.INSTANCE.getRegistry("language");
+        if (language==null || language.getValue().equals("")) language = new Registry("language", "en");
+        selectLanguage.setSummary(UmbrellaUtil.getLanguageEntryByValue(language.getValue()));
+        selectLanguage.setValue(language.getValue());
         skipPassword.setChecked(Global.INSTANCE.getSkipPassword());
-        serverRefresh.setVisible(false);
         int refValue = Global.INSTANCE.getRefreshValue();
         String refLabel = Global.INSTANCE.getRefreshLabel(refValue);
         refreshInterval.setValue(String.valueOf(refValue));
@@ -506,6 +446,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         : getString(R.string.none)));
     }
 
+    @Override
+    public void onProgressChange(int progress) {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.setProgress(progress);
+    }
+
+    @Override
+    public void onStatusChange(String status) {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.setContent(status);
+    }
+
+    @Override
+    public void onDone() {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.dismiss();
+    }
+
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
         private ArrayList<String> resultList;
 
@@ -546,7 +504,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                         List<Address> list = autoComplete(constraint.toString());
                         ArrayList<String> toStrings = new ArrayList<String>();
                         for (Address current : list) {
-                            Timber.d("address %s", current);
                             if (!current.getAddressLine(0).equals("")) {
                                 String toAdd = current.getAddressLine(0);
                                 if (current.getAddressLine(1) != null)

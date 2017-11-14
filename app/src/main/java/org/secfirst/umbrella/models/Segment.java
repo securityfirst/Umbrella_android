@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.models;
 
+import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
 import java.io.Serializable;
@@ -17,8 +18,15 @@ public class Segment implements Serializable {
     private String body;
     @DatabaseField(columnName = FIELD_CATEGORY)
     private int category;
+    @SerializedName("difficulty_old")
     @DatabaseField(columnName = FIELD_DIFFICULTY)
     private int difficulty;
+    @SerializedName("difficulty")
+    private String difficultyString;
+
+    public String getDifficultyString() {
+        return difficultyString;
+    }
 
     public Segment(){}
 
@@ -74,6 +82,7 @@ public class Segment implements Serializable {
         sb.append(",title='").append(title).append('\'');
         sb.append(", body='").append(body).append('\'');
         sb.append(", difficulty='").append(difficulty).append('\'');
+        sb.append(", difficultyString='").append(difficultyString).append('\'');
         sb.append(", category='").append(category).append('\'');
         sb.append('}');
         return sb.toString();

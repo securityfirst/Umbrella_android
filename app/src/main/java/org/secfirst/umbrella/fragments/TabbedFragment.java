@@ -245,7 +245,8 @@ public class TabbedFragment extends Fragment {
             try {
                 QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
                 Where<Segment, String> where = queryBuilder.where();
-                where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty));
+                where.eq(Segment.FIELD_CATEGORY, drawerItem)
+                        .and().like(Segment.FIELD_DIFFICULTY, difficulty);
                 final List<Segment> segments = queryBuilder.query();
                 if (!segments.isEmpty()) {
                     GridView gridView = (GridView) rootView.findViewById(R.id.grid_tiles);

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-
+<resources tools:ignore="MissingTranslation,ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Umbrella</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -155,4 +154,8 @@
     <string name="available_forms">Available forms</string>
     <string name="filled_out_forms">Filled out forms</string>
     <string name="share_form">Share Form</string>
+    <string name="update_from_server">Update from server</string>
+    <string name="downloading">Downloading</string>
+    <string name="updating_the_database">Updating the database</string>
+    <string name="sync_complete">Update complete</string>
 </resources>

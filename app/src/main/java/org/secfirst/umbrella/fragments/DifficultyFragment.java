@@ -23,9 +23,9 @@ import timber.log.Timber;
 public class DifficultyFragment extends Fragment {
 
     private static final String SECTION_NUMBER = "section_number";
-    private static final int BEGINNER = 0;
-    private static final int INTERMEDIATE = 1;
-    private static final int EXPERT = 2;
+    public static final int BEGINNER = 0;
+    public static final int INTERMEDIATE = 1;
+    public static final int EXPERT = 2;
 
     private long mSection;
 
@@ -79,9 +79,9 @@ public class DifficultyFragment extends Fragment {
                     onDifficultySelected(EXPERT);
                 }
             });
-            ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
-            ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
-            ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
+            ((TextView) v.findViewById(R.id.beginner_description)).setText("Beginner");
+            ((TextView) v.findViewById(R.id.advanced_description)).setText("Advanced");
+            ((TextView) v.findViewById(R.id.expert_description)).setText("Expert");
             btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
             btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
             btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);

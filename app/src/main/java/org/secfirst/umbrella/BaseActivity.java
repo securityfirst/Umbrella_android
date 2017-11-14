@@ -75,12 +75,16 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
         global = (Global) getApplicationContext();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
-        Registry language = global.getRegistry("language");
+        Registry language = Global.INSTANCE.getRegistry("language");
         if (language!=null && !language.getValue().equals("")) {
             setLocale(language.getValue());
         } else {
-            setScreen();
+            CharSequence[] languageList = UmbrellaUtil.getLanguageEntryValues();
+            if (languageList.length > 0) {
+                setLocale((String) languageList[0]);
+            }
         }
+        setScreen();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
     }

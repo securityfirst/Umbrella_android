@@ -13,11 +13,15 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.content.IntentCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -26,10 +30,13 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.R;
@@ -48,6 +55,7 @@ import org.secfirst.umbrella.models.FormOption;
 import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.models.Language;
+import org.secfirst.umbrella.models.NewCategory;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 
@@ -57,6 +65,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,6 +95,7 @@ public class Global extends Application {
     private Dao<FeedSource, String> daoFeedSource;
     private OrmHelper dbHelper;
     public static Global INSTANCE;
+    private boolean needsRefreshActivity;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -118,6 +128,14 @@ public class Global extends Application {
     public boolean getTermsAccepted() {
         _termsAccepted = prefs.getBoolean("termsAccepted", false);
         return _termsAccepted;
+    }
+
+    public boolean needsRefreshActivity() {
+        return needsRefreshActivity;
+    }
+
+    public void setNeedsRefreshActivity(boolean needsRefreshActivity) {
+        this.needsRefreshActivity = needsRefreshActivity;
     }
 
     public boolean hasShownNavAlready() {
@@ -619,12 +637,42 @@ public class Global extends Application {
         return daoDifficulty;
     }
 
-    public void syncSegments(ArrayList<Segment> segments) {
+    public void syncNewCategories(ArrayList<NewCategory> categories) {
         if (getOrmHelper()!=null) {
             try {
+                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
+                TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
                 TableUtils.clearTable(getOrmHelper().getConnectionSource(), Segment.class);
-                for (Segment segment : segments) {
-                    getDaoSegment().create(segment);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), CheckItem.class);
+                Category mySecurity = new Category();
+                mySecurity.setCategory(getString(R.string.my_security));
+                getDaoCategory().create(mySecurity);
+                for (NewCategory item : categories) {
+                    Category category = item.getCategory(Global.INSTANCE);
+                    getDaoCategory().create(category);
+                    for (NewCategory newCategory : item.getSubcategories()) {
+                        Category subCategory = newCategory.getCategory(Global.INSTANCE);
+                        if (subCategory.getCategory().equals("_")) {
+                            subCategory.setId(category.getId());
+                            subCategory.setCategory(category.getCategory());
+                            getDaoCategory().update(subCategory);
+                        } else {
+                            subCategory.setParent(category.getId());
+                            getDaoCategory().create(subCategory);
+                        }
+                        for (Segment segment : newCategory.getSegments()) {
+                            segment.setCategory(subCategory.getId());
+                            segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(segment.getDifficultyString()));
+                            getDaoSegment().create(segment);
+                        }
+                        for (CheckItem checkItem : newCategory.getCheckItems()) {
+                            checkItem.setCategory(subCategory.getId());
+                            checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(checkItem.getDifficultyString()));
+                            checkItem.setText("");
+                            getDaoCheckItem().create(checkItem);
+                        }
+
+                    }
                 }
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
@@ -632,18 +680,69 @@ public class Global extends Application {
         }
     }
 
-    public void syncCategories(ArrayList<Category> categories) {
-        if (getOrmHelper()!=null) {
-            try {
-                TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
-                TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
-                for (Category item : categories) {
-                    getDaoCategory().create(item);
+    public void syncApi(final Context context, final SyncProgressListener listener) {
+
+        UmbrellaRestClient.get("api/tree?content=html", null, null, context, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                listener.onProgressChange(77);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<NewCategory>>() {
+                }.getType();
+                final ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
+                if (receivedCategories!=null && receivedCategories.size()>0) {
+                    listener.onProgressChange(88);
+                    listener.onStatusChange(getString(R.string.updating_the_database));
+                    new Thread(){
+                        @Override
+                        public void run() {
+                            Global.INSTANCE.syncNewCategories(receivedCategories);
+                            ((Activity) context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.onProgressChange(100);
+                                    listener.onStatusChange(getString(R.string.sync_complete));
+                                    listener.onDone();
+                                    setNeedsRefreshActivity(true);
+
+                                }
+                            });
+                        };
+                    }.start();
                 }
-            } catch (SQLiteException | SQLException  e) {
-                Timber.e(e);
             }
-        }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                listener.onDone();
+                setNeedsRefreshActivity(false);
+            }
+
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+                if (bytesWritten<totalSize) {
+                    listener.onProgressChange((int) ((bytesWritten / totalSize)*0.66));
+                } else {
+                    listener.onProgressChange(44);
+                }
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                listener.onProgressChange(22);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                listener.onProgressChange(66);
+            }
+        });
     }
 
     public void syncLanguages(ArrayList<Language> languages) {
@@ -652,27 +751,6 @@ public class Global extends Application {
                 TableUtils.clearTable(getOrmHelper().getConnectionSource(), Language.class);
                 for (Language item : languages) {
                     getDaoLanguage().create(item);
-                }
-            } catch (SQLiteException | SQLException  e) {
-                Timber.e(e);
-            }
-        }
-    }
-
-    public void syncCheckLists(ArrayList<CheckItem> checkList) {
-        if (getOrmHelper()!=null) {
-            try {
-                DeleteBuilder<CheckItem, String> deleteBuilder = getDaoCheckItem().deleteBuilder();
-                deleteBuilder.where().not().eq(CheckItem.FIELD_CUSTOM, "1");
-                deleteBuilder.delete();
-                CheckItem previousItem = null;
-                for (CheckItem checkItem : checkList) {
-                    if (previousItem!=null && checkItem.getTitle().equals(previousItem.getTitle())&& checkItem.getParent()!=0) {
-                        checkItem.setParent(previousItem.getId());
-                        getDaoCheckItem().create(checkItem);
-                    } else {
-                        previousItem = checkItem;
-                    }
                 }
             } catch (SQLiteException | SQLException  e) {
                 Timber.e(e);
