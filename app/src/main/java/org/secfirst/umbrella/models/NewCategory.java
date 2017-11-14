@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.util.Global;
 
 import java.io.Serializable;
@@ -42,7 +41,7 @@ public class NewCategory implements Serializable {
         if (hasBeginner==null) {
             hasBeginner = false;
             for (Segment segment : getSegments()) {
-                if (segment.getDifficulty() == DifficultyFragment.BEGINNER) {
+                if (segment.getDifficultyString().equals(Global.INSTANCE.getString(R.string.beginner))) {
                     hasBeginner = true;
                     break;
                 }
@@ -55,7 +54,7 @@ public class NewCategory implements Serializable {
         if (hasAdvanced==null) {
             hasAdvanced = false;
             for (Segment segment : getSegments()) {
-                if (segment.getDifficulty() == DifficultyFragment.INTERMEDIATE) {
+                if (segment.getDifficultyString().equals(Global.INSTANCE.getString(R.string.advanced))) {
                     hasAdvanced = true;
                     break;
                 }
@@ -68,7 +67,7 @@ public class NewCategory implements Serializable {
         if (hasExpert==null) {
             hasExpert = false;
             for (Segment segment : getSegments()) {
-                if (segment.getDifficulty() == DifficultyFragment.EXPERT) {
+                if (segment.getDifficultyString().equals(Global.INSTANCE.getString(R.string.expert))) {
                     hasExpert = true;
                     break;
                 }

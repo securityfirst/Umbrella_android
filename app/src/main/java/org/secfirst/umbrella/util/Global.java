@@ -645,13 +645,13 @@ public class Global extends Application {
                         }
                         for (Segment segment : newCategory.getSegments()) {
                             segment.setCategory(subCategory.getId());
-                            segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(Global.INSTANCE, segment.getDifficultyString()));
+                            segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(segment.getDifficultyString()));
                             getDaoSegment().create(segment);
                         }
                         for (CheckItem checkItem : newCategory.getCheckItems()) {
                             checkItem.setCategory(subCategory.getId());
-                            checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(Global.INSTANCE, checkItem.getDifficultyString()));
-                            checkItem.setText("");
+                            checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(checkItem.getDifficultyString()));
+                            checkItem.setText(checkItem.getNoCheck() ? checkItem.getTitle() : "");
                             getDaoCheckItem().create(checkItem);
                         }
 

@@ -384,10 +384,10 @@ public class UmbrellaUtil {
         return false;
     }
 
-    public static int getDifficultyFromString(Global global, String difficultyString) {
-        if (difficultyString.equals(global.getString(R.string.advanced))) {
+    public static int getDifficultyFromString(String difficultyString) {
+        if (difficultyString.equals(Global.INSTANCE.getString(R.string.advanced))) {
             return DifficultyFragment.INTERMEDIATE +1;
-        } else if (difficultyString.equals(global.getString(R.string.expert))) {
+        } else if (difficultyString.equals(Global.INSTANCE.getString(R.string.expert))) {
             return DifficultyFragment.EXPERT +1;
         }
         return DifficultyFragment.BEGINNER +1;
