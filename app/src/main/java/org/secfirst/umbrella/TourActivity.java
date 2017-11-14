@@ -86,15 +86,15 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
     @Override
     public void onSwipeOutAtEnd() {
-        global.set_termsAccepted(true);
-        materialDialog = new MaterialDialog.Builder(TourActivity.this)
-                .title(R.string.update_from_server)
-                .content(R.string.downloading)
-                .cancelable(false)
-                .autoDismiss(false)
-                .progress(false, 100, false)
-                .show();
-        Global.INSTANCE.syncApi(TourActivity.this, TourActivity.this);
+//        global.set_termsAccepted(true);
+//        materialDialog = new MaterialDialog.Builder(TourActivity.this)
+//                .title(R.string.update_from_server)
+//                .content(R.string.downloading)
+//                .cancelable(false)
+//                .autoDismiss(false)
+//                .progress(false, 100, false)
+//                .show();
+//        Global.INSTANCE.syncApi(TourActivity.this, TourActivity.this);
     }
 
     public void navigateToMain() {
