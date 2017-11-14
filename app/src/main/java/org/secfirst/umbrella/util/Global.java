@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.content.IntentCompat;
@@ -18,6 +19,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -26,10 +31,13 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import net.sqlcipher.database.SQLiteDatabase;
 import net.sqlcipher.database.SQLiteException;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.R;
@@ -58,6 +66,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -661,6 +670,56 @@ public class Global extends Application {
                 Timber.e(e);
             }
         }
+    }
+
+    public void syncApi(Context context) {
+        final MaterialDialog dialog = new MaterialDialog.Builder(context)
+                .title(R.string.update_from_server)
+                .content(R.string.downloading)
+                .cancelable(false)
+                .autoDismiss(false)
+                .progress(false, 100, false)
+                .show();
+
+
+        UmbrellaRestClient.get("api/tree?content=html", null, null, context, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Gson gson = new GsonBuilder().create();
+                Type listType = new TypeToken<ArrayList<NewCategory>>() {
+                }.getType();
+                ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
+                if (receivedCategories!=null && receivedCategories.size()>0) {
+                    dialog.setContent(R.string.updating_the_database);
+                    Global.INSTANCE.syncNewCategories(receivedCategories);
+                    dialog.setProgress(100);
+                    dialog.setContent(R.string.sync_complete);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                        }
+                    }, 1000);
+                }
+            }
+
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+                if (bytesWritten<totalSize && !dialog.isCancelled())
+                    dialog.setProgress((int) ((bytesWritten / totalSize)*0.66));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (!dialog.isCancelled()) {
+                    dialog.setProgress(66);
+                }
+            }
+        });
     }
 
     public void syncLanguages(ArrayList<Language> languages) {

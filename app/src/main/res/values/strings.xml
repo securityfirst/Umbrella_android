@@ -154,4 +154,8 @@
     <string name="available_forms">Available forms</string>
     <string name="filled_out_forms">Filled out forms</string>
     <string name="share_form">Share Form</string>
+    <string name="update_from_server">Update from server</string>
+    <string name="downloading">Downloading</string>
+    <string name="updating_the_database">Updating the database</string>
+    <string name="sync_complete">Update complete</string>
 </resources>

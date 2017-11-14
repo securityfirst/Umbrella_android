@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,25 +27,16 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.apache.http.Header;
-import org.json.JSONArray;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
-import org.secfirst.umbrella.models.NewCategory;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.UmbrellaRestClient;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +49,6 @@ import static android.media.RingtoneManager.getRingtone;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private static final int REQUEST_RINGTONE = 93;
-
-    private int syncDone;
     private ArrayList<Address> mAddressList;
 
     ListPreference refreshInterval, selectLanguage;
@@ -94,7 +82,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     String languageToLoad = (String) newValue;
                     Global.INSTANCE.setRegistry("language", languageToLoad);
                     if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
-                    syncApi();
+                    Global.INSTANCE.syncApi(getActivity());
                 } else {
                     Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 }
@@ -107,7 +95,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (Global.INSTANCE.hasPasswordSet(false)) {
-                    syncApi();
+                    Global.INSTANCE.syncApi(getActivity());
                 } else {
                     Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 }
@@ -329,27 +317,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onResume() {
         super.onResume();
         updateSummaries();
-    }
-
-    public void syncApi() {
-        syncDone = 0;
-        progressDialog = UmbrellaUtil.launchRingDialogWithText((Activity) getContext(), getString(R.string.checking_for_updates));
-
-        UmbrellaRestClient.get("api/tree?content=html", null, null, getContext(), new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                super.onSuccess(statusCode, headers, response);
-                Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<NewCategory>>() {
-                }.getType();
-                ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
-                if (receivedCategories!=null && receivedCategories.size()>0) {
-                    Global.INSTANCE.syncNewCategories(receivedCategories);
-                }
-                if (progressDialog!=null) progressDialog.dismiss();
-            }
-        });
     }
 
     public void showFeedSources() {
