@@ -10,16 +10,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.content.IntentCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -73,6 +72,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class Global extends Application {
@@ -672,52 +676,65 @@ public class Global extends Application {
         }
     }
 
-    public void syncApi(Context context) {
-        final MaterialDialog dialog = new MaterialDialog.Builder(context)
-                .title(R.string.update_from_server)
-                .content(R.string.downloading)
-                .cancelable(false)
-                .autoDismiss(false)
-                .progress(false, 100, false)
-                .show();
-
+    public void syncApi(final Context context, final SyncProgressListener listener) {
 
         UmbrellaRestClient.get("api/tree?content=html", null, null, context, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 super.onSuccess(statusCode, headers, response);
+                listener.onProgressChange(77);
                 Gson gson = new GsonBuilder().create();
                 Type listType = new TypeToken<ArrayList<NewCategory>>() {
                 }.getType();
-                ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
+                final ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
                 if (receivedCategories!=null && receivedCategories.size()>0) {
-                    dialog.setContent(R.string.updating_the_database);
-                    Global.INSTANCE.syncNewCategories(receivedCategories);
-                    dialog.setProgress(100);
-                    dialog.setContent(R.string.sync_complete);
-                    new Handler().postDelayed(new Runnable() {
+                    listener.onProgressChange(88);
+                    listener.onStatusChange(getString(R.string.updating_the_database));
+                    new Thread(){
                         @Override
                         public void run() {
-                            dialog.dismiss();
-                        }
-                    }, 1000);
+                            Global.INSTANCE.syncNewCategories(receivedCategories);
+                            ((Activity) context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    listener.onProgressChange(100);
+                                    listener.onStatusChange(getString(R.string.sync_complete));
+                                    listener.onDone();
+
+                                }
+                            });
+                        };
+                    }.start();
                 }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                listener.onDone();
             }
 
             @Override
             public void onProgress(long bytesWritten, long totalSize) {
                 super.onProgress(bytesWritten, totalSize);
-                if (bytesWritten<totalSize && !dialog.isCancelled())
-                    dialog.setProgress((int) ((bytesWritten / totalSize)*0.66));
+                if (bytesWritten<totalSize) {
+                    listener.onProgressChange((int) ((bytesWritten / totalSize)*0.66));
+                } else {
+                    listener.onProgressChange(44);
+                }
+            }
+
+            @Override
+            public void onStart() {
+                super.onStart();
+                listener.onProgressChange(22);
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (!dialog.isCancelled()) {
-                    dialog.setProgress(66);
-                }
+                listener.onProgressChange(66);
             }
         });
     }

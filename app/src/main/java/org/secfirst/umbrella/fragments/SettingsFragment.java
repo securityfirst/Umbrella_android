@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.fragments;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,6 +33,7 @@ import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.media.RingtoneManager.getRingtone;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends PreferenceFragmentCompat implements SyncProgressListener {
     private static final int REQUEST_RINGTONE = 93;
     private ArrayList<Address> mAddressList;
 
@@ -55,8 +55,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     Preference serverRefresh, setLocation, feedSources, notificationRingtone;
     SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
     private Address mAddress;
-
-    private ProgressDialog progressDialog;
+    private MaterialDialog materialDialog;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -82,7 +81,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     String languageToLoad = (String) newValue;
                     Global.INSTANCE.setRegistry("language", languageToLoad);
                     if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
-                    Global.INSTANCE.syncApi(getActivity());
+
+                     materialDialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.update_from_server)
+                            .content(R.string.downloading)
+                            .cancelable(false)
+                            .autoDismiss(false)
+                            .progress(false, 100, false)
+                            .show();
+                    Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
                 } else {
                     Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 }
@@ -95,7 +102,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 if (Global.INSTANCE.hasPasswordSet(false)) {
-                    Global.INSTANCE.syncApi(getActivity());
+                    materialDialog = new MaterialDialog.Builder(getContext())
+                            .title(R.string.update_from_server)
+                            .content(R.string.downloading)
+                            .cancelable(false)
+                            .autoDismiss(false)
+                            .progress(false, 100, false)
+                            .show();
+                    Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
                 } else {
                     Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
                 }
@@ -439,6 +453,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 Global.INSTANCE.getNotificationRingtoneEnabled() && RingtoneManager.getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone())!=null
                         ? getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone()).getTitle(getContext())
                         : getString(R.string.none)));
+    }
+
+    @Override
+    public void onProgressChange(int progress) {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.setProgress(progress);
+    }
+
+    @Override
+    public void onStatusChange(String status) {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.setContent(status);
+    }
+
+    @Override
+    public void onDone() {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.dismiss();
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {

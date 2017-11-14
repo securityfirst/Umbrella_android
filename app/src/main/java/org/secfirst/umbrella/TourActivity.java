@@ -10,16 +10,21 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.Button;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import org.secfirst.umbrella.fragments.SettingsFragment;
 import org.secfirst.umbrella.fragments.TourSlideFragment;
+import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.TourViewPager;
 
-public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener {
+public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeOutListener, SyncProgressListener {
 
     private static final int NUM_PAGES = 5;
     private TourViewPager mPager;
     private CirclePageIndicator mIndicator;
+    private MaterialDialog materialDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +67,14 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
         skipBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                global.set_termsAccepted(true);
-                navigateToMain();
+                materialDialog = new MaterialDialog.Builder(TourActivity.this)
+                        .title(R.string.update_from_server)
+                        .content(R.string.downloading)
+                        .cancelable(false)
+                        .autoDismiss(false)
+                        .progress(false, 100, false)
+                        .show();
+                Global.INSTANCE.syncApi(TourActivity.this, TourActivity.this);
             }
         });
     }
@@ -76,13 +87,48 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
     @Override
     public void onSwipeOutAtEnd() {
         global.set_termsAccepted(true);
-        navigateToMain();
+        materialDialog = new MaterialDialog.Builder(TourActivity.this)
+                .title(R.string.update_from_server)
+                .content(R.string.downloading)
+                .cancelable(false)
+                .autoDismiss(false)
+                .progress(false, 100, false)
+                .show();
+        Global.INSTANCE.syncApi(TourActivity.this, TourActivity.this);
     }
 
     public void navigateToMain() {
         Intent toMain = new Intent(this, MainActivity.class);
         toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toMain);
+    }
+
+    @Override
+    public void onProgressChange(int progress) {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.setProgress(progress);
+    }
+
+    @Override
+    public void onStatusChange(String status) {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.setContent(status);
+    }
+
+    @Override
+    public void onDone() {
+        if (materialDialog!=null && !materialDialog.isCancelled()) {
+            materialDialog.dismiss();
+            Global.INSTANCE.set_termsAccepted(true);
+            navigateToMain();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (materialDialog!=null && !materialDialog.isCancelled())
+            materialDialog.dismiss();
+        super.onDestroy();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
