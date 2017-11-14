@@ -77,22 +77,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
         selectLanguage.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (Global.INSTANCE.hasPasswordSet(false)) {
-                    String languageToLoad = (String) newValue;
-                    Global.INSTANCE.setRegistry("language", languageToLoad);
-                    if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
+                String languageToLoad = (String) newValue;
+                Global.INSTANCE.setRegistry("language", languageToLoad);
+                if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
 
-                     materialDialog = new MaterialDialog.Builder(getContext())
-                            .title(R.string.update_from_server)
-                            .content(R.string.downloading)
-                            .cancelable(false)
-                            .autoDismiss(false)
-                            .progress(false, 100, false)
-                            .show();
-                    Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
-                } else {
-                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
-                }
+                materialDialog = new MaterialDialog.Builder(getContext())
+                        .title(R.string.update_from_server)
+                        .content(R.string.downloading)
+                        .cancelable(false)
+                        .autoDismiss(false)
+                        .progress(false, 100, false)
+                        .show();
+                Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
                 return true;
             }
         });
@@ -101,18 +97,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
         serverRefresh.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                if (Global.INSTANCE.hasPasswordSet(false)) {
-                    materialDialog = new MaterialDialog.Builder(getContext())
-                            .title(R.string.update_from_server)
-                            .content(R.string.downloading)
-                            .cancelable(false)
-                            .autoDismiss(false)
-                            .progress(false, 100, false)
-                            .show();
-                    Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
-                } else {
-                    Global.INSTANCE.setPassword(getContext(), SettingsFragment.this);
-                }
+                materialDialog = new MaterialDialog.Builder(getContext())
+                        .title(R.string.update_from_server)
+                        .content(R.string.downloading)
+                        .cancelable(false)
+                        .autoDismiss(false)
+                        .progress(false, 100, false)
+                        .show();
+                Global.INSTANCE.syncApi(getActivity(), SettingsFragment.this);
                 return true;
             }
         });
