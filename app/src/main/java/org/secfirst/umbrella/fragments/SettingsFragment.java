@@ -415,10 +415,9 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     public void updateSummaries() {
         Registry language = Global.INSTANCE.getRegistry("language");
-        if (language!=null && !language.getValue().equals("")) {
-            selectLanguage.setSummary(UmbrellaUtil.getLanguageEntryByValue(language.getValue()));
-            selectLanguage.setValue(language.getValue());
-        }
+        if (language==null || language.getValue().equals("")) language = new Registry("language", "en");
+        selectLanguage.setSummary(UmbrellaUtil.getLanguageEntryByValue(language.getValue()));
+        selectLanguage.setValue(language.getValue());
         skipPassword.setChecked(Global.INSTANCE.getSkipPassword());
         int refValue = Global.INSTANCE.getRefreshValue();
         String refLabel = Global.INSTANCE.getRefreshLabel(refValue);
