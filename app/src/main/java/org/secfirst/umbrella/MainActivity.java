@@ -331,7 +331,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onRestart() {
         super.onRestart();
-        invalidateOptionsMenu();
+        if (Global.INSTANCE.needsRefreshActivity()) {
+            invalidateOptionsMenu();
+            Intent intent = getIntent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            startActivity(intent);
+        }
     }
 
     @Override

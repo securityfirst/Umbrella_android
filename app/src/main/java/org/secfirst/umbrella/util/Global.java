@@ -100,6 +100,7 @@ public class Global extends Application {
     private Dao<FeedSource, String> daoFeedSource;
     private OrmHelper dbHelper;
     public static Global INSTANCE;
+    private boolean needsRefreshActivity;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -132,6 +133,14 @@ public class Global extends Application {
     public boolean getTermsAccepted() {
         _termsAccepted = prefs.getBoolean("termsAccepted", false);
         return _termsAccepted;
+    }
+
+    public boolean needsRefreshActivity() {
+        return needsRefreshActivity;
+    }
+
+    public void setNeedsRefreshActivity(boolean needsRefreshActivity) {
+        this.needsRefreshActivity = needsRefreshActivity;
     }
 
     public boolean hasShownNavAlready() {
@@ -701,6 +710,7 @@ public class Global extends Application {
                                     listener.onProgressChange(100);
                                     listener.onStatusChange(getString(R.string.sync_complete));
                                     listener.onDone();
+                                    setNeedsRefreshActivity(true);
 
                                 }
                             });
@@ -713,6 +723,7 @@ public class Global extends Application {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
                 listener.onDone();
+                setNeedsRefreshActivity(false);
             }
 
             @Override
