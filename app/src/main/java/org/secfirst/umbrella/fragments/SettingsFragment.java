@@ -364,7 +364,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                     public void onClick(DialogInterface dialog, int id) {
                         Global.INSTANCE.deleteRegistriesByName("feed_sources");
                         for (Integer item : selectedItems) {
-                            Timber.d("sel %s", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item)));
                             try {
                                 Global.INSTANCE.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
@@ -505,7 +504,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                         List<Address> list = autoComplete(constraint.toString());
                         ArrayList<String> toStrings = new ArrayList<String>();
                         for (Address current : list) {
-                            Timber.d("address %s", current);
                             if (!current.getAddressLine(0).equals("")) {
                                 String toAdd = current.getAddressLine(0);
                                 if (current.getAddressLine(1) != null)

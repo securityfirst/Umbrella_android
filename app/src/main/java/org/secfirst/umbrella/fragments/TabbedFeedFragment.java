@@ -263,7 +263,6 @@ public class TabbedFeedFragment extends Fragment {
                                     .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                                         @Override
                                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                                            Timber.d("text %s", text);
                                             try {
                                                 DeleteBuilder<FeedSource, String> toDelete = global.getDaoFeedSource().deleteBuilder();
                                                 toDelete.where().eq(FeedSource.FIELD_URL, text);
@@ -360,7 +359,6 @@ public class TabbedFeedFragment extends Fragment {
                     }
                     String sources = sb.substring(separator.length());
                     String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
-                    Timber.d("url %s", mUrl);
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
