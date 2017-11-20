@@ -6,7 +6,6 @@
     android:paddingLeft="10dp"
     android:id="@+id/swipe_refresh_layout"
     android:paddingRight="10dp"
-    android:background="@drawable/background"
     android:layout_height="match_parent"
     tools:context="org.secfirst.umbrella.fragments.TabbedFormsFragment">
 
