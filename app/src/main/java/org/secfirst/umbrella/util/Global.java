@@ -13,7 +13,6 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.v4.content.IntentCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -37,6 +36,7 @@ import net.sqlcipher.database.SQLiteException;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.LoginActivity;
 import org.secfirst.umbrella.R;
@@ -717,6 +717,20 @@ public class Global extends Application {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+                listener.onDone();
+                setNeedsRefreshActivity(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                listener.onDone();
+                setNeedsRefreshActivity(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
                 listener.onDone();
                 setNeedsRefreshActivity(false);
             }
