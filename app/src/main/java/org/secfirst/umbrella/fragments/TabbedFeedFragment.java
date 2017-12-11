@@ -570,7 +570,7 @@ public class TabbedFeedFragment extends Fragment {
                         for (Address current : list) {
                             if (!current.getAddressLine(0).equals("")) {
                                 String toAdd = current.getAddressLine(0);
-                                if (current.getAddressLine(0) != null)
+                                if (current.getAddressLine(1) != null)
                                     toAdd += " " + current.getAddressLine(1);
                                 if (current.getAddressLine(2) != null)
                                     toAdd += " " + current.getAddressLine(2);
