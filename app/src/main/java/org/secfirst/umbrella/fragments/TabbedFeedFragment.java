@@ -153,7 +153,7 @@ public class TabbedFeedFragment extends Fragment {
                 showFeedSources();
             }
         });
-        refreshInterval.setVisibility(!global.isLoggedIn() ? View.GONE : View.VISIBLE);
+        
         refreshInterval.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
