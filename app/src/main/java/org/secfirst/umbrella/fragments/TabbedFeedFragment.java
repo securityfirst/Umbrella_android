@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,6 +83,7 @@ public class TabbedFeedFragment extends Fragment {
     private Address mAddress;
     private Registry mLocation, mCountry;
     private List<FeedItem> items = new ArrayList<>();
+    private String location;
 
     public TabbedFeedFragment() {
     }
@@ -207,7 +209,13 @@ public class TabbedFeedFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Registry selLoc = global.getRegistry("location");
-        mAutocompleteLocation.setHint(selLoc!=null ? selLoc.getValue() : global.getString(R.string.set_location));
+        if(selLoc!=null){
+            mAutocompleteLocation.setHint(selLoc.getValue());
+            location = selLoc.getValue();
+        }else{
+            global.getString(R.string.set_location);
+        }
+
     }
 
     @Override
@@ -341,6 +349,16 @@ public class TabbedFeedFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
+    private void deleteOldFeedItems(){
+        Registry selLoc = global.getRegistry("location");
+        try {
+            if(selLoc != null && location != null && (!location.equals(selLoc.getValue())))
+            global.getDaoFeedItem().delete(global.getFeedItems());
+        } catch (SQLException e) {
+            Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public boolean getFeeds(final Context context) {
         Registry selISO2 = global.getRegistry("iso2");
         if (selISO2!=null) {
@@ -358,17 +376,20 @@ public class TabbedFeedFragment extends Fragment {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
+                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                             super.onSuccess(statusCode, headers, response);
+                            Log.d("test", "-----"+mUrl);
                             Gson gson = new GsonBuilder().create();
                             Type listType = new TypeToken<ArrayList<FeedItem>>() {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && receivedItems.size() > 0) {
+
+                                Log.d("test",""+receivedItems);
                                 for (FeedItem receivedItem : receivedItems) {
                                     try {
                                         global.getDaoFeedItem().create(receivedItem);
@@ -508,6 +529,7 @@ public class TabbedFeedFragment extends Fragment {
                                 Timber.e(e);
                             }
                         }
+                        deleteOldFeedItems();
                         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
                         refreshFeed();
                         dialog.dismiss();
