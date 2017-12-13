@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -472,11 +471,7 @@ public class TabbedFragment extends Fragment {
                         }
                     }
                     setFavouriteIcon(getActivity());
-                    if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-                        getActivity().supportInvalidateOptionsMenu();
-                    } else {
-                        getActivity().invalidateOptionsMenu();
-                    }
+                    getActivity().invalidateOptionsMenu();
                     return true;
                 }
             }
