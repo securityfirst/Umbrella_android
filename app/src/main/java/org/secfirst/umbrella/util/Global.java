@@ -12,7 +12,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
-import android.support.v4.content.IntentCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -319,6 +318,11 @@ public class Global extends Application {
                     public void onClick(DialogInterface dialog, int which) {
                         if (password) getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(getString(R.string.default_db_password)) + "';");
                         setPassword(context, fragment, change);
+                        Intent i = new Intent(context, ((Activity) context).getClass());
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                        ((Activity) context).overridePendingTransition(0,0);
+                        ((Activity) context).finish();
                     }
                 });
                 alert2.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
@@ -357,6 +361,11 @@ public class Global extends Application {
                     dialog.dismiss();
                     if (fragment!=null) fragment.onResume();
                     Toast.makeText(context, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(context, ((Activity) context).getClass());
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                    ((Activity) context).overridePendingTransition(0,0);
+                    ((Activity) context).finish();
                 } else {
                     Toast.makeText(context, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
                 }
@@ -373,7 +382,7 @@ public class Global extends Application {
         }
         if (redirect) {
             Intent i = new Intent(context, LoginActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }
     }
