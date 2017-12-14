@@ -4,12 +4,11 @@ package org.secfirst.umbrella.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -25,11 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -48,6 +43,7 @@ import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.secfirst.umbrella.BaseActivity;
+import org.secfirst.umbrella.LocationDialog;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.adapters.FeedAdapter;
@@ -55,10 +51,10 @@ import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.FeedSource;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.OnLocationEventListener;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -67,7 +63,7 @@ import java.util.Map;
 
 import timber.log.Timber;
 
-public class TabbedFeedFragment extends Fragment {
+public class TabbedFeedFragment extends Fragment implements OnLocationEventListener {
     SwipeRefreshLayout mSwipeRefreshLayout;
     FeedAdapter feedAdapter;
     TextView noFeedSettings;
@@ -78,10 +74,7 @@ public class TabbedFeedFragment extends Fragment {
     TextView feedSourcesValue;
     CardView noFeedItems;
     Global global;
-    private AutoCompleteTextView mAutocompleteLocation;
-    private List<Address> mAddressList;
-    private Address mAddress;
-    private Registry mLocation, mCountry;
+    private TextView locationLabel;
     private List<FeedItem> items = new ArrayList<>();
     private String location;
 
@@ -107,6 +100,7 @@ public class TabbedFeedFragment extends Fragment {
                 refreshFeed();
             }
         });
+        locationLabel = (TextView) rootView.findViewById(R.id.location_label);
         mSwipeRefreshLayout.setNestedScrollingEnabled(true);
         feedListView = (ListView) rootView.findViewById(R.id.feed_list);
         noFeedSettings = (TextView) rootView.findViewById(R.id.no_feed_settings);
@@ -117,6 +111,7 @@ public class TabbedFeedFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
             }
         });
+
         refreshIntervalValue = (TextView) rootView.findViewById(R.id.refresh_interval_value);
         feedSourcesValue = (TextView) rootView.findViewById(R.id.feed_sources_value);
         noFeedCard = (ScrollView) rootView.findViewById(R.id.no_feed_list);
@@ -133,18 +128,16 @@ public class TabbedFeedFragment extends Fragment {
         feedListView.setAdapter(feedAdapter);
         feedListView.setDividerHeight(10);
 
-        mAutocompleteLocation = (AutoCompleteTextView) rootView.findViewById(R.id.settings_autocomplete);
-
-        mAutocompleteLocation.setAdapter(new GeoCodingAutoCompleteAdapter(getActivity(), R.layout.autocomplete_list_item));
-        mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        LinearLayout locationLayout = (LinearLayout) rootView.findViewById(R.id.location_layout);
+        locationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && !global.hasPasswordSet(false)) {
-                    global.setPassword(getActivity(), null);
-                }
-
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this);
+                custom.show(fragmentManager, "");
             }
         });
+
         LinearLayout refreshInterval = (LinearLayout) rootView.findViewById(R.id.refresh_interval);
         LinearLayout feedSources = (LinearLayout) rootView.findViewById(R.id.feed_sources);
         feedSources.setOnClickListener(new View.OnClickListener() {
@@ -153,7 +146,7 @@ public class TabbedFeedFragment extends Fragment {
                 showFeedSources();
             }
         });
-        
+
         refreshInterval.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,39 +158,6 @@ public class TabbedFeedFragment extends Fragment {
             }
         });
 
-        mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (global.hasPasswordSet(false)) {
-                    UmbrellaUtil.hideSoftKeyboard(getActivity());
-                    if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
-                        mAddress = mAddressList.get(position - 1);
-                        if (mAddress!=null) {
-                            String chosenAddress = mAutocompleteLocation.getText().toString();
-                            mAutocompleteLocation.setText(chosenAddress);
-                            global.setRegistry("location", chosenAddress);
-                            global.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
-                            global.setRegistry("country", mAddress.getCountryName());
-                        }
-                    } else {
-                        mAddress = null;
-                    }
-                } else {
-                    global.setPassword(getActivity(), null);
-                }
-            }
-        });
-        mAutocompleteLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         refreshIntervalValue.setText(global.getRefreshLabel(null));
         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
         getFeeds(getActivity());
@@ -209,10 +169,10 @@ public class TabbedFeedFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Registry selLoc = global.getRegistry("location");
-        if(selLoc!=null){
-            mAutocompleteLocation.setHint(selLoc.getValue());
+        if (selLoc != null) {
+            locationLabel.setText(selLoc.getValue());
             location = selLoc.getValue();
-        }else{
+        } else {
             global.getString(R.string.set_location);
         }
 
@@ -238,7 +198,7 @@ public class TabbedFeedFragment extends Fragment {
                                 if (Patterns.WEB_URL.matcher(input).matches()) {
                                     try {
                                         List<FeedSource> sourceExists = global.getDaoFeedSource().queryForEq(FeedSource.FIELD_URL, input);
-                                        if (sourceExists!=null && sourceExists.size()>0) {
+                                        if (sourceExists != null && sourceExists.size() > 0) {
                                             Toast.makeText(getContext(), R.string.source_already_added, Toast.LENGTH_SHORT).show();
                                         } else {
                                             global.getDaoFeedSource().create(new FeedSource(input.toString(), 0, input.toString()));
@@ -257,14 +217,14 @@ public class TabbedFeedFragment extends Fragment {
             case R.id.manage_sources:
                 try {
                     List<FeedSource> externalSources = global.getDaoFeedSource().queryForAll();
-                    if (externalSources!=null && externalSources.size()>0) {
+                    if (externalSources != null && externalSources.size() > 0) {
                         ArrayList<String> sourceUrls = new ArrayList<String>();
                         for (FeedSource externalSource : externalSources) {
-                            if (externalSource.getUrl()!=null && !externalSource.getUrl().equals("")) {
+                            if (externalSource.getUrl() != null && !externalSource.getUrl().equals("")) {
                                 sourceUrls.add(externalSource.getUrl());
                             }
                         }
-                        if (sourceUrls.size()>0) {
+                        if (sourceUrls.size() > 0) {
                             new MaterialDialog.Builder(getContext())
                                     .title(R.string.delete_external_sources)
                                     .items(sourceUrls)
@@ -328,14 +288,16 @@ public class TabbedFeedFragment extends Fragment {
         feedAdapter.updateData(items);
         Registry selCountry = global.getRegistry("country");
         String headerText = "";
-        if (selCountry!=null)
-            headerText = global.getString(R.string.country_selected)+": " + selCountry.getValue() + "\n";
+        if (selCountry != null)
+            headerText = global.getString(R.string.country_selected) + ": " + selCountry.getValue() + "\n";
         mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
         noFeedItems.setVisibility((isFeedSet() && (items.size() == 0)) ? View.VISIBLE : View.GONE);
-        headerText += global.getString(R.string.lat_updated)+": " + DateUtils.formatDateTime(getContext(), global.getFeedItemsRefreshed(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
-        feedListView.setVisibility(isFeedSet() && items.size()>0 ? View.VISIBLE : View.GONE);
+        headerText += global.getString(R.string.lat_updated) + ": "
+                + DateUtils.formatDateTime(getContext(), global.getFeedItemsRefreshed(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+        feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
         noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
-        noFeedCard.setVisibility( (items.size()>0 && isFeedSet()) ? View.GONE : View.VISIBLE);
+        noFeedCard.setVisibility((items.size() > 0 && isFeedSet()) ? View.GONE : View.VISIBLE);
         header.setText(headerText);
     }
 
@@ -349,11 +311,11 @@ public class TabbedFeedFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private void deleteOldFeedItems(){
+    private void deleteOldFeedItems() {
         Registry selLoc = global.getRegistry("location");
         try {
-            if(selLoc != null && location != null && (!location.equals(selLoc.getValue())))
-            global.getDaoFeedItem().delete(global.getFeedItems());
+            if (selLoc != null && location != null && (!location.equals(selLoc.getValue())))
+                global.getDaoFeedItem().delete(global.getFeedItems());
         } catch (SQLException e) {
             Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
         }
@@ -361,11 +323,11 @@ public class TabbedFeedFragment extends Fragment {
 
     public boolean getFeeds(final Context context) {
         Registry selISO2 = global.getRegistry("iso2");
-        if (selISO2!=null) {
+        if (selISO2 != null) {
             List<Registry> selections;
             try {
                 selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size()>0) {
+                if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
                     for (Registry item : selections) {
@@ -376,20 +338,20 @@ public class TabbedFeedFragment extends Fragment {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
+                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
+                            + "&since=" + global.getFeedItemsRefreshed();
+
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                             super.onSuccess(statusCode, headers, response);
-                            Log.d("test", "-----"+mUrl);
+                            Log.d("test", "-----" + mUrl);
                             Gson gson = new GsonBuilder().create();
                             Type listType = new TypeToken<ArrayList<FeedItem>>() {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && receivedItems.size() > 0) {
-
-                                Log.d("test",""+receivedItems);
                                 for (FeedItem receivedItem : receivedItems) {
                                     try {
                                         global.getDaoFeedItem().create(receivedItem);
@@ -400,6 +362,12 @@ public class TabbedFeedFragment extends Fragment {
                                 refreshView();
                                 feedListView.smoothScrollToPosition(0);
                                 mSwipeRefreshLayout.setRefreshing(false);
+                            } else {
+//                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                                transaction.replace(R.id.root_frame, FeedEmptyFragment.newInstance());
+//                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+//                                transaction.addToBackStack(null);
+//                                transaction.commit();
                             }
                         }
 
@@ -524,7 +492,8 @@ public class TabbedFeedFragment extends Fragment {
                         }
                         for (Integer item : selectedItems) {
                             try {
-                                global.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(global.getFeedSourceCodeByIndex(item))));
+                                global.getDaoRegistry().create(new Registry("feed_sources",
+                                        String.valueOf(global.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -547,77 +516,13 @@ public class TabbedFeedFragment extends Fragment {
     }
 
     public boolean isFeedSet() {
-        return !global.getSelectedFeedSourcesLabel(false).equals("") && !global.getRefreshLabel(null).equals("") && !global.getChosenCountry().equals("");
+        return !global.getSelectedFeedSourcesLabel(false).equals("")
+                && !global.getRefreshLabel(null).equals("")
+                && !global.getChosenCountry().equals("");
     }
 
-    private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
-        private ArrayList<String> resultList;
-
-        public GeoCodingAutoCompleteAdapter(Context context, int textViewResourceId) {
-            super(context, textViewResourceId);
-        }
-
-        @Override
-        public int getCount() {
-            return resultList.size();
-        }
-
-        @Override
-        public String getItem(int index) {
-            return resultList.get(index);
-        }
-
-        private List<Address> autoComplete(String input) {
-            List<Address> foundGeocode = null;
-            Context context = getActivity();
-            try {
-                foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
-                mAddressList = new ArrayList<>(foundGeocode);
-            } catch (IOException e) {
-                Timber.e(e);
-            }
-
-            return foundGeocode;
-        }
-
-        @Override
-        public Filter getFilter() {
-            return new Filter() {
-                @Override
-                protected FilterResults performFiltering(CharSequence constraint) {
-                    FilterResults filterResults = new FilterResults();
-                    if (constraint != null) {
-                        List<Address> list = autoComplete(constraint.toString());
-                        ArrayList<String> toStrings = new ArrayList<>();
-                        for (Address current : list) {
-                            if (!current.getAddressLine(0).equals("")) {
-                                String toAdd = current.getAddressLine(0);
-                                if (current.getAddressLine(1) != null)
-                                    toAdd += " " + current.getAddressLine(1);
-                                if (current.getAddressLine(2) != null)
-                                    toAdd += " " + current.getAddressLine(2);
-                                toStrings.add(toAdd);
-                            }
-                        }
-                        resultList = toStrings;
-                        resultList.add(0, global.getString(R.string.current_location));
-
-                        filterResults.values = resultList;
-                        filterResults.count = resultList.size();
-                    }
-                    return filterResults;
-                }
-
-                @Override
-                protected void publishResults(CharSequence constraint, FilterResults results) {
-                    if (results != null && results.count > 0) {
-                        notifyDataSetChanged();
-                    } else {
-                        notifyDataSetInvalidated();
-                    }
-                }
-            };
-        }
+    @Override
+    public void locationEvent(String currentLocation) {
+        locationLabel.setText(currentLocation);
     }
-
 }

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="2"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_weight="1"
+        android:background="@android:color/holo_orange_dark"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/location" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/place_search_dialog_location_TIL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="20dp">
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/place_search_dialog_location_ET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter location"
+                android:imeOptions="actionDone"
+                android:inputType="textCapSentences"
+                android:textColorHint="@android:color/holo_green_dark"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/place_search_dialog_cancel_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/place_search_dialog_ok_TV"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="10dp"
+                android:text="@string/cancel" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/place_search_dialog_ok_TV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:padding="10dp"
+                android:text="@string/ok"
+                android:textColor="@android:color/holo_green_dark" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

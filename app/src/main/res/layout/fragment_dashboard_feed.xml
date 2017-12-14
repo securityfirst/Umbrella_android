@@ -1,46 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:paddingRight="10dp">
+
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/activity_main_swipe_refresh_layout"
-        android:visibility="gone"
-        android:paddingTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:visibility="gone">
 
         <ListView
             android:id="@+id/feed_list"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
 
-        <android.support.v7.widget.CardView
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/no_feed_items"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:layout_marginTop="20dp"
             android:paddingTop="20dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             card_view:cardCornerRadius="2dp">
 
             <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="3dp"
+                android:padding="10dp"
                 android:text="@string/no_feed_items_label"
                 android:textSize="@dimen/text_size_smallest"
-                android:layout_width="fill_parent"
-                android:padding="10dp"
-                android:visibility="visible"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:layout_height="wrap_content" />
+                android:visibility="visible" />
 
         </android.support.v7.widget.CardView>
 
@@ -53,139 +54,201 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:focusableInTouchMode="true"
-            android:layout_height="wrap_content">
+            android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="top"
-                android:layout_marginTop="20dp"
-                android:paddingTop="20dp"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="fill_parent"
-                android:visibility="visible"
                 android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="15dp"
+                android:paddingTop="3dp"
+                android:visibility="visible"
                 card_view:cardCornerRadius="2dp">
 
-                <TextView
-                    android:id="@+id/no_feed_settings"
-                    android:text="@string/no_feed_settings"
-                    android:textSize="@dimen/text_size_smallest"
-                    android:layout_width="fill_parent"
-                    android:padding="10dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginBottom="3dp"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Set your Feed"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/no_feed_settings"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_feed_settings"
+                        android:textSize="@dimen/text_size_smallest" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginBottom="3dp"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:text="SET NOW"
+                        android:textColor="@android:color/holo_green_dark" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="top"
-                android:layout_marginTop="20dp"
-                android:paddingTop="20dp"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="fill_parent"
-                android:visibility="visible"
                 android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="15dp"
+                android:padding="3dp"
+                android:visibility="visible"
                 card_view:cardCornerRadius="2dp">
 
                 <LinearLayout
                     android:id="@+id/refresh_interval"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:padding="5dp">
 
                     <TextView
-                        android:text="@string/refresh_interval_feeds"
-                        android:textSize="@dimen/text_size_smallest"
                         android:layout_width="fill_parent"
-                        android:padding="5dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:layout_height="wrap_content" />
+                        android:text="Interval"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Set how often you want Umbrella to check for the latest security news."
+                        android:textSize="@dimen/text_size_smallest" />
 
                     <TextView
                         android:id="@+id/refresh_interval_value"
-                        android:textSize="@dimen/text_size_smaller"
-                        android:layout_width="fill_parent"
-                        android:padding="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@android:color/holo_green_dark" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
                         android:layout_marginBottom="3dp"
-                        android:layout_height="wrap_content" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:text="SET"
+                        android:textColor="@android:color/holo_green_dark" />
 
                 </LinearLayout>
 
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="top"
-                android:layout_marginTop="20dp"
-                android:paddingTop="20dp"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="fill_parent"
-                android:visibility="visible"
                 android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="15dp"
+                android:padding="3dp"
+                android:visibility="visible"
                 card_view:cardCornerRadius="2dp">
 
                 <LinearLayout
+                    android:id="@+id/location_layout"
                     android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:padding="5dp">
 
                     <TextView
-                        android:text="@string/feed_location_label"
-                        android:textSize="@dimen/text_size_smallest"
                         android:layout_width="fill_parent"
-                        android:padding="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="Location"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                    <AutoCompleteTextView
-                        android:id="@+id/settings_autocomplete"
-                        android:textSize="@dimen/text_size_smaller"
+                    <TextView
+                        android:id="@+id/location_label"
                         android:layout_width="fill_parent"
-                        android:singleLine="true"
-                        android:hint="@string/set_location"
-                        android:imeOptions="actionDone"
-                        android:padding="5dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+
+                        android:text="@string/feed_location_label"
+                        android:textColor="@android:color/holo_green_dark"
+                        android:textSize="@dimen/text_size_smallest" />
+
+                    <TextView
+                        android:id="@+id/settings_autocomplete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
                         android:layout_marginBottom="3dp"
-                        android:layout_height="wrap_content" />
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:text="SET"
+                        android:textColor="@android:color/holo_green_dark" />
 
                 </LinearLayout>
 
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="top"
-                android:layout_marginTop="20dp"
-                android:paddingTop="20dp"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="fill_parent"
-                android:visibility="visible"
                 android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="15dp"
+                android:padding="3dp"
+                android:visibility="visible"
                 card_view:cardCornerRadius="2dp">
 
                 <LinearLayout
                     android:id="@+id/feed_sources"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_height="wrap_content">
+                    android:padding="5dp">
 
                     <TextView
-                        android:text="@string/feed_sources"
-                        android:textSize="@dimen/text_size_smallest"
                         android:layout_width="fill_parent"
-                        android:padding="5dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
-                        android:layout_height="wrap_content" />
+                        android:text="@string/feed_sources"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/feed_sources_value"
-                        android:textSize="@dimen/text_size_smaller"
                         android:layout_width="fill_parent"
-                        android:padding="5dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
-                        android:layout_height="wrap_content" />
+                        android:text="Set Sources"
+                        android:textSize="@dimen/text_size_smaller" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginBottom="3dp"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:text="SET"
+                        android:textColor="@android:color/holo_green_dark" />
 
                 </LinearLayout>
 
@@ -195,6 +258,5 @@
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/empty_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:visibility="visible"
+        card_view:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:id="@+id/location_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/empty_dashboard_title"
+                android:textColor="@color/cardview_dark_background"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/empty_dashboard_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/location_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:text="There are no events to display for you location. We'll display them when they will occour. Pull to refresh to check again."
+                android:textSize="@dimen/text_size_smallest" />
+
+            <TextView
+                android:id="@+id/settings_autocomplete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="3dp"
+                android:gravity="right"
+                android:padding="5dp"
+                android:singleLine="true"
+                android:text="CHANGE LOCATION"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

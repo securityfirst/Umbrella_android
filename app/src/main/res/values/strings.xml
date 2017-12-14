@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources tools:ignore="MissingTranslation,ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation,ExtraTranslation">
     <string name="app_name">Umbrella</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -158,4 +158,5 @@
     <string name="downloading">Downloading</string>
     <string name="updating_the_database">Updating the database</string>
     <string name="sync_complete">Update complete</string>
+    <string name="empty_dashboard_title">Security feed set to:</string>
 </resources>
