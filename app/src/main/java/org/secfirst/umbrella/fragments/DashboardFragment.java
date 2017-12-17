@@ -66,7 +66,7 @@ public class DashboardFragment extends Fragment {
             Fragment fragment;
             switch (position) {
                 case 1:
-                    fragment = new TabbedFeedFragment();
+                    fragment = new TabbedFeedRootFragment();
                     break;
                 case 2:
                     fragment = new TabbedFormsFragment();

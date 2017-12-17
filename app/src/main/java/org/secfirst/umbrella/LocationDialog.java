@@ -88,8 +88,8 @@ public class LocationDialog extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (global.hasPasswordSet(false)) {
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
-                    if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
-                        mAddress = mAddressList.get(position - 1);
+                    if (mAddressList != null ) {
+                        mAddress = mAddressList.get(position);
                         if (mAddress != null) {
                             String chosenAddress = mAutocompleteLocation.getText().toString();
                             mAutocompleteLocation.setText(chosenAddress);
@@ -170,7 +170,7 @@ public class LocationDialog extends DialogFragment {
                             }
                         }
                         resultList = toStrings;
-                        resultList.add(0, global.getString(R.string.current_location));
+                        //resultList.add(0, global.getString(R.string.current_location));
 
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();

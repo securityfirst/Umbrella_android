@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 
@@ -18,11 +19,13 @@ public class FeedEmptyFragment extends Fragment {
 
     private View mView;
     private CardView mEmptyCard;
+    private String mLocation;
 
-    public static FeedEmptyFragment newInstance() {
+    public static FeedEmptyFragment newInstance(String location) {
         Bundle args = new Bundle();
         FeedEmptyFragment fragment = new FeedEmptyFragment();
         fragment.setArguments(args);
+        fragment.mLocation = location;
         return fragment;
     }
 
@@ -31,7 +34,8 @@ public class FeedEmptyFragment extends Fragment {
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.dasboard_feed_empty_view, container, false);
         mEmptyCard = (CardView) mView.findViewById(R.id.empty_dashboard);
-
+        TextView title = (TextView) mView.findViewById(R.id.empty_dashboard_title);
+        title.setText(mLocation);
         mEmptyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

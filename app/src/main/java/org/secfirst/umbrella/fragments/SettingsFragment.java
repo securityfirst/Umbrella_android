@@ -514,7 +514,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                             }
                         }
                         resultList = toStrings;
-                        resultList.add(0, Global.INSTANCE.getString(R.string.current_location));
+                        //resultList.add(0, Global.INSTANCE.getString(R.string.current_location));
 
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();

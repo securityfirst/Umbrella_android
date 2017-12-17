@@ -13,10 +13,10 @@ import org.secfirst.umbrella.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DashboardRootFragment extends Fragment {
+public class TabbedFeedRootFragment extends Fragment {
 
 
-    public DashboardRootFragment() {
+    public TabbedFeedRootFragment() {
         // Required empty public constructor
     }
 

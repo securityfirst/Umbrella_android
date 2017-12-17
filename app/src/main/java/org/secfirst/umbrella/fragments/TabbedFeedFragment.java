@@ -9,11 +9,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.InputType;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
@@ -76,7 +77,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     Global global;
     private TextView locationLabel;
     private List<FeedItem> items = new ArrayList<>();
-    private String location;
+    private String mLocation;
 
     public TabbedFeedFragment() {
     }
@@ -86,6 +87,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,7 +99,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshFeed();
+                refreshFeed(false);
             }
         });
         locationLabel = (TextView) rootView.findViewById(R.id.location_label);
@@ -159,22 +161,44 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         });
 
         refreshIntervalValue.setText(global.getRefreshLabel(null));
-        feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
-        getFeeds(getActivity());
+        setFeedSourceLabel();
+        getFeeds(getActivity(), false);
         refreshView();
         return rootView;
+    }
+
+    private void setFeedSourceLabel() {
+        if (!global.getSelectedFeedSourcesLabel(false).equals(""))
+            feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
+    }
+
+    private void verifyDefaultColor() {
+
+        if (feedSourcesValue.getText().equals(getString(R.string.set_sources))) {
+            feedSourcesValue.setTextColor(noFeedSettings.getCurrentTextColor());
+        } else
+            feedSourcesValue.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
+
+
+        if (locationLabel.getText().equals(getString(R.string.feed_location_label))) {
+            locationLabel.setTextColor(noFeedSettings.getCurrentTextColor());
+        } else
+            locationLabel.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Registry selLoc = global.getRegistry("location");
+        Registry selLoc = global.getRegistry("mLocation");
         if (selLoc != null) {
             locationLabel.setText(selLoc.getValue());
-            location = selLoc.getValue();
+            mLocation = selLoc.getValue();
+
         } else {
             global.getString(R.string.set_location);
         }
+        verifyDefaultColor();
 
     }
 
@@ -284,27 +308,27 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     public void refreshView() {
-        ArrayList<FeedItem> items = new ArrayList<>(global.getFeedItems());
-        feedAdapter.updateData(items);
-        Registry selCountry = global.getRegistry("country");
-        String headerText = "";
-        if (selCountry != null)
-            headerText = global.getString(R.string.country_selected) + ": " + selCountry.getValue() + "\n";
-        mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
-        noFeedItems.setVisibility((isFeedSet() && (items.size() == 0)) ? View.VISIBLE : View.GONE);
-        headerText += global.getString(R.string.lat_updated) + ": "
-                + DateUtils.formatDateTime(getContext(), global.getFeedItemsRefreshed(),
-                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
-        feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
-        noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
-        noFeedCard.setVisibility((items.size() > 0 && isFeedSet()) ? View.GONE : View.VISIBLE);
-        header.setText(headerText);
+//        ArrayList<FeedItem> items = new ArrayList<>(global.getFeedItems());
+//        feedAdapter.updateData(items);
+//        Registry selCountry = global.getRegistry("country");
+//        String headerText = "";
+//        if (selCountry != null)
+//            headerText = global.getString(R.string.country_selected) + ": " + selCountry.getValue() + "\n";
+//        mSwipeRefreshLayout.setVisibility(isFeedSet() ? View.VISIBLE : View.GONE);
+//        noFeedItems.setVisibility((isFeedSet() && (items.size() == 0)) ? View.VISIBLE : View.GONE);
+//        headerText += global.getString(R.string.lat_updated) + ": "
+//                + DateUtils.formatDateTime(getContext(), global.getFeedItemsRefreshed(),
+//                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+//        feedListView.setVisibility(isFeedSet() && items.size() > 0 ? View.VISIBLE : View.GONE);
+//        noFeedCard.setVisibility(isFeedSet() ? View.GONE : View.VISIBLE);
+//        noFeedCard.setVisibility((items.size() > 0 && isFeedSet()) ? View.GONE : View.VISIBLE);
+//        header.setText(headerText);
     }
 
-    public void refreshFeed() {
+    public void refreshFeed(boolean feedSourceClicked) {
         refreshView();
         if (isFeedSet()) {
-            getFeeds(getActivity());
+            getFeeds(getActivity(), feedSourceClicked);
         } else {
             Toast.makeText(getActivity(), R.string.set_location_source_in_settings, Toast.LENGTH_SHORT).show();
         }
@@ -312,16 +336,18 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     private void deleteOldFeedItems() {
-        Registry selLoc = global.getRegistry("location");
+        Registry selLoc = global.getRegistry("mLocation");
         try {
-            if (selLoc != null && location != null && (!location.equals(selLoc.getValue())))
+            if (selLoc != null && mLocation != null && (!mLocation.equals(selLoc.getValue())))
                 global.getDaoFeedItem().delete(global.getFeedItems());
         } catch (SQLException e) {
             Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
-    public boolean getFeeds(final Context context) {
+    public boolean getFeeds(final Context context, final boolean feedSourceClicked) {
         Registry selISO2 = global.getRegistry("iso2");
         if (selISO2 != null) {
             List<Registry> selections;
@@ -359,15 +385,24 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                         e.printStackTrace();
                                     }
                                 }
-                                refreshView();
-                                feedListView.smoothScrollToPosition(0);
-                                mSwipeRefreshLayout.setRefreshing(false);
+                                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                                        .beginTransaction();
+                                transaction.replace(R.id.root_frame, FeedListFragment.
+                                        newInstance(receivedItems));
+                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
                             } else {
-//                                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                                transaction.replace(R.id.root_frame, FeedEmptyFragment.newInstance());
-//                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-//                                transaction.addToBackStack(null);
-//                                transaction.commit();
+                                if (feedSourceClicked) {
+                                    FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                                            .beginTransaction();
+                                    transaction.replace(R.id.root_frame, FeedEmptyFragment.
+                                            newInstance(global.getRegistry("mLocation").getValue()));
+                                    transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                    transaction.addToBackStack(null);
+                                    transaction.commit();
+                                }
+
                             }
                         }
 
@@ -375,7 +410,9 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                             super.onFailure(statusCode, headers, throwable, errorResponse);
                             if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
-                                Toast.makeText(getContext(), "The SSL certificate pin is not valid. Most likely the certificate has expired and was renewed. Update the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
+                                        " Most likely the certificate has expired and was renewed. Update " +
+                                        "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
                             }
                             refreshView();
                         }
@@ -435,7 +472,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 global.setRefreshValue(value);
                                 refreshIntervalValue.setText(global.getRefreshLabel(null));
-                                refreshFeed();
+                                refreshFeed(false);
                                 dialog.dismiss();
                             }
                         }
@@ -500,7 +537,8 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         }
                         deleteOldFeedItems();
                         feedSourcesValue.setText(global.getSelectedFeedSourcesLabel(false));
-                        refreshFeed();
+                        refreshFeed(true);
+                        verifyDefaultColor();
                         dialog.dismiss();
                     }
                 })
@@ -524,5 +562,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     @Override
     public void locationEvent(String currentLocation) {
         locationLabel.setText(currentLocation);
+        locationLabel.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
+        global.setRegistry("mLocation", currentLocation);
     }
 }

@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:padding="10dp">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/empty_dashboard"
@@ -34,12 +35,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:textColor="@android:color/holo_red_light"
+                android:textColor="#a04056"
                 android:textSize="22sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/location_label"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -57,7 +57,7 @@
                 android:padding="5dp"
                 android:singleLine="true"
                 android:text="CHANGE LOCATION"
-                android:textColor="@android:color/holo_green_dark"
+                android:textColor="#a7bd34"
                 android:textSize="15sp" />
 
         </LinearLayout>

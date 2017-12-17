@@ -159,4 +159,5 @@
     <string name="updating_the_database">Updating the database</string>
     <string name="sync_complete">Update complete</string>
     <string name="empty_dashboard_title">Security feed set to:</string>
+    <string name="set_sources">Set Sources</string>
 </resources>
