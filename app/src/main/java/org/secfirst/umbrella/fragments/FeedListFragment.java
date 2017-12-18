@@ -1,8 +1,11 @@
 package org.secfirst.umbrella.fragments;
 
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -11,9 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.aakira.expandablelayout.ExpandableLayoutListener;
+import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.github.aakira.expandablelayout.Utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -28,7 +36,9 @@ import org.secfirst.umbrella.adapters.FeedAdapter;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.OnLocationEventListener;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Type;
 import java.sql.SQLException;
@@ -44,10 +54,14 @@ public class FeedListFragment extends Fragment {
 
 
     private ListView mFeedListView;
-    private FeedAdapter mFeedAdapter;
     private List<FeedItem> mItems = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private Global mGlobal;
+    private ExpandableLinearLayout mExpandableLayout;
+    private RelativeLayout mButtonLayout;
+    private TextView mLocationLabel;
+    private TextView mExpandLocationLabel;
+    private TextView mChangeLocation;
 
 
     public static FeedListFragment newInstance(List<FeedItem> items) {
@@ -65,20 +79,66 @@ public class FeedListFragment extends Fragment {
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_feed_ist_refresh);
         mFeedListView = (ListView) view.findViewById(R.id.feed_list);
-
+        mExpandableLayout = (ExpandableLinearLayout) view.findViewById(R.id.expandableLayout);
+        mButtonLayout = (RelativeLayout) view.findViewById(R.id.button);
+        mLocationLabel = (TextView) view.findViewById(R.id.current_location);
+        mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
         mGlobal = ((BaseActivity) getActivity()).getGlobal();
+        mChangeLocation = (TextView) view.findViewById(R.id.expand_change_location);
 
         initHeadViwOfList();
         initFooterViewOfList();
         initSwipeRefresh();
-        mFeedAdapter = new FeedAdapter(getActivity(), mItems);
+        initExpandableList();
+        initChangeLocation();
+
+        FeedAdapter mFeedAdapter = new FeedAdapter(getActivity(), mItems);
         mFeedListView.setAdapter(mFeedAdapter);
-        mFeedListView.setDividerHeight(10);
+        mFeedListView.setDividerHeight(20);
+        mLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
         return view;
+    }
+
+    private void initChangeLocation() {
+        mChangeLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                        .beginTransaction();
+                transaction.replace(R.id.root_frame, TabbedFeedFragment.newInstance(true));
+                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+    }
+
+    private void initExpandableList() {
+        mExpandableLayout.setInterpolator(Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR));
+        mExpandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
+            @Override
+            public void onPreOpen() {
+                createRotateAnimator(mButtonLayout, 0f, 180f).start();
+            }
+
+            @Override
+            public void onPreClose() {
+                createRotateAnimator(mButtonLayout, 180f, 0f).start();
+            }
+        });
+
+        mButtonLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mExpandableLayout.toggle();
+            }
+        });
+
     }
 
 
     private void initSwipeRefresh() {
+        mSwipeRefreshLayout.setNestedScrollingEnabled(true);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,7 +193,8 @@ public class FeedListFragment extends Fragment {
                         public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                             super.onSuccess(statusCode, headers, response);
                             Gson gson = new GsonBuilder().create();
-                            Type listType = new TypeToken<ArrayList<FeedItem>>() {}.getType();
+                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                            }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && receivedItems.size() > 0) {
                                 for (FeedItem receivedItem : receivedItems) {
@@ -144,8 +205,8 @@ public class FeedListFragment extends Fragment {
                                     }
                                 }
                                 mFeedListView.smoothScrollToPosition(0);
-                                mSwipeRefreshLayout.setRefreshing(false);
                             }
+                            mSwipeRefreshLayout.setRefreshing(false);
                         }
 
                         @Override
@@ -156,8 +217,8 @@ public class FeedListFragment extends Fragment {
                                         " Most likely the certificate has expired and was renewed. Update " +
                                         "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
                             }
+                            mSwipeRefreshLayout.setRefreshing(false);
                         }
-
                     });
                 } else {
                     Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
@@ -170,6 +231,13 @@ public class FeedListFragment extends Fragment {
         } else {
             return false;
         }
+    }
+
+    private ObjectAnimator createRotateAnimator(final View target, final float from, final float to) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
+        animator.setDuration(300);
+        animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
+        return animator;
     }
 
 }

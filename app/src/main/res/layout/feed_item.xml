@@ -1,51 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
-        android:layout_gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         card_view:cardCornerRadius="2dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:padding="15dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
 
 
             <TextView
                 android:id="@+id/feed_title"
-                android:textSize="@dimen/text_size_smaller"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/umbrella_purple"
-                android:gravity="center"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="left"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_smaller" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/feed_site"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Via SITE NAME"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/text_size_smallest" />
+
+                <TextView
+                    android:id="@+id/feed_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/coachmark_background_dark"
+                    android:textSize="@dimen/text_size_smallest" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/feed_body"
-                android:textSize="@dimen/text_size_smaller"
-                android:maxLines="3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:ellipsize="end"
+                android:maxLines="3"
                 android:textColor="@color/dark_grey"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/feed_date"
-                android:textSize="@dimen/text_size_smallest"
-                android:textColor="@color/dark_grey"
-                android:gravity="bottom|right"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-
+                android:textSize="@dimen/text_size_smaller" />
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
 
 </LinearLayout>

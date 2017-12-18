@@ -78,8 +78,14 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private TextView locationLabel;
     private List<FeedItem> items = new ArrayList<>();
     private String mLocation;
+    private boolean mChangeLocation;
 
-    public TabbedFeedFragment() {
+    public static TabbedFeedFragment newInstance(boolean isChangeLocation) {
+        Bundle args = new Bundle();
+        TabbedFeedFragment fragment = new TabbedFeedFragment();
+        fragment.setArguments(args);
+        fragment.mChangeLocation = isChangeLocation;
+        return fragment;
     }
 
     @Override
@@ -349,88 +355,96 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
 
     public boolean getFeeds(final Context context, final boolean feedSourceClicked) {
         Registry selISO2 = global.getRegistry("iso2");
-        if (selISO2 != null) {
-            List<Registry> selections;
-            try {
-                selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size() > 0) {
-                    String separator = ",";
-                    int total = selections.size() * separator.length();
-                    for (Registry item : selections) {
-                        total += item.getValue().length();
-                    }
-                    StringBuilder sb = new StringBuilder(total);
-                    for (Registry item : selections) {
-                        sb.append(separator).append(item.getValue());
-                    }
-                    String sources = sb.substring(separator.length());
-                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                            + "&since=" + global.getFeedItemsRefreshed();
+        if (!mChangeLocation) {
+            if (selISO2 != null) {
+                List<Registry> selections;
+                try {
+                    selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                    if (selections.size() > 0) {
+                        String separator = ",";
+                        int total = selections.size() * separator.length();
+                        for (Registry item : selections) {
+                            total += item.getValue().length();
+                        }
+                        StringBuilder sb = new StringBuilder(total);
+                        for (Registry item : selections) {
+                            sb.append(separator).append(item.getValue());
+                        }
 
-                    UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
+                        //TODO remove since "since=0" before commit this code.
+                        // *global.getFeedItemsRefreshed()
 
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                            super.onSuccess(statusCode, headers, response);
-                            Log.d("test", "-----" + mUrl);
-                            Gson gson = new GsonBuilder().create();
-                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
-                            }.getType();
-                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                            if (receivedItems != null && receivedItems.size() > 0) {
-                                for (FeedItem receivedItem : receivedItems) {
-                                    try {
-                                        global.getDaoFeedItem().create(receivedItem);
-                                    } catch (SQLException e) {
-                                        e.printStackTrace();
+                        String sources = sb.substring(separator.length());
+                        final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
+                                + "&since=" + 0;
+
+                        UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                                super.onSuccess(statusCode, headers, response);
+                                Log.d("test", "-----" + mUrl);
+                                Gson gson = new GsonBuilder().create();
+                                Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                                }.getType();
+                                ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
+                                if (receivedItems != null && receivedItems.size() > 0) {
+                                    for (FeedItem receivedItem : receivedItems) {
+                                        try {
+                                            global.getDaoFeedItem().create(receivedItem);
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                                FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-                                        .beginTransaction();
-                                transaction.replace(R.id.root_frame, FeedListFragment.
-                                        newInstance(receivedItems));
-                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            } else {
-                                if (feedSourceClicked) {
                                     FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                                             .beginTransaction();
-                                    transaction.replace(R.id.root_frame, FeedEmptyFragment.
-                                            newInstance(global.getRegistry("mLocation").getValue()));
+                                    transaction.replace(R.id.root_frame, FeedListFragment.
+                                            newInstance(receivedItems));
                                     transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
                                     transaction.addToBackStack(null);
                                     transaction.commit();
+                                } else {
+                                    if (feedSourceClicked) {
+                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                                                .beginTransaction();
+                                        transaction.replace(R.id.root_frame, FeedEmptyFragment.
+                                                newInstance(global.getRegistry("mLocation").getValue()));
+                                        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                        transaction.addToBackStack(null);
+                                        transaction.commit();
+                                    }
+
                                 }
-
                             }
-                        }
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                            if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
-                                Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
-                                        " Most likely the certificate has expired and was renewed. Update " +
-                                        "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                super.onFailure(statusCode, headers, throwable, errorResponse);
+                                if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+                                    Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
+                                            " Most likely the certificate has expired and was renewed. Update " +
+                                            "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                                }
+                                refreshView();
                             }
-                            refreshView();
-                        }
 
-                    });
-                } else {
-                    Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
+                        });
+                    } else {
+                        Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
+                    }
+                    return true;
+                } catch (SQLException e) {
+                    Timber.e(e);
                 }
-                return true;
-            } catch (SQLException e) {
-                Timber.e(e);
+                return false;
+            } else {
+                noFeedCard.setVisibility(View.VISIBLE);
+                feedListView.setVisibility(View.GONE);
+                return false;
             }
-            return false;
-        } else {
-            noFeedCard.setVisibility(View.VISIBLE);
-            feedListView.setVisibility(View.GONE);
-            return false;
         }
+        mChangeLocation = false;
+        return false;
     }
 
     public void showRefresh() {
