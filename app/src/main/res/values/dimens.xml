@@ -71,6 +71,15 @@
     <dimen name="login_button_padding_right">5dp</dimen>
     <dimen name="login_panel_margin_horizontal">40dp</dimen>
 
-    <dimen name="cardview_default_radius">2dp</dimen>
 
+    <!--Dashboard Feed-->
+    <dimen name="cardview_default_radius">2dp</dimen>
+    <dimen name="dashboard_feed_padding">10dp</dimen>
+    <dimen name="dashboard_feed_small_padding">5dp</dimen>
+    <dimen name="dashboard_feed_smallest_padding">3dp</dimen>
+    <dimen name="dashboard_feed_margin_top">15dp</dimen>
+    <dimen name="dashboard_feed_medium_margin_top">10dp</dimen>
+    <dimen name="dashboard_feed_smallest_margin_top">3dp</dimen>
+    <dimen name="dashboard_feed_small_margin_top">5dp</dimen>
+    <dimen name="dashboard_feed_smallest_margin_bottom">3dp</dimen>
 </resources>

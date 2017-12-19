@@ -161,4 +161,10 @@
     <string name="empty_dashboard_title">Security feed set to:</string>
     <string name="set_sources">Set Sources</string>
     <string name="error_refresh_message">There is no events to display for your location</string>
+    <string name="feed_set_your_feed">Set your Feed</string>
+    <string name="feed_set_now">SET NOW</string>
+    <string name="feed_interval">Interval</string>
+    <string name="feed_interval_text">Set how often you want Umbrella to check for the latest security news.</string>
+    <string name="feed_location">Location</string>
+    <string name="feed_set">SET</string>
 </resources>

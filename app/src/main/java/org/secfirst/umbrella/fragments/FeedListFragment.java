@@ -56,6 +56,9 @@ public class FeedListFragment extends Fragment {
     private ExpandableLinearLayout mExpandableLayout;
     private RelativeLayout mButtonLayout;
     private TextView mChangeLocation;
+    private TextView mLocationLabel;
+    private TextView mExpandLocationLabel;
+    private TextView mColonLabel;
 
 
     public static FeedListFragment newInstance(List<FeedItem> items) {
@@ -75,11 +78,11 @@ public class FeedListFragment extends Fragment {
         mFeedListView = (ListView) view.findViewById(R.id.feed_list);
         mExpandableLayout = (ExpandableLinearLayout) view.findViewById(R.id.expandableLayout);
         mButtonLayout = (RelativeLayout) view.findViewById(R.id.button);
-        TextView mLocationLabel = (TextView) view.findViewById(R.id.current_location);
-        TextView mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
+        mLocationLabel = (TextView) view.findViewById(R.id.current_location);
+        mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
         mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mChangeLocation = (TextView) view.findViewById(R.id.expand_change_location);
-
+        mColonLabel = (TextView) view.findViewById(R.id.colon_id);
         initHeadViwOfList();
         initFooterViewOfList();
         initSwipeRefresh();
@@ -112,12 +115,19 @@ public class FeedListFragment extends Fragment {
         mExpandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
             @Override
             public void onPreOpen() {
+                mLocationLabel.setVisibility(View.GONE);
+                mColonLabel.setVisibility(View.GONE);
+                mExpandLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
+                mExpandLocationLabel.setVisibility(View.VISIBLE);
                 createRotateAnimator(mButtonLayout, 0f, 180f).start();
             }
 
             @Override
             public void onPreClose() {
                 createRotateAnimator(mButtonLayout, 180f, 0f).start();
+                mExpandLocationLabel.setVisibility(View.GONE);
+                mLocationLabel.setVisibility(View.VISIBLE);
+                mColonLabel.setVisibility(View.VISIBLE);
             }
         });
 
