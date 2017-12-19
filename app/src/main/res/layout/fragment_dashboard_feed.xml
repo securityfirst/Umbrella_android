@@ -7,46 +7,6 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/activity_main_swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="20dp"
-        android:visibility="gone">
-
-        <ListView
-            android:id="@+id/feed_list"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp" />
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/no_feed_items"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="20dp"
-            android:paddingTop="20dp"
-            card_view:cardCornerRadius="2dp">
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp"
-                android:padding="10dp"
-                android:text="@string/no_feed_items_label"
-                android:textSize="@dimen/text_size_smallest"
-                android:visibility="visible" />
-
-        </android.support.v7.widget.CardView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
     <ScrollView
         android:id="@+id/no_feed_list"
         android:layout_width="fill_parent"

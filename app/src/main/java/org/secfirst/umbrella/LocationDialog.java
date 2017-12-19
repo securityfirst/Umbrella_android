@@ -39,8 +39,6 @@ public class LocationDialog extends DialogFragment {
     private List<Address> mAddressList;
     private Address mAddress;
     private AppCompatAutoCompleteTextView mAutocompleteLocation;
-    private TextView buttonCancel;
-    private TextView buttonOk;
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment) {
         Bundle args = new Bundle();
@@ -55,8 +53,8 @@ public class LocationDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_view, container, false);
         global = ((BaseActivity) getActivity()).getGlobal();
-        buttonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
-        buttonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
+        TextView buttonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
+        TextView buttonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
         buttonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,7 +86,7 @@ public class LocationDialog extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (global.hasPasswordSet(false)) {
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
-                    if (mAddressList != null ) {
+                    if (mAddressList != null) {
                         mAddress = mAddressList.get(position);
                         if (mAddress != null) {
                             String chosenAddress = mAutocompleteLocation.getText().toString();

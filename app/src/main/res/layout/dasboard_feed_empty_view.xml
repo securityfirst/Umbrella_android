@@ -5,63 +5,70 @@
     android:background="@drawable/background"
     android:padding="10dp">
 
-    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/empty_dashboard"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_feed_empty_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginTop="20dp"
-        android:visibility="visible"
-        card_view:cardCornerRadius="2dp">
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/location_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:layout_width="fill_parent"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/empty_dashboard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="@string/empty_dashboard_title"
-                android:textColor="@color/cardview_dark_background"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                android:layout_gravity="top"
+                android:layout_marginTop="20dp"
+                card_view:cardCornerRadius="2dp">
 
-            <TextView
-                android:id="@+id/empty_dashboard_title"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:textColor="#a04056"
-                android:textSize="22sp"
-                android:textStyle="bold" />
+                <LinearLayout
+                    android:id="@+id/location_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:padding="5dp"
-                android:text="There are no events to display for you location. We'll display them when they will occour. Pull to refresh to check again."
-                android:textSize="@dimen/text_size_smallest" />
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/empty_dashboard_title"
+                        android:textColor="@color/cardview_dark_background"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/settings_autocomplete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:layout_marginBottom="3dp"
-                android:gravity="right"
-                android:padding="5dp"
-                android:singleLine="true"
-                android:text="CHANGE LOCATION"
-                android:textColor="#a7bd34"
-                android:textSize="15sp" />
+                    <TextView
+                        android:id="@+id/empty_dashboard_title"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textColor="#a04056"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:padding="5dp"
+                        android:text="There are no events to display for you location. We'll display them when they will occour. Pull to refresh to check again."
+                        android:textSize="@dimen/text_size_smallest" />
 
+                    <TextView
+                        android:id="@+id/settings_autocomplete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom"
+                        android:layout_marginBottom="3dp"
+                        android:gravity="right"
+                        android:padding="5dp"
+                        android:singleLine="true"
+                        android:text="CHANGE LOCATION"
+                        android:textColor="#a7bd34"
+                        android:textSize="15sp" />
 
-    </android.support.v7.widget.CardView>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableLayoutListenerAdapter;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.Utils;
@@ -36,9 +34,7 @@ import org.secfirst.umbrella.adapters.FeedAdapter;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.OnLocationEventListener;
 import org.secfirst.umbrella.util.UmbrellaRestClient;
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Type;
 import java.sql.SQLException;
@@ -59,8 +55,6 @@ public class FeedListFragment extends Fragment {
     private Global mGlobal;
     private ExpandableLinearLayout mExpandableLayout;
     private RelativeLayout mButtonLayout;
-    private TextView mLocationLabel;
-    private TextView mExpandLocationLabel;
     private TextView mChangeLocation;
 
 
@@ -81,8 +75,8 @@ public class FeedListFragment extends Fragment {
         mFeedListView = (ListView) view.findViewById(R.id.feed_list);
         mExpandableLayout = (ExpandableLinearLayout) view.findViewById(R.id.expandableLayout);
         mButtonLayout = (RelativeLayout) view.findViewById(R.id.button);
-        mLocationLabel = (TextView) view.findViewById(R.id.current_location);
-        mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
+        TextView mLocationLabel = (TextView) view.findViewById(R.id.current_location);
+        TextView mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
         mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mChangeLocation = (TextView) view.findViewById(R.id.expand_change_location);
 
