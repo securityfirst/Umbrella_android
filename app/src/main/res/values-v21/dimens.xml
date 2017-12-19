@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="login_button_padding_left">10dp</dimen>
+    <dimen name="login_button_padding_right">20dp</dimen>
+    <dimen name="login_panel_margin_horizontal">60dp</dimen>
+</resources>

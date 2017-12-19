@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="text_size_xlarge">26sp</dimen>
     <dimen name="text_size_large">24sp</dimen>
@@ -14,4 +11,63 @@
     <dimen name="fab_size">56dp</dimen>
     <dimen name="button_elevation">2dp</dimen>
     <dimen name="button_press_elevation">4dp</dimen>
+    <dimen name="gridHalfx">4dp</dimen>
+    <dimen name="grid1x">8dp</dimen>
+    <dimen name="grid1_5x">12dp</dimen>
+    <dimen name="grid2x">16dp</dimen>
+    <dimen name="grid3x">24dp</dimen>
+    <dimen name="grid4x">32dp</dimen>
+    <dimen name="grid5x">40dp</dimen>
+    <dimen name="grid6x">48dp</dimen>
+    <dimen name="grid7x">56dp</dimen>
+    <dimen name="grid8x">64dp</dimen>
+    <dimen name="grid9x">72dp</dimen>
+    <dimen name="grid10x">80dp</dimen>
+    <dimen name="grid11x">88dp</dimen>
+    <dimen name="grid12x">96dp</dimen>
+    <dimen name="grid13x">104dp</dimen>
+    <dimen name="grid14x">112dp</dimen>
+    <dimen name="grid15x">120dp</dimen>
+    <dimen name="grid16x">128dp</dimen>
+    <dimen name="grid17x">136dp</dimen>
+    <dimen name="grid18x">144dp</dimen>
+    <dimen name="grid19x">152dp</dimen>
+    <dimen name="grid20x">160dp</dimen>
+    <dimen name="grid21x">168dp</dimen>
+    <dimen name="grid22x">176dp</dimen>
+    <dimen name="grid23x">184dp</dimen>
+    <dimen name="grid24x">192dp</dimen>
+    <dimen name="grid25x">200dp</dimen>
+    <dimen name="grid26x">208dp</dimen>
+    <dimen name="grid27x">216dp</dimen>
+    <dimen name="grid28x">224dp</dimen>
+    <dimen name="grid29x">232dp</dimen>
+    <dimen name="grid30x">240dp</dimen>
+
+    <dimen name="elevationLevel1">4dp</dimen>
+    <dimen name="elevationLevel2">8dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">12dp</dimen>
+    <dimen name="activity_vertical_margin">12dp</dimen>
+    <dimen name="activity_vertical_margin_smaller">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="text_smallest">10sp</dimen>
+    <dimen name="text_smaller">12sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_medium">18sp</dimen>
+    <dimen name="text_larger">20sp</dimen>
+    <dimen name="text_large">22sp</dimen>
+    <dimen name="text_xlarge">24sp</dimen>
+    <dimen name="text_xxlarge">30sp</dimen>
+    <dimen name="login_button_padding_left">5dp</dimen>
+    <dimen name="login_button_padding_right">5dp</dimen>
+    <dimen name="login_panel_margin_horizontal">40dp</dimen>
 </resources>
