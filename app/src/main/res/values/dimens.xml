@@ -163,4 +163,5 @@
     <dimen name="hands_shake_info_biggest_margin_left">25dp</dimen>
 
 
+    <dimen name="card_view_default_radius">2dp</dimen>
 </resources>
