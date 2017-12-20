@@ -35,6 +35,7 @@ public class FormItem {
     @SerializedName(FIELD_HINT)
     String hint;
     @ForeignCollectionField
+    @SerializedName("options")
     ForeignCollection<FormOption> options;
 
     List<FormValue> values;

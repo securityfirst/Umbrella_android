@@ -24,6 +24,7 @@ public class FormScreen {
     @SerializedName("title")
     String title;
     @ForeignCollectionField
+    @SerializedName("items")
     ForeignCollection<FormItem> items;
 
     public FormScreen() {}

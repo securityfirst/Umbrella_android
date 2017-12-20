@@ -3,6 +3,8 @@ package org.secfirst.umbrella.models;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
+import org.secfirst.umbrella.util.UmbrellaUtil;
+
 import java.io.Serializable;
 
 public class Segment implements Serializable {
@@ -10,6 +12,7 @@ public class Segment implements Serializable {
     public static final String FIELD_BODY = "body";
     public static final String FIELD_CATEGORY = "category";
     public static final String FIELD_DIFFICULTY = "difficulty";
+    @SerializedName("_id")
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
     @DatabaseField(columnName = FIELD_TITLE)
@@ -23,9 +26,23 @@ public class Segment implements Serializable {
     private int difficulty;
     @SerializedName("difficulty")
     private String difficultyString;
+    @SerializedName("id")
+    private String idString;
 
     public String getDifficultyString() {
         return difficultyString;
+    }
+
+    public void setDifficultyString(String difficultyString) {
+        this.difficultyString = difficultyString;
+    }
+
+    public String getIdString() {
+        return idString;
+    }
+
+    public void setIdString(String idString) {
+        this.idString = idString;
     }
 
     public Segment(){}
@@ -68,6 +85,7 @@ public class Segment implements Serializable {
     }
 
     public int getDifficulty() {
+        difficulty = UmbrellaUtil.getDifficultyFromString(difficultyString);
         return difficulty;
     }
 

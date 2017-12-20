@@ -385,9 +385,9 @@ public class UmbrellaUtil {
     }
 
     public static int getDifficultyFromString(String difficultyString) {
-        if (difficultyString.equals(Global.INSTANCE.getString(R.string.advanced))) {
+        if (difficultyString.equals("advanced")) {
             return DifficultyFragment.INTERMEDIATE +1;
-        } else if (difficultyString.equals(Global.INSTANCE.getString(R.string.expert))) {
+        } else if (difficultyString.equals("expert")) {
             return DifficultyFragment.EXPERT +1;
         }
         return DifficultyFragment.BEGINNER +1;
