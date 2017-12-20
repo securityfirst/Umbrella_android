@@ -55,8 +55,10 @@ import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.models.Language;
 import org.secfirst.umbrella.models.NewCategory;
+import org.secfirst.umbrella.models.NewDifficulty;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.models.Tree;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -669,18 +671,23 @@ public class Global extends Application {
                             subCategory.setParent(category.getId());
                             getDaoCategory().create(subCategory);
                         }
-                        for (Segment segment : newCategory.getSegments()) {
-                            segment.setCategory(subCategory.getId());
-                            segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(segment.getDifficultyString()));
-                            getDaoSegment().create(segment);
-                        }
-                        for (CheckItem checkItem : newCategory.getCheckItems()) {
-                            checkItem.setCategory(subCategory.getId());
-                            checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(checkItem.getDifficultyString()));
-                            checkItem.setText("");
-                            getDaoCheckItem().create(checkItem);
-                        }
+                        ArrayList<NewDifficulty> nd = newCategory.getDifficulties();
+                        for (NewDifficulty difficulty : nd) {
 
+                            for (Segment segment : difficulty.getSegments()) {
+                                segment.setCategory(subCategory.getId());
+                                segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(difficulty.getId()));
+                                getDaoSegment().create(segment);
+                            }
+
+                            for (CheckItem checkItem : difficulty.getCheckItems()) {
+                                checkItem.setCategory(subCategory.getId());
+                                checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(difficulty.getId()));
+                                checkItem.setText("");
+                                getDaoCheckItem().create(checkItem);
+                            }
+
+                        }
                     }
                 }
             } catch (SQLiteException | SQLException  e) {
@@ -694,20 +701,19 @@ public class Global extends Application {
         UmbrellaRestClient.get("api/tree?content=html", null, null, context, new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 listener.onProgressChange(77);
                 Gson gson = new GsonBuilder().create();
-                Type listType = new TypeToken<ArrayList<NewCategory>>() {
-                }.getType();
-                final ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
-                if (receivedCategories!=null && receivedCategories.size()>0) {
+                Type treeType = new TypeToken<Tree>(){}.getType();
+                final Tree receivedTree = gson.fromJson(response.toString(), treeType);
+                if (receivedTree!=null) {
                     listener.onProgressChange(88);
                     listener.onStatusChange(getString(R.string.updating_the_database));
                     new Thread(){
                         @Override
                         public void run() {
-                            Global.INSTANCE.syncNewCategories(receivedCategories);
+                            Global.INSTANCE.syncNewCategories(receivedTree.getCategories());
                             ((Activity) context).runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -715,12 +721,14 @@ public class Global extends Application {
                                     listener.onStatusChange(getString(R.string.sync_complete));
                                     listener.onDone();
                                     setNeedsRefreshActivity(true);
-
                                 }
                             });
                         };
                     }.start();
+                } else {
+                    listener.onDone();
                 }
+
             }
 
             @Override
@@ -992,6 +1000,16 @@ public class Global extends Application {
 
     public ArrayList<Form> getForms(boolean alsoFirst) {
         ArrayList<Form> forms = new ArrayList<>();
+        if (getOrmHelper()!=null) {
+            try {
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Form.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), FormScreen.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), FormItem.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), FormOption.class);
+            } catch (SQLiteException | SQLException  e) {
+                Timber.e(e);
+            }
+        }
 
         if (alsoFirst) {
             Form form = new Form("Digital Security Incident");

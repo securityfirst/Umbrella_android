@@ -18,6 +18,7 @@ public class Form {
     @SerializedName("title")
     String title;
     @ForeignCollectionField(eager = true)
+    @SerializedName("screens")
     ForeignCollection<FormScreen> screens;
 
     public Form() {}

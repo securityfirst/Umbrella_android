@@ -79,9 +79,9 @@ public class DifficultyFragment extends Fragment {
                     onDifficultySelected(EXPERT);
                 }
             });
-            ((TextView) v.findViewById(R.id.beginner_description)).setText("Beginner");
-            ((TextView) v.findViewById(R.id.advanced_description)).setText("Advanced");
-            ((TextView) v.findViewById(R.id.expert_description)).setText("Expert");
+            ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
+            ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
+            ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
             btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
             btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
             btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
