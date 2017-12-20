@@ -24,8 +24,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -596,30 +594,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public void onDrawerStateChanged(int newState) {
         actionBarDrawerToggle.onDrawerStateChanged(newState);
-    }
-
-    private static class ExclusionForForms implements ExclusionStrategy {
-
-        public boolean shouldSkipClass(Class<?> arg0) {
-            return false;
-        }
-
-        public boolean shouldSkipField(FieldAttributes f) {
-            Timber.d("class: %s", f.getDeclaringClass().getName());
-            Timber.d("name: %s", f.getName());
-            switch (f.getDeclaringClass().getName()) {
-                case "org.secfirst.umbrella.models.Form":
-                    return !(f.getName().equals("title") || f.getName().equals("screens"));
-                case "org.secfirst.umbrella.models.FormScreen":
-                    return !(f.getName().equals("title") || f.getName().equals("items1"));
-//                case "org.secfirst.umbrella.models.FormItem":
-//                    return !(f.getName().equals("title") || f.getName().equals("type") || f.getName().equals("hint") || f.getName().equals("options"));
-//                case "org.secfirst.umbrella.models.FormOption":
-//                    return !(f.getName().equals("option"));
-            }
-            return true;
-        }
-
     }
 
 }
