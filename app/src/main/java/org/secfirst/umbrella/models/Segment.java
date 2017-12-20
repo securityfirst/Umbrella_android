@@ -95,14 +95,12 @@ public class Segment implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Segment{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(",title='").append(title).append('\'');
-        sb.append(", body='").append(body).append('\'');
-        sb.append(", difficulty='").append(difficulty).append('\'');
-        sb.append(", difficultyString='").append(difficultyString).append('\'');
-        sb.append(", category='").append(category).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Segment{" + "id='" + id + '\'' +
+                ",title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", difficulty='" + difficulty + '\'' +
+                ", difficultyString='" + difficultyString + '\'' +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

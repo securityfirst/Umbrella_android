@@ -655,7 +655,10 @@ public class Global extends Application {
                 TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
                 TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
                 TableUtils.clearTable(getOrmHelper().getConnectionSource(), Segment.class);
-                TableUtils.clearTable(getOrmHelper().getConnectionSource(), CheckItem.class);
+                TableUtils.clearTable(getOrmHelper().getConnectionSource(), Difficulty.class);
+                TableUtils.dropTable(getOrmHelper().getConnectionSource(), CheckItem.class, true);
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), CheckItem.class);
+
                 Category mySecurity = new Category();
                 mySecurity.setCategory(getString(R.string.my_security));
                 getDaoCategory().create(mySecurity);
@@ -664,9 +667,10 @@ public class Global extends Application {
                     getDaoCategory().create(category);
                     for (NewCategory newCategory : item.getSubcategories()) {
                         Category subCategory = newCategory.getCategory(Global.INSTANCE);
-                        if (subCategory.getCategory().equals("_")) {
+                        if (newCategory.getId().equals("_")) {
                             subCategory.setId(category.getId());
                             subCategory.setCategory(category.getCategory());
+                            subCategory.setHasDifficulty(0);
                             getDaoCategory().update(subCategory);
                         } else {
                             subCategory.setParent(category.getId());
@@ -678,12 +682,14 @@ public class Global extends Application {
                             for (Segment segment : difficulty.getSegments()) {
                                 segment.setCategory(subCategory.getId());
                                 segment.setDifficulty(UmbrellaUtil.getDifficultyFromString(difficulty.getId()));
+                                segment.setDifficultyString(difficulty.getId());
                                 getDaoSegment().create(segment);
                             }
 
                             for (CheckItem checkItem : difficulty.getCheckItems()) {
                                 checkItem.setCategory(subCategory.getId());
                                 checkItem.setDifficulty(UmbrellaUtil.getDifficultyFromString(difficulty.getId()));
+                                checkItem.setDifficultyString(difficulty.getId());
                                 checkItem.setText("");
                                 getDaoCheckItem().create(checkItem);
                             }

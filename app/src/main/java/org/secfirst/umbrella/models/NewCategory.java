@@ -115,4 +115,16 @@ public class NewCategory implements Serializable {
         this.difficulties = newDifficulties;
     }
 
+    @Override
+    public String toString() {
+        return "NewCategory{" + "id='" + id + '\'' +
+                ",subcategories='" + subcategories + '\'' +
+                ", name='" + name + '\'' +
+                ", difficulties='" + difficulties + '\'' +
+                ", difficultyBeginner='" + hasBeginner() + '\'' +
+                ", difficultyAdvanced='" + hasAdvanced() + '\'' +
+                ", difficultyExpert='" + hasExpert() + '\'' +
+                '}';
+    }
+
 }

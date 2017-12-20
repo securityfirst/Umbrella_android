@@ -14,6 +14,7 @@ public class CheckItem implements Serializable {
     public static final String FIELD_PARENT = "parent";
     public static final String FIELD_CATEGORY = "category";
     public static final String FIELD_DIFFICULTY = "difficulty";
+    public static final String FIELD_DIFFICULTY_STRING = "difficulty_string";
     public static final String FIELD_CUSTOM = "custom";
     public static final String FIELD_DISABLED = "disabled";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
@@ -33,6 +34,7 @@ public class CheckItem implements Serializable {
     @DatabaseField(columnName = FIELD_DIFFICULTY)
     @SerializedName("difficulty_old")
     private int difficulty;
+    @DatabaseField(columnName = FIELD_DIFFICULTY_STRING)
     @SerializedName("difficulty")
     private String difficultyString;
 
