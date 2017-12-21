@@ -168,4 +168,6 @@
     <string name="feed_location">Location</string>
     <string name="feed_set">SET</string>
     <string name="enter_location">Enter location</string>
+    <string name="dashboard_feed_empty_change_location">CHANGE LOCATION</string>
+    <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour. Pull to refresh to check again.</string>
 </resources>

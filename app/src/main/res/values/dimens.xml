@@ -96,4 +96,11 @@
     <dimen name="location_dialog_default_margin">15dp</dimen>
     <dimen name="location_dialog_big_margin_top">20dp</dimen>
     <dimen name="location_dialog_big_padding">20dp</dimen>
+    <dimen name="feed_empty_normal_padding">10dp</dimen>
+    <dimen name="feed_empty_small_padding">5dp</dimen>
+    <dimen name="feed_empty_big_margin_top">20dp</dimen>
+    <dimen name="feed_empty_smallest_margin_top">3dp</dimen>
+    <dimen name="feed_empty_small_margin_top">5dp</dimen>
+    <dimen name="feed_empty_smallest_margin_bottom">3dp</dimen>
+    <dimen name="feed_empty_card_view">2dp</dimen>
 </resources>
