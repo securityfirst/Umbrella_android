@@ -51,6 +51,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_start"
                         android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/no_feed_settings"
                         android:textColor="@color/black"
@@ -62,6 +63,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
                         android:layout_marginBottom="@dimen/dashboard_feed_smallest_margin_top"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_right"
                         android:padding="@dimen/dashboard_feed_small_padding"
                         android:singleLine="true"
                         android:text="@string/feed_set_now"
@@ -102,6 +104,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_start"
                         android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/feed_interval_text"
                         android:textColor="@color/black"
@@ -122,6 +125,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
                         android:layout_marginBottom="@dimen/dashboard_feed_smallest_margin_top"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_right"
                         android:padding="@dimen/dashboard_feed_small_padding"
                         android:singleLine="true"
                         android:text="@string/feed_set"
@@ -164,6 +168,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_start"
                         android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/feed_location_label"
                         android:textSize="@dimen/text_size_smallest" />
@@ -175,6 +180,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
                         android:layout_marginBottom="@dimen/dashboard_feed_smallest_margin_bottom"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_right"
                         android:padding="@dimen/dashboard_feed_small_padding"
                         android:singleLine="true"
                         android:text="@string/feed_set"
@@ -218,6 +224,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dashboard_feed_smallest_margin_bottom"
                         android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_start"
                         android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/set_sources"
                         android:textColor="@color/black"
@@ -229,6 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
                         android:layout_marginBottom="@dimen/dashboard_feed_smallest_margin_bottom"
+                        android:layout_marginRight="@dimen/dashboard_feed_big_margin_right"
                         android:padding="@dimen/dashboard_feed_small_padding"
                         android:singleLine="true"
                         android:text="@string/feed_set"
@@ -240,7 +248,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="50dp" />
+                android:layout_height="25dp" />
 
         </LinearLayout>
 
