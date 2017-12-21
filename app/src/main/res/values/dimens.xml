@@ -70,4 +70,7 @@
     <dimen name="login_button_padding_left">5dp</dimen>
     <dimen name="login_button_padding_right">5dp</dimen>
     <dimen name="login_panel_margin_horizontal">40dp</dimen>
+
+    <dimen name="cardview_default_radius">2dp</dimen>
+
 </resources>
