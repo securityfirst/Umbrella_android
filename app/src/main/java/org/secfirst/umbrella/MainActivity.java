@@ -2,6 +2,7 @@ package org.secfirst.umbrella;
 
 import android.annotation.TargetApi;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 import uk.co.samuelwall.materialtaptargetprompt.extras.backgrounds.RectanglePromptBackground;
 import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
@@ -79,6 +81,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (UmbrellaUtil.isAppMasked(MainActivity.this)) {
@@ -94,7 +101,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (!global.getTermsAccepted()) {
             startActivity(new Intent(this, TourActivity.class));
         } else {
-            if (titleSpinner!=null) {
+            if (titleSpinner != null) {
                 return;
             }
             titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
@@ -208,13 +215,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         try {
             Category childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
             if (childCategory.getDifficultyBeginner()) {
-                navArray.add(title +" "+getString(R.string.beginner));
+                navArray.add(title + " " + getString(R.string.beginner));
             }
             if (childCategory.getDifficultyAdvanced()) {
-                navArray.add(title +" "+getString(R.string.advanced));
+                navArray.add(title + " " + getString(R.string.advanced));
             }
             if (childCategory.getDifficultyExpert()) {
-                navArray.add(title +" "+getString(R.string.expert));
+                navArray.add(title + " " + getString(R.string.expert));
             }
         } catch (SQLException e) {
             Timber.e(e);
@@ -309,7 +316,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (actionBarDrawerToggle!=null) actionBarDrawerToggle.syncState();
+        if (actionBarDrawerToggle != null) actionBarDrawerToggle.syncState();
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
@@ -398,7 +405,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            itemExport.setVisible(hasDifficulty!=null && !hasDifficulty.isEmpty());
+            itemExport.setVisible(hasDifficulty != null && !hasDifficulty.isEmpty());
         }
         favouriteItem = menu.findItem(R.id.favourite);
         return true;
@@ -409,7 +416,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public boolean onOptionsItemSelected(MenuItem item) {
         int sdk = android.os.Build.VERSION.SDK_INT;
         int id = item.getItemId();
-        if (sdk >= android.os.Build.VERSION_CODES.HONEYCOMB && id==android.R.id.home) {
+        if (sdk >= android.os.Build.VERSION_CODES.HONEYCOMB && id == android.R.id.home) {
             if (drawer.isDrawerOpen(drawerList))
                 drawer.closeDrawer(drawerList);
             else
@@ -429,7 +436,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         @Override
                         public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             UmbrellaUtil.setMaskMode(MainActivity.this, true);
-                            if (global.hasPasswordSet(false)) global.logout(MainActivity.this, false);
+                            if (global.hasPasswordSet(false))
+                                global.logout(MainActivity.this, false);
                             Intent i = new Intent(MainActivity.this, CalcActivity.class);
                             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i);
@@ -461,7 +469,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            if (hasDifficulty!=null && !hasDifficulty.isEmpty()) {
+            if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                 String body = "";
                 List<CheckItem> items = null;
                 QueryBuilder<CheckItem, String> queryBuilder = global.getDaoCheckItem().queryBuilder();
@@ -473,9 +481,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     if (BuildConfig.BUILD_TYPE.equals("debug"))
                         Log.getStackTraceString(e.getCause());
                 }
-                if (items!=null) {
+                if (items != null) {
                     for (CheckItem checkItem : items) {
-                        body += "\n" + (checkItem.getParent()==0 ? "" : "   ") + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + ((checkItem.getParent()==0) ? checkItem.getTitle() : checkItem.getText());
+                        body += "\n" + (checkItem.getParent() == 0 ? "" : "   ") + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + ((checkItem.getParent() == 0) ? checkItem.getTitle() : checkItem.getText());
                     }
                 }
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
@@ -506,15 +514,15 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
                     .setPromptFocal(new RectanglePromptFocal())
                     .setPromptBackground(new RectanglePromptBackground())
-                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                    {
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                         @Override
-                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                        {
-                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("change_level", true);;
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                Global.INSTANCE.setCoachMarkShown("change_level", true);
+                            ;
                             if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
                                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
-                                if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1 ) {
+                                if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1) {
                                     new MaterialTapTargetPrompt.Builder(MainActivity.this)
                                             .setTarget(pagerTabStrip.getChildAt(1))
                                             .setSecondaryText(getString(R.string.swipe_left_to_read))
@@ -523,13 +531,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                                             .setPromptFocal(new RectanglePromptFocal())
                                             .setPromptBackground(new RectanglePromptBackground())
                                             .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                            {
+                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                                                 @Override
-                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                                                {
-                                                    if (state == MaterialTapTargetPrompt.STATE_REVEALED)
-                                                    {
+                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                    if (state == MaterialTapTargetPrompt.STATE_REVEALED) {
                                                         Global.INSTANCE.setCoachMarkShown("swipe_lessons", true);
                                                     }
                                                 }
@@ -570,12 +575,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .setSecondaryText(getString(R.string.swipe_left_to_read))
                     .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                    {
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                         @Override
-                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                        {
-                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("swipe_side", true);
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                Global.INSTANCE.setCoachMarkShown("swipe_side", true);
                         }
                     })
                     .show();

@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
     android:paddingLeft="@dimen/dashboard_feed_padding"
-    android:paddingRight="@dimen/dashboard_feed_padding">
+    android:paddingRight="@dimen/dashboard_feed_padding"
+    tools:ignore="MissingPrefix">
 
     <ScrollView
         android:id="@+id/no_feed_list"
@@ -23,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="@dimen/dashboard_feed_margin_top"
-                android:paddingTop="@dimen/dashboard_feed_smallest_padding"
+                android:padding="@dimen/dashboard_feed_normal_padding"
                 android:visibility="visible"
                 card_view:cardCornerRadius="@dimen/card_view_default_radius">
 
@@ -34,21 +36,28 @@
                     android:padding="@dimen/dashboard_feed_small_padding">
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dashboard_feed_normal_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_small_margin_top"
                         android:text="@string/feed_set_your_feed"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_larger" />
 
                     <TextView
                         android:id="@+id/no_feed_settings"
+                        fontPath="fonts/Roboto-Regular.ttf"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/no_feed_settings"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_size_smallest" />
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
@@ -67,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="@dimen/dashboard_feed_margin_top"
-                android:padding="@dimen/dashboard_feed_smallest_padding"
+                android:padding="@dimen/dashboard_feed_normal_padding"
                 android:visibility="visible"
                 card_view:cardCornerRadius="@dimen/card_view_default_radius">
 
@@ -79,18 +88,23 @@
                     android:padding="@dimen/gridHalfx">
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dashboard_feed_smallest_margin_top"
+                        android:layout_marginLeft="@dimen/dashboard_feed_normal_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_small_margin_top"
                         android:text="@string/feed_interval"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_larger" />
 
                     <TextView
+                        fontPath="fonts/Roboto-Regular.ttf"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/feed_interval_text"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_size_smallest" />
 
                     <TextView
@@ -98,10 +112,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
+                        android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
                         android:layout_marginTop="@dimen/dashboard_feed_medium_margin_top"
                         android:textColor="@android:color/holo_green_dark" />
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
@@ -121,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="@dimen/dashboard_feed_margin_top"
-                android:padding="@dimen/dashboard_feed_smallest_padding"
+                android:padding="@dimen/dashboard_feed_normal_padding"
                 android:visibility="visible"
                 card_view:cardCornerRadius="@dimen/card_view_default_radius">
 
@@ -133,25 +149,28 @@
                     android:padding="@dimen/dashboard_feed_small_padding">
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dashboard_feed_smallest_margin_top"
+                        android:layout_marginLeft="@dimen/dashboard_feed_normal_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_small_margin_top"
                         android:text="@string/feed_location"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_larger" />
 
                     <TextView
                         android:id="@+id/location_label"
+                        fontPath="fonts/Roboto-Regular.ttf"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dashboard_feed_small_margin_top"
+                        android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/feed_location_label"
-                        android:textColor="@color/umbrella_green"
                         android:textSize="@dimen/text_size_smallest" />
 
                     <TextView
                         android:id="@+id/settings_autocomplete"
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
@@ -171,7 +190,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginTop="@dimen/dashboard_feed_margin_top"
-                android:padding="@dimen/dashboard_feed_smallest_padding"
+                android:padding="@dimen/dashboard_feed_normal_padding"
                 android:visibility="visible"
                 card_view:cardCornerRadius="@dimen/card_view_default_radius">
 
@@ -183,23 +202,29 @@
                     android:padding="@dimen/dashboard_feed_small_padding">
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dashboard_feed_smallest_margin_top"
+                        android:layout_marginLeft="@dimen/dashboard_feed_normal_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_small_margin_top"
                         android:text="@string/feed_sources"
-                        android:textColor="@color/cardview_dark_background"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_larger" />
 
                     <TextView
                         android:id="@+id/feed_sources_value"
+                        fontPath="fonts/Roboto-Regular.ttf"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dashboard_feed_smallest_margin_bottom"
+                        android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
+                        android:layout_marginTop="@dimen/dashboard_feed_margin_top"
                         android:text="@string/set_sources"
+                        android:textColor="@color/black"
                         android:textSize="@dimen/text_size_small" />
 
                     <TextView
+                        fontPath="fonts/Roboto-Medium.ttf"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|bottom"
@@ -212,6 +237,10 @@
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
         </LinearLayout>
 

@@ -59,6 +59,7 @@ dependencies {
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'uk.co.samuelwall:material-tap-target-prompt:2.3.0'
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
 }
 
 // generate using: `gradle -q calculateChecksums`

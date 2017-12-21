@@ -78,7 +78,6 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         setHasOptionsMenu(true);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -506,7 +505,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         mLocationLabel.setText(currentLocation);
         mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
         mGlobal.setRegistry("mLocation", currentLocation);
-        if(mOpenList)
-            getFeeds(getContext(),false);
+        if (mOpenList)
+            getFeeds(getContext(), false);
     }
 }
