@@ -9,6 +9,7 @@
     <color name="green_transparent">#AA7ADEA7</color>
     <color name="green_button">#CC9BBF2E</color>
     <color name="green_dashboard">#9bbf2e</color>
+    <color name="grey_location">#9b9b9b</color>
     <color name="white_transparent">#CCFFFFFF</color>
 
     <color name="umbrella_green">#FF9ABE2E</color>

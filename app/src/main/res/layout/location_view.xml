@@ -7,14 +7,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="@dimen/location_dialog_medium_height"
         android:layout_weight="1"
         android:background="@android:color/holo_orange_dark"
         android:gravity="center">
 
         <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="@dimen/location_dialog_smallest_width"
+            android:layout_height="@dimen/location_dialog_smallest_height"
             android:background="@drawable/location" />
     </LinearLayout>
 
@@ -24,25 +24,26 @@
         android:layout_weight="1"
         android:background="@color/white"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/location_dialog_small_padding">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/place_search_dialog_location_TIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginLeft="@dimen/location_dialog_default_margin"
+            android:layout_marginRight="@dimen/location_dialog_default_margin"
+            android:layout_marginTop="@dimen/location_dialog_big_margin_top">
 
             <android.support.v7.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/place_search_dialog_location_ET"
+                fontPath="fonts/Roboto-Medium.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter location"
+                android:hint="@string/enter_location"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
-                android:textColorHint="@android:color/holo_green_dark"
-                android:textSize="16sp" />
+                android:textColorHint="@color/green_dashboard"
+                android:textSize="@dimen/text_size_small" />
         </android.support.design.widget.TextInputLayout>
 
         <RelativeLayout
@@ -50,29 +51,36 @@
             android:layout_height="wrap_content"
             android:gravity="right"
             android:orientation="horizontal"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingLeft="@dimen/location_dialog_big_padding"
+            android:paddingRight="@dimen/location_dialog_big_padding">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/place_search_dialog_cancel_TV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/place_search_dialog_ok_TV"
+                android:layout_toStartOf="@+id/place_search_dialog_ok_TV"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:padding="10dp"
-                android:text="@string/cancel" />
+                android:focusable="true"
+                android:padding="@dimen/location_dialog_small_padding"
+                android:text="@string/cancel"
+                android:textColor="@color/grey_location" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/place_search_dialog_ok_TV"
+                fontPath="fonts/Roboto-Medium.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
-                android:padding="10dp"
+                android:focusable="true"
+                android:padding="@dimen/location_dialog_small_padding"
                 android:text="@string/ok"
-                android:textColor="@android:color/holo_green_dark" />
+                android:textColor="@color/green_dashboard" />
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

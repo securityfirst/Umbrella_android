@@ -167,4 +167,5 @@
     <string name="feed_interval_text">Set how often you want Umbrella to check for the latest security news.</string>
     <string name="feed_location">Location</string>
     <string name="feed_set">SET</string>
+    <string name="enter_location">Enter location</string>
 </resources>
