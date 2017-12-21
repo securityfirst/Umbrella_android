@@ -36,7 +36,7 @@
 
             <android.support.v7.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/place_search_dialog_location_ET"
-                fontPath="fonts/Roboto-Medium.ttf"
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_location"

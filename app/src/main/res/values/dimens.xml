@@ -96,11 +96,38 @@
     <dimen name="location_dialog_default_margin">15dp</dimen>
     <dimen name="location_dialog_big_margin_top">20dp</dimen>
     <dimen name="location_dialog_big_padding">20dp</dimen>
-    <dimen name="feed_empty_normal_padding">10dp</dimen>
-    <dimen name="feed_empty_small_padding">5dp</dimen>
+
+
+    <!--Feed empty view-->
     <dimen name="feed_empty_big_margin_top">20dp</dimen>
     <dimen name="feed_empty_smallest_margin_top">3dp</dimen>
     <dimen name="feed_empty_small_margin_top">5dp</dimen>
     <dimen name="feed_empty_smallest_margin_bottom">3dp</dimen>
     <dimen name="feed_empty_card_view">2dp</dimen>
+    <dimen name="feed_empty_normal_padding">10dp</dimen>
+    <dimen name="feed_empty_small_padding">5dp</dimen>
+
+
+    <!--Feed list view-->
+    <dimen name="feed_list_small_margin_top">10dp</dimen>
+    <dimen name="feed_list_normal_margin_top">20dp</dimen>
+    <dimen name="feed_list_big_margin_bottom">20dp</dimen>
+    <dimen name="feed_list_card_view_radius">2dp</dimen>
+    <dimen name="feed_list_small_padding">10dp</dimen>
+    <dimen name="feed_list_smallest_margin_left">5dp</dimen>
+    <dimen name="feed_list_small_margin_bottom">5dp</dimen>
+    <dimen name="feed_list_normal_padding">10dp</dimen>
+
+
+    <!--Feed Location view-->
+    <dimen name="feed_location_width">344dp</dimen>
+    <dimen name="feed_location_smallest_margin_top">8dp</dimen>
+    <dimen name="feed_location_button_width">48dp</dimen>
+    <dimen name="feed_location_empty_view">18dp</dimen>
+    <dimen name="feed_location_small_padding">10dp</dimen>
+    <dimen name="feed_location_height_expandable_layout">120dp</dimen>
+    <dimen name="feed_location_normal_margin_bottom">15dp</dimen>
+    <dimen name="feed_location_smallest_margin_right">5dp</dimen>
+    <dimen name="feed_location_dialog_small_padding">10dp</dimen>
+
 </resources>

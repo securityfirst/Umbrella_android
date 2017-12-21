@@ -10,6 +10,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -55,7 +59,7 @@ public class FeedListFragment extends Fragment {
     private Global mGlobal;
     private ExpandableLinearLayout mExpandableLayout;
     private RelativeLayout mButtonLayout;
-    private TextView mChangeLocation;
+    private TextView mChangeLocationLabel;
     private TextView mLocationLabel;
     private TextView mExpandLocationLabel;
     private TextView mColonLabel;
@@ -81,7 +85,7 @@ public class FeedListFragment extends Fragment {
         mLocationLabel = (TextView) view.findViewById(R.id.current_location);
         mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
         mGlobal = ((BaseActivity) getActivity()).getGlobal();
-        mChangeLocation = (TextView) view.findViewById(R.id.expand_change_location);
+        mChangeLocationLabel = (TextView) view.findViewById(R.id.expand_change_location);
         mColonLabel = (TextView) view.findViewById(R.id.colon_id);
         initHeadViwOfList();
         initFooterViewOfList();
@@ -97,7 +101,7 @@ public class FeedListFragment extends Fragment {
     }
 
     private void initChangeLocation() {
-        mChangeLocation.setOnClickListener(new View.OnClickListener() {
+        mChangeLocationLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager()
@@ -111,23 +115,20 @@ public class FeedListFragment extends Fragment {
     }
 
     private void initExpandableList() {
+        mExpandableLayout.setInRecyclerView(true);
         mExpandableLayout.setInterpolator(Utils.createInterpolator(Utils.ACCELERATE_DECELERATE_INTERPOLATOR));
         mExpandableLayout.setListener(new ExpandableLayoutListenerAdapter() {
             @Override
             public void onPreOpen() {
-                mLocationLabel.setVisibility(View.GONE);
-                mColonLabel.setVisibility(View.GONE);
-                mExpandLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
-                mExpandLocationLabel.setVisibility(View.VISIBLE);
                 createRotateAnimator(mButtonLayout, 0f, 180f).start();
+                animationOpen();
             }
 
             @Override
             public void onPreClose() {
                 createRotateAnimator(mButtonLayout, 180f, 0f).start();
-                mExpandLocationLabel.setVisibility(View.GONE);
-                mLocationLabel.setVisibility(View.VISIBLE);
-                mColonLabel.setVisibility(View.VISIBLE);
+                mLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
+                animationClose();
             }
         });
 
@@ -138,6 +139,108 @@ public class FeedListFragment extends Fragment {
             }
         });
 
+
+    }
+
+    private void animationOpen() {
+        mLocationLabel.setVisibility(View.INVISIBLE);
+        mColonLabel.setVisibility(View.INVISIBLE);
+        mExpandLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
+        mExpandLocationLabel.setVisibility(View.VISIBLE);
+        mChangeLocationLabel.setVisibility(View.VISIBLE);
+        mExpandLocationLabel.setAnimation(fadeInAnimation());
+    }
+
+    private void animationClose() {
+        mChangeLocationLabel.setVisibility(View.INVISIBLE);
+        final Animation changeLocationAnimation = fadeOutAnimation();
+        changeLocationAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mLocationLabel.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+
+        final Animation locationLabelAnimation = fadeInAnimation();
+        locationLabelAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mColonLabel.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mLocationLabel.setVisibility(View.VISIBLE);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mLocationLabel.setAnimation(locationLabelAnimation);
+
+    }
+
+
+    private Animation fadeInAnimation() {
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator());
+        fadeIn.setDuration(500);
+        fadeIn.setStartOffset(300);
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mExpandLocationLabel.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        return fadeIn;
+    }
+
+    private Animation fadeOutAnimation() {
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setStartOffset(300);
+        fadeOut.setDuration(500);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mExpandLocationLabel.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        return fadeOut;
     }
 
 

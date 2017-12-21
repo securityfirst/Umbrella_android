@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
+        android:padding="@dimen/feed_list_normal_padding">
 
         <include
             layout="@layout/location_expandable_view"
@@ -21,16 +21,14 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/fragment_feed_ist_refresh"
             android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/feed_list_normal_padding"
             android:layout_height="wrap_content">
 
             <ListView
                 android:id="@+id/feed_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                android:layout_height="wrap_content"
+                />
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 

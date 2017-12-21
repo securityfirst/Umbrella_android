@@ -170,4 +170,8 @@
     <string name="enter_location">Enter location</string>
     <string name="dashboard_feed_empty_change_location">CHANGE LOCATION</string>
     <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour. Pull to refresh to check again.</string>
+    <string name="feed_list_location">Location</string>
+    <string name="feed_list_colon">:\u0020</string>
+    <string name="feed_list_change">CHANGE</string>
+    <string name="feed_list_via">Via\u0020</string>
 </resources>
