@@ -669,7 +669,7 @@ public class Global extends Application {
                         if (newCategory.getId().equals("_")) {
                             subCategory.setId(category.getId());
                             subCategory.setCategory(category.getCategory());
-                            subCategory.setHasDifficulty(0);
+                            subCategory.setHasDifficulty(item.getId().equals("about") ? 0 : 1);
                             getDaoCategory().update(subCategory);
                         } else {
                             subCategory.setParent(category.getId());
