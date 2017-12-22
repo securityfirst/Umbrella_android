@@ -70,7 +70,7 @@
     <string name="change_password_title">Change your password</string>
     <string name="country_selected">Country selected</string>
     <string name="lat_updated">Last updated</string>
-    <string name="set_location_source_in_settings">Please set sources and location in the settings</string>
+    <string name="set_location_source_in_settings">Please set location in the settings</string>
     <string name="no_sources_selected">No sources selected</string>
     <string name="choose_refresh_inteval">Choose refresh interval:</string>
     <string name="select_feed_sources">Select The Feed Sources</string>

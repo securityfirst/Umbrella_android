@@ -6,6 +6,8 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +20,30 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import org.apache.http.Header;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.secfirst.umbrella.fragments.FeedEmptyFragment;
+import org.secfirst.umbrella.fragments.FeedListFragment;
 import org.secfirst.umbrella.fragments.TabbedFeedFragment;
+import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.OnLocationEventListener;
+import org.secfirst.umbrella.util.UmbrellaRestClient;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +57,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
 
     private OnLocationEventListener onLocationEventListener;
-    private Global global;
+    private Global mGlobal;
     private List<Address> mAddressList;
     private Address mAddress;
     @NotEmpty
@@ -49,12 +65,14 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private Validator mValidator;
     private TextView mButtonOk;
     private TextView mButtonCancel;
+    private FragmentActivity mActivity;
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment) {
         Bundle args = new Bundle();
         LocationDialog locationDialog = new LocationDialog();
         locationDialog.setArguments(args);
         locationDialog.onLocationEventListener = tabbedFeedFragment;
+        locationDialog.mActivity = tabbedFeedFragment.getActivity();
         return locationDialog;
     }
 
@@ -62,7 +80,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_view, container, false);
-        global = ((BaseActivity) getActivity()).getGlobal();
+        mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mButtonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
         mButtonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
         mAutocompleteLocation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.place_search_dialog_location_ET);
@@ -95,8 +113,8 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && !global.hasPasswordSet(false)) {
-                    global.setPassword(getActivity(), null);
+                if (hasFocus && !mGlobal.hasPasswordSet(false)) {
+                    mGlobal.setPassword(getActivity(), null);
                 }
 
             }
@@ -107,22 +125,22 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (global.hasPasswordSet(false)) {
+                if (mGlobal.hasPasswordSet(false)) {
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
                     if (mAddressList != null) {
                         mAddress = mAddressList.get(position);
                         if (mAddress != null) {
                             String chosenAddress = mAutocompleteLocation.getText().toString();
                             mAutocompleteLocation.setText(chosenAddress);
-                            global.setRegistry("location", chosenAddress);
-                            global.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
-                            global.setRegistry("country", mAddress.getCountryName());
+                            mGlobal.setRegistry("location", chosenAddress);
+                            mGlobal.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
+                            mGlobal.setRegistry("country", mAddress.getCountryName());
                         }
                     } else {
                         mAddress = null;
                     }
                 } else {
-                    global.setPassword(getActivity(), null);
+                    mGlobal.setPassword(getActivity(), null);
                 }
             }
         });
@@ -132,6 +150,15 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     public void onValidationSucceeded() {
         onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString());
         dismiss();
+        verifyIfSourceWasSelected();
+    }
+
+
+    private void verifyIfSourceWasSelected() {
+        if (!mGlobal.getSelectedFeedSourcesLabel(false).equals("")
+                && !mGlobal.getRefreshLabel(null).equals("")) {
+            getFeeds(getContext());
+        }
     }
 
     @Override
@@ -198,7 +225,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                             }
                         }
                         resultList = toStrings;
-                        //resultList.add(0, global.getString(R.string.current_location));
+                        //resultList.add(0, mGlobal.getString(R.string.current_location));
 
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();
@@ -216,5 +243,87 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                 }
             };
         }
+    }
+
+    public boolean getFeeds(final Context context) {
+        Registry selISO2 = mGlobal.getRegistry("iso2");
+        if (selISO2 != null) {
+            List<Registry> selections;
+            try {
+                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                if (selections.size() > 0) {
+                    String separator = ",";
+                    int total = selections.size() * separator.length();
+                    for (Registry item : selections) {
+                        total += item.getValue().length();
+                    }
+                    StringBuilder sb = new StringBuilder(total);
+                    for (Registry item : selections) {
+                        sb.append(separator).append(item.getValue());
+                    }
+
+                    //TODO remove since "since=0" before commit this code.
+                    // *mGlobal.getFeedItemsRefreshed()
+
+                    String sources = sb.substring(separator.length());
+                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
+                            + "&since=" + 0;
+
+                    UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Gson gson = new GsonBuilder().create();
+                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                            }.getType();
+                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
+                            if (receivedItems != null && receivedItems.size() > 0) {
+                                for (FeedItem receivedItem : receivedItems) {
+                                    try {
+                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                FragmentTransaction transaction = mActivity.getSupportFragmentManager()
+                                        .beginTransaction();
+                                transaction.replace(R.id.root_frame, FeedListFragment.
+                                        newInstance(receivedItems));
+                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            } else {
+                                FragmentTransaction transaction = mActivity.getSupportFragmentManager()
+                                        .beginTransaction();
+                                transaction.replace(R.id.root_frame, FeedEmptyFragment.
+                                        newInstance(mGlobal.getRegistry("mLocation").getValue()));
+                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+                                Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
+                                        " Most likely the certificate has expired and was renewed. Update " +
+                                        "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                    });
+                } else {
+                    Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+            return false;
+        }
+        return false;
     }
 }

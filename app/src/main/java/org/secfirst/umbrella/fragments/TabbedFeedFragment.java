@@ -522,8 +522,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
 
 
     public boolean isFeedSet() {
-        return !mGlobal.getSelectedFeedSourcesLabel(false).equals("")
-                && !mGlobal.getRefreshLabel(null).equals("")
+        return !mGlobal.getRefreshLabel(null).equals("")
                 && !mGlobal.getChosenCountry().equals("");
     }
 
