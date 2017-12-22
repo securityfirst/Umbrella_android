@@ -63,6 +63,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private String mLocation;
     private boolean mChangeLocation;
     private boolean mOpenList;
+    private LinearLayout mUndefinedButton;
 
     public static TabbedFeedFragment newInstance(boolean isChangeLocation) {
         Bundle args = new Bundle();
@@ -88,6 +89,8 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         mNoFeedSettings = (TextView) rootView.findViewById(R.id.no_feed_settings);
         mRefreshIntervalValue = (TextView) rootView.findViewById(R.id.refresh_interval_value);
         mFeedSourcesValue = (TextView) rootView.findViewById(R.id.feed_sources_value);
+        mUndefinedButton = (LinearLayout) rootView.findViewById(R.id.feed_undefined_button);
+
         LinearLayout footer = new LinearLayout(getActivity());
         footer.setOrientation(LinearLayout.HORIZONTAL);
         AbsListView.LayoutParams lp = new AbsListView.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 50);
@@ -126,7 +129,31 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
         setFeedSourceLabel();
         getFeeds(getActivity(), false);
+        setUndefinedListenerButton();
         return rootView;
+    }
+
+    private void setUndefinedListenerButton() {
+        mUndefinedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+                    List<Registry> selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                    if (selections.isEmpty()) {
+                        showFeedSources();
+                    } else if (mLocationLabel.getText().equals(getString(R.string.feed_location_label))) {
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this);
+                        custom.show(fragmentManager, "");
+                    } else {
+                        getFeeds(getContext(), false);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void setFeedSourceLabel() {

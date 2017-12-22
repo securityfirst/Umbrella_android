@@ -12,9 +12,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.secfirst.umbrella.fragments.TabbedFeedFragment;
 import org.secfirst.umbrella.util.Global;
@@ -31,14 +37,18 @@ import timber.log.Timber;
  * Created by HAL-9000 on 12/12/2017.
  */
 
-public class LocationDialog extends DialogFragment {
+public class LocationDialog extends DialogFragment implements Validator.ValidationListener {
 
 
     private OnLocationEventListener onLocationEventListener;
     private Global global;
     private List<Address> mAddressList;
     private Address mAddress;
+    @NotEmpty
     private AppCompatAutoCompleteTextView mAutocompleteLocation;
+    private Validator mValidator;
+    private TextView mButtonOk;
+    private TextView mButtonCancel;
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment) {
         Bundle args = new Bundle();
@@ -53,23 +63,34 @@ public class LocationDialog extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_view, container, false);
         global = ((BaseActivity) getActivity()).getGlobal();
-        TextView buttonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
-        TextView buttonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
-        buttonOk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString());
-                dismiss();
-            }
-        });
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
+        mButtonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
+        mButtonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
         mAutocompleteLocation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.place_search_dialog_location_ET);
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
+        initOkButtons();
+        initAutoCompleteOnItemClick();
+        initAutoCompleteOnFocusChange();
+        return view;
+    }
+
+    private void initOkButtons() {
+        mButtonOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mValidator.validate();
+            }
+        });
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
+    private void initAutoCompleteOnFocusChange() {
+
         mAutocompleteLocation.setAdapter(new GeoCodingAutoCompleteAdapter(getActivity(), R.layout.autocomplete_list_item));
         mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -80,7 +101,9 @@ public class LocationDialog extends DialogFragment {
 
             }
         });
+    }
 
+    private void initAutoCompleteOnItemClick() {
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,19 +126,26 @@ public class LocationDialog extends DialogFragment {
                 }
             }
         });
-        mAutocompleteLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    }
 
+    @Override
+    public void onValidationSucceeded() {
+        onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString());
+        dismiss();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(getContext());
+            // Display error messages ;)
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        return view;
+        }
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
