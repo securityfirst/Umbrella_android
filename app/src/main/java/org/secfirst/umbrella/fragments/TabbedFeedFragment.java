@@ -166,13 +166,13 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         if (mFeedSourcesValue.getText().equals(getString(R.string.set_sources))) {
             mFeedSourcesValue.setTextColor(mNoFeedSettings.getCurrentTextColor());
         } else
-            mFeedSourcesValue.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
+            mFeedSourcesValue.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
 
 
         if (mLocationLabel.getText().equals(getString(R.string.feed_location_label))) {
             mLocationLabel.setTextColor(mNoFeedSettings.getCurrentTextColor());
         } else
-            mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
+            mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
 
     }
 
@@ -353,24 +353,12 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                             e.printStackTrace();
                                         }
                                     }
-                                    FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-                                            .beginTransaction();
-                                    transaction.replace(R.id.root_frame, FeedListFragment.
-                                            newInstance(receivedItems));
-                                    transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-                                    transaction.addToBackStack(null);
-                                    transaction.commit();
+                                    startFeedListFragment(receivedItems);
+
                                 } else {
                                     if (feedSourceClicked) {
-                                        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-                                                .beginTransaction();
-                                        transaction.replace(R.id.root_frame, FeedEmptyFragment.
-                                                newInstance(mGlobal.getRegistry("mLocation").getValue()));
-                                        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-                                        transaction.addToBackStack(null);
-                                        transaction.commit();
+                                        startFeedEmptyFragment();
                                     }
-
                                 }
                             }
 
@@ -397,6 +385,26 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         }
         mChangeLocation = false;
         return false;
+    }
+
+    private void startFeedEmptyFragment() {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                .beginTransaction();
+        transaction.replace(R.id.root_frame, FeedEmptyFragment.
+                newInstance(mGlobal.getRegistry("mLocation").getValue()));
+        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void startFeedListFragment(ArrayList<FeedItem> receivedItems) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                .beginTransaction();
+        transaction.replace(R.id.root_frame, FeedListFragment.
+                newInstance(receivedItems));
+        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     public void showRefresh() {
