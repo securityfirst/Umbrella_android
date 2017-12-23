@@ -46,6 +46,8 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/feed_empty_smallest_margin_top"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="@color/umbrella_purple"
                         android:textSize="@dimen/text_size_large" />
 
@@ -54,9 +56,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/feed_empty_small_margin_top"
+                        android:lineSpacingExtra="7sp"
                         android:padding="@dimen/feed_empty_small_padding"
                         android:text="@string/dashboard_empty_text"
-                        android:lineSpacingExtra="7sp"
                         android:textSize="@dimen/text_size_like_really_small" />
 
                     <TextView

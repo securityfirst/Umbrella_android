@@ -67,7 +67,11 @@ public class FeedEmptyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.root_frame, new TabbedFeedFragment());
+                TabbedFeedFragment tabbedFeedFragment = new TabbedFeedFragment();
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(FeedListFragment.CHANGED_LOCATION, true);
+                tabbedFeedFragment.setArguments(bundle);
+                transaction.replace(R.id.root_frame, tabbedFeedFragment);
                 transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
                 transaction.addToBackStack(null);
                 transaction.commit();

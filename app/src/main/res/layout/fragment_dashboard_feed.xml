@@ -118,7 +118,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginLeft="@dimen/dashboard_feed_big_margin_start"
                         android:layout_marginTop="@dimen/dashboard_feed_medium_margin_top"
-                        android:textColor="@android:color/holo_green_dark" />
+                        android:textColor="@color/umbrella_green" />
 
                     <TextView
                         fontPath="fonts/Roboto-Medium.ttf"

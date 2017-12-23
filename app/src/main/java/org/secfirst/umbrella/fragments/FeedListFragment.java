@@ -63,6 +63,7 @@ public class FeedListFragment extends Fragment {
     private TextView mLocationLabel;
     private TextView mExpandLocationLabel;
     private TextView mColonLabel;
+    public static final String CHANGED_LOCATION = "changed_location";
 
 
     public static FeedListFragment newInstance(List<FeedItem> items) {
@@ -104,9 +105,12 @@ public class FeedListFragment extends Fragment {
         mChangeLocationLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(CHANGED_LOCATION, true);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                         .beginTransaction();
-                transaction.replace(R.id.root_frame, TabbedFeedFragment.newInstance(true));
+                transaction.replace(R.id.root_frame, TabbedFeedFragment.newInstance(bundle));
                 transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
                 transaction.addToBackStack(null);
                 transaction.commit();
@@ -346,5 +350,4 @@ public class FeedListFragment extends Fragment {
         animator.setInterpolator(Utils.createInterpolator(Utils.LINEAR_INTERPOLATOR));
         return animator;
     }
-
 }

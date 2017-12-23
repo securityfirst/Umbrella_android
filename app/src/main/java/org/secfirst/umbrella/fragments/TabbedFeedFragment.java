@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.fragments;
 
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -60,18 +59,15 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private TextView mFeedSourcesValue;
     private Global mGlobal;
     private TextView mLocationLabel;
-    private String mLocation;
-    private boolean mChangeLocation;
     private boolean mOpenList;
     private LinearLayout mUndefinedButton;
 
-    public static TabbedFeedFragment newInstance(boolean isChangeLocation) {
-        Bundle args = new Bundle();
+    public static TabbedFeedFragment newInstance(Bundle args) {
         TabbedFeedFragment fragment = new TabbedFeedFragment();
         fragment.setArguments(args);
-        fragment.mChangeLocation = isChangeLocation;
         return fragment;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,10 +122,12 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
             }
         });
 
-        mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
-        setFeedSourceLabel();
-        getFeeds(getActivity(), false);
         setUndefinedListenerButton();
+        setDefaultValue();
+
+        if (getArguments() == null)
+            getFeeds();
+
         return rootView;
     }
 
@@ -137,7 +135,6 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         mUndefinedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 try {
                     List<Registry> selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                     if (selections.isEmpty()) {
@@ -147,7 +144,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this);
                         custom.show(fragmentManager, "");
                     } else {
-                        getFeeds(getContext(), false);
+                        getFeeds();
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -156,9 +153,24 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         });
     }
 
-    private void setFeedSourceLabel() {
-        if (!mGlobal.getSelectedFeedSourcesLabel(false).equals(""))
+    /**
+     * Set default value from Interval, Source, and Location.
+     */
+    private void setDefaultValue() {
+        if (getArguments() == null) {
+            //Feeds
             mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
+            //Interval
+            mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
+            //Location
+            String location = mGlobal.getRegistry("mLocation") != null ?
+                    mGlobal.getRegistry("mLocation").getValue() : "";
+            mLocationLabel.setText(location);
+        } else {
+            Global.INSTANCE.deleteRegistriesByName("feed_sources");
+            Global.INSTANCE.deleteRegistriesByName("mLocation");
+            Global.INSTANCE.deleteRegistriesByName("refresh_value");
+        }
     }
 
     private void verifyDefaultColor() {
@@ -166,29 +178,20 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         if (mFeedSourcesValue.getText().equals(getString(R.string.set_sources))) {
             mFeedSourcesValue.setTextColor(mNoFeedSettings.getCurrentTextColor());
         } else
-            mFeedSourcesValue.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
+            mFeedSourcesValue.setTextColor(ContextCompat.getColor(getContext(), R.color.umbrella_green));
 
 
         if (mLocationLabel.getText().equals(getString(R.string.feed_location_label))) {
             mLocationLabel.setTextColor(mNoFeedSettings.getCurrentTextColor());
         } else
-            mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
+            mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.umbrella_green));
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Registry selLoc = mGlobal.getRegistry("mLocation");
-        if (selLoc != null) {
-            mLocationLabel.setText(selLoc.getValue());
-            mLocation = selLoc.getValue();
-
-        } else {
-            mGlobal.getString(R.string.set_location);
-        }
         verifyDefaultColor();
-
     }
 
 
@@ -291,9 +294,9 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         return super.onOptionsItemSelected(item);
     }
 
-    public void refreshFeed(boolean feedSourceClicked) {
+    public void refreshFeed() {
         if (isFeedSet()) {
-            getFeeds(getActivity(), feedSourceClicked);
+            getFeeds();
         } else {
             Toast.makeText(getActivity(), R.string.set_location_source_in_settings, Toast.LENGTH_SHORT).show();
         }
@@ -302,89 +305,82 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private void deleteOldFeedItems() {
         Registry selLoc = mGlobal.getRegistry("mLocation");
         try {
-            if (selLoc != null && mLocation != null && (!mLocation.equals(selLoc.getValue())))
+            if (selLoc != null)
                 mGlobal.getDaoFeedItem().delete(mGlobal.getFeedItems());
         } catch (SQLException e) {
             Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
-    public boolean getFeeds(final Context context, final boolean feedSourceClicked) {
+    public void getFeeds() {
         Registry selISO2 = mGlobal.getRegistry("iso2");
-        if (!mChangeLocation) {
-            if (selISO2 != null) {
-                List<Registry> selections;
-                try {
-                    selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                    if (selections.size() > 0) {
-                        String separator = ",";
-                        int total = selections.size() * separator.length();
-                        for (Registry item : selections) {
-                            total += item.getValue().length();
-                        }
-                        StringBuilder sb = new StringBuilder(total);
-                        for (Registry item : selections) {
-                            sb.append(separator).append(item.getValue());
-                        }
 
-                        //TODO remove since "since=0" before commit this code.
-                        // *mGlobal.getFeedItemsRefreshed()
-
-                        String sources = sb.substring(separator.length());
-                        final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                                + "&since=" + 0;
-
-                        UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
-
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                                super.onSuccess(statusCode, headers, response);
-                                Gson gson = new GsonBuilder().create();
-                                Type listType = new TypeToken<ArrayList<FeedItem>>() {
-                                }.getType();
-                                ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                                if (receivedItems != null && receivedItems.size() > 0) {
-                                    for (FeedItem receivedItem : receivedItems) {
-                                        try {
-                                            mGlobal.getDaoFeedItem().create(receivedItem);
-                                        } catch (SQLException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                    startFeedListFragment(receivedItems);
-
-                                } else {
-                                    if (feedSourceClicked) {
-                                        startFeedEmptyFragment();
-                                    }
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                super.onFailure(statusCode, headers, throwable, errorResponse);
-                                if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
-                                    Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
-                                            " Most likely the certificate has expired and was renewed. Update " +
-                                            "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                        });
-                    } else {
-                        Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
+        if (selISO2 != null) {
+            List<Registry> selections;
+            try {
+                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                if (selections.size() > 0) {
+                    String separator = ",";
+                    int total = selections.size() * separator.length();
+                    for (Registry item : selections) {
+                        total += item.getValue().length();
                     }
-                    return true;
-                } catch (SQLException e) {
-                    Timber.e(e);
+                    StringBuilder sb = new StringBuilder(total);
+                    for (Registry item : selections) {
+                        sb.append(separator).append(item.getValue());
+                    }
+
+                    //TODO remove since "since=0" before commit this code.
+                    // *mGlobal.getFeedItemsRefreshed()
+
+                    String sources = sb.substring(separator.length());
+                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
+                            + "&since=" + 0;
+
+                    UmbrellaRestClient.get(mUrl, null, "", getContext(), new JsonHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Gson gson = new GsonBuilder().create();
+                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                            }.getType();
+                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
+                            if (receivedItems != null && receivedItems.size() > 0) {
+                                for (FeedItem receivedItem : receivedItems) {
+                                    try {
+                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                startFeedListFragment(receivedItems);
+
+                            } else {
+                                //if (getArguments() != null && getArguments().getBoolean(CHANGED_LOCATION)) {
+                                startFeedEmptyFragment();
+                                //}
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+                                Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
+                                        " Most likely the certificate has expired and was renewed. Update " +
+                                        "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                    });
+                } else {
+                    Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
                 }
-                return false;
+            } catch (SQLException e) {
+                Timber.e(e);
             }
         }
-        mChangeLocation = false;
-        return false;
     }
 
     private void startFeedEmptyFragment() {
@@ -446,7 +442,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
                                 mGlobal.setRefreshValue(value);
                                 mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
-                                refreshFeed(false);
+                                refreshFeed();
                                 dialog.dismiss();
                             }
                         }
@@ -512,7 +508,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         }
                         deleteOldFeedItems();
                         mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
-                        refreshFeed(true);
+                        refreshFeed();
                         verifyDefaultColor();
                         dialog.dismiss();
                     }
@@ -530,16 +526,21 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
 
 
     public boolean isFeedSet() {
+
+        String location = mGlobal.getRegistry("mLocation") != null ?
+                mGlobal.getRegistry("mLocation").getValue() : "";
+
         return !mGlobal.getRefreshLabel(null).equals("")
+                && !location.equals("")
                 && !mGlobal.getChosenCountry().equals("");
     }
 
     @Override
     public void locationEvent(String currentLocation) {
         mLocationLabel.setText(currentLocation);
-        mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_dark));
+        mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
         mGlobal.setRegistry("mLocation", currentLocation);
         if (mOpenList)
-            getFeeds(getContext(), false);
+            getFeeds();
     }
 }

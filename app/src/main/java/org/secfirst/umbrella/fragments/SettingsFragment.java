@@ -365,13 +365,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                         Global.INSTANCE.deleteRegistriesByName("feed_sources");
                         for (Integer item : selectedItems) {
                             try {
-                                Global.INSTANCE.getDaoRegistry().create(new Registry("feed_sources", String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item))));
+                                Global.INSTANCE.getDaoRegistry().create(new Registry("feed_sources",
+                                        String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item))));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
                         }
                         String selectedFeedSources = Global.INSTANCE.getSelectedFeedSourcesLabel(true);
-                        feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources : Global.INSTANCE.getString(R.string.feed_sources));
+                        feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources
+                                : Global.INSTANCE.getString(R.string.feed_sources));
+
                         dialog.dismiss();
                     }
                 })
