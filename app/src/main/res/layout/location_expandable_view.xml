@@ -54,6 +54,7 @@
         <View
             android:layout_width="@dimen/feed_location_empty_view"
             android:layout_height="@dimen/feed_location_empty_view"
+            android:layout_marginLeft="@dimen/location_big_margin_left"
             android:background="@drawable/triangle" />
     </RelativeLayout>
 
