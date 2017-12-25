@@ -21,13 +21,15 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/fragment_feed_ist_refresh"
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/feed_list_normal_padding"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/feed_list_normal_padding">
 
             <ListView
                 android:id="@+id/feed_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:footerDividersEnabled="true"
+                android:headerDividersEnabled="true"
                 />
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>

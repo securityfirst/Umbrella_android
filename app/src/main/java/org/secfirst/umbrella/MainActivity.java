@@ -99,6 +99,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (!global.getTermsAccepted()) {
+
             startActivity(new Intent(this, TourActivity.class));
         } else {
             if (titleSpinner != null) {

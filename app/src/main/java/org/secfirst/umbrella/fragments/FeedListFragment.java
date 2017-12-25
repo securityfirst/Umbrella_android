@@ -88,8 +88,8 @@ public class FeedListFragment extends Fragment {
         mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mChangeLocationLabel = (TextView) view.findViewById(R.id.expand_change_location);
         mColonLabel = (TextView) view.findViewById(R.id.colon_id);
-        initHeadViwOfList();
-        initFooterViewOfList();
+        //initHeadViwOfList();
+        //initFooterViewOfList();
         initSwipeRefresh();
         initExpandableList();
         initChangeLocation();
