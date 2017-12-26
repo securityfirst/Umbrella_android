@@ -225,8 +225,6 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                             }
                         }
                         resultList = toStrings;
-                        //resultList.add(0, mGlobal.getString(R.string.current_location));
-
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();
                     }

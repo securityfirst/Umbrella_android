@@ -18,7 +18,7 @@
         <item name="android:textColorPrimary">@color/black</item>
     </style>
 
-    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar"></style>
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="action_btn" parent="@android:style/Widget.Button">
         <item name="android:layout_height">100dp</item>
@@ -89,4 +89,25 @@
         <item name="android:textStyle">normal</item>
         <item name="android:textColor">#000000</item>
     </style>
+
+    <style name="LinearProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/umbrella_purple_dark</item>
+    </style>
+
+    <style name="Autocomplete" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:background">@color/white</item>
+        <item name="colorControlNormal">@color/green_button</item>
+        <item name="colorControlActivated">@color/green_button</item>
+    </style>
+
+    <style name="GreenTextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColorHint">@color/green_button</item>
+        <item name="android:textColor">@color/green_button</item>
+    </style>
+
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/green_button</item>
+        <item name="android:textColorHint">@color/green_button</item>
+    </style>
+
 </resources>

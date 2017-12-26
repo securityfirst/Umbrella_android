@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,6 +62,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private TextView mLocationLabel;
     private boolean mOpenList;
     private LinearLayout mUndefinedButton;
+    private ProgressBar mFeedProgress;
 
     public static TabbedFeedFragment newInstance(Bundle args) {
         TabbedFeedFragment fragment = new TabbedFeedFragment();
@@ -86,6 +88,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         mRefreshIntervalValue = (TextView) rootView.findViewById(R.id.refresh_interval_value);
         mFeedSourcesValue = (TextView) rootView.findViewById(R.id.feed_sources_value);
         mUndefinedButton = (LinearLayout) rootView.findViewById(R.id.feed_undefined_button);
+        mFeedProgress = (ProgressBar) rootView.findViewById(R.id.feed_indeterminate_bar);
 
         LinearLayout footer = new LinearLayout(getActivity());
         footer.setOrientation(LinearLayout.HORIZONTAL);
@@ -126,7 +129,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         setDefaultValue();
 
         if (getArguments() == null)
-            getFeeds();
+            refreshFeed();
 
         return rootView;
     }
@@ -313,6 +316,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     public void getFeeds() {
+
         Registry selISO2 = mGlobal.getRegistry("iso2");
 
         if (selISO2 != null) {
@@ -333,10 +337,11 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                     //TODO remove since "since=0" before commit this code.
                     // *mGlobal.getFeedItemsRefreshed()
 
+                    mFeedProgress.setVisibility(View.VISIBLE);
+
                     String sources = sb.substring(separator.length());
                     final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
                             + "&since=" + 0;
-
                     UmbrellaRestClient.get(mUrl, null, "", getContext(), new JsonHttpResponseHandler() {
 
                         @Override
@@ -355,7 +360,6 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                     }
                                 }
                                 startFeedListFragment(receivedItems);
-
                             } else {
                                 //if (getArguments() != null && getArguments().getBoolean(CHANGED_LOCATION)) {
                                 startFeedEmptyFragment();
@@ -371,6 +375,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                         " Most likely the certificate has expired and was renewed. Update " +
                                         "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
                             }
+                            mFeedProgress.setVisibility(View.INVISIBLE);
                         }
 
                     });
@@ -381,6 +386,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                 Timber.e(e);
             }
         }
+
     }
 
     private void startFeedEmptyFragment() {
@@ -506,7 +512,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                 Timber.e(e);
                             }
                         }
-                        deleteOldFeedItems();
+                        //deleteOldFeedItems();
                         mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
                         refreshFeed();
                         verifyDefaultColor();

@@ -9,6 +9,17 @@
     android:paddingRight="@dimen/dashboard_feed_padding"
     tools:ignore="MissingPrefix">
 
+
+    <ProgressBar
+        android:id="@+id/feed_indeterminate_bar"
+        android:theme="@style/LinearProgress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:visibility="invisible"
+        android:indeterminate="true" />
+
     <ScrollView
         android:id="@+id/no_feed_list"
         android:layout_width="match_parent"
@@ -254,5 +265,4 @@
         </LinearLayout>
 
     </ScrollView>
-
 </LinearLayout>
