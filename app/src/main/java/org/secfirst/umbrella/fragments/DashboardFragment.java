@@ -41,16 +41,17 @@ public class DashboardFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(-1*getArguments().getInt("dashboard", 0));
+        mViewPager.setCurrentItem(-1 * getArguments().getInt("dashboard", 0));
+
         return v;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
-            if (global==null) global = ((BaseActivity) getActivity()).getGlobal();
+            if (global == null) global = ((BaseActivity) getActivity()).getGlobal();
             getActivity().setTitle(global.getString(R.string.my_security));
         }
     }
@@ -66,7 +67,7 @@ public class DashboardFragment extends Fragment {
             Fragment fragment;
             switch (position) {
                 case 1:
-                    fragment = new TabbedFeedRootFragment();
+                    fragment = TabbedFeedRootFragment.newInstance(mViewPager);
                     break;
                 case 2:
                     fragment = new TabbedFormsFragment();

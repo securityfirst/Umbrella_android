@@ -110,7 +110,7 @@ public class FeedListFragment extends Fragment {
                 bundle.putBoolean(CHANGED_LOCATION, true);
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                         .beginTransaction();
-                transaction.replace(R.id.root_frame, TabbedFeedFragment.newInstance(bundle));
+                transaction.replace(R.id.root_frame, TabbedFeedFragment.newInstance(bundle, null));
                 transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
                 transaction.addToBackStack(null);
                 transaction.commit();

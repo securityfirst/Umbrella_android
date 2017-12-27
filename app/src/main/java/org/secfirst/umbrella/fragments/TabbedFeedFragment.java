@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Patterns;
@@ -63,9 +64,12 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private boolean mOpenList;
     private LinearLayout mUndefinedButton;
     private ProgressBar mFeedProgress;
+    private ViewPager mViewPager;
 
-    public static TabbedFeedFragment newInstance(Bundle args) {
+
+    public static TabbedFeedFragment newInstance(Bundle args, ViewPager viewPager) {
         TabbedFeedFragment fragment = new TabbedFeedFragment();
+        fragment.mViewPager = viewPager;
         fragment.setArguments(args);
         return fragment;
     }
@@ -301,7 +305,8 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         if (isFeedSet()) {
             getFeeds();
         } else {
-            Toast.makeText(getActivity(), R.string.set_location_source_in_settings, Toast.LENGTH_SHORT).show();
+            if (mViewPager == null || mViewPager.getCurrentItem() == 1)
+                Toast.makeText(getActivity(), R.string.set_location_source_in_settings, Toast.LENGTH_SHORT).show();
         }
     }
 
