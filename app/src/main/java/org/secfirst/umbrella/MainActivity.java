@@ -178,7 +178,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             if (getIntent() != null && getIntent().getData() != null && !getIntent().getData().getPathSegments().isEmpty()) {
                 for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
                     for (DrawerChildItem childItem : groupItem) {
-                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
+                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().
+                                getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
                             this.childItem = childItem;
                         }
                     }
@@ -239,7 +240,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         drawer.closeDrawer(drawerList);
         if (fragType < 1) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global, fragType));
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    DashboardFragment.newInstance(global, fragType));
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
@@ -251,16 +253,20 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+            if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null
+                    && getIntent().getData() != null && getIntent().getData().getPathSegments() != null
+                    && getIntent().getData().getPathSegments().size() > 1) {
                 hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
                     global.getDaoDifficulty().update(hasDifficulty.get(0));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
-            } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+            } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData()
+                    .getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 try {
-                    global.getDaoDifficulty().create(new Difficulty(childItem.getPosition(), Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
+                    global.getDaoDifficulty().create(new Difficulty(childItem.getPosition(),
+                            Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
@@ -280,11 +286,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null) {
                     if (getIntent().getData().getHost().equalsIgnoreCase("checklist"))
                         checklist = true;
-                    else if (getIntent().getData().getHost().equalsIgnoreCase("lesson") && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 2)
+                    else if (getIntent().getData().getHost().equalsIgnoreCase("lesson") &&
+                            getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 2)
                         page = Integer.valueOf(getIntent().getData().getPathSegments().get(2));
                 }
                 setIntent(null);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
+                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                        TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
@@ -297,17 +305,20 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else if (fragType == 2) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
+            android.support.v4.app.FragmentTransaction trans = trans = fragmentTransaction.replace(R.id.container,
+                    TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
             if (!isFirst) trans.addToBackStack(null);
             trans.commit();
         } else if (fragType == 3) {
             setTitle(childItem.getTitle());
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
             if (!isFirst) trans.addToBackStack(null);
             trans.commit();
         } else if (fragType == 4) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    new TabbedFragment.TabbedSegmentFragment());
             if (!isFirst) trans.addToBackStack(null);
             trans.commit();
         }
@@ -352,7 +363,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem _searchMenuItem = menu.findItem(R.id.action_search_view);
-        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(_searchMenuItem);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView)
+                MenuItemCompat.getActionView(_searchMenuItem);
         searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -476,7 +488,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 QueryBuilder<CheckItem, String> queryBuilder = global.getDaoCheckItem().queryBuilder();
                 Where<CheckItem, String> where = queryBuilder.where();
                 try {
-                    where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected() + 1));
+                    where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).
+                            and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected() + 1));
                     items = queryBuilder.query();
                 } catch (SQLException e) {
                     if (BuildConfig.BUILD_TYPE.equals("debug"))
@@ -484,7 +497,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
                 if (items != null) {
                     for (CheckItem checkItem : items) {
-                        body += "\n" + (checkItem.getParent() == 0 ? "" : "   ") + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + ((checkItem.getParent() == 0) ? checkItem.getTitle() : checkItem.getText());
+                        body += "\n" + (checkItem.getParent() == 0 ? "" : "   ") +
+                                (checkItem.getValue() ? "\u2713" : "\u2717") + " " +
+                                ((checkItem.getParent() == 0) ? checkItem.getTitle() : checkItem.getText());
                     }
                 }
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
