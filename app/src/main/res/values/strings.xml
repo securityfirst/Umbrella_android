@@ -174,5 +174,6 @@
     <string name="feed_list_colon">:\u0020</string>
     <string name="feed_list_change">CHANGE</string>
     <string name="feed_list_via">Via\u0020</string>
-    <string name="error_address_not_found">Invalid address.</string>
+    <string name="device_shake_enter_text">If you enable this, the app will be masked from casual viewers. When masked, you can find it under the name SimpleCalc.</string>
+    <string name="error_address_not_found">This address is not valid.</string>
 </resources>

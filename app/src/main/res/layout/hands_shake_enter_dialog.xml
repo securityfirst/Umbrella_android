@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:ignore="MissingPrefix">
+
+
+    <ImageView
+        android:layout_width="84dp"
+        android:layout_height="84dp"
+        android:layout_marginTop="22dp"
+        android:background="@color/green_button" />
+
+    <TextView
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="SimpleCalc"
+        android:textColor="#4a4a4a" />
+
+    <TextView
+        fontPath="fonts/Roboto-Medium.ttf"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:gravity="center"
+        android:text="Enable masking mode"
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_large" />
+
+    <TextView
+        fontPath="fonts/Roboto-Regular.ttf"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="14dp"
+        android:gravity="left"
+        android:text="@string/device_shake_enter_text"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+
+
+    <android.support.v7.widget.ContentFrameLayout
+        android:id="@+id/hands_shake_next_button"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NEXT"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/device_shake_sick_green"
+            android:textSize="@dimen/text_size_smallest" />
+    </android.support.v7.widget.ContentFrameLayout>
+
+
+</LinearLayout>

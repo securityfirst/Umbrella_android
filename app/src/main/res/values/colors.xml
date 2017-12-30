@@ -25,4 +25,5 @@
     <color name="coachmark_background_dark">#BB000000</color>
     <color name="coachmark_focal_background">#AAF2BC2B</color>
     <color name="feed_list_site_name">#828282</color>
+    <color name="device_shake_sick_green">#9bbf2e</color>
 </resources>
