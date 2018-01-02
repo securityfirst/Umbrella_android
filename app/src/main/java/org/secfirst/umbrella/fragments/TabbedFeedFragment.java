@@ -103,8 +103,9 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         locationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final boolean openSource = false;
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this);
+                LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this, openSource);
                 custom.show(fragmentManager, "");
             }
         });
@@ -139,17 +140,18 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     private void setUndefinedListenerButton() {
+        final boolean openSource = true;
         mUndefinedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     List<Registry> selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                    if (selections.isEmpty()) {
-                        showFeedSources();
-                    } else if (mLocationLabel.getText().equals(getString(R.string.feed_location_label))) {
+                    if (mLocationLabel.getText().equals(getString(R.string.feed_location_label))) {
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this);
+                        LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this, openSource);
                         custom.show(fragmentManager, "");
+                    } else if (selections.isEmpty()) {
+                        showFeedSources();
                     } else {
                         getFeeds();
                     }
@@ -160,24 +162,28 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         });
     }
 
+
     /**
      * Set default value from Interval, Source, and Location.
      */
     private void setDefaultValue() {
-        if (getArguments() == null) {
-            //Feeds
-            mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
-            //Interval
-            mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
-            //Location
-            String location = mGlobal.getRegistry("mLocation") != null ?
-                    mGlobal.getRegistry("mLocation").getValue() : "";
-            mLocationLabel.setText(location);
-        } else {
-            Global.INSTANCE.deleteRegistriesByName("feed_sources");
+
+        if (getArguments() != null && getArguments().getBoolean(FeedListFragment.CHANGED_LOCATION))
             Global.INSTANCE.deleteRegistriesByName("mLocation");
-            Global.INSTANCE.deleteRegistriesByName("refresh_value");
-        }
+
+        //Feeds
+        mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
+        //Interval
+        mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
+        //Location
+        String location = mGlobal.getRegistry("mLocation") != null ?
+                mGlobal.getRegistry("mLocation").getValue() : getString(R.string.feed_location_label);
+        mLocationLabel.setText(location);
+
+        //Source value
+        String sourceValue = mGlobal.getSelectedFeedSourcesLabel(false).equals("") ?
+                getString(R.string.set_sources) : mGlobal.getSelectedFeedSourcesLabel(false);
+        mFeedSourcesValue.setText(sourceValue);
     }
 
     private void verifyDefaultColor() {
@@ -518,7 +524,10 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                             }
                         }
                         //deleteOldFeedItems();
-                        mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
+                        String sourceValue = mGlobal.getSelectedFeedSourcesLabel(false).equals("") ?
+                                getString(R.string.set_sources) : mGlobal.getSelectedFeedSourcesLabel(false);
+                        mFeedSourcesValue.setText(sourceValue);
+
                         refreshFeed();
                         verifyDefaultColor();
                         dialog.dismiss();
@@ -547,11 +556,16 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     @Override
-    public void locationEvent(String currentLocation) {
+    public void locationEvent(String currentLocation, boolean sourceFeedEnable) {
         mLocationLabel.setText(currentLocation);
         mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
         mGlobal.setRegistry("mLocation", currentLocation);
+
+        if (sourceFeedEnable && mGlobal.getSelectedFeedSourcesLabel(false).equals(""))
+            showFeedSources();
+
         if (mOpenList)
             getFeeds();
+
     }
 }

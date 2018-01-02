@@ -5,5 +5,5 @@ package org.secfirst.umbrella.util;
  */
 
 public interface OnLocationEventListener {
-    void locationEvent(String currentLocation);
+    void locationEvent(String currentLocation, boolean sourceFeedEnable);
 }

@@ -12,6 +12,7 @@ import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -66,13 +67,15 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private TextView mButtonOk;
     private TextView mButtonCancel;
     private FragmentActivity mActivity;
+    private boolean mSourceFeedEnable;
 
-    public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment) {
+    public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment, boolean openSource) {
         Bundle args = new Bundle();
         LocationDialog locationDialog = new LocationDialog();
         locationDialog.setArguments(args);
         locationDialog.onLocationEventListener = tabbedFeedFragment;
         locationDialog.mActivity = tabbedFeedFragment.getActivity();
+        locationDialog.mSourceFeedEnable = openSource;
         return locationDialog;
     }
 
@@ -148,7 +151,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
     @Override
     public void onValidationSucceeded() {
-        onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString());
+        onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString(), mSourceFeedEnable);
         dismiss();
         verifyIfSourceWasSelected();
     }
@@ -323,5 +326,13 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
             return false;
         }
         return false;
+    }
+
+    private void hiddenKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
