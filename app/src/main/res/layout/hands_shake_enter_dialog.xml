@@ -6,58 +6,58 @@
     android:layout_gravity="center"
     android:gravity="center|top"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="@dimen/hand_shake_normal_padding"
     tools:ignore="MissingPrefix">
 
 
     <ImageView
-        android:layout_width="84dp"
-        android:layout_height="84dp"
-        android:layout_marginTop="22dp"
-        android:background="@color/green_button" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/hands_shake_big_margin_top"
+        android:background="@drawable/ic_calc" />
 
     <TextView
         fontPath="fonts/Roboto-Regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="SimpleCalc"
-        android:textColor="#4a4a4a" />
+        android:layout_marginTop="@dimen/hands_shake_smallest_margin_top"
+        android:text="@string/hands_shake_calc_name"
+        android:textColor="@color/hands_shake_color" />
 
     <TextView
         fontPath="fonts/Roboto-Medium.ttf"
-        android:layout_width="260dp"
+        android:layout_width="@dimen/hands_shake_width"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="@dimen/hands_shake_biggest_margin_top"
         android:gravity="center"
-        android:text="Enable masking mode"
+        android:text="@string/hands_shake_enable_masking_mode"
         android:textColor="@color/black"
         android:textSize="@dimen/text_size_large" />
 
     <TextView
         fontPath="fonts/Roboto-Regular.ttf"
-        android:layout_width="200dp"
+        android:layout_width="@dimen/hands_shake_width_description"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="@dimen/hands_shake_normal_margin_top"
         android:gravity="left"
         android:text="@string/device_shake_enter_text"
         android:textColor="@color/black"
-        android:textSize="13sp" />
+        android:textSize="@dimen/hands_shake_normal_text" />
 
 
     <android.support.v7.widget.ContentFrameLayout
         android:id="@+id/hands_shake_next_button"
-        android:layout_width="74dp"
-        android:layout_height="36dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="15dp">
+        android:layout_width="@dimen/hands_shake_width_button"
+        android:layout_height="@dimen/hands_shake_height_button"
+        android:layout_marginLeft="@dimen/hands_shake_biggest_margin_left"
+        android:layout_marginTop="@dimen/hands_shake_normal_margin_top">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NEXT"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="@dimen/hands_shake_small_margin_left"
+            android:text="@string/hands_shake_button_label"
             android:textColor="@color/device_shake_sick_green"
             android:textSize="@dimen/text_size_smallest" />
     </android.support.v7.widget.ContentFrameLayout>

@@ -4,6 +4,7 @@ package org.secfirst.umbrella.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.ContentFrameLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +38,14 @@ public class HandsShakeDialog extends DialogFragment implements View.OnClickList
 
         mNextButton = (ContentFrameLayout) view.findViewById(R.id.hands_shake_next_button);
         mNextButton.setOnClickListener(this);
-
         return view;
     }
 
     @Override
     public void onClick(View view) {
-
+        dismiss();
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        InfoHandsShakeDialog infoHandsShakeDialog = InfoHandsShakeDialog.newInstance();
+        infoHandsShakeDialog.show(fragmentManager, "");
     }
 }

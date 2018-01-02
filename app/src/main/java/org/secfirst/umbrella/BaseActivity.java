@@ -16,6 +16,7 @@ import android.os.IBinder;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -118,7 +119,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
         bindService(mIntent, mConnection, BIND_AUTO_CREATE);
     }
 
-    ;
 
     @Override
     protected void onResume() {
@@ -220,8 +220,13 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
 
     @Override
     public void hearShake() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
-        handsShake.show(fragmentManager, "");
+        if (!UmbrellaUtil.isAppMasked(this)) {
+            if (global.hasPasswordSet(false))
+                global.logout(this, false);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
+            handsShake.show(fragmentManager, "");
+            Log.e("test", "hearShake - BaseActivity");
+        }
     }
 }

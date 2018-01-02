@@ -132,6 +132,35 @@
     <dimen name="feed_location_dialog_small_padding">10dp</dimen>
     <dimen name="location_big_margin_left">20dp</dimen>
 
-    <dimen name="card_view_default_radius">0dp</dimen>
+    <!--Hands Shake Dialog-->
+    <dimen name="hands_shake_biggest_margin_top">28dp</dimen>
+    <dimen name="hands_shake_big_margin_top">22dp</dimen>
+    <dimen name="hands_shake_smallest_margin_top">5dp</dimen>
+    <dimen name="hands_shake_width">260dp</dimen>
+    <dimen name="hands_shake_width_description">235dp</dimen>
+    <dimen name="hands_shake_normal_margin_top">14dp</dimen>
+    <dimen name="hands_shake_normal_text">13sp</dimen>
+    <dimen name="hands_shake_width_button">74dp</dimen>
+    <dimen name="hands_shake_height_button">36dp</dimen>
+    <dimen name="hands_shake_biggest_margin_left">100dp</dimen>
+    <dimen name="hands_shake_small_margin_left">20dp</dimen>
+    <dimen name="hand_shake_normal_padding">10dp</dimen>
+
+    <!--Info Hands Shake Dialog-->
+    <dimen name="hands_shake_info_normal_padding">10dp</dimen>
+    <dimen name="hands_shake_info_normal_margin_top">22dp</dimen>
+    <dimen name="hands_shake_info_biggest_margin_top">28dp</dimen>
+    <dimen name="hands_shake_info_width_title">260dp</dimen>
+    <dimen name="hands_shake_info_width_description">235dp</dimen>
+    <dimen name="hands_shake_info_small_margin_top">14dp</dimen>
+    <dimen name="hands_shake_info_norma_text_size">13sp</dimen>
+    <dimen name="hands_shake_info_smallest_margin_top">15dp</dimen>
+    <dimen name="hands_shake_info_width_cancel_button">36dp</dimen>
+    <dimen name="hands_shake_info_normal_margin_left">20dp</dimen>
+    <dimen name="hands_shake_info_width_ok">60dp</dimen>
+    <dimen name="hands_shake_info_height_ok">36dp</dimen>
+    <dimen name="hands_shake_info_smallest_margin_left">8dp</dimen>
+    <dimen name="hands_shake_info_biggest_margin_left">25dp</dimen>
+
 
 </resources>
