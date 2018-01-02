@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/hands_shake_info_small_margin_top"
             android:gravity="left"
-            android:text="@string/device_shake_enter_text"
+            android:text="@string/hands_shake_info_description"
             android:textColor="@color/black"
             android:textSize="@dimen/hands_shake_info_norma_text_size" />
 
