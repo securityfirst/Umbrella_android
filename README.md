@@ -39,6 +39,9 @@ Lessons are where users can learn about topics and things that they can do to im
 **Checklists:**
 Checklists are quick and easy references to help users implement the advice in the lessons. You can tick them off as you complete each item. Items can be added, disabled deleted and edited. If you favourite them by clicking the star, you will then see them in "My Checklists." Checklists can also be shared in through other apps such as your email.
 
+**Forms:**
+Forms allow a user to quickly fill out and share important information about issues such as their travel plan in a high risk location or report on a digital/physical security incident.
+
 **Dashboard:**
 The dashboard contains security feeds from places like the UN Relief Web and the US Centers for Disease Control. You enter your location (and how often you want to be updated). Every a new update is released (e.g a disease outbreak in your location), the information comes up on the dashboard.
 
@@ -126,7 +129,6 @@ These are the tools currrently covered in the tool guide. (A number of them are 
 * Psiphon
 * Rescuva
 * Signal
-* TextSecure
 * Tor for macOS
 * Tor for Windows
 * TrueCrypt
