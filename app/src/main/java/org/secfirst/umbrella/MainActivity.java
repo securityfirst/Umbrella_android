@@ -463,8 +463,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         }
         if (id == R.id.action_logout) {
             global.logout(this, true);
-            throw new NullPointerException("Error test");
-            //return true;
+            return true;
         }
         if (id == R.id.action_set_password) {
             global.setPassword(this, null);
