@@ -28,7 +28,6 @@ android {
             ext.enableCrashlytics = false
         }
         beta {
-            //applicationIdSuffix '.beta'
             debuggable false
             signingConfig signingConfigs.debug
             ext.enableCrashlytics = true
