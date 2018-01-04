@@ -147,6 +147,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secfirst.umbrella.MainActivity" />
         </activity>
+    -->
     </application>
 
 </manifest>

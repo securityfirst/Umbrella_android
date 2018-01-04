@@ -14,3 +14,5 @@ app/app-debug.apk
 app/app-release.apk
 *.apk
 app/release/output.json
+app/fabric.properties
+

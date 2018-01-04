@@ -22,6 +22,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+            minifyEnabled false
+            ext.enableCrashlytics = false
+        }
+        beta {
+            //applicationIdSuffix '.beta'
+            debuggable false
+            signingConfig signingConfigs.debug
+            ext.enableCrashlytics = true
+        }
+
     }
     sourceSets {
         main {
