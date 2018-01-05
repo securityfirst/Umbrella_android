@@ -187,7 +187,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
         @Override
         public int getCount() {
-            return resultList.size();
+            return resultList.size() - 1;
         }
 
         @Override
@@ -219,17 +219,22 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                         ArrayList<String> toStrings = new ArrayList<>();
                         for (Address current : list) {
                             if (!current.getAddressLine(0).equals("")) {
-                                String toAdd = current.getAddressLine(0);
-                                if (current.getAddressLine(1) != null)
-                                    toAdd += " " + current.getAddressLine(1);
-                                if (current.getAddressLine(2) != null)
-                                    toAdd += " " + current.getAddressLine(2);
-                                toStrings.add(toAdd);
+                                try {
+                                    String toAdd = current.getAddressLine(0);
+                                    if (current.getAddressLine(1) != null)
+                                        toAdd += " " + current.getAddressLine(1);
+                                    if (current.getAddressLine(2) != null)
+                                        toAdd += " " + current.getAddressLine(2);
+                                    toStrings.add(toAdd);
+                                } catch (Exception e) {
+                                    Timber.e("Some fields are null in Location list.", e);
+                                }
                             }
                         }
                         resultList = toStrings;
                         filterResults.values = resultList;
                         filterResults.count = resultList.size();
+                        notifyDataSetChanged();
                     }
                     return filterResults;
                 }
