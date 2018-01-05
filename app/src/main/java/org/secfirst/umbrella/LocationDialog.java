@@ -12,7 +12,6 @@ import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -135,9 +134,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                         if (mAddress != null) {
                             String chosenAddress = mAutocompleteLocation.getText().toString();
                             mAutocompleteLocation.setText(chosenAddress);
-                            mGlobal.setRegistry("location", chosenAddress);
-                            mGlobal.setRegistry("iso2", mAddress.getCountryCode().toLowerCase());
-                            mGlobal.setRegistry("country", mAddress.getCountryName());
+                            locationRegistry(chosenAddress);
                         }
                     } else {
                         mAddress = null;
@@ -151,9 +148,18 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
     @Override
     public void onValidationSucceeded() {
+        locationRegistry(mAutocompleteLocation.getText().toString());
         onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString(), mSourceFeedEnable);
-        dismiss();
+        deleteOldFeedItems();
         verifyIfSourceWasSelected();
+        dismiss();
+    }
+
+    private void locationRegistry(String input) {
+        Address address = autoComplete(input).get(0);
+        mGlobal.setRegistry("location", input);
+        mGlobal.setRegistry("iso2", address.getCountryCode().toLowerCase());
+        mGlobal.setRegistry("country", address.getCountryName());
     }
 
 
@@ -169,13 +175,25 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         for (ValidationError error : errors) {
             View view = error.getView();
             String message = error.getCollatedErrorMessage(getContext());
-            // Display error messages ;)
             if (view instanceof EditText) {
                 ((EditText) view).setError(message);
             } else {
                 Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private List<Address> autoComplete(String input) {
+        List<Address> foundGeocode = null;
+        Context context = getActivity();
+        try {
+            foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
+            mAddressList = new ArrayList<>(foundGeocode);
+        } catch (IOException e) {
+            Timber.e(e);
+        }
+
+        return foundGeocode;
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
@@ -195,18 +213,6 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
             return resultList.get(index);
         }
 
-        private List<Address> autoComplete(String input) {
-            List<Address> foundGeocode = null;
-            Context context = getActivity();
-            try {
-                foundGeocode = new Geocoder(context).getFromLocationName(input, 7);
-                mAddressList = new ArrayList<>(foundGeocode);
-            } catch (IOException e) {
-                Timber.e(e);
-            }
-
-            return foundGeocode;
-        }
 
         @Override
         public Filter getFilter() {
@@ -333,11 +339,14 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         return false;
     }
 
-    private void hiddenKeyboard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
+    private void deleteOldFeedItems() {
+        Registry selLoc = mGlobal.getRegistry("mLocation");
+        try {
+            if (selLoc != null)
+                mGlobal.getDaoFeedItem().delete(mGlobal.getFeedItems());
+        } catch (SQLException e) {
+            Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
         }
     }
 }

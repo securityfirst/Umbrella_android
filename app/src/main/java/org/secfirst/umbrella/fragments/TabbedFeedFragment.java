@@ -523,7 +523,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                 Timber.e(e);
                             }
                         }
-                        //deleteOldFeedItems();
+                        deleteOldFeedItems();
                         String sourceValue = mGlobal.getSelectedFeedSourcesLabel(false).equals("") ?
                                 getString(R.string.set_sources) : mGlobal.getSelectedFeedSourcesLabel(false);
                         mFeedSourcesValue.setText(sourceValue);
