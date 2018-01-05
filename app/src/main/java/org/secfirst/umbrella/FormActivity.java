@@ -12,6 +12,7 @@ import com.stepstone.stepper.VerificationError;
 import org.secfirst.umbrella.adapters.FragmentStepAdapter;
 import org.secfirst.umbrella.models.Form;
 import org.secfirst.umbrella.util.OnNavigationBarListener;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 
@@ -29,6 +30,8 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
 
         int formId = getIntent().getExtras().getInt("form_id", -1);
         if (formId < 0) {
