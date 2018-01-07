@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.mobsandgeeks.saripaar.QuickRule;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
@@ -56,7 +57,7 @@ import timber.log.Timber;
 public class LocationDialog extends DialogFragment implements Validator.ValidationListener {
 
 
-    private OnLocationEventListener onLocationEventListener;
+    private OnLocationEventListener mOnLocationEventListener;
     private Global mGlobal;
     private List<Address> mAddressList;
     private Address mAddress;
@@ -67,12 +68,13 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private TextView mButtonCancel;
     private FragmentActivity mActivity;
     private boolean mSourceFeedEnable;
+    private String mChosenAddress;
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment, boolean openSource) {
         Bundle args = new Bundle();
         LocationDialog locationDialog = new LocationDialog();
         locationDialog.setArguments(args);
-        locationDialog.onLocationEventListener = tabbedFeedFragment;
+        locationDialog.mOnLocationEventListener = tabbedFeedFragment;
         locationDialog.mActivity = tabbedFeedFragment.getActivity();
         locationDialog.mSourceFeedEnable = openSource;
         return locationDialog;
@@ -88,6 +90,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mAutocompleteLocation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.place_search_dialog_location_ET);
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
+        mValidator.put(mAutocompleteLocation, new AutocompleteLocationRule());
         initOkButtons();
         initAutoCompleteOnItemClick();
         initAutoCompleteOnFocusChange();
@@ -132,9 +135,8 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                     if (mAddressList != null) {
                         mAddress = mAddressList.get(position);
                         if (mAddress != null) {
-                            String chosenAddress = mAutocompleteLocation.getText().toString();
-                            mAutocompleteLocation.setText(chosenAddress);
-                            locationRegistry(chosenAddress);
+                            mChosenAddress = mAutocompleteLocation.getText().toString();
+                            locationRegistry(mChosenAddress);
                         }
                     } else {
                         mAddress = null;
@@ -148,8 +150,9 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
     @Override
     public void onValidationSucceeded() {
+        mAutocompleteLocation.setText(mChosenAddress);
         locationRegistry(mAutocompleteLocation.getText().toString());
-        onLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString(), mSourceFeedEnable);
+        mOnLocationEventListener.locationEvent(mAutocompleteLocation.getText().toString(), mSourceFeedEnable);
         deleteOldFeedItems();
         verifyIfSourceWasSelected();
         dismiss();
@@ -196,6 +199,100 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         return foundGeocode;
     }
 
+
+    public boolean getFeeds(final Context context) {
+        Registry selISO2 = mGlobal.getRegistry("iso2");
+        if (selISO2 != null) {
+            List<Registry> selections;
+            try {
+                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                if (selections.size() > 0) {
+                    String separator = ",";
+                    int total = selections.size() * separator.length();
+                    for (Registry item : selections) {
+                        total += item.getValue().length();
+                    }
+                    StringBuilder sb = new StringBuilder(total);
+                    for (Registry item : selections) {
+                        sb.append(separator).append(item.getValue());
+                    }
+
+                    String sources = sb.substring(separator.length());
+                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
+                            + "&since=" + mGlobal.getFeedItemsRefreshed();
+
+                    mOnLocationEventListener.locationStartFetchData();
+                    UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                            super.onSuccess(statusCode, headers, response);
+                            Gson gson = new GsonBuilder().create();
+                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
+                            }.getType();
+                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
+                            if (receivedItems != null && receivedItems.size() > 0) {
+                                for (FeedItem receivedItem : receivedItems) {
+                                    try {
+                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                    } catch (SQLException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                FragmentTransaction transaction = mActivity.getSupportFragmentManager()
+                                        .beginTransaction();
+                                transaction.replace(R.id.root_frame, FeedListFragment.
+                                        newInstance(receivedItems));
+                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            } else {
+                                FragmentTransaction transaction = mActivity.getSupportFragmentManager()
+                                        .beginTransaction();
+                                transaction.replace(R.id.root_frame, FeedEmptyFragment.
+                                        newInstance(mGlobal.getRegistry("mLocation").getValue()));
+                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            }
+                            mOnLocationEventListener.locationEndFetchData();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            super.onFailure(statusCode, headers, throwable, errorResponse);
+                            if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
+                                Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
+                                        " Most likely the certificate has expired and was renewed. Update " +
+                                        "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
+                            }
+                            mOnLocationEventListener.locationEndFetchData();
+                        }
+
+                    });
+                } else {
+                    Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
+            return false;
+        }
+        return false;
+    }
+
+
+    private void deleteOldFeedItems() {
+        Registry selLoc = mGlobal.getRegistry("mLocation");
+        try {
+            if (selLoc != null)
+                mGlobal.getDaoFeedItem().delete(mGlobal.getFeedItems());
+        } catch (SQLException e) {
+            Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
         private ArrayList<String> resultList;
 
@@ -205,7 +302,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
         @Override
         public int getCount() {
-            return resultList.size() - 1;
+            return resultList.size();
         }
 
         @Override
@@ -257,96 +354,29 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         }
     }
 
-    public boolean getFeeds(final Context context) {
-        Registry selISO2 = mGlobal.getRegistry("iso2");
-        if (selISO2 != null) {
-            List<Registry> selections;
+    public class AutocompleteLocationRule extends QuickRule<AppCompatAutoCompleteTextView> {
+
+        @Override
+        public boolean isValid(AppCompatAutoCompleteTextView view) {
+            boolean returnValue;
             try {
-                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size() > 0) {
-                    String separator = ",";
-                    int total = selections.size() * separator.length();
-                    for (Registry item : selections) {
-                        total += item.getValue().length();
-                    }
-                    StringBuilder sb = new StringBuilder(total);
-                    for (Registry item : selections) {
-                        sb.append(separator).append(item.getValue());
-                    }
 
-                    //TODO remove since "since=0" before commit this code.
-                    // *mGlobal.getFeedItemsRefreshed()
+                Address address = autoComplete(mAutocompleteLocation.getText().toString()).get(0);
+                if (address.getCountryCode().toLowerCase().equals("") && address.getCountryName().equals(""))
+                    returnValue = false;
+                else
+                    returnValue = true;
 
-                    String sources = sb.substring(separator.length());
-                    final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                            + "&since=" + 0;
-
-                    UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
-
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                            super.onSuccess(statusCode, headers, response);
-                            Gson gson = new GsonBuilder().create();
-                            Type listType = new TypeToken<ArrayList<FeedItem>>() {
-                            }.getType();
-                            ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
-                            if (receivedItems != null && receivedItems.size() > 0) {
-                                for (FeedItem receivedItem : receivedItems) {
-                                    try {
-                                        mGlobal.getDaoFeedItem().create(receivedItem);
-                                    } catch (SQLException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                FragmentTransaction transaction = mActivity.getSupportFragmentManager()
-                                        .beginTransaction();
-                                transaction.replace(R.id.root_frame, FeedListFragment.
-                                        newInstance(receivedItems));
-                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            } else {
-                                FragmentTransaction transaction = mActivity.getSupportFragmentManager()
-                                        .beginTransaction();
-                                transaction.replace(R.id.root_frame, FeedEmptyFragment.
-                                        newInstance(mGlobal.getRegistry("mLocation").getValue()));
-                                transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            super.onFailure(statusCode, headers, throwable, errorResponse);
-                            if (throwable instanceof javax.net.ssl.SSLPeerUnverifiedException) {
-                                Toast.makeText(getContext(), "The SSL certificate pin is not valid." +
-                                        " Most likely the certificate has expired and was renewed. Update " +
-                                        "the app to refresh the accepted pins", Toast.LENGTH_LONG).show();
-                            }
-                        }
-
-                    });
-                } else {
-                    Toast.makeText(getActivity(), R.string.no_sources_selected, Toast.LENGTH_SHORT).show();
-                }
-                return true;
-            } catch (SQLException e) {
-                Timber.e(e);
+            } catch (Exception e) {
+                returnValue = false;
             }
-            return false;
+
+            return returnValue;
         }
-        return false;
-    }
 
-
-    private void deleteOldFeedItems() {
-        Registry selLoc = mGlobal.getRegistry("mLocation");
-        try {
-            if (selLoc != null)
-                mGlobal.getDaoFeedItem().delete(mGlobal.getFeedItems());
-        } catch (SQLException e) {
-            Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
+        @Override
+        public String getMessage(Context context) {
+            return getString(R.string.error_address_not_found);
         }
     }
 }

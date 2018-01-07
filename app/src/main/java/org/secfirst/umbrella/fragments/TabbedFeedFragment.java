@@ -345,14 +345,10 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         sb.append(separator).append(item.getValue());
                     }
 
-                    //TODO remove since "since=0" before commit this code.
-                    // *mGlobal.getFeedItemsRefreshed()
-
                     mFeedProgress.setVisibility(View.VISIBLE);
-
                     String sources = sb.substring(separator.length());
                     final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                            + "&since=" + 0;
+                            + "&since=" + mGlobal.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", getContext(), new JsonHttpResponseHandler() {
 
                         @Override
@@ -567,5 +563,15 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         if (mOpenList)
             getFeeds();
 
+    }
+
+    @Override
+    public void locationStartFetchData() {
+        mFeedProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void locationEndFetchData() {
+        mFeedProgress.setVisibility(View.INVISIBLE);
     }
 }
