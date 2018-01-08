@@ -159,10 +159,14 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     }
 
     private void locationRegistry(String input) {
-        Address address = autoComplete(input).get(0);
-        mGlobal.setRegistry("location", input);
-        mGlobal.setRegistry("iso2", address.getCountryCode().toLowerCase());
-        mGlobal.setRegistry("country", address.getCountryName());
+        try {
+            Address address = autoComplete(input).get(0);
+            mGlobal.setRegistry("location", input);
+            mGlobal.setRegistry("iso2", address.getCountryCode().toLowerCase());
+            mGlobal.setRegistry("country", address.getCountryName());
+        } catch (Exception e) {
+            Timber.e("Invalid address.", e);
+        }
     }
 
 
