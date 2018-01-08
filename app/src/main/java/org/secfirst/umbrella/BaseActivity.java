@@ -221,12 +221,15 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     @Override
     public void hearShake() {
         if (!UmbrellaUtil.isAppMasked(this)) {
-            if (global.hasPasswordSet(false))
-                global.logout(this, false);
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
-            handsShake.show(fragmentManager, "");
-            Log.e("test", "hearShake - BaseActivity");
+            try {
+                if (global.hasPasswordSet(false))
+                    global.logout(this, false);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
+                handsShake.show(fragmentManager, "");
+            } catch (IllegalStateException e) {
+                Log.e(BaseActivity.class.getName(), "hearShake - BaseActivity");
+            }
         }
     }
 }
