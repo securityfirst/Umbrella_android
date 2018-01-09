@@ -171,16 +171,15 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         if (getArguments() != null && getArguments().getBoolean(FeedListFragment.CHANGED_LOCATION))
             Global.INSTANCE.deleteRegistriesByName("mLocation");
 
-        //Feeds
+
         mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
-        //Interval
+
         mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
-        //Location
+
         String location = mGlobal.getRegistry("mLocation") != null ?
                 mGlobal.getRegistry("mLocation").getValue() : getString(R.string.feed_location_label);
         mLocationLabel.setText(location);
 
-        //Source value
         String sourceValue = mGlobal.getSelectedFeedSourcesLabel(false).equals("") ?
                 getString(R.string.set_sources) : mGlobal.getSelectedFeedSourcesLabel(false);
         mFeedSourcesValue.setText(sourceValue);
@@ -368,9 +367,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                 }
                                 startFeedListFragment(receivedItems);
                             } else {
-                                //if (getArguments() != null && getArguments().getBoolean(CHANGED_LOCATION)) {
                                 startFeedEmptyFragment();
-                                //}
                             }
                         }
 
