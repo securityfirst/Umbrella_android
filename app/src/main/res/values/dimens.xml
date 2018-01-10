@@ -132,5 +132,6 @@
     <dimen name="feed_location_dialog_small_padding">10dp</dimen>
     <dimen name="location_big_margin_left">20dp</dimen>
 
+    <dimen name="card_view_default_radius">0dp</dimen>
 
 </resources>
