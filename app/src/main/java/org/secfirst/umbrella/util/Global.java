@@ -151,7 +151,7 @@ public class Global extends Application {
         List<FeedItem> items = new ArrayList<>();
         try {
             items = getDaoFeedItem().queryForAll();
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             e.printStackTrace();
         }
         return items;
@@ -161,8 +161,8 @@ public class Global extends Application {
         Registry r = getRegistry("notificationsEnabled");
         boolean enabled = false;
         try {
-            if (r!=null) enabled = Boolean.valueOf(r.getValue());
-        } catch(NumberFormatException nfe) {
+            if (r != null) enabled = Boolean.valueOf(r.getValue());
+        } catch (NumberFormatException nfe) {
             Timber.e(nfe);
         }
         return enabled;
@@ -173,14 +173,14 @@ public class Global extends Application {
             DeleteBuilder<Registry, String> toDelete = getDaoRegistry().deleteBuilder();
             toDelete.where().eq(Registry.FIELD_NAME, name);
             toDelete.delete();
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         }
     }
 
     public boolean hasShownCoachMark(String name) {
         Registry reg = getRegistry(name);
-        return reg!=null && Boolean.parseBoolean(reg.getValue());
+        return reg != null && Boolean.parseBoolean(reg.getValue());
     }
 
     public void setCoachMarkShown(String name, boolean shown) {
@@ -193,7 +193,7 @@ public class Global extends Application {
             PreparedQuery<Registry> queryBuilder =
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         }
         return registry;
@@ -205,20 +205,20 @@ public class Global extends Application {
             PreparedQuery<Registry> queryBuilder =
                     getDaoRegistry().queryBuilder().where().eq(Registry.FIELD_NAME, name).prepare();
             registry = getDaoRegistry().queryForFirst(queryBuilder);
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         } finally {
-            if (registry!=null) {
+            if (registry != null) {
                 try {
                     registry.setValue(String.valueOf(value));
                     getDaoRegistry().update(registry);
-                } catch (SQLiteException | SQLException  e) {
+                } catch (SQLiteException | SQLException e) {
                     Timber.e(e);
                 }
             } else {
                 try {
                     getDaoRegistry().create(new Registry(name, String.valueOf(value)));
-                } catch (SQLiteException | SQLException  e) {
+                } catch (SQLiteException | SQLException e) {
                     Timber.e(e);
                 }
             }
@@ -233,8 +233,8 @@ public class Global extends Application {
         Registry r = getRegistry("notificationRingtoneEnabled");
         boolean enabled = true;
         try {
-            if (r!=null) enabled = Boolean.valueOf(r.getValue());
-        } catch(NumberFormatException nfe) {
+            if (r != null) enabled = Boolean.valueOf(r.getValue());
+        } catch (NumberFormatException nfe) {
             Timber.e(nfe);
         }
         return enabled;
@@ -248,15 +248,15 @@ public class Global extends Application {
         Registry r = getRegistry("notificationRingtone");
         Uri ringtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         try {
-            if (r!=null && !r.getValue().equals("")) ringtone = Uri.parse(r.getValue());
-        } catch(IllegalArgumentException e) {
+            if (r != null && !r.getValue().equals("")) ringtone = Uri.parse(r.getValue());
+        } catch (IllegalArgumentException e) {
             Timber.e(e);
         }
         return ringtone;
     }
 
     public void setNotificationRingtone(Uri notificationRingtoneUri) {
-        if(notificationRingtoneUri== null) return;
+        if (notificationRingtoneUri == null) return;
         setRegistry("notificationRingtone", notificationRingtoneUri.toString());
     }
 
@@ -264,8 +264,8 @@ public class Global extends Application {
         Registry r = getRegistry("notificationVibration");
         boolean enabled = true;
         try {
-            if (r!=null) enabled = Boolean.valueOf(r.getValue());
-        } catch(NumberFormatException nfe) {
+            if (r != null) enabled = Boolean.valueOf(r.getValue());
+        } catch (NumberFormatException nfe) {
             Timber.e(nfe);
         }
         return enabled;
@@ -316,12 +316,13 @@ public class Global extends Application {
                 alert2.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (password) getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(getString(R.string.default_db_password)) + "';");
+                        if (password)
+                            getOrmHelper().getWritableDatabase(getOrmHelper().getPassword()).rawExecSQL("PRAGMA rekey = '" + new SelectArg(getString(R.string.default_db_password)) + "';");
                         setPassword(context, fragment, change);
                         Intent i = new Intent(context, ((Activity) context).getClass());
                         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(i);
-                        ((Activity) context).overridePendingTransition(0,0);
+                        ((Activity) context).overridePendingTransition(0, 0);
                         ((Activity) context).finish();
                     }
                 });
@@ -359,12 +360,12 @@ public class Global extends Application {
                     setLoggedIn(true);
                     setSkipPassword(false);
                     dialog.dismiss();
-                    if (fragment!=null) fragment.onResume();
+                    if (fragment != null) fragment.onResume();
                     Toast.makeText(context, R.string.you_have_successfully_set_your_password, Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(context, ((Activity) context).getClass());
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
-                    ((Activity) context).overridePendingTransition(0,0);
+                    ((Activity) context).overridePendingTransition(0, 0);
                     ((Activity) context).finish();
                 } else {
                     Toast.makeText(context, getString(R.string.choose_stronger_password) + checkError, Toast.LENGTH_LONG).show();
@@ -416,7 +417,7 @@ public class Global extends Application {
 
     public OrmHelper getOrmHelper() {
         SQLiteDatabase.loadLibs(this);
-        if (dbHelper==null || !dbHelper.isOpen()) {
+        if (dbHelper == null || !dbHelper.isOpen()) {
             createDatabaseIfNotExists();
             dbHelper = new OrmHelper(getApplicationContext());
         }
@@ -426,7 +427,7 @@ public class Global extends Application {
     public boolean checkSQLCipherPW(String password, Context context) {
         SQLiteDatabase.loadLibs(this);
         try {
-            OrmHelper oh = context!=null ? new OrmHelper(context) : getOrmHelper();
+            OrmHelper oh = context != null ? new OrmHelper(context) : getOrmHelper();
             oh.getWritableDatabase(password);
             return true;
         } catch (SQLiteException e) {
@@ -453,8 +454,8 @@ public class Global extends Application {
             getDaoFormScreen();
             getDaoFormValue();
             startService();
-            SQLiteDatabase db  = getOrmHelper().getWritableDatabase(getOrmHelper().getPassword());
-            if (db!=null) {
+            SQLiteDatabase db = getOrmHelper().getWritableDatabase(getOrmHelper().getPassword());
+            if (db != null) {
                 if (db.getVersion() == 1) db.setVersion(5); // Fix for an old regression
                 getOrmHelper().onUpgrade(db, getOrmHelper().getConnectionSource(), db.getVersion(), OrmHelper.DATABASE_VERSION);
             }
@@ -472,10 +473,10 @@ public class Global extends Application {
     }
 
     public Dao<Segment, String> getDaoSegment() {
-        if (daoSegment==null) {
+        if (daoSegment == null) {
             try {
                 daoSegment = getOrmHelper().getDao(Segment.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -483,10 +484,10 @@ public class Global extends Application {
     }
 
     public Dao<CheckItem, String> getDaoCheckItem() {
-        if (daoCheckItem==null) {
+        if (daoCheckItem == null) {
             try {
                 daoCheckItem = getOrmHelper().getDao(CheckItem.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -494,10 +495,10 @@ public class Global extends Application {
     }
 
     public Dao<Category, String> getDaoCategory() {
-        if (daoCategory==null) {
+        if (daoCategory == null) {
             try {
                 daoCategory = getOrmHelper().getDao(Category.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -505,10 +506,10 @@ public class Global extends Application {
     }
 
     public Dao<Language, String> getDaoLanguage() {
-        if (daoLanguage==null) {
+        if (daoLanguage == null) {
             try {
                 daoLanguage = getOrmHelper().getDao(Language.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -516,11 +517,11 @@ public class Global extends Application {
     }
 
     public Dao<FeedItem, String> getDaoFeedItem() {
-        if (daoFeedItem==null) {
+        if (daoFeedItem == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FeedItem.class);
                 daoFeedItem = getOrmHelper().getDao(FeedItem.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -528,11 +529,11 @@ public class Global extends Application {
     }
 
     public Dao<Form, String> getDaoForm() {
-        if (daoForm==null) {
+        if (daoForm == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), Form.class);
                 daoForm = getOrmHelper().getDao(Form.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -540,11 +541,11 @@ public class Global extends Application {
     }
 
     public Dao<FormScreen, String> getDaoFormScreen() {
-        if (daoFormScreen==null) {
+        if (daoFormScreen == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormScreen.class);
                 daoFormScreen = getOrmHelper().getDao(FormScreen.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -552,11 +553,11 @@ public class Global extends Application {
     }
 
     public Dao<FormItem, String> getDaoFormItem() {
-        if (daoFormItem==null) {
+        if (daoFormItem == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormItem.class);
                 daoFormItem = getOrmHelper().getDao(FormItem.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -564,11 +565,11 @@ public class Global extends Application {
     }
 
     public Dao<FormOption, String> getDaoFormOption() {
-        if (daoFormOption==null) {
+        if (daoFormOption == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormOption.class);
                 daoFormOption = getOrmHelper().getDao(FormOption.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -576,17 +577,17 @@ public class Global extends Application {
     }
 
     public Dao<FormValue, String> getDaoFormValue() {
-        if (daoFormValue==null) {
+        if (daoFormValue == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormValue.class);
                 daoFormValue = getOrmHelper().getDao(FormValue.class);
                 long count = getDaoForm().countOf();
-                if (count<1) {
+                if (count < 1) {
                     getForms(true);
-                } else if(count<2) {
+                } else if (count < 2) {
                     getForms(false);
                 }
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -594,19 +595,19 @@ public class Global extends Application {
     }
 
     public Dao<FeedSource, String> getDaoFeedSource() {
-        if (daoFeedSource==null) {
+        if (daoFeedSource == null) {
             try {
                 TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FeedSource.class);
                 daoFeedSource = getOrmHelper().getDao(FeedSource.class);
-                if (daoFeedSource.countOf()<1) {
+                if (daoFeedSource.countOf() < 1) {
                     daoFeedSource.create(new FeedSource("ReliefWeb", 0));
                     daoFeedSource.create(new FeedSource("UN", 1));
-                    daoFeedSource.create(new FeedSource("FCO" ,2));
+                    daoFeedSource.create(new FeedSource("FCO", 2));
                     daoFeedSource.create(new FeedSource("CDC", 3));
                     daoFeedSource.create(new FeedSource("Global Disaster and Alert Coordination System", 4));
                     daoFeedSource.create(new FeedSource("US State Department Country Warnings", 5));
                 }
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -614,10 +615,10 @@ public class Global extends Application {
     }
 
     public Dao<Registry, String> getDaoRegistry() {
-        if (daoRegistry==null) {
+        if (daoRegistry == null) {
             try {
                 daoRegistry = getOrmHelper().getDao(Registry.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -625,10 +626,10 @@ public class Global extends Application {
     }
 
     public Dao<Favourite, String> getDaoFavourite() {
-        if (daoFavourite==null) {
+        if (daoFavourite == null) {
             try {
                 daoFavourite = getOrmHelper().getDao(Favourite.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -636,10 +637,10 @@ public class Global extends Application {
     }
 
     public Dao<Difficulty, String> getDaoDifficulty() {
-        if (daoDifficulty==null) {
+        if (daoDifficulty == null) {
             try {
                 daoDifficulty = getOrmHelper().getDao(Difficulty.class);
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -647,7 +648,7 @@ public class Global extends Application {
     }
 
     public void syncNewCategories(ArrayList<NewCategory> categories) {
-        if (getOrmHelper()!=null) {
+        if (getOrmHelper() != null) {
             try {
                 TableUtils.dropTable(getOrmHelper().getConnectionSource(), Category.class, true);
                 TableUtils.createTable(getOrmHelper().getConnectionSource(), Category.class);
@@ -683,7 +684,7 @@ public class Global extends Application {
 
                     }
                 }
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -701,10 +702,10 @@ public class Global extends Application {
                 Type listType = new TypeToken<ArrayList<NewCategory>>() {
                 }.getType();
                 final ArrayList<NewCategory> receivedCategories = gson.fromJson(response.toString(), listType);
-                if (receivedCategories!=null && receivedCategories.size()>0) {
+                if (receivedCategories != null && receivedCategories.size() > 0) {
                     listener.onProgressChange(88);
                     listener.onStatusChange(getString(R.string.updating_the_database));
-                    new Thread(){
+                    new Thread() {
                         @Override
                         public void run() {
                             Global.INSTANCE.syncNewCategories(receivedCategories);
@@ -718,7 +719,9 @@ public class Global extends Application {
 
                                 }
                             });
-                        };
+                        }
+
+                        ;
                     }.start();
                 }
             }
@@ -747,8 +750,8 @@ public class Global extends Application {
             @Override
             public void onProgress(long bytesWritten, long totalSize) {
                 super.onProgress(bytesWritten, totalSize);
-                if (bytesWritten<totalSize) {
-                    listener.onProgressChange((int) ((bytesWritten / totalSize)*0.66));
+                if (bytesWritten < totalSize) {
+                    listener.onProgressChange((int) ((bytesWritten / totalSize) * 0.66));
                 } else {
                     listener.onProgressChange(44);
                 }
@@ -769,13 +772,13 @@ public class Global extends Application {
     }
 
     public void syncLanguages(ArrayList<Language> languages) {
-        if (getOrmHelper()!=null) {
+        if (getOrmHelper() != null) {
             try {
                 TableUtils.clearTable(getOrmHelper().getConnectionSource(), Language.class);
                 for (Language item : languages) {
                     getDaoLanguage().create(item);
                 }
-            } catch (SQLiteException | SQLException  e) {
+            } catch (SQLiteException | SQLException e) {
                 Timber.e(e);
             }
         }
@@ -783,7 +786,7 @@ public class Global extends Application {
 
     public String getRefreshLabel(Integer refreshValue) {
         String refreshValueLabel = "";
-        if (refreshValue==null) refreshValue = getRefreshValue();
+        if (refreshValue == null) refreshValue = getRefreshValue();
         HashMap<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(getApplicationContext());
         for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
             if (entry.getValue().equals(refreshValue)) {
@@ -794,7 +797,7 @@ public class Global extends Application {
     }
 
     public ArrayList<Integer> getSelectedFeedSources() {
-        final CharSequence[] items = {"ReliefWeb","UN","FCO","CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
+        final CharSequence[] items = {"ReliefWeb", "UN", "FCO", "CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
         final ArrayList<Integer> selectedItems = new ArrayList<>();
         List<Registry> selections;
         try {
@@ -807,7 +810,7 @@ public class Global extends Application {
                     }
                 }
             }
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         }
         return selectedItems;
@@ -815,13 +818,13 @@ public class Global extends Application {
 
     public String getSelectedFeedSourcesLabel(boolean inline) {
         String feedSourcesLabel = "";
-        final CharSequence[] items = {"ReliefWeb","UN","FCO","CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
+        final CharSequence[] items = {"ReliefWeb", "UN", "FCO", "CDC", "Global Disaster and Alert Coordination System", "US State Department Country Warnings"};
         final ArrayList<Integer> selectedItems = getSelectedFeedSources();
         for (Integer selectedItem : selectedItems) {
             if (!selectedItem.equals(selectedItems.get(0))) {
                 feedSourcesLabel += (inline) ? ", " : "\n";
             }
-            feedSourcesLabel += (inline ? "" : " - " )+items[selectedItem];
+            feedSourcesLabel += (inline ? "" : " - ") + items[selectedItem];
         }
         return feedSourcesLabel;
     }
@@ -832,7 +835,7 @@ public class Global extends Application {
         List<Registry> selCountry = null;
         try {
             selCountry = regDao.queryForEq(Registry.FIELD_NAME, "country");
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         }
         if (selCountry != null && !selCountry.isEmpty()) {
@@ -852,7 +855,7 @@ public class Global extends Application {
                     Timber.e(nfe);
                 }
             }
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         }
         return retInterval;
@@ -867,7 +870,7 @@ public class Global extends Application {
             } else {
                 getDaoRegistry().create(new Registry("refresh_value", String.valueOf(refreshValue)));
             }
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             Timber.e(e);
         }
     }
@@ -878,10 +881,10 @@ public class Global extends Application {
         try {
             qb.orderBy(FeedItem.FIELD_UPDATED_AT, false);
             FeedItem firstFeedItem = qb.queryForFirst();
-            if (firstFeedItem!=null) {
-                feedItemsRefreshed = firstFeedItem.getDate()*1000;
+            if (firstFeedItem != null) {
+                feedItemsRefreshed = firstFeedItem.getDate() * 1000;
             }
-        } catch (SQLiteException | SQLException  e) {
+        } catch (SQLiteException | SQLException e) {
             e.printStackTrace();
         }
         return feedItemsRefreshed;

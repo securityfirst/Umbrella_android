@@ -58,9 +58,12 @@ dependencies {
     compile 'info.guardianproject.iocipher:IOCipher:0.4'
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile 'uk.co.samuelwall:material-tap-target-prompt:2.3.0'
+    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
 }
 
-// generate using: `gradle -q calculateChecksums`
+ //generate using: `gradle -q calculateChecksums`
 dependencyVerification {
     verify = [
             'com.android.support:preference-v7:b37d8193c65cf8eb3c4ba9cbfc6d5c96042177901622717fb089290bef784a58',

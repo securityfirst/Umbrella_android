@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources tools:ignore="MissingTranslation,ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation,ExtraTranslation">
     <string name="app_name">Umbrella</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -42,7 +42,7 @@
     <string name="refresh_interval_feeds">Refresh interval for feeds</string>
     <string name="refresh_umbrella_data">Refresh from the server</string>
     <string name="set_location">Your location</string>
-    <string name="feed_sources">Feed sources</string>
+    <string name="feed_sources">Security Feed Sources</string>
     <string name="no_feed_updates">There were no news updates for your chosen country, pull to refresh.</string>
     <string name="reset_password_title">Confirm reset password</string>
     <string name="reset_password_text">Are you sure you want to reset your password? This also means losing any data you might have entered so far\n</string>
@@ -53,8 +53,8 @@
     <string name="password_reset_notification">Password reset and all data removed.</string>
     <string name="title_activity_about">Licences</string>
     <string name="default_db_password">umbrella</string>
-    <string name="no_feed_settings">You haven\'t set the country and the sources for the feed yet. You have to do it in order for the feed to start displaying, and you can change it any time later in the settings.</string>
-    <string name="feed_location_label">Set the location for your feeds</string>
+    <string name="no_feed_settings">You haven’t set the location and the sources for the feed yet. You have to do that to get the latest security news for your country. You can change it anytime later in the settings.</string>
+    <string name="feed_location_label">Enter your location to get the security news from your area. Not every country will be covered by every feed. We don&apos;t store your location</string>
     <string name="no_feed_items_label">There is currently no results with your chosen settings. Please tap to revise and change them</string>
     <string name="disable_password">Don\'t ask for password again</string>
     <string name="terms_conditions">Terms and Conditions</string>
@@ -70,7 +70,7 @@
     <string name="change_password_title">Change your password</string>
     <string name="country_selected">Country selected</string>
     <string name="lat_updated">Last updated</string>
-    <string name="set_location_source_in_settings">Please set sources and location in the settings</string>
+    <string name="set_location_source_in_settings">Please set location in the settings</string>
     <string name="no_sources_selected">No sources selected</string>
     <string name="choose_refresh_inteval">Choose refresh interval:</string>
     <string name="select_feed_sources">Select The Feed Sources</string>
@@ -158,4 +158,21 @@
     <string name="downloading">Downloading</string>
     <string name="updating_the_database">Updating the database</string>
     <string name="sync_complete">Update complete</string>
+    <string name="empty_dashboard_title">Security feed set to:</string>
+    <string name="set_sources">Set the sources that you want updates from. The feed sources cannot see that you are requesting information from them.</string>
+    <string name="error_refresh_message">There is no events to display for your location</string>
+    <string name="feed_set_your_feed">Set your Feed</string>
+    <string name="feed_set_now">SET NOW</string>
+    <string name="feed_interval">Interval</string>
+    <string name="feed_interval_text">Set how often you want Umbrella to check for the latest security news.</string>
+    <string name="feed_location">Location</string>
+    <string name="feed_set">SET</string>
+    <string name="enter_location">Enter location</string>
+    <string name="dashboard_feed_empty_change_location">CHANGE LOCATION</string>
+    <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour. Pull to refresh to check again.</string>
+    <string name="feed_list_location">Location</string>
+    <string name="feed_list_colon">:\u0020</string>
+    <string name="feed_list_change">CHANGE</string>
+    <string name="feed_list_via">Via\u0020</string>
+    <string name="error_address_not_found">Invalid address.</string>
 </resources>
