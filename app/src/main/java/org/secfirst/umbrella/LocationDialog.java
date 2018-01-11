@@ -362,20 +362,20 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
         @Override
         public boolean isValid(AppCompatAutoCompleteTextView view) {
-            boolean returnValue;
+            boolean value;
             try {
-
                 Address address = autoComplete(mAutocompleteLocation.getText().toString()).get(0);
-                if (address.getCountryCode().toLowerCase().equals("") && address.getCountryName().equals(""))
-                    returnValue = false;
-                else
-                    returnValue = true;
-
+                if (address.getCountryCode().toLowerCase().equals("") && address.getCountryName().equals("")) {
+                    value = false;
+                } else {
+                    mChosenAddress = address.getCountryName();
+                    value = true;
+                }
             } catch (Exception e) {
-                returnValue = false;
+                value = false;
             }
 
-            return returnValue;
+            return value;
         }
 
         @Override
