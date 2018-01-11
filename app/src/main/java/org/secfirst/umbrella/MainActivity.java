@@ -353,9 +353,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (Global.INSTANCE.needsRefreshActivity()) {
             invalidateOptionsMenu();
             Intent intent = getIntent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            finish();
-            startActivity(intent);
+            if (intent!=null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+                startActivity(intent);
+            }
         }
     }
 
