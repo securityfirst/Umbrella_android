@@ -15,6 +15,9 @@ android {
         versionCode 31
         versionName "0.4.3"
         multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "x86", "armeabi", "mips"
+        }
     }
     buildTypes {
         release {
