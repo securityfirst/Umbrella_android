@@ -19,8 +19,8 @@
         <provider
             android:name="org.secfirst.umbrella.util.IOCipherContentProvider"
             android:authorities="org.secfirst.umbrella"
-            android:grantUriPermissions="true"
-            android:exported="true" />
+            android:exported="true"
+            android:grantUriPermissions="true" />
         <service
             android:name=".RefreshService"
             android:exported="false" />

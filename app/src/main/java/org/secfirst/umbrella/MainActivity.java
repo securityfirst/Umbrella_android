@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.PagerTabStrip;
@@ -25,14 +24,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
+import org.secfirst.umbrella.fragments.HandsShakeDialog;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
@@ -442,24 +440,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_mask) {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.masking_mode_title)
-                    .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            UmbrellaUtil.setMaskMode(MainActivity.this, true);
-                            if (global.hasPasswordSet(false))
-                                global.logout(MainActivity.this, false);
-                            Intent i = new Intent(MainActivity.this, CalcActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i);
-                            finish();
-                        }
-                    })
-                    .show();
+            if (!UmbrellaUtil.isAppMasked(this)) {
+                if (global.hasPasswordSet(false))
+                    global.logout(MainActivity.this, false);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
+                handsShake.show(fragmentManager, "");
+            }
         }
         if (id == R.id.action_logout) {
             global.logout(this, true);
