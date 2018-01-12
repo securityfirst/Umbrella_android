@@ -61,6 +61,9 @@ public class FeedListFragment extends Fragment {
     private RelativeLayout mButtonLayout;
     private TextView mChangeLocationLabel;
     public static final String CHANGED_LOCATION = "changed_location";
+    private TextView mLocationLabel;
+    private TextView mColonLabel;
+    private TextView mExpandLocationLabel;
 
 
     public static FeedListFragment newInstance(List<FeedItem> items) {
