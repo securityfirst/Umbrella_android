@@ -102,9 +102,16 @@ dependencies {
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true
     }
+
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+
 }
 
 //generate using: `gradle -q calculateChecksums`
