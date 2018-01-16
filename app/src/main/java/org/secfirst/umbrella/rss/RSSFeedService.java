@@ -2,7 +2,6 @@ package org.secfirst.umbrella.rss;
 
 import android.os.AsyncTask;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -28,18 +27,17 @@ public class RSSFeedService extends AsyncTask<String, Void, String> implements O
     protected String doInBackground(String... urls) {
         Response response;
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(urls[0])
-                .build();
-
         try {
+            Request request = new Request.Builder()
+                    .url(urls[0])
+                    .build();
             response = client.newCall(request).execute();
             if (response.isSuccessful())
                 return response.body().string();
             else
                 rssEvent.onError();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             rssEvent.onError();
         }
@@ -57,7 +55,6 @@ public class RSSFeedService extends AsyncTask<String, Void, String> implements O
             }
         } else
             rssEvent.onError();
-
     }
 
     @Override
