@@ -155,7 +155,8 @@ public class UmbrellaUtil {
                 if (parentCategory.getId() == 1) {
                     child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
                     child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
-                    child.add(new DrawerChildItem(context.getString(R.string.forms), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.custom_rss_menu_name), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.forms), -4));
                 }
                 childItem.add(child);
             }
@@ -210,7 +211,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -223,7 +224,7 @@ public class UmbrellaUtil {
                             if (receivedItems != null && !receivedItems.isEmpty()) {
                                 List<FeedItem> oldList = Global.INSTANCE.getFeedItems();
                                 List<FeedItem> notificationItems = new ArrayList<FeedItem>();
-                                if (Global.INSTANCE.getNotificationsEnabled()) {
+                                if (global.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
                                             try {
@@ -387,9 +388,9 @@ public class UmbrellaUtil {
     }
 
     public static int getDifficultyFromString(String difficultyString) {
-        if (difficultyString.equals("advanced")) {
+        if (difficultyString.equals(Global.INSTANCE.getString(R.string.advanced))) {
             return DifficultyFragment.INTERMEDIATE + 1;
-        } else if (difficultyString.equals("expert")) {
+        } else if (difficultyString.equals(Global.INSTANCE.getString(R.string.expert))) {
             return DifficultyFragment.EXPERT + 1;
         }
         return DifficultyFragment.BEGINNER + 1;

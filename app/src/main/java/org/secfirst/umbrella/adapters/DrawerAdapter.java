@@ -19,13 +19,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unchecked")
-public class DrawerAdapter extends BaseExpandableListAdapter implements ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
+public class DrawerAdapter extends BaseExpandableListAdapter implements
+        ExpandableListView.OnChildClickListener, ExpandableListView.OnGroupClickListener {
 
     public List<Category> groupItem = new ArrayList<Category>();
     List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
     private Context mContext;
-    private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp, R.drawable.ic_devices_grey600_24dp, R.drawable.ic_settings_phone_grey600_24dp, R.drawable.ic_work_grey600_24dp, R.drawable.ic_group_grey600_24dp, R.drawable.ic_accessibility_grey600_24dp, R.drawable.ic_business_grey600_24dp, R.drawable.ic_local_hospital_grey600_24dp, R.drawable.ic_content_cut_grey600_24dp, R.drawable.ic_about};
-    private int[][] childImages = {{R.drawable.ic_checklists, R.drawable.ic_dashboard, R.drawable.ic_forms}, {R.drawable.ic_supervisor_account_grey600_24dp, R.drawable.ic_bug_report_grey600_24dp, R.drawable.ic_lock_grey600_24dp, R.drawable.ic_security_grey600_24dp, R.drawable.ic_delete_grey600_24dp, R.drawable.ic_backup_grey600_24dp}, {R.drawable.ic_phones, R.drawable.ic_call, R.drawable.ic_message, R.drawable.ic_email, R.drawable.ic_internet, R.drawable.ic_social, R.drawable.ic_radio, R.drawable.ic_satellite}, {R.drawable.ic_travel_preparation, R.drawable.ic_borders, R.drawable.ic_travel_vehicles, R.drawable.ic_travel_checkpoints, R.drawable.ic_kidnapping}, {R.drawable.ic_group, R.drawable.ic_personal_counter, R.drawable.ic_operations_protests, R.drawable.ic_personal_arrests, R.drawable.ic_operations_evacuation}, {R.drawable.ic_personal_stress, R.drawable.ic_security_grey600_24dp}, {R.drawable.ic_psyhical, R.drawable.ic_digital}};
+
+    private int[] groupImages = {R.drawable.ic_account_box_grey600_24dp,
+            R.drawable.ic_devices_grey600_24dp,
+            R.drawable.ic_settings_phone_grey600_24dp,
+            R.drawable.ic_work_grey600_24dp,
+            R.drawable.ic_group_grey600_24dp,
+            R.drawable.ic_accessibility_grey600_24dp,
+            R.drawable.ic_business_grey600_24dp,
+            R.drawable.ic_local_hospital_grey600_24dp,
+            R.drawable.ic_content_cut_grey600_24dp,
+            R.drawable.ic_about};
+
+    private int[][] childImages = {
+
+            {R.drawable.ic_checklists, R.drawable.ic_dashboard,
+                    R.drawable.ic_cast_connected,
+                    R.drawable.ic_forms},
+            {R.drawable.ic_supervisor_account_grey600_24dp,
+                    R.drawable.ic_bug_report_grey600_24dp,
+                    R.drawable.ic_lock_grey600_24dp,
+                    R.drawable.ic_security_grey600_24dp,
+                    R.drawable.ic_delete_grey600_24dp,
+                    R.drawable.ic_backup_grey600_24dp},
+            {R.drawable.ic_phones,
+                    R.drawable.ic_call,
+                    R.drawable.ic_message,
+                    R.drawable.ic_email,
+                    R.drawable.ic_internet,
+                    R.drawable.ic_social,
+                    R.drawable.ic_radio,
+                    R.drawable.ic_satellite},
+            {R.drawable.ic_travel_preparation,
+                    R.drawable.ic_borders,
+                    R.drawable.ic_travel_vehicles,
+                    R.drawable.ic_travel_checkpoints,
+                    R.drawable.ic_kidnapping},
+            {R.drawable.ic_group,
+                    R.drawable.ic_personal_counter,
+                    R.drawable.ic_operations_protests,
+                    R.drawable.ic_personal_arrests,
+                    R.drawable.ic_operations_evacuation},
+            {R.drawable.ic_personal_stress,
+                    R.drawable.ic_security_grey600_24dp},
+            {R.drawable.ic_psyhical, R.drawable.ic_digital}};
 
     public DrawerAdapter(Context context) {
         mContext = context;
@@ -137,7 +180,7 @@ public class DrawerAdapter extends BaseExpandableListAdapter implements Expandab
     @Override
     public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
         if (groupPosition == 0) {
-            ((MainActivity) mContext).setFragment(childPosition*-1, groupItem.get(groupPosition).getCategory(), false);
+            ((MainActivity) mContext).setFragment(childPosition * -1, groupItem.get(groupPosition).getCategory(), false);
         } else {
             final DrawerChildItem tempChild = childItem.get(groupPosition).get(childPosition);
             ((MainActivity) mContext).onNavigationDrawerItemSelected(tempChild);
