@@ -77,6 +77,9 @@ public class DashboardFragment extends Fragment {
                     fragment = TabbedFeedRootFragment.newInstance(mViewPager);
                     break;
                 case 2:
+                    fragment = CustomRSSFragment.newInstance();
+                    break;
+                case 3:
                     fragment = new TabbedFormsFragment();
                     break;
                 default:
@@ -87,7 +90,7 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -97,6 +100,8 @@ public class DashboardFragment extends Fragment {
                 case 1:
                     return getString(R.string.feeds).toUpperCase(l);
                 case 2:
+                    return getString(R.string.rss_menu_name).toUpperCase(l);
+                case 3:
                     return getString(R.string.forms).toUpperCase(l);
                 default:
                     return getString(R.string.my_checklists).toUpperCase(l);

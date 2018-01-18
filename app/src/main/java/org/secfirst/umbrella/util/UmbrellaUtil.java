@@ -155,7 +155,7 @@ public class UmbrellaUtil {
                 if (parentCategory.getId() == 1) {
                     child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
                     child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
-                    child.add(new DrawerChildItem(context.getString(R.string.custom_rss_menu_name), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.rss_menu_name), -3));
                     child.add(new DrawerChildItem(context.getString(R.string.forms), -4));
                 }
                 childItem.add(child);

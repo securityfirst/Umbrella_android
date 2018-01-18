@@ -28,6 +28,7 @@
     <string name="set_password">Set password</string>
     <string name="my_checklists">My Checklists</string>
     <string name="custom_rss_menu_name">Custom RSS</string>
+    <string name="rss_menu_name">RSS</string>
     <string name="feeds">Dashboard</string>
     <string name="feed">Feed</string>
     <string name="check_lists_total">Check lists total</string>
