@@ -77,7 +77,7 @@ public class DashboardFragment extends Fragment {
                     fragment = TabbedFeedRootFragment.newInstance(mViewPager);
                     break;
                 case 2:
-                    fragment = CustomRSSFragment.newInstance();
+                    fragment = RSSFragment.newInstance();
                     break;
                 case 3:
                     fragment = new TabbedFormsFragment();

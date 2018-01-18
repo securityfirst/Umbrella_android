@@ -120,6 +120,7 @@ compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
     testImplementation "org.robolectric:robolectric:3.6.1"
     testCompile "org.robolectric:robolectric:3.6.1"
     testCompile "org.robolectric:shadows-multidex:3.0"
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 }
 
 //generate using: `gradle -q calculateChecksums`
