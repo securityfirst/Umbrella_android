@@ -114,10 +114,9 @@ public class UmbrellaUtil {
     }
 
     public static ArrayList<Category> getParentCategories(Context context) {
-        Global global = (Global) context.getApplicationContext();
         ArrayList<Category> parentCategories = new ArrayList<>();
         try {
-            List<Category> categories = global.getDaoCategory().queryForAll();
+            List<Category> categories = Global.INSTANCE.getDaoCategory().queryForAll();
             for (Category category : categories) {
                 if (category.getParent()==0) {
                     parentCategories.add(category);
@@ -131,12 +130,11 @@ public class UmbrellaUtil {
     }
 
     public static List<ArrayList<DrawerChildItem>> getChildItems(Context context) {
-        Global global = (Global) context.getApplicationContext();
         List<Category> parentCategories = new ArrayList<>();
         List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
-            categories = global.getDaoCategory().queryForAll();
+            categories = Global.INSTANCE.getDaoCategory().queryForAll();
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
@@ -197,12 +195,11 @@ public class UmbrellaUtil {
     }
 
     public static boolean getFeeds(final Context context) {
-        final Global global = (Global) context.getApplicationContext();
-        Registry selISO2 = global.getRegistry("iso2");
+        Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
         if (selISO2!=null) {
             List<Registry> selections;
             try {
-                selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                 if (selections.size()>0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -214,7 +211,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+Global.INSTANCE.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -225,13 +222,13 @@ public class UmbrellaUtil {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && !receivedItems.isEmpty()) {
-                                List<FeedItem> oldList = global.getFeedItems();
+                                List<FeedItem> oldList = Global.INSTANCE.getFeedItems();
                                 List<FeedItem> notificationItems = new ArrayList<FeedItem>();
-                                if(global.getNotificationsEnabled()) {
+                                if(Global.INSTANCE.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
                                             try {
-                                                global.getDaoFeedItem().create(feedItem);
+                                                Global.INSTANCE.getDaoFeedItem().create(feedItem);
                                             } catch (SQLException e) {
                                                 e.printStackTrace();
                                             }
@@ -385,9 +382,9 @@ public class UmbrellaUtil {
     }
 
     public static int getDifficultyFromString(String difficultyString) {
-        if (difficultyString.equals(Global.INSTANCE.getString(R.string.advanced))) {
+        if (difficultyString.equals("advanced")) {
             return DifficultyFragment.INTERMEDIATE +1;
-        } else if (difficultyString.equals(Global.INSTANCE.getString(R.string.expert))) {
+        } else if (difficultyString.equals("expert")) {
             return DifficultyFragment.EXPERT +1;
         }
         return DifficultyFragment.BEGINNER +1;

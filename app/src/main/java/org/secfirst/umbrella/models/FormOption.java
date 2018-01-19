@@ -20,6 +20,10 @@ public class FormOption {
         this.formItem = formItem;
     }
 
+    public void setFormItem(FormItem formItem) {
+        this.formItem = formItem;
+    }
+
     public String getOption() {
         return option;
     }

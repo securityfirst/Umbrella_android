@@ -2,7 +2,6 @@ package org.secfirst.umbrella.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,18 +51,11 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
 
     private FormListAdapter formListAdapter;
     private FilledOutFormListAdapter filledOutAdapter;
-    Global global;
     List<Form> allForms = new ArrayList<>();
     List<FormValue> fValues = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefresh;
     LinearLayout filledOutHolder;
     private ProgressDialog progressDialog;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        global = (Global) context.getApplicationContext();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,9 +113,9 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         try {
-            allForms = global.getDaoForm().queryForAll();
-            PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().groupBy(FormValue.FIELD_SESSION).prepare();
-            fValues = global.getDaoFormValue().query(queryBuilder);
+            allForms = Global.INSTANCE.getDaoForm().queryForAll();
+            PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().groupBy(FormValue.FIELD_SESSION).prepare();
+            fValues = Global.INSTANCE.getDaoFormValue().query(queryBuilder);
             filledOutHolder.setVisibility((fValues==null || fValues.size()<1) ? View.GONE : View.VISIBLE);
             formListAdapter.updateData(allForms);
             filledOutAdapter.updateData(fValues);
@@ -139,11 +131,11 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
         List<FormValue> formValues = null;
         Form form = null;
         try {
-            PreparedQuery<FormValue> query = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).prepare();
-            formValues = global.getDaoFormValue().query(query);
+            PreparedQuery<FormValue> query = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).prepare();
+            formValues = Global.INSTANCE.getDaoFormValue().query(query);
             if (formValues!=null && formValues.size()>0) {
-                int formId = formValues.get(0).getFormItem(global).getFormScreen(global).getForm(null).get_id();
-                form = global.getDaoForm().queryForId(String.valueOf(formId));
+                int formId = formValues.get(0).getFormItem().getFormScreen().getForm().get_id();
+                form = Global.INSTANCE.getDaoForm().queryForId(String.valueOf(formId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -168,8 +160,8 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                         body.append("<form>");
                         for (FormItem formItem : screen.getItems()) {
                             try {
-                                PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
-                                formItem.setValues(global.getDaoFormValue().query(queryBuilder));
+                                PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                                formItem.setValues(Global.INSTANCE.getDaoFormValue().query(queryBuilder));
                             } catch (SQLException e) {
                                 e.printStackTrace();
                             }
@@ -237,8 +229,8 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                     VirtualFileSystem vfs = VirtualFileSystem.get();
                     vfs.setContainerPath(path);
                     try {
-                        if (!vfs.isMounted()) vfs.mount(global.getOrmHelper().getPassword());
-                        if (!vfs.isMounted()) vfs.createNewContainer(path, global.getOrmHelper().getPassword());
+                        if (!vfs.isMounted()) vfs.mount(Global.INSTANCE.getOrmHelper().getPassword());
+                        if (!vfs.isMounted()) vfs.createNewContainer(path, Global.INSTANCE.getOrmHelper().getPassword());
 
                         File file = new File("/", fileName +".html");
                         try {
@@ -254,10 +246,6 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                                     getString(R.string.share_form));
                             intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
-
-//                Intent onlyView = new Intent(Intent.ACTION_VIEW).setDataAndType(uri, "text/html");
-//                onlyView.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                startActivity(onlyView);
                         } catch (IOException e) {
                             Timber.e(e);
                         } finally {

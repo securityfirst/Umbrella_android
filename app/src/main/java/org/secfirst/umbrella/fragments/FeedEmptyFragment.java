@@ -20,7 +20,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
@@ -34,17 +33,12 @@ import java.util.List;
 
 import timber.log.Timber;
 
-/**
- * Created by HAL-9000 on 13/12/2017.
- */
-
 public class FeedEmptyFragment extends Fragment {
 
     private View mView;
     private CardView mEmptyCard;
     private String mLocation;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private Global mGlobal;
 
     public static FeedEmptyFragment newInstance(String location) {
         Bundle args = new Bundle();
@@ -62,7 +56,6 @@ public class FeedEmptyFragment extends Fragment {
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.fragment_feed_empty_refresh);
         TextView title = (TextView) mView.findViewById(R.id.empty_dashboard_title);
         title.setText(mLocation);
-        mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mEmptyCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,11 +86,11 @@ public class FeedEmptyFragment extends Fragment {
     }
 
     private boolean getFeeds(final Context context) {
-        Registry selISO2 = mGlobal.getRegistry("iso2");
+        Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
         if (selISO2 != null) {
             List<Registry> selections;
             try {
-                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                 if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -128,7 +121,7 @@ public class FeedEmptyFragment extends Fragment {
                             if (receivedItems != null && receivedItems.size() > 0) {
                                 for (FeedItem receivedItem : receivedItems) {
                                     try {
-                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                        Global.INSTANCE.getDaoFeedItem().create(receivedItem);
                                     } catch (SQLException e) {
                                         e.printStackTrace();
                                     }

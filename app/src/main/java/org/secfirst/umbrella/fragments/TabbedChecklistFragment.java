@@ -12,8 +12,6 @@ import android.widget.ListView;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-import org.secfirst.umbrella.BaseActivity;
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.DashCheckListAdapter;
 import org.secfirst.umbrella.models.Category;
@@ -101,11 +99,10 @@ public class TabbedChecklistFragment extends Fragment {
     }
 
     public ArrayList<DashCheckFinished> getChecklistProgress() {
-        final Global global = ((MainActivity) getActivity()).getGlobal();
         ArrayList<DashCheckFinished> returned = new ArrayList<>();
         List<Favourite> favourites = null;
         try {
-            favourites = global.getDaoFavourite().queryForAll();
+            favourites = Global.INSTANCE.getDaoFavourite().queryForAll();
         } catch (SQLException e) {
             Timber.e(e);
         }
@@ -113,7 +110,7 @@ public class TabbedChecklistFragment extends Fragment {
             for (Favourite favourite : favourites) {
                 List<CheckItem> mCheckList = null;
                 try {
-                    QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity) getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                    QueryBuilder<CheckItem, String> queryBuilder = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                     Where<CheckItem, String> where = queryBuilder.where();
                     where.eq(CheckItem.FIELD_CATEGORY, favourite.getCategory()).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(favourite.getDifficulty() + 1));
                     mCheckList = queryBuilder.query();
@@ -122,7 +119,7 @@ public class TabbedChecklistFragment extends Fragment {
                 }
                 Category category = null;
                 try {
-                    category = global.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
+                    category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
@@ -144,12 +141,12 @@ public class TabbedChecklistFragment extends Fragment {
             }
         }
         try {
-            QueryBuilder<Difficulty, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
+            QueryBuilder<Difficulty, String> queryBuilder = Global.INSTANCE.getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
             List<Difficulty> hasDifficulty = queryBuilder.query();
             for (Difficulty difficulty : hasDifficulty) {
                 List<CheckItem> mCheckList = null;
                 try {
-                    QueryBuilder<CheckItem, String> queryBuilder1 = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                    QueryBuilder<CheckItem, String> queryBuilder1 = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                     Where<CheckItem, String> where = queryBuilder1.where();
                     where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(difficulty.getCategory())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty.getSelected() + 1));
                     mCheckList = queryBuilder1.query();
@@ -157,7 +154,7 @@ public class TabbedChecklistFragment extends Fragment {
                     Timber.e(e);
                 }
                 try {
-                    Category category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
+                    Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
                     if (category != null) {
                         DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
                         if (mCheckList!=null) {
@@ -185,11 +182,11 @@ public class TabbedChecklistFragment extends Fragment {
         } catch (SQLException e) {
             Timber.e(e);
         }
-        DashCheckFinished totalDone = new DashCheckFinished(global.getString(R.string.total_done), getTotalCheckListPercentage(returned), 100, false);
+        DashCheckFinished totalDone = new DashCheckFinished(Global.INSTANCE.getString(R.string.total_done), getTotalCheckListPercentage(returned), 100, false);
         totalDone.setNoIcon(true);
         returned.add(0, totalDone);
         if (returned.size()<2) {
-            DashCheckFinished noItems = new DashCheckFinished(global.getString(R.string.no_check_items_started_on_yet), 0, 0, false);
+            DashCheckFinished noItems = new DashCheckFinished(Global.INSTANCE.getString(R.string.no_check_items_started_on_yet), 0, 0, false);
             noItems.setNoIcon(true);
             noItems.setNoPercent(true);
             returned.add(noItems);

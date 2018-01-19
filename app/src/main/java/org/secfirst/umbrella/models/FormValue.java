@@ -82,10 +82,10 @@ public class FormValue {
         this.value = value;
     }
 
-    public FormItem getFormItem(Global global) {
-        if (global!=null && formItem!=null && formItem.get_id()!=0) {
+    public FormItem getFormItem() {
+        if (formItem!=null && formItem.get_id()!=0) {
             try {
-                formItem = global.getDaoFormItem().queryForId(String.valueOf(formItem.get_id()));
+                formItem = Global.INSTANCE.getDaoFormItem().queryForId(String.valueOf(formItem.get_id()));
             } catch (SQLException e) {
                 Timber.e(e);
             }

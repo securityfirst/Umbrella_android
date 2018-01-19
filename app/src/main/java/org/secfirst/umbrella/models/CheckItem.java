@@ -3,6 +3,8 @@ package org.secfirst.umbrella.models;
 import com.google.gson.annotations.SerializedName;
 import com.j256.ormlite.field.DatabaseField;
 
+import org.secfirst.umbrella.util.UmbrellaUtil;
+
 import java.io.Serializable;
 
 public class CheckItem implements Serializable {
@@ -12,6 +14,7 @@ public class CheckItem implements Serializable {
     public static final String FIELD_PARENT = "parent";
     public static final String FIELD_CATEGORY = "category";
     public static final String FIELD_DIFFICULTY = "difficulty";
+    public static final String FIELD_DIFFICULTY_STRING = "difficulty_string";
     public static final String FIELD_CUSTOM = "custom";
     public static final String FIELD_DISABLED = "disabled";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
@@ -31,11 +34,16 @@ public class CheckItem implements Serializable {
     @DatabaseField(columnName = FIELD_DIFFICULTY)
     @SerializedName("difficulty_old")
     private int difficulty;
+    @DatabaseField(columnName = FIELD_DIFFICULTY_STRING)
     @SerializedName("difficulty")
     private String difficultyString;
 
     public String getDifficultyString() {
         return difficultyString;
+    }
+
+    public void setDifficultyString(String difficultyString) {
+        this.difficultyString = difficultyString;
     }
 
     @DatabaseField(columnName = FIELD_CUSTOM)
@@ -144,6 +152,7 @@ public class CheckItem implements Serializable {
     }
 
     public int getDifficulty() {
+        difficulty = UmbrellaUtil.getDifficultyFromString(difficultyString);
         return difficulty;
     }
 

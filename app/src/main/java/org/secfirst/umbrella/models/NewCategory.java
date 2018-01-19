@@ -1,25 +1,19 @@
 package org.secfirst.umbrella.models;
 
 import com.google.gson.annotations.SerializedName;
-import com.j256.ormlite.field.DatabaseField;
-
-import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.util.Global;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class NewCategory implements Serializable {
-    @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
-    private int id;
+    @SerializedName("id")
+    private String id;
     @SerializedName("subcategories")
     private ArrayList<NewCategory> subcategories;
     @SerializedName("name")
     private String name;
-    @SerializedName("checks")
-    private ArrayList<CheckItem> checkItems;
-    @SerializedName("items")
-    private ArrayList<Segment> segments;
+    @SerializedName("difficulties")
+    private ArrayList<NewDifficulty> difficulties;
     private Boolean hasBeginner, hasAdvanced, hasExpert;
 
     public NewCategory() {}
@@ -37,11 +31,11 @@ public class NewCategory implements Serializable {
         return name;
     }
 
-    public boolean hasBeginner() {
+    private boolean hasBeginner() {
         if (hasBeginner==null) {
             hasBeginner = false;
-            for (Segment segment : getSegments()) {
-                if (segment.getDifficultyString().equals(Global.INSTANCE.getString(R.string.beginner))) {
+            for (NewDifficulty difficulty : getDifficulties()) {
+                if (difficulty.getId().equals("beginner")) {
                     hasBeginner = true;
                     break;
                 }
@@ -50,11 +44,11 @@ public class NewCategory implements Serializable {
         return hasBeginner;
     }
 
-    public boolean hasAdvanced() {
+    private boolean hasAdvanced() {
         if (hasAdvanced==null) {
             hasAdvanced = false;
-            for (Segment segment : getSegments()) {
-                if (segment.getDifficultyString().equals(Global.INSTANCE.getString(R.string.advanced))) {
+            for (NewDifficulty difficulty : getDifficulties()) {
+                if (difficulty.getId().equals("advanced")) {
                     hasAdvanced = true;
                     break;
                 }
@@ -66,8 +60,8 @@ public class NewCategory implements Serializable {
     public boolean hasExpert() {
         if (hasExpert==null) {
             hasExpert = false;
-            for (Segment segment : getSegments()) {
-                if (segment.getDifficultyString().equals(Global.INSTANCE.getString(R.string.expert))) {
+            for (NewDifficulty difficulty : getDifficulties()) {
+                if (difficulty.getId().equals("expert")) {
                     hasExpert = true;
                     break;
                 }
@@ -76,20 +70,30 @@ public class NewCategory implements Serializable {
         return hasExpert;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Category getCategory(Global global) {
+    public Category getCategory() {
         boolean hasDifficulty = hasDifficulty();
-        if (getName().equals("_") && hasBeginner() && getSegments().size()==1) {
+        if (getName().equals("_") && hasBeginner() && getDifficulties().get(0).getSegments().size()==1) {
             hasDifficulty = false;
         }
-        return new Category(id, 0, getName(), hasDifficulty, hasBeginner(), hasAdvanced(), hasExpert(), getName()+global.getString(R.string.beginner), getName()+global.getString(R.string.advanced), getName()+global.getString(R.string.expert));
+        String textBeginner = "", textAdvanced = "", textExpert  = "";
+        for (NewDifficulty difficulty : getDifficulties()) {
+            if (difficulty.getId().equals("advanced")) {
+                textAdvanced = difficulty.getDescription();
+            } else if (difficulty.getId().equals("expert")) {
+                textExpert = difficulty.getDescription();
+            } else if (difficulty.getId().equals("beginner")) {
+                textBeginner = difficulty.getDescription();
+            }
+        }
+        return new Category(0, 0, getName(), hasDifficulty, hasBeginner(), hasAdvanced(), hasExpert(), textBeginner, textAdvanced, textExpert);
     }
 
     public boolean hasDifficulty() {
@@ -100,21 +104,25 @@ public class NewCategory implements Serializable {
         this.name = name;
     }
 
-    public ArrayList<CheckItem> getCheckItems() {
-        if (checkItems == null) checkItems = new ArrayList<>();
-        return checkItems;
+    public ArrayList<NewDifficulty> getDifficulties() {
+        if (difficulties == null) difficulties = new ArrayList<>();
+        return difficulties;
     }
 
-    public void setCheckItems(ArrayList<CheckItem> checkItems) {
-        this.checkItems = checkItems;
+    public void setDifficulties(ArrayList<NewDifficulty> newDifficulties) {
+        this.difficulties = newDifficulties;
     }
 
-    public ArrayList<Segment> getSegments() {
-        if (segments == null) segments = new ArrayList<>();
-        return segments;
+    @Override
+    public String toString() {
+        return "NewCategory{" + "id='" + id + '\'' +
+                ",subcategories='" + subcategories + '\'' +
+                ", name='" + name + '\'' +
+                ", difficulties='" + difficulties + '\'' +
+                ", difficultyBeginner='" + hasBeginner() + '\'' +
+                ", difficultyAdvanced='" + hasAdvanced() + '\'' +
+                ", difficultyExpert='" + hasExpert() + '\'' +
+                '}';
     }
 
-    public void setSegments(ArrayList<Segment> segments) {
-        this.segments = segments;
-    }
 }
