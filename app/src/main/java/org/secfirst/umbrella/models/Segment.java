@@ -85,7 +85,7 @@ public class Segment implements Serializable {
     }
 
     public int getDifficulty() {
-        difficulty = UmbrellaUtil.getDifficultyFromString(difficultyString);
+        if (difficulty==0 && difficultyString!=null) difficulty = UmbrellaUtil.getDifficultyFromString(difficultyString);
         return difficulty;
     }
 
