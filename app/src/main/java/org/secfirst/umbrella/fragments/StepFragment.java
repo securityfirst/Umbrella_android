@@ -129,14 +129,14 @@ public class StepFragment extends Fragment implements Step {
                 case "label":
                     if (!formItem.getTitle().equals("")) {
                         TextView tvTextInput = new TextView(getContext());
-                        tvTextInput.setText(Html.fromHtml(Jsoup.clean(formItem.getTitle(), Whitelist.simpleText())));
+                        tvTextInput.setText(Html.fromHtml(Jsoup.clean(formItem.getLabel(), Whitelist.simpleText())));
                         formHolder.addView(tvTextInput);
                     }
                     break;
                 case "text_input":
                     if (!formItem.getTitle().equals("")) {
                         TextView tvTextInput = new TextView(getContext());
-                        tvTextInput.setText(formItem.getTitle());
+                        tvTextInput.setText(formItem.getLabel());
                         formHolder.addView(tvTextInput);
                     }
 
@@ -150,7 +150,7 @@ public class StepFragment extends Fragment implements Step {
                 case "text_area":
                     if (!formItem.getTitle().equals("")) {
                         TextView taTextInput = new TextView(getContext());
-                        taTextInput.setText(formItem.getTitle());
+                        taTextInput.setText(formItem.getLabel());
                         formHolder.addView(taTextInput);
                     }
 
@@ -164,7 +164,7 @@ public class StepFragment extends Fragment implements Step {
                 case "multiple_choice":
                     if (!formItem.getTitle().equals("")) {
                         TextView mcTextInput = new TextView(getContext());
-                        mcTextInput.setText(formItem.getTitle());
+                        mcTextInput.setText(formItem.getLabel());
                         formHolder.addView(mcTextInput);
                     }
                     List<String> mcValList = new ArrayList<>();
@@ -185,7 +185,7 @@ public class StepFragment extends Fragment implements Step {
                 case "single_choice":
                     if (!formItem.getTitle().equals("")) {
                         TextView scTextInput = new TextView(getContext());
-                        scTextInput.setText(formItem.getTitle());
+                        scTextInput.setText(formItem.getLabel());
                         formHolder.addView(scTextInput);
                     }
                     List<String> scValList = new ArrayList<>();
@@ -206,7 +206,7 @@ public class StepFragment extends Fragment implements Step {
                 case "toggle_button":
                     if (!formItem.getTitle().equals("")) {
                         TextView toTextInput = new TextView(getContext());
-                        toTextInput.setText(formItem.getTitle());
+                        toTextInput.setText(formItem.getLabel());
                         formHolder.addView(toTextInput);
                     }
                     for (FormOption formOption : formItem.getOptions()) {

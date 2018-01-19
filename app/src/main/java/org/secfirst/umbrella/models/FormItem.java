@@ -20,13 +20,14 @@ public class FormItem {
     public static final String FIELD_TITLE = "title";
     public static final String FIELD_TYPE = "type";
     public static final String FIELD_HINT = "hint";
+    public static final String FIELD_LABEL = "label";
 
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int _id;
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private FormScreen formScreen;
     @DatabaseField(columnName = FIELD_TITLE)
-    @SerializedName(FIELD_TITLE)
+    @SerializedName("name")
     String title;
     @DatabaseField(columnName = FIELD_TYPE)
     @SerializedName(FIELD_TYPE)
@@ -34,18 +35,29 @@ public class FormItem {
     @DatabaseField(columnName = FIELD_HINT)
     @SerializedName(FIELD_HINT)
     String hint;
+    @DatabaseField(persisted = false)
+    ArrayList<FormOption> optionArrayList;
     @ForeignCollectionField
-    @SerializedName("options")
     ForeignCollection<FormOption> options;
 
     List<FormValue> values;
+    @DatabaseField(columnName = FIELD_LABEL)
+    @SerializedName("label")
+    String label;
 
     public FormItem() {}
 
-    public FormItem(String title, String type, FormScreen screen) {
-        this.title = title;
-        this.type = type;
-        this.formScreen = screen;
+    public ArrayList<FormOption> getOptionArrayList() {
+        if (optionArrayList==null) optionArrayList = new ArrayList<>();
+        return optionArrayList;
+    }
+
+    public void setOptionArrayList(ArrayList<FormOption> optionArrayList) {
+        this.optionArrayList = optionArrayList;
+    }
+
+    public void setFormScreen(FormScreen formScreen) {
+        this.formScreen = formScreen;
     }
 
     public int get_id() {
@@ -112,5 +124,13 @@ public class FormItem {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
     }
 }

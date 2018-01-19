@@ -8,6 +8,8 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
+
 @DatabaseTable(tableName = "forms")
 public class Form {
     public static final String FIELD_TITLE = "title";
@@ -15,10 +17,11 @@ public class Form {
     @DatabaseField(columnName = FIELD_ID, generatedId = true, allowGeneratedIdInsert = true)
     private int _id;
     @DatabaseField(columnName = FIELD_TITLE)
-    @SerializedName("title")
+    @SerializedName("name")
     String title;
+    @DatabaseField(persisted = false)
+    ArrayList<FormScreen> screenArrayList;
     @ForeignCollectionField(eager = true)
-    @SerializedName("screens")
     ForeignCollection<FormScreen> screens;
 
     public Form() {}
@@ -30,6 +33,15 @@ public class Form {
     public Form(String title, ForeignCollection<FormScreen> screens) {
         this.title = title;
         setScreens(screens);
+    }
+
+    public void setScreenArrayList(ArrayList<FormScreen> screenArrayList) {
+        this.screenArrayList = screenArrayList;
+    }
+
+    public ArrayList<FormScreen> getScreenArrayList() {
+        if (screenArrayList==null) screenArrayList = new ArrayList<FormScreen>();
+        return screenArrayList;
     }
 
     public int get_id() {

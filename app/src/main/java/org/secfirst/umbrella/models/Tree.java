@@ -9,6 +9,8 @@ public class Tree {
     private ArrayList<NewCategory> categories;
     @SerializedName("assets")
     private ArrayList<String> assets;
+    @SerializedName("forms")
+    private ArrayList<Form> forms;
 
     public Tree() {}
 
@@ -24,6 +26,11 @@ public class Tree {
     public ArrayList<String> getAssets() {
         if (assets==null) assets = new ArrayList<>();
         return assets;
+    }
+
+    public ArrayList<Form> getForms() {
+        if (forms==null) forms = new ArrayList<>();
+        return forms;
     }
 
     public void setAssets(ArrayList<String> assets) {
