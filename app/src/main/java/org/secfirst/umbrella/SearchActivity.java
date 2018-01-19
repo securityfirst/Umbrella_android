@@ -17,6 +17,7 @@ import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.adapters.SearchAdapter;
 import org.secfirst.umbrella.models.Segment;
+import org.secfirst.umbrella.util.Global;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -48,7 +49,7 @@ public class SearchActivity extends BaseActivity {
             if (query!=null) {
                 List<Segment> mSegments;
                 try {
-                    QueryBuilder<Segment, String> queryBuilder = global.getDaoSegment().queryBuilder();
+                    QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
                     Where<Segment, String> where = queryBuilder.where();
                     where.like(Segment.FIELD_BODY, new SelectArg("%" + query + "%"));
                     mSegments = queryBuilder.query();

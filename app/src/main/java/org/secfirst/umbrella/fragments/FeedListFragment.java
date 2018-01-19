@@ -32,7 +32,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.FeedAdapter;
 import org.secfirst.umbrella.models.FeedItem;
@@ -56,7 +55,6 @@ public class FeedListFragment extends Fragment {
     private ListView mFeedListView;
     private List<FeedItem> mItems = new ArrayList<>();
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private Global mGlobal;
     private ExpandableLinearLayout mExpandableLayout;
     private RelativeLayout mButtonLayout;
     private TextView mChangeLocationLabel;
@@ -85,7 +83,6 @@ public class FeedListFragment extends Fragment {
         mButtonLayout = (RelativeLayout) view.findViewById(R.id.button);
         mLocationLabel = (TextView) view.findViewById(R.id.current_location);
         mExpandLocationLabel = (TextView) view.findViewById(R.id.expand_current_location);
-        mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mChangeLocationLabel = (TextView) view.findViewById(R.id.expand_change_location);
         mColonLabel = (TextView) view.findViewById(R.id.colon_id);
         initSwipeRefresh();
@@ -95,7 +92,7 @@ public class FeedListFragment extends Fragment {
         FeedAdapter mFeedAdapter = new FeedAdapter(getActivity(), mItems);
         mFeedListView.setAdapter(mFeedAdapter);
         mFeedListView.setDividerHeight(20);
-        mLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
+        mLocationLabel.setText(Global.INSTANCE.getRegistry("mLocation").getValue());
         return view;
     }
 
@@ -129,7 +126,7 @@ public class FeedListFragment extends Fragment {
             @Override
             public void onPreClose() {
                 createRotateAnimator(mButtonLayout, 180f, 0f).start();
-                mLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
+                mLocationLabel.setText(Global.INSTANCE.getRegistry("mLocation").getValue());
                 animationClose();
             }
         });
@@ -147,7 +144,7 @@ public class FeedListFragment extends Fragment {
     private void animationOpen() {
         mLocationLabel.setVisibility(View.INVISIBLE);
         mColonLabel.setVisibility(View.INVISIBLE);
-        mExpandLocationLabel.setText(mGlobal.getRegistry("mLocation").getValue());
+        mExpandLocationLabel.setText(Global.INSTANCE.getRegistry("mLocation").getValue());
         mExpandLocationLabel.setVisibility(View.VISIBLE);
         mChangeLocationLabel.setVisibility(View.VISIBLE);
         mExpandLocationLabel.setAnimation(fadeInAnimation());
@@ -277,11 +274,11 @@ public class FeedListFragment extends Fragment {
     }
 
     public boolean getFeeds() {
-        Registry selISO2 = mGlobal.getRegistry("iso2");
+        Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
         if (selISO2 != null) {
             List<Registry> selections;
             try {
-                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                 if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -294,7 +291,7 @@ public class FeedListFragment extends Fragment {
                     }
                     String sources = sb.substring(separator.length());
                     final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                            + "&since=" + mGlobal.getFeedItemsRefreshed();
+                            + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
 
                     UmbrellaRestClient.get(mUrl, null, "", getContext(), new JsonHttpResponseHandler() {
 
@@ -308,7 +305,7 @@ public class FeedListFragment extends Fragment {
                             if (receivedItems != null && receivedItems.size() > 0) {
                                 for (FeedItem receivedItem : receivedItems) {
                                     try {
-                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                        Global.INSTANCE.getDaoFeedItem().create(receivedItem);
                                     } catch (SQLException e) {
                                         e.printStackTrace();
                                     }

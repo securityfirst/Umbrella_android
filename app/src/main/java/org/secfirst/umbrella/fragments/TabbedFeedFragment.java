@@ -59,7 +59,6 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     private TextView mNoFeedSettings;
     private TextView mRefreshIntervalValue;
     private TextView mFeedSourcesValue;
-    private Global mGlobal;
     private TextView mLocationLabel;
     private boolean mOpenList;
     private LinearLayout mUndefinedButton;
@@ -86,7 +85,6 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dashboard_feed,
                 container, false);
-        mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mLocationLabel = (TextView) rootView.findViewById(R.id.location_label);
         mNoFeedSettings = (TextView) rootView.findViewById(R.id.no_feed_settings);
         mRefreshIntervalValue = (TextView) rootView.findViewById(R.id.refresh_interval_value);
@@ -122,10 +120,10 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         refreshInterval.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mGlobal.hasPasswordSet(false)) {
+                if (Global.INSTANCE.hasPasswordSet(false)) {
                     showRefresh();
                 } else {
-                    mGlobal.setPassword(getActivity(), null);
+                    Global.INSTANCE.setPassword(getActivity(), null);
                 }
             }
         });
@@ -145,7 +143,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
             @Override
             public void onClick(View view) {
                 try {
-                    List<Registry> selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                    List<Registry> selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                     if (mLocationLabel.getText().equals(getString(R.string.feed_location_label))) {
                         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                         LocationDialog custom = LocationDialog.newInstance(TabbedFeedFragment.this, openSource);
@@ -172,16 +170,16 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
             Global.INSTANCE.deleteRegistriesByName("mLocation");
 
 
-        mFeedSourcesValue.setText(mGlobal.getSelectedFeedSourcesLabel(false));
+        mFeedSourcesValue.setText(Global.INSTANCE.getSelectedFeedSourcesLabel(false));
 
-        mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
+        mRefreshIntervalValue.setText(Global.INSTANCE.getRefreshLabel(null));
 
-        String location = mGlobal.getRegistry("mLocation") != null ?
-                mGlobal.getRegistry("mLocation").getValue() : getString(R.string.feed_location_label);
+        String location = Global.INSTANCE.getRegistry("mLocation") != null ?
+                Global.INSTANCE.getRegistry("mLocation").getValue() : getString(R.string.feed_location_label);
         mLocationLabel.setText(location);
 
-        String sourceValue = mGlobal.getSelectedFeedSourcesLabel(false).equals("") ?
-                getString(R.string.set_sources) : mGlobal.getSelectedFeedSourcesLabel(false);
+        String sourceValue = Global.INSTANCE.getSelectedFeedSourcesLabel(false).equals("") ?
+                getString(R.string.set_sources) : Global.INSTANCE.getSelectedFeedSourcesLabel(false);
         mFeedSourcesValue.setText(sourceValue);
     }
 
@@ -221,11 +219,11 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                             public void onInput(MaterialDialog dialog, CharSequence input) {
                                 if (Patterns.WEB_URL.matcher(input).matches()) {
                                     try {
-                                        List<FeedSource> sourceExists = mGlobal.getDaoFeedSource().queryForEq(FeedSource.FIELD_URL, input);
+                                        List<FeedSource> sourceExists = Global.INSTANCE.getDaoFeedSource().queryForEq(FeedSource.FIELD_URL, input);
                                         if (sourceExists != null && sourceExists.size() > 0) {
                                             Toast.makeText(getContext(), R.string.source_already_added, Toast.LENGTH_SHORT).show();
                                         } else {
-                                            mGlobal.getDaoFeedSource().create(new FeedSource(input.toString(), 0, input.toString()));
+                                            Global.INSTANCE.getDaoFeedSource().create(new FeedSource(input.toString(), 0, input.toString()));
                                             Toast.makeText(getContext(), String.format("Source %s was successfully added", input.toString()), Toast.LENGTH_SHORT).show();
                                         }
                                     } catch (SQLException e) {
@@ -240,7 +238,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                 break;
             case R.id.manage_sources:
                 try {
-                    List<FeedSource> externalSources = mGlobal.getDaoFeedSource().queryForAll();
+                    List<FeedSource> externalSources = Global.INSTANCE.getDaoFeedSource().queryForAll();
                     if (externalSources != null && externalSources.size() > 0) {
                         ArrayList<String> sourceUrls = new ArrayList<String>();
                         for (FeedSource externalSource : externalSources) {
@@ -256,7 +254,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                                         @Override
                                         public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                             try {
-                                                DeleteBuilder<FeedSource, String> toDelete = mGlobal.getDaoFeedSource().deleteBuilder();
+                                                DeleteBuilder<FeedSource, String> toDelete = Global.INSTANCE.getDaoFeedSource().deleteBuilder();
                                                 toDelete.where().eq(FeedSource.FIELD_URL, text);
                                                 toDelete.delete();
                                             } catch (SQLException e) {
@@ -286,7 +284,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                 break;
             case R.id.list_items:
                 try {
-                    for (FeedItem feedItem : mGlobal.getDaoFeedItem().queryForAll()) {
+                    for (FeedItem feedItem : Global.INSTANCE.getDaoFeedItem().queryForAll()) {
                         Timber.d("fi %s", feedItem);
                     }
                 } catch (SQLException e) {
@@ -296,7 +294,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                 break;
             case R.id.remove_items:
                 try {
-                    DeleteBuilder<FeedItem, String> db = mGlobal.getDaoFeedItem().deleteBuilder();
+                    DeleteBuilder<FeedItem, String> db = Global.INSTANCE.getDaoFeedItem().deleteBuilder();
                     db.delete();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -316,10 +314,10 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     private void deleteOldFeedItems() {
-        Registry selLoc = mGlobal.getRegistry("mLocation");
+        Registry selLoc = Global.INSTANCE.getRegistry("mLocation");
         try {
             if (selLoc != null)
-                mGlobal.getDaoFeedItem().delete(mGlobal.getFeedItems());
+                Global.INSTANCE.getDaoFeedItem().delete(Global.INSTANCE.getFeedItems());
         } catch (SQLException e) {
             Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
         }
@@ -327,12 +325,12 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
 
     public void getFeeds() {
 
-        Registry selISO2 = mGlobal.getRegistry("iso2");
+        Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
 
         if (selISO2 != null) {
             List<Registry> selections;
             try {
-                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                 if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -347,7 +345,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                     mFeedProgress.setVisibility(View.VISIBLE);
                     String sources = sb.substring(separator.length());
                     final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                            + "&since=" + mGlobal.getFeedItemsRefreshed();
+                            + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", getContext(), new JsonHttpResponseHandler() {
 
                         @Override
@@ -360,7 +358,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                             if (receivedItems != null && receivedItems.size() > 0) {
                                 for (FeedItem receivedItem : receivedItems) {
                                     try {
-                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                        Global.INSTANCE.getDaoFeedItem().create(receivedItem);
                                     } catch (SQLException e) {
                                         e.printStackTrace();
                                     }
@@ -397,7 +395,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
         FragmentTransaction transaction = getActivity().getSupportFragmentManager()
                 .beginTransaction();
         transaction.replace(R.id.root_frame, FeedEmptyFragment.
-                newInstance(mGlobal.getRegistry("mLocation").getValue()));
+                newInstance(Global.INSTANCE.getRegistry("mLocation").getValue()));
         transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
         transaction.addToBackStack(null);
         transaction.commit();
@@ -416,14 +414,14 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     public void showRefresh() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(
                 getActivity());
-        builderSingle.setTitle(mGlobal.getString(R.string.choose_refresh_inteval));
+        builderSingle.setTitle(getString(R.string.choose_refresh_inteval));
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 getActivity(),
                 android.R.layout.select_dialog_singlechoice);
-        int currentRefresh = mGlobal.getRefreshValue();
+        int currentRefresh = Global.INSTANCE.getRefreshValue();
         int selectedIndex = 0;
         int i = 0;
-        final Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(mGlobal.getApplicationContext());
+        final Map<String, Integer> refreshValues = UmbrellaUtil.getRefreshValues(Global.INSTANCE.getApplicationContext());
         for (Map.Entry<String, Integer> entry : refreshValues.entrySet()) {
             if (entry.getValue().equals(currentRefresh)) {
                 selectedIndex = i;
@@ -431,7 +429,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
             arrayAdapter.add(entry.getKey());
             i++;
         }
-        builderSingle.setNegativeButton(mGlobal.getString(R.string.cancel),
+        builderSingle.setNegativeButton(getString(R.string.cancel),
                 new DialogInterface.OnClickListener() {
 
                     @Override
@@ -450,8 +448,8 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                             if (entry.getKey().equals(chosen)) {
                                 BaseActivity baseAct = ((BaseActivity) getActivity());
                                 if (baseAct.mBounded) baseAct.mService.setRefresh(value);
-                                mGlobal.setRefreshValue(value);
-                                mRefreshIntervalValue.setText(mGlobal.getRefreshLabel(null));
+                                Global.INSTANCE.setRefreshValue(value);
+                                mRefreshIntervalValue.setText(Global.INSTANCE.getRefreshLabel(null));
                                 refreshFeed();
                                 dialog.dismiss();
                             }
@@ -462,16 +460,16 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
     }
 
     public void showFeedSources() {
-        final CharSequence[] items = mGlobal.getFeedSourcesArray();
+        final CharSequence[] items = Global.INSTANCE.getFeedSourcesArray();
         final ArrayList<Integer> selectedItems = new ArrayList<>();
         boolean[] currentSelections = new boolean[items.length];
         List<Registry> selections;
         try {
-            selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+            selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
             for (int i = 0; i < items.length; i++) {
                 currentSelections[i] = false;
                 for (Registry reg : selections) {
-                    if (reg.getValue().equals(String.valueOf(mGlobal.getFeedSourceCodeByIndex(i)))) {
+                    if (reg.getValue().equals(String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(i)))) {
                         currentSelections[i] = true;
                         selectedItems.add(i);
                         break;
@@ -482,7 +480,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
             Timber.e(e);
         }
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(mGlobal.getString(R.string.select_feed_sources));
+        builder.setTitle(getString(R.string.select_feed_sources));
         builder.setMultiChoiceItems(items, currentSelections,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -495,30 +493,30 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         }
                     }
                 })
-                .setPositiveButton(mGlobal.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         List<Registry> selections;
                         try {
-                            selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                            selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                             for (Registry selection : selections) {
-                                mGlobal.getDaoRegistry().delete(selection);
+                                Global.INSTANCE.getDaoRegistry().delete(selection);
                             }
                         } catch (SQLException e) {
                             Timber.e(e);
                         }
                         for (Integer item : selectedItems) {
                             try {
-                                mGlobal.getDaoRegistry().create(new Registry("feed_sources",
-                                        String.valueOf(mGlobal.getFeedSourceCodeByIndex(item))));
+                                Global.INSTANCE.getDaoRegistry().create(new Registry("feed_sources",
+                                        String.valueOf(Global.INSTANCE.getFeedSourceCodeByIndex(item))));
                                 mOpenList = true;
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
                         }
                         deleteOldFeedItems();
-                        String sourceValue = mGlobal.getSelectedFeedSourcesLabel(false).equals("") ?
-                                getString(R.string.set_sources) : mGlobal.getSelectedFeedSourcesLabel(false);
+                        String sourceValue = Global.INSTANCE.getSelectedFeedSourcesLabel(false).equals("") ?
+                                getString(R.string.set_sources) : Global.INSTANCE.getSelectedFeedSourcesLabel(false);
                         mFeedSourcesValue.setText(sourceValue);
 
                         refreshFeed();
@@ -526,7 +524,7 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(mGlobal.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
@@ -540,21 +538,21 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
 
     public boolean isFeedSet() {
 
-        String location = mGlobal.getRegistry("mLocation") != null ?
-                mGlobal.getRegistry("mLocation").getValue() : "";
+        String location = Global.INSTANCE.getRegistry("mLocation") != null ?
+                Global.INSTANCE.getRegistry("mLocation").getValue() : "";
 
-        return !mGlobal.getRefreshLabel(null).equals("")
+        return !Global.INSTANCE.getRefreshLabel(null).equals("")
                 && !location.equals("")
-                && !mGlobal.getChosenCountry().equals("");
+                && !Global.INSTANCE.getChosenCountry().equals("");
     }
 
     @Override
     public void locationEvent(String currentLocation, boolean sourceFeedEnable) {
         mLocationLabel.setText(currentLocation);
         mLocationLabel.setTextColor(ContextCompat.getColor(getContext(), R.color.green_dashboard));
-        mGlobal.setRegistry("mLocation", currentLocation);
+        Global.INSTANCE.setRegistry("mLocation", currentLocation);
 
-        if (sourceFeedEnable && mGlobal.getSelectedFeedSourcesLabel(false).equals(""))
+        if (sourceFeedEnable && Global.INSTANCE.getSelectedFeedSourcesLabel(false).equals(""))
             showFeedSources();
 
         if (mOpenList)

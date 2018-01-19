@@ -85,17 +85,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
     }
 
     @Override
-    public void onSwipeOutAtEnd() {
-//        global.set_termsAccepted(true);
-//        materialDialog = new MaterialDialog.Builder(TourActivity.this)
-//                .title(R.string.update_from_server)
-//                .content(R.string.downloading)
-//                .cancelable(false)
-//                .autoDismiss(false)
-//                .progress(false, 100, false)
-//                .show();
-//        Global.INSTANCE.syncApi(TourActivity.this, TourActivity.this);
-    }
+    public void onSwipeOutAtEnd() {}
 
     public void navigateToMain() {
         Intent toMain = new Intent(this, MainActivity.class);
@@ -138,7 +128,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            return TourSlideFragment.create(position, global);
+            return TourSlideFragment.create(position);
         }
 
         @Override

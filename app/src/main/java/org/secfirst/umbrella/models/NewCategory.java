@@ -2,8 +2,6 @@ package org.secfirst.umbrella.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import org.secfirst.umbrella.util.Global;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -80,7 +78,7 @@ public class NewCategory implements Serializable {
         this.id = id;
     }
 
-    public Category getCategory(Global global) {
+    public Category getCategory() {
         boolean hasDifficulty = hasDifficulty();
         if (getName().equals("_") && hasBeginner() && getDifficulties().get(0).getSegments().size()==1) {
             hasDifficulty = false;

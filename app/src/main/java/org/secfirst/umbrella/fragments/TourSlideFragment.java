@@ -12,19 +12,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 public class TourSlideFragment extends Fragment {
 
     private int mPageNumber;
-    private Global global;
 
-    public static TourSlideFragment create(int pageNumber, Global global) {
+    public static TourSlideFragment create(int pageNumber) {
         TourSlideFragment fragment = new TourSlideFragment();
-        fragment.global = global;
         Bundle args = new Bundle();
         args.putInt("page", pageNumber);
         fragment.setArguments(args);
@@ -43,7 +39,6 @@ public class TourSlideFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (getActivity()!=null && global==null) global = ((BaseActivity) getActivity()).getGlobal();
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_tour_slide, container, false);
 

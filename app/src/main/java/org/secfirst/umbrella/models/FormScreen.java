@@ -58,10 +58,10 @@ public class FormScreen {
         this.items = items;
     }
 
-    public Form getForm(Global global) {
-        if (global!=null && form!=null && form.get_id()!=0) {
+    public Form getForm() {
+        if (form!=null && form.get_id()!=0) {
             try {
-                form = global.getDaoForm().queryForId(String.valueOf(form.get_id()));
+                form = Global.INSTANCE.getDaoForm().queryForId(String.valueOf(form.get_id()));
             } catch (SQLException e) {
                 Timber.e(e);
             }

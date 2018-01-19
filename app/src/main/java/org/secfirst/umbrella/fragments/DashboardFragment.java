@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.Global;
@@ -18,13 +17,11 @@ import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
 
-    private Global global;
     SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
-    public static DashboardFragment newInstance(Global global, int toDash) {
+    public static DashboardFragment newInstance(int toDash) {
         DashboardFragment fragment = new DashboardFragment();
-        fragment.global = global;
         Bundle args = new Bundle();
         args.putInt("dashboard", toDash);
         fragment.setArguments(args);
@@ -51,8 +48,7 @@ public class DashboardFragment extends Fragment {
         super.onResume();
         if (getActivity() != null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
-            if (global == null) global = ((BaseActivity) getActivity()).getGlobal();
-            getActivity().setTitle(global.getString(R.string.my_security));
+            getActivity().setTitle(Global.INSTANCE.getString(R.string.my_security));
         }
     }
 

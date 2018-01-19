@@ -19,7 +19,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.seismic.ShakeDetector;
@@ -50,7 +49,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
         return intent;
     }
 
-    protected Global global;
     protected Toolbar toolbar;
     public boolean mBounded;
     public RefreshService mService;
@@ -58,7 +56,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     private Timer logoutTimer;
     final Handler handler = new Handler();
     ShakeDetector sd;
-    private MaterialDialog materialDialog;
 
     private BroadcastReceiver mForegroundReceiver = new BroadcastReceiver() {
         @Override
@@ -66,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
             String json = intent.getStringExtra(EXTRA_FEEDS);
             List<FeedItem> feeds = new Gson().fromJson(json, new TypeToken<List<FeedItem>>() {
             }.getType());
-            NotificationUtil.showNotificationForeground(context, global, feeds);
+            NotificationUtil.showNotificationForeground(context, feeds);
             abortBroadcast();
         }
     };
@@ -75,7 +72,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        global = (Global) getApplicationContext();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
                 WindowManager.LayoutParams.FLAG_SECURE);
         Registry language = Global.INSTANCE.getRegistry("language");
@@ -123,7 +119,6 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     @Override
     protected void onResume() {
         super.onResume();
-        if (global == null) global = (Global) getApplicationContext();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -137,17 +132,12 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     protected void onPause() {
         super.onPause();
         if (sd != null) sd.stop();
-        if (materialDialog != null) materialDialog.dismiss();
     }
 
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
         resetLogoutTimer();
-    }
-
-    public Global getGlobal() {
-        return this.global;
     }
 
     @Override
@@ -171,7 +161,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        global.logout(BaseActivity.this, false);
+                        Global.INSTANCE.logout(BaseActivity.this, false);
                     }
                 });
             }
@@ -222,8 +212,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     public void hearShake() {
         if (!UmbrellaUtil.isAppMasked(this)) {
             try {
-                if (global.hasPasswordSet(false))
-                    global.logout(this, false);
+                if (Global.INSTANCE.hasPasswordSet(false)) Global.INSTANCE.logout(this, false);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
                 handsShake.show(fragmentManager, "");

@@ -68,8 +68,6 @@ public class StepFragment extends Fragment implements Step {
     private Long sessionId;
     private Form form;
 
-    Global global;
-
     ProgressBar progressBar;
     LinearLayout formHolder;
 
@@ -91,7 +89,6 @@ public class StepFragment extends Fragment implements Step {
         if (context instanceof OnNavigationBarListener) {
             onNavigationBarListener = (OnNavigationBarListener) context;
         }
-        global = (Global) context.getApplicationContext();
     }
 
     @Override
@@ -123,8 +120,8 @@ public class StepFragment extends Fragment implements Step {
         for (int i = 0; i < fsc.getItems().size(); i++) {
             FormItem formItem = new ArrayList<>(fsc.getItems()).get(i);
             try {
-                PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
-                formItem.setValues(global.getDaoFormValue().query(queryBuilder));
+                PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                formItem.setValues(Global.INSTANCE.getDaoFormValue().query(queryBuilder));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -286,13 +283,13 @@ public class StepFragment extends Fragment implements Step {
 
     private void upsertFormValue(FormValue formValue, FormItem formItem) {
         try {
-            PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, formValue.getSessionID()).and().eq(FormValue.FIELD_FORM_ITEM_ID, formValue.getFormId()).prepare();
-            FormValue exists = global.getDaoFormValue().queryForFirst(queryBuilder);
+            PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, formValue.getSessionID()).and().eq(FormValue.FIELD_FORM_ITEM_ID, formValue.getFormId()).prepare();
+            FormValue exists = Global.INSTANCE.getDaoFormValue().queryForFirst(queryBuilder);
             if (exists!=null && exists.get_id()>0) {
                 exists.setValue(formValue.getValue());
-                global.getDaoFormValue().update(exists);
+                Global.INSTANCE.getDaoFormValue().update(exists);
             } else {
-                global.getDaoFormValue().create(formValue);
+                Global.INSTANCE.getDaoFormValue().create(formValue);
                 formItem.addValue(formValue);
             }
         } catch (SQLException e) {

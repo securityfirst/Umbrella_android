@@ -50,15 +50,10 @@ import java.util.List;
 
 import timber.log.Timber;
 
-/**
- * Created by HAL-9000 on 12/12/2017.
- */
-
 public class LocationDialog extends DialogFragment implements Validator.ValidationListener {
 
 
     private OnLocationEventListener mOnLocationEventListener;
-    private Global mGlobal;
     private List<Address> mAddressList;
     private Address mAddress;
     @NotEmpty
@@ -84,7 +79,6 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_view, container, false);
-        mGlobal = ((BaseActivity) getActivity()).getGlobal();
         mButtonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
         mButtonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
         mAutocompleteLocation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.place_search_dialog_location_ET);
@@ -118,8 +112,8 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mAutocompleteLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && !mGlobal.hasPasswordSet(false)) {
-                    mGlobal.setPassword(getActivity(), null);
+                if (hasFocus && !Global.INSTANCE.hasPasswordSet(false)) {
+                    Global.INSTANCE.setPassword(getActivity(), null);
                 }
 
             }
@@ -130,7 +124,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mAutocompleteLocation.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mGlobal.hasPasswordSet(false)) {
+                if (Global.INSTANCE.hasPasswordSet(false)) {
                     UmbrellaUtil.hideSoftKeyboard(getActivity());
                     if (mAddressList != null) {
                         mAddress = mAddressList.get(position);
@@ -142,7 +136,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                         mAddress = null;
                     }
                 } else {
-                    mGlobal.setPassword(getActivity(), null);
+                    Global.INSTANCE.setPassword(getActivity(), null);
                 }
             }
         });
@@ -161,9 +155,9 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private void locationRegistry(String input) {
         try {
             Address address = autoComplete(input).get(0);
-            mGlobal.setRegistry("location", input);
-            mGlobal.setRegistry("iso2", address.getCountryCode().toLowerCase());
-            mGlobal.setRegistry("country", address.getCountryName());
+            Global.INSTANCE.setRegistry("location", input);
+            Global.INSTANCE.setRegistry("iso2", address.getCountryCode().toLowerCase());
+            Global.INSTANCE.setRegistry("country", address.getCountryName());
         } catch (Exception e) {
             Timber.e("Invalid address.", e);
         }
@@ -171,8 +165,8 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
 
     private void verifyIfSourceWasSelected() {
-        if (!mGlobal.getSelectedFeedSourcesLabel(false).equals("")
-                && !mGlobal.getRefreshLabel(null).equals("")) {
+        if (!Global.INSTANCE.getSelectedFeedSourcesLabel(false).equals("")
+                && !Global.INSTANCE.getRefreshLabel(null).equals("")) {
             getFeeds(getContext());
         }
     }
@@ -205,11 +199,11 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
 
     public boolean getFeeds(final Context context) {
-        Registry selISO2 = mGlobal.getRegistry("iso2");
+        Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
         if (selISO2 != null) {
             List<Registry> selections;
             try {
-                selections = mGlobal.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
                 if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
@@ -223,7 +217,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
                     String sources = sb.substring(separator.length());
                     final String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources
-                            + "&since=" + mGlobal.getFeedItemsRefreshed();
+                            + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
 
                     mOnLocationEventListener.locationStartFetchData();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
@@ -238,7 +232,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                             if (receivedItems != null && receivedItems.size() > 0) {
                                 for (FeedItem receivedItem : receivedItems) {
                                     try {
-                                        mGlobal.getDaoFeedItem().create(receivedItem);
+                                        Global.INSTANCE.getDaoFeedItem().create(receivedItem);
                                     } catch (SQLException e) {
                                         e.printStackTrace();
                                     }
@@ -254,7 +248,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                                 FragmentTransaction transaction = mActivity.getSupportFragmentManager()
                                         .beginTransaction();
                                 transaction.replace(R.id.root_frame, FeedEmptyFragment.
-                                        newInstance(mGlobal.getRegistry("mLocation").getValue()));
+                                        newInstance(Global.INSTANCE.getRegistry("mLocation").getValue()));
                                 transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
                                 transaction.addToBackStack(null);
                                 transaction.commit();
@@ -288,10 +282,10 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
 
 
     private void deleteOldFeedItems() {
-        Registry selLoc = mGlobal.getRegistry("mLocation");
+        Registry selLoc = Global.INSTANCE.getRegistry("mLocation");
         try {
             if (selLoc != null)
-                mGlobal.getDaoFeedItem().delete(mGlobal.getFeedItems());
+                Global.INSTANCE.getDaoFeedItem().delete(Global.INSTANCE.getFeedItems());
         } catch (SQLException e) {
             Toast.makeText(getActivity(), R.string.no_results_label, Toast.LENGTH_SHORT).show();
         }

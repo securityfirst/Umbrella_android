@@ -93,10 +93,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             finish();
             return;
         }
-        boolean hasOpened = global.initializeSQLCipher("");
+        boolean hasOpened = Global.INSTANCE.initializeSQLCipher("");
         if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
-        } else if (!global.getTermsAccepted()) {
+        } else if (!Global.INSTANCE.getTermsAccepted()) {
 
             startActivity(new Intent(this, TourActivity.class));
         } else {
@@ -112,14 +112,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     List<Difficulty> hasDifficulty = null;
                     try {
-                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                        hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
                     if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                         Category childCategory;
                         try {
-                            childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                            childCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
                             if (!childCategory.getDifficultyAdvanced() && position > 0) {
                                 position++;
                             }
@@ -132,7 +132,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         }
                         hasDifficulty.get(0).setSelected(position);
                         try {
-                            global.getDaoDifficulty().update(hasDifficulty.get(0));
+                            Global.INSTANCE.getDaoDifficulty().update(hasDifficulty.get(0));
                         } catch (SQLException e) {
                             Timber.e(e);
                         }
@@ -159,16 +159,16 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, this.toolbar, R.string.open_drawer, R.string.close_drawer);
             actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
             actionBarDrawerToggle.syncState();
-            loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+            loginHeader.setText(Global.INSTANCE.isLoggedIn() ? R.string.log_out : R.string.log_in);
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (global.isLoggedIn() && global.hasPasswordSet(true)) {
-                        global.logout(MainActivity.this, true);
+                    if (Global.INSTANCE.isLoggedIn() && Global.INSTANCE.hasPasswordSet(true)) {
+                        Global.INSTANCE.logout(MainActivity.this, true);
                     } else {
-                        global.setPassword(MainActivity.this, null);
+                        Global.INSTANCE.setPassword(MainActivity.this, null);
                     }
-                    loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+                    loginHeader.setText(Global.INSTANCE.isLoggedIn() ? R.string.log_out : R.string.log_in);
                 }
             });
 
@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
                 if (childItem != null) {
                     try {
-                        Category category = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                        Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
                         if (category.hasDifficulty()) {
                             setFragment(1, "", true);
                         } else {
@@ -197,9 +197,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             } else {
                 setFragment(0, getString(R.string.my_security), true);
-                if (!global.hasShownNavAlready()) {
+                if (!Global.INSTANCE.hasShownNavAlready()) {
                     drawer.openDrawer(Gravity.LEFT);
-                    global.navShown();
+                    Global.INSTANCE.navShown();
                 }
             }
         }
@@ -213,7 +213,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void setNavItems(String title) {
         ArrayList<String> navArray = new ArrayList<>();
         try {
-            Category childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+            Category childCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
             if (childCategory.getDifficultyBeginner()) {
                 navArray.add(title + " " + getString(R.string.beginner));
             }
@@ -239,7 +239,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (fragType < 1) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
-                    DashboardFragment.newInstance(global, fragType));
+                    DashboardFragment.newInstance(fragType));
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
@@ -247,7 +247,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (fragType == 1) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -256,21 +256,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     && getIntent().getData().getPathSegments().size() > 1) {
                 hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
-                    global.getDaoDifficulty().update(hasDifficulty.get(0));
+                    Global.INSTANCE.getDaoDifficulty().update(hasDifficulty.get(0));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
             } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData()
                     .getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 try {
-                    global.getDaoDifficulty().create(new Difficulty(childItem.getPosition(),
+                    Global.INSTANCE.getDaoDifficulty().create(new Difficulty(childItem.getPosition(),
                             Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
             }
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -332,7 +332,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
         Category category;
         try {
-            category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
+            category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
                 childItem = selectedItem;
                 setFragment(3, "", false);
@@ -406,15 +406,15 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
         MenuItem itemLogout = menu.findItem(R.id.action_logout);
         MenuItem itemExport = menu.findItem(R.id.export_checklist);
-        itemSetPw.setVisible(!global.hasPasswordSet(true));
-        itemResetPw.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
-        itemChangePw.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
-        itemLogout.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
+        itemSetPw.setVisible(!Global.INSTANCE.hasPasswordSet(true));
+        itemResetPw.setVisible(Global.INSTANCE.hasPasswordSet(false) && !Global.INSTANCE.getSkipPassword());
+        itemChangePw.setVisible(Global.INSTANCE.hasPasswordSet(false) && !Global.INSTANCE.getSkipPassword());
+        itemLogout.setVisible(Global.INSTANCE.hasPasswordSet(false) && !Global.INSTANCE.getSkipPassword());
         itemExport.setVisible(false);
         if (childItem != null) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -441,40 +441,40 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         }
         if (id == R.id.action_mask) {
             if (!UmbrellaUtil.isAppMasked(this)) {
-                if (global.hasPasswordSet(false))
-                    global.logout(MainActivity.this, false);
+                if (Global.INSTANCE.hasPasswordSet(false))
+                    Global.INSTANCE.logout(MainActivity.this, false);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
                 handsShake.show(fragmentManager, "");
             }
         }
         if (id == R.id.action_logout) {
-            global.logout(this, true);
+            Global.INSTANCE.logout(this, true);
             return true;
         }
         if (id == R.id.action_set_password) {
-            global.setPassword(this, null);
+            Global.INSTANCE.setPassword(this, null);
             return true;
         }
         if (id == R.id.action_reset_password) {
-            global.resetPassword(this);
+            Global.INSTANCE.resetPassword(this);
             return true;
         }
         if (id == R.id.action_change_password) {
-            global.setPassword(this, null, global.hasPasswordSet(true));
+            Global.INSTANCE.setPassword(this, null, Global.INSTANCE.hasPasswordSet(true));
             return true;
         }
         if (id == R.id.export_checklist) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
             if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                 String body = "";
                 List<CheckItem> items = null;
-                QueryBuilder<CheckItem, String> queryBuilder = global.getDaoCheckItem().queryBuilder();
+                QueryBuilder<CheckItem, String> queryBuilder = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                 Where<CheckItem, String> where = queryBuilder.where();
                 try {
                     where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).

@@ -84,10 +84,10 @@ public class FormItem {
         this.options = options;
     }
 
-    public FormScreen getFormScreen(Global global) {
-        if (global!=null && formScreen!=null && formScreen.get_id()!=0) {
+    public FormScreen getFormScreen() {
+        if (formScreen!=null && formScreen.get_id()!=0) {
             try {
-                formScreen = global.getDaoFormScreen().queryForId(String.valueOf(formScreen.get_id()));
+                formScreen = Global.INSTANCE.getDaoFormScreen().queryForId(String.valueOf(formScreen.get_id()));
             } catch (SQLException e) {
                 Timber.e(e);
             }

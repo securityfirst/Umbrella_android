@@ -29,13 +29,11 @@ public class CheckListAdapter extends BaseAdapter {
 
     private List<CheckItem> checkList = new ArrayList<>();
     private Context mContext;
-    private Global global;
     private TabbedFragment.CheckItemFragment mFragment;
 
     public CheckListAdapter(Context context, List<CheckItem> mCheckList, TabbedFragment.CheckItemFragment fragment) {
         mFragment = fragment;
         mContext = context;
-        global  = (Global) mContext.getApplicationContext();
         checkList = mCheckList;
         notifyDataSetChanged();
     }
@@ -125,7 +123,7 @@ public class CheckListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                global.getDaoCheckItem().delete(checkList.get(i));
+                                Global.INSTANCE.getDaoCheckItem().delete(checkList.get(i));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -152,7 +150,7 @@ public class CheckListAdapter extends BaseAdapter {
                                 checkList.get(i).disable();
                             }
                             try {
-                                global.getDaoCheckItem().update(checkList.get(i));
+                                Global.INSTANCE.getDaoCheckItem().update(checkList.get(i));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -165,7 +163,7 @@ public class CheckListAdapter extends BaseAdapter {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                global.getDaoCheckItem().delete(checkList.get(i));
+                                Global.INSTANCE.getDaoCheckItem().delete(checkList.get(i));
                             } catch (SQLException e) {
                                 Timber.e(e);
                             }
@@ -187,7 +185,7 @@ public class CheckListAdapter extends BaseAdapter {
         CheckItem current = (CheckItem) getItem(i);
         current.setValue(b ? 1 : 0);
         try {
-            global.getDaoCheckItem().update(current);
+            Global.INSTANCE.getDaoCheckItem().update(current);
         } catch (SQLException e) {
             Timber.e(e);
         }

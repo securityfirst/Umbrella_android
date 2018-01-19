@@ -16,12 +16,10 @@ public class ServiceReceiver extends BroadcastReceiver
     }
 
     public void callRefresh(Context context) {
-//        Toast.makeText(context, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.UK).toString(), Toast.LENGTH_SHORT).show();
         UmbrellaUtil.getFeeds(context);
     }
 
     public void callLogout(Context context) {
-        Global global = (Global) context.getApplicationContext();
-        global.logout(context, false);
+        Global.INSTANCE.logout(context, false);
     }
 }

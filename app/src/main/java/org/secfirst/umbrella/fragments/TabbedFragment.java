@@ -32,7 +32,6 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.AboutActivity;
-import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.CheckListAdapter;
@@ -180,7 +179,7 @@ public class TabbedFragment extends Fragment {
             this.difficulty = difficulty;
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             try {
-                QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
+                QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
                 Where<Segment, String> where = queryBuilder.where();
                 where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty + 1));
                 segments = queryBuilder.query();
@@ -242,7 +241,7 @@ public class TabbedFragment extends Fragment {
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             try {
-                QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
+                QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
                 Where<Segment, String> where = queryBuilder.where();
                 where.eq(Segment.FIELD_CATEGORY, drawerItem)
                         .and().like(Segment.FIELD_DIFFICULTY, difficulty);
@@ -318,7 +317,7 @@ public class TabbedFragment extends Fragment {
             int segmentInt = getArguments() != null ? getArguments().getInt(ARG_SEGMENT_INDEX, 0) : 0;
             List<Segment> segments = null;
             try {
-                QueryBuilder<Segment, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoSegment().queryBuilder();
+                QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
                 Where<Segment, String> where = queryBuilder.where();
                 where.eq(Segment.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Segment.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 segments = queryBuilder.query();
@@ -372,9 +371,8 @@ public class TabbedFragment extends Fragment {
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final Global global = ((MainActivity) getActivity()).getGlobal();
-                    if (!global.hasPasswordSet(false)) {
-                        global.setPassword(getActivity(), null);
+                    if (!Global.INSTANCE.hasPasswordSet(false)) {
+                        Global.INSTANCE.setPassword(getActivity(), null);
                     } else {
                         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                         alert.setTitle(R.string.add_new_checkitem);
@@ -389,7 +387,7 @@ public class TabbedFragment extends Fragment {
                                     nItem.setCustom(1);
                                     nItem.setDifficulty(diffArg);
                                     try {
-                                        global.getDaoCheckItem().create(nItem);
+                                        Global.INSTANCE.getDaoCheckItem().create(nItem);
                                     } catch (SQLException e) {
                                         Timber.e(e);
                                     }
@@ -438,30 +436,29 @@ public class TabbedFragment extends Fragment {
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
             if (getActivity()!=null) {
-                final Global global = ((MainActivity) getActivity()).getGlobal();
                 final long drawerItem = ((MainActivity) getActivity()).drawerItem;
                 if (id == R.id.favourite) {
                     List<Difficulty> hasDifficulty = null;
                     try {
-                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(drawerItem));
+                        hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(drawerItem));
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
                     if (hasDifficulty!=null && !hasDifficulty.isEmpty()) {
                         try {
-                            QueryBuilder<Favourite, String> queryBuilder = global.getDaoFavourite().queryBuilder();
+                            QueryBuilder<Favourite, String> queryBuilder = Global.INSTANCE.getDaoFavourite().queryBuilder();
                             Where<Favourite, String> where = queryBuilder.where();
                             where.eq(Favourite.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected()));
                             Favourite favourite = queryBuilder.queryForFirst();
                             if (favourite!=null) {
                                 try {
-                                    global.getDaoFavourite().delete(favourite);
+                                    Global.INSTANCE.getDaoFavourite().delete(favourite);
                                 } catch (SQLException e) {
                                     Timber.e(e);
                                 }
                             } else {
                                 try {
-                                    global.getDaoFavourite().create(new Favourite(drawerItem, hasDifficulty.get(0).getSelected()));
+                                    Global.INSTANCE.getDaoFavourite().create(new Favourite(drawerItem, hasDifficulty.get(0).getSelected()));
                                 } catch (SQLException e) {
                                     Timber.e(e);
                                 }
@@ -481,7 +478,7 @@ public class TabbedFragment extends Fragment {
         public void setFavouriteIcon(Context context) {
             final long drawerItem = ((MainActivity) context).drawerItem;
             try {
-                QueryBuilder<Favourite, String> queryBuilder = ((BaseActivity) context).getGlobal().getDaoFavourite().queryBuilder();
+                QueryBuilder<Favourite, String> queryBuilder = Global.INSTANCE.getDaoFavourite().queryBuilder();
                 Where<Favourite, String> where = queryBuilder.where();
                 where.eq(Favourite.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 Favourite favourite = queryBuilder.queryForFirst();
@@ -494,7 +491,7 @@ public class TabbedFragment extends Fragment {
 
         public void refreshCheckList(long category, int difficulty) {
             try {
-                QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                QueryBuilder<CheckItem, String> queryBuilder = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                 Where<CheckItem, String> where = queryBuilder.where();
                 where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(category)).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty));
                 mCheckList = queryBuilder.query();
