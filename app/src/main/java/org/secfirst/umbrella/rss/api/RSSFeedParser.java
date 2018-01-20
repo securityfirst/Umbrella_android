@@ -20,15 +20,69 @@ import java.util.Observable;
 
 public class RSSFeedParser extends Observable {
 
-    private ArrayList<Article> articles;
-    private Article currentArticle;
+    private ArrayList<Article> mArticles;
+    private Article mCurrentArticle;
+    private Channel mChannel;
 
     public RSSFeedParser() {
-        articles = new ArrayList<>();
-        currentArticle = new Article();
+        mArticles = new ArrayList<>();
+        mCurrentArticle = new Article();
     }
 
-    public void test(String xml) throws XmlPullParserException, IOException {
+
+    public void channelParse(String xml) throws XmlPullParserException, IOException {
+        XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+
+        factory.setNamespaceAware(false);
+        XmlPullParser xmlPullParser = factory.newPullParser();
+
+        xmlPullParser.setInput(new StringReader(xml));
+        boolean insideItem = false;
+        boolean lastItem = false;
+        int eventType = xmlPullParser.getEventType();
+        Channel channel = new Channel();
+
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            if (eventType == XmlPullParser.START_TAG) {
+
+                XMLNode xmlNode = XMLNode.getEnum(xmlPullParser.getName());
+
+                if (xmlNode != null && (!lastItem)) {
+                    switch (xmlNode) {
+                        case IMAGE:
+                            insideItem = true;
+                            break;
+                        case TITLE:
+                            String title = safeNextText(xmlPullParser);
+                            channel.setTitle(title);
+                            Log.e(RSSFeedParser.class.getName(), "Channel title - " + title);
+                            break;
+                        case DESCRIPTION:
+                            String description = safeNextText(xmlPullParser);
+                            channel.setDescription(description);
+                            Log.e(RSSFeedParser.class.getName(), "Channel description- " + description);
+                        case URL:
+                            if (insideItem) {
+                                String image = safeNextText(xmlPullParser);
+                                channel.setImage(image);
+                                lastItem = true;
+                                Log.e(RSSFeedParser.class.getName(), "Channel Image - " + image);
+                            }
+                            break;
+                        default:
+                    }
+                }
+            } else if (eventType == XmlPullParser.END_TAG && xmlPullParser.getName().equalsIgnoreCase("item")) {
+                insideItem = false;
+                mChannel = channel;
+            }
+            eventType = xmlPullParser.next();
+        }
+
+        articleParse(xml);
+    }
+
+    private void articleParse(String xml) throws XmlPullParserException, IOException {
 
         XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
 
@@ -52,28 +106,21 @@ public class RSSFeedParser extends Observable {
                         case TITLE:
                             if (insideItem) {
                                 String title = xmlPullParser.nextText();
-                                currentArticle.setTitle(title);
+                                mCurrentArticle.setTitle(title);
                                 Log.e(RSSFeedParser.class.getName(), "TITLE - " + title);
-                            }
-                            break;
-                        case LINK:
-                            if (insideItem) {
-                                String link = xmlPullParser.nextText();
-                                currentArticle.setLink(link);
-                                Log.e(RSSFeedParser.class.getName(), "LINK - " + link);
                             }
                             break;
                         case CREATOR:
                             if (insideItem) {
                                 String author = xmlPullParser.nextText();
-                                currentArticle.setAuthor(author);
+                                mCurrentArticle.setAuthor(author);
                                 Log.e(RSSFeedParser.class.getName(), "CREATOR - " + author);
                             }
                             break;
                         case CATEGORY:
                             if (insideItem) {
                                 String category = xmlPullParser.nextText();
-                                currentArticle.addCategory(category);
+                                mCurrentArticle.addCategory(category);
                                 Log.e(RSSFeedParser.class.getName(), "CATEGORY - " + category);
                             }
                             break;
@@ -84,33 +131,33 @@ public class RSSFeedParser extends Observable {
                                 try {
                                     //choose the first image found in the article
                                     String pic = doc.select("img").first().attr("abs:src");
-                                    currentArticle.setImage(pic);
+                                    mCurrentArticle.setImage(pic);
                                     Log.e(RSSFeedParser.class.getName(), "" + pic);
                                 } catch (NullPointerException e) {
-                                    currentArticle.setImage(null);
+                                    mCurrentArticle.setImage(null);
                                 }
-                                currentArticle.setContent(htmlData);
+                                mCurrentArticle.setContent(htmlData);
                                 Log.e(RSSFeedParser.class.getName(), "ENCODED - " + htmlData);
                             }
                             break;
                         case DESCRIPTION:
                             if (insideItem) {
                                 String description = xmlPullParser.nextText();
-                                currentArticle.setDescription(description);
+                                mCurrentArticle.setDescription(description);
                                 Log.e(RSSFeedParser.class.getName(), "DESCRIPTION - " + description);
                             }
                             break;
                         case DATE:
                             @SuppressWarnings("deprecation")
                             Date pubDate = new Date(xmlPullParser.nextText());
-                            currentArticle.setPubDate(pubDate);
+                            mCurrentArticle.setPubDate(pubDate);
                             Log.e(RSSFeedParser.class.getName(), "DATE -" + pubDate);
                             break;
                         case END_TAG:
                             if (xmlPullParser.getName().equalsIgnoreCase("item")) {
                                 insideItem = false;
-                                articles.add(currentArticle);
-                                currentArticle = new Article();
+                                mArticles.add(mCurrentArticle);
+                                mCurrentArticle = new Article();
                             }
                             break;
                         default:
@@ -118,16 +165,28 @@ public class RSSFeedParser extends Observable {
                 }
             } else if (eventType == XmlPullParser.END_TAG && xmlPullParser.getName().equalsIgnoreCase("item")) {
                 insideItem = false;
-                articles.add(currentArticle);
-                currentArticle = new Article();
+                Log.e("test", "----------------------------------------------------------------");
+                mArticles.add(mCurrentArticle);
+                mCurrentArticle = new Article();
             }
+
             eventType = xmlPullParser.next();
         }
+        mChannel.setArticles(mArticles);
         triggerObserver();
+    }
+
+    private String safeNextText(XmlPullParser parser)
+            throws XmlPullParserException, IOException {
+        String result = parser.nextText();
+        if (parser.getEventType() != XmlPullParser.END_TAG) {
+            parser.nextTag();
+        }
+        return result;
     }
 
     private void triggerObserver() {
         setChanged();
-        notifyObservers(articles);
+        notifyObservers(mChannel);
     }
 }

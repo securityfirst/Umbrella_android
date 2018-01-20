@@ -14,7 +14,9 @@ public interface ChannelContract {
 
         void loadInProgressFeed();
 
-        void finishLoadFeed();
+        void finishLoadFeed(Channel channel);
+
+        void errorLoadFeed();
     }
 
     interface Presenter extends BasePresenter {
@@ -23,6 +25,6 @@ public interface ChannelContract {
 
         void removeFeed(Channel channel);
 
-        void loadFeed();
+        void loadFeed(String url);
     }
 }

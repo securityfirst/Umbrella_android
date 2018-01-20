@@ -2,8 +2,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center"
     android:background="@android:color/white"
     tools:context="org.secfirst.umbrella.rss.feed.ChannelFragment">
+
+    <ProgressBar
+        android:id="@+id/rss_indeterminate_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:indeterminate="true"
+        android:theme="@style/LinearProgress"
+        android:visibility="invisible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/channel_recycler_view"

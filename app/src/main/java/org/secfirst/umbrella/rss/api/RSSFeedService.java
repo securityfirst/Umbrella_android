@@ -2,7 +2,6 @@ package org.secfirst.umbrella.rss.api;
 
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,12 +14,12 @@ import okhttp3.Response;
  */
 
 public class RSSFeedService extends AsyncTask<String, Void, String> implements Observer {
-    private RSSFeedParser RSSFeedParser;
+    private RSSFeedParser rssFeedParser;
     private RSSEvent rssEvent;
 
     public RSSFeedService() {
-        RSSFeedParser = new RSSFeedParser();
-        RSSFeedParser.addObserver(this);
+        rssFeedParser = new RSSFeedParser();
+        rssFeedParser.addObserver(this);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class RSSFeedService extends AsyncTask<String, Void, String> implements O
     protected void onPostExecute(String result) {
         if (result != null) {
             try {
-                RSSFeedParser.test(result);
+                rssFeedParser.channelParse(result);
             } catch (Exception e) {
                 e.printStackTrace();
                 rssEvent.onError();
@@ -60,8 +59,8 @@ public class RSSFeedService extends AsyncTask<String, Void, String> implements O
     @Override
     @SuppressWarnings("unchecked")
     public void update(Observable observable, Object data) {
-        ArrayList<Article> articles = (ArrayList<Article>) data;
-        rssEvent.onTaskCompleted(articles);
+        Channel channel = (Channel) data;
+        rssEvent.onTaskCompleted(channel);
     }
 
     @Override
@@ -74,7 +73,7 @@ public class RSSFeedService extends AsyncTask<String, Void, String> implements O
 
         void onTaskInProgress();
 
-        void onTaskCompleted(ArrayList<Article> list);
+        void onTaskCompleted(Channel channel);
 
         void onError();
     }

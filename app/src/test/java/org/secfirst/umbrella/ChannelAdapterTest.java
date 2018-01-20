@@ -88,4 +88,9 @@ public class ChannelAdapterTest {
         assertEquals(channelAdapter.getItemCount(), 0);
     }
 
+    @Test
+    public void clearMyListInAdapter() {
+        channelAdapter.clear();
+        assertEquals(channelAdapter.getItemCount(), 0);
+    }
 }

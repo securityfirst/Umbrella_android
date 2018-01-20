@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.rss.api;
 
+import android.support.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -10,13 +12,17 @@ public class Channel {
 
     private String title;
     private String description;
+    private String image;
     private List<Article> articles;
 
 
-    public Channel(String title, String description, List<Article> articles) {
+    public Channel(String title, String description, @NonNull List<Article> articles) {
         this.title = title;
         this.description = description;
         this.articles = articles;
+    }
+
+    public Channel() {
     }
 
     public String getTitle() {
@@ -43,11 +49,20 @@ public class Channel {
         this.articles = articles;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "Channel{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
                 ", articles=" + articles +
                 '}';
     }

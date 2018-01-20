@@ -8,11 +8,9 @@ import org.xmlpull.v1.XmlPullParser;
 
 public enum XMLNode {
 
-    ITEM("item"), TITLE("title"), LINK("link"),
-    CREATOR("dc:creator"), CATEGORY("category"),
-    ENCODED("content:encoded"), SRC("abs:src"),
-    DESCRIPTION("description"), DATE("pubDate"),
-    END_TAG(String.valueOf(XmlPullParser.END_TAG));
+    ITEM("item"), TITLE("title"), LINK("link"), CREATOR("dc:creator"), CATEGORY("category"),
+    ENCODED("content:encoded"), SRC("abs:src"), DESCRIPTION("description"), DATE("pubDate"),
+    CHANNEL("channel"), IMAGE("image"), URL("url"), END_TAG(String.valueOf(XmlPullParser.END_TAG));
 
     private String name;
 

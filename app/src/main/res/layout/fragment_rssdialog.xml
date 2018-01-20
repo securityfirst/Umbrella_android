@@ -36,14 +36,15 @@
             android:layout_marginTop="@dimen/location_dialog_big_margin_top"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/place_search_dialog_location_ET"
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/channel_dialog_source"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/rss_dialog_hit_text"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
+                android:text="http://feeds.bbci.co.uk/news/business/rss.xml"
                 android:textSize="@dimen/text_size_small"
                 android:theme="@style/Autocomplete" />
         </android.support.design.widget.TextInputLayout>
@@ -57,11 +58,11 @@
             android:paddingRight="@dimen/location_dialog_big_padding">
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/place_search_dialog_cancel_TV"
+                android:id="@+id/channel_dialog_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/place_search_dialog_ok_TV"
-                android:layout_toStartOf="@+id/place_search_dialog_ok_TV"
+                android:layout_toLeftOf="@+id/channel_dialog_ok"
+                android:layout_toStartOf="@+id/channel_dialog_ok"
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
@@ -70,7 +71,7 @@
                 android:textColor="@color/grey_location" />
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/place_search_dialog_ok_TV"
+                android:id="@+id/channel_dialog_ok"
                 fontPath="fonts/Roboto-Medium.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -11,10 +11,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
-import org.secfirst.umbrella.rss.api.Article;
+import org.secfirst.umbrella.rss.api.Channel;
 import org.secfirst.umbrella.rss.api.RSSFeedService;
-
-import java.util.ArrayList;
 
 /**
  * Created by dougl on 16/01/2018.
@@ -22,7 +20,7 @@ import java.util.ArrayList;
 @RunWith(RobolectricTestRunner.class)
 public class RSSFeedServiceTest extends InstrumentationTestCase {
 
-    
+
     private RSSFeedService rssFeedService;
 
     @Before
@@ -35,14 +33,14 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
 
     @Test
     public void onTaskCompleted() throws Throwable {
-        String urlString = "https://www.pcworld.com/index.rss";
+        String urlString = "http://feeds.bbci.co.uk/news/business/rss.xml";
         rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
             @Override
             public void onTaskInProgress() {
             }
 
             @Override
-            public void onTaskCompleted(ArrayList<Article> list) {
+            public void onTaskCompleted(Channel channel) {
                 Assert.assertTrue(true);
             }
 
@@ -63,7 +61,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(ArrayList<Article> list) {
+            public void onTaskCompleted(Channel channel) {
                 Assert.assertTrue(false);
             }
 
@@ -85,7 +83,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(ArrayList<Article> list) {
+            public void onTaskCompleted(Channel channel) {
 
             }
 
@@ -106,7 +104,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(ArrayList<Article> list) {
+            public void onTaskCompleted(Channel channel) {
                 Assert.assertTrue(false);
             }
 
