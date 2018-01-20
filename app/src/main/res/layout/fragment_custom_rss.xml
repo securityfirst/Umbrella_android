@@ -2,8 +2,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.secfirst.umbrella.fragments.RSSFragment">
+    android:background="@android:color/white"
+    tools:context="org.secfirst.umbrella.rss.feed.ChannelFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/channel_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:scrollbars="vertical" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_feed_btn"

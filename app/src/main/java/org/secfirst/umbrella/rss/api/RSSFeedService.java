@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss;
+package org.secfirst.umbrella.rss.api;
 
 import android.os.AsyncTask;
 

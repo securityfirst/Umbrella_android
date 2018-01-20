@@ -11,8 +11,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
-import org.secfirst.umbrella.rss.Article;
-import org.secfirst.umbrella.rss.RSSFeedService;
+import org.secfirst.umbrella.rss.api.Article;
+import org.secfirst.umbrella.rss.api.RSSFeedService;
 
 import java.util.ArrayList;
 

@@ -102,7 +102,7 @@ public class FeedEmptyFragment extends Fragment {
                         sb.append(separator).append(item.getValue());
                     }
 
-                    //TODO remove since "since=0" before commit this code.
+                    //TODO removeFeed since "since=0" before commit this code.
                     // *mGlobal.getFeedItemsRefreshed()
 
                     String sources = sb.substring(separator.length());

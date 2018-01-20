@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.fragments;
+package org.secfirst.umbrella.rss.feed;
 
 
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import org.secfirst.umbrella.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RSSDialog extends DialogFragment {
+public class ChannelDialog extends DialogFragment {
 
 
-    public static RSSDialog newInstance() {
+    public static ChannelDialog newInstance() {
         Bundle args = new Bundle();
-        RSSDialog fragment = new RSSDialog();
+        ChannelDialog fragment = new ChannelDialog();
         fragment.setArguments(args);
         return fragment;
     }
