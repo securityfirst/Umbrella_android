@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.channel;
 
 
 import android.os.Bundle;
@@ -13,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.einmalfel.earl.Feed;
+
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.rss.api.Channel;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, C
         mAddFeedButton = view.findViewById(R.id.add_feed_btn);
         mAddFeedButton.setOnClickListener(this);
         mChannelRecyclerView = view.findViewById(R.id.channel_recycler_view);
-        mChannelAdapter = new ChannelAdapter(new ArrayList<Channel>());
+        mChannelAdapter = new ChannelAdapter(new ArrayList<Feed>());
         mChannelRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mChannelRecyclerView.setLayoutManager(mLayoutManager);
@@ -95,9 +96,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, C
     }
 
     @Override
-    public void finishLoadFeed(Channel channel) {
+    public void finishLoadFeed(Feed feed) {
         mRssProgress.setVisibility(View.INVISIBLE);
-        mChannelAdapter.add(channel);
+        mChannelAdapter.add(feed);
     }
 
     @Override

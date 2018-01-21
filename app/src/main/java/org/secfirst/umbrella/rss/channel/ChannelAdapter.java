@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.channel;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.einmalfel.earl.Feed;
+
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.rss.api.Channel;
 
 import java.util.List;
 
@@ -18,34 +19,34 @@ import java.util.List;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChannel> {
 
-    private List<Channel> channels;
+    private List<Feed> feeds;
 
 
-    public ChannelAdapter(@NonNull List<Channel> channels) {
-        this.channels = channels;
+    public ChannelAdapter(@NonNull List<Feed> feeds) {
+        this.feeds = feeds;
     }
 
 
-    public void add(Channel channel) {
-        channels.add(channel);
-        notifyItemInserted(channels.size() - 1);
+    public void add(Feed channel) {
+        feeds.add(channel);
+        notifyItemInserted(feeds.size() - 1);
     }
 
     public boolean isEmpty() {
         return false;
     }
 
-    public void remove(Channel channel) {
-        int position = channels.indexOf(channel);
+    public void remove(Feed channel) {
+        int position = feeds.indexOf(channel);
         if (position > -1) {
-            channels.remove(position);
+            feeds.remove(position);
             notifyItemRemoved(position);
         }
     }
 
     public void clear() {
         while (getItemCount() > 0) {
-            remove(channels.get(0));
+            remove(feeds.get(0));
         }
     }
 
@@ -58,14 +59,14 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
 
     @Override
     public void onBindViewHolder(RSSChannel holder, int position) {
-        Channel channel = channels.get(position);
+        Feed channel = feeds.get(position);
         holder.channelTitle.setText(channel.getTitle());
         holder.channelDescription.setText(channel.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return channels.size();
+        return feeds.size();
     }
 
     public class RSSChannel extends RecyclerView.ViewHolder {

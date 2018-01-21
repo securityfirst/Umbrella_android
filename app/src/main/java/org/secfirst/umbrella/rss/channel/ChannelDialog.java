@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.channel;
 
 
 import android.os.Bundle;

@@ -1,8 +1,9 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.channel;
+
+import com.einmalfel.earl.Feed;
 
 import org.secfirst.umbrella.BasePresenter;
 import org.secfirst.umbrella.BaseView;
-import org.secfirst.umbrella.rss.api.Channel;
 
 /**
  * Created by dougl on 18/01/2018.
@@ -14,16 +15,16 @@ public interface ChannelContract {
 
         void loadInProgressFeed();
 
-        void finishLoadFeed(Channel channel);
+        void finishLoadFeed(Feed feed);
 
         void errorLoadFeed();
     }
 
     interface Presenter extends BasePresenter {
 
-        void addFeed(Channel channel);
+        void addFeed(Feed feed);
 
-        void removeFeed(Channel channel);
+        void removeFeed(Feed feed);
 
         void loadFeed(String url);
     }

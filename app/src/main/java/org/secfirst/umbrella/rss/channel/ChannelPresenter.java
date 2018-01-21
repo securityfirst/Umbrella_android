@@ -1,7 +1,9 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.channel;
 
-import org.secfirst.umbrella.rss.api.Channel;
-import org.secfirst.umbrella.rss.api.RSSFeedService;
+import com.einmalfel.earl.Feed;
+
+import org.secfirst.umbrella.rss.RSSFeedService;
+
 
 /**
  * Created by dougl on 18/01/2018.
@@ -22,12 +24,12 @@ public class ChannelPresenter implements ChannelContract.Presenter {
     }
 
     @Override
-    public void addFeed(Channel channel) {
+    public void addFeed(Feed feed) {
 
     }
 
     @Override
-    public void removeFeed(Channel channel) {
+    public void removeFeed(Feed feed) {
 
     }
 
@@ -41,7 +43,7 @@ public class ChannelPresenter implements ChannelContract.Presenter {
             }
 
             @Override
-            public void onTaskCompleted(Channel channel) {
+            public void onTaskCompleted(Feed channel) {
                 mViewRss.finishLoadFeed(channel);
             }
 

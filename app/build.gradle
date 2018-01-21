@@ -14,7 +14,7 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     testOptions {
-        //unitTests.returnDefaultValues = true
+        unitTests.returnDefaultValues = true
         unitTests {
             includeAndroidResources = true
         }
@@ -58,8 +58,18 @@ android {
             assets.srcDirs = ['assets']
         }
     }
+    // Always show the result of every unit test, even if it passes.
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
+        }
+    }
 }
 
+task copyResDirectoryToClasses(type: Copy){
+    from "${projectDir}/src/test/res"
+    into "${buildDir}/intermediates/classes/test/debug/res"
+}
 def Properties props = new Properties()
 def propFile = new File('keystore.properties')
 if (propFile.canRead()) {
@@ -121,7 +131,10 @@ compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
     testCompile "org.robolectric:robolectric:3.6.1"
     testCompile "org.robolectric:shadows-multidex:3.0"
     implementation 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.einmalfel:earl:1.2.0'
 }
+
+
 
 //generate using: `gradle -q calculateChecksums`
 dependencyVerification {
