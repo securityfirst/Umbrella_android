@@ -161,5 +161,10 @@
     <dimen name="hands_shake_info_height_ok">36dp</dimen>
     <dimen name="hands_shake_info_smallest_margin_left">8dp</dimen>
     <dimen name="hands_shake_info_biggest_margin_left">25dp</dimen>
-    
+
+    <!--WebVeiw Dialog-->
+    <dimen name="web_view_big_margin_right">60dp</dimen>
+    <dimen name="web_view_small_margin_right">10dp</dimen>
+
+
 </resources>

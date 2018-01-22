@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.channel;
+package org.secfirst.umbrella.rss.feed;
 
 
 import android.os.Bundle;
@@ -24,13 +24,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChannelFragment extends Fragment implements View.OnClickListener, ChannelContract.View, ChannelDialog.OnChannelDialog {
+public class ChannelFragment extends Fragment implements View.OnClickListener, FeedContract.View, ChannelDialog.OnChannelDialog {
 
 
     private FloatingActionButton mAddFeedButton;
-    private RecyclerView mChannelRecyclerView;
     private ChannelAdapter mChannelAdapter;
-    private ChannelContract.Presenter mPresenter;
+    private FeedContract.Presenter mPresenter;
     private ProgressBar mRssProgress;
 
     public ChannelFragment() {
@@ -49,10 +48,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, C
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_custom_rss, container, false);
-        mPresenter = new ChannelPresenter(this);
+        mPresenter = new FeedPresenter(this);
         mAddFeedButton = view.findViewById(R.id.add_feed_btn);
         mAddFeedButton.setOnClickListener(this);
-        mChannelRecyclerView = view.findViewById(R.id.channel_recycler_view);
+        RecyclerView mChannelRecyclerView = view.findViewById(R.id.channel_recycler_view);
         mChannelAdapter = new ChannelAdapter(new ArrayList<Feed>());
         mChannelRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
@@ -81,8 +80,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, C
     }
 
     @Override
-    public void setPresenter(@NonNull ChannelContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter, "ChannelPresenter cannot be null!");
+    public void setPresenter(@NonNull FeedContract.Presenter presenter) {
+        mPresenter = checkNotNull(presenter, "FeedPresenter cannot be null!");
     }
 
     @Override

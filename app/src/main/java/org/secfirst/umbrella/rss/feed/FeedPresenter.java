@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.channel;
+package org.secfirst.umbrella.rss.feed;
 
 import com.einmalfel.earl.Feed;
 
@@ -9,11 +9,11 @@ import org.secfirst.umbrella.rss.RSSFeedService;
  * Created by dougl on 18/01/2018.
  */
 
-public class ChannelPresenter implements ChannelContract.Presenter {
+public class FeedPresenter implements FeedContract.Presenter {
 
-    private ChannelContract.View mViewRss;
+    private FeedContract.View mViewRss;
 
-    public ChannelPresenter(ChannelContract.View view) {
+    public FeedPresenter(FeedContract.View view) {
         mViewRss = view;
         mViewRss.setPresenter(this);
     }
@@ -54,6 +54,4 @@ public class ChannelPresenter implements ChannelContract.Presenter {
         });
         rssFeedService.execute(url);
     }
-
-
 }

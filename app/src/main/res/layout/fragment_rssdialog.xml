@@ -44,7 +44,7 @@
                 android:hint="@string/rss_dialog_hit_text"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
-                android:text="http://feeds.bbci.co.uk/news/business/rss.xml"
+                android:text="http://feeds.bbci.co.uk/news/rss.xml"
                 android:textSize="@dimen/text_size_small"
                 android:theme="@style/Autocomplete" />
         </android.support.design.widget.TextInputLayout>

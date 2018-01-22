@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.secfirst.umbrella.rss.channel.ChannelAdapter;
+import org.secfirst.umbrella.rss.feed.ChannelAdapter;
 
 import java.util.ArrayList;
 import java.util.Date;

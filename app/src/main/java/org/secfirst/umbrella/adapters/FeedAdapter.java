@@ -1,23 +1,20 @@
 package org.secfirst.umbrella.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.FeedItem;
+import org.secfirst.umbrella.util.WebViewDialog;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -83,35 +80,12 @@ public class FeedAdapter extends BaseAdapter {
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 if (Patterns.WEB_URL.matcher(current.getUrl()).matches()) {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
-                    alert.setTitle("");
-                    WebView wv = new WebView(mContext);
-                    wv.loadUrl(current.getUrl());
-                    wv.setWebViewClient(new WebViewClient() {
-                        @Override
-                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                            view.loadUrl(url);
-                            return true;
-                        }
-                    });
-                    alert.setView(wv);
-                    alert.setNegativeButton(R.string.open_in_browser, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setData(Uri.parse(current.getUrl()));
-                            mContext.startActivity(intent);
-                        }
-                    });
-                    alert.setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.dismiss();
-                        }
-                    });
-                    alert.show();
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                    WebViewDialog webViewDialog = WebViewDialog.newInstance(current.getUrl());
+                    webViewDialog.show(fragmentManager, "");
                 }
             }
         });

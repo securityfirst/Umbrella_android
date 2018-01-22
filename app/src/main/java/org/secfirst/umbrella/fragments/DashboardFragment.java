@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.rss.channel.ChannelFragment;
+import org.secfirst.umbrella.rss.feed.ChannelFragment;
 import org.secfirst.umbrella.util.Global;
 
 import java.util.Locale;

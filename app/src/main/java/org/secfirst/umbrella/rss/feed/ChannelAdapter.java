@@ -1,6 +1,7 @@
-package org.secfirst.umbrella.rss.channel;
+package org.secfirst.umbrella.rss.feed;
 
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,8 +76,20 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
 
         RSSChannel(View view) {
             super(view);
+
             channelTitle = view.findViewById(R.id.rss_channel_title);
             channelDescription = view.findViewById(R.id.rss_channel_description);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    activity.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.rss_container, ArticleFragment.newInstance(feeds.get(getLayoutPosition())))
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
         }
     }
 }

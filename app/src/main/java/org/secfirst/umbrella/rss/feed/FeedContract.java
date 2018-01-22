@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.channel;
+package org.secfirst.umbrella.rss.feed;
 
 import com.einmalfel.earl.Feed;
 
@@ -9,7 +9,7 @@ import org.secfirst.umbrella.BaseView;
  * Created by dougl on 18/01/2018.
  */
 
-public interface ChannelContract {
+public interface FeedContract {
 
     interface View extends BaseView<Presenter> {
 
