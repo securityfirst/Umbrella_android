@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'idea'
 apply plugin: 'witness'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
@@ -13,7 +14,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 31
-        versionName "0.4.3"
+        versionName "0.4.4"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86", "armeabi", "mips"
@@ -24,6 +25,7 @@ android {
             debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.enableCrashlytics = false
         }
         debug {
             debuggable true
@@ -31,7 +33,7 @@ android {
             ext.enableCrashlytics = false
         }
         beta {
-            debuggable false
+            debuggable true
             signingConfig signingConfigs.debug
             ext.enableCrashlytics = true
         }
@@ -75,6 +77,9 @@ dependencies {
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true
+    }
 }
 
 //generate using: `gradle -q calculateChecksums`
