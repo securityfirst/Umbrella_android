@@ -18,7 +18,7 @@
         tools:replace="icon">
         <provider
             android:name="org.secfirst.umbrella.util.IOCipherContentProvider"
-            android:authorities="org.secfirst.umbrella"
+            android:authorities="IOCipherContentProvider"
             android:exported="true"
             android:grantUriPermissions="true" />
         <service
