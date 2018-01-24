@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.IntentCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.viewpagerindicator.CirclePageIndicator;
 
-import org.secfirst.umbrella.fragments.SettingsFragment;
 import org.secfirst.umbrella.fragments.TourSlideFragment;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.SyncProgressListener;
@@ -89,7 +87,7 @@ public class TourActivity extends BaseActivity implements TourViewPager.OnSwipeO
 
     public void navigateToMain() {
         Intent toMain = new Intent(this, MainActivity.class);
-        toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+        toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toMain);
     }
 

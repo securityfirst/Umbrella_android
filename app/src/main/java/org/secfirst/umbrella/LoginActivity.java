@@ -2,7 +2,6 @@ package org.secfirst.umbrella;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.IntentCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -98,7 +97,7 @@ public class LoginActivity extends BaseActivity {
     private void goToMain() {
         Intent toMain = new Intent(LoginActivity.this, (Global.INSTANCE.getTermsAccepted() ? MainActivity.class : TourActivity.class));
         if (Global.INSTANCE.getTermsAccepted()) {
-            toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+            toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
         startActivity(toMain);
     }
