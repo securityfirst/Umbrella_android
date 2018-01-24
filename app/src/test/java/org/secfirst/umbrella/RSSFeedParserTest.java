@@ -1,11 +1,16 @@
 package org.secfirst.umbrella;
 
-import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowApplication;
+import org.robolectric.shadows.ShadowLooper;
+import org.secfirst.umbrella.rss.RSSFeedService;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
@@ -14,15 +19,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.DataFormatException;
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
  * Created by dougl on 21/01/2018.
  */
-@RunWith(JUnit4.class)
+@RunWith(RobolectricTestRunner.class)
 public class RSSFeedParserTest {
+
+    private RSSFeedService rssFeedService;
 
     private static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -45,6 +52,14 @@ public class RSSFeedParserTest {
         return sb.toString();
     }
 
+    @Before
+    public void setUp() throws Exception {
+        rssFeedService = new RSSFeedService();
+        ShadowApplication.runBackgroundTasks();
+        Robolectric.flushBackgroundThreadScheduler();
+        ShadowLooper.runUiThreadTasks();
+    }
+
     @Test
     public void fileObjectShouldNotBeNull() throws Exception {
         InputStream inputStream = getClass().getClassLoader()
@@ -53,36 +68,69 @@ public class RSSFeedParserTest {
     }
 
     @Test
-    public void getAllArticlesFromBBCFeed() throws IOException, XmlPullParserException, DataFormatException {
-        InputStream inputStream = getClass().getClassLoader()
-                .getResourceAsStream("rss_parse/" + "rss_bbc.xml");
-        Feed feed = EarlParser.parseOrThrow(inputStream, 0);
-        assertEquals(49, feed.getItems().size());
-    }
+    public void getArticlesFromBBCFeed() throws IOException, XmlPullParserException, DataFormatException {
+        String urlString = "http://feeds.bbci.co.uk/news/business/rss.xml";
+        rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
+            @Override
+            public void onTaskInProgress() {
+            }
 
-    @Test(expected = XmlPullParserException.class)
-    public void tryToReadMalformedRss() throws IOException, XmlPullParserException, DataFormatException {
-        InputStream inputStream = getClass().getClassLoader()
-                .getResourceAsStream("rss_parse/" + "malformated_rss.xml");
-        EarlParser.parseOrThrow(inputStream, 0);
+            @Override
+            public void onTaskCompleted(Feed feed) {
+                assertNotNull(feed.getItems().get(0).getTitle());
+                assertNotNull(feed.getItems().get(0).getDescription());
+            }
+
+            @Override
+            public void onError() {
+                Assert.assertTrue(false);
+            }
+        });
+        rssFeedService.execute(urlString);
     }
 
     @Test
     public void getInformationAboutChannelInXmlV1() throws IOException, XmlPullParserException, DataFormatException {
-        InputStream inputStream = getClass().getClassLoader()
-                .getResourceAsStream("rss_parse/" + "rss_bbc.xml");
-        Feed feed = EarlParser.parseOrThrow(inputStream, 0);
-        assertEquals(feed.getTitle(), "BBC News - Business");
-        assertEquals(feed.getDescription(), "BBC News - Business");
-        assertEquals(feed.getImageLink(), "http://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif");
+        String url = "http://deadline.com/feed/";
+        rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
+            @Override
+            public void onTaskInProgress() {
+            }
+
+            @Override
+            public void onTaskCompleted(Feed feed) {
+                assertNotNull(feed.getTitle());
+                assertNotNull(feed.getDescription());
+            }
+
+            @Override
+            public void onError() {
+                Assert.assertTrue(false);
+            }
+        });
+        rssFeedService.execute(url);
     }
 
     @Test
     public void getInformationAboutChannelInXmlV2() throws IOException, XmlPullParserException, DataFormatException {
-        InputStream inputStream = getClass().getClassLoader()
-                .getResourceAsStream("rss_parse/" + "cbn_rss.xml");
-        Feed feed = EarlParser.parseOrThrow(inputStream, 0);
-        assertEquals(feed.getTitle(), "CBNNews.com");
-        assertEquals(feed.getDescription(), "CBNNews.com Feed");
+
+        String url = "http://entertainmentweekly.tumblr.com/rss";
+        rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
+            @Override
+            public void onTaskInProgress() {
+            }
+
+            @Override
+            public void onTaskCompleted(Feed feed) {
+                assertNotNull(feed.getTitle());
+                assertNotNull(feed.getDescription());
+            }
+
+            @Override
+            public void onError() {
+                Assert.assertTrue(false);
+            }
+        });
+        rssFeedService.execute(url);
     }
 }

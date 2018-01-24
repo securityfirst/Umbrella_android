@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.einmalfel.earl.Feed;
 
@@ -85,13 +86,14 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     }
 
     @Override
-    public void loadInProgressFeed() {
+    public void setLoadingIndicator() {
         mRssProgress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void errorLoadFeed() {
         mRssProgress.setVisibility(View.INVISIBLE);
+        Toast.makeText(getContext(), "There is a problem to load your RSS.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -101,7 +103,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     }
 
     @Override
-    public void getCustomChannel(String url) {
+    public void getFeedFromDialog(String url) {
         mPresenter.loadFeed(url);
     }
 }

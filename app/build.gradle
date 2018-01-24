@@ -124,15 +124,19 @@ compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
     }
 
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    testImplementation "org.robolectric:robolectric:3.6.1"
-    testCompile "org.robolectric:robolectric:3.6.1"
-    testCompile "org.robolectric:shadows-multidex:3.0"
     implementation 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.einmalfel:earl:1.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+
+    //Dependencies for Android unit tests
+    testImplementation 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-all:1.10.19"
+    testCompile "org.robolectric:robolectric:3.6.1"
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testImplementation "org.robolectric:robolectric:3.6.1"
+    testCompile "org.robolectric:shadows-multidex:3.0"
+    androidTestCompile "org.mockito:mockito-core:2.7.19"
 }
 
 //generate using: `gradle -q calculateChecksums`

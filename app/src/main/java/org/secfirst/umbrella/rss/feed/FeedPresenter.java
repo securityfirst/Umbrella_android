@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.rss.feed;
 
 import com.einmalfel.earl.Feed;
+import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.rss.RSSFeedService;
 
@@ -39,12 +40,13 @@ public class FeedPresenter implements FeedContract.Presenter {
         rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
             @Override
             public void onTaskInProgress() {
-                mViewRss.loadInProgressFeed();
+                mViewRss.setLoadingIndicator();
             }
 
             @Override
-            public void onTaskCompleted(Feed channel) {
-                mViewRss.finishLoadFeed(channel);
+            public void onTaskCompleted(Feed feed) {
+                mViewRss.finishLoadFeed(cleanMalformedArticles(feed));
+
             }
 
             @Override
@@ -53,5 +55,17 @@ public class FeedPresenter implements FeedContract.Presenter {
             }
         });
         rssFeedService.execute(url);
+    }
+
+    private Feed cleanMalformedArticles(Feed feed) {
+        for (Item item : feed.getItems()) {
+            if (item.getTitle() == null || item.getDescription() == null) {
+                feed.getItems().remove(item);
+            } else if (item.getTitle().equalsIgnoreCase("")
+                    || item.getDescription().equalsIgnoreCase("")) {
+                feed.getItems().remove(item);
+            }
+        }
+        return feed;
     }
 }

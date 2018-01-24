@@ -13,7 +13,7 @@ public interface FeedContract {
 
     interface View extends BaseView<Presenter> {
 
-        void loadInProgressFeed();
+        void setLoadingIndicator();
 
         void finishLoadFeed(Feed feed);
 

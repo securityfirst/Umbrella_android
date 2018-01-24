@@ -46,7 +46,7 @@ public class ChannelDialog extends DialogFragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.channel_dialog_ok:
-                onChannelDialog.getCustomChannel(mUrl.getText().toString());
+                onChannelDialog.getFeedFromDialog(mUrl.getText().toString());
                 dismiss();
                 break;
             case R.id.channel_dialog_cancel:
@@ -56,6 +56,6 @@ public class ChannelDialog extends DialogFragment implements View.OnClickListene
     }
 
     interface OnChannelDialog {
-        void getCustomChannel(String url);
+        void getFeedFromDialog(String url);
     }
 }
