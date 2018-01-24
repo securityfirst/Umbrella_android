@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.fragments;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,7 +13,6 @@ import android.view.ViewGroup;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.util.Global;
 
 import java.util.Locale;
 
@@ -44,11 +45,21 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        if (!context.getResources().getConfiguration().locale.toString().equals(Locale.getDefault().toString())) {
+            Configuration config = new Configuration();
+            config.locale = Locale.getDefault();
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        }
+        super.onAttach(context);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (getActivity() != null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
-            getActivity().setTitle(Global.INSTANCE.getString(R.string.my_security));
+            getActivity().setTitle(getString(R.string.my_security));
         }
     }
 

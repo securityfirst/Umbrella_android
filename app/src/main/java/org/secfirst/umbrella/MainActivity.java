@@ -303,7 +303,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else if (fragType == 2) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = trans = fragmentTransaction.replace(R.id.container,
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
                     TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
             if (!isFirst) trans.addToBackStack(null);
             trans.commit();

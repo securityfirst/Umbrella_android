@@ -1,6 +1,8 @@
 package org.secfirst.umbrella.fragments;
 
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.secfirst.umbrella.R;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +39,16 @@ public class TabbedFeedRootFragment extends Fragment {
         transaction.replace(R.id.root_frame, TabbedFeedFragment.newInstance(null, mViewPage));
         transaction.commit();
         return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        if (!context.getResources().getConfiguration().locale.toString().equals(Locale.getDefault().toString())) {
+            Configuration config = new Configuration();
+            config.locale = Locale.getDefault();
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        }
+        super.onAttach(context);
     }
 
 }

@@ -1,10 +1,10 @@
 package org.secfirst.umbrella.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -73,6 +73,16 @@ public class TabbedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        if (!context.getResources().getConfiguration().locale.toString().equals(Locale.getDefault().toString())) {
+            Configuration config = new Configuration();
+            config.locale = Locale.getDefault();
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        }
+        super.onAttach(context);
     }
 
     @Override
@@ -164,17 +174,12 @@ public class TabbedFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public int difficulty;
         private List<Segment> segments;
 
-        public SectionsPagerAdapter(FragmentManager fm, int difficulty) {
+        SectionsPagerAdapter(FragmentManager fm, int difficulty) {
             super(fm);
             this.difficulty = difficulty;
             int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
@@ -214,14 +219,14 @@ public class TabbedFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             if (position==0) {
-                return getString(R.string.section1_tab_title1).toUpperCase(l);
+                return getContext().getString(R.string.section1_tab_title1).toUpperCase(l);
             } else if (position==segments.size()+1) {
-                return getString(R.string.section1_tab_title3).toUpperCase(l);
+                return getContext().getString(R.string.section1_tab_title3).toUpperCase(l);
             } else {
                 if (segments.get(position-1).getTitle()!=null) {
                     return segments.get(position-1).getTitle().toUpperCase(l);
                 } else {
-                    return (getActivity().getString(R.string.slide) + position).toUpperCase(l);
+                    return (getContext().getString(R.string.slide) + position).toUpperCase(l);
                 }
             }
         }
@@ -252,7 +257,7 @@ public class TabbedFragment extends Fragment {
                     gridView.setAdapter(gAdapter);
                 }
                 TextView toChecklist = (TextView) rootView.findViewById(R.id.grid_title);
-                toChecklist.setText(getActivity().getString(R.string.checklist));
+                toChecklist.setText(getString(R.string.checklist));
                 int[] colours = {R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow};
                 toChecklist.setBackgroundColor(getActivity().getResources().getColor(colours[(segments.size()) % 3]));
                 CardView checklistCard = (CardView) rootView.findViewById(R.id.checklist_view);
@@ -353,6 +358,16 @@ public class TabbedFragment extends Fragment {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
+        }
+
+        @Override
+        public void onAttach(Context context) {
+            if (!context.getResources().getConfiguration().locale.toString().equals(Locale.getDefault().toString())) {
+                Configuration config = new Configuration();
+                config.locale = Locale.getDefault();
+                context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+            }
+            super.onAttach(context);
         }
 
         @Override
