@@ -105,7 +105,6 @@ public class Global extends Application {
     @SuppressLint("CommitPrefEdits")
     @Override
     public void onCreate() {
-        MultiDex.install(this);
         super.onCreate();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -115,6 +114,12 @@ public class Global extends Application {
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
         INSTANCE = this;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public boolean isLoggedIn() {
