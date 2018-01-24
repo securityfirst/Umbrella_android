@@ -289,6 +289,16 @@ public class TabbedFragment extends Fragment {
         }
 
         @Override
+        public void onAttach(Context context) {
+            if (!context.getResources().getConfiguration().locale.toString().equals(Locale.getDefault().toString())) {
+                Configuration config = new Configuration();
+                config.locale = Locale.getDefault();
+                context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+            }
+            super.onAttach(context);
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final View rootView = inflater.inflate(R.layout.fragment_segment,
