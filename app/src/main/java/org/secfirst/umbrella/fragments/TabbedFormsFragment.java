@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,10 +31,10 @@ import org.secfirst.umbrella.models.FormOption;
 import org.secfirst.umbrella.models.FormScreen;
 import org.secfirst.umbrella.models.FormValue;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.IOCipherContentProvider;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -41,7 +43,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import info.guardianproject.iocipher.File;
-import info.guardianproject.iocipher.FileWriter;
 import info.guardianproject.iocipher.VirtualFileSystem;
 import timber.log.Timber;
 
@@ -106,7 +107,7 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
 
     @Override
     public void onStop() {
-        if (progressDialog!=null && progressDialog.isShowing()) progressDialog.dismiss();
+        if (progressDialog != null && progressDialog.isShowing()) progressDialog.dismiss();
         super.onStop();
     }
 
@@ -116,7 +117,7 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
             allForms = Global.INSTANCE.getDaoForm().queryForAll();
             PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().groupBy(FormValue.FIELD_SESSION).prepare();
             fValues = Global.INSTANCE.getDaoFormValue().query(queryBuilder);
-            filledOutHolder.setVisibility((fValues==null || fValues.size()<1) ? View.GONE : View.VISIBLE);
+            filledOutHolder.setVisibility((fValues == null || fValues.size() < 1) ? View.GONE : View.VISIBLE);
             formListAdapter.updateData(allForms);
             filledOutAdapter.updateData(fValues);
         } catch (SQLException e) {
@@ -133,14 +134,14 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
         try {
             PreparedQuery<FormValue> query = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).prepare();
             formValues = Global.INSTANCE.getDaoFormValue().query(query);
-            if (formValues!=null && formValues.size()>0) {
+            if (formValues != null && formValues.size() > 0) {
                 int formId = formValues.get(0).getFormItem().getFormScreen().getForm().get_id();
                 form = Global.INSTANCE.getDaoForm().queryForId(String.valueOf(formId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (form!=null && formValues.size()>0) {
+        if (form != null && formValues.size() > 0) {
 
             final Form finalForm = form;
             new Handler().post(new Runnable() {
@@ -154,9 +155,9 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                     Element body = doc.body();
                     body.attr("style", "display:block;width:100%;");
                     doc.title(fileName);
-                    body.append("<h1>"+ finalForm.getTitle()+"</h1>");
+                    body.append("<h1>" + finalForm.getTitle() + "</h1>");
                     for (FormScreen screen : finalForm.getScreens()) {
-                        body.append("<h3>"+screen.getTitle()+"</h3>");
+                        body.append("<h3>" + screen.getTitle() + "</h3>");
                         body.append("<form>");
                         for (FormItem formItem : screen.getItems()) {
                             try {
@@ -166,50 +167,53 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                                 e.printStackTrace();
                             }
                             Element paragraph = body.append("<p></p>");
-                            paragraph.append("<h5>"+formItem.getTitle()+"</h5>");
+                            paragraph.append("<h5>" + formItem.getTitle() + "</h5>");
                             switch (formItem.getType()) {
                                 case "text_input":
                                     String textInput = "";
-                                    if (formItem.getValues()!=null && formItem.getValues().size()>0) textInput = formItem.getValues().get(0).getValue();
-                                    paragraph.append("<input type='text' value='"+textInput+"' readonly />");
+                                    if (formItem.getValues() != null && formItem.getValues().size() > 0)
+                                        textInput = formItem.getValues().get(0).getValue();
+                                    paragraph.append("<input type='text' value='" + textInput + "' readonly />");
                                     break;
                                 case "text_area":
                                     String textArea = "";
-                                    if (formItem.getValues()!=null && formItem.getValues().size()>0) textArea = formItem.getValues().get(0).getValue();
-                                    paragraph.append("<textarea rows='4' cols='50' readonly>"+textArea+"</textarea>");
+                                    if (formItem.getValues() != null && formItem.getValues().size() > 0)
+                                        textArea = formItem.getValues().get(0).getValue();
+                                    paragraph.append("<textarea rows='4' cols='50' readonly>" + textArea + "</textarea>");
                                     break;
                                 case "multiple_choice":
                                     List<String> mcValList = new ArrayList<>();
-                                    if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                    if (formItem.getValues() != null && formItem.getValues().size() > 0 && !formItem.getValues().get(0).getValue().equals("")) {
                                         mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
                                     }
                                     for (FormOption formOption : formItem.getOptions()) {
                                         boolean isChecked = false;
-                                        if (mcValList.size()>0) {
+                                        if (mcValList.size() > 0) {
                                             isChecked = Boolean.parseBoolean(mcValList.get(0));
                                             mcValList.remove(0);
                                         }
-                                        paragraph.append("<label><input type='checkbox' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
+                                        paragraph.append("<label><input type='checkbox' " + (isChecked ? "checked" : "") + " readonly>" + formOption.getOption() + "</label><br>");
                                     }
                                     break;
                                 case "single_choice":
                                     List<String> scValList = new ArrayList<>();
-                                    if (formItem.getValues()!=null && formItem.getValues().size()>0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                    if (formItem.getValues() != null && formItem.getValues().size() > 0 && !formItem.getValues().get(0).getValue().equals("")) {
                                         scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
                                     }
                                     for (FormOption formOption : formItem.getOptions()) {
                                         boolean isChecked = false;
-                                        if (scValList.size()>0) {
+                                        if (scValList.size() > 0) {
                                             isChecked = Boolean.parseBoolean(scValList.get(0));
                                             scValList.remove(0);
                                         }
-                                        paragraph.append("<label><input type='radio' "+ (isChecked?"checked":"" )+" readonly>"+formOption.getOption()+"</label><br>");
+                                        paragraph.append("<label><input type='radio' " + (isChecked ? "checked" : "") + " readonly>" + formOption.getOption() + "</label><br>");
                                     }
                                     break;
                                 case "toggle_button":
                                     String toggleText = "";
-                                    if (formItem.getValues()!=null && formItem.getValues().size()>0) toggleText = formItem.getValues().get(0).getValue();
-                                    paragraph.append("<br><span>"+toggleText+"</span><br>");
+                                    if (formItem.getValues() != null && formItem.getValues().size() > 0)
+                                        toggleText = formItem.getValues().get(0).getValue();
+                                    paragraph.append("<br><span>" + toggleText + "</span><br>");
                                     break;
                             }
                         }
@@ -229,23 +233,28 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                     VirtualFileSystem vfs = VirtualFileSystem.get();
                     vfs.setContainerPath(path);
                     try {
-                        if (!vfs.isMounted()) vfs.mount(Global.INSTANCE.getOrmHelper().getPassword());
-                        if (!vfs.isMounted()) vfs.createNewContainer(path, Global.INSTANCE.getOrmHelper().getPassword());
+                        if (!vfs.isMounted())
+                            vfs.mount(Global.INSTANCE.getOrmHelper().getPassword());
+                        if (!vfs.isMounted())
+                            vfs.createNewContainer(path, Global.INSTANCE.getOrmHelper().getPassword());
 
-                        File file = new File("/", fileName +".html");
+                        File file = new File(Global.INSTANCE.getCacheDir(), fileName + ".html");
                         try {
                             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
                             writer.write(doc.toString());
                             writer.flush();
                             writer.close();
-                            Uri uri = Uri.parse(IOCipherContentProvider.FILES_URI + file.getName());
-                            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
-                            intentShareFile.setType("text/html");
-                            intentShareFile.putExtra(Intent.EXTRA_STREAM, uri);
-                            intentShareFile.putExtra(Intent.EXTRA_SUBJECT,
-                                    getString(R.string.share_form));
-                            intentShareFile.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            startActivity(Intent.createChooser(intentShareFile, getString(R.string.share_form)));
+                            Uri uri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName(), file);
+                            Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+                                    .setType(getActivity().getContentResolver().getType(uri))
+                                    .setStream(uri)
+                                    .getIntent();
+
+                            //Provide read access
+                            shareIntent.setData(uri);
+                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_form)));
+
                         } catch (IOException e) {
                             Timber.e(e);
                         } finally {
@@ -258,5 +267,4 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
             });
         }
     }
-
 }
