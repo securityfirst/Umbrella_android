@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.FilledOutFormListAdapter;
 import org.secfirst.umbrella.adapters.FormListAdapter;
@@ -244,16 +246,20 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                             writer.write(doc.toString());
                             writer.flush();
                             writer.close();
-                            Uri uri = FileProvider.getUriForFile(getContext(), getActivity().getPackageName(), file);
+                            Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID, file);
                             Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
                                     .setType(getActivity().getContentResolver().getType(uri))
                                     .setStream(uri)
                                     .getIntent();
 
                             //Provide read access
-                            shareIntent.setData(uri);
+                            shareIntent.setAction(Intent.ACTION_SEND);
                             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_form)));
+                            PackageManager pm = getActivity().getPackageManager();
+
+                            if (shareIntent.resolveActivity(pm) != null) {
+                                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_form)));
+                            }
 
                         } catch (IOException e) {
                             Timber.e(e);
