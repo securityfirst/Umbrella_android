@@ -120,7 +120,7 @@
     <string name="coach_marks_menu_message">Click here or swipe from the side of your screen to view the menu at any time.</string>
     <string name="coach_marks_add_item_message">Click here to add new tasks.</string>
     <string name="coach_marks_star_message">Star this checklist to make it one of your favourites. Go to “My Checklists” to see all of your progress.</string>
-    <string name="coach_marks_message">Mark off tasks as you complete them o Hold down on a task to delete or disable it.</string>
+    <string name="coach_marks_message">Mark off tasks as you complete them Hold down on a task to delete or disable it.</string>
     <string name="view_all_checlists">View all the checklists you’ve started and see your progress</string>
     <string name="search">Search</string>
     <string name="search_result">search result</string>
