@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 
+import org.secfirst.umbrella.rss.feed.CustomFeed;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -16,17 +17,26 @@ import java.util.zip.DataFormatException;
  * Created by dougl on 21/01/2018.
  */
 
-public class RSSFeedService extends AsyncTask<String, Void, Feed> {
+public class RSSFeedService extends AsyncTask<String, Void, CustomFeed> {
 
     private RSSEvent mRssEvent;
 
     @Override
-    protected Feed doInBackground(String... urls) {
+    protected CustomFeed doInBackground(String... urls) {
         InputStream inputStream;
-        Feed feed = null;
+        CustomFeed customFeed = new CustomFeed();
+        Feed feed;
+
         try {
+
             inputStream = new URL(urls[0]).openConnection().getInputStream();
             feed = EarlParser.parseOrThrow(inputStream, 0);
+
+            customFeed.setFeedUrl(urls[0]);
+            customFeed.setDetail(feed.getDescription());
+            customFeed.setTitle(feed.getTitle());
+            customFeed.setFeed(feed);
+
         } catch (IOException e) {
             mRssEvent.onError();
             cancel(true);
@@ -37,14 +47,14 @@ public class RSSFeedService extends AsyncTask<String, Void, Feed> {
             mRssEvent.onError();
             cancel(true);
         }
-        return feed;
+        return customFeed;
     }
 
 
     @Override
-    protected void onPostExecute(Feed feed) {
-        super.onPostExecute(feed);
-        mRssEvent.onTaskCompleted(feed);
+    protected void onPostExecute(CustomFeed customFeed) {
+        super.onPostExecute(customFeed);
+        mRssEvent.onTaskCompleted(customFeed);
     }
 
 
@@ -58,7 +68,7 @@ public class RSSFeedService extends AsyncTask<String, Void, Feed> {
 
         void onTaskInProgress();
 
-        void onTaskCompleted(Feed feed);
+        void onTaskCompleted(CustomFeed customFeed);
 
         void onError();
     }

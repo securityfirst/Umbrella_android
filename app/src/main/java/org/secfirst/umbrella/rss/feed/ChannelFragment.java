@@ -14,11 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.einmalfel.earl.Feed;
-
 import org.secfirst.umbrella.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -53,7 +52,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
         mAddFeedButton = view.findViewById(R.id.add_feed_btn);
         mAddFeedButton.setOnClickListener(this);
         RecyclerView mChannelRecyclerView = view.findViewById(R.id.channel_recycler_view);
-        mChannelAdapter = new ChannelAdapter(new ArrayList<Feed>());
+        mChannelAdapter = new ChannelAdapter(new ArrayList<CustomFeed>());
         mChannelRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         mChannelRecyclerView.setLayoutManager(mLayoutManager);
@@ -70,7 +69,6 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
             case R.id.add_feed_btn:
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -90,6 +88,19 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
         mRssProgress.setVisibility(View.VISIBLE);
     }
 
+
+    @Override
+    public void finishLoadFeed(CustomFeed customFeed) {
+        mRssProgress.setVisibility(View.INVISIBLE);
+        mChannelAdapter.add(customFeed);
+        mPresenter.saveFeed(customFeed);
+    }
+
+    @Override
+    public void getFeedFromDialog(String url) {
+        mPresenter.loadFeed(url);
+    }
+
     @Override
     public void errorLoadFeed() {
         mRssProgress.setVisibility(View.INVISIBLE);
@@ -97,13 +108,14 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     }
 
     @Override
-    public void finishLoadFeed(Feed feed) {
-        mRssProgress.setVisibility(View.INVISIBLE);
-        mChannelAdapter.add(feed);
+    public void errorSaveFeed() {
+        Toast.makeText(getContext(), R.string.error_channel_fragment, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void getFeedFromDialog(String url) {
-        mPresenter.loadFeed(url);
+    public void showFeeds(List<CustomFeed> customFeeds) {
+        for (CustomFeed feed : customFeeds) {
+            mChannelAdapter.add(feed);
+        }
     }
 }

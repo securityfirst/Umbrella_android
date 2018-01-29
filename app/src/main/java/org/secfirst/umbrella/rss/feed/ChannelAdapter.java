@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.einmalfel.earl.Feed;
+import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.rss.RSSFeedService;
 
 import java.util.List;
 
@@ -20,34 +20,34 @@ import java.util.List;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChannel> {
 
-    private List<Feed> feeds;
+    private List<CustomFeed> mCustomFeeds;
 
 
-    public ChannelAdapter(@NonNull List<Feed> feeds) {
-        this.feeds = feeds;
+    public ChannelAdapter(@NonNull List<CustomFeed> customFeeds) {
+        this.mCustomFeeds = customFeeds;
     }
 
 
-    public void add(Feed channel) {
-        feeds.add(channel);
-        notifyItemInserted(feeds.size() - 1);
+    public void add(CustomFeed channel) {
+        mCustomFeeds.add(channel);
+        notifyItemInserted(mCustomFeeds.size() - 1);
     }
 
     public boolean isEmpty() {
         return false;
     }
 
-    public void remove(Feed channel) {
-        int position = feeds.indexOf(channel);
+    public void remove(CustomFeed channel) {
+        int position = mCustomFeeds.indexOf(channel);
         if (position > -1) {
-            feeds.remove(position);
+            mCustomFeeds.remove(position);
             notifyItemRemoved(position);
         }
     }
 
     public void clear() {
         while (getItemCount() > 0) {
-            remove(feeds.get(0));
+            remove(mCustomFeeds.get(0));
         }
     }
 
@@ -60,14 +60,14 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
 
     @Override
     public void onBindViewHolder(RSSChannel holder, int position) {
-        Feed channel = feeds.get(position);
+        CustomFeed channel = mCustomFeeds.get(position);
         holder.channelTitle.setText(channel.getTitle());
-        holder.channelDescription.setText(channel.getDescription());
+        holder.channelDescription.setText(channel.getDetail());
     }
 
     @Override
     public int getItemCount() {
-        return feeds.size();
+        return mCustomFeeds.size();
     }
 
     public class RSSChannel extends RecyclerView.ViewHolder {
@@ -79,17 +79,45 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
 
             channelTitle = view.findViewById(R.id.rss_channel_title);
             channelDescription = view.findViewById(R.id.rss_channel_description);
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    activity.getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.rss_container, ArticleFragment.newInstance(feeds.get(getLayoutPosition())))
-                            .addToBackStack(null)
-                            .commit();
+                public void onClick(final View view) {
+                    CustomFeed currentFeed = mCustomFeeds.get(getLayoutPosition());
+                    RSSFeedService rssFeedService = new RSSFeedService();
+                    rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
+                        @Override
+                        public void onTaskInProgress() {
+
+                        }
+
+                        @Override
+                        public void onTaskCompleted(CustomFeed feed) {
+                            mCustomFeeds.get(getLayoutPosition()).setFeed(feed.getFeed());
+                            openArticleFragment(view);
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Toast.makeText(view.getContext(),
+                                    view.getContext().getString(R.string.error_show_message_custom_feed)
+                                    , Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    rssFeedService.execute(currentFeed.getFeedUrl());
+
                 }
             });
+        }
+
+
+        private void openArticleFragment(View view) {
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            activity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.rss_container, ArticleFragment.newInstance
+                            (mCustomFeeds.get(getLayoutPosition()).getFeed()))
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 }

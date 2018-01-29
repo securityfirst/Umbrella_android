@@ -6,7 +6,7 @@
         <description><![CDATA[BBC News - Business]]></description>
         <link>http://www.bbc.co.uk/news/</link>
         <image>
-            <url>http://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif</url>
+            <feedUrl>http://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif</feedUrl>
             <title>BBC News - Business</title>
             <link>http://www.bbc.co.uk/news/</link>
         </image>
@@ -21,7 +21,7 @@
             <link>http://www.bbc.co.uk/news/business-42748243</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42748243</guid>
             <pubDate>Sat, 20 Jan 2018 00:22:52 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/15E25/production/_99673698_mediaitem99673697.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/15E25/production/_99673698_mediaitem99673697.jpg"/>
         </item>
         <item>
             <title><![CDATA[Carillion: The signals that the company was going bust]]></title>
@@ -29,7 +29,7 @@
             <link>http://www.bbc.co.uk/news/business-42744949</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42744949</guid>
             <pubDate>Sat, 20 Jan 2018 00:31:37 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/D166/production/_99660635_carillion.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/D166/production/_99660635_carillion.jpg"/>
         </item>
         <item>
             <title><![CDATA[Dixons Carphone boss leaves for Boots]]></title>
@@ -37,7 +37,7 @@
             <link>http://www.bbc.co.uk/news/business-42754940</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42754940</guid>
             <pubDate>Fri, 19 Jan 2018 23:02:05 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/164C9/production/_99673319_curryspcworldcarphonewarehouse.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/164C9/production/_99673319_curryspcworldcarphonewarehouse.jpg"/>
         </item>
         <item>
             <title><![CDATA[Coca-Cola pledges to recycle all packaging by 2030]]></title>
@@ -45,7 +45,7 @@
             <link>http://www.bbc.co.uk/news/business-42746911</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42746911</guid>
             <pubDate>Fri, 19 Jan 2018 17:18:12 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/41B4/production/_99602861_gettyimages-511722836.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/41B4/production/_99602861_gettyimages-511722836.jpg"/>
         </item>
         <item>
             <title><![CDATA[Amazon raises monthly Prime price in US]]></title>
@@ -53,7 +53,7 @@
             <link>http://www.bbc.co.uk/news/business-42753879</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42753879</guid>
             <pubDate>Fri, 19 Jan 2018 18:23:05 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/CA69/production/_99671815_gettyimages-825330784.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/CA69/production/_99671815_gettyimages-825330784.jpg"/>
         </item>
         <item>
             <title><![CDATA[Dignity cuts funeral prices amid growing competition]]></title>
@@ -61,7 +61,7 @@
             <link>http://www.bbc.co.uk/news/business-42751546</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42751546</guid>
             <pubDate>Fri, 19 Jan 2018 17:29:44 GMT</pubDate>
-            <media:thumbnail width="2048" height="1152" url="http://c.files.bbci.co.uk/1865D/production/_96833999_gettyimages-508182149.jpg"/>
+            <media:thumbnail width="2048" height="1152" feedUrl="http://c.files.bbci.co.uk/1865D/production/_96833999_gettyimages-508182149.jpg"/>
         </item>
         <item>
             <title><![CDATA[Carpetright shares crash on profit warning]]></title>
@@ -69,7 +69,7 @@
             <link>http://www.bbc.co.uk/news/business-42744504</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42744504</guid>
             <pubDate>Fri, 19 Jan 2018 17:23:44 GMT</pubDate>
-            <media:thumbnail width="768" height="432" url="http://c.files.bbci.co.uk/C4BE/production/_99666305_mediaitem99666302.jpg"/>
+            <media:thumbnail width="768" height="432" feedUrl="http://c.files.bbci.co.uk/C4BE/production/_99666305_mediaitem99666302.jpg"/>
         </item>
         <item>
             <title><![CDATA[UK retail sales slide in tough December]]></title>
@@ -77,7 +77,7 @@
             <link>http://www.bbc.co.uk/news/business-42744499</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42744499</guid>
             <pubDate>Fri, 19 Jan 2018 16:02:48 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/1FFA/production/_99668180_salesignpa.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/1FFA/production/_99668180_salesignpa.jpg"/>
         </item>
         <item>
             <title><![CDATA[Asda and Aldi stop energy drink sales to under-16s]]></title>
@@ -85,7 +85,7 @@
             <link>http://www.bbc.co.uk/news/uk-42744873</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/uk-42744873</guid>
             <pubDate>Fri, 19 Jan 2018 12:30:36 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/117D4/production/_99663617_supermarkets.gif"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/117D4/production/_99663617_supermarkets.gif"/>
         </item>
         <item>
             <title><![CDATA[Carillion plan dubbed 'sticking plaster']]></title>
@@ -93,7 +93,7 @@
             <link>http://www.bbc.co.uk/news/business-42745119</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42745119</guid>
             <pubDate>Fri, 19 Jan 2018 11:54:12 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/14EE8/production/_99663758_ut21og6v.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/14EE8/production/_99663758_ut21og6v.jpg"/>
         </item>
         <item>
             <title><![CDATA[Uber co-founder Travis Kalanick a billionaire after $9.3bn investment deal]]></title>
@@ -101,7 +101,7 @@
             <link>http://www.bbc.co.uk/news/business-42740680</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42740680</guid>
             <pubDate>Fri, 19 Jan 2018 03:24:21 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/109F5/production/_99658086_ubertravis3.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/109F5/production/_99658086_ubertravis3.jpg"/>
         </item>
         <item>
             <title><![CDATA[Web firms 'better' at hate speech removal]]></title>
@@ -109,7 +109,7 @@
             <link>http://www.bbc.co.uk/news/technology-42746781</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/technology-42746781</guid>
             <pubDate>Fri, 19 Jan 2018 17:08:58 GMT</pubDate>
-            <media:thumbnail width="464" height="261" url="http://c.files.bbci.co.uk/16A18/production/_99669629_gettyimages-50787536.jpg"/>
+            <media:thumbnail width="464" height="261" feedUrl="http://c.files.bbci.co.uk/16A18/production/_99669629_gettyimages-50787536.jpg"/>
         </item>
         <item>
             <title><![CDATA[ATM shake-up could leave many without cash, consumer group warns]]></title>
@@ -117,7 +117,7 @@
             <link>http://www.bbc.co.uk/news/business-42741465</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42741465</guid>
             <pubDate>Fri, 19 Jan 2018 00:40:54 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/1058B/production/_99655966_gettyimages-621617660.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/1058B/production/_99655966_gettyimages-621617660.jpg"/>
         </item>
         <item>
             <title><![CDATA['Poor' British Steel pensions advice reviewed by police]]></title>
@@ -125,7 +125,7 @@
             <link>http://www.bbc.co.uk/news/uk-wales-south-west-wales-42745061</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/uk-wales-south-west-wales-42745061</guid>
             <pubDate>Fri, 19 Jan 2018 12:23:30 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/65DF/production/_97297062_973e7eaa-3c5f-426a-a5f3-8157813321e2.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/65DF/production/_97297062_973e7eaa-3c5f-426a-a5f3-8157813321e2.jpg"/>
         </item>
         <item>
             <title><![CDATA[Santander boss named in RBS scandal]]></title>
@@ -133,7 +133,7 @@
             <link>http://www.bbc.co.uk/news/business-42739680</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42739680</guid>
             <pubDate>Thu, 18 Jan 2018 17:37:42 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/3B97/production/_99655251_020300101.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/3B97/production/_99655251_020300101.jpg"/>
         </item>
         <item>
             <title><![CDATA[Hyperloop: A visit to the test site of Virgin's train of the future]]></title>
@@ -141,7 +141,7 @@
             <link>http://www.bbc.co.uk/news/technology-42733450</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/technology-42733450</guid>
             <pubDate>Fri, 19 Jan 2018 23:21:08 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/10407/production/_99676566_p05vjhfw.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/10407/production/_99676566_p05vjhfw.jpg"/>
         </item>
         <item>
             <title><![CDATA[How the zipper became a million dollar idea]]></title>
@@ -149,7 +149,7 @@
             <link>http://www.bbc.co.uk/news/business-42719704</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42719704</guid>
             <pubDate>Fri, 19 Jan 2018 00:45:17 GMT</pubDate>
-            <media:thumbnail width="1024" height="575" url="http://c.files.bbci.co.uk/115C9/production/_99631117_p05v4qd3.jpg"/>
+            <media:thumbnail width="1024" height="575" feedUrl="http://c.files.bbci.co.uk/115C9/production/_99631117_p05v4qd3.jpg"/>
         </item>
         <item>
             <title><![CDATA[Fighting for flexible working hours]]></title>
@@ -157,7 +157,7 @@
             <link>http://www.bbc.co.uk/news/business-42734427</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42734427</guid>
             <pubDate>Fri, 19 Jan 2018 00:01:37 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/423B/production/_99655961_p05vbrh6.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/423B/production/_99655961_p05vbrh6.jpg"/>
         </item>
         <item>
             <title><![CDATA[Fishermen's app: 'We can go direct to the consumer']]></title>
@@ -165,7 +165,7 @@
             <link>http://www.bbc.co.uk/news/business-42747882</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42747882</guid>
             <pubDate>Fri, 19 Jan 2018 11:17:13 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/1076C/production/_99663476_p05vfckb.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/1076C/production/_99663476_p05vfckb.jpg"/>
         </item>
         <item>
             <title><![CDATA['If I tried to escape they said they would kill me']]></title>
@@ -173,7 +173,7 @@
             <link>http://www.bbc.co.uk/news/business-42734424</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42734424</guid>
             <pubDate>Thu, 18 Jan 2018 12:00:25 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/A144/production/_99648214_p05v91bw.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/A144/production/_99648214_p05v91bw.jpg"/>
         </item>
         <item>
             <title><![CDATA[Zambia's traders protest at anti-cholera measures]]></title>
@@ -181,7 +181,7 @@
             <link>http://www.bbc.co.uk/news/business-42747884</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42747884</guid>
             <pubDate>Fri, 19 Jan 2018 13:24:05 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/1558C/production/_99663478_p05vfs50.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/1558C/production/_99663478_p05vfs50.jpg"/>
         </item>
         <item>
             <title><![CDATA[Donald Trump's impact on trade in Asia]]></title>
@@ -189,7 +189,7 @@
             <link>http://www.bbc.co.uk/news/business-42720848</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42720848</guid>
             <pubDate>Thu, 18 Jan 2018 00:37:40 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/C939/production/_99631515_p05v54rv.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/C939/production/_99631515_p05v54rv.jpg"/>
         </item>
         <item>
             <title><![CDATA[Detroit motor show: Autonomous vehicles move centre stage]]></title>
@@ -197,7 +197,7 @@
             <link>http://www.bbc.co.uk/news/business-42712451</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42712451</guid>
             <pubDate>Tue, 16 Jan 2018 23:50:44 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/A7E7/production/_99638924_p05v61fg.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/A7E7/production/_99638924_p05v61fg.jpg"/>
         </item>
         <item>
             <title><![CDATA[Hijab shampoo advert: L'Oreal model on 'game-changing' ad]]></title>
@@ -205,7 +205,7 @@
             <link>http://www.bbc.co.uk/newsbeat/articles/42746002</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/newsbeat/articles/42746002</guid>
             <pubDate>Fri, 19 Jan 2018 09:44:15 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/EB9C/production/_99661306_amena2.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/EB9C/production/_99661306_amena2.jpg"/>
         </item>
         <item>
             <title><![CDATA[Call to curb disruption caused by holiday lets like Airbnb]]></title>
@@ -213,7 +213,7 @@
             <link>http://www.bbc.co.uk/news/uk-politics-42633271</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/uk-politics-42633271</guid>
             <pubDate>Fri, 19 Jan 2018 11:12:22 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/C0BF/production/_99534394_housebbc.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/C0BF/production/_99534394_housebbc.jpg"/>
         </item>
         <item>
             <title><![CDATA[Switch on, switch off]]></title>
@@ -221,7 +221,7 @@
             <link>http://www.bbc.co.uk/news/business-42710215</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42710215</guid>
             <pubDate>Fri, 19 Jan 2018 00:46:35 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/72B4/production/_99646392_gettyimages-696868366.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/72B4/production/_99646392_gettyimages-696868366.jpg"/>
         </item>
         <item>
             <title><![CDATA[Flexible working]]></title>
@@ -229,7 +229,7 @@
             <link>http://www.bbc.co.uk/news/business-42739681</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42739681</guid>
             <pubDate>Fri, 19 Jan 2018 00:02:34 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/1794B/production/_90978569_thinkstockphotos-494374443.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/1794B/production/_90978569_thinkstockphotos-494374443.jpg"/>
         </item>
         <item>
             <title><![CDATA[Modern day slaves]]></title>
@@ -237,7 +237,7 @@
             <link>http://www.bbc.co.uk/news/business-42721936</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42721936</guid>
             <pubDate>Thu, 18 Jan 2018 12:01:13 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/49C3/production/_99638881_de121.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/49C3/production/_99638881_de121.jpg"/>
         </item>
         <item>
             <title><![CDATA[Ukraine's secret]]></title>
@@ -245,7 +245,7 @@
             <link>http://www.bbc.co.uk/news/business-42403024</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42403024</guid>
             <pubDate>Thu, 18 Jan 2018 00:40:34 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/7E4D/production/_99633323_intelliasvitalysedler.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/7E4D/production/_99633323_intelliasvitalysedler.jpg"/>
         </item>
         <item>
             <title><![CDATA[Better balance]]></title>
@@ -253,7 +253,7 @@
             <link>http://www.bbc.co.uk/news/business-42705291</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42705291</guid>
             <pubDate>Wed, 17 Jan 2018 00:01:59 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/10038/production/_99629556_m1.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/10038/production/_99629556_m1.jpg"/>
         </item>
         <item>
             <title><![CDATA[Made in Medellin]]></title>
@@ -261,7 +261,7 @@
             <link>http://www.bbc.co.uk/news/business-42661648</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42661648</guid>
             <pubDate>Wed, 17 Jan 2018 00:05:01 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/E643/production/_99574985_women-recut.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/E643/production/_99574985_women-recut.jpg"/>
         </item>
         <item>
             <title><![CDATA[Paris, London]]></title>
@@ -269,7 +269,7 @@
             <link>http://www.bbc.co.uk/news/business-42690438</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42690438</guid>
             <pubDate>Wed, 17 Jan 2018 01:38:48 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/0AEF/production/_99599720_brexitflags.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/0AEF/production/_99599720_brexitflags.jpg"/>
         </item>
         <item>
             <title><![CDATA[Carillion fallout]]></title>
@@ -277,7 +277,7 @@
             <link>http://www.bbc.co.uk/news/business-42703542</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42703542</guid>
             <pubDate>Tue, 16 Jan 2018 17:27:40 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/F0A2/production/_99620616_carillionpaythewagesreuters.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/F0A2/production/_99620616_carillionpaythewagesreuters.jpg"/>
         </item>
         <item>
             <title><![CDATA[Heads up]]></title>
@@ -285,7 +285,7 @@
             <link>http://www.bbc.co.uk/news/business-42699500</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42699500</guid>
             <pubDate>Tue, 16 Jan 2018 11:36:15 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/F03D/production/_99610516_mercedes.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/F03D/production/_99610516_mercedes.jpg"/>
         </item>
         <item>
             <title><![CDATA[Panic buying]]></title>
@@ -293,7 +293,7 @@
             <link>http://www.bbc.co.uk/news/business-42687937</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42687937</guid>
             <pubDate>Tue, 16 Jan 2018 00:20:34 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/942A/production/_99603973_gettyimages-588255994.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/942A/production/_99603973_gettyimages-588255994.jpg"/>
         </item>
         <item>
             <title><![CDATA['That's it, go home']]></title>
@@ -301,7 +301,7 @@
             <link>http://www.bbc.co.uk/news/business-42690807</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42690807</guid>
             <pubDate>Mon, 15 Jan 2018 15:16:36 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/FEB0/production/_99600256_carillionpa1.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/FEB0/production/_99600256_carillionpa1.jpg"/>
         </item>
         <item>
             <title><![CDATA[Auto changes]]></title>
@@ -309,7 +309,7 @@
             <link>http://www.bbc.co.uk/news/business-42685132</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42685132</guid>
             <pubDate>Mon, 15 Jan 2018 11:54:02 GMT</pubDate>
-            <media:thumbnail width="2048" height="1152" url="http://c.files.bbci.co.uk/5F1D/production/_99594342_autoshow2.jpg"/>
+            <media:thumbnail width="2048" height="1152" feedUrl="http://c.files.bbci.co.uk/5F1D/production/_99594342_autoshow2.jpg"/>
         </item>
         <item>
             <title><![CDATA[Carillion's woes]]></title>
@@ -317,7 +317,7 @@
             <link>http://www.bbc.co.uk/news/business-42666275</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42666275</guid>
             <pubDate>Mon, 15 Jan 2018 09:52:40 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/0741/production/_99575810_gettyimages-883448012.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/0741/production/_99575810_gettyimages-883448012.jpg"/>
         </item>
         <item>
             <title><![CDATA[Sticky business]]></title>
@@ -325,7 +325,7 @@
             <link>http://www.bbc.co.uk/news/business-42619485</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42619485</guid>
             <pubDate>Mon, 15 Jan 2018 00:00:48 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/83D9/production/_99535733_photo1.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/83D9/production/_99535733_photo1.jpg"/>
         </item>
         <item>
             <title><![CDATA[Trouble brewing]]></title>
@@ -333,7 +333,7 @@
             <link>http://www.bbc.co.uk/news/uk-england-41892346</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/uk-england-41892346</guid>
             <pubDate>Sun, 14 Jan 2018 00:47:30 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/7FD9/production/_99192723_jaega-wise.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/7FD9/production/_99192723_jaega-wise.jpg"/>
         </item>
         <item>
             <title><![CDATA[Socking it to 'em]]></title>
@@ -341,7 +341,7 @@
             <link>http://www.bbc.co.uk/news/business-42353259</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42353259</guid>
             <pubDate>Sat, 13 Jan 2018 00:33:11 GMT</pubDate>
-            <media:thumbnail width="2048" height="1152" url="http://c.files.bbci.co.uk/178D3/production/_99576469_26220360_402526933484424_76.jpg"/>
+            <media:thumbnail width="2048" height="1152" feedUrl="http://c.files.bbci.co.uk/178D3/production/_99576469_26220360_402526933484424_76.jpg"/>
         </item>
         <item>
             <title><![CDATA[War on waste]]></title>
@@ -349,7 +349,7 @@
             <link>http://www.bbc.co.uk/news/science-environment-42652937</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/science-environment-42652937</guid>
             <pubDate>Sun, 14 Jan 2018 00:25:51 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/10889/production/_99612776_bigblue.00_44_51_12.still008.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/10889/production/_99612776_bigblue.00_44_51_12.still008.jpg"/>
         </item>
         <item>
             <title><![CDATA[Will taps run dry?]]></title>
@@ -357,7 +357,7 @@
             <link>http://www.bbc.co.uk/news/business-42626790</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42626790</guid>
             <pubDate>Fri, 12 Jan 2018 00:04:32 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/4C96/production/_99560691_cape_town_getty_rt.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/4C96/production/_99560691_cape_town_getty_rt.jpg"/>
         </item>
         <item>
             <title><![CDATA[Financial secrets]]></title>
@@ -365,7 +365,7 @@
             <link>http://www.bbc.co.uk/news/business-42253051</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42253051</guid>
             <pubDate>Thu, 11 Jan 2018 17:24:07 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/5ADB/production/_99095232_starlingbank1..jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/5ADB/production/_99095232_starlingbank1..jpg"/>
         </item>
         <item>
             <title><![CDATA[Donald's decision]]></title>
@@ -373,7 +373,7 @@
             <link>http://www.bbc.co.uk/news/business-42571838</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42571838</guid>
             <pubDate>Thu, 11 Jan 2018 00:04:33 GMT</pubDate>
-            <media:thumbnail width="1024" height="576" url="http://c.files.bbci.co.uk/2EEE/production/_99541021_gettyimages-901869368.jpg"/>
+            <media:thumbnail width="1024" height="576" feedUrl="http://c.files.bbci.co.uk/2EEE/production/_99541021_gettyimages-901869368.jpg"/>
         </item>
         <item>
             <title><![CDATA[Unwelcome extra]]></title>
@@ -381,7 +381,7 @@
             <link>http://www.bbc.co.uk/news/business-42639408</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42639408</guid>
             <pubDate>Wed, 10 Jan 2018 16:47:57 GMT</pubDate>
-            <media:thumbnail width="768" height="432" url="http://c.files.bbci.co.uk/0BC6/production/_99541030_2pb2ybgn.jpg"/>
+            <media:thumbnail width="768" height="432" feedUrl="http://c.files.bbci.co.uk/0BC6/production/_99541030_2pb2ybgn.jpg"/>
         </item>
         <item>
             <title><![CDATA[Big designs]]></title>
@@ -389,7 +389,7 @@
             <link>http://www.bbc.co.uk/news/business-42552367</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42552367</guid>
             <pubDate>Wed, 10 Jan 2018 00:29:51 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/0FB6/production/_99522040_melanieperkins.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/0FB6/production/_99522040_melanieperkins.jpg"/>
         </item>
         <item>
             <title><![CDATA[Net gains]]></title>
@@ -397,7 +397,7 @@
             <link>http://www.bbc.co.uk/news/business-41579180</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/business-41579180</guid>
             <pubDate>Thu, 11 Jan 2018 00:09:06 GMT</pubDate>
-            <media:thumbnail width="976" height="549" url="http://c.files.bbci.co.uk/3036/production/_99524321_mediaitem99524320.jpg"/>
+            <media:thumbnail width="976" height="549" feedUrl="http://c.files.bbci.co.uk/3036/production/_99524321_mediaitem99524320.jpg"/>
         </item>
         <item>
             <title><![CDATA[How bad is it?]]></title>
@@ -405,7 +405,7 @@
             <link>http://www.bbc.co.uk/news/uk-42611725</link>
             <guid isPermaLink="true">http://www.bbc.co.uk/news/uk-42611725</guid>
             <pubDate>Mon, 08 Jan 2018 17:59:24 GMT</pubDate>
-            <media:thumbnail width="2048" height="1152" url="http://c.files.bbci.co.uk/AD17/production/_99511344_mediaitem99511343.jpg"/>
+            <media:thumbnail width="2048" height="1152" feedUrl="http://c.files.bbci.co.uk/AD17/production/_99511344_mediaitem99511343.jpg"/>
         </item>
     </channel>
 </rss>

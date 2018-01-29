@@ -43,7 +43,7 @@ Checklists are quick and easy references to help users implement the advice in t
 Forms allow a user to quickly fill out and share important information about issues such as their travel plan in a high risk location or report on a digital/physical security incident.
 
 **Dashboard:**
-The dashboard contains security feeds from places like the UN Relief Web and the US Centers for Disease Control. You enter your location (and how often you want to be updated). Every a new update is released (e.g a disease outbreak in your location), the information comes up on the dashboard.
+The dashboard contains security customFeeds from places like the UN Relief Web and the US Centers for Disease Control. You enter your location (and how often you want to be updated). Every a new update is released (e.g a disease outbreak in your location), the information comes up on the dashboard.
 
 **Tool Guides:**
 These are detailed guides about how to use software and apps mentioned in the lessons.
@@ -142,7 +142,7 @@ Explains the licences that we use for and by Umbrella. Also says a big THANKYOU 
 ## Dashboard Feed Sources
 ![](https://github.com/rorymbyrne/Umbrella_android/blob/master/DASHBOARDLOGOS.png?raw=true)
 
-These are the sources that we currently include for real-time updated security feeds. For privacy reasons, users never connect directly to these services. We are always looking for more useful sources that will help users keep updated on the move.
+These are the sources that we currently include for real-time updated security customFeeds. For privacy reasons, users never connect directly to these services. We are always looking for more useful sources that will help users keep updated on the move.
 * [Centers for Disease Control](https://www.cdc.gov): updates on disease and health warnings
 * [Global Disaster Alert and Coordination System](http://www.gdacs.org): updates on natural disaster issues such as floods, earthquakes and tsunamis
 * [UN / ReliefWeb](http://reliefweb.int): excellent physical security updates that amalgamate information from the UN and various NGOs - though not available in every country
@@ -152,7 +152,7 @@ These are the sources that we currently include for real-time updated security f
 The three vertical dots in the top of the app. Here you can:
 
 * Set a password
-* Change the refresh interval for the security feeds
+* Change the refresh interval for the security customFeeds
 * Change your location
 * Change your feed sources
 

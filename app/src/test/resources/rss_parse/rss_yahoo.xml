@@ -13,9 +13,9 @@
         <image>
             <title>Yahoo dNews - Latest News & Headlines</title>
             <link>http://www.yahoo.com/news</link>
-            <url>
+            <feedUrl>
                 http://l.yimg.com/rz/d/yahoo_news_en-US_s_f_p_168x21_news.png
-            </url>
+            </feedUrl>
         </image>
         <item>
             <title>
@@ -41,10 +41,10 @@
                 https://www.yahoo.com/news/trump-apos-america-statue-liberty-204713972.html
             </link>
             <pubDate>Sat, 20 Jan 2018 15:47:13 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">trump-apos-america-statue-liberty-204713972.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/vx4CCRpZPs6L5MaLeN5e3g--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/c71c3723388c032b8e45e5eed17246d2"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/vx4CCRpZPs6L5MaLeN5e3g--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/c71c3723388c032b8e45e5eed17246d2"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -81,10 +81,10 @@
                 https://www.yahoo.com/news/photos-week-1-12-1-201719561.html
             </link>
             <pubDate>Fri, 19 Jan 2018 15:17:19 -0500</pubDate>
-            <source url="https://www.aol.com/">AOL.com</source>
+            <source feedUrl="https://www.aol.com/">AOL.com</source>
             <guid isPermaLink="false">photos-week-1-12-1-201719561.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/Ew2W55mOElD0MkE.hFw0YQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/aol_com_127/92b63c4f2231397d6e66b56f6bbc6ce7"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/Ew2W55mOElD0MkE.hFw0YQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/aol_com_127/92b63c4f2231397d6e66b56f6bbc6ce7"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -125,10 +125,10 @@
                 https://www.yahoo.com/news/trump-appointee-carl-higbie-resigns-110323640.html
             </link>
             <pubDate>Fri, 19 Jan 2018 06:03:23 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">trump-appointee-carl-higbie-resigns-110323640.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/xDAZTl3Tsuzu3GNdNCYkFA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/ea86e31d6f02a74081adc99268a2cdc3"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/xDAZTl3Tsuzu3GNdNCYkFA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/ea86e31d6f02a74081adc99268a2cdc3"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -171,12 +171,12 @@
                 https://www.yahoo.com/news/delta-issues-rules-emotional-support-160557429.html
             </link>
             <pubDate>Fri, 19 Jan 2018 11:05:57 -0500</pubDate>
-            <source url="https://view.yahoo.com">Yahoo View</source>
+            <source feedUrl="https://view.yahoo.com">Yahoo View</source>
             <guid isPermaLink="false">
                 delta-issues-rules-emotional-support-160557429.html
             </guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/25lJn5DSw45iWcOdzgS1Fg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/es-US/homerun/yahoo_view_839/758831b9a44fe12edb41e1831b099eed"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/25lJn5DSw45iWcOdzgS1Fg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/es-US/homerun/yahoo_view_839/758831b9a44fe12edb41e1831b099eed"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -222,10 +222,10 @@
                 https://www.yahoo.com/news/texas-judge-pushes-jury-acquittal-162608970.html
             </link>
             <pubDate>Sat, 20 Jan 2018 11:26:00 -0500</pubDate>
-            <source url="http://www.independent.co.uk/">The Independent</source>
+            <source feedUrl="http://www.independent.co.uk/">The Independent</source>
             <guid isPermaLink="false">texas-judge-pushes-jury-acquittal-162608970.html</guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/GhU2QXkMLISxWJ62kGfcAg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_independent_635/c363f7741f7a114aa798dc006cc49d00"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/GhU2QXkMLISxWJ62kGfcAg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_independent_635/c363f7741f7a114aa798dc006cc49d00"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -272,10 +272,10 @@
                 https://www.yahoo.com/news/googe-ceo-more-important-humanity-150442743.html
             </link>
             <pubDate>Fri, 19 Jan 2018 10:04:42 -0500</pubDate>
-            <source url="https://view.yahoo.com">Yahoo View</source>
+            <source feedUrl="https://view.yahoo.com">Yahoo View</source>
             <guid isPermaLink="false">googe-ceo-more-important-humanity-150442743.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/K_LmNFmkyxsX0kuXT2rh0w--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/es-US/homerun/yahoo_view_839/c464faf02a9b925b4a198ef84772d4bd"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/K_LmNFmkyxsX0kuXT2rh0w--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/es-US/homerun/yahoo_view_839/c464faf02a9b925b4a198ef84772d4bd"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -320,10 +320,10 @@
                 https://www.yahoo.com/news/deported-man-apos-wife-state-111503514.html
             </link>
             <pubDate>Fri, 19 Jan 2018 06:15:03 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">deported-man-apos-wife-state-111503514.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/JJxzXIrCXruFol6J_ELQjw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/321d830724a714f90033de098bed7508"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/JJxzXIrCXruFol6J_ELQjw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/321d830724a714f90033de098bed7508"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -369,12 +369,12 @@
                 https://www.yahoo.com/news/california-community-makes-recovery-strides-mudslide-021708782.html
             </link>
             <pubDate>Fri, 19 Jan 2018 21:17:08 -0500</pubDate>
-            <source url="http://www.ap.org/">Associated Press</source>
+            <source feedUrl="http://www.ap.org/">Associated Press</source>
             <guid isPermaLink="false">
                 california-community-makes-recovery-strides-mudslide-021708782.html
             </guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/td3dVL5rNruxCPpeeH7Oag--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/70906032821c4174bd401067ef1d0f05.jpg"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/td3dVL5rNruxCPpeeH7Oag--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/70906032821c4174bd401067ef1d0f05.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -472,12 +472,12 @@
                 https://www.yahoo.com/news/apostrophes-trip-kazakhstan-apos-move-143537885.html
             </link>
             <pubDate>Sat, 20 Jan 2018 09:35:37 -0500</pubDate>
-            <source url="http://www.telegraph.co.uk/">The Telegraph</source>
+            <source feedUrl="http://www.telegraph.co.uk/">The Telegraph</source>
             <guid isPermaLink="false">
                 apostrophes-trip-kazakhstan-apos-move-143537885.html
             </guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/1mlZi5PzfztknEGl2y_eSg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_telegraph_258/c59f37a8fe9d8096603f952c34521d8e"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/1mlZi5PzfztknEGl2y_eSg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_telegraph_258/c59f37a8fe9d8096603f952c34521d8e"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -574,12 +574,12 @@
                 https://www.yahoo.com/news/tick-tickboom-shutdown-comes-will-pay-price-194625392.html
             </link>
             <pubDate>Fri, 19 Jan 2018 14:46:25 -0500</pubDate>
-            <source url="https://www.yahoo.com/news/">Yahoo News</source>
+            <source feedUrl="https://www.yahoo.com/news/">Yahoo News</source>
             <guid isPermaLink="false">
                 tick-tickboom-shutdown-comes-will-pay-price-194625392.html
             </guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/zJjLrW2HiZgpj1AJ_1rr4w--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en/homerun/feed_manager_auto_publish_494/425858def7bd7926b6ac29b931141621"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/zJjLrW2HiZgpj1AJ_1rr4w--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en/homerun/feed_manager_auto_publish_494/425858def7bd7926b6ac29b931141621"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -624,10 +624,10 @@
                 https://www.yahoo.com/news/mom-racist-ranting-alabama-student-131358875.html
             </link>
             <pubDate>Fri, 19 Jan 2018 08:13:58 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">mom-racist-ranting-alabama-student-131358875.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/ZMaZheMGsZVgTW9mm12.rw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/8178a10787fdb8df21a2ee61aba2a4df"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/ZMaZheMGsZVgTW9mm12.rw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/8178a10787fdb8df21a2ee61aba2a4df"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -670,11 +670,11 @@
                 https://www.yahoo.com/news/car-plows-crowd-along-brazil-slideshow-wp-155602079.html
             </link>
             <pubDate>Fri, 19 Jan 2018 10:56:02 -0500</pubDate>
-            <source url="https://www.yahoo.com/news/tagged/photos/">Yahoo News Photo Staff</source>
+            <source feedUrl="https://www.yahoo.com/news/tagged/photos/">Yahoo News Photo Staff</source>
             <guid isPermaLink="false">
                 car-plows-crowd-along-brazil-slideshow-wp-155602079.html
             </guid>
-            <media:content height="86" url="" width="130" />
+            <media:content height="86" feedUrl="" width="130" />
             <media:text type="html">
                 <p>
                 <a href="https://www.yahoo.com/news/car-plows-crowd-along-brazil-slideshow-wp-155602079.html">
@@ -719,12 +719,12 @@
                 https://www.yahoo.com/news/turkey-hits-syria-kurd-militia-again-ground-attack-101722129.html
             </link>
             <pubDate>Sat, 20 Jan 2018 18:22:25 -0500</pubDate>
-            <source url="http://www.afp.com/">AFP</source>
+            <source feedUrl="http://www.afp.com/">AFP</source>
             <guid isPermaLink="false">
                 turkey-hits-syria-kurd-militia-again-ground-attack-101722129.html
             </guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/r9O31z3EKKrOKIbmqbP0pA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/afp.com/99b35d39933852e332101f276935b59857156017.jpg"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/r9O31z3EKKrOKIbmqbP0pA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/afp.com/99b35d39933852e332101f276935b59857156017.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -776,10 +776,10 @@
                 https://www.yahoo.com/news/turpin-family-latest-two-healthy-123542378.html
             </link>
             <pubDate>Fri, 19 Jan 2018 07:35:00 -0500</pubDate>
-            <source url="http://www.independent.co.uk/">The Independent</source>
+            <source feedUrl="http://www.independent.co.uk/">The Independent</source>
             <guid isPermaLink="false">turpin-family-latest-two-healthy-123542378.html</guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/MqJ8z.mEkN0q8Ir69asymg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_independent_635/02994f6e98ea335a1f90e5064e610397"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/MqJ8z.mEkN0q8Ir69asymg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_independent_635/02994f6e98ea335a1f90e5064e610397"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -822,12 +822,12 @@
                 https://www.yahoo.com/news/mattis-unveils-national-defense-strategy-164304585.html
             </link>
             <pubDate>Fri, 19 Jan 2018 11:43:04 -0500</pubDate>
-            <source url="http://www.abc.com">ABC News Videos</source>
+            <source feedUrl="http://www.abc.com">ABC News Videos</source>
             <guid isPermaLink="false">
                 mattis-unveils-national-defense-strategy-164304585.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/ULnAP2gcTkJ4vP66PZxVaQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/video/video.abcnewsplus.com/5cafe344bc5dcb268608db7dd3e910af"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/ULnAP2gcTkJ4vP66PZxVaQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/video/video.abcnewsplus.com/5cafe344bc5dcb268608db7dd3e910af"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -869,12 +869,12 @@
                 https://www.yahoo.com/news/classmate-speaks-california-house-horrors-160327414.html
             </link>
             <pubDate>Fri, 19 Jan 2018 11:03:27 -0500</pubDate>
-            <source url="https://view.yahoo.com">Yahoo View</source>
+            <source feedUrl="https://view.yahoo.com">Yahoo View</source>
             <guid isPermaLink="false">
                 classmate-speaks-california-house-horrors-160327414.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/0LWPj7rNU9ZbRofM1xhoZQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/es-US/homerun/yahoo_view_839/a1a38b4ec59ef357eea32da9f55f304e"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/0LWPj7rNU9ZbRofM1xhoZQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/es-US/homerun/yahoo_view_839/a1a38b4ec59ef357eea32da9f55f304e"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -922,10 +922,10 @@
                 https://www.yahoo.com/news/donald-trump-apos-apos-screaming-090648275.html
             </link>
             <pubDate>Sat, 20 Jan 2018 04:06:48 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">donald-trump-apos-apos-screaming-090648275.html</guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/83YdyOHVL2zeUozUyDPJdg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/d68baef65ca6409dfe0785008ffe9943"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/83YdyOHVL2zeUozUyDPJdg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/d68baef65ca6409dfe0785008ffe9943"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -966,10 +966,10 @@
                 https://www.yahoo.com/news/funniest-tweets-parents-week-140011184.html
             </link>
             <pubDate>Fri, 19 Jan 2018 09:00:11 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">funniest-tweets-parents-week-140011184.html</guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/Qu7gBT7owbqiwybXVlbOPw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/279a36715aef4a3eb36e014b4255540f"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/Qu7gBT7owbqiwybXVlbOPw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/279a36715aef4a3eb36e014b4255540f"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1013,10 +1013,10 @@
                 https://www.yahoo.com/news/trump-mark-anniversary-mar-lago-165009522.html
             </link>
             <pubDate>Fri, 19 Jan 2018 11:50:09 -0500</pubDate>
-            <source url="https://www.theguardian.com/international">The Guardian</source>
+            <source feedUrl="https://www.theguardian.com/international">The Guardian</source>
             <guid isPermaLink="false">trump-mark-anniversary-mar-lago-165009522.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/LLEkduvm6oGrPbYdIzftFQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_guardian_765/ea4c132fb4a67ea05127f5943986b565"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/LLEkduvm6oGrPbYdIzftFQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_guardian_765/ea4c132fb4a67ea05127f5943986b565"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1062,14 +1062,14 @@
                 https://www.yahoo.com/news/electrification-era-moves-closer-cars-194206319.html
             </link>
             <pubDate>Fri, 19 Jan 2018 14:42:06 -0500</pubDate>
-            <source url="http://www.consumerreports.org/cro/cars/index.htm?EXTKEY=AYAHFP03">Consumer
+            <source feedUrl="http://www.consumerreports.org/cro/cars/index.htm?EXTKEY=AYAHFP03">Consumer
                 Reports
             </source>
             <guid isPermaLink="false">
                 electrification-era-moves-closer-cars-194206319.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/DOn2gOdiKChtTddQgp7u4Q--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/cms/autos/ConsumerReportsNews/CR-Cars-Hero-2017-Ford-Focus-EV-plug-1-18.jpg"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/DOn2gOdiKChtTddQgp7u4Q--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/cms/autos/ConsumerReportsNews/CR-Cars-Hero-2017-Ford-Focus-EV-plug-1-18.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1115,12 +1115,12 @@
                 https://www.yahoo.com/news/head-n-koreas-most-popular-girl-band-visit-100329270.html
             </link>
             <pubDate>Fri, 19 Jan 2018 11:40:50 -0500</pubDate>
-            <source url="http://www.ap.org/">Associated Press</source>
+            <source feedUrl="http://www.ap.org/">Associated Press</source>
             <guid isPermaLink="false">
                 head-n-koreas-most-popular-girl-band-visit-100329270.html
             </guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/4sJfgX41vmGlec2oiHAUmg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/86d59a25f2534c22b19cf4cabfa85251.jpg"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/4sJfgX41vmGlec2oiHAUmg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/86d59a25f2534c22b19cf4cabfa85251.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1169,11 +1169,11 @@
                 https://www.yahoo.com/news/supreme-court-blocks-redrawing-north-carolina-congressional-maps-131518619.html
             </link>
             <pubDate>Fri, 19 Jan 2018 08:15:18 -0500</pubDate>
-            <source url="http://www.reuters.com/">Reuters</source>
+            <source feedUrl="http://www.reuters.com/">Reuters</source>
             <guid isPermaLink="false">
                 supreme-court-blocks-redrawing-north-carolina-congressional-maps-131518619.html
             </guid>
-            <media:content height="86" url="" width="130" />
+            <media:content height="86" feedUrl="" width="130" />
             <media:text type="html">
                 <p>
                 <a href="https://www.yahoo.com/news/supreme-court-blocks-redrawing-north-carolina-congressional-maps-131518619.html">
@@ -1217,12 +1217,12 @@
                 https://www.yahoo.com/news/gop-lawmaker-claims-isis-masterminded-165500092.html
             </link>
             <pubDate>Fri, 19 Jan 2018 11:55:00 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">
                 gop-lawmaker-claims-isis-masterminded-165500092.html
             </guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/qhkaN1_kvFQkw1T6OFaknw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/958dc680a27c0f1c15801dfa752e1bb8"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/qhkaN1_kvFQkw1T6OFaknw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/958dc680a27c0f1c15801dfa752e1bb8"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1263,10 +1263,10 @@
                 https://www.yahoo.com/news/tourists-jamaica-warned-not-leave-190133622.html
             </link>
             <pubDate>Sat, 20 Jan 2018 14:01:33 -0500</pubDate>
-            <source url="https://www.time.com">Time</source>
+            <source feedUrl="https://www.time.com">Time</source>
             <guid isPermaLink="false">tourists-jamaica-warned-not-leave-190133622.html</guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/W36Xzqu0gtWlSwODuUKpaw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/time_72/d013b2087aa56306ac71df3b8140c532"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/W36Xzqu0gtWlSwODuUKpaw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/time_72/d013b2087aa56306ac71df3b8140c532"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1352,12 +1352,12 @@
                 https://www.yahoo.com/news/confronting-china-russia-not-tackling-211132696.html
             </link>
             <pubDate>Fri, 19 Jan 2018 16:11:32 -0500</pubDate>
-            <source url="http://www.telegraph.co.uk/">The Telegraph</source>
+            <source feedUrl="http://www.telegraph.co.uk/">The Telegraph</source>
             <guid isPermaLink="false">
                 confronting-china-russia-not-tackling-211132696.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/wBdywlCdRtBEHv9.4t5c6w--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_telegraph_258/7bb414438304fb108fb0952eba48a6db"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/wBdywlCdRtBEHv9.4t5c6w--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_telegraph_258/7bb414438304fb108fb0952eba48a6db"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1444,10 +1444,10 @@
                 https://www.yahoo.com/news/apos-jersey-shore-apos-star-222412929.html
             </link>
             <pubDate>Fri, 19 Jan 2018 17:24:12 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">apos-jersey-shore-apos-star-222412929.html</guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/1FoSAMDDcHw1sm9rruL.Nw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/7d39975ff117118d5a525513f78c59d9"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/1FoSAMDDcHw1sm9rruL.Nw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/7d39975ff117118d5a525513f78c59d9"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1492,10 +1492,10 @@
                 https://www.yahoo.com/news/anderson-cooper-tells-conan-haiti-120323136.html
             </link>
             <pubDate>Fri, 19 Jan 2018 07:03:23 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">anderson-cooper-tells-conan-haiti-120323136.html</guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/ITfh99f9aZ.oIMZK.Sz5Uw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/2e5c7ab74ff5634e51ab3996582f99d3"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/ITfh99f9aZ.oIMZK.Sz5Uw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/2e5c7ab74ff5634e51ab3996582f99d3"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1539,10 +1539,10 @@
                 https://www.yahoo.com/news/flu-season-worst-possible-time-015251386.html
             </link>
             <pubDate>Fri, 19 Jan 2018 20:52:51 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">flu-season-worst-possible-time-015251386.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/MGAC89rll7St8gkLeNA9UA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/710e533eec6db10ec8d0f1128c2ab3e1"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/MGAC89rll7St8gkLeNA9UA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/710e533eec6db10ec8d0f1128c2ab3e1"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1582,9 +1582,9 @@
                 https://www.yahoo.com/news/solidify-retirement-fund-152757436.html
             </link>
             <pubDate>Fri, 19 Jan 2018 10:27:57 -0500</pubDate>
-            <source url="http://money.usnews.com/">U.S.News & World Report</source>
+            <source feedUrl="http://money.usnews.com/">U.S.News & World Report</source>
             <guid isPermaLink="false">solidify-retirement-fund-152757436.html</guid>
-            <media:content height="86" url="" width="130" />
+            <media:content height="86" feedUrl="" width="130" />
             <media:text type="html">
                 <p>
                 <a href="https://www.yahoo.com/news/solidify-retirement-fund-152757436.html">
@@ -1624,11 +1624,11 @@
                 https://www.yahoo.com/news/leaning-aerial-photography-jeffry-milstein-slideshow-wp-184850328.html
             </link>
             <pubDate>Fri, 19 Jan 2018 13:48:50 -0500</pubDate>
-            <source url="https://www.yahoo.com/news/tagged/photos/">Yahoo News Photo Staff</source>
+            <source feedUrl="https://www.yahoo.com/news/tagged/photos/">Yahoo News Photo Staff</source>
             <guid isPermaLink="false">
                 leaning-aerial-photography-jeffry-milstein-slideshow-wp-184850328.html
             </guid>
-            <media:content height="86" url="" width="130" />
+            <media:content height="86" feedUrl="" width="130" />
             <media:text type="html">
                 <p>
                 <a href="https://www.yahoo.com/news/leaning-aerial-photography-jeffry-milstein-slideshow-wp-184850328.html">
@@ -1672,10 +1672,10 @@
                 https://www.yahoo.com/news/man-woman-child-pulled-truck-072333406.html
             </link>
             <pubDate>Sat, 20 Jan 2018 03:03:57 -0500</pubDate>
-            <source url="http://abclocal.go.com/kabc/index">KABC – Los Angeles</source>
+            <source feedUrl="http://abclocal.go.com/kabc/index">KABC – Los Angeles</source>
             <guid isPermaLink="false">man-woman-child-pulled-truck-072333406.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/EP65u5x6WA_j392n0v61lw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/video/video.kabc.abc.news.com/f5ca75064260183313ad45520b0d527d"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/EP65u5x6WA_j392n0v61lw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/video/video.kabc.abc.news.com/f5ca75064260183313ad45520b0d527d"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1723,10 +1723,10 @@
                 https://www.yahoo.com/news/house-gopers-secret-memo-could-011414007.html
             </link>
             <pubDate>Fri, 19 Jan 2018 20:14:14 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">house-gopers-secret-memo-could-011414007.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/jNiPTvZg1h73ikUfjIVo9g--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/f3c74ac06b91b2628a661206d6629c69"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/jNiPTvZg1h73ikUfjIVo9g--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/f3c74ac06b91b2628a661206d6629c69"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1775,12 +1775,12 @@
                 https://www.yahoo.com/news/thai-police-arrest-kingpin-asian-wildlife-trafficking-074104511.html
             </link>
             <pubDate>Sat, 20 Jan 2018 04:18:32 -0500</pubDate>
-            <source url="http://www.afp.com/">AFP</source>
+            <source feedUrl="http://www.afp.com/">AFP</source>
             <guid isPermaLink="false">
                 thai-police-arrest-kingpin-asian-wildlife-trafficking-074104511.html
             </guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/l.byQ.cTG7j.0KDT.AFCMw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/afp.com/03996e23413612299c8aa932472355b5d517fbb3.jpg"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/l.byQ.cTG7j.0KDT.AFCMw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/afp.com/03996e23413612299c8aa932472355b5d517fbb3.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1830,10 +1830,10 @@
                 https://www.yahoo.com/news/china-wants-missile-defenses-stop-122800013.html
             </link>
             <pubDate>Fri, 19 Jan 2018 07:28:00 -0500</pubDate>
-            <source url="http://nationalinterest.org/">The National Interest</source>
+            <source feedUrl="http://nationalinterest.org/">The National Interest</source>
             <guid isPermaLink="false">china-wants-missile-defenses-stop-122800013.html</guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/uE2naHt2tepiPJkkvcKpUw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_national_interest_705/137b967af11968660f724259a860f52e"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/uE2naHt2tepiPJkkvcKpUw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_national_interest_705/137b967af11968660f724259a860f52e"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1880,12 +1880,12 @@
                 https://www.yahoo.com/news/puerto-rico-finances-under-scrutiny-amid-11-recession-165633911.html
             </link>
             <pubDate>Fri, 19 Jan 2018 13:30:59 -0500</pubDate>
-            <source url="http://www.ap.org/">Associated Press</source>
+            <source feedUrl="http://www.ap.org/">Associated Press</source>
             <guid isPermaLink="false">
                 puerto-rico-finances-under-scrutiny-amid-11-recession-165633911.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/dQjsqYq88rm4lGfahFErng--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/74bb4720c4464a8f882ca70f2ab6167c.jpg"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/dQjsqYq88rm4lGfahFErng--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/74bb4720c4464a8f882ca70f2ab6167c.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1932,10 +1932,10 @@
                 https://www.yahoo.com/news/aly-raisman-tells-nassar-apos-183744152.html
             </link>
             <pubDate>Fri, 19 Jan 2018 13:37:44 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">aly-raisman-tells-nassar-apos-183744152.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/_KDwRkH2aYiQusRJSaIphQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/fc48c01fb498ad66756464da630fb543"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/_KDwRkH2aYiQusRJSaIphQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/fc48c01fb498ad66756464da630fb543"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -1983,12 +1983,12 @@
                 https://www.yahoo.com/news/twitter-concedes-russian-influence-u-012115061.html
             </link>
             <pubDate>Fri, 19 Jan 2018 20:21:15 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">
                 twitter-concedes-russian-influence-u-012115061.html
             </guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/UsK7FsBc.wVaS5BjFqAB.g--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/b9443b3a7ee2077dcc4fd21086f6e95c"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/UsK7FsBc.wVaS5BjFqAB.g--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/b9443b3a7ee2077dcc4fd21086f6e95c"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2076,10 +2076,10 @@
                 https://www.yahoo.com/news/happens-us-government-shuts-down-212910803.html
             </link>
             <pubDate>Sat, 20 Jan 2018 01:31:48 -0500</pubDate>
-            <source url="http://www.telegraph.co.uk/">The Telegraph</source>
+            <source feedUrl="http://www.telegraph.co.uk/">The Telegraph</source>
             <guid isPermaLink="false">happens-us-government-shuts-down-212910803.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/c3TmBndRucLfpGQqXqLZkg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_telegraph_258/b7bac190b8cf813dfe6664a037c8d4e8"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/c3TmBndRucLfpGQqXqLZkg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_telegraph_258/b7bac190b8cf813dfe6664a037c8d4e8"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2168,10 +2168,10 @@
                 https://www.yahoo.com/news/13-siblings-allegedly-held-captive-234537220.html
             </link>
             <pubDate>Fri, 19 Jan 2018 18:45:37 -0500</pubDate>
-            <source url="http://www.abc.com">ABC News Videos</source>
+            <source feedUrl="http://www.abc.com">ABC News Videos</source>
             <guid isPermaLink="false">13-siblings-allegedly-held-captive-234537220.html</guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/aKEeTUO4VAzNGSP3nt5syw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/video/video.abcnewsplus.com/4d248ffe50df83a75e0237f0dc2d9d0d"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/aKEeTUO4VAzNGSP3nt5syw--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/video/video.abcnewsplus.com/4d248ffe50df83a75e0237f0dc2d9d0d"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2212,14 +2212,14 @@
                 https://www.yahoo.com/news/takata-recalls-3-3-million-more-airbags-132304441.html
             </link>
             <pubDate>Fri, 19 Jan 2018 13:47:36 -0500</pubDate>
-            <source url="http://www.consumerreports.org/cro/cars/index.htm?EXTKEY=AYAHFP03">Consumer
+            <source feedUrl="http://www.consumerreports.org/cro/cars/index.htm?EXTKEY=AYAHFP03">Consumer
                 Reports
             </source>
             <guid isPermaLink="false">
                 takata-recalls-3-3-million-more-airbags-132304441.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/XzrOKp6mw3A6Qat4oM7DBg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/cms/autos/ConsumerReportsNews/CR-Cars-Takata-Airbag-Recall-01-18.jpg"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/XzrOKp6mw3A6Qat4oM7DBg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/cms/autos/ConsumerReportsNews/CR-Cars-Takata-Airbag-Recall-01-18.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2261,10 +2261,10 @@
                 https://www.yahoo.com/news/trump-flubs-key-line-anti-020310333.html
             </link>
             <pubDate>Fri, 19 Jan 2018 21:03:10 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">trump-flubs-key-line-anti-020310333.html</guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/iXe36pwsetST9Q6xsvXuKQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/44ebdb266672e78aff87954c05ca823e"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/iXe36pwsetST9Q6xsvXuKQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/44ebdb266672e78aff87954c05ca823e"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2313,10 +2313,10 @@
                 https://www.yahoo.com/news/two-children-charged-killing-half-140956374.html
             </link>
             <pubDate>Fri, 19 Jan 2018 09:09:00 -0500</pubDate>
-            <source url="http://www.independent.co.uk/">The Independent</source>
+            <source feedUrl="http://www.independent.co.uk/">The Independent</source>
             <guid isPermaLink="false">two-children-charged-killing-half-140956374.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/Et6V4VyZJcbqUzoeO_61rA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_independent_635/a6b88d1e88318dd810d5094e4d8ed5ae"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/Et6V4VyZJcbqUzoeO_61rA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-GB/homerun/the_independent_635/a6b88d1e88318dd810d5094e4d8ed5ae"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2370,11 +2370,11 @@
                 https://www.yahoo.com/news/taiwan-stymies-china-flights-amid-route-row-official-080322829--finance.html
             </link>
             <pubDate>Fri, 19 Jan 2018 09:25:57 -0500</pubDate>
-            <source url="http://www.reuters.com/">Reuters</source>
+            <source feedUrl="http://www.reuters.com/">Reuters</source>
             <guid isPermaLink="false">
                 taiwan-stymies-china-flights-amid-route-row-official-080322829--finance.html
             </guid>
-            <media:content height="86" url="" width="130" />
+            <media:content height="86" feedUrl="" width="130" />
             <media:text type="html">
                 <p>
                 <a href="https://www.yahoo.com/news/taiwan-stymies-china-flights-amid-route-row-official-080322829--finance.html">
@@ -2427,12 +2427,12 @@
                 https://www.yahoo.com/news/kremlin-regrets-ukrainian-law-recognising-russian-occupation-173506508.html
             </link>
             <pubDate>Fri, 19 Jan 2018 12:35:06 -0500</pubDate>
-            <source url="http://www.afp.com/">AFP</source>
+            <source feedUrl="http://www.afp.com/">AFP</source>
             <guid isPermaLink="false">
                 kremlin-regrets-ukrainian-law-recognising-russian-occupation-173506508.html
             </guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/.UNc.0PesF0LzHks1lWVvQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/afp.com/Part-DV-DV1967260-1-1-1.jpg"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/.UNc.0PesF0LzHks1lWVvQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/afp.com/Part-DV-DV1967260-1-1-1.jpg"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2478,10 +2478,10 @@
                 https://www.yahoo.com/news/ed-sheeran-engaged-childhood-friend-212321276.html
             </link>
             <pubDate>Sat, 20 Jan 2018 16:23:21 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">ed-sheeran-engaged-childhood-friend-212321276.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/p3sK6o8NzB8j5rGMS3Jeww--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/c03182a7043a99a87ec509a01427c6d8"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/p3sK6o8NzB8j5rGMS3Jeww--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/c03182a7043a99a87ec509a01427c6d8"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2522,10 +2522,10 @@
                 https://www.yahoo.com/news/way-serena-williams-looks-her-143937813.html
             </link>
             <pubDate>Fri, 19 Jan 2018 09:39:37 -0500</pubDate>
-            <source url="http://www.huffingtonpost.com/">HuffPost</source>
+            <source feedUrl="http://www.huffingtonpost.com/">HuffPost</source>
             <guid isPermaLink="false">way-serena-williams-looks-her-143937813.html</guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/SX80z5ZTucwfVOrb1moUPg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/65a872003aba76dfaf0402193bee4ac2"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/SX80z5ZTucwfVOrb1moUPg--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_huffington_post_584/65a872003aba76dfaf0402193bee4ac2"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2573,10 +2573,10 @@
                 https://www.yahoo.com/news/mexico-buying-america-apos-most-023300354.html
             </link>
             <pubDate>Fri, 19 Jan 2018 21:33:00 -0500</pubDate>
-            <source url="http://nationalinterest.org/">The National Interest</source>
+            <source feedUrl="http://nationalinterest.org/">The National Interest</source>
             <guid isPermaLink="false">mexico-buying-america-apos-most-023300354.html</guid>
             <media:content height="86"
-                url="http://l.yimg.com/uu/api/res/1.2/_jcT9mRag.pDw.cUp2hCQA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_national_interest_705/261e01b0ddd736cd7dcf3f2e5c45fd60"
+                feedUrl="http://l.yimg.com/uu/api/res/1.2/_jcT9mRag.pDw.cUp2hCQA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/the_national_interest_705/261e01b0ddd736cd7dcf3f2e5c45fd60"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2624,10 +2624,10 @@
                 https://www.yahoo.com/news/reno-apos-d-900-square-224241381.html
             </link>
             <pubDate>Fri, 19 Jan 2018 17:42:41 -0500</pubDate>
-            <source url="http://www.architecturaldigest.com/">Architectural Digest</source>
+            <source feedUrl="http://www.architecturaldigest.com/">Architectural Digest</source>
             <guid isPermaLink="false">reno-apos-d-900-square-224241381.html</guid>
             <media:content height="86"
-                url="http://l2.yimg.com/uu/api/res/1.2/CEx_tmfTUypvcDwQobBSwA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/architectural_digest_422/eee3176b33f5a46d9154d8c760470d6c"
+                feedUrl="http://l2.yimg.com/uu/api/res/1.2/CEx_tmfTUypvcDwQobBSwA--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en-US/homerun/architectural_digest_422/eee3176b33f5a46d9154d8c760470d6c"
                 width="130" />
             <media:text type="html">
                 <p>
@@ -2664,9 +2664,9 @@
                 https://www.yahoo.com/news/10-asian-beef-recipes-youll-214505793.html
             </link>
             <pubDate>Fri, 19 Jan 2018 19:26:30 -0500</pubDate>
-            <source url="http://www.delish.com/">Delish</source>
+            <source feedUrl="http://www.delish.com/">Delish</source>
             <guid isPermaLink="false">10-asian-beef-recipes-youll-214505793.html</guid>
-            <media:content height="86" url="" width="130" />
+            <media:content height="86" feedUrl="" width="130" />
             <media:text type="html">
                 <p>
                 <a href="https://www.yahoo.com/news/10-asian-beef-recipes-youll-214505793.html">
@@ -2702,12 +2702,12 @@
                 https://www.yahoo.com/news/pence-long-pushed-trump-policies-israel-061751528--politics.html
             </link>
             <pubDate>Sat, 20 Jan 2018 03:07:02 -0500</pubDate>
-            <source url="http://www.ap.org/">Associated Press</source>
+            <source feedUrl="http://www.ap.org/">Associated Press</source>
             <guid isPermaLink="false">
                 pence-long-pushed-trump-policies-israel-061751528--politics.html
             </guid>
             <media:content height="86"
-                url="http://l1.yimg.com/uu/api/res/1.2/7XjYqXjmFPx595jf_j8yXQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/6be5099aa9ff4c2295c831382c4e5066.jpg"
+                feedUrl="http://l1.yimg.com/uu/api/res/1.2/7XjYqXjmFPx595jf_j8yXQ--/YXBwaWQ9eXRhY2h5b247aD04Njt3PTEzMDs-/http://media.zenfs.com/en_us/News/ap_webfeeds/6be5099aa9ff4c2295c831382c4e5066.jpg"
                 width="130" />
             <media:text type="html">
                 <p>

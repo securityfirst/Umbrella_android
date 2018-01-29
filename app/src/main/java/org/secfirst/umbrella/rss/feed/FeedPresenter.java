@@ -1,9 +1,12 @@
 package org.secfirst.umbrella.rss.feed;
 
-import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.rss.RSSFeedService;
+import org.secfirst.umbrella.util.Global;
+
+import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -21,21 +24,18 @@ public class FeedPresenter implements FeedContract.Presenter {
 
     @Override
     public void start() {
+        List<CustomFeed> customFeeds = Global.INSTANCE.getRSS();
+        if (!customFeeds.isEmpty())
+            mViewRss.showFeeds(customFeeds);
+    }
+
+    @Override
+    public void removeFeed(CustomFeed customFeed) {
 
     }
 
     @Override
-    public void addFeed(Feed feed) {
-
-    }
-
-    @Override
-    public void removeFeed(Feed feed) {
-
-    }
-
-    @Override
-    public void loadFeed(String url) {
+    public void loadFeed(final String url) {
         RSSFeedService rssFeedService = new RSSFeedService();
         rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
             @Override
@@ -44,9 +44,9 @@ public class FeedPresenter implements FeedContract.Presenter {
             }
 
             @Override
-            public void onTaskCompleted(Feed feed) {
-                mViewRss.finishLoadFeed(cleanMalformedArticles(feed));
-
+            public void onTaskCompleted(CustomFeed customFeed) {
+                mViewRss.finishLoadFeed(cleanMalformedArticles(customFeed));
+                saveFeed(customFeed);
             }
 
             @Override
@@ -57,15 +57,25 @@ public class FeedPresenter implements FeedContract.Presenter {
         rssFeedService.execute(url);
     }
 
-    private Feed cleanMalformedArticles(Feed feed) {
-        for (Item item : feed.getItems()) {
+    @Override
+    public void saveFeed(CustomFeed customFeed) {
+        try {
+            Global.INSTANCE.getDaoRSS().
+                    createIfNotExists(customFeed);
+        } catch (SQLException e) {
+            mViewRss.errorSaveFeed();
+        }
+    }
+
+    private CustomFeed cleanMalformedArticles(CustomFeed customFeed) {
+        for (Item item : customFeed.getFeed().getItems()) {
             if (item.getTitle() == null || item.getDescription() == null) {
-                feed.getItems().remove(item);
+                customFeed.getFeed().getItems().remove(item);
             } else if (item.getTitle().equalsIgnoreCase("")
                     || item.getDescription().equalsIgnoreCase("")) {
-                feed.getItems().remove(item);
+                customFeed.getFeed().getItems().remove(item);
             }
         }
-        return feed;
+        return customFeed;
     }
 }

@@ -39,7 +39,7 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-        mViewPager = (ViewPager) v.findViewById(R.id.pager);
+        mViewPager = v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(-1 * getArguments().getInt("dashboard", 0));
 

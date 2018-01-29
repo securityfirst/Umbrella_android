@@ -6,7 +6,7 @@
         <link>http://www.bbc.co.uk/news/</link>
         <image>
             http://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif
-        </url>
+        </feedUrl>
         <title>BBC News - Business</title>
         <link>http://www.bbc.co.uk/news/</link>
     </image>
@@ -23,7 +23,7 @@
         <link>http://www.bbc.co.uk/news/business-42748243</link>
         <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42748243</guid>
         <pubDate>Sat, 20 Jan 2018 00:22:52 GMT</pubDate>
-        <media:thumbnail height="549" url="http://c.files.bbci.co.uk/15E25/production/_99673698_mediaitem99673697.jpg"
+        <media:thumbnail height="549" feedUrl="http://c.files.bbci.co.uk/15E25/production/_99673698_mediaitem99673697.jpg"
             width="976" />
     </item>
 </channel></rss>

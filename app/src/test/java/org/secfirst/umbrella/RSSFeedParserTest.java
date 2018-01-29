@@ -1,7 +1,5 @@
 package org.secfirst.umbrella;
 
-import com.einmalfel.earl.Feed;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +9,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
 import org.secfirst.umbrella.rss.RSSFeedService;
+import org.secfirst.umbrella.rss.feed.CustomFeed;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;
@@ -76,9 +75,9 @@ public class RSSFeedParserTest {
             }
 
             @Override
-            public void onTaskCompleted(Feed feed) {
-                assertNotNull(feed.getItems().get(0).getTitle());
-                assertNotNull(feed.getItems().get(0).getDescription());
+            public void onTaskCompleted(CustomFeed customFeed) {
+                assertNotNull(customFeed.getFeed().getItems().get(0).getTitle());
+                assertNotNull(customFeed.getFeed().getItems().get(0).getDescription());
             }
 
             @Override
@@ -98,9 +97,9 @@ public class RSSFeedParserTest {
             }
 
             @Override
-            public void onTaskCompleted(Feed feed) {
-                assertNotNull(feed.getTitle());
-                assertNotNull(feed.getDescription());
+            public void onTaskCompleted(CustomFeed customFeed) {
+                assertNotNull(customFeed.getFeed().getTitle());
+                assertNotNull(customFeed.getFeed().getDescription());
             }
 
             @Override
@@ -121,9 +120,9 @@ public class RSSFeedParserTest {
             }
 
             @Override
-            public void onTaskCompleted(Feed feed) {
-                assertNotNull(feed.getTitle());
-                assertNotNull(feed.getDescription());
+            public void onTaskCompleted(CustomFeed customFeed) {
+                assertNotNull(customFeed.getFeed().getTitle());
+                assertNotNull(customFeed.getFeed().getDescription());
             }
 
             @Override

@@ -65,7 +65,7 @@
     <string name="feed_set_now">现在设置</string>
     <string name="feed_set_your_feed">设置您的Feed</string>
     <string name="feed_sources">安全Feed源</string>
-    <string name="feeds">面板</string>
+    <string name="customFeeds">面板</string>
     <string name="filled">已填写</string>
     <string name="filled_out_forms">填写表格</string>
     <string name="forms">形式</string>

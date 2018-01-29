@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.rss.feed;
 
-import com.einmalfel.earl.Feed;
-
 import org.secfirst.umbrella.BasePresenter;
 import org.secfirst.umbrella.BaseView;
+
+import java.util.List;
 
 /**
  * Created by dougl on 18/01/2018.
@@ -15,17 +15,21 @@ public interface FeedContract {
 
         void setLoadingIndicator();
 
-        void finishLoadFeed(Feed feed);
+        void finishLoadFeed(CustomFeed customFeed);
 
         void errorLoadFeed();
+
+        void errorSaveFeed();
+
+        void showFeeds(List<CustomFeed> feedLinks);
     }
 
     interface Presenter extends BasePresenter {
 
-        void addFeed(Feed feed);
-
-        void removeFeed(Feed feed);
+        void removeFeed(CustomFeed customFeed);
 
         void loadFeed(String url);
+
+        void saveFeed(CustomFeed customFeed);
     }
 }

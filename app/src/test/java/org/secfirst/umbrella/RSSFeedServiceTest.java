@@ -2,8 +2,6 @@ package org.secfirst.umbrella;
 
 import android.test.InstrumentationTestCase;
 
-import com.einmalfel.earl.Feed;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
 import org.secfirst.umbrella.rss.RSSFeedService;
+import org.secfirst.umbrella.rss.feed.CustomFeed;
 
 /**
  * Created by dougl on 16/01/2018.
@@ -40,7 +39,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(Feed channel) {
+            public void onTaskCompleted(CustomFeed channel) {
                 Assert.assertTrue(true);
             }
 
@@ -61,7 +60,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(Feed channel) {
+            public void onTaskCompleted(CustomFeed channel) {
                 Assert.assertTrue(false);
             }
 
@@ -83,7 +82,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(Feed channel) {
+            public void onTaskCompleted(CustomFeed channel) {
 
             }
 
@@ -104,7 +103,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(Feed channel) {
+            public void onTaskCompleted(CustomFeed channel) {
                 Assert.assertTrue(false);
             }
 
