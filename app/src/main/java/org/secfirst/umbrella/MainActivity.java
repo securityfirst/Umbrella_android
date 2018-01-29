@@ -68,13 +68,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+        drawer = findViewById(R.id.drawer_layout);
+        drawerList = findViewById(R.id.left_drawer);
         header = View.inflate(this, R.layout.drawer_header, null);
-        loginHeader = (TextView) header.findViewById(R.id.login_header);
+        loginHeader = header.findViewById(R.id.login_header);
         drawerList.addHeaderView(header);
     }
 
@@ -351,7 +349,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (Global.INSTANCE.needsRefreshActivity()) {
             invalidateOptionsMenu();
             Intent intent = getIntent();
-            if (intent!=null) {
+            if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
                 startActivity(intent);
@@ -595,5 +593,4 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onDrawerStateChanged(int newState) {
         actionBarDrawerToggle.onDrawerStateChanged(newState);
     }
-
 }
