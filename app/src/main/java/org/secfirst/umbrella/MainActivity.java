@@ -524,7 +524,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
                             if (state == MaterialTapTargetPrompt.STATE_REVEALED)
                                 Global.INSTANCE.setCoachMarkShown("change_level", true);
-                            ;
+
                             if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
                                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
                                 if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1) {
@@ -577,7 +577,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .setSecondaryText(getString(R.string.swipe_to_view_menu))
                     .setTextGravity(Gravity.CENTER)
                     .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
-                    .setSecondaryText(getString(R.string.swipe_left_to_read))
+                    .setSecondaryText(getString(R.string.coach_marks_menu_message))
                     .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {

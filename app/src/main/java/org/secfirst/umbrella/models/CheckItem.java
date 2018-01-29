@@ -54,7 +54,8 @@ public class CheckItem implements Serializable {
     @DatabaseField
     private boolean noCheck;
 
-    public CheckItem(){}
+    public CheckItem() {
+    }
 
     public CheckItem(String title, String text, boolean value, long parent, int category, int difficulty) {
         this.title = title;
@@ -152,6 +153,7 @@ public class CheckItem implements Serializable {
     }
 
     public int getDifficulty() {
+        difficultyString = difficultyString == null ? UmbrellaUtil.a(difficulty) : difficultyString;
         difficulty = UmbrellaUtil.getDifficultyFromString(difficultyString);
         return difficulty;
     }
@@ -161,11 +163,11 @@ public class CheckItem implements Serializable {
     }
 
     public boolean isCustom() {
-        return custom==1;
+        return custom == 1;
     }
 
     public boolean isDisabled() {
-        return disabled==1;
+        return disabled == 1;
     }
 
     public void disable() {

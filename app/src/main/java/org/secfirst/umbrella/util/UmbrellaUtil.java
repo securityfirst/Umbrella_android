@@ -55,16 +55,16 @@ public class UmbrellaUtil {
     }
 
     public static void hideSoftKeyboard(Activity activity) {
-        if (activity!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (activity != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             View view = activity.getCurrentFocus();
-            if (view!=null) inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (view != null) inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
     public static void setupUItoHideKeyboard(View view, final Activity activity) {
-        if (activity!=null) {
-            if(!(view instanceof EditText) && !(view instanceof ImageButton)) {
+        if (activity != null) {
+            if (!(view instanceof EditText) && !(view instanceof ImageButton)) {
                 view.setOnTouchListener(new View.OnTouchListener() {
 
                     public boolean onTouch(View v, MotionEvent event) {
@@ -85,7 +85,7 @@ public class UmbrellaUtil {
 
     public static int dpToPix(int sizeInDp, Context context) {
         float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (sizeInDp*scale + 0.5f);
+        return (int) (sizeInDp * scale + 0.5f);
     }
 
     public static boolean isNetworkAvailable(Context context) {
@@ -118,7 +118,7 @@ public class UmbrellaUtil {
         try {
             List<Category> categories = Global.INSTANCE.getDaoCategory().queryForAll();
             for (Category category : categories) {
-                if (category.getParent()==0) {
+                if (category.getParent() == 0) {
                     parentCategories.add(category);
                 }
             }
@@ -139,9 +139,9 @@ public class UmbrellaUtil {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
         }
-        if (categories!=null) {
+        if (categories != null) {
             for (Category category : categories) {
-                if (category.getParent()==0) {
+                if (category.getParent() == 0) {
                     parentCategories.add(category);
                 }
             }
@@ -165,20 +165,19 @@ public class UmbrellaUtil {
     }
 
     public static String checkPasswordStrength(String password, Context context) {
-        if (password.length()<8) {
+        if (password.length() < 8) {
             return context.getString(R.string.password_too_short);
-        } else if(!Pattern.compile("\\d").matcher(password).find()) {
+        } else if (!Pattern.compile("\\d").matcher(password).find()) {
             return context.getString(R.string.password_one_digit);
-        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+        } else if (!Pattern.compile("[A-Z]").matcher(password).find()) {
             return context.getString(R.string.password_one_capital);
-        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+        } else if (!Pattern.compile("[A-Z]").matcher(password).find()) {
             return context.getString(R.string.password_one_small);
         }
         return "";
     }
 
-    public static String ellipsis(final String text, int length)
-    {
+    public static String ellipsis(final String text, int length) {
         if (text.length() < length) {
             return text;
         }
@@ -196,11 +195,11 @@ public class UmbrellaUtil {
 
     public static boolean getFeeds(final Context context) {
         Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
-        if (selISO2!=null) {
+        if (selISO2 != null) {
             List<Registry> selections;
             try {
                 selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size()>0) {
+                if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
                     for (Registry item : selections) {
@@ -211,7 +210,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+Global.INSTANCE.getFeedItemsRefreshed();
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -224,7 +223,7 @@ public class UmbrellaUtil {
                             if (receivedItems != null && !receivedItems.isEmpty()) {
                                 List<FeedItem> oldList = Global.INSTANCE.getFeedItems();
                                 List<FeedItem> notificationItems = new ArrayList<FeedItem>();
-                                if(Global.INSTANCE.getNotificationsEnabled()) {
+                                if (Global.INSTANCE.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
                                             try {
@@ -255,16 +254,15 @@ public class UmbrellaUtil {
 
     public static Map<String, String> getLanguageMap() {
         Map<String, String> map = new HashMap<String, String>();
-        map.put("en","English");
-        map.put("es","Español");
-        map.put("zh","Chinese");
+        map.put("en", "English");
+        map.put("es", "Español");
+        map.put("zh", "Chinese");
         return map;
     }
 
     public static CharSequence getLanguageEntryByValue(String languageValue) {
         CharSequence[] elements = getLanguageEntryValues();
-        for( int i = 0; i < elements.length - 1; i++)
-        {
+        for (int i = 0; i < elements.length - 1; i++) {
             if (elements[i].equals(languageValue))
                 return UmbrellaUtil.getLanguageEntries()[i];
         }
@@ -288,14 +286,14 @@ public class UmbrellaUtil {
     }
 
     public static HashMap<String, Integer> getRefreshValues(Context context) {
-        LinkedHashMap<String, Integer> refreshInterval =new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> refreshInterval = new LinkedHashMap<>();
         refreshInterval.put(context.getString(R.string.half_hour), (int) TimeUnit.MINUTES.toMillis(30));
-        refreshInterval.put("1 "+context.getString(R.string.hour),  (int) TimeUnit.HOURS.toMillis(1));
-        refreshInterval.put("2 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(2));
-        refreshInterval.put("4 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(4));
-        refreshInterval.put("6 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(6));
-        refreshInterval.put("12 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(12));
-        refreshInterval.put("24 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(24));
+        refreshInterval.put("1 " + context.getString(R.string.hour), (int) TimeUnit.HOURS.toMillis(1));
+        refreshInterval.put("2 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(2));
+        refreshInterval.put("4 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(4));
+        refreshInterval.put("6 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(6));
+        refreshInterval.put("12 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(12));
+        refreshInterval.put("24 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(24));
         refreshInterval.put(context.getString(R.string.manually), 0);
         return refreshInterval;
     }
@@ -303,12 +301,12 @@ public class UmbrellaUtil {
     public static CharSequence[] getRefreshEntries(Context context) {
         List<String> listItems = new ArrayList<>();
         listItems.add(context.getString(R.string.half_hour));
-        listItems.add("1 "+context.getString(R.string.hour));
-        listItems.add("2 "+context.getString(R.string.hours));
-        listItems.add("4 "+context.getString(R.string.hours));
-        listItems.add("6 "+context.getString(R.string.hours));
-        listItems.add("12 "+context.getString(R.string.hours));
-        listItems.add("24 "+context.getString(R.string.hours));
+        listItems.add("1 " + context.getString(R.string.hour));
+        listItems.add("2 " + context.getString(R.string.hours));
+        listItems.add("4 " + context.getString(R.string.hours));
+        listItems.add("6 " + context.getString(R.string.hours));
+        listItems.add("12 " + context.getString(R.string.hours));
+        listItems.add("24 " + context.getString(R.string.hours));
         listItems.add(context.getString(R.string.manually));
         return listItems.toArray(new CharSequence[listItems.size()]);
     }
@@ -348,7 +346,7 @@ public class UmbrellaUtil {
         List<String> disableNames = new ArrayList<>();
         disableNames.add("org.secfirst.umbrella.MainActivityNormal");
         disableNames.add("org.secfirst.umbrella.MainActivityCalculator");
-        String activeName = disableNames.remove(masked ? 1 :0);
+        String activeName = disableNames.remove(masked ? 1 : 0);
 
         activity.getPackageManager().setComponentEnabledSetting(
                 new ComponentName(packageName, activeName),
@@ -383,11 +381,21 @@ public class UmbrellaUtil {
 
     public static int getDifficultyFromString(String difficultyString) {
         if (difficultyString.equals("advanced")) {
-            return DifficultyFragment.INTERMEDIATE +1;
+            return DifficultyFragment.INTERMEDIATE + 1;
         } else if (difficultyString.equals("expert")) {
-            return DifficultyFragment.EXPERT +1;
+            return DifficultyFragment.EXPERT + 1;
         }
-        return DifficultyFragment.BEGINNER +1;
+        return DifficultyFragment.BEGINNER + 1;
+    }
+
+    public static String a(int difficulty) {
+        if (difficulty == DifficultyFragment.BEGINNER) {
+            return "BEGINNER";
+        } else if (difficulty == DifficultyFragment.INTERMEDIATE) {
+            return "INTERMEDIATE";
+        } else {
+            return "EXPERT";
+        }
     }
 
 }
