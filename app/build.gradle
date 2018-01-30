@@ -1,8 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'idea'
 apply plugin: 'witness'
+apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        release {
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion '26.0.2'
     dataBinding.enabled = true
@@ -13,7 +18,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 31
-        versionName "0.4.3"
+        versionName "0.4.4"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86", "armeabi", "mips"
@@ -23,15 +28,18 @@ android {
         release {
             debuggable false
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            ext.enableCrashlytics = false
         }
         debug {
             debuggable true
+            signingConfig signingConfigs.debug
             minifyEnabled false
             ext.enableCrashlytics = false
         }
         beta {
-            debuggable false
+            debuggable true
             signingConfig signingConfigs.debug
             ext.enableCrashlytics = true
         }
@@ -43,6 +51,25 @@ android {
             assets.srcDirs = ['assets']
         }
     }
+}
+
+def Properties props = new Properties()
+def propFile = new File('keystore.properties')
+if (propFile.canRead()) {
+    props.load(new FileInputStream(propFile))
+    if (props != null && props.containsKey('storeFile') && props.containsKey('storePassword') &&
+            props.containsKey('keyAlias') && props.containsKey('keyPassword')) {
+        android.signingConfigs.release.storeFile = file(props['storeFile'])
+        android.signingConfigs.release.storePassword = props['storePassword']
+        android.signingConfigs.release.keyAlias = props['keyAlias']
+        android.signingConfigs.release.keyPassword = props['keyPassword']
+    } else {
+        println 'signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println 'signing.properties not found'
+    android.buildTypes.release.signingConfig = null
 }
 
 dependencies {
@@ -75,6 +102,9 @@ dependencies {
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+        transitive = true
+    }
 }
 
 //generate using: `gradle -q calculateChecksums`

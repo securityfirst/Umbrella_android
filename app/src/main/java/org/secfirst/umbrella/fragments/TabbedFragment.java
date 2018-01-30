@@ -41,6 +41,7 @@ import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.Favourite;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -101,46 +102,41 @@ public class TabbedFragment extends Fragment {
                                 .setSecondaryText(getActivity().getString(R.string.mark_off_tasks))
                                 .setTextGravity(Gravity.CENTER)
                                 .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
-                                .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                .setSecondaryText(getString(R.string.coach_marks_message))
                                 .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                                 .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                {
+                                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                                     @Override
-                                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                                    {
-                                        if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("mark_off_tasks", true);;
+                                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                        if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                            Global.INSTANCE.setCoachMarkShown("mark_off_tasks", true);
                                         if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("add_new_tasks")) {
                                             new MaterialTapTargetPrompt.Builder(getActivity())
                                                     .setTarget(R.id.fab)
                                                     .setSecondaryText(getActivity().getString(R.string.click_to_add_new_tasks))
                                                     .setTextGravity(Gravity.CENTER)
                                                     .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
-                                                    .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                                    .setSecondaryText(getString(R.string.coach_marks_add_item_message))
                                                     .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                                                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                                                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                                    {
+                                                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                                                         @Override
-                                                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                                                        {
-                                                            if (state == MaterialTapTargetPrompt.STATE_REVEALED) Global.INSTANCE.setCoachMarkShown("add_new_tasks", true);
+                                                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                            if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                                                Global.INSTANCE.setCoachMarkShown("add_new_tasks", true);
                                                             if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("star_check_list") && isAdded()) {
                                                                 new MaterialTapTargetPrompt.Builder(getActivity())
                                                                         .setTarget(getActivity().findViewById(R.id.favourite))
                                                                         .setSecondaryText(getActivity().getString(R.string.star_this_checklist))
                                                                         .setTextGravity(Gravity.CENTER)
                                                                         .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
-                                                                        .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                                                        .setSecondaryText(getString(R.string.coach_marks_star_message))
                                                                         .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                                                                         .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
-                                                                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener()
-                                                                        {
+                                                                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
                                                                             @Override
-                                                                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state)
-                                                                            {
-                                                                                if (state == MaterialTapTargetPrompt.STATE_REVEALED)
-                                                                                {
+                                                                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                                                if (state == MaterialTapTargetPrompt.STATE_REVEALED) {
                                                                                     Global.INSTANCE.setCoachMarkShown("star_check_list", true);
                                                                                 }
                                                                             }
@@ -182,7 +178,7 @@ public class TabbedFragment extends Fragment {
         SectionsPagerAdapter(FragmentManager fm, int difficulty) {
             super(fm);
             this.difficulty = difficulty;
-            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            int drawerItem = (int) ((MainActivity) getActivity()).drawerItem;
             try {
                 QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
                 Where<Segment, String> where = queryBuilder.where();
@@ -197,13 +193,13 @@ public class TabbedFragment extends Fragment {
         public Fragment getItem(int position) {
             Fragment fragment;
             Bundle args = new Bundle();
-            if (position==0) {
+            if (position == 0) {
                 fragment = new TabbedContentFragment();
-            } else if (position==segments.size()+1) {
+            } else if (position == segments.size() + 1) {
                 fragment = new CheckItemFragment();
             } else {
                 fragment = new TabbedSegmentFragment();
-                args.putInt(TabbedFragment.ARG_SEGMENT_INDEX, position-1);
+                args.putInt(TabbedFragment.ARG_SEGMENT_INDEX, position - 1);
             }
             args.putInt(TabbedFragment.ARG_DIFFICULTY_NUMBER, difficulty + 1);
             fragment.setArguments(args);
@@ -212,19 +208,19 @@ public class TabbedFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return segments.size()+2;
+            return segments.size() + 2;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
-            if (position==0) {
+            if (position == 0) {
                 return getContext().getString(R.string.section1_tab_title1).toUpperCase(l);
-            } else if (position==segments.size()+1) {
+            } else if (position == segments.size() + 1) {
                 return getContext().getString(R.string.section1_tab_title3).toUpperCase(l);
             } else {
-                if (segments.get(position-1).getTitle()!=null) {
-                    return segments.get(position-1).getTitle().toUpperCase(l);
+                if (segments.get(position - 1).getTitle() != null) {
+                    return segments.get(position - 1).getTitle().toUpperCase(l);
                 } else {
                     return (getContext().getString(R.string.slide) + position).toUpperCase(l);
                 }
@@ -243,7 +239,7 @@ public class TabbedFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_tabbed_content,
                     container, false);
 
-            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            int drawerItem = (int) ((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             try {
                 QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
@@ -266,10 +262,11 @@ public class TabbedFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Fragment frag = getActivity().getSupportFragmentManager().findFragmentByTag("tabbed");
-                        if (frag!=null) {
-                            ((TabbedFragment)frag).mViewPager.setCurrentItem(segments.size()+2);
+                        if (frag != null) {
+                            ((TabbedFragment) frag).mViewPager.setCurrentItem(segments.size() + 2);
                         }
-                        if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(true);
+                        if (getActivity() != null)
+                            ((MainActivity) getActivity()).favouriteItem.setVisible(true);
                     }
                 });
             } catch (SQLException e) {
@@ -303,9 +300,9 @@ public class TabbedFragment extends Fragment {
                                  Bundle savedInstanceState) {
             final View rootView = inflater.inflate(R.layout.fragment_segment,
                     container, false);
-            WebViewClient interceptUrlLicences = new WebViewClient(){
+            WebViewClient interceptUrlLicences = new WebViewClient() {
                 @Override
-                public boolean shouldOverrideUrlLoading(WebView  view, String  url) {
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
                     Intent i = new Intent(getActivity(), AboutActivity.class);
                     if (url.equals("umbrella://licences/")) {
                         i.putExtra("topic", "licences");
@@ -321,13 +318,13 @@ public class TabbedFragment extends Fragment {
                 }
 
                 @Override
-                public void onLoadResource(WebView  view, String  url) {
+                public void onLoadResource(WebView view, String url) {
                 }
             };
             content = (WebView) rootView.findViewById(R.id.segment_content);
             content.setWebViewClient(interceptUrlLicences);
 
-            int drawerItem = (int)((MainActivity) getActivity()).drawerItem;
+            int drawerItem = (int) ((MainActivity) getActivity()).drawerItem;
             int difficulty = getArguments() != null ? getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1) : 1;
             int segmentInt = getArguments() != null ? getArguments().getInt(ARG_SEGMENT_INDEX, 0) : 0;
             List<Segment> segments = null;
@@ -339,7 +336,7 @@ public class TabbedFragment extends Fragment {
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            if (segments!=null && !segments.isEmpty() && segments.size()>=segmentInt+1) {
+            if (segments != null && !segments.isEmpty() && segments.size() >= segmentInt + 1) {
                 final String html = segments.get(segmentInt).getBody();
                 if (html != null) {
                     content.postDelayed(new Runnable() {
@@ -362,7 +359,8 @@ public class TabbedFragment extends Fragment {
         private TextView checkBarText;
         private CheckListAdapter cLAdapter;
 
-        public CheckItemFragment() {}
+        public CheckItemFragment() {
+        }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -387,12 +385,12 @@ public class TabbedFragment extends Fragment {
                     container, false);
 
             final long drawerItem = ((MainActivity) getActivity()).drawerItem;
-            ListView contentBox = (ListView) rootView.findViewById(R.id.content_box);
-            checkBar = (ProgressBar) rootView.findViewById(R.id.progress_bar_checked);
-            checkBarText = (TextView) rootView.findViewById(R.id.check_bar_text);
+            ListView contentBox = rootView.findViewById(R.id.content_box);
+            checkBar = rootView.findViewById(R.id.progress_bar_checked);
+            checkBarText = rootView.findViewById(R.id.check_bar_text);
             setProgressBarTo(0);
             final int diffArg = getArguments().getInt(ARG_DIFFICULTY_NUMBER, 1);
-            ImageButton addItem = (ImageButton) rootView.findViewById(R.id.fab);
+            ImageButton addItem = rootView.findViewById(R.id.fab);
             addItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -407,10 +405,11 @@ public class TabbedFragment extends Fragment {
                         alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 String pw = pwInput.getText().toString();
-                                if (pw.length()>4) {
+                                if (pw.length() > 4) {
                                     CheckItem nItem = new CheckItem(pw, (int) drawerItem);
                                     nItem.setCustom(1);
                                     nItem.setDifficulty(diffArg);
+                                    nItem.setDifficultyString(UmbrellaUtil.a(diffArg));
                                     try {
                                         Global.INSTANCE.getDaoCheckItem().create(nItem);
                                     } catch (SQLException e) {
@@ -445,22 +444,23 @@ public class TabbedFragment extends Fragment {
         public void setMenuVisibility(boolean menuVisible) {
             super.setMenuVisibility(menuVisible);
             if (menuVisible) {
-                if (getActivity()!=null) setFavouriteIcon(getActivity());
+                if (getActivity() != null) setFavouriteIcon(getActivity());
             } else {
-               if (getActivity()!=null) ((MainActivity) getActivity()).favouriteItem.setVisible(false);
+                if (getActivity() != null)
+                    ((MainActivity) getActivity()).favouriteItem.setVisible(false);
             }
         }
 
         @Override
         public void onPrepareOptionsMenu(Menu menu) {
             super.onPrepareOptionsMenu(menu);
-            if (getActivity()!=null) setFavouriteIcon(getActivity());
+            if (getActivity() != null) setFavouriteIcon(getActivity());
         }
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
-            if (getActivity()!=null) {
+            if (getActivity() != null) {
                 final long drawerItem = ((MainActivity) getActivity()).drawerItem;
                 if (id == R.id.favourite) {
                     List<Difficulty> hasDifficulty = null;
@@ -469,13 +469,13 @@ public class TabbedFragment extends Fragment {
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
-                    if (hasDifficulty!=null && !hasDifficulty.isEmpty()) {
+                    if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                         try {
                             QueryBuilder<Favourite, String> queryBuilder = Global.INSTANCE.getDaoFavourite().queryBuilder();
                             Where<Favourite, String> where = queryBuilder.where();
                             where.eq(Favourite.FIELD_CATEGORY, String.valueOf(drawerItem)).and().eq(Favourite.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected()));
                             Favourite favourite = queryBuilder.queryForFirst();
-                            if (favourite!=null) {
+                            if (favourite != null) {
                                 try {
                                     Global.INSTANCE.getDaoFavourite().delete(favourite);
                                 } catch (SQLException e) {
@@ -524,7 +524,7 @@ public class TabbedFragment extends Fragment {
                 Timber.e(e);
             }
 
-            if (mCheckList!=null) {
+            if (mCheckList != null) {
                 if (cLAdapter != null) {
                     cLAdapter.updateData(mCheckList);
                 }
@@ -543,7 +543,7 @@ public class TabbedFragment extends Fragment {
         }
 
         public void setProgressBarTo(int percent) {
-            if (percent>=0 && percent<=100) {
+            if (percent >= 0 && percent <= 100) {
                 checkBar.setProgress(percent);
                 checkBarText.setText(percent + "% " + getActivity().getString(R.string.filled));
             }

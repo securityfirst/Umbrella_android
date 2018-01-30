@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -77,6 +79,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 public class Global extends Application {
@@ -114,6 +117,7 @@ public class Global extends Application {
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
         INSTANCE = this;
+        setupCrashlytics();
     }
 
     @Override
@@ -707,8 +711,8 @@ public class Global extends Application {
                     }
                 }
 
-                if (receivedTree.getForms()!=null) {
-                    if (getOrmHelper()!=null) {
+                if (receivedTree.getForms() != null) {
+                    if (getOrmHelper() != null) {
                         try {
                             TableUtils.dropTable(getOrmHelper().getConnectionSource(), Form.class, true);
                             TableUtils.dropTable(getOrmHelper().getConnectionSource(), FormScreen.class, true);
@@ -719,7 +723,7 @@ public class Global extends Application {
                             TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormScreen.class);
                             TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormItem.class);
                             TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), FormOption.class);
-                        } catch (SQLiteException | SQLException  e) {
+                        } catch (SQLiteException | SQLException e) {
                             Timber.e(e);
                         }
                     }
@@ -767,9 +771,10 @@ public class Global extends Application {
                 Gson gson = new GsonBuilder().
                         registerTypeAdapter(Form.class, new FormDeserializer()).
                         create();
-                Type treeType = new TypeToken<Tree>(){}.getType();
+                Type treeType = new TypeToken<Tree>() {
+                }.getType();
                 final Tree receivedTree = gson.fromJson(response.toString(), treeType);
-                if (receivedTree!=null) {
+                if (receivedTree != null) {
                     listener.onProgressChange(88);
                     Registry language = Global.INSTANCE.getRegistry("language");
                     Configuration conf = getResources().getConfiguration();
@@ -1058,5 +1063,14 @@ public class Global extends Application {
     public ArrayList<Form> getForms(boolean alsoFirst) {
         ArrayList<Form> forms = new ArrayList<>();
         return forms;
+    }
+
+    private void setupCrashlytics() {
+        // Set up Crashlytics, disabled for debug builds
+        Crashlytics crashlyticsKit = new Crashlytics.Builder()
+                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                .build();
+        // Initialize Fabric with the debug-disabled crashlytics.
+        Fabric.with(this, crashlyticsKit);
     }
 }

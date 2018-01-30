@@ -54,7 +54,7 @@
     <string name="title_activity_about">Licences</string>
     <string name="default_db_password">umbrella</string>
     <string name="no_feed_settings">You haven’t set the location and the sources for the feed yet. You have to do that to get the latest security news for your country. You can change it anytime later in the settings.</string>
-    <string name="feed_location_label">Enter your location to get the security news from your area. Not every country will be covered by every feed. We don&apos;t store your location</string>
+    <string name="feed_location_label">We do not store your location for longer than necessary. Feed providers do not know you are receiving data from them.</string>
     <string name="no_feed_items_label">There is currently no results with your chosen settings. Please tap to revise and change them</string>
     <string name="disable_password">Don\'t ask for password again</string>
     <string name="terms_conditions">Terms and Conditions</string>
@@ -117,6 +117,10 @@
     <string name="click_here_to_change_level">Click here to change level</string>
     <string name="swipe_left_to_read">Swipe left to read through the lesson or click on a tab to go straight to that section\n\nYou can also skip straight to the checklist</string>
     <string name="swipe_to_view_menu">Click here or swipe from the side of your screen to view the menu at any time</string>
+    <string name="coach_marks_menu_message">Click here or swipe from the side of your screen to view the menu at any time.</string>
+    <string name="coach_marks_add_item_message">Click here to add new tasks.</string>
+    <string name="coach_marks_star_message">Star this checklist to make it one of your favourites. Go to “My Checklists” to see all of your progress.</string>
+    <string name="coach_marks_message">Mark off tasks as you complete them Hold down on a task to delete or disable it.</string>
     <string name="view_all_checlists">View all the checklists you’ve started and see your progress</string>
     <string name="search">Search</string>
     <string name="search_result">search result</string>
@@ -175,7 +179,7 @@
     <string name="feed_list_change">CHANGE</string>
     <string name="feed_list_via">Via\u0020</string>
     <string name="device_shake_enter_text">If you enable this, the app will be masked from casual viewers. When masked, you can find it under the name SimpleCalc.</string>
-<string name="error_address_not_found">This address is not valid.</string>
+    <string name="error_address_not_found">This address is not valid.</string>
     <string name="hands_shake_calc_name">SimpleCalc</string>
     <string name="hands_shake_enable_masking_mode">Enable masking mode</string>
     <string name="hands_shake_button_label">NEXT</string>

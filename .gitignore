@@ -15,4 +15,7 @@ app/app-release.apk
 *.apk
 app/release/output.json
 app/fabric.properties
+app/sonar-project.properties
 
+app/*.jks
+keystore.properties

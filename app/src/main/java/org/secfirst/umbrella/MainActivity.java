@@ -68,13 +68,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+        drawer = findViewById(R.id.drawer_layout);
+        drawerList = findViewById(R.id.left_drawer);
         header = View.inflate(this, R.layout.drawer_header, null);
-        loginHeader = (TextView) header.findViewById(R.id.login_header);
+        loginHeader = header.findViewById(R.id.login_header);
         drawerList.addHeaderView(header);
     }
 
@@ -351,7 +349,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (Global.INSTANCE.needsRefreshActivity()) {
             invalidateOptionsMenu();
             Intent intent = getIntent();
-            if (intent!=null) {
+            if (intent != null) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 finish();
                 startActivity(intent);
@@ -524,7 +522,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
                             if (state == MaterialTapTargetPrompt.STATE_REVEALED)
                                 Global.INSTANCE.setCoachMarkShown("change_level", true);
-                            ;
+
                             if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
                                 PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
                                 if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1) {
@@ -577,7 +575,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .setSecondaryText(getString(R.string.swipe_to_view_menu))
                     .setTextGravity(Gravity.CENTER)
                     .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
-                    .setSecondaryText(getString(R.string.swipe_left_to_read))
+                    .setSecondaryText(getString(R.string.coach_marks_menu_message))
                     .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
                     .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
                     .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
@@ -595,5 +593,4 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onDrawerStateChanged(int newState) {
         actionBarDrawerToggle.onDrawerStateChanged(newState);
     }
-
 }

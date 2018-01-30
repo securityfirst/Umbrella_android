@@ -20,7 +20,20 @@
             android:name="org.secfirst.umbrella.util.IOCipherContentProvider"
             android:authorities="IOCipherContentProvider"
             android:exported="true"
-            android:grantUriPermissions="true" />
+            android:grantUriPermissions="true">
+
+        </provider>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
         <service
             android:name=".RefreshService"
             android:exported="false" />
