@@ -95,6 +95,12 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mChannelAdapter.clear();
+    }
+
+    @Override
     public void setPresenter(@NonNull FeedContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter, "FeedPresenter cannot be null!");
     }
