@@ -31,7 +31,11 @@ public class FeedPresenter implements FeedContract.Presenter {
 
     @Override
     public void removeFeed(CustomFeed customFeed) {
-
+        try {
+            Global.INSTANCE.getDaoRSS().delete(customFeed);
+        } catch (SQLException e) {
+            mViewRss.errorDeleteFeed();
+        }
     }
 
     @Override

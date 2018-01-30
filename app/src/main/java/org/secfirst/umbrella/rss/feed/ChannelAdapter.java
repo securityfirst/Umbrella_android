@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +53,16 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
         }
     }
 
+    public void restoreItem(CustomFeed customFeed, int position) {
+        mCustomFeeds.add(position, customFeed);
+        // notify item added by position
+        notifyItemInserted(position);
+    }
+
+    public List<CustomFeed> getCustomFeeds() {
+        return mCustomFeeds;
+    }
+
     @Override
     public ChannelAdapter.RSSChannel onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -73,12 +85,17 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
     public class RSSChannel extends RecyclerView.ViewHolder {
         public TextView channelTitle;
         public TextView channelDescription;
+        public LinearLayout viewForeground;
+        public RelativeLayout viewBackground;
 
         RSSChannel(View view) {
             super(view);
 
             channelTitle = view.findViewById(R.id.rss_channel_title);
             channelDescription = view.findViewById(R.id.rss_channel_description);
+            viewForeground = view.findViewById(R.id.channel_item_view_foreground);
+            viewBackground = view.findViewById(R.id.channel_item_view_background);
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {

@@ -22,6 +22,8 @@ public interface FeedContract {
         void errorSaveFeed();
 
         void showFeeds(List<CustomFeed> feedLinks);
+
+        void errorDeleteFeed();
     }
 
     interface Presenter extends BasePresenter {

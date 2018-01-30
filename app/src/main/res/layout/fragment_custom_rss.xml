@@ -1,35 +1,41 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rss_container"
+    android:id="@+id/rss_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/white"
     tools:context="org.secfirst.umbrella.rss.feed.ChannelFragment">
 
-    <ProgressBar
-        android:id="@+id/rss_indeterminate_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    <FrameLayout
+        android:id="@+id/rss_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|top"
-        android:indeterminate="true"
-        android:theme="@style/LinearProgress"
-        android:visibility="invisible" />
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/rss_indeterminate_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:indeterminate="true"
+            android:theme="@style/LinearProgress"
+            android:visibility="invisible" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/channel_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:scrollbars="vertical" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/channel_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:scrollbars="vertical" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_feed_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add" />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_feed_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@android:drawable/ic_input_add" />
 
-</FrameLayout>
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

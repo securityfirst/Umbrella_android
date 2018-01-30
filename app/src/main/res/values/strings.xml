@@ -193,5 +193,9 @@
     <string name="rss_dialog_hit_text">Feed Sources</string>
     <string name="send_to">Share</string>
     <string name="error_channel_fragment">There is a problem to store your feed.</string>
+    <string name="error_feed_channel_fragment">There is a problem to remove your feed.</string>
     <string name="error_show_message_custom_feed">There is a problem to show your feed.</string>
+    <string name="rss_custom_remove_item">removed from list!</string>
+    <string name="undo">UNDO</string>
+    <string name="rss_error_load_feed">There is a problem to load your RSS.</string>
 </resources>
