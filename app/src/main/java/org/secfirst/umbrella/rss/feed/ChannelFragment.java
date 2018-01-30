@@ -154,7 +154,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
             final int deletedIndex = viewHolder.getAdapterPosition();
             mChannelAdapter.remove(mChannelAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition()));
             Snackbar snackbar = Snackbar
-                    .make(mCoordinatorLayout, name + getString(R.string.rss_custom_remove_item), Snackbar.LENGTH_LONG);
+                    .make(mCoordinatorLayout, name + " " + getString(R.string.rss_custom_remove_item), Snackbar.LENGTH_LONG);
             mPresenter.removeFeed(customFeed);
             snackbar.setAction(R.string.undo, new View.OnClickListener() {
                 @Override

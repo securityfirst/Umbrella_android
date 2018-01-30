@@ -174,7 +174,7 @@ public class Global extends Application {
         return items;
     }
 
-    public List<CustomFeed> getRSS() {
+    public List<CustomFeed> getCustomFeed() {
         List<CustomFeed> items = new ArrayList<>();
         try {
             items = getDaoRSS().queryForAll();

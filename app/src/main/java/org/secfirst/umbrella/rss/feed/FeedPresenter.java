@@ -24,9 +24,7 @@ public class FeedPresenter implements FeedContract.Presenter {
 
     @Override
     public void start() {
-        List<CustomFeed> customFeeds = Global.INSTANCE.getRSS();
-        if (!customFeeds.isEmpty())
-            mViewRss.showFeeds(customFeeds);
+        getFeeds();
     }
 
     @Override
@@ -69,6 +67,14 @@ public class FeedPresenter implements FeedContract.Presenter {
         } catch (SQLException e) {
             mViewRss.errorSaveFeed();
         }
+    }
+
+    @Override
+    public List<CustomFeed> getFeeds() {
+        List<CustomFeed> customFeeds = Global.INSTANCE.getCustomFeed();
+        if (!customFeeds.isEmpty())
+            mViewRss.showFeeds(customFeeds);
+        return customFeeds;
     }
 
     private CustomFeed cleanMalformedArticles(CustomFeed customFeed) {

@@ -1,4 +1,5 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rss_coordinator_layout"
     android:layout_width="match_parent"
@@ -11,6 +12,7 @@
         android:id="@+id/rss_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ProgressBar
             android:id="@+id/rss_indeterminate_bar"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -34,7 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="@color/device_shake_sick_green" />
 
     </FrameLayout>
 

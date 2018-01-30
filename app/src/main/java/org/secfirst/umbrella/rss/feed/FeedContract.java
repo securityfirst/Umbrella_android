@@ -33,5 +33,7 @@ public interface FeedContract {
         void loadFeed(String url);
 
         void saveFeed(CustomFeed customFeed);
+
+        List<CustomFeed> getFeeds();
     }
 }
