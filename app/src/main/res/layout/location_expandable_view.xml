@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_border"
+    android:paddingLeft="@dimen/feed_location_dialog_small_padding"
+    android:paddingRight="@dimen/feed_location_dialog_small_padding"
+    tools:ignore="MissingPrefix">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/feed_location_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/feed_location_smallest_margin_top"
+        android:orientation="horizontal">
+
+        <TextView
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feed_list_location"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <TextView
+            android:id="@+id/colon_id"
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/feed_list_colon"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <TextView
+            android:id="@+id/current_location"
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@color/deep_rose"
+            android:textSize="@dimen/text_size_smaller" />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/button"
+        android:layout_width="@dimen/feed_location_button_width"
+        android:layout_height="@dimen/feed_location_button_width"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center">
+
+        <View
+            android:layout_width="@dimen/feed_location_empty_view"
+            android:layout_height="@dimen/feed_location_empty_view"
+            android:layout_marginLeft="@dimen/location_big_margin_left"
+            android:background="@drawable/triangle" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/button"
+        android:gravity="center"
+        android:padding="@dimen/feed_location_small_padding"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_like_really_small" />
+
+    <com.github.aakira.expandablelayout.ExpandableLinearLayout
+        android:id="@+id/expandableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/feed_location_height_expandable_layout"
+        android:layout_below="@id/textView"
+        android:orientation="vertical"
+        app:ael_duration="300"
+        app:ael_expanded="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/expand_current_location"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:textColor="@color/deep_rose"
+                android:textSize="@dimen/text_size_smaller" />
+
+            <TextView
+                android:id="@+id/expand_change_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="@dimen/feed_location_normal_margin_bottom"
+                android:layout_marginRight="@dimen/feed_location_smallest_margin_right"
+                android:text="@string/feed_list_change"
+                android:textColor="@color/green_dashboard" />
+        </LinearLayout>
+
+
+    </com.github.aakira.expandablelayout.ExpandableLinearLayout>
+</RelativeLayout>

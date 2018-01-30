@@ -31,7 +31,6 @@ import timber.log.Timber;
 public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<FormValue> forms = new ArrayList<>();
     private Context context;
-    private Global global;
     private OnSessionHTMLCreate sessionHTMLCreate;
 
     static class FilledOutFormViewHolder extends RecyclerView.ViewHolder {
@@ -54,7 +53,6 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public FilledOutFormListAdapter(Context context, TabbedFormsFragment fragment) {
         this.context = context;
-        this.global = (Global) context.getApplicationContext();
         this.sessionHTMLCreate = fragment;
     }
 
@@ -67,7 +65,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         FilledOutFormViewHolder formViewHolder = (FilledOutFormViewHolder) holder;
         final FormValue currentValue = forms.get(holder.getAdapterPosition());
-        final Form current = forms.get(holder.getAdapterPosition()).getFormItem(global).getFormScreen(global).getForm(global);
+        final Form current = forms.get(holder.getAdapterPosition()).getFormItem().getFormScreen().getForm();
         formViewHolder.formTitle.setText(current.getTitle());
         formViewHolder.formLastModified.setText(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(currentValue.getLastModified()));
         formViewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +83,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            DeleteBuilder<FormValue, String> deleteBuilder = global.getDaoFormValue().deleteBuilder();
+                            DeleteBuilder<FormValue, String> deleteBuilder = Global.INSTANCE.getDaoFormValue().deleteBuilder();
                             deleteBuilder.where().eq(FormValue.FIELD_SESSION, currentValue.getSessionID());
                             deleteBuilder.delete();
                             forms.remove(holder.getAdapterPosition());

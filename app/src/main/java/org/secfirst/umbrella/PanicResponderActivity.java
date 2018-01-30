@@ -20,10 +20,9 @@ public class PanicResponderActivity extends Activity {
 
         Intent intent = getIntent();
         if (intent != null && PANIC_TRIGGER_ACTION.equals(intent.getAction())) {
-            Global global = (Global) getApplicationContext();
-            global.logout(this, false);
+            Global.INSTANCE.logout(this, false);
             UmbrellaUtil.setMaskMode(PanicResponderActivity.this, true);
-            if (global.hasPasswordSet(false)) global.logout(PanicResponderActivity.this, false);
+            if (Global.INSTANCE.hasPasswordSet(false)) Global.INSTANCE.logout(PanicResponderActivity.this, false);
             Intent i = new Intent(PanicResponderActivity.this, CalcActivity.class);
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);

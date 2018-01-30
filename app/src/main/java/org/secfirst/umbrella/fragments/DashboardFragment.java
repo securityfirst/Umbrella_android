@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.fragments;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,22 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.util.Global;
 
 import java.util.Locale;
 
 public class DashboardFragment extends Fragment {
 
-    private Global global;
     SectionsPagerAdapter mSectionsPagerAdapter;
     public ViewPager mViewPager;
 
-    public static DashboardFragment newInstance(Global global, int toDash) {
+    public static DashboardFragment newInstance(int toDash) {
         DashboardFragment fragment = new DashboardFragment();
-        fragment.global = global;
         Bundle args = new Bundle();
         args.putInt("dashboard", toDash);
         fragment.setArguments(args);
@@ -41,17 +39,27 @@ public class DashboardFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(-1*getArguments().getInt("dashboard", 0));
+        mViewPager.setCurrentItem(-1 * getArguments().getInt("dashboard", 0));
+
         return v;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        if (!context.getResources().getConfiguration().locale.toString().equals(Locale.getDefault().toString())) {
+            Configuration config = new Configuration();
+            config.locale = Locale.getDefault();
+            context.getResources().updateConfiguration(config, context.getResources().getDisplayMetrics());
+        }
+        super.onAttach(context);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
-            if (global==null) global = ((BaseActivity) getActivity()).getGlobal();
-            getActivity().setTitle(global.getString(R.string.my_security));
+            getActivity().setTitle(getString(R.string.my_security));
         }
     }
 
@@ -66,7 +74,7 @@ public class DashboardFragment extends Fragment {
             Fragment fragment;
             switch (position) {
                 case 1:
-                    fragment = new TabbedFeedFragment();
+                    fragment = TabbedFeedRootFragment.newInstance(mViewPager);
                     break;
                 case 2:
                     fragment = new TabbedFormsFragment();

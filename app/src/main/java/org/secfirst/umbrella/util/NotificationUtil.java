@@ -3,7 +3,6 @@ package org.secfirst.umbrella.util;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
@@ -16,25 +15,25 @@ import java.util.List;
 
 public class NotificationUtil {
 
-    public static void showNotificationBackground(Context context, Global global, List<FeedItem> feeds) {
-        showNotification(context, global, feeds, NotificationCompat.PRIORITY_HIGH);
+    public static void showNotificationBackground(Context context, List<FeedItem> feeds) {
+        showNotification(context, feeds, NotificationCompat.PRIORITY_HIGH);
     }
 
-    public static void showNotificationForeground(Context context, Global global, List<FeedItem> feeds) {
-        showNotification(context, global, feeds, NotificationCompat.PRIORITY_LOW);
+    public static void showNotificationForeground(Context context, List<FeedItem> feeds) {
+        showNotification(context, feeds, NotificationCompat.PRIORITY_LOW);
     }
 
-    private static void showNotification(Context context, Global global, List<FeedItem> feeds, int priority) {
+    private static void showNotification(Context context, List<FeedItem> feeds, int priority) {
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         String title = feeds.size() == 1 ? feeds.get(0).getTitle() : context.getString(R.string.dashboard);
         String content = feeds.size() == 1 ? feeds.get(0).getBody() : String.format(context.getString(R.string.new_feeds), feeds.size());
         NotificationCompat.Builder b = getBaseNotificationBuilder(context, title, content, pendingIntent);
         b.setPriority(priority);
-        if(global.getNotificationRingtoneEnabled()) {
-            b.setSound(global.getNotificationRingtone());
+        if(Global.INSTANCE.getNotificationRingtoneEnabled()) {
+            b.setSound(Global.INSTANCE.getNotificationRingtone());
         }
-        if(global.getNotificationVibrationEnabled()) {
+        if(Global.INSTANCE.getNotificationVibrationEnabled()) {
             b.setVibrate(new long[]{0, 500});
         }
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);

@@ -2,47 +2,41 @@ package org.secfirst.umbrella;
 
 import android.annotation.TargetApi;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.PointTarget;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
+import org.secfirst.umbrella.fragments.HandsShakeDialog;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
@@ -50,9 +44,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+import uk.co.samuelwall.materialtaptargetprompt.extras.backgrounds.RectanglePromptBackground;
+import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 
-public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener, OnShowcaseEventListener   {
+public class MainActivity extends BaseActivity implements DifficultyFragment.OnDifficultySelected, DrawerLayout.DrawerListener {
 
     public DrawerLayout drawer;
     public ExpandableListView drawerList;
@@ -61,9 +59,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public long drawerItem;
     public Spinner titleSpinner;
     private DrawerChildItem childItem;
-    private int fragType = 0;
     public MenuItem favouriteItem;
-    public boolean shownCoachmark = false;
     private TextView loginHeader;
     private View header;
     private boolean ran = false;
@@ -72,14 +68,17 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerList = (ExpandableListView) findViewById(R.id.left_drawer);
+        drawer = findViewById(R.id.drawer_layout);
+        drawerList = findViewById(R.id.left_drawer);
         header = View.inflate(this, R.layout.drawer_header, null);
-        loginHeader = (TextView) header.findViewById(R.id.login_header);
+        loginHeader = header.findViewById(R.id.login_header);
         drawerList.addHeaderView(header);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -92,13 +91,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             finish();
             return;
         }
-        boolean hasOpened = global.initializeSQLCipher("");
+        boolean hasOpened = Global.INSTANCE.initializeSQLCipher("");
         if (!hasOpened) {
             startActivity(new Intent(this, LoginActivity.class));
-        } else if (!global.getTermsAccepted()) {
+        } else if (!Global.INSTANCE.getTermsAccepted()) {
+
             startActivity(new Intent(this, TourActivity.class));
         } else {
-            if (titleSpinner!=null) {
+            if (titleSpinner != null) {
                 return;
             }
             titleSpinner = (Spinner) findViewById(R.id.spinner_nav);
@@ -110,14 +110,14 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     List<Difficulty> hasDifficulty = null;
                     try {
-                        hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                        hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
                     if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                         Category childCategory;
                         try {
-                            childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                            childCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
                             if (!childCategory.getDifficultyAdvanced() && position > 0) {
                                 position++;
                             }
@@ -130,7 +130,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         }
                         hasDifficulty.get(0).setSelected(position);
                         try {
-                            global.getDaoDifficulty().update(hasDifficulty.get(0));
+                            Global.INSTANCE.getDaoDifficulty().update(hasDifficulty.get(0));
                         } catch (SQLException e) {
                             Timber.e(e);
                         }
@@ -157,16 +157,16 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, this.toolbar, R.string.open_drawer, R.string.close_drawer);
             actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
             actionBarDrawerToggle.syncState();
-            loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+            loginHeader.setText(Global.INSTANCE.isLoggedIn() ? R.string.log_out : R.string.log_in);
             header.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (global.isLoggedIn() && global.hasPasswordSet(false) && !global.getSkipPassword()) {
-                        global.logout(MainActivity.this, true);
+                    if (Global.INSTANCE.isLoggedIn() && Global.INSTANCE.hasPasswordSet(true)) {
+                        Global.INSTANCE.logout(MainActivity.this, true);
                     } else {
-                        global.setPassword(MainActivity.this, null);
+                        Global.INSTANCE.setPassword(MainActivity.this, null);
                     }
-                    loginHeader.setText(global.isLoggedIn() ? R.string.log_out : R.string.log_in);
+                    loginHeader.setText(Global.INSTANCE.isLoggedIn() ? R.string.log_out : R.string.log_in);
                 }
             });
 
@@ -174,14 +174,15 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             if (getIntent() != null && getIntent().getData() != null && !getIntent().getData().getPathSegments().isEmpty()) {
                 for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
                     for (DrawerChildItem childItem : groupItem) {
-                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
+                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().
+                                getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
                             this.childItem = childItem;
                         }
                     }
                 }
                 if (childItem != null) {
                     try {
-                        Category category = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+                        Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
                         if (category.hasDifficulty()) {
                             setFragment(1, "", true);
                         } else {
@@ -194,9 +195,9 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 }
             } else {
                 setFragment(0, getString(R.string.my_security), true);
-                if (!global.hasShownNavAlready()) {
+                if (!Global.INSTANCE.hasShownNavAlready()) {
                     drawer.openDrawer(Gravity.LEFT);
-                    global.navShown();
+                    Global.INSTANCE.navShown();
                 }
             }
         }
@@ -210,15 +211,15 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void setNavItems(String title) {
         ArrayList<String> navArray = new ArrayList<>();
         try {
-            Category childCategory = global.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
+            Category childCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
             if (childCategory.getDifficultyBeginner()) {
-                navArray.add(title +" "+getString(R.string.beginner));
+                navArray.add(title + " " + getString(R.string.beginner));
             }
             if (childCategory.getDifficultyAdvanced()) {
-                navArray.add(title +" "+getString(R.string.advanced));
+                navArray.add(title + " " + getString(R.string.advanced));
             }
             if (childCategory.getDifficultyExpert()) {
-                navArray.add(title +" "+getString(R.string.expert));
+                navArray.add(title + " " + getString(R.string.expert));
             }
         } catch (SQLException e) {
             Timber.e(e);
@@ -229,41 +230,45 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void setFragment(int fragType, String groupName, boolean isFirst) {
-        this.fragType = fragType;
+        titleSpinner.setVisibility(fragType == 1 ? View.VISIBLE : View.GONE);
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         drawer.closeDrawer(drawerList);
         if (fragType < 1) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DashboardFragment.newInstance(global, fragType));
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    DashboardFragment.newInstance(fragType));
             if (!isFirst) {
                 trans.addToBackStack(null);
             }
             trans.commit();
-            titleSpinner.setVisibility(View.GONE);
         } else if (fragType == 1) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+            if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null
+                    && getIntent().getData() != null && getIntent().getData().getPathSegments() != null
+                    && getIntent().getData().getPathSegments().size() > 1) {
                 hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
                 try {
-                    global.getDaoDifficulty().update(hasDifficulty.get(0));
+                    Global.INSTANCE.getDaoDifficulty().update(hasDifficulty.get(0));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
-            } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
+            } else if (getIntent() != null && getIntent().getData() != null && getIntent().getData()
+                    .getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 try {
-                    global.getDaoDifficulty().create(new Difficulty(childItem.getPosition(), Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
+                    Global.INSTANCE.getDaoDifficulty().create(new Difficulty(childItem.getPosition(),
+                            Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
             }
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -277,11 +282,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null) {
                     if (getIntent().getData().getHost().equalsIgnoreCase("checklist"))
                         checklist = true;
-                    else if (getIntent().getData().getHost().equalsIgnoreCase("lesson") && getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 2)
+                    else if (getIntent().getData().getHost().equalsIgnoreCase("lesson") &&
+                            getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 2)
                         page = Integer.valueOf(getIntent().getData().getPathSegments().get(2));
                 }
                 setIntent(null);
-                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
+                android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                        TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
@@ -294,24 +301,21 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
         } else if (fragType == 2) {
             setTitle(groupName);
-            android.support.v4.app.FragmentTransaction trans;
-            if (drawerItem == 58) { // index into pageviewer
-                trans = fragmentTransaction.replace(R.id.container, TabbedFragment.newInstance(drawerItem, 0, false, 0), "tabbed");
-            } else {
-                trans = fragmentTransaction.replace(R.id.container, new TabbedFragment.TabbedSegmentFragment());
-            }
-            if (!isFirst) {
-                trans.addToBackStack(null);
-            }
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
+            if (!isFirst) trans.addToBackStack(null);
             trans.commit();
-            titleSpinner.setVisibility(View.GONE);
         } else if (fragType == 3) {
             setTitle(childItem.getTitle());
-            titleSpinner.setVisibility(View.GONE);
-            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container, DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
-            if (!isFirst) {
-                trans.addToBackStack(null);
-            }
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    DifficultyFragment.newInstance(childItem.getPosition()), childItem.getTitle());
+            if (!isFirst) trans.addToBackStack(null);
+            trans.commit();
+        } else if (fragType == 4) {
+            setTitle(groupName);
+            android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
+                    new TabbedFragment.TabbedSegmentFragment());
+            if (!isFirst) trans.addToBackStack(null);
             trans.commit();
         }
         invalidateOptionsMenu();
@@ -320,13 +324,13 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        if (actionBarDrawerToggle!=null) actionBarDrawerToggle.syncState();
+        if (actionBarDrawerToggle != null) actionBarDrawerToggle.syncState();
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
         Category category;
         try {
-            category = global.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
+            category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
             if (category.hasDifficulty()) {
                 childItem = selectedItem;
                 setFragment(3, "", false);
@@ -340,10 +344,25 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (Global.INSTANCE.needsRefreshActivity()) {
+            invalidateOptionsMenu();
+            Intent intent = getIntent();
+            if (intent != null) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                finish();
+                startActivity(intent);
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem _searchMenuItem = menu.findItem(R.id.action_search_view);
-        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(_searchMenuItem);
+        android.support.v7.widget.SearchView searchView = (android.support.v7.widget.SearchView)
+                MenuItemCompat.getActionView(_searchMenuItem);
         searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
@@ -385,19 +404,19 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
         MenuItem itemLogout = menu.findItem(R.id.action_logout);
         MenuItem itemExport = menu.findItem(R.id.export_checklist);
-        itemSetPw.setVisible(!global.hasPasswordSet(true));
-        itemResetPw.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
-        itemChangePw.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
-        itemLogout.setVisible(global.hasPasswordSet(false) && !global.getSkipPassword());
+        itemSetPw.setVisible(!Global.INSTANCE.hasPasswordSet(true));
+        itemResetPw.setVisible(Global.INSTANCE.hasPasswordSet(false) && !Global.INSTANCE.getSkipPassword());
+        itemChangePw.setVisible(Global.INSTANCE.hasPasswordSet(false) && !Global.INSTANCE.getSkipPassword());
+        itemLogout.setVisible(Global.INSTANCE.hasPasswordSet(false) && !Global.INSTANCE.getSkipPassword());
         itemExport.setVisible(false);
         if (childItem != null) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            itemExport.setVisible(hasDifficulty!=null && !hasDifficulty.isEmpty());
+            itemExport.setVisible(hasDifficulty != null && !hasDifficulty.isEmpty());
         }
         favouriteItem = menu.findItem(R.id.favourite);
         return true;
@@ -408,7 +427,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public boolean onOptionsItemSelected(MenuItem item) {
         int sdk = android.os.Build.VERSION.SDK_INT;
         int id = item.getItemId();
-        if (sdk >= android.os.Build.VERSION_CODES.HONEYCOMB && id==android.R.id.home) {
+        if (sdk >= android.os.Build.VERSION_CODES.HONEYCOMB && id == android.R.id.home) {
             if (drawer.isDrawerOpen(drawerList))
                 drawer.closeDrawer(drawerList);
             else
@@ -419,62 +438,55 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_mask) {
-            new MaterialDialog.Builder(this)
-                    .title(R.string.masking_mode_title)
-                    .content(getString(R.string.masking_mode_body, getString(R.string.app_calc)))
-                    .positiveText(R.string.ok)
-                    .negativeText(R.string.cancel)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            UmbrellaUtil.setMaskMode(MainActivity.this, true);
-                            if (global.hasPasswordSet(false)) global.logout(MainActivity.this, false);
-                            Intent i = new Intent(MainActivity.this, CalcActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i);
-                            finish();
-                        }
-                    })
-                    .show();
+            if (!UmbrellaUtil.isAppMasked(this)) {
+                if (Global.INSTANCE.hasPasswordSet(false))
+                    Global.INSTANCE.logout(MainActivity.this, false);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
+                handsShake.show(fragmentManager, "");
+            }
         }
         if (id == R.id.action_logout) {
-            global.logout(this, true);
+            Global.INSTANCE.logout(this, true);
             return true;
         }
         if (id == R.id.action_set_password) {
-            global.setPassword(this, null);
+            Global.INSTANCE.setPassword(this, null);
             return true;
         }
         if (id == R.id.action_reset_password) {
-            global.resetPassword(this);
+            Global.INSTANCE.resetPassword(this);
             return true;
         }
         if (id == R.id.action_change_password) {
-            global.setPassword(this, null, global.hasPasswordSet(true));
+            Global.INSTANCE.setPassword(this, null, Global.INSTANCE.hasPasswordSet(true));
             return true;
         }
         if (id == R.id.export_checklist) {
             List<Difficulty> hasDifficulty = null;
             try {
-                hasDifficulty = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
+                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
             } catch (SQLException e) {
                 Timber.e(e);
             }
-            if (hasDifficulty!=null && !hasDifficulty.isEmpty()) {
+            if (hasDifficulty != null && !hasDifficulty.isEmpty()) {
                 String body = "";
                 List<CheckItem> items = null;
-                QueryBuilder<CheckItem, String> queryBuilder = global.getDaoCheckItem().queryBuilder();
+                QueryBuilder<CheckItem, String> queryBuilder = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                 Where<CheckItem, String> where = queryBuilder.where();
                 try {
-                    where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected() + 1));
+                    where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(childItem.getPosition())).
+                            and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(hasDifficulty.get(0).getSelected() + 1));
                     items = queryBuilder.query();
                 } catch (SQLException e) {
                     if (BuildConfig.BUILD_TYPE.equals("debug"))
                         Log.getStackTraceString(e.getCause());
                 }
-                if (items!=null) {
+                if (items != null) {
                     for (CheckItem checkItem : items) {
-                        body += "\n" + (checkItem.getParent()==0 ? "" : "   ") + (checkItem.getValue() ? "\u2713" : "\u2717") + " " + ((checkItem.getParent()==0) ? checkItem.getTitle() : checkItem.getText());
+                        body += "\n" + (checkItem.getParent() == 0 ? "" : "   ") +
+                                (checkItem.getValue() ? "\u2713" : "\u2717") + " " +
+                                ((checkItem.getParent() == 0) ? checkItem.getTitle() : checkItem.getText());
                     }
                 }
                 Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(body)));
@@ -496,57 +508,52 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             titleSpinner.setSelection(difficulty);
         }
         setFragment(1, "", false);
-        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-        lps.setMargins(margin, margin, margin * 5, margin * 5);
-        new ShowcaseView.Builder(this)
-                .setTarget(new ViewTarget(R.id.spinner_nav, this))
-                .setContentText(getString(R.string.click_here_to_change_level))
-                .setStyle(R.style.CustomShowcaseTheme4)
-                .hideOnTouchOutside()
-                .singleShot(2)
-                .setShowcaseEventListener(new OnShowcaseEventListener() {
-                    @Override
-                    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-                        RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                        lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                        int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-                        lps.setMargins(margin, margin, margin * 5, margin * 5);
-                        new ShowcaseView.Builder(MainActivity.this)
-                                .setTarget(new ViewTarget(R.id.pager_title_strip, MainActivity.this))
-                                .setContentText(getString(R.string.swipe_left_to_read))
-                                .setStyle(R.style.CustomShowcaseTheme4)
-                                .hideOnTouchOutside()
-                                .singleShot(3)
-                                .build()
-                                .setButtonPosition(lps);
-                    }
+        if (!Global.INSTANCE.hasShownCoachMark("change_level")) {
+            new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                    .setTarget(R.id.spinner_nav)
+                    .setSecondaryText(getString(R.string.click_here_to_change_level))
+                    .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
+                    .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                    .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                    .setPromptFocal(new RectanglePromptFocal())
+                    .setPromptBackground(new RectanglePromptBackground())
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                        @Override
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                Global.INSTANCE.setCoachMarkShown("change_level", true);
 
-                    @Override
-                    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-
-                    }
-
-                    @Override
-                    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
-                    }
-                })
-                .build()
-                .setButtonPosition(lps);
+                            if (state == MaterialTapTargetPrompt.STATE_DISMISSED && !Global.INSTANCE.hasShownCoachMark("swipe_lessons")) {
+                                PagerTabStrip pagerTabStrip = (PagerTabStrip) findViewById(R.id.pager_title_strip);
+                                if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1) {
+                                    new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                                            .setTarget(pagerTabStrip.getChildAt(1))
+                                            .setSecondaryText(getString(R.string.swipe_left_to_read))
+                                            .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                                            .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
+                                            .setPromptFocal(new RectanglePromptFocal())
+                                            .setPromptBackground(new RectanglePromptBackground())
+                                            .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                                            .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                                                @Override
+                                                public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                                    if (state == MaterialTapTargetPrompt.STATE_REVEALED) {
+                                                        Global.INSTANCE.setCoachMarkShown("swipe_lessons", true);
+                                                    }
+                                                }
+                                            })
+                                            .show();
+                                }
+                            }
+                        }
+                    })
+                    .show();
+        }
     }
 
     public void onNavigationDrawerGroupItemSelected(Category category) {
         drawerItem = category.getId();
-        setFragment(2, category.getCategory(), false);
+        setFragment(category.hasDifficulty() ? 2 : 4, category.getCategory(), false);
     }
 
     @Override
@@ -562,23 +569,23 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     @Override
     public void onDrawerClosed(View drawerView) {
         actionBarDrawerToggle.onDrawerClosed(drawerView);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {
-            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-            lps.setMargins(margin, margin, margin * 5, margin * 5);
-            new ShowcaseView.Builder(this)
-                    .setTarget(new PointTarget(0, 0))
-                    .setContentText(getString(R.string.swipe_to_view_menu))
-                    .setStyle(R.style.CustomShowcaseTheme4)
-                    .hideOnTouchOutside()
-                    .singleShot(1)
-                    .setShowcaseEventListener(this)
-                    .build()
-                    .setButtonPosition(lps);
-            if (!shownCoachmark)
-               onShowcaseViewHide(null);
+        if (!Global.INSTANCE.hasShownCoachMark("swipe_side")) {
+            new MaterialTapTargetPrompt.Builder(MainActivity.this)
+                    .setTarget(this.toolbar.getChildAt(2))
+                    .setSecondaryText(getString(R.string.swipe_to_view_menu))
+                    .setTextGravity(Gravity.CENTER)
+                    .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                    .setSecondaryText(getString(R.string.coach_marks_menu_message))
+                    .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
+                    .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                    .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                        @Override
+                        public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                            if (state == MaterialTapTargetPrompt.STATE_REVEALED)
+                                Global.INSTANCE.setCoachMarkShown("swipe_side", true);
+                        }
+                    })
+                    .show();
         }
     }
 
@@ -586,39 +593,4 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     public void onDrawerStateChanged(int newState) {
         actionBarDrawerToggle.onDrawerStateChanged(newState);
     }
-
-    @Override
-    public void onShowcaseViewHide(ShowcaseView showcaseView) {
-        if (fragType == 0) {
-            RelativeLayout.LayoutParams lps = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-            lps.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            int margin = ((Number) (getResources().getDisplayMetrics().density * 12)).intValue();
-            lps.setMargins(margin, margin, margin * 5, margin * 5);
-            new ShowcaseView.Builder(MainActivity.this)
-                    .setTarget(new ViewTarget(R.id.pager_title_strip, this))
-                    .setContentText(getString(R.string.view_all_checlists))
-                    .setStyle(R.style.CustomShowcaseTheme4)
-                    .hideOnTouchOutside()
-                    .singleShot(7)
-                    .build()
-                    .setButtonPosition(lps);
-        }
-    }
-
-    @Override
-    public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
-
-    }
-
-    @Override
-    public void onShowcaseViewShow(ShowcaseView showcaseView) {
-        shownCoachmark = true;
-    }
-
-    @Override
-    public void onShowcaseViewTouchBlocked(MotionEvent motionEvent) {
-
-    }
-
 }

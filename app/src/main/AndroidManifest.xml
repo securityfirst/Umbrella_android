@@ -18,9 +18,22 @@
         tools:replace="icon">
         <provider
             android:name="org.secfirst.umbrella.util.IOCipherContentProvider"
-            android:authorities="org.secfirst.umbrella"
-            android:grantUriPermissions="true"
-            android:exported="true" />
+            android:authorities="IOCipherContentProvider"
+            android:exported="true"
+            android:grantUriPermissions="true">
+
+        </provider>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
+
         <service
             android:name=".RefreshService"
             android:exported="false" />
@@ -37,7 +50,7 @@
         <activity android:name=".MainActivity" />
 
         <activity-alias
-            android:name=".MainActivity-normal"
+            android:name=".MainActivityNormal"
             android:enabled="true"
             android:icon="@drawable/ic_umbrella"
             android:label="@string/app_normal"
@@ -79,7 +92,7 @@
             </intent-filter>
         </activity-alias>
         <activity-alias
-            android:name=".MainActivity-calculator"
+            android:name=".MainActivityCalculator"
             android:enabled="false"
             android:icon="@drawable/calc"
             android:label="@string/app_calc"

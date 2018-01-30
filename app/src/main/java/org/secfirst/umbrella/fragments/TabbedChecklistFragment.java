@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerTabStrip;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,6 @@ import android.widget.ListView;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
-import org.secfirst.umbrella.BaseActivity;
-import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.adapters.DashCheckListAdapter;
 import org.secfirst.umbrella.models.Category;
@@ -27,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import timber.log.Timber;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+import uk.co.samuelwall.materialtaptargetprompt.extras.focals.RectanglePromptFocal;
 
 
 public class TabbedChecklistFragment extends Fragment {
@@ -61,6 +62,32 @@ public class TabbedChecklistFragment extends Fragment {
         }
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isAdded() && isVisibleToUser && Global.INSTANCE.hasShownCoachMark("swipe_side") && !Global.INSTANCE.hasShownCoachMark("check_lists")) {
+            PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pager_title_strip);
+            if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1 ) {
+                new MaterialTapTargetPrompt.Builder(getActivity())
+                        .setTarget(pagerTabStrip.getChildAt(1))
+                        .setSecondaryText(getString(R.string.view_all_checlists))
+                        .setBackgroundColour(getResources().getColor(R.color.coachmark_background_dark))
+                        .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
+                        .setSecondaryTextColour(getResources().getColor(R.color.umbrella_green))
+                        .setPromptFocal(new RectanglePromptFocal())
+                        .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                            @Override
+                            public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                                if (state == MaterialTapTargetPrompt.STATE_REVEALED) {
+                                    Global.INSTANCE.setCoachMarkShown("check_lists", true);
+                                }
+                            }
+                        })
+                        .show();
+            }
+        }
+    }
+
     private int getTotalCheckListPercentage(ArrayList<DashCheckFinished> checkLists) {
         int checked, total;
         checked = total = 0;
@@ -72,11 +99,10 @@ public class TabbedChecklistFragment extends Fragment {
     }
 
     public ArrayList<DashCheckFinished> getChecklistProgress() {
-        final Global global = ((MainActivity) getActivity()).getGlobal();
         ArrayList<DashCheckFinished> returned = new ArrayList<>();
         List<Favourite> favourites = null;
         try {
-            favourites = global.getDaoFavourite().queryForAll();
+            favourites = Global.INSTANCE.getDaoFavourite().queryForAll();
         } catch (SQLException e) {
             Timber.e(e);
         }
@@ -84,7 +110,7 @@ public class TabbedChecklistFragment extends Fragment {
             for (Favourite favourite : favourites) {
                 List<CheckItem> mCheckList = null;
                 try {
-                    QueryBuilder<CheckItem, String> queryBuilder = ((BaseActivity) getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                    QueryBuilder<CheckItem, String> queryBuilder = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                     Where<CheckItem, String> where = queryBuilder.where();
                     where.eq(CheckItem.FIELD_CATEGORY, favourite.getCategory()).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(favourite.getDifficulty() + 1));
                     mCheckList = queryBuilder.query();
@@ -93,7 +119,7 @@ public class TabbedChecklistFragment extends Fragment {
                 }
                 Category category = null;
                 try {
-                    category = global.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
+                    category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(favourite.getCategory()));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
@@ -114,14 +140,13 @@ public class TabbedChecklistFragment extends Fragment {
                 }
             }
         }
-        int favReturnedSize = returned.size();
         try {
-            QueryBuilder<Difficulty, String> queryBuilder = ((BaseActivity)getActivity()).getGlobal().getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
+            QueryBuilder<Difficulty, String> queryBuilder = Global.INSTANCE.getDaoDifficulty().queryBuilder().orderBy(Difficulty.FIELD_CREATED_AT, false);
             List<Difficulty> hasDifficulty = queryBuilder.query();
             for (Difficulty difficulty : hasDifficulty) {
                 List<CheckItem> mCheckList = null;
                 try {
-                    QueryBuilder<CheckItem, String> queryBuilder1 = ((BaseActivity)getActivity()).getGlobal().getDaoCheckItem().queryBuilder();
+                    QueryBuilder<CheckItem, String> queryBuilder1 = Global.INSTANCE.getDaoCheckItem().queryBuilder();
                     Where<CheckItem, String> where = queryBuilder1.where();
                     where.eq(CheckItem.FIELD_CATEGORY, String.valueOf(difficulty.getCategory())).and().eq(CheckItem.FIELD_DIFFICULTY, String.valueOf(difficulty.getSelected() + 1));
                     mCheckList = queryBuilder1.query();
@@ -129,7 +154,7 @@ public class TabbedChecklistFragment extends Fragment {
                     Timber.e(e);
                 }
                 try {
-                    Category category = global.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
+                    Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
                     if (category != null) {
                         DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
                         if (mCheckList!=null) {
@@ -157,11 +182,11 @@ public class TabbedChecklistFragment extends Fragment {
         } catch (SQLException e) {
             Timber.e(e);
         }
-        DashCheckFinished totalDone = new DashCheckFinished(global.getString(R.string.total_done), getTotalCheckListPercentage(returned), 100, false);
+        DashCheckFinished totalDone = new DashCheckFinished(Global.INSTANCE.getString(R.string.total_done), getTotalCheckListPercentage(returned), 100, false);
         totalDone.setNoIcon(true);
         returned.add(0, totalDone);
         if (returned.size()<2) {
-            DashCheckFinished noItems = new DashCheckFinished(global.getString(R.string.no_check_items_started_on_yet), 0, 0, false);
+            DashCheckFinished noItems = new DashCheckFinished(Global.INSTANCE.getString(R.string.no_check_items_started_on_yet), 0, 0, false);
             noItems.setNoIcon(true);
             noItems.setNoPercent(true);
             returned.add(noItems);

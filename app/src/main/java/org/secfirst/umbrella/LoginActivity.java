@@ -2,7 +2,6 @@ package org.secfirst.umbrella;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.IntentCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 public class LoginActivity extends BaseActivity {
@@ -25,7 +25,7 @@ public class LoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         if (getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        if (!global.hasPasswordSet(false)) {
+        if (!Global.INSTANCE.hasPasswordSet(false)) {
             goToMain();
         }
 
@@ -67,8 +67,8 @@ public class LoginActivity extends BaseActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem itemResetPw = menu.findItem(R.id.action_reset_password);
         MenuItem itemSetPw = menu.findItem(R.id.action_set_password);
-        itemSetPw.setVisible(!global.hasPasswordSet(true));
-        itemResetPw.setVisible(global.hasPasswordSet(false));
+        itemSetPw.setVisible(!Global.INSTANCE.hasPasswordSet(true));
+        itemResetPw.setVisible(Global.INSTANCE.hasPasswordSet(false));
         return true;
     }
 
@@ -76,17 +76,17 @@ public class LoginActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_reset_password) {
-            global.resetPassword(this);
+            Global.INSTANCE.resetPassword(this);
             return true;
         } else if (id == R.id.action_set_password) {
-            global.setPassword(this, null);
+            Global.INSTANCE.setPassword(this, null);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void tryLogin() {
-        if (global.initializeSQLCipher(inputPassword.getText().toString().trim())) {
+        if (Global.INSTANCE.initializeSQLCipher(inputPassword.getText().toString().trim())) {
             goToMain();
         } else {
             inputPassword.setText("");
@@ -95,9 +95,9 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void goToMain() {
-        Intent toMain = new Intent(LoginActivity.this, (global.getTermsAccepted() ? MainActivity.class : TourActivity.class));
-        if (global.getTermsAccepted()) {
-            toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
+        Intent toMain = new Intent(LoginActivity.this, (Global.INSTANCE.getTermsAccepted() ? MainActivity.class : TourActivity.class));
+        if (Global.INSTANCE.getTermsAccepted()) {
+            toMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         }
         startActivity(toMain);
     }

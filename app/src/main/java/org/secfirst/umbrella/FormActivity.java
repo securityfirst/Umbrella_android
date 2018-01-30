@@ -11,7 +11,9 @@ import com.stepstone.stepper.VerificationError;
 
 import org.secfirst.umbrella.adapters.FragmentStepAdapter;
 import org.secfirst.umbrella.models.Form;
+import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.OnNavigationBarListener;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
 
@@ -30,6 +32,8 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
+
         int formId = getIntent().getExtras().getInt("form_id", -1);
         if (formId < 0) {
             Toast.makeText(this, "Not a valid form", Toast.LENGTH_SHORT).show();
@@ -37,7 +41,7 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
             return;
         }
         try {
-            f = global.getDaoForm().queryForId(String.valueOf(formId));
+            f = Global.INSTANCE.getDaoForm().queryForId(String.valueOf(formId));
         } catch (SQLException e) {
             e.printStackTrace();
         }

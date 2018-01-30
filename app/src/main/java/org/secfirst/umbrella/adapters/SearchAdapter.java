@@ -69,13 +69,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         final Segment current = mSegment.get(position);
         String forTitle = "";
         try {
-            final Category category = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(current.getCategory()));
+            final Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(current.getCategory()));
             if (category == null) {
                 return;
             }
             Category parent = null;
             try {
-                parent = ((Global) mContext.getApplicationContext()).getDaoCategory().queryForId(String.valueOf(category.getParent()));
+                parent = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(category.getParent()));
             } catch (SQLException e) {}
             if (parent != null && parent.getCategory() != null)
                 forTitle = parent.getCategory();
@@ -87,7 +87,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 public void onClick(View view) {
                     int page = 0;
                     try {
-                        List<Segment> segments = ((Global) mContext.getApplicationContext()).getDaoSegment().queryForEq("category", current.getCategory());
+                        List<Segment> segments = Global.INSTANCE.getDaoSegment().queryForEq("category", current.getCategory());
                         for (int i = 0; i < segments.size(); i++) {
                             if (segments.get(i).getTitle()!=null && segments.get(i).getTitle().equals(current.getTitle())) {
                                 page = ++i;

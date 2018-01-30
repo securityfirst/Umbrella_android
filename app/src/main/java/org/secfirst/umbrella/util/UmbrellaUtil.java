@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -53,16 +55,16 @@ public class UmbrellaUtil {
     }
 
     public static void hideSoftKeyboard(Activity activity) {
-        if (activity!=null) {
-            InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (activity != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
             View view = activity.getCurrentFocus();
-            if (view!=null) inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (view != null) inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
     public static void setupUItoHideKeyboard(View view, final Activity activity) {
-        if (activity!=null) {
-            if(!(view instanceof EditText) && !(view instanceof ImageButton)) {
+        if (activity != null) {
+            if (!(view instanceof EditText) && !(view instanceof ImageButton)) {
                 view.setOnTouchListener(new View.OnTouchListener() {
 
                     public boolean onTouch(View v, MotionEvent event) {
@@ -83,7 +85,7 @@ public class UmbrellaUtil {
 
     public static int dpToPix(int sizeInDp, Context context) {
         float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (sizeInDp*scale + 0.5f);
+        return (int) (sizeInDp * scale + 0.5f);
     }
 
     public static boolean isNetworkAvailable(Context context) {
@@ -112,12 +114,11 @@ public class UmbrellaUtil {
     }
 
     public static ArrayList<Category> getParentCategories(Context context) {
-        Global global = (Global) context.getApplicationContext();
         ArrayList<Category> parentCategories = new ArrayList<>();
         try {
-            List<Category> categories = global.getDaoCategory().queryForAll();
+            List<Category> categories = Global.INSTANCE.getDaoCategory().queryForAll();
             for (Category category : categories) {
-                if (category.getParent()==0) {
+                if (category.getParent() == 0) {
                     parentCategories.add(category);
                 }
             }
@@ -129,19 +130,18 @@ public class UmbrellaUtil {
     }
 
     public static List<ArrayList<DrawerChildItem>> getChildItems(Context context) {
-        Global global = (Global) context.getApplicationContext();
         List<Category> parentCategories = new ArrayList<>();
         List<ArrayList<DrawerChildItem>> childItem = new ArrayList<>();
         List<Category> categories = null;
         try {
-            categories = global.getDaoCategory().queryForAll();
+            categories = Global.INSTANCE.getDaoCategory().queryForAll();
         } catch (SQLException e) {
             if (BuildConfig.BUILD_TYPE.equals("debug"))
                 Log.getStackTraceString(e.getCause());
         }
-        if (categories!=null) {
+        if (categories != null) {
             for (Category category : categories) {
-                if (category.getParent()==0) {
+                if (category.getParent() == 0) {
                     parentCategories.add(category);
                 }
             }
@@ -165,20 +165,19 @@ public class UmbrellaUtil {
     }
 
     public static String checkPasswordStrength(String password, Context context) {
-        if (password.length()<8) {
+        if (password.length() < 8) {
             return context.getString(R.string.password_too_short);
-        } else if(!Pattern.compile("\\d").matcher(password).find()) {
+        } else if (!Pattern.compile("\\d").matcher(password).find()) {
             return context.getString(R.string.password_one_digit);
-        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+        } else if (!Pattern.compile("[A-Z]").matcher(password).find()) {
             return context.getString(R.string.password_one_capital);
-        } else if(!Pattern.compile("[A-Z]").matcher(password).find()) {
+        } else if (!Pattern.compile("[A-Z]").matcher(password).find()) {
             return context.getString(R.string.password_one_small);
         }
         return "";
     }
 
-    public static String ellipsis(final String text, int length)
-    {
+    public static String ellipsis(final String text, int length) {
         if (text.length() < length) {
             return text;
         }
@@ -195,13 +194,12 @@ public class UmbrellaUtil {
     }
 
     public static boolean getFeeds(final Context context) {
-        final Global global = (Global) context.getApplicationContext();
-        Registry selISO2 = global.getRegistry("iso2");
-        if (selISO2!=null) {
+        Registry selISO2 = Global.INSTANCE.getRegistry("iso2");
+        if (selISO2 != null) {
             List<Registry> selections;
             try {
-                selections = global.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
-                if (selections.size()>0) {
+                selections = Global.INSTANCE.getDaoRegistry().queryForEq(Registry.FIELD_NAME, "feed_sources");
+                if (selections.size() > 0) {
                     String separator = ",";
                     int total = selections.size() * separator.length();
                     for (Registry item : selections) {
@@ -212,7 +210,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -223,13 +221,13 @@ public class UmbrellaUtil {
                             }.getType();
                             ArrayList<FeedItem> receivedItems = gson.fromJson(response.toString(), listType);
                             if (receivedItems != null && !receivedItems.isEmpty()) {
-                                List<FeedItem> oldList = global.getFeedItems();
+                                List<FeedItem> oldList = Global.INSTANCE.getFeedItems();
                                 List<FeedItem> notificationItems = new ArrayList<FeedItem>();
-                                if(global.getNotificationsEnabled()) {
+                                if (Global.INSTANCE.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
                                             try {
-                                                global.getDaoFeedItem().create(feedItem);
+                                                Global.INSTANCE.getDaoFeedItem().create(feedItem);
                                             } catch (SQLException e) {
                                                 e.printStackTrace();
                                             }
@@ -254,29 +252,48 @@ public class UmbrellaUtil {
         return false;
     }
 
+    public static Map<String, String> getLanguageMap() {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("en", "English");
+        map.put("es", "Español");
+        map.put("zh", "Chinese");
+        return map;
+    }
+
+    public static CharSequence getLanguageEntryByValue(String languageValue) {
+        CharSequence[] elements = getLanguageEntryValues();
+        for (int i = 0; i < elements.length - 1; i++) {
+            if (elements[i].equals(languageValue))
+                return UmbrellaUtil.getLanguageEntries()[i];
+        }
+        return "";
+    }
+
     public static CharSequence[] getLanguageEntries() {
         List<String> languageLabels = new ArrayList<>();
         languageLabels.add("English");
         languageLabels.add("Español");
+        languageLabels.add("Chinese");
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
     public static CharSequence[] getLanguageEntryValues() {
         List<String> languageLabels = new ArrayList<>();
-        languageLabels.add("en-gb");
+        languageLabels.add("en");
         languageLabels.add("es");
+        languageLabels.add("zh");
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
     public static HashMap<String, Integer> getRefreshValues(Context context) {
-        LinkedHashMap<String, Integer> refreshInterval =new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> refreshInterval = new LinkedHashMap<>();
         refreshInterval.put(context.getString(R.string.half_hour), (int) TimeUnit.MINUTES.toMillis(30));
-        refreshInterval.put("1 "+context.getString(R.string.hour),  (int) TimeUnit.HOURS.toMillis(1));
-        refreshInterval.put("2 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(2));
-        refreshInterval.put("4 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(4));
-        refreshInterval.put("6 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(6));
-        refreshInterval.put("12 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(12));
-        refreshInterval.put("24 "+context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(24));
+        refreshInterval.put("1 " + context.getString(R.string.hour), (int) TimeUnit.HOURS.toMillis(1));
+        refreshInterval.put("2 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(2));
+        refreshInterval.put("4 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(4));
+        refreshInterval.put("6 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(6));
+        refreshInterval.put("12 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(12));
+        refreshInterval.put("24 " + context.getString(R.string.hours), (int) TimeUnit.HOURS.toMillis(24));
         refreshInterval.put(context.getString(R.string.manually), 0);
         return refreshInterval;
     }
@@ -284,12 +301,12 @@ public class UmbrellaUtil {
     public static CharSequence[] getRefreshEntries(Context context) {
         List<String> listItems = new ArrayList<>();
         listItems.add(context.getString(R.string.half_hour));
-        listItems.add("1 "+context.getString(R.string.hour));
-        listItems.add("2 "+context.getString(R.string.hours));
-        listItems.add("4 "+context.getString(R.string.hours));
-        listItems.add("6 "+context.getString(R.string.hours));
-        listItems.add("12 "+context.getString(R.string.hours));
-        listItems.add("24 "+context.getString(R.string.hours));
+        listItems.add("1 " + context.getString(R.string.hour));
+        listItems.add("2 " + context.getString(R.string.hours));
+        listItems.add("4 " + context.getString(R.string.hours));
+        listItems.add("6 " + context.getString(R.string.hours));
+        listItems.add("12 " + context.getString(R.string.hours));
+        listItems.add("24 " + context.getString(R.string.hours));
         listItems.add(context.getString(R.string.manually));
         return listItems.toArray(new CharSequence[listItems.size()]);
     }
@@ -327,9 +344,9 @@ public class UmbrellaUtil {
     public static void setMaskMode(Activity activity, boolean masked) {
         String packageName = BuildConfig.APPLICATION_ID;
         List<String> disableNames = new ArrayList<>();
-        disableNames.add("org.secfirst.umbrella.MainActivity-normal");
-        disableNames.add("org.secfirst.umbrella.MainActivity-calculator");
-        String activeName = disableNames.remove(masked ? 1 :0);
+        disableNames.add("org.secfirst.umbrella.MainActivityNormal");
+        disableNames.add("org.secfirst.umbrella.MainActivityCalculator");
+        String activeName = disableNames.remove(masked ? 1 : 0);
 
         activity.getPackageManager().setComponentEnabledSetting(
                 new ComponentName(packageName, activeName),
@@ -349,8 +366,8 @@ public class UmbrellaUtil {
     public static boolean isAppMasked(Activity activity) {
         String packageName = BuildConfig.APPLICATION_ID;
         List<String> disableNames = new ArrayList<>();
-        disableNames.add("org.secfirst.umbrella.MainActivity-normal");
-        disableNames.add("org.secfirst.umbrella.MainActivity-calculator");
+        disableNames.add("org.secfirst.umbrella.MainActivityNormal");
+        disableNames.add("org.secfirst.umbrella.MainActivityCalculator");
         for (int i = 0; i < disableNames.size(); i++) {
             try {
                 int flag = activity.getPackageManager().getComponentEnabledSetting(new ComponentName(packageName, disableNames.get(i)));
@@ -360,6 +377,25 @@ public class UmbrellaUtil {
             }
         }
         return false;
+    }
+
+    public static int getDifficultyFromString(String difficultyString) {
+        if (difficultyString.equals("advanced")) {
+            return DifficultyFragment.INTERMEDIATE + 1;
+        } else if (difficultyString.equals("expert")) {
+            return DifficultyFragment.EXPERT + 1;
+        }
+        return DifficultyFragment.BEGINNER + 1;
+    }
+
+    public static String a(int difficulty) {
+        if (difficulty == DifficultyFragment.BEGINNER) {
+            return "BEGINNER";
+        } else if (difficulty == DifficultyFragment.INTERMEDIATE) {
+            return "INTERMEDIATE";
+        } else {
+            return "EXPERT";
+        }
     }
 
 }

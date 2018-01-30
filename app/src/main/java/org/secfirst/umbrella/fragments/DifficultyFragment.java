@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,14 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.secfirst.umbrella.BaseActivity;
+import com.j256.ormlite.stmt.PreparedQuery;
+
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.util.Global;
 
 import java.sql.SQLException;
-import java.util.List;
 
 import timber.log.Timber;
 
@@ -23,9 +23,9 @@ import timber.log.Timber;
 public class DifficultyFragment extends Fragment {
 
     private static final String SECTION_NUMBER = "section_number";
-    private static final int BEGINNER = 0;
-    private static final int INTERMEDIATE = 1;
-    private static final int EXPERT = 2;
+    public static final int BEGINNER = 0;
+    public static final int INTERMEDIATE = 1;
+    public static final int EXPERT = 2;
 
     private long mSection;
 
@@ -55,62 +55,58 @@ public class DifficultyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_select, container, false);
-        Global global = ((BaseActivity) getActivity()).getGlobal();
-        try {
-            final Category childCategory = global.getDaoCategory().queryForId(String.valueOf(mSection));
-            View btnBeginner = v.findViewById(R.id.card_beginner);
-            btnBeginner.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDifficultySelected(BEGINNER);
-                }
-            });
-            View btnIntermediate = v.findViewById(R.id.card_intermediate);
-            btnIntermediate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDifficultySelected(INTERMEDIATE);
-                }
-            });
-            View btnExpert = v.findViewById(R.id.card_expert);
-            btnExpert.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onDifficultySelected(EXPERT);
-                }
-            });
-            ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
-            ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
-            ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
-            btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
-            btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
-            btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
-        } catch (SQLException e) {
-            Timber.e(e);
+        Difficulty d = getSelectedDifficulty();
+        if (d!=null && d.getSelected()>= 0 && d.getSelected()<3) {
+            onDifficultySelected(d.getSelected());
+        } else {
+            try {
+                final Category childCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(mSection));
+                View btnBeginner = v.findViewById(R.id.card_beginner);
+                btnBeginner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDifficultySelected(BEGINNER);
+                    }
+                });
+                View btnIntermediate = v.findViewById(R.id.card_intermediate);
+                btnIntermediate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDifficultySelected(INTERMEDIATE);
+                    }
+                });
+                View btnExpert = v.findViewById(R.id.card_expert);
+                btnExpert.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onDifficultySelected(EXPERT);
+                    }
+                });
+                ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
+                ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
+                ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
+                btnBeginner.setVisibility(childCategory.getDifficultyBeginner() ? View.VISIBLE : View.GONE);
+                btnIntermediate.setVisibility(childCategory.getDifficultyAdvanced() ? View.VISIBLE : View.GONE);
+                btnExpert.setVisibility(childCategory.getDifficultyExpert() ? View.VISIBLE : View.GONE);
+            } catch (SQLException e) {
+                Timber.e(e);
+            }
         }
         return v;
     }
 
     public void onDifficultySelected(int difficulty) {
-        Global global = ((BaseActivity) getActivity()).getGlobal();
-        List<Difficulty> df = null;
-        try {
-            df = global.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(mSection));
-        } catch (SQLException e) {
-            Timber.e(e);
-        }
-        Difficulty d;
-        if (df!=null && !df.isEmpty()) {
-            d = df.get(0);
+        Difficulty d = getSelectedDifficulty();
+        if (d!=null) {
             d.setSelected(difficulty);
             try {
-                global.getDaoDifficulty().update(d);
+                Global.INSTANCE.getDaoDifficulty().update(d);
             } catch (SQLException e) {
                 Timber.e(e);
             }
         } else {
             try {
-                global.getDaoDifficulty().create(new Difficulty(mSection, difficulty));
+                Global.INSTANCE.getDaoDifficulty().create(new Difficulty(mSection, difficulty));
             } catch (SQLException e) {
                 Timber.e(e);
             }
@@ -121,12 +117,12 @@ public class DifficultyFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnDifficultySelected) activity;
+            mListener = (OnDifficultySelected) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
@@ -138,7 +134,18 @@ public class DifficultyFragment extends Fragment {
     }
 
     public interface OnDifficultySelected {
-        public void onDifficultySelected(int difficulty);
+        void onDifficultySelected(int difficulty);
+    }
+
+    private Difficulty getSelectedDifficulty() {
+        Difficulty df = null;
+        try {
+            PreparedQuery<Difficulty> queryBuilder = Global.INSTANCE.getDaoDifficulty().queryBuilder().where().eq(Difficulty.FIELD_CATEGORY, mSection).prepare();
+            df = Global.INSTANCE.getDaoDifficulty().queryForFirst(queryBuilder);
+        } catch (SQLException e) {
+            Timber.e(e);
+        }
+        return df;
     }
 
 }

@@ -8,15 +8,24 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green_transparent">#AA7ADEA7</color>
     <color name="green_button">#CC9BBF2E</color>
+    <color name="green_dashboard">#9bbf2e</color>
+    <color name="grey_location">#9b9b9b</color>
     <color name="white_transparent">#CCFFFFFF</color>
 
     <color name="umbrella_green">#FF9ABE2E</color>
     <color name="umbrella_yellow">#FFF2BC2B</color>
     <color name="umbrella_purple">#FFB83657</color>
     <color name="umbrella_purple_dark">#FF8D2A43</color>
+    <color name="deep_rose">#b83657</color>
     <color name="holo_dark_selected">#6633b5e5</color>
     <color name="dashboard_light_blue">#FF76c3da</color>
     <color name="grey_600">#546e7a</color>
     <color name="background_grey">#FFF2F2F2</color>
     <color name="black">#FF000000</color>
+    <color name="coachmark_background_dark">#BB000000</color>
+    <color name="coachmark_focal_background">#AAF2BC2B</color>
+    <color name="feed_list_site_name">#828282</color>
+    <color name="device_shake_sick_green">#9bbf2e</color>
+    <color name="hands_shake_color">#4a4a4a</color>
+    <color name="hands_shake_info_text_color">#9b9b9b</color>
 </resources>

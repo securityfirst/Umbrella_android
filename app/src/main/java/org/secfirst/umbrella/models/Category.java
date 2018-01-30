@@ -54,7 +54,7 @@ public class Category implements Serializable {
         return parent;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -96,6 +96,29 @@ public class Category implements Serializable {
 
     public String getTextBeginner() {
         return textBeginner;
+    }
+
+    public void setTextBeginner(String textBeginner) {
+        this.textBeginner = textBeginner;
+        if (!textBeginner.equals("")) this.difficultyBeginner = 1;
+    }
+
+    public void setTextAdvanced(String textAdvanced) {
+        this.textAdvanced = textAdvanced;
+        if (!textAdvanced.equals("")) this.difficultyAdvanced = 1;
+    }
+
+    public void setTextExpert(String textExpert) {
+        this.textExpert = textExpert;
+        if (!textExpert.equals("")) this.difficultyExpert = 1;
+    }
+
+    public int getHasDifficulty() {
+        return hasDifficulty;
+    }
+
+    public void setHasDifficulty(int hasDifficulty) {
+        this.hasDifficulty = hasDifficulty;
     }
 
     public boolean hasDifficulty() {

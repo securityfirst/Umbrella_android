@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.secfirst.umbrella.util.Global;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import timber.log.Timber;
 
@@ -21,8 +22,10 @@ public class FormScreen {
     @DatabaseField(foreign = true, foreignAutoRefresh = true)
     private Form form;
     @DatabaseField(columnName = FIELD_TITLE)
-    @SerializedName("title")
+    @SerializedName("name")
     String title;
+    @DatabaseField(persisted = false)
+    ArrayList<FormItem> itemArrayList;
     @ForeignCollectionField
     ForeignCollection<FormItem> items;
 
@@ -35,6 +38,15 @@ public class FormScreen {
     public FormScreen(String title, Form form) {
         this.title = title;
         this.form = form;
+    }
+
+    public ArrayList<FormItem> getItemArrayList() {
+        if (itemArrayList==null) itemArrayList = new ArrayList<>();
+        return itemArrayList;
+    }
+
+    public void setItemArrayList(ArrayList<FormItem> itemArrayList) {
+        this.itemArrayList = itemArrayList;
     }
 
     public int get_id() {
@@ -57,10 +69,10 @@ public class FormScreen {
         this.items = items;
     }
 
-    public Form getForm(Global global) {
-        if (global!=null && form!=null && form.get_id()!=0) {
+    public Form getForm() {
+        if (form!=null && form.get_id()!=0) {
             try {
-                form = global.getDaoForm().queryForId(String.valueOf(form.get_id()));
+                form = Global.INSTANCE.getDaoForm().queryForId(String.valueOf(form.get_id()));
             } catch (SQLException e) {
                 Timber.e(e);
             }

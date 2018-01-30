@@ -21,18 +21,18 @@ import timber.log.Timber;
 public class UmbrellaRestClient {
 
     private static final String BASE_URL = "https://api.secfirst.org";
-    private static final String VERSION = "v1";
+    private static final String VERSION = "v3";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static AsyncHttpClient getClientForApiUpdates(Context context) {
         String[] pins = new String[] {
-                "1212959a1fd001c80d152b1ee0410bbf90d1323e",
-                "636c2f348d1a6a698c2bf17c3f6b3ee35c816f92"
+                "da9b52a8771169d31318a567e1dc9b1f44b5b35c"
         };
         try {
             client.setSSLSocketFactory(new PinningSSLSocketFactory(context ,pins, 0));
             client.addHeader("Accept-Language", Locale.getDefault().toString());
+            client.addHeader("X-Tent-Language", Locale.getDefault().toString());
         } catch (UnrecoverableKeyException | KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
             Timber.e(e);
         }
@@ -42,6 +42,10 @@ public class UmbrellaRestClient {
     public static void get(String url, RequestParams params, String token, Context context, AsyncHttpResponseHandler responseHandler) {
         client = getClientForApiUpdates(context);
         if (isRequestReady(context, token)) client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    private static boolean isRequestReady(Context context) {
+        return isRequestReady(context, null);
     }
 
     private static boolean isRequestReady(Context context, String token) {

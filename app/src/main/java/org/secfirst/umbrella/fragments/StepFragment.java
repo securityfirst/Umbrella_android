@@ -68,8 +68,6 @@ public class StepFragment extends Fragment implements Step {
     private Long sessionId;
     private Form form;
 
-    Global global;
-
     ProgressBar progressBar;
     LinearLayout formHolder;
 
@@ -91,7 +89,6 @@ public class StepFragment extends Fragment implements Step {
         if (context instanceof OnNavigationBarListener) {
             onNavigationBarListener = (OnNavigationBarListener) context;
         }
-        global = (Global) context.getApplicationContext();
     }
 
     @Override
@@ -123,8 +120,8 @@ public class StepFragment extends Fragment implements Step {
         for (int i = 0; i < fsc.getItems().size(); i++) {
             FormItem formItem = new ArrayList<>(fsc.getItems()).get(i);
             try {
-                PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
-                formItem.setValues(global.getDaoFormValue().query(queryBuilder));
+                PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                formItem.setValues(Global.INSTANCE.getDaoFormValue().query(queryBuilder));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -132,14 +129,14 @@ public class StepFragment extends Fragment implements Step {
                 case "label":
                     if (!formItem.getTitle().equals("")) {
                         TextView tvTextInput = new TextView(getContext());
-                        tvTextInput.setText(Html.fromHtml(Jsoup.clean(formItem.getTitle(), Whitelist.simpleText())));
+                        tvTextInput.setText(Html.fromHtml(Jsoup.clean(formItem.getLabel(), Whitelist.simpleText())));
                         formHolder.addView(tvTextInput);
                     }
                     break;
                 case "text_input":
                     if (!formItem.getTitle().equals("")) {
                         TextView tvTextInput = new TextView(getContext());
-                        tvTextInput.setText(formItem.getTitle());
+                        tvTextInput.setText(formItem.getLabel());
                         formHolder.addView(tvTextInput);
                     }
 
@@ -153,7 +150,7 @@ public class StepFragment extends Fragment implements Step {
                 case "text_area":
                     if (!formItem.getTitle().equals("")) {
                         TextView taTextInput = new TextView(getContext());
-                        taTextInput.setText(formItem.getTitle());
+                        taTextInput.setText(formItem.getLabel());
                         formHolder.addView(taTextInput);
                     }
 
@@ -167,7 +164,7 @@ public class StepFragment extends Fragment implements Step {
                 case "multiple_choice":
                     if (!formItem.getTitle().equals("")) {
                         TextView mcTextInput = new TextView(getContext());
-                        mcTextInput.setText(formItem.getTitle());
+                        mcTextInput.setText(formItem.getLabel());
                         formHolder.addView(mcTextInput);
                     }
                     List<String> mcValList = new ArrayList<>();
@@ -188,7 +185,7 @@ public class StepFragment extends Fragment implements Step {
                 case "single_choice":
                     if (!formItem.getTitle().equals("")) {
                         TextView scTextInput = new TextView(getContext());
-                        scTextInput.setText(formItem.getTitle());
+                        scTextInput.setText(formItem.getLabel());
                         formHolder.addView(scTextInput);
                     }
                     List<String> scValList = new ArrayList<>();
@@ -209,7 +206,7 @@ public class StepFragment extends Fragment implements Step {
                 case "toggle_button":
                     if (!formItem.getTitle().equals("")) {
                         TextView toTextInput = new TextView(getContext());
-                        toTextInput.setText(formItem.getTitle());
+                        toTextInput.setText(formItem.getLabel());
                         formHolder.addView(toTextInput);
                     }
                     for (FormOption formOption : formItem.getOptions()) {
@@ -286,13 +283,13 @@ public class StepFragment extends Fragment implements Step {
 
     private void upsertFormValue(FormValue formValue, FormItem formItem) {
         try {
-            PreparedQuery<FormValue> queryBuilder = global.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, formValue.getSessionID()).and().eq(FormValue.FIELD_FORM_ITEM_ID, formValue.getFormId()).prepare();
-            FormValue exists = global.getDaoFormValue().queryForFirst(queryBuilder);
+            PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, formValue.getSessionID()).and().eq(FormValue.FIELD_FORM_ITEM_ID, formValue.getFormId()).prepare();
+            FormValue exists = Global.INSTANCE.getDaoFormValue().queryForFirst(queryBuilder);
             if (exists!=null && exists.get_id()>0) {
                 exists.setValue(formValue.getValue());
-                global.getDaoFormValue().update(exists);
+                Global.INSTANCE.getDaoFormValue().update(exists);
             } else {
-                global.getDaoFormValue().create(formValue);
+                Global.INSTANCE.getDaoFormValue().create(formValue);
                 formItem.addValue(formValue);
             }
         } catch (SQLException e) {

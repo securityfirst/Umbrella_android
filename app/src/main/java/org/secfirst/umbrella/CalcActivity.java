@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import com.squareup.seismic.ShakeDetector;
@@ -173,11 +174,10 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
         binding.buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(binding.editText.getText().length() > 0) {
+                if (binding.editText.getText().length() > 0) {
                     CharSequence currentText = binding.editText.getText();
-                    binding.editText.setText(currentText.subSequence(0, currentText.length()-1));
-                }
-                else {
+                    binding.editText.setText(currentText.subSequence(0, currentText.length() - 1));
+                } else {
                     valueOne = Double.NaN;
                     valueTwo = Double.NaN;
                     binding.editText.setText("");
@@ -188,7 +188,7 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     private void computeCalculation() {
-        if(!Double.isNaN(valueOne)) {
+        if (!Double.isNaN(valueOne)) {
             try {
                 valueTwo = Double.parseDouble(binding.editText.getText().toString());
             } catch (NumberFormatException e) {
@@ -196,20 +196,18 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
             }
             binding.editText.setText(null);
 
-            if(CURRENT_ACTION == ADDITION)
+            if (CURRENT_ACTION == ADDITION)
                 valueOne = this.valueOne + valueTwo;
-            else if(CURRENT_ACTION == SUBTRACTION)
+            else if (CURRENT_ACTION == SUBTRACTION)
                 valueOne = this.valueOne - valueTwo;
-            else if(CURRENT_ACTION == MULTIPLICATION)
+            else if (CURRENT_ACTION == MULTIPLICATION)
                 valueOne = this.valueOne * valueTwo;
-            else if(CURRENT_ACTION == DIVISION)
+            else if (CURRENT_ACTION == DIVISION)
                 valueOne = this.valueOne / valueTwo;
-        }
-        else {
+        } else {
             try {
                 valueOne = Double.parseDouble(binding.editText.getText().toString());
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 Timber.e(e);
             }
         }
@@ -218,7 +216,7 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
     @Override
     protected void onResume() {
         super.onResume();
-        if (sd==null) sd = new ShakeDetector(this);
+        if (sd == null) sd = new ShakeDetector(this);
         sd.start((SensorManager) getSystemService(SENSOR_SERVICE));
         sd.setSensitivity(ShakeDetector.SENSITIVITY_HARD);
     }
@@ -226,7 +224,7 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
     @Override
     protected void onPause() {
         super.onPause();
-        if (sd!=null) sd.stop();
+        if (sd != null) sd.stop();
     }
 
     @Override
@@ -236,5 +234,6 @@ public class CalcActivity extends AppCompatActivity implements ShakeDetector.Lis
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i);
         finish();
+        Log.e("test", "hearShake - CalcActivity");
     }
 }
