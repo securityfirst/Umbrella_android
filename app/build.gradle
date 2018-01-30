@@ -4,6 +4,10 @@ apply plugin: 'witness'
 apply plugin: 'io.fabric'
 
 android {
+    signingConfigs {
+        release {
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion '26.0.2'
     dataBinding.enabled = true
@@ -24,11 +28,13 @@ android {
         release {
             debuggable false
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ext.enableCrashlytics = false
         }
         debug {
             debuggable true
+            signingConfig signingConfigs.debug
             minifyEnabled false
             ext.enableCrashlytics = false
         }
@@ -45,6 +51,25 @@ android {
             assets.srcDirs = ['assets']
         }
     }
+}
+
+def Properties props = new Properties()
+def propFile = new File('keystore.properties')
+if (propFile.canRead()) {
+    props.load(new FileInputStream(propFile))
+    if (props != null && props.containsKey('storeFile') && props.containsKey('storePassword') &&
+            props.containsKey('keyAlias') && props.containsKey('keyPassword')) {
+        android.signingConfigs.release.storeFile = file(props['storeFile'])
+        android.signingConfigs.release.storePassword = props['storePassword']
+        android.signingConfigs.release.keyAlias = props['keyAlias']
+        android.signingConfigs.release.keyPassword = props['keyPassword']
+    } else {
+        println 'signing.properties found but some entries are missing'
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println 'signing.properties not found'
+    android.buildTypes.release.signingConfig = null
 }
 
 dependencies {
