@@ -1,0 +1,16 @@
+{
+  "feed": {
+    "items": [
+        { "link":"https://www.wired.com/feed/category/security/latest/rss"},
+        { "link":"https://threatpost.com/feed/"},
+        { "link":"https://krebsonsecurity.com/feed/"},
+        { "link":"Ford"},
+        { "link":"http://feeds.feedburner.com/NakedSecurity"},
+        { "link":"http://feeds.bbci.co.uk/news/world/rss.xml?edition=uk"},
+        { "link":"http://rss.cnn.com/rss/edition.rss"},
+        { "link":"https://www.aljazeera.com/xml/rss/all.xml"},
+        { "link":"http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml"},
+        { "link":"https://www.theguardian.com/world/rss"}
+    ]
+  }
+}
