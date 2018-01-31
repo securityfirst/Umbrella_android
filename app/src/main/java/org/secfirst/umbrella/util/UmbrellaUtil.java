@@ -211,7 +211,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+global.getFeedItemsRefreshed();
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+Global.INSTANCE.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -224,7 +224,7 @@ public class UmbrellaUtil {
                             if (receivedItems != null && !receivedItems.isEmpty()) {
                                 List<FeedItem> oldList = Global.INSTANCE.getFeedItems();
                                 List<FeedItem> notificationItems = new ArrayList<FeedItem>();
-                                if (global.getNotificationsEnabled()) {
+                                if (Global.INSTANCE.getNotificationsEnabled()) {
                                     for (FeedItem feedItem : receivedItems) {
                                         if (!oldList.contains(feedItem)) {
                                             try {

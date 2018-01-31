@@ -119,7 +119,7 @@ dependencies {
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
     compile 'com.mobsandgeeks:android-saripaar:2.0.3'
-compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true
     }
 
