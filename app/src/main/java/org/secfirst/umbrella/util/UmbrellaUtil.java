@@ -211,7 +211,7 @@ public class UmbrellaUtil {
                         sb.append(separator).append(item.getValue());
                     }
                     String sources = sb.substring(separator.length());
-                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since="+Global.INSTANCE.getFeedItemsRefreshed();
+                    String mUrl = "feed?country=" + selISO2.getValue() + "&sources=" + sources + "&since=" + Global.INSTANCE.getFeedItemsRefreshed();
                     UmbrellaRestClient.get(mUrl, null, "", context, new JsonHttpResponseHandler() {
 
                         @Override
@@ -403,6 +403,17 @@ public class UmbrellaUtil {
             return "INTERMEDIATE";
         } else {
             return "EXPERT";
+        }
+    }
+
+    public static String inputStreamToString(InputStream inputStream) {
+        try {
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, bytes.length);
+            String json = new String(bytes);
+            return json;
+        } catch (IOException e) {
+            return null;
         }
     }
 

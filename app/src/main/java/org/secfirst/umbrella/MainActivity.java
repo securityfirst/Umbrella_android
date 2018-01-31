@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
@@ -36,9 +37,12 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.RSS;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +78,17 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         header = View.inflate(this, R.layout.drawer_header, null);
         loginHeader = header.findViewById(R.id.login_header);
         drawerList.addHeaderView(header);
+
+
+        try {
+            InputStream is = getAssets().open("default_rss_feed.json");
+            String test = UmbrellaUtil.inputStreamToString(is);
+            RSS rss = new Gson().fromJson(test, RSS.class);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
