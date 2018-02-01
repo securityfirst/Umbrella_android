@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
-    <!-- A CardView that contains a TextView -->
+    android:padding="8dp"
+    tools:ignore="MissingPrefix">
+    
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="@dimen/article_rss_biggest_height"
         android:layout_gravity="center"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="@dimen/article_rss_smallest_margin_bottom"
         card_view:cardCornerRadius="@dimen/feed_empty_card_view">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/article_rss_biggest_height"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -24,60 +26,83 @@
                 <ImageView
                     android:id="@+id/article_item_image"
                     android:layout_width="match_parent"
-                    android:layout_height="176dp" />
+                    android:layout_height="@dimen/article_rss_big_height" />
 
                 <TextView
                     android:id="@+id/article_item_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/article_item_image"
-                    android:layout_marginLeft="16dp"
+                    android:layout_marginLeft="@dimen/article_rss_smallest_margin_left"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="Top 10 Australian Beaches"
                     android:textColor="@color/white"
-                    android:textSize="24sp" />
+                    android:textSize="@dimen/text_size_large" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginLeft="@dimen/article_rss_smallest_margin_left"
+                android:layout_marginTop="@dimen/article_rss_smallest_margin_top"
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/article_item_author"
+                    fontPath="fonts/Roboto-Medium.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/article_item_last_update"
+                    fontPath="fonts/Roboto-Regular.ttf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_like_extremely_small" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/article_rss_smallest_height"
+                    android:background="@color/white_transparent"
+                    android:textColor="@color/black" />
+
+                <TextView
                     android:id="@+id/article_item_description"
+                    fontPath="fonts/Roboto-Regular.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:text="Number 10" />
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_like_small" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginLeft="@dimen/article_rss_smallest_margin_left"
+                android:layout_marginTop="@dimen/article_rss_big_margin_top"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/article_item_share_text"
-                    android:layout_width="50dp"
+                    android:layout_width="@dimen/article_rss_normal_width"
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:focusable="true"
-                    android:text="SHARE"
-                    android:textColor="#21449e" />
+                    android:text="@string/share"
+                    fontPath="fonts/Roboto-Regular.ttf"
+                    android:textColor="@color/blue" />
 
                 <TextView
                     android:id="@+id/article_item_lean_more_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:text="LEARN MORE"
-                    android:textColor="#21449e" />
+                    android:layout_marginLeft="@dimen/article_rss_big_margin_left"
+                    android:textColor="@color/blue"
+                    fontPath="fonts/Roboto-Regular.ttf"
+                    android:text="@string/learn_more"/>
 
             </LinearLayout>
         </LinearLayout>

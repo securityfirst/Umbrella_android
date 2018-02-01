@@ -117,8 +117,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
                         @Override
                         public void onTaskCompleted(List<CustomFeed> customFeeds) {
                             if (!customFeeds.isEmpty()) {
-                                mCustomFeeds.get(getLayoutPosition()).setFeed(customFeeds.get(0).getFeed());
-                                openArticleFragment(view);
+                                openArticleFragment(view, customFeeds);
                             }
                         }
 
@@ -136,11 +135,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
         }
 
 
-        private void openArticleFragment(View view) {
+        private void openArticleFragment(View view, List<CustomFeed> customFeeds) {
             AppCompatActivity activity = (AppCompatActivity) view.getContext();
             activity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.rss_container, ArticleFragment.newInstance
-                            (mCustomFeeds.get(getLayoutPosition()).getFeed()))
+                            (customFeeds.get(0).getFeed()))
                     .addToBackStack(null)
                     .commit();
         }

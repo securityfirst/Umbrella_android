@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.util.ShareContentUtil;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 import org.secfirst.umbrella.util.WebViewDialog;
 
 import java.util.List;
@@ -46,8 +48,13 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RSSItem>
     @Override
     public void onBindViewHolder(final ArticleAdapter.RSSItem holder, final int position) {
         Item item = mArticleItems.get(position);
+        String reportDate = UmbrellaUtil.convertDateToString(item.getPublicationDate());
+        String description = Html.fromHtml(item.getDescription()).toString();
+
         holder.articleTitle.setText(item.getTitle());
-        holder.articleDescription.setText(item.getDescription());
+        holder.articleDescription.setText(description);
+        holder.articleAuthor.setText(item.getAuthor());
+        holder.articleLastUpdate.setText(reportDate);
         Picasso.with(mContext)
                 .load(item.getImageLink())
                 .resize(344, 176)
@@ -67,6 +74,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RSSItem>
         public ImageView articleImage;
         public TextView articleShare;
         public TextView articleLeanMore;
+        public TextView articleAuthor;
+        public TextView articleLastUpdate;
 
         RSSItem(View view) {
             super(view);
@@ -76,6 +85,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RSSItem>
             articleShare = view.findViewById(R.id.article_item_share_text);
             articleLeanMore = view.findViewById(R.id.article_item_lean_more_text);
             articleImage = view.findViewById(R.id.article_item_image);
+            articleAuthor = view.findViewById(R.id.article_item_author);
+            articleLastUpdate = view.findViewById(R.id.article_item_last_update);
 
             articleShare.setOnClickListener(this);
             articleLeanMore.setOnClickListener(this);

@@ -198,4 +198,7 @@
     <string name="rss_custom_remove_item">removed from list!</string>
     <string name="undo">UNDO</string>
     <string name="rss_error_load_feed">There is a problem to load your RSS.</string>
+    <string name="custom_rss_by">By</string>
+    <string name="learn_more">LEARN MORE</string>
+    <string name="share">SHARE</string>
 </resources>

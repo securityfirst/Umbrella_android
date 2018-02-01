@@ -2,12 +2,14 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="text_size_xlarge">26sp</dimen>
     <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_like_extremely_small">11sp</dimen>
     <dimen name="text_size_larger">22sp</dimen>
     <dimen name="text_size_normal">20sp</dimen>
     <dimen name="text_size_smaller">18sp</dimen>
     <dimen name="text_size_small">16sp</dimen>
     <dimen name="text_size_smallest">14sp</dimen>
     <dimen name="text_size_like_really_small">12sp</dimen>
+    <dimen name="text_size_like_small">13sp</dimen>
     <dimen name="fab_size">56dp</dimen>
     <dimen name="button_elevation">2dp</dimen>
     <dimen name="button_press_elevation">4dp</dimen>
@@ -178,6 +180,17 @@
     <dimen name="custom_normal_rss_width">30dp</dimen>
     <dimen name="custom_normal_rss_big_margin_top">15dp</dimen>
     <dimen name="title_size">13sp</dimen>
+
+    <!--Article Feed-->
+    <dimen name="article_rss_biggest_height">320dp</dimen>
+    <dimen name="article_rss_smallest_margin_bottom">2dp</dimen>
+    <dimen name="article_rss_big_height">176dp</dimen>
+    <dimen name="article_rss_smallest_margin_left">16dp</dimen>
+    <dimen name="article_rss_smallest_margin_top">5dp</dimen>
+    <dimen name="article_rss_smallest_height">10dp</dimen>
+    <dimen name="article_rss_big_margin_top">20dp</dimen>
+    <dimen name="article_rss_normal_width">50dp</dimen>
+    <dimen name="article_rss_big_margin_left">20dp</dimen>
 
 
 </resources>
