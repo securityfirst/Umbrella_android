@@ -1,10 +1,14 @@
 package org.secfirst.umbrella.rss.feed;
 
 import com.einmalfel.earl.Item;
+import com.google.gson.Gson;
 
+import org.secfirst.umbrella.models.RSS;
 import org.secfirst.umbrella.rss.RSSFeedService;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -37,7 +41,7 @@ public class FeedPresenter implements FeedContract.Presenter {
     }
 
     @Override
-    public void loadFeed(final String url) {
+    public void loadFeed(final String... urls) {
         RSSFeedService rssFeedService = new RSSFeedService();
         rssFeedService.onFinish(new RSSFeedService.RSSEvent() {
             @Override
@@ -46,9 +50,11 @@ public class FeedPresenter implements FeedContract.Presenter {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed customFeed) {
-                mViewRss.finishLoadFeed(cleanMalformedArticles(customFeed));
-                saveFeed(customFeed);
+            public void onTaskCompleted(List<CustomFeed> customFeeds) {
+//                for (CustomFeed customFeed : customFeeds) {
+//                    saveFeed(customFeed);
+//                }
+                mViewRss.finishLoadFeed(customFeeds);
             }
 
             @Override
@@ -56,7 +62,20 @@ public class FeedPresenter implements FeedContract.Presenter {
                 mViewRss.errorLoadFeed();
             }
         });
-        rssFeedService.execute(url);
+
+        rssFeedService.execute(urls);
+    }
+
+    @Override
+    public void saveFeed(List<CustomFeed> customFeeds) {
+        try {
+            for (CustomFeed customFeed : customFeeds) {
+                Global.INSTANCE.getDaoRSS().
+                        createIfNotExists(customFeed);
+            }
+        } catch (SQLException e) {
+            mViewRss.errorSaveFeed();
+        }
     }
 
     @Override
@@ -77,15 +96,28 @@ public class FeedPresenter implements FeedContract.Presenter {
         return customFeeds;
     }
 
-    private CustomFeed cleanMalformedArticles(CustomFeed customFeed) {
-        for (Item item : customFeed.getFeed().getItems()) {
-            if (item.getTitle() == null || item.getDescription() == null) {
-                customFeed.getFeed().getItems().remove(item);
-            } else if (item.getTitle().equalsIgnoreCase("")
-                    || item.getDescription().equalsIgnoreCase("")) {
-                customFeed.getFeed().getItems().remove(item);
+    @Override
+    public String[] getDefaultFeedUrl(InputStream inputStream) {
+        String test = UmbrellaUtil.inputStreamToString(inputStream);
+        RSS rss = new Gson().fromJson(test, RSS.class);
+        String[] urls = new String[rss.getFeed().getItems().size()];
+        for (int i = 0; i < rss.getFeed().getItems().size(); i++) {
+            urls[i] = rss.getFeed().getItems().get(i).getLink();
+        }
+        return urls;
+    }
+
+    private List<CustomFeed> cleanMalformedArticles(List<CustomFeed> customFeeds) {
+        for (CustomFeed customFeed : customFeeds) {
+            for (Item item : customFeed.getFeed().getItems()) {
+                if (item.getTitle() == null || item.getDescription() == null) {
+                    customFeed.getFeed().getItems().remove(item);
+                } else if (item.getTitle().equalsIgnoreCase("")
+                        || item.getDescription().equalsIgnoreCase("")) {
+                    customFeed.getFeed().getItems().remove(item);
+                }
             }
         }
-        return customFeed;
+        return customFeeds;
     }
 }

@@ -35,6 +35,13 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
         notifyItemInserted(mCustomFeeds.size() - 1);
     }
 
+    public void add(List<CustomFeed> channels) {
+        for (CustomFeed customFeed : channels) {
+            mCustomFeeds.add(customFeed);
+            notifyItemInserted(mCustomFeeds.size() - 1);
+        }
+    }
+
     public boolean isEmpty() {
         return false;
     }
@@ -108,10 +115,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
                         }
 
                         @Override
-                        public void onTaskCompleted(CustomFeed feed) {
-                            mCustomFeeds.get(getLayoutPosition()).setFeed(feed.getFeed());
-                            openArticleFragment(view);
-
+                        public void onTaskCompleted(List<CustomFeed> customFeeds) {
+                            if (!customFeeds.isEmpty()) {
+                                mCustomFeeds.get(getLayoutPosition()).setFeed(customFeeds.get(0).getFeed());
+                                openArticleFragment(view);
+                            }
                         }
 
                         @Override

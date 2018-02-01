@@ -19,8 +19,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.models.RSS;
 import org.secfirst.umbrella.util.RecyclerItemTouchHelper;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,20 +64,9 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
         setUpRecycleView(view);
         mRssProgress = view.findViewById(R.id.rss_indeterminate_bar);
         mCoordinatorLayout = view.findViewById(R.id.rss_coordinator_layout);
+        loadDefaultFeeds();
 
         return view;
-    }
-
-
-    private void setUpRecycleView(View view) {
-        RecyclerView channelRecyclerView = view.findViewById(R.id.channel_recycler_view);
-        channelRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        channelRecyclerView.setLayoutManager(mLayoutManager);
-        channelRecyclerView.setAdapter(mChannelAdapter);
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
-        // attaching the touch helper to recycler view
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(channelRecyclerView);
     }
 
     @Override
@@ -101,6 +93,12 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mChannelAdapter.clear();
+    }
+
+    @Override
     public void setPresenter(@NonNull FeedContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter, "FeedPresenter cannot be null!");
     }
@@ -112,10 +110,10 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
 
 
     @Override
-    public void finishLoadFeed(CustomFeed customFeed) {
+    public void finishLoadFeed(List<CustomFeed> customFeeds) {
         mRssProgress.setVisibility(View.INVISIBLE);
-        mChannelAdapter.add(customFeed);
-        mPresenter.saveFeed(customFeed);
+        mChannelAdapter.add(customFeeds);
+        mPresenter.saveFeed(customFeeds);
     }
 
     @Override
@@ -136,8 +134,8 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
 
     @Override
     public void showFeeds(List<CustomFeed> customFeeds) {
-        for (CustomFeed feed : customFeeds) {
-            mChannelAdapter.add(feed);
+        for (CustomFeed customFeed : customFeeds) {
+            mChannelAdapter.add(customFeed);
         }
     }
 
@@ -166,6 +164,30 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
             });
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
+        }
+    }
+
+    private void setUpRecycleView(View view) {
+        RecyclerView channelRecyclerView = view.findViewById(R.id.channel_recycler_view);
+        channelRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        channelRecyclerView.setLayoutManager(mLayoutManager);
+        channelRecyclerView.setAdapter(mChannelAdapter);
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+        // attaching the touch helper to recycler view
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(channelRecyclerView);
+    }
+
+    private void loadDefaultFeeds() {
+        if (!RSS.isLoadedDefault(getActivity())) {
+            InputStream inputStream;
+            try {
+                inputStream = getActivity().getAssets().open(RSS.FILE_NAME);
+                String[] urls = mPresenter.getDefaultFeedUrl(inputStream);
+                mPresenter.loadFeed(urls);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

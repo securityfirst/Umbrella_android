@@ -3,6 +3,7 @@ package org.secfirst.umbrella.rss.feed;
 import org.secfirst.umbrella.BasePresenter;
 import org.secfirst.umbrella.BaseView;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public interface FeedContract {
 
         void setLoadingIndicator();
 
-        void finishLoadFeed(CustomFeed customFeed);
+        void finishLoadFeed(List<CustomFeed> customFeeds);
 
         void errorLoadFeed();
 
@@ -30,10 +31,14 @@ public interface FeedContract {
 
         void removeFeed(CustomFeed customFeed);
 
-        void loadFeed(String url);
+        void loadFeed(String... urls);
+
+        void saveFeed(List<CustomFeed> customFeeds);
 
         void saveFeed(CustomFeed customFeed);
 
         List<CustomFeed> getFeeds();
+
+        String[] getDefaultFeedUrl(InputStream inputStream);
     }
 }
