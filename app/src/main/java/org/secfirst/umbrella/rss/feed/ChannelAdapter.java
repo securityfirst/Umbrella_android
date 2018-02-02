@@ -1,7 +1,8 @@
 package org.secfirst.umbrella.rss.feed;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,11 +23,12 @@ import java.util.List;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChannel> {
 
+    private final Context mContext;
     private List<CustomFeed> mCustomFeeds;
 
-
-    public ChannelAdapter(@NonNull List<CustomFeed> customFeeds) {
+    public ChannelAdapter(@NonNull List<CustomFeed> customFeeds, Context context) {
         this.mCustomFeeds = customFeeds;
+        this.mContext = context;
     }
 
 
@@ -136,12 +138,15 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
 
 
         private void openArticleFragment(View view, List<CustomFeed> customFeeds) {
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-            activity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.rss_container, ArticleFragment.newInstance
-                            (customFeeds.get(0).getFeed()))
-                    .addToBackStack(null)
-                    .commit();
+//            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+//            activity.getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.rss_container, ArticleFragment.newInstance
+//                            (customFeeds.get(0).getFeed()))
+//                    .addToBackStack(null)
+//                    .commit();
+            Intent intent = new Intent(view.getContext(), ArticleActivity.class);
+            ChannelAdapter.this.mContext.startActivity(intent);
+
         }
     }
 }

@@ -40,6 +40,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     private FeedContract.Presenter mPresenter;
     private ProgressBar mRssProgress;
     private CoordinatorLayout mCoordinatorLayout;
+    private FloatingActionButton mAddFeedButton;
 
     public ChannelFragment() {
         // Required empty public constructor
@@ -58,14 +59,13 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_custom_rss, container, false);
         mPresenter = new FeedPresenter(this);
-        FloatingActionButton mAddFeedButton = view.findViewById(R.id.add_feed_btn);
+        mAddFeedButton = view.findViewById(R.id.add_feed_btn);
         mAddFeedButton.setOnClickListener(this);
-        mChannelAdapter = new ChannelAdapter(new ArrayList<CustomFeed>());
+        mChannelAdapter = new ChannelAdapter(new ArrayList<CustomFeed>(),getActivity());
         setUpRecycleView(view);
         mRssProgress = view.findViewById(R.id.rss_indeterminate_bar);
         mCoordinatorLayout = view.findViewById(R.id.rss_coordinator_layout);
         loadDefaultFeeds();
-
         return view;
     }
 
@@ -73,6 +73,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     public void onResume() {
         super.onResume();
         mPresenter.start();
+        mAddFeedButton.setVisibility(View.VISIBLE);
     }
 
     @Override

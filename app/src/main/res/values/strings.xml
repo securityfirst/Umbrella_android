@@ -201,4 +201,8 @@
     <string name="custom_rss_by">By</string>
     <string name="learn_more">LEARN MORE</string>
     <string name="share">SHARE</string>
+    <string name="title_activity_article">ArticleActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>
