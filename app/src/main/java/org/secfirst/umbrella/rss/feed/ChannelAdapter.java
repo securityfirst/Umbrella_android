@@ -138,15 +138,9 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.RSSChann
 
 
         private void openArticleFragment(View view, List<CustomFeed> customFeeds) {
-//            AppCompatActivity activity = (AppCompatActivity) view.getContext();
-//            activity.getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.rss_container, ArticleFragment.newInstance
-//                            (customFeeds.get(0).getFeed()))
-//                    .addToBackStack(null)
-//                    .commit();
+            ArticleActivity.mCustomFeed = customFeeds.get(0);
             Intent intent = new Intent(view.getContext(), ArticleActivity.class);
-            ChannelAdapter.this.mContext.startActivity(intent);
-
+            view.getContext().startActivity(intent);
         }
     }
 }

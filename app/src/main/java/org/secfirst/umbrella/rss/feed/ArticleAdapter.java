@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.einmalfel.earl.Feed;
 import com.einmalfel.earl.Item;
 import com.squareup.picasso.Picasso;
 
@@ -33,8 +32,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RSSItem>
     private final List<? extends Item> mArticleItems;
     private Context mContext;
 
-    public ArticleAdapter(@NonNull Feed feed) {
-        this.mArticleItems = feed.getItems();
+    public ArticleAdapter(@NonNull CustomFeed customFeed) {
+        this.mArticleItems = customFeed.getFeed().getItems();
     }
 
     @Override
