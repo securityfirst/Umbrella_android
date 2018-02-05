@@ -42,6 +42,12 @@ public class CustomFeedAdapter extends RecyclerView.Adapter<CustomFeedAdapter.RS
         notifyItemInserted(mCustomFeeds.size() - 1);
     }
 
+    public void reload() {
+        List<CustomFeed> customFeedList = mCustomFeeds;
+        clear();
+        add(customFeedList);
+    }
+
     public void add(List<CustomFeed> channels) {
         for (CustomFeed customFeed : channels) {
             mCustomFeeds.add(customFeed);
@@ -76,6 +82,7 @@ public class CustomFeedAdapter extends RecyclerView.Adapter<CustomFeedAdapter.RS
 
     public void cleanSelectedFeeds() {
         mSelectedFeeds = new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     public void addSelectedFeeds(CustomFeed customFeed) {

@@ -70,16 +70,21 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
         mRssProgress = view.findViewById(R.id.rss_indeterminate_bar);
         mCoordinatorLayout = view.findViewById(R.id.rss_coordinator_layout);
         loadDefaultFeeds();
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mPresenter.start();
-        mAddFeedButton.setVisibility(View.VISIBLE);
+
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mPresenter.start();
+    }
 
     @Override
     public void onClick(View view) {
@@ -259,10 +264,12 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
         @Override
         public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
+
                 case R.id.action_rss_delete:
                     for (CustomFeed feed : mFeedAdapter.getSelectedFeeds()) {
                         mFeedAdapter.remove(feed);
                         mPresenter.removeFeed(feed);
+                        mActionMode.finish();
                     }
                     return true;
                 case R.id.action_rss_share:

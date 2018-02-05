@@ -51,9 +51,6 @@ public class FeedPresenter implements FeedContract.Presenter {
 
             @Override
             public void onTaskCompleted(List<CustomFeed> customFeeds) {
-//                for (CustomFeed customFeed : customFeeds) {
-//                    saveFeed(customFeed);
-//                }
                 mViewRss.finishLoadFeed(cleanMalformedArticles(customFeeds));
             }
 
