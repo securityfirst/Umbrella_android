@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.rss;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
@@ -23,7 +24,6 @@ public class RSSFeedService extends AsyncTask<String, Void, List<CustomFeed>> {
     @Override
     protected List<CustomFeed> doInBackground(String... urls) {
         InputStream inputStream;
-
         List<CustomFeed> customFeeds = new ArrayList<>();
         Feed feed;
         try {
@@ -56,6 +56,7 @@ public class RSSFeedService extends AsyncTask<String, Void, List<CustomFeed>> {
     protected void onProgressUpdate(Void... values) {
         super.onProgressUpdate(values);
         mRssEvent.onTaskInProgress();
+        Log.e("test", "progresss");
     }
 
     public interface RSSEvent {

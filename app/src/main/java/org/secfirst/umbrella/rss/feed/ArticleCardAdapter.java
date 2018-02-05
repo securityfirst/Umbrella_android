@@ -26,26 +26,26 @@ import java.util.List;
 /**
  * Created by dougl on 22/01/2018.
  */
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.RSSItem> {
+public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.RSSItem> {
 
 
     private final List<? extends Item> mArticleItems;
     private Context mContext;
 
-    public ArticleAdapter(@NonNull CustomFeed customFeed) {
+    public ArticleCardAdapter(@NonNull CustomFeed customFeed) {
         this.mArticleItems = customFeed.getFeed().getItems();
     }
 
     @Override
-    public ArticleAdapter.RSSItem onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ArticleCardAdapter.RSSItem onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.article_item, parent, false);
+                .inflate(R.layout.article_card_view_item, parent, false);
         mContext = view.getContext();
         return new RSSItem(view);
     }
 
     @Override
-    public void onBindViewHolder(final ArticleAdapter.RSSItem holder, final int position) {
+    public void onBindViewHolder(final ArticleCardAdapter.RSSItem holder, final int position) {
         Item item = mArticleItems.get(position);
         String reportDate = UmbrellaUtil.convertDateToString(item.getPublicationDate());
         String description = Html.fromHtml(item.getDescription()).toString();
