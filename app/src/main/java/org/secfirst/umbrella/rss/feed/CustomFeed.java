@@ -8,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 /**
  * Created by dougl on 24/01/2018.
  */
-@DatabaseTable(tableName = "custom_feed")
+@DatabaseTable(tableName = "custom_feed_list")
 public class CustomFeed {
 
     private static final String FIELD_URL = "url";

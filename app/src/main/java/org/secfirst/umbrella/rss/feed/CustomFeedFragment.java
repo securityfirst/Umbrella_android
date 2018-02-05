@@ -12,7 +12,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -20,7 +23,9 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.RSS;
+import org.secfirst.umbrella.util.RecyclerItemClickListener;
 import org.secfirst.umbrella.util.RecyclerItemTouchHelper;
+import org.secfirst.umbrella.util.ShareContentUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,26 +34,25 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ChannelFragment extends Fragment implements View.OnClickListener, FeedContract.View,
-        ChannelDialog.OnChannelDialog, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
+public class CustomFeedFragment extends Fragment implements View.OnClickListener, FeedContract.View,
+        CustomFeedDialog.OnChannelDialog, RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-    private ChannelAdapter mChannelAdapter;
+    private ActionMode mActionMode;
+    private CustomFeedAdapter mFeedAdapter;
     private FeedContract.Presenter mPresenter;
     private ProgressBar mRssProgress;
     private CoordinatorLayout mCoordinatorLayout;
     private FloatingActionButton mAddFeedButton;
 
-    public ChannelFragment() {
+
+    public CustomFeedFragment() {
         // Required empty public constructor
     }
 
-    public static ChannelFragment newInstance() {
+    public static CustomFeedFragment newInstance() {
         Bundle args = new Bundle();
-        ChannelFragment fragment = new ChannelFragment();
+        CustomFeedFragment fragment = new CustomFeedFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,7 +65,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
         mPresenter = new FeedPresenter(this);
         mAddFeedButton = view.findViewById(R.id.add_feed_btn);
         mAddFeedButton.setOnClickListener(this);
-        mChannelAdapter = new ChannelAdapter(new ArrayList<CustomFeed>(),getActivity());
+        mFeedAdapter = new CustomFeedAdapter(new ArrayList<CustomFeed>(), getActivity());
         setUpRecycleView(view);
         mRssProgress = view.findViewById(R.id.rss_indeterminate_bar);
         mCoordinatorLayout = view.findViewById(R.id.rss_coordinator_layout);
@@ -76,13 +80,14 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
         mAddFeedButton.setVisibility(View.VISIBLE);
     }
 
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_feed_btn:
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                ChannelDialog channelDialog = ChannelDialog.newInstance(this);
-                channelDialog.show(fragmentManager, "");
+                CustomFeedDialog customFeedDialog = CustomFeedDialog.newInstance(this);
+                customFeedDialog.show(fragmentManager, "");
                 break;
         }
     }
@@ -90,13 +95,13 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     @Override
     public void onStop() {
         super.onStop();
-        mChannelAdapter.clear();
+        mFeedAdapter.clear();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mChannelAdapter.clear();
+        mFeedAdapter.clear();
     }
 
     @Override
@@ -113,7 +118,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     @Override
     public void finishLoadFeed(List<CustomFeed> customFeeds) {
         mRssProgress.setVisibility(View.INVISIBLE);
-        mChannelAdapter.add(customFeeds);
+        mFeedAdapter.add(customFeeds);
         mPresenter.saveFeed(customFeeds);
     }
 
@@ -136,7 +141,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     @Override
     public void showFeeds(List<CustomFeed> customFeeds) {
         for (CustomFeed customFeed : customFeeds) {
-            mChannelAdapter.add(customFeed);
+            mFeedAdapter.add(customFeed);
         }
     }
 
@@ -147,11 +152,11 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if (viewHolder instanceof ChannelAdapter.RSSChannel) {
-            String name = mChannelAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition()).getTitle();
-            final CustomFeed customFeed = mChannelAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition());
+        if (viewHolder instanceof CustomFeedAdapter.RSSChannel) {
+            String name = mFeedAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition()).getTitle();
+            final CustomFeed customFeed = mFeedAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition());
             final int deletedIndex = viewHolder.getAdapterPosition();
-            mChannelAdapter.remove(mChannelAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition()));
+            mFeedAdapter.remove(mFeedAdapter.getCustomFeeds().get(viewHolder.getAdapterPosition()));
             Snackbar snackbar = Snackbar
                     .make(mCoordinatorLayout, name + " " + getString(R.string.rss_custom_remove_item), Snackbar.LENGTH_LONG);
             mPresenter.removeFeed(customFeed);
@@ -159,7 +164,7 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
                 @Override
                 public void onClick(View view) {
                     // undo is selected, restore the deleted item
-                    mChannelAdapter.restoreItem(customFeed, deletedIndex);
+                    mFeedAdapter.restoreItem(customFeed, deletedIndex);
                     mPresenter.saveFeed(customFeed);
                 }
             });
@@ -169,14 +174,59 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
     }
 
     private void setUpRecycleView(View view) {
-        RecyclerView channelRecyclerView = view.findViewById(R.id.channel_recycler_view);
-        channelRecyclerView.setHasFixedSize(true);
+        RecyclerView feedRecyclerView = view.findViewById(R.id.channel_recycler_view);
+        feedRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        channelRecyclerView.setLayoutManager(mLayoutManager);
-        channelRecyclerView.setAdapter(mChannelAdapter);
+        feedRecyclerView.setLayoutManager(mLayoutManager);
+        feedRecyclerView.setAdapter(mFeedAdapter);
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         // attaching the touch helper to recycler view
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(channelRecyclerView);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(feedRecyclerView);
+
+        feedRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                feedRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (mFeedAdapter.isMultiSelect()) {
+                    multiSelect(position);
+                }
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                if (!mFeedAdapter.isMultiSelect()) {
+                    mFeedAdapter.setMultiSelect(true);
+
+                    if (mActionMode == null) {
+                        mActionMode = getActivity().startActionMode(mActionModeCallback); //show ActionMode.
+                    }
+                }
+
+                multiSelect(position);
+            }
+        }));
+    }
+
+    private void multiSelect(int position) {
+        CustomFeed customFeed = mFeedAdapter.getCustomFeeds().get(position);
+        List<CustomFeed> selectedFeeds = mFeedAdapter.getSelectedFeeds();
+        if (customFeed != null) {
+            if (mActionMode != null) {
+                if (selectedFeeds.contains(customFeed)) {
+                    selectedFeeds.remove(customFeed);
+                } else {
+                    mFeedAdapter.addSelectedFeeds(customFeed);
+                }
+
+                if (selectedFeeds.size() > 0)
+                    mActionMode.setTitle(String.valueOf(selectedFeeds.size())); //show selected item count on action mode.
+                else {
+                    mActionMode.setTitle(""); //remove item count from action mode.
+                    mActionMode.finish(); //hide action mode.
+                }
+                mFeedAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private void loadDefaultFeeds() {
@@ -191,4 +241,45 @@ public class ChannelFragment extends Fragment implements View.OnClickListener, F
             }
         }
     }
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            getActivity().getMenuInflater().inflate(R.menu.custom_feed, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+
+            return false; // Return false if nothing is done
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_rss_delete:
+                    for (CustomFeed feed : mFeedAdapter.getSelectedFeeds()) {
+                        mFeedAdapter.remove(feed);
+                        mPresenter.removeFeed(feed);
+                    }
+                    return true;
+                case R.id.action_rss_share:
+                    String stringToShare = mPresenter.splitFeedLinkToShare(mFeedAdapter.getSelectedFeeds());
+                    ShareContentUtil.shareLinkContent(getContext(), stringToShare);
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode actionMode) {
+            mFeedAdapter.cleanSelectedFeeds();
+            mActionMode = null;
+            mFeedAdapter.setMultiSelect(false);
+        }
+    };
+
 }

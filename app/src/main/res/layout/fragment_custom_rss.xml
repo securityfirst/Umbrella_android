@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@android:color/white"
-    tools:context="org.secfirst.umbrella.rss.feed.ChannelFragment">
+    tools:context="org.secfirst.umbrella.rss.feed.CustomFeedFragment">
 
     <FrameLayout
         android:id="@+id/rss_container"

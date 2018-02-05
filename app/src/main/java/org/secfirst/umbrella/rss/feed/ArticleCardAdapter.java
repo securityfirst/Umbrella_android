@@ -47,8 +47,8 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
     @Override
     public void onBindViewHolder(final ArticleCardAdapter.RSSItem holder, final int position) {
         Item item = mArticleItems.get(position);
-        String reportDate = UmbrellaUtil.convertDateToString(item.getPublicationDate());
-        String description = Html.fromHtml(item.getDescription()).toString();
+        String reportDate = item.getPublicationDate() != null ? UmbrellaUtil.convertDateToString(item.getPublicationDate()) : "";
+        String description = item.getDescription() != null ? Html.fromHtml(item.getDescription()).toString() : item.getDescription();
 
         holder.articleTitle.setText(item.getTitle());
         holder.articleDescription.setText(description);

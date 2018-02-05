@@ -54,7 +54,7 @@ public class FeedPresenter implements FeedContract.Presenter {
 //                for (CustomFeed customFeed : customFeeds) {
 //                    saveFeed(customFeed);
 //                }
-                mViewRss.finishLoadFeed(customFeeds);
+                mViewRss.finishLoadFeed(cleanMalformedArticles(customFeeds));
             }
 
             @Override
@@ -107,13 +107,21 @@ public class FeedPresenter implements FeedContract.Presenter {
         return urls;
     }
 
+    @Override
+    public String splitFeedLinkToShare(List<CustomFeed> selectedFeeds) {
+        StringBuilder string = new StringBuilder();
+        for (CustomFeed feed : selectedFeeds) {
+            string.append(feed.getFeedUrl());
+            string.append(System.getProperty("line.separator"));
+        }
+        return string.toString();
+    }
+
     private List<CustomFeed> cleanMalformedArticles(List<CustomFeed> customFeeds) {
         for (CustomFeed customFeed : customFeeds) {
             for (Item item : customFeed.getFeed().getItems()) {
-                if (item.getTitle() == null || item.getDescription() == null) {
-                    customFeed.getFeed().getItems().remove(item);
-                } else if (item.getTitle().equalsIgnoreCase("")
-                        || item.getDescription().equalsIgnoreCase("")) {
+                if (item.getTitle() == null || item.getDescription() == null
+                        || item.getTitle().equals("") || item.getDescription().equals("")) {
                     customFeed.getFeed().getItems().remove(item);
                 }
             }

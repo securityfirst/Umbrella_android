@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import org.secfirst.umbrella.rss.feed.ChannelAdapter;
+import org.secfirst.umbrella.rss.feed.CustomFeedAdapter;
 
 /**
  * Created by ravi on 29/09/17.
@@ -27,7 +27,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
-            final View foregroundView = ((ChannelAdapter.RSSChannel) viewHolder).viewForeground;
+            final View foregroundView = ((CustomFeedAdapter.RSSChannel) viewHolder).viewForeground;
             getDefaultUIUtil().onSelected(foregroundView);
         }
     }
@@ -36,14 +36,14 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDrawOver(Canvas c, RecyclerView recyclerView,
                                 RecyclerView.ViewHolder viewHolder, float dX, float dY,
                                 int actionState, boolean isCurrentlyActive) {
-        final View foregroundView = ((ChannelAdapter.RSSChannel) viewHolder).viewForeground;
+        final View foregroundView = ((CustomFeedAdapter.RSSChannel) viewHolder).viewForeground;
         getDefaultUIUtil().onDrawOver(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);
     }
 
     @Override
     public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        final View foregroundView = ((ChannelAdapter.RSSChannel) viewHolder).viewForeground;
+        final View foregroundView = ((CustomFeedAdapter.RSSChannel) viewHolder).viewForeground;
         getDefaultUIUtil().clearView(foregroundView);
     }
 
@@ -51,7 +51,7 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(Canvas c, RecyclerView recyclerView,
                             RecyclerView.ViewHolder viewHolder, float dX, float dY,
                             int actionState, boolean isCurrentlyActive) {
-        final View foregroundView = ((ChannelAdapter.RSSChannel) viewHolder).viewForeground;
+        final View foregroundView = ((CustomFeedAdapter.RSSChannel) viewHolder).viewForeground;
 
         getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
                 actionState, isCurrentlyActive);

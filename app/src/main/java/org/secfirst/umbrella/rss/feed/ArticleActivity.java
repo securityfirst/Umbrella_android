@@ -37,7 +37,7 @@ public class ArticleActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.custom_feed, menu);
+        inflater.inflate(R.menu.custom_feed_list, menu);
         return true;
     }
 

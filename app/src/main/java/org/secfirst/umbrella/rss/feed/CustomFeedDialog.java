@@ -15,14 +15,14 @@ import org.secfirst.umbrella.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChannelDialog extends DialogFragment implements View.OnClickListener {
+public class CustomFeedDialog extends DialogFragment implements View.OnClickListener {
 
     private AppCompatEditText mUrl;
     private OnChannelDialog onChannelDialog;
 
-    public static ChannelDialog newInstance(OnChannelDialog onChannelDialog) {
+    public static CustomFeedDialog newInstance(OnChannelDialog onChannelDialog) {
         Bundle args = new Bundle();
-        ChannelDialog fragment = new ChannelDialog();
+        CustomFeedDialog fragment = new CustomFeedDialog();
         fragment.setArguments(args);
         fragment.onChannelDialog = onChannelDialog;
         return fragment;

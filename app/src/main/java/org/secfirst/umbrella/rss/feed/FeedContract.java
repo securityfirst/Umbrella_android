@@ -40,5 +40,7 @@ public interface FeedContract {
         List<CustomFeed> getFeeds();
 
         String[] getDefaultFeedUrl(InputStream inputStream);
+
+        String splitFeedLinkToShare(List<CustomFeed> selectedFeeds);
     }
 }

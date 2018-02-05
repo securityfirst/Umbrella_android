@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.secfirst.umbrella.rss.feed.ChannelAdapter;
+import org.secfirst.umbrella.rss.feed.CustomFeedAdapter;
 import org.secfirst.umbrella.rss.feed.CustomFeed;
 
 import java.util.ArrayList;
@@ -25,11 +25,11 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, sdk = Build.VERSION_CODES.LOLLIPOP)
-public class ChannelAdapterTest {
+public class CustomFeedAdapterTest {
 
     private Context context;
-    private ChannelAdapter.RSSChannel viewHolder;
-    private ChannelAdapter channelAdapter;
+    private CustomFeedAdapter.RSSChannel viewHolder;
+    private CustomFeedAdapter customFeedAdapter;
 
     @Before
     public void setUp() throws Exception {
@@ -47,51 +47,51 @@ public class ChannelAdapterTest {
         customFeeds.add(customFeed);
         customFeeds.add(customFeed1);
         customFeeds.add(customFeed2);
-        channelAdapter = new ChannelAdapter(customFeeds);
+        customFeedAdapter = new CustomFeedAdapter(customFeeds);
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));
-        viewHolder = channelAdapter.onCreateViewHolder(rvParent, 0);
+        viewHolder = customFeedAdapter.onCreateViewHolder(rvParent, 0);
     }
 
     @Test
     public void getOneItemInList() {
-        channelAdapter.onBindViewHolder(viewHolder, 0);
+        customFeedAdapter.onBindViewHolder(viewHolder, 0);
         assertEquals("title1", viewHolder.channelTitle.getText().toString());
     }
 
     @Test
     public void checkSizeList() {
-        assertEquals(3, channelAdapter.getItemCount());
+        assertEquals(3, customFeedAdapter.getItemCount());
     }
 
     @Test
     public void AddOneItemInList() {
         CustomFeed customFeed = new CustomFeed();
         customFeed.setTitle("title");
-        channelAdapter.add(customFeed);
-        channelAdapter.onBindViewHolder(viewHolder, 3);
+        customFeedAdapter.add(customFeed);
+        customFeedAdapter.onBindViewHolder(viewHolder, 3);
         assertEquals(customFeed.getTitle(), viewHolder.channelTitle.getText().toString());
     }
 
     @Test
     public void removeOneItemInList() {
         CustomFeed customFeed = new CustomFeed();
-        channelAdapter.add(customFeed);
-        channelAdapter.remove(customFeed);
-        assertEquals(channelAdapter.getItemCount(), 3);
+        customFeedAdapter.add(customFeed);
+        customFeedAdapter.remove(customFeed);
+        assertEquals(customFeedAdapter.getItemCount(), 3);
     }
 
     @Test
     public void sendToAdapterAnEmptyList() {
-        ChannelAdapter channelAdapter = new ChannelAdapter(new ArrayList<CustomFeed>());
+        CustomFeedAdapter customFeedAdapter = new CustomFeedAdapter(new ArrayList<CustomFeed>());
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));
-        assertEquals(channelAdapter.getItemCount(), 0);
+        assertEquals(customFeedAdapter.getItemCount(), 0);
     }
 
     @Test
     public void clearMyListInAdapter() {
-        channelAdapter.clear();
-        assertEquals(channelAdapter.getItemCount(), 0);
+        customFeedAdapter.clear();
+        assertEquals(customFeedAdapter.getItemCount(), 0);
     }
 }
