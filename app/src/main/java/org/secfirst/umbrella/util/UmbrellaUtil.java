@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.einmalfel.earl.Item;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -423,6 +424,15 @@ public class UmbrellaUtil {
     public static String convertDateToString(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         return dateFormat.format(date);
+    }
+
+    public static String splitArticleLinkToShare(List<Item> selectedItems) {
+        StringBuilder string = new StringBuilder();
+        for (Item item : selectedItems) {
+            string.append(item.getLink());
+            string.append(System.getProperty("line.separator"));
+        }
+        return string.toString();
     }
 
 }

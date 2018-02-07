@@ -4,8 +4,10 @@
     tools:context="org.secfirst.umbrella.rss.feed.ArticleActivity">
 
     <item
-        android:id="@+id/action_card_list"
+        android:id="@+id/article_action_share"
+        android:icon="@android:drawable/ic_menu_share"
         android:orderInCategory="100"
-        android:title="@string/simple_list"
-        app:showAsAction="never" />
+        android:title="@string/send_to"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="ifRoom" />
 </menu>
