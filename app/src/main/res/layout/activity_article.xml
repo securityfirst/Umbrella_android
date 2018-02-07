@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#e2e2e2"
+    android:background="@android:color/white"
     tools:context="org.secfirst.umbrella.rss.feed.ArticleActivity">
 
     <LinearLayout

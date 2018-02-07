@@ -207,4 +207,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="message_custom_feed_dialog_description">Are you sure you want to remove this Feed?</string>
+    <string name="message_custom_feed_dialog_title">Remove</string>
+    <string name="message_custom_feed_dialog_ok">Yes</string>
+    <string name="message_custom_feed_dialog_no">No</string>
 </resources>

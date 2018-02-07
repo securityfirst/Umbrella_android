@@ -1,12 +1,14 @@
 package org.secfirst.umbrella.rss.feed;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ActionMode;
@@ -235,18 +237,42 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
             switch (menuItem.getItemId()) {
 
                 case R.id.action_rss_delete:
-                    for (CustomFeed feed : mFeedAdapter.getSelectedFeeds()) {
-                        mFeedAdapter.remove(feed);
-                        mPresenter.removeFeed(feed);
-                    }
+                    deleteFeed();
                     return true;
                 case R.id.action_rss_share:
-                    String stringToShare = mPresenter.splitFeedLinkToShare(mFeedAdapter.getSelectedFeeds());
-                    ShareContentUtil.shareLinkContent(getContext(), stringToShare);
+                    shareFeed();
                     return true;
                 default:
                     return false;
             }
+        }
+
+        private void deleteFeed() {
+            new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.message_custom_feed_dialog_title)
+                    .setMessage(R.string.message_custom_feed_dialog_description)
+                    .setPositiveButton(R.string.message_custom_feed_dialog_ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            for (CustomFeed feed : mFeedAdapter.getSelectedFeeds()) {
+                                mFeedAdapter.remove(feed);
+                                mPresenter.removeFeed(feed);
+                            }
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton(R.string.message_custom_feed_dialog_no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
+
+        private void shareFeed() {
+            String stringToShare = mPresenter.splitFeedLinkToShare(mFeedAdapter.getSelectedFeeds());
+            ShareContentUtil.shareLinkContent(getContext(), stringToShare);
         }
 
         @Override
