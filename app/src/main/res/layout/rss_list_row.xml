@@ -7,33 +7,6 @@
     android:orientation="horizontal"
     tools:ignore="MissingPrefix">
 
-    <RelativeLayout
-        android:id="@+id/channel_item_view_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/deep_rose">
-
-        <ImageView
-            android:id="@+id/delete_icon"
-            android:layout_width="@dimen/custom_normal_rss_width"
-            android:layout_height="@dimen/custom_rss_normal_height"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/custom_rss_normal_margin_right"
-            android:src="@drawable/ic_delete_white_24dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/delete_icon"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/custom_rss_biggest_margin_right"
-            android:text="@string/delete"
-            android:textColor="#fff"
-            android:textSize="@dimen/title_size" />
-
-    </RelativeLayout>
-
     <LinearLayout
         android:id="@+id/channel_item_view_foreground"
         android:layout_width="match_parent"

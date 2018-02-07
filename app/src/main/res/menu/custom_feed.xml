@@ -14,7 +14,6 @@
         android:id="@+id/action_rss_delete"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/delete"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
         app:showAsAction="ifRoom" />
 
 </menu>

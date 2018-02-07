@@ -14,11 +14,12 @@ import org.secfirst.umbrella.R;
 
 public class ArticleActivity extends BaseActivity {
 
-    // TODO: 02/02/2018  That's impossible to parcelable [com.einmalfel.earl.Feed]
+    // TODO: 02/02/2018  That's now way to parcelable [com.einmalfel.earl.Feed]
     // TODO: Probably we have to create a PM in Earl lib.
     public static CustomFeed mCustomFeed;
     private RecyclerView mArticleRecyclerView;
     private LinearLayoutManager mLayoutManager;
+    private MenuItem mShareIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class ArticleActivity extends BaseActivity {
     }
 
     private void enableActionBar() {
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.article_list_toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
@@ -38,6 +39,7 @@ public class ArticleActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.custom_feed_list, menu);
+        mShareIcon = menu.findItem(R.id.action_share);
         return true;
     }
 
@@ -61,9 +63,11 @@ public class ArticleActivity extends BaseActivity {
         if (menuItem.getTitle().equals(getString(R.string.simple_list))) {
             menuItem.setTitle(getString(R.string.card_list));
             openSimpleListAdapter(menuItem);
+            mShareIcon.setVisible(true);
         } else {
             menuItem.setTitle(getString(R.string.simple_list));
             openCardListAdapter();
+            mShareIcon.setVisible(false);
         }
     }
 
@@ -89,5 +93,4 @@ public class ArticleActivity extends BaseActivity {
     protected int getLayoutResource() {
         return R.layout.activity_article;
     }
-
 }

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,12 +39,6 @@ public class CustomFeedAdapter extends RecyclerView.Adapter<CustomFeedAdapter.RS
     public void add(CustomFeed channel) {
         mCustomFeeds.add(channel);
         notifyItemInserted(mCustomFeeds.size() - 1);
-    }
-
-    public void reload() {
-        List<CustomFeed> customFeedList = mCustomFeeds;
-        clear();
-        add(customFeedList);
     }
 
     public void add(List<CustomFeed> channels) {
@@ -136,7 +129,6 @@ public class CustomFeedAdapter extends RecyclerView.Adapter<CustomFeedAdapter.RS
         public TextView channelTitle;
         public TextView channelDescription;
         public LinearLayout viewForeground;
-        public RelativeLayout viewBackground;
 
         RSSChannel(View view) {
             super(view);
@@ -144,8 +136,6 @@ public class CustomFeedAdapter extends RecyclerView.Adapter<CustomFeedAdapter.RS
             channelTitle = view.findViewById(R.id.rss_channel_title);
             channelDescription = view.findViewById(R.id.rss_channel_description);
             viewForeground = view.findViewById(R.id.channel_item_view_foreground);
-            viewBackground = view.findViewById(R.id.channel_item_view_background);
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
