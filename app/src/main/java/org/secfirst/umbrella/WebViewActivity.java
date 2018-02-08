@@ -2,10 +2,13 @@ package org.secfirst.umbrella;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ public class WebViewActivity extends BaseActivity {
         mWebView.getSettings().setJavaScriptEnabled(true); // enable javascript
         mWebView.clearHistory();
         mWebView.clearFormData();
+        mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         mWebView.clearCache(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("deprecation")
@@ -40,6 +44,14 @@ public class WebViewActivity extends BaseActivity {
                 onReceivedError(view, rerr.getErrorCode(), rerr.getDescription().toString(), req.getUrl().toString());
             }
         });
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // chromium, enable hardware acceleration
+            mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        } else {
+            // older android version, disable hardware acceleration
+            mWebView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        }
 
         mWebView.loadUrl(getLink());
 
