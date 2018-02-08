@@ -102,12 +102,8 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
 
                     final String link = mArticleItems.get(getLayoutPosition()).getLink();
                     if (link != null && Patterns.WEB_URL.matcher(link).matches()) {
-//                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-//                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-//                        WebViewDialog webViewDialog = WebViewDialog.newInstance(link);
-//                        webViewDialog.show(fragmentManager, "");
                         Intent intent = new Intent(mContext, WebViewActivity.class);
-                        intent.putExtra(WebViewActivity.URL_KEY,link);
+                        intent.putExtra(WebViewActivity.URL_KEY, link);
                         mContext.startActivity(intent);
                     }
                     break;
