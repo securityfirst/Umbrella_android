@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.util;
+package org.secfirst.umbrella;
 
 
 import android.content.Intent;
@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
-
-import org.secfirst.umbrella.R;
 
 /**
  * A simple {@link Fragment} subclass.

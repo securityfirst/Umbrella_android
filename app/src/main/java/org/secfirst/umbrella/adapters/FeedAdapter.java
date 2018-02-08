@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.FeedItem;
-import org.secfirst.umbrella.util.WebViewDialog;
+import org.secfirst.umbrella.WebViewDialog;
 
 import java.net.MalformedURLException;
 import java.net.URL;

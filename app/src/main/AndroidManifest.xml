@@ -47,18 +47,6 @@
         <activity android:name=".MainActivity" />
 
         <activity-alias
-            android:name=".MainActivityCalculator"
-            android:enabled="false"
-            android:icon="@drawable/calc"
-            android:label="@string/app_calc"
-            android:targetActivity=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
-        <activity-alias
             android:name=".MainActivityNormal"
             android:enabled="true"
             android:icon="@drawable/ic_umbrella"
@@ -98,6 +86,18 @@
                 <data
                     android:host="tools"
                     android:scheme="umbrella" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name=".MainActivityCalculator"
+            android:enabled="false"
+            android:icon="@drawable/calc"
+            android:label="@string/app_calc"
+            android:targetActivity=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity-alias>
 
@@ -160,7 +160,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secfirst.umbrella.MainActivity" />
         </activity>
-        <activity android:name=".rss.feed.ArticleActivity"></activity>
+        <activity android:name=".rss.feed.ArticleActivity" />
+        <activity android:name=".WebViewActivity"></activity>
     </application>
 
 </manifest>

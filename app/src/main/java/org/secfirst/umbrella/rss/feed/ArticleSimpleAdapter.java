@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.WebViewDialog;
 import org.secfirst.umbrella.util.UmbrellaUtil;
-import org.secfirst.umbrella.util.WebViewDialog;
 
 import java.util.ArrayList;
 import java.util.List;

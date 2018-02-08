@@ -1,9 +1,8 @@
 package org.secfirst.umbrella.rss.feed;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Patterns;
@@ -17,9 +16,9 @@ import com.einmalfel.earl.Item;
 import com.squareup.picasso.Picasso;
 
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.WebViewActivity;
 import org.secfirst.umbrella.util.ShareContentUtil;
 import org.secfirst.umbrella.util.UmbrellaUtil;
-import org.secfirst.umbrella.util.WebViewDialog;
 
 import java.util.List;
 
@@ -103,10 +102,13 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
 
                     final String link = mArticleItems.get(getLayoutPosition()).getLink();
                     if (link != null && Patterns.WEB_URL.matcher(link).matches()) {
-                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                        WebViewDialog webViewDialog = WebViewDialog.newInstance(link);
-                        webViewDialog.show(fragmentManager, "");
+//                        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+//                        FragmentManager fragmentManager = activity.getSupportFragmentManager();
+//                        WebViewDialog webViewDialog = WebViewDialog.newInstance(link);
+//                        webViewDialog.show(fragmentManager, "");
+                        Intent intent = new Intent(mContext, WebViewActivity.class);
+                        intent.putExtra(WebViewActivity.URL_KEY,link);
+                        mContext.startActivity(intent);
                     }
                     break;
             }
