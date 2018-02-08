@@ -48,6 +48,6 @@ public class FeedPresenterTest {
 
     @Test(expected = Exception.class)
     public void tryToSaveAnInvalidFeed() {
-        mPresenter.saveFeed(null);
+        mPresenter.saveFeed(new CustomFeed());
     }
 }

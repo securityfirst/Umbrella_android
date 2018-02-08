@@ -20,3 +20,5 @@ app/sonar-project.properties
 
 app/*.jks
 keystore.properties
+com.crashlytics.settings.json
+session_analytics.tap

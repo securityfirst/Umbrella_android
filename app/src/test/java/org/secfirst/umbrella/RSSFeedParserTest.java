@@ -16,6 +16,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.zip.DataFormatException;
 
 import static junit.framework.Assert.assertNotNull;
@@ -75,9 +76,9 @@ public class RSSFeedParserTest {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed customFeed) {
-                assertNotNull(customFeed.getFeed().getItems().get(0).getTitle());
-                assertNotNull(customFeed.getFeed().getItems().get(0).getDescription());
+            public void onTaskCompleted(List<CustomFeed> customFeed) {
+                assertNotNull(customFeed.get(0).getFeed().getItems().get(0).getTitle());
+                assertNotNull(customFeed.get(0).getFeed().getItems().get(0).getDescription());
             }
 
             @Override
@@ -97,9 +98,9 @@ public class RSSFeedParserTest {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed customFeed) {
-                assertNotNull(customFeed.getFeed().getTitle());
-                assertNotNull(customFeed.getFeed().getDescription());
+            public void onTaskCompleted(List<CustomFeed> customFeed) {
+                assertNotNull(customFeed.get(0).getFeed().getTitle());
+                assertNotNull(customFeed.get(0).getFeed().getDescription());
             }
 
             @Override
@@ -120,9 +121,9 @@ public class RSSFeedParserTest {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed customFeed) {
-                assertNotNull(customFeed.getFeed().getTitle());
-                assertNotNull(customFeed.getFeed().getDescription());
+            public void onTaskCompleted(List<CustomFeed> customFeed) {
+                assertNotNull(customFeed.get(0).getFeed().getTitle());
+                assertNotNull(customFeed.get(0).getFeed().getDescription());
             }
 
             @Override

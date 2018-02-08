@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.secfirst.umbrella.rss.feed.CustomFeedAdapter;
 import org.secfirst.umbrella.rss.feed.CustomFeed;
+import org.secfirst.umbrella.rss.feed.CustomFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class CustomFeedAdapterTest {
         customFeeds.add(customFeed);
         customFeeds.add(customFeed1);
         customFeeds.add(customFeed2);
-        customFeedAdapter = new CustomFeedAdapter(customFeeds);
+        customFeedAdapter = new CustomFeedAdapter(customFeeds, context);
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));
         viewHolder = customFeedAdapter.onCreateViewHolder(rvParent, 0);
@@ -83,7 +83,7 @@ public class CustomFeedAdapterTest {
 
     @Test
     public void sendToAdapterAnEmptyList() {
-        CustomFeedAdapter customFeedAdapter = new CustomFeedAdapter(new ArrayList<CustomFeed>());
+        CustomFeedAdapter customFeedAdapter = new CustomFeedAdapter(new ArrayList<CustomFeed>(), context);
         RecyclerView rvParent = new RecyclerView(context);
         rvParent.setLayoutManager(new LinearLayoutManager(context));
         assertEquals(customFeedAdapter.getItemCount(), 0);

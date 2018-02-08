@@ -13,6 +13,8 @@ import org.robolectric.shadows.ShadowLooper;
 import org.secfirst.umbrella.rss.RSSFeedService;
 import org.secfirst.umbrella.rss.feed.CustomFeed;
 
+import java.util.List;
+
 /**
  * Created by dougl on 16/01/2018.
  */
@@ -39,7 +41,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed channel) {
+            public void onTaskCompleted(List<CustomFeed> channel) {
                 Assert.assertTrue(true);
             }
 
@@ -60,7 +62,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed channel) {
+            public void onTaskCompleted(List<CustomFeed> channel) {
                 Assert.assertTrue(false);
             }
 
@@ -82,7 +84,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed channel) {
+            public void onTaskCompleted(List<CustomFeed> channel) {
 
             }
 
@@ -103,7 +105,7 @@ public class RSSFeedServiceTest extends InstrumentationTestCase {
             }
 
             @Override
-            public void onTaskCompleted(CustomFeed channel) {
+            public void onTaskCompleted(List<CustomFeed> channel) {
                 Assert.assertTrue(false);
             }
 
