@@ -17,6 +17,16 @@
             android:layout_height="?attr/actionBarSize"
             app:theme="@style/UmbrellaTheme.Base" />
 
+        <ProgressBar
+            android:id="@+id/web_view_load"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:indeterminate="true"
+            android:theme="@style/LinearProgress"
+            android:visibility="invisible" />
+
         <WebView
             android:id="@+id/article_web_view"
             android:layout_width="match_parent"

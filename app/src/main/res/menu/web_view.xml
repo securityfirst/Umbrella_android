@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.secfirst.umbrella.rss.feed.ArticleActivity">
+
+    <item
+        android:id="@+id/article_action_browser"
+        android:icon="@drawable/ic_open_in_browser_black"
+        android:orderInCategory="100"
+        android:title="@string/send_to"
+        app:showAsAction="ifRoom" />
+</menu>
