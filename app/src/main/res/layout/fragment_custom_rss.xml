@@ -8,20 +8,21 @@
     android:background="@android:color/white"
     tools:context="org.secfirst.umbrella.rss.feed.CustomFeedFragment">
 
+    <ProgressBar
+        android:id="@+id/rss_indeterminate_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:indeterminate="true"
+        android:theme="@style/LinearProgress"
+        android:visibility="invisible" />
+
     <FrameLayout
         android:id="@+id/rss_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/rss_indeterminate_bar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|top"
-            android:indeterminate="true"
-            android:theme="@style/LinearProgress"
-            android:visibility="invisible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/channel_recycler_view"

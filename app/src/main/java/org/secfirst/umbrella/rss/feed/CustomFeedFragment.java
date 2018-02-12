@@ -112,7 +112,12 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void setLoadingIndicator() {
-        mRssProgress.setVisibility(View.VISIBLE);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRssProgress.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 

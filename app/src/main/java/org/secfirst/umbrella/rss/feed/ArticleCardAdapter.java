@@ -3,6 +3,7 @@ package org.secfirst.umbrella.rss.feed;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Patterns;
@@ -55,6 +56,7 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
         holder.articleLastUpdate.setText(reportDate);
         Picasso.with(mContext)
                 .load(item.getImageLink())
+                .placeholder(ContextCompat.getDrawable(mContext, R.drawable.default_image))
                 .resize(344, 176)
                 .into(holder.articleImage);
     }

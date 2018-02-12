@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
+                    android:scaleType="centerCrop"
                     android:id="@+id/article_item_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/article_rss_big_height" />

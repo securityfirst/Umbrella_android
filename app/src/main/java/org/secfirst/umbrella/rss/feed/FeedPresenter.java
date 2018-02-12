@@ -10,6 +10,7 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -51,7 +52,7 @@ public class FeedPresenter implements FeedContract.Presenter {
 
             @Override
             public void onTaskCompleted(List<CustomFeed> customFeeds) {
-                mViewRss.finishLoadFeed(cleanMalformedArticles(customFeeds));
+                mViewRss.finishLoadFeed(customFeeds);
             }
 
             @Override
@@ -115,14 +116,14 @@ public class FeedPresenter implements FeedContract.Presenter {
     }
 
     private List<CustomFeed> cleanMalformedArticles(List<CustomFeed> customFeeds) {
+        List<CustomFeed> newCustomFeed = new ArrayList<>();
         for (CustomFeed customFeed : customFeeds) {
             for (Item item : customFeed.getFeed().getItems()) {
-                if (item.getTitle() == null || item.getDescription() == null
-                        || item.getTitle().equals("") || item.getDescription().equals("")) {
+                if (item != null || item.getTitle().trim().equals("") || item.getDescription().trim().equals("")) {
                     customFeed.getFeed().getItems().remove(item);
                 }
             }
         }
-        return customFeeds;
+        return newCustomFeed;
     }
 }
