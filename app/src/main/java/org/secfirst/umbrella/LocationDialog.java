@@ -95,7 +95,11 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValidator.validate();
+                if (UmbrellaUtil.isOnline(getContext())) {
+                    mValidator.validate();
+                } else {
+                    Toast.makeText(getContext(), "There is no internet access.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mButtonCancel.setOnClickListener(new View.OnClickListener() {
