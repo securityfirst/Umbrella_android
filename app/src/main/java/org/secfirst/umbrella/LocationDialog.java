@@ -98,7 +98,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
                 if (UmbrellaUtil.isOnline(getContext())) {
                     mValidator.validate();
                 } else {
-                    Toast.makeText(getContext(), "There is no internet access.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.feed_no_connection, Toast.LENGTH_SHORT).show();
                 }
             }
         });
