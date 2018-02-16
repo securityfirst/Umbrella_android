@@ -79,9 +79,9 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_view, container, false);
-        mButtonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
-        mButtonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
-        mAutocompleteLocation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.place_search_dialog_location_ET);
+        mButtonCancel = view.findViewById(R.id.place_search_dialog_cancel_TV);
+        mButtonOk = view.findViewById(R.id.place_search_dialog_ok_TV);
+        mAutocompleteLocation = view.findViewById(R.id.place_search_dialog_location_ET);
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
         mValidator.put(mAutocompleteLocation, new AutocompleteLocationRule());
