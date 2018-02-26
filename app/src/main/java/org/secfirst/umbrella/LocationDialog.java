@@ -64,6 +64,8 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private FragmentActivity mActivity;
     private boolean mSourceFeedEnable;
     private String mChosenAddress;
+    private String mErrorMessage;
+
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment, boolean openSource) {
         Bundle args = new Bundle();
@@ -85,10 +87,16 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
         mValidator.put(mAutocompleteLocation, new AutocompleteLocationRule());
+        mErrorMessage = getString(R.string.error_address_not_found);
         initOkButtons();
         initAutoCompleteOnItemClick();
         initAutoCompleteOnFocusChange();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     private void initOkButtons() {
@@ -198,9 +206,9 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
             Timber.e(e);
         }
 
+
         return foundGeocode;
     }
-
 
     public boolean getFeeds(final Context context) {
         Registry selISO2 = Global.INSTANCE.getRegistry("iso2");

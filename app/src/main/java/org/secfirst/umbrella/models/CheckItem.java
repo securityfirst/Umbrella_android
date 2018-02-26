@@ -153,7 +153,7 @@ public class CheckItem implements Serializable {
     }
 
     public int getDifficulty() {
-        difficultyString = difficultyString == null ? UmbrellaUtil.a(difficulty) : difficultyString;
+        difficultyString = difficultyString == null ? UmbrellaUtil.getDifficultyFromId(difficulty) : difficultyString;
         difficulty = UmbrellaUtil.getDifficultyFromString(difficultyString);
         return difficulty;
     }

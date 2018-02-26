@@ -395,7 +395,7 @@ public class UmbrellaUtil {
         return DifficultyFragment.BEGINNER + 1;
     }
 
-    public static String a(int difficulty) {
+    public static String getDifficultyFromId(int difficulty) {
         if (difficulty == DifficultyFragment.BEGINNER) {
             return "BEGINNER";
         } else if (difficulty == DifficultyFragment.INTERMEDIATE) {
