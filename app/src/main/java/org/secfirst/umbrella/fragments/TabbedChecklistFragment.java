@@ -57,7 +57,7 @@ public class TabbedChecklistFragment extends Fragment {
     public void onResume() {
         super.onResume();
         checkLists = getChecklistProgress();
-        if (!checkLists.isEmpty() && mAdapter!=null) {
+        if (!checkLists.isEmpty() && mAdapter != null) {
             mAdapter.updateData(checkLists);
         }
     }
@@ -67,7 +67,7 @@ public class TabbedChecklistFragment extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isAdded() && isVisibleToUser && Global.INSTANCE.hasShownCoachMark("swipe_side") && !Global.INSTANCE.hasShownCoachMark("check_lists")) {
             PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pager_title_strip);
-            if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1 ) {
+            if (pagerTabStrip != null && pagerTabStrip.getChildCount() > 1) {
                 new MaterialTapTargetPrompt.Builder(getActivity())
                         .setTarget(pagerTabStrip.getChildAt(1))
                         .setSecondaryText(getString(R.string.view_all_checlists))
@@ -92,10 +92,12 @@ public class TabbedChecklistFragment extends Fragment {
         int checked, total;
         checked = total = 0;
         for (DashCheckFinished checkList : checkLists) {
-            checked = checked + checkList.getChecked();
-            total = total + checkList.getTotal();
+            checked += checkList.getPercent();
+            total++;
         }
-        return Math.round((checked * 100.0f) / total);
+        int percentage = Math.round((checked * 100.0f) / total);
+
+        return Math.round(percentage / 100);//truncate value
     }
 
     public ArrayList<DashCheckFinished> getChecklistProgress() {
@@ -106,7 +108,7 @@ public class TabbedChecklistFragment extends Fragment {
         } catch (SQLException e) {
             Timber.e(e);
         }
-        if (favourites!=null) {
+        if (favourites != null) {
             for (Favourite favourite : favourites) {
                 List<CheckItem> mCheckList = null;
                 try {
@@ -157,7 +159,7 @@ public class TabbedChecklistFragment extends Fragment {
                     Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(difficulty.getCategory()));
                     if (category != null) {
                         DashCheckFinished dashCheckFinished = new DashCheckFinished(category.getCategory(), difficulty.getSelected(), false);
-                        if (mCheckList!=null) {
+                        if (mCheckList != null) {
                             for (CheckItem checkItem : mCheckList) {
                                 if (!checkItem.getNoCheck() && !checkItem.isDisabled()) {
                                     if (checkItem.getValue()) {
@@ -173,7 +175,8 @@ public class TabbedChecklistFragment extends Fragment {
                             if (retItem.getCategory().equals(dashCheckFinished.getCategory()) && retItem.getDifficulty() == dashCheckFinished.getDifficulty())
                                 isAlreadyPresent = true;
                         }
-                        if (dashCheckFinished.getChecked() > 0 && !isAlreadyPresent) returned.add(dashCheckFinished);
+                        if (dashCheckFinished.getChecked() > 0 && !isAlreadyPresent)
+                            returned.add(dashCheckFinished);
                     }
                 } catch (SQLException e) {
                     Timber.e(e);
@@ -185,7 +188,7 @@ public class TabbedChecklistFragment extends Fragment {
         DashCheckFinished totalDone = new DashCheckFinished(Global.INSTANCE.getString(R.string.total_done), getTotalCheckListPercentage(returned), 100, false);
         totalDone.setNoIcon(true);
         returned.add(0, totalDone);
-        if (returned.size()<2) {
+        if (returned.size() < 2) {
             DashCheckFinished noItems = new DashCheckFinished(Global.INSTANCE.getString(R.string.no_check_items_started_on_yet), 0, 0, false);
             noItems.setNoIcon(true);
             noItems.setNoPercent(true);
