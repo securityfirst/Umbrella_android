@@ -159,7 +159,7 @@ public class ArticleActivity extends BaseActivity {
     };
 
     private void multiSelect(int position) {
-        Item itemSelected = simpleAdapter.getArticleItems().get(position);
+        Item itemSelected = (Item) simpleAdapter.getArticleItems().get(position);
         List<Item> itemsSelected = simpleAdapter.getSelectedItems();
         if (itemSelected != null) {
             if (mActionMode != null) {

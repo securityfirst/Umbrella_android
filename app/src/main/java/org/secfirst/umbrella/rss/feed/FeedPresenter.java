@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.rss.feed;
 
-import com.einmalfel.earl.Item;
 import com.google.gson.Gson;
 
 import org.secfirst.umbrella.models.RSS;
@@ -10,7 +9,6 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -113,17 +111,5 @@ public class FeedPresenter implements FeedContract.Presenter {
             string.append(System.getProperty("line.separator"));
         }
         return string.toString();
-    }
-
-    private List<CustomFeed> cleanMalformedArticles(List<CustomFeed> customFeeds) {
-        List<CustomFeed> newCustomFeed = new ArrayList<>();
-        for (CustomFeed customFeed : customFeeds) {
-            for (Item item : customFeed.getFeed().getItems()) {
-                if (item != null || item.getTitle().trim().equals("") || item.getDescription().trim().equals("")) {
-                    customFeed.getFeed().getItems().remove(item);
-                }
-            }
-        }
-        return newCustomFeed;
     }
 }

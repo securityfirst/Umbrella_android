@@ -22,6 +22,7 @@ import org.secfirst.umbrella.rss.feed.CustomFeed;
 import org.secfirst.umbrella.util.ShareContentUtil;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,11 +31,11 @@ import java.util.List;
 public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.RSSItem> {
 
 
-    private final List<? extends Item> mArticleItems;
     private Context mContext;
+    private List mArticleItems = new ArrayList();
 
     public ArticleCardAdapter(@NonNull CustomFeed customFeed) {
-        this.mArticleItems = customFeed.getFeed().getItems();
+        removeUnformattedItem(customFeed.getFeed().getItems());
     }
 
     @Override
@@ -47,10 +48,9 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
 
     @Override
     public void onBindViewHolder(final ArticleCardAdapter.RSSItem holder, final int position) {
-        Item item = mArticleItems.get(position);
+        Item item = (Item) mArticleItems.get(position);
         String reportDate = item.getPublicationDate() != null ? UmbrellaUtil.convertDateToString(item.getPublicationDate()) : "";
         String description = item.getDescription() != null ? Html.fromHtml(item.getDescription()).toString() : item.getDescription();
-
         holder.articleTitle.setText(item.getTitle());
         holder.articleDescription.setText(description);
         holder.articleAuthor.setText(item.getAuthor());
@@ -96,20 +96,32 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
 
         @Override
         public void onClick(View view) {
+            Item currentItem = (Item) mArticleItems.get(getLayoutPosition());
+
             switch (view.getId()) {
                 case R.id.article_item_share_text:
 
-                    ShareContentUtil.shareLinkContent(mContext, mArticleItems.get(getLayoutPosition()).getLink());
+                    ShareContentUtil.shareLinkContent(mContext, currentItem.getLink());
                     break;
                 case R.id.article_item_lean_more_text:
 
-                    final String link = mArticleItems.get(getLayoutPosition()).getLink();
+                    final String link = currentItem.getLink();
                     if (link != null && Patterns.WEB_URL.matcher(link).matches()) {
                         Intent intent = new Intent(mContext, WebViewActivity.class);
                         intent.putExtra(WebViewActivity.URL_KEY, link);
                         mContext.startActivity(intent);
                     }
                     break;
+            }
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private void removeUnformattedItem(List<? extends Item> items) {
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.get(i).getDescription().equals("")) {
+                mArticleItems.add(items.get(i));
             }
         }
     }

@@ -30,13 +30,13 @@ import java.util.List;
 public class ArticleSimpleAdapter extends RecyclerView.Adapter<ArticleSimpleAdapter.RSSItem> {
 
 
-    private final List<? extends Item> mArticleItems;
+    private List mArticleItems = new ArrayList();
     private List<Item> mSelectedItems = new ArrayList<>();
     private Context mContext;
     private boolean isMultiSelect = false;
 
     public ArticleSimpleAdapter(@NonNull CustomFeed customFeed) {
-        this.mArticleItems = customFeed.getFeed().getItems();
+        removeUnformattedItem(customFeed.getFeed().getItems());
     }
 
     public void cleanSelectedItems() {
@@ -54,7 +54,7 @@ public class ArticleSimpleAdapter extends RecyclerView.Adapter<ArticleSimpleAdap
     }
 
 
-    public List<? extends Item> getArticleItems() {
+    public List getArticleItems() {
         return mArticleItems;
     }
 
@@ -76,7 +76,7 @@ public class ArticleSimpleAdapter extends RecyclerView.Adapter<ArticleSimpleAdap
 
     @Override
     public void onBindViewHolder(final ArticleSimpleAdapter.RSSItem holder, final int position) {
-        Item item = mArticleItems.get(position);
+        Item item = (Item) mArticleItems.get(position);
         String reportDate = UmbrellaUtil.convertDateToString(item.getPublicationDate());
         String description = Html.fromHtml(item.getDescription()).toString();
 
@@ -120,12 +120,23 @@ public class ArticleSimpleAdapter extends RecyclerView.Adapter<ArticleSimpleAdap
 
         @Override
         public void onClick(View view) {
-            final String link = mArticleItems.get(getLayoutPosition()).getLink();
+            Item currentItem = (Item) mArticleItems.get(getLayoutPosition());
+            final String link = currentItem.getLink();
             if (link != null && Patterns.WEB_URL.matcher(link).matches()) {
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 WebViewDialog webViewDialog = WebViewDialog.newInstance(link);
                 webViewDialog.show(fragmentManager, "");
+            }
+        }
+    }
+
+
+    @SuppressWarnings("unchecked")
+    private void removeUnformattedItem(List<? extends Item> items) {
+        for (int i = 0; i < items.size(); i++) {
+            if (!items.get(i).getDescription().equals("")) {
+                mArticleItems.add(items.get(i));
             }
         }
     }
