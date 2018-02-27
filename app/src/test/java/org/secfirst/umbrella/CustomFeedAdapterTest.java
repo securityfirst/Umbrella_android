@@ -12,7 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.secfirst.umbrella.rss.feed.CustomFeed;
-import org.secfirst.umbrella.rss.feed.CustomFeedAdapter;
+import org.secfirst.umbrella.rss.feed.adapters.CustomFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.feed.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.rss.RSSFeedService;
+import org.secfirst.umbrella.rss.feed.ArticleActivity;
+import org.secfirst.umbrella.rss.feed.CustomFeed;
 
 import java.util.ArrayList;
 import java.util.List;

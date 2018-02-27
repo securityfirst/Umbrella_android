@@ -15,6 +15,8 @@ import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.rss.feed.adapters.ArticleCardAdapter;
+import org.secfirst.umbrella.rss.feed.adapters.ArticleSimpleAdapter;
 import org.secfirst.umbrella.util.RecyclerItemClickListener;
 import org.secfirst.umbrella.util.ShareContentUtil;
 import org.secfirst.umbrella.util.UmbrellaUtil;

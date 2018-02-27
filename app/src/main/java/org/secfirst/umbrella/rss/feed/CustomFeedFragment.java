@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.RSS;
+import org.secfirst.umbrella.rss.feed.adapters.CustomFeedAdapter;
 import org.secfirst.umbrella.util.RecyclerItemClickListener;
 import org.secfirst.umbrella.util.ShareContentUtil;
 

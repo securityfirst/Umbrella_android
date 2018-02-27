@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import org.secfirst.umbrella.rss.feed.CustomFeedAdapter;
+import org.secfirst.umbrella.rss.feed.adapters.CustomFeedAdapter;
 
 /**
  * Created by ravi on 29/09/17.

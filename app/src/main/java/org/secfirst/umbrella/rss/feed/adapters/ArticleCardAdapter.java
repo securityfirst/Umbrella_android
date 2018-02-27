@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.feed.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.WebViewActivity;
+import org.secfirst.umbrella.rss.feed.CustomFeed;
 import org.secfirst.umbrella.util.ShareContentUtil;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 

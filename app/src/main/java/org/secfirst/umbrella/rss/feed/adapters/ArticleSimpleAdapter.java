@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.feed.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -18,6 +18,7 @@ import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.WebViewDialog;
+import org.secfirst.umbrella.rss.feed.CustomFeed;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.util.ArrayList;
