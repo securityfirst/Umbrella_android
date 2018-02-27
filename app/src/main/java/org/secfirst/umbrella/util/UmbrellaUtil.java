@@ -285,6 +285,13 @@ public class UmbrellaUtil {
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     public static HashMap<String, Integer> getRefreshValues(Context context) {
         LinkedHashMap<String, Integer> refreshInterval = new LinkedHashMap<>();
         refreshInterval.put(context.getString(R.string.half_hour), (int) TimeUnit.MINUTES.toMillis(30));
@@ -388,7 +395,7 @@ public class UmbrellaUtil {
         return DifficultyFragment.BEGINNER + 1;
     }
 
-    public static String a(int difficulty) {
+    public static String getDifficultyFromId(int difficulty) {
         if (difficulty == DifficultyFragment.BEGINNER) {
             return "BEGINNER";
         } else if (difficulty == DifficultyFragment.INTERMEDIATE) {

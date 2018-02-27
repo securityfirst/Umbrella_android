@@ -36,7 +36,7 @@ android {
             debuggable true
             signingConfig signingConfigs.debug
             minifyEnabled false
-            ext.enableCrashlytics = false
+            ext.enableCrashlytics = true
         }
         beta {
             debuggable true
