@@ -179,7 +179,7 @@
     <string name="feed_list_change">CHANGE</string>
     <string name="feed_list_via">Via\u0020</string>
     <string name="device_shake_enter_text">If you enable this, the app will be masked from casual viewers. When masked, you can find it under the name SimpleCalc.</string>
-    <string name="error_address_not_found">This address is not valid or you may have a low connection.</string>
+    <string name="error_address_not_found">The city or country is not available or you have no internet connection.</string>
     <string name="hands_shake_calc_name">SimpleCalc</string>
     <string name="hands_shake_enable_masking_mode">Enable masking mode</string>
     <string name="hands_shake_button_label">NEXT</string>
