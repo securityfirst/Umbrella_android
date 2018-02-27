@@ -27,7 +27,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mobsandgeeks.saripaar.QuickRule;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -56,7 +55,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private OnLocationEventListener mOnLocationEventListener;
     private List<Address> mAddressList;
     private Address mAddress;
-    @NotEmpty
+    
     private AppCompatAutoCompleteTextView mAutocompleteLocation;
     private Validator mValidator;
     private TextView mButtonOk;
@@ -64,7 +63,6 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private FragmentActivity mActivity;
     private boolean mSourceFeedEnable;
     private String mChosenAddress;
-    private String mErrorMessage;
 
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment, boolean openSource) {
@@ -87,7 +85,6 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
         mValidator.put(mAutocompleteLocation, new AutocompleteLocationRule());
-        mErrorMessage = getString(R.string.error_address_not_found);
         initOkButtons();
         initAutoCompleteOnItemClick();
         initAutoCompleteOnFocusChange();
