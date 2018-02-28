@@ -7,6 +7,7 @@
 
     <style name="UmbrellaTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <item name="theme">@style/MyToolbarStyle</item>
     </style>
 
@@ -19,8 +20,7 @@
         <item name="android:textColorPrimary">@color/black</item>
     </style>
 
-    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar" >
-    </style>
+    <style name="NoActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="action_btn" parent="@android:style/Widget.Button">
         <item name="android:layout_height">100dp</item>
@@ -96,11 +96,10 @@
         <item name="android:textColorHint">@color/green_button</item>
     </style>
 
-    <style name="UmbrellaTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+    <style name="UmbrellaTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="UmbrellaTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
-    </style>
+    <style name="UmbrellaTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

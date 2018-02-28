@@ -39,6 +39,7 @@ public class ArticleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         enableActionBar();
         mArticleRecyclerView = findViewById(R.id.article_recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
