@@ -33,6 +33,7 @@ public class ArticleActivity extends BaseActivity {
     //private MenuItem mShareIcon;
     private ActionMode mActionMode;
     private ArticleSimpleAdapter simpleAdapter;
+    private DividerItemDecoration mItemDecor;
 
 
     @Override
@@ -40,6 +41,8 @@ public class ArticleActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         enableActionBar();
         mArticleRecyclerView = findViewById(R.id.article_recycler_view);
+        mLayoutManager = new LinearLayoutManager(this);
+        mItemDecor = new DividerItemDecoration(this, mLayoutManager.getOrientation());
         openCardListAdapter();
     }
 
@@ -91,18 +94,18 @@ public class ArticleActivity extends BaseActivity {
     private void openCardListAdapter() {
         ArticleCardAdapter articleCardAdapter = new ArticleCardAdapter(mCustomFeed);
         mArticleRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
         mArticleRecyclerView.setLayoutManager(mLayoutManager);
         mArticleRecyclerView.setAdapter(articleCardAdapter);
+        mArticleRecyclerView.removeItemDecoration(mItemDecor);
     }
 
     @SuppressWarnings("ConstantConditions")
     private void openSimpleListAdapter(MenuItem menuItem) {
         simpleAdapter = new ArticleSimpleAdapter(mCustomFeed);
-        DividerItemDecoration itemDecor = new DividerItemDecoration(this, mLayoutManager.getOrientation());
-        itemDecor.setDrawable(ContextCompat.getDrawable(this, R.drawable.article_list_divider));
-        mArticleRecyclerView.addItemDecoration(itemDecor);
+        mItemDecor.setDrawable(ContextCompat.getDrawable(this, R.drawable.article_list_divider));
+        mArticleRecyclerView.addItemDecoration(mItemDecor);
         mArticleRecyclerView.setAdapter(simpleAdapter);
+        mArticleRecyclerView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
         mArticleRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this,
                 mArticleRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
