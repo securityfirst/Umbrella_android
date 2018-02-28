@@ -29,7 +29,8 @@
                     android:id="@+id/article_item_image"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/article_rss_big_height"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="#b1b1b1" />
 
                 <TextView
                     android:id="@+id/article_item_title"

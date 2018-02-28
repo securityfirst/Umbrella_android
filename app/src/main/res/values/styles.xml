@@ -95,11 +95,4 @@
         <item name="android:textColor">@color/green_button</item>
         <item name="android:textColorHint">@color/green_button</item>
     </style>
-
-    <style name="UmbrellaTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="windowActionModeOverlay">true</item>
-    </style>
-
-    <style name="UmbrellaTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
 </resources>
