@@ -19,6 +19,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.secfirst.umbrella.util.UmbrellaUtil;
+
 public class WebViewActivity extends BaseActivity {
 
     public static String URL_KEY;
@@ -28,6 +30,7 @@ public class WebViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
         WebView webView = findViewById(R.id.article_web_view);
         mProgress = findViewById(R.id.web_view_load);
         enableActionBar();

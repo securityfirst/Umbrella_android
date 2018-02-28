@@ -39,7 +39,7 @@ public class ArticleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        UmbrellaUtil.setStatusBarColor(this, getResources().getColor(R.color.umbrella_purple_dark));
         enableActionBar();
         mArticleRecyclerView = findViewById(R.id.article_recycler_view);
         mLayoutManager = new LinearLayoutManager(this);

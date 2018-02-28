@@ -424,12 +424,17 @@ public class UmbrellaUtil {
 
     public static String convertDateToString(Date date) {
         DateFormat dateFormat;
+        String dateConvert = "";
         try {
-            dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
+            if (date != null) {
+                dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
+                dateConvert = dateFormat.format(date);
+            }
         } catch (Exception e) {
-            return "";
+            return dateConvert;
         }
-        return dateFormat.format(date);
+
+        return dateConvert;
     }
 
     public static String splitArticleLinkToShare(List<Item> selectedItems) {
