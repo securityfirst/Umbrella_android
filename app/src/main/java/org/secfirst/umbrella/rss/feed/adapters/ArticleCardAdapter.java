@@ -120,7 +120,8 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
     @SuppressWarnings("unchecked")
     private void removeUnformattedItem(List<? extends Item> items) {
         for (int i = 0; i < items.size(); i++) {
-            if (!items.get(i).getDescription().equals("")) {
+            Item item = items.get(i);
+            if (item.getDescription() != null && !item.getDescription().equals("")) {
                 mArticleItems.add(items.get(i));
             }
         }

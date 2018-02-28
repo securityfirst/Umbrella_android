@@ -1,10 +1,9 @@
 package org.secfirst.umbrella.rss.feed.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Patterns;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.WebViewDialog;
+import org.secfirst.umbrella.WebViewActivity;
 import org.secfirst.umbrella.rss.feed.CustomFeed;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
@@ -123,10 +122,9 @@ public class ArticleSimpleAdapter extends RecyclerView.Adapter<ArticleSimpleAdap
             Item currentItem = (Item) mArticleItems.get(getLayoutPosition());
             final String link = currentItem.getLink();
             if (link != null && Patterns.WEB_URL.matcher(link).matches()) {
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                WebViewDialog webViewDialog = WebViewDialog.newInstance(link);
-                webViewDialog.show(fragmentManager, "");
+                Intent intent = new Intent(mContext, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.URL_KEY, link);
+                mContext.startActivity(intent);
             }
         }
     }
@@ -135,7 +133,8 @@ public class ArticleSimpleAdapter extends RecyclerView.Adapter<ArticleSimpleAdap
     @SuppressWarnings("unchecked")
     private void removeUnformattedItem(List<? extends Item> items) {
         for (int i = 0; i < items.size(); i++) {
-            if (!items.get(i).getDescription().equals("")) {
+            Item item = items.get(i);
+            if (item.getDescription() != null && !item.getDescription().equals("")) {
                 mArticleItems.add(items.get(i));
             }
         }

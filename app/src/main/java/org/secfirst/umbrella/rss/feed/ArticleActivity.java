@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ArticleActivity extends BaseActivity {
 
-    // TODO: 02/02/2018  That's now way to parcelable [com.einmalfel.earl.Feed]
+    // TODO: 02/02/2018  That's no way to parcelable [com.einmalfel.earl.Feed]
     // TODO: Probably we have to create a PM in Earl lib.
     public static CustomFeed mCustomFeed;
     private RecyclerView mArticleRecyclerView;
@@ -46,7 +46,10 @@ public class ArticleActivity extends BaseActivity {
     private void enableActionBar() {
         toolbar = findViewById(R.id.article_list_toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(mCustomFeed.getTitle());
+        }
     }
 
     @Override

@@ -73,11 +73,6 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         mPresenter.start();
@@ -98,12 +93,14 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
     public void onStop() {
         super.onStop();
         mFeedAdapter.clear();
+        if (mActionMode != null) mActionMode.finish();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         mFeedAdapter.clear();
+        if (mActionMode != null) mActionMode.finish();
     }
 
     @Override
@@ -288,5 +285,4 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
             mFeedAdapter.setMultiSelect(false);
         }
     };
-
 }
