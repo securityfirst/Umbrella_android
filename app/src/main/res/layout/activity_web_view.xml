@@ -15,7 +15,8 @@
             android:id="@+id/web_view_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:theme="@style/UmbrellaTheme.Base" />
+            android:background="@color/umbrella_purple"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <ProgressBar
             android:id="@+id/web_view_load"

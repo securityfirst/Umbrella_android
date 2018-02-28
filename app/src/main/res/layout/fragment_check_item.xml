@@ -60,7 +60,7 @@
             android:layout_marginRight="16dp"
             android:background="@drawable/round_button"
             android:elevation="4dp"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_add_white_18dp"
             android:stateListAnimator="@animator/anim" />
 
     </RelativeLayout>
