@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/custom_normal_rss_big_margin_top"
+    android:background="@color/light_grey"
     android:orientation="horizontal"
     tools:ignore="MissingPrefix">
 
@@ -11,7 +12,7 @@
         android:id="@+id/channel_item_view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@color/light_grey"
         android:orientation="horizontal">
 
         <View
@@ -45,6 +46,4 @@
                 android:textSize="@dimen/text_size_like_really_small" />
         </LinearLayout>
     </LinearLayout>
-
-
 </FrameLayout>

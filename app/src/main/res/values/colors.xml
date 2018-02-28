@@ -31,4 +31,6 @@
     <color name="macaroni_and_cheese">#f3bc2b</color>
     <color name="blue_pea">#4285f4</color>
     <color name="blue">#21449e</color>
+    <color name="light_grey">#e2e2e2</color>
+    <color name="light_white">#fafafa</color>
 </resources>

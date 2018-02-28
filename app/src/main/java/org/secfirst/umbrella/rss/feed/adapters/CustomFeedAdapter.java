@@ -118,7 +118,7 @@ public class CustomFeedAdapter extends RecyclerView.Adapter<CustomFeedAdapter.RS
             holder.viewForeground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.grey));
         } else {
             //else remove selected item color.
-            holder.viewForeground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
+            holder.viewForeground.setBackgroundColor(ContextCompat.getColor(mContext, R.color.light_grey));
         }
     }
 

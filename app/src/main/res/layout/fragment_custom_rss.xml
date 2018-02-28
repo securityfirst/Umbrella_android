@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@android:color/white"
+    android:background="@color/light_grey"
     tools:context="org.secfirst.umbrella.rss.feed.CustomFeedFragment">
 
     <ProgressBar
@@ -28,7 +28,7 @@
             android:id="@+id/channel_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
+            android:background="@color/light_grey"
             android:scrollbars="vertical" />
 
         <android.support.design.widget.FloatingActionButton

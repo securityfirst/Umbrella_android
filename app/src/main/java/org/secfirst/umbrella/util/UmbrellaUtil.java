@@ -46,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -422,7 +423,12 @@ public class UmbrellaUtil {
     }
 
     public static String convertDateToString(Date date) {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat dateFormat;
+        try {
+            dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
+        } catch (Exception e) {
+            return "";
+        }
         return dateFormat.format(date);
     }
 
