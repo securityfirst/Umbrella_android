@@ -328,10 +328,16 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void onNavigationDrawerItemSelected(DrawerChildItem selectedItem) {
-        Category category;
+        Category category, parentCategory = null;
         try {
             category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
-            if (category.hasDifficulty()) {
+            if (category.getParent()>0) {
+                parentCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(category.getParent()));
+            }
+            if ((parentCategory!=null && parentCategory.getStringId()!=null && parentCategory.getStringId().equals("tools"))) {
+                drawerItem = selectedItem.getPosition();
+                setFragment(4, "", false);
+            } else if (category.hasDifficulty()) {
                 childItem = selectedItem;
                 setFragment(3, "", false);
             } else {

@@ -34,10 +34,12 @@ public class Category implements Serializable {
     @DatabaseField
     @SerializedName("text_expert")
     private String textExpert;
+    @DatabaseField(columnName = "id")
+    private String stringId;
 
     public Category() {}
 
-    public Category(int id, int parent, String category, boolean hasDifficulty, boolean difficultyBeginner, boolean difficultyAdvanced, boolean difficultyExpert, String textBeginner, String textAdvanced, String textExpert) {
+    public Category(int id, int parent, String category, boolean hasDifficulty, boolean difficultyBeginner, boolean difficultyAdvanced, boolean difficultyExpert, String textBeginner, String textAdvanced, String textExpert, String stringId) {
         this.id = id;
         this.parent = parent;
         this.category = category;
@@ -48,6 +50,15 @@ public class Category implements Serializable {
         this.textBeginner = textBeginner;
         this.textAdvanced = textAdvanced;
         this.textExpert = textExpert;
+        this.stringId = stringId;
+    }
+
+    public String getStringId() {
+        return stringId;
+    }
+
+    public void setStringId(String stringId) {
+        this.stringId = stringId;
     }
 
     public int getParent() {
@@ -137,6 +148,7 @@ public class Category implements Serializable {
         sb.append(", difficultyExpert='").append(difficultyExpert).append('\'');
         sb.append(", textAdvanced='").append(textAdvanced).append('\'');
         sb.append(", textExpert='").append(textExpert).append('\'');
+        sb.append(", stringId='").append(stringId).append('\'');
         sb.append('}');
         return sb.toString();
     }

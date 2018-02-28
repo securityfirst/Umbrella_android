@@ -1,0 +1,1 @@
+ALTER TABLE Category ADD id VARCHAR(255);
