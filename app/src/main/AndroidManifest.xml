@@ -160,7 +160,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.secfirst.umbrella.MainActivity" />
         </activity>
-        <activity android:name=".rss.feed.ArticleActivity" />
+        <activity android:name=".rss.views.ArticleActivity" />
         <activity android:name=".WebViewActivity"></activity>
     </application>
 

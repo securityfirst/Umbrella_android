@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.views;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -15,8 +15,9 @@ import com.einmalfel.earl.Item;
 
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.R;
-import org.secfirst.umbrella.rss.feed.adapters.ArticleCardAdapter;
-import org.secfirst.umbrella.rss.feed.adapters.ArticleSimpleAdapter;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
+import org.secfirst.umbrella.rss.adapters.ArticleCardAdapter;
+import org.secfirst.umbrella.rss.adapters.ArticleSimpleAdapter;
 import org.secfirst.umbrella.util.RecyclerItemClickListener;
 import org.secfirst.umbrella.util.ShareContentUtil;
 import org.secfirst.umbrella.util.UmbrellaUtil;

@@ -6,10 +6,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.secfirst.umbrella.rss.RSSFeedService;
-import org.secfirst.umbrella.rss.feed.CustomFeed;
-import org.secfirst.umbrella.rss.feed.FeedContract;
-import org.secfirst.umbrella.rss.feed.FeedPresenter;
+import org.secfirst.umbrella.rss.services.RSSFeedService;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
+import org.secfirst.umbrella.rss.presenters.FeedContract;
+import org.secfirst.umbrella.rss.presenters.FeedPresenter;
 
 import static org.mockito.Mockito.verify;
 

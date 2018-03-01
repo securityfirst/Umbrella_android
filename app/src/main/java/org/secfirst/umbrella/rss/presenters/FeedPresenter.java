@@ -1,9 +1,10 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.presenters;
 
 import com.google.gson.Gson;
 
 import org.secfirst.umbrella.models.RSS;
-import org.secfirst.umbrella.rss.RSSFeedService;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
+import org.secfirst.umbrella.rss.services.RSSFeedService;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 

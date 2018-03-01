@@ -1,7 +1,8 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.presenters;
 
 import org.secfirst.umbrella.BasePresenter;
 import org.secfirst.umbrella.BaseView;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
 
 import java.io.InputStream;
 import java.util.List;

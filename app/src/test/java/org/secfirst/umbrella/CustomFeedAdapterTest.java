@@ -11,8 +11,8 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.secfirst.umbrella.rss.feed.CustomFeed;
-import org.secfirst.umbrella.rss.feed.adapters.CustomFeedAdapter;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
+import org.secfirst.umbrella.rss.adapters.CustomFeedAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

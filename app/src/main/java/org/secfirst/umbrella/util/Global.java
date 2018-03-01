@@ -64,7 +64,7 @@ import org.secfirst.umbrella.models.NewDifficulty;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.models.Tree;
-import org.secfirst.umbrella.rss.feed.CustomFeed;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
 
 import java.io.File;
 import java.io.FileFilter;

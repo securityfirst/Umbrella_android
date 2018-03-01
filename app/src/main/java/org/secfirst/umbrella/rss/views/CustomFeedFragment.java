@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.views;
 
 
 import android.content.DialogInterface;
@@ -23,7 +23,10 @@ import android.widget.Toast;
 
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.RSS;
-import org.secfirst.umbrella.rss.feed.adapters.CustomFeedAdapter;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
+import org.secfirst.umbrella.rss.presenters.FeedContract;
+import org.secfirst.umbrella.rss.presenters.FeedPresenter;
+import org.secfirst.umbrella.rss.adapters.CustomFeedAdapter;
 import org.secfirst.umbrella.util.RecyclerItemClickListener;
 import org.secfirst.umbrella.util.ShareContentUtil;
 

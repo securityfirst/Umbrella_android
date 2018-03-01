@@ -8,8 +8,8 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowApplication;
 import org.robolectric.shadows.ShadowLooper;
-import org.secfirst.umbrella.rss.RSSFeedService;
-import org.secfirst.umbrella.rss.feed.CustomFeed;
+import org.secfirst.umbrella.rss.services.RSSFeedService;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.BufferedReader;

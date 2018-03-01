@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:background="@color/light_grey"
-    tools:context="org.secfirst.umbrella.rss.feed.CustomFeedFragment">
+    tools:context="org.secfirst.umbrella.rss.views.CustomFeedFragment">
 
     <ProgressBar
         android:id="@+id/rss_indeterminate_bar"

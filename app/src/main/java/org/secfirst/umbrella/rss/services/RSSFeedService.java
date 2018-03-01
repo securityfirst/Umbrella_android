@@ -1,11 +1,11 @@
-package org.secfirst.umbrella.rss;
+package org.secfirst.umbrella.rss.services;
 
 import android.os.AsyncTask;
 
 import com.einmalfel.earl.EarlParser;
 import com.einmalfel.earl.Feed;
 
-import org.secfirst.umbrella.rss.feed.CustomFeed;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
 
 import java.io.InputStream;
 import java.net.URL;

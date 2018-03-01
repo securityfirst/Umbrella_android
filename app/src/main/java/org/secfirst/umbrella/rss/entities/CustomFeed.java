@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.rss.feed;
+package org.secfirst.umbrella.rss.entities;
 
 import com.einmalfel.earl.Feed;
 import com.google.gson.annotations.SerializedName;
