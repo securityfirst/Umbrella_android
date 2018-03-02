@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.einmalfel.earl.Item;
 import com.squareup.picasso.Picasso;
 
+import org.jsoup.Jsoup;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.WebViewActivity;
 import org.secfirst.umbrella.rss.entities.CustomFeed;
@@ -50,7 +50,9 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
     public void onBindViewHolder(final ArticleCardAdapter.RSSItem holder, final int position) {
         Item item = (Item) mArticleItems.get(position);
         String reportDate = item.getPublicationDate() != null ? UmbrellaUtil.convertDateToString(item.getPublicationDate()) : "";
-        String description = item.getDescription() != null ? Html.fromHtml(item.getDescription()).toString() : item.getDescription();
+        String description = item.getDescription() != null ? Jsoup.parse(item.getDescription()).text() : item.getDescription();
+
+
         holder.articleTitle.setText(item.getTitle());
         holder.articleDescription.setText(description);
         holder.articleAuthor.setText(item.getAuthor());
