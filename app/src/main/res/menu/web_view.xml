@@ -4,7 +4,11 @@
     tools:context="org.secfirst.umbrella.rss.views.ArticleActivity">
 
     <item
-        android:id="@+id/article_action_browser"
+        android:id="@+id/web_view_menu_refresh"
+        android:title="@string/menu_refresh"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/web_view_action_browser"
         android:icon="@drawable/ic_open_in_browser_white_36dp"
         android:orderInCategory="100"
         android:title="@string/send_to"

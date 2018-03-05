@@ -28,10 +28,16 @@
             android:theme="@style/LinearProgress"
             android:visibility="invisible" />
 
-        <WebView
-            android:id="@+id/article_web_view"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/web_view_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <WebView
+                android:id="@+id/article_web_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
