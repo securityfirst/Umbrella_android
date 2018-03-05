@@ -136,13 +136,25 @@ public class CustomFeedFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void errorLoadFeed() {
-        mRssProgress.setVisibility(View.INVISIBLE);
-        Toast.makeText(getContext(), R.string.rss_error_load_feed, Toast.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mRssProgress.setVisibility(View.INVISIBLE);
+                Toast.makeText(getContext(), R.string.rss_error_load_feed, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override
     public void errorSaveFeed() {
-        Toast.makeText(getContext(), R.string.error_channel_fragment, Toast.LENGTH_SHORT).show();
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getContext(), R.string.error_channel_fragment, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     @Override

@@ -26,8 +26,9 @@ public class RSSFeedService extends AsyncTask<String, Void, List<CustomFeed>> {
         List<CustomFeed> customFeeds = new ArrayList<>();
         Feed feed;
         mRssEvent.onTaskInProgress();
-        try {
-            for (String url : urls) {
+
+        for (String url : urls) {
+            try {
                 CustomFeed customFeed = new CustomFeed();
                 inputStream = new URL(url).openConnection().getInputStream();
                 feed = EarlParser.parseOrThrow(inputStream, 0);
@@ -36,11 +37,12 @@ public class RSSFeedService extends AsyncTask<String, Void, List<CustomFeed>> {
                 customFeed.setTitle(feed.getTitle());
                 customFeed.setFeed(feed);
                 customFeeds.add(customFeed);
+            } catch (Exception e) {
+                mRssEvent.onError();
             }
-        } catch (Exception e) {
-            mRssEvent.onError();
-            cancel(true);
         }
+
+
         return customFeeds;
     }
 
