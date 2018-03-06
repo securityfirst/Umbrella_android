@@ -32,6 +32,7 @@ import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -45,7 +46,7 @@ import static org.secfirst.umbrella.fragments.TabbedFragment.ARG_DIFFICULTY_NUMB
 
 public class CheckItemFragment extends Fragment implements CheckListAdapter.OnCheckListEvent {
 
-    private List<CheckItem> mCheckList;
+    private List<CheckItem> mCheckList = new ArrayList<>();
     private ProgressBar checkBar;
     private TextView checkBarText;
     private CheckListAdapter cLAdapter;
@@ -145,7 +146,7 @@ public class CheckItemFragment extends Fragment implements CheckListAdapter.OnCh
 
     private void populateAdapter() {
         for (CheckItem checkItem : mCheckList) {
-            cLAdapter.add(checkItem);
+            if (cLAdapter != null) cLAdapter.add(checkItem);
         }
     }
 
