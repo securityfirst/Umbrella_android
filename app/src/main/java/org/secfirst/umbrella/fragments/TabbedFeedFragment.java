@@ -391,18 +391,6 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
 
     }
 
-    private void startFeedEmptyFragment() {
-        if (getActivity() != null && getActivity().getSupportFragmentManager() != null) {
-            FragmentTransaction transaction = getActivity().getSupportFragmentManager()
-                    .beginTransaction();
-            transaction.replace(R.id.root_frame, FeedEmptyFragment.
-                    newInstance(Global.INSTANCE.getRegistry("mLocation").getValue()));
-            transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-    }
-
     private void startFeedListFragment(ArrayList<FeedItem> receivedItems) {
         if (getActivity() != null && getActivity().getSupportFragmentManager() != null) {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager()
@@ -411,7 +399,19 @@ public class TabbedFeedFragment extends Fragment implements OnLocationEventListe
                     newInstance(receivedItems));
             transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
             transaction.addToBackStack(null);
-            transaction.commit();
+            transaction.commitAllowingStateLoss();
+        }
+    }
+
+    private void startFeedEmptyFragment() {
+        if (getActivity() != null && getActivity().getSupportFragmentManager() != null) {
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager()
+                    .beginTransaction();
+            transaction.replace(R.id.root_frame, FeedEmptyFragment.
+                    newInstance(Global.INSTANCE.getRegistry("mLocation").getValue()));
+            transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
+            transaction.addToBackStack(null);
+            transaction.commitAllowingStateLoss();
         }
     }
 
