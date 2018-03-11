@@ -60,7 +60,6 @@ public class ArticleCardAdapter extends RecyclerView.Adapter<ArticleCardAdapter.
         Picasso.with(mContext)
                 .load(item.getImageLink())
                 .placeholder(ContextCompat.getDrawable(mContext, R.drawable.default_image))
-                .resize(344, 176)
                 .into(holder.articleImage);
     }
 
