@@ -1,84 +1,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/slide_layout"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/umbrella_green"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="org.secfirst.umbrella.fragments.TourSlideFragment">
 
     <LinearLayout
         android:id="@+id/umbrella_layout"
         android:layout_width="fill_parent"
-        android:orientation="vertical"
+        android:layout_height="0dp"
         android:layout_weight="5"
-        android:layout_height="0dp">
+        android:orientation="vertical">
 
         <ImageView
-            android:src="@drawable/umbrella190"
             android:id="@+id/tour_image"
-            android:layout_gravity="center"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_marginTop="40dp"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/umbrella190" />
 
     </LinearLayout>
+
+
+    <Button
+        android:id="@+id/tour_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_language" />
+
 
     <LinearLayout
         android:id="@+id/layout_title"
         android:layout_width="fill_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:visibility="gone"
-        android:layout_height="0dp">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/heading_title"
-            android:textColor="@color/white"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="20dp"
             android:gravity="center"
-            android:textSize="@dimen/text_size_large"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:orientation="vertical"
+        android:layout_height="0dp"
         android:layout_weight="4"
-        android:layout_height="0dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/heading_body"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_large"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_large" />
 
         <WebView
             android:id="@+id/terms_content"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/text_size_smaller"
-            android:paddingLeft="7dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:visibility="gone"
-            android:paddingRight="7dp"
             android:fontFamily="sans-serif-light"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:paddingLeft="7dp"
+            android:paddingRight="7dp"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/text_size_smaller"
+            android:visibility="gone" />
 
     </LinearLayout>
 
     <View
-        android:layout_weight="1"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </LinearLayout>

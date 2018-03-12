@@ -557,6 +557,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         }
     }
 
+    @Override
+    public void recreate() {
+        super.recreate();
+    }
+
     public void onNavigationDrawerGroupItemSelected(Category category) {
         drawerItem = category.getId();
         setFragment(category.hasDifficulty() ? 2 : 4, category.getCategory(), false);

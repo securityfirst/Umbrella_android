@@ -781,7 +781,11 @@ public class Global extends Application {
                     if (language != null && !language.getValue().equals("")) {
                         conf.locale = new Locale(language.getValue());
                     }
+
                     final Resources resources = new Resources(getAssets(), new DisplayMetrics(), conf);
+                    DisplayMetrics dm = resources.getDisplayMetrics();
+                    resources.updateConfiguration(conf, dm);
+
                     listener.onStatusChange(resources.getString(R.string.updating_the_database));
                     new Thread() {
                         @Override
@@ -803,7 +807,6 @@ public class Global extends Application {
                 } else {
                     listener.onDone();
                 }
-
             }
 
             @Override
