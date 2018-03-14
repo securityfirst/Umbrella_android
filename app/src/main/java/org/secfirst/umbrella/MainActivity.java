@@ -31,6 +31,7 @@ import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.fragments.HandsShakeDialog;
+import org.secfirst.umbrella.fragments.InfoHandsShakeDialog;
 import org.secfirst.umbrella.fragments.TabbedFragment;
 import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
@@ -331,10 +332,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         Category category, parentCategory = null;
         try {
             category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(selectedItem.getPosition()));
-            if (category.getParent()>0) {
+            if (category.getParent() > 0) {
                 parentCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(category.getParent()));
             }
-            if ((parentCategory!=null && parentCategory.getStringId()!=null && parentCategory.getStringId().equals("tools"))) {
+            if ((parentCategory != null && parentCategory.getStringId() != null && parentCategory.getStringId().equals("tools"))) {
                 drawerItem = selectedItem.getPosition();
                 setFragment(4, "", false);
             } else if (category.hasDifficulty()) {
@@ -425,6 +426,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             itemExport.setVisible(hasDifficulty != null && !hasDifficulty.isEmpty());
         }
         favouriteItem = menu.findItem(R.id.favourite);
+
+        if (InfoHandsShakeDialog.isMaskModeEnable(getApplicationContext())) {
+            menu.findItem(R.id.action_mask).setTitle("Disable Mask Application");
+        }
         return true;
     }
 
@@ -444,13 +449,19 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             return true;
         }
         if (id == R.id.action_mask) {
-            if (!UmbrellaUtil.isAppMasked(this)) {
+            if (!InfoHandsShakeDialog.isMaskModeEnable(this) && !UmbrellaUtil.isAppMasked(this)) {
                 if (Global.INSTANCE.hasPasswordSet(false))
                     Global.INSTANCE.logout(MainActivity.this, false);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 HandsShakeDialog handsShake = HandsShakeDialog.newInstance();
                 handsShake.show(fragmentManager, "");
+            } else {
+                UmbrellaUtil.setMaskMode(this, false);
+                InfoHandsShakeDialog.storeMaskAppState(false, getBaseContext());
+                Toast.makeText(getBaseContext(),"Mask Application has been disabled.", Toast.LENGTH_LONG).show();
+                item.setTitle(getString(R.string.action_mask));
             }
+
         }
         if (id == R.id.action_logout) {
             Global.INSTANCE.logout(this, true);
@@ -593,6 +604,17 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     })
                     .show();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        isMaskModeEnable();
+    }
+
+    private void isMaskModeEnable() {
+        if (InfoHandsShakeDialog.isMaskModeEnable(getApplicationContext()))
+            UmbrellaUtil.setMaskMode(this, true);
     }
 
     @Override
