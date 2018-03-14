@@ -428,7 +428,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         favouriteItem = menu.findItem(R.id.favourite);
 
         if (InfoHandsShakeDialog.isMaskModeEnable(getApplicationContext())) {
-            menu.findItem(R.id.action_mask).setTitle("Disable Mask Application");
+            menu.findItem(R.id.action_mask).setTitle(R.string.mask_application_message);
         }
         return true;
     }
@@ -458,7 +458,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } else {
                 UmbrellaUtil.setMaskMode(this, false);
                 InfoHandsShakeDialog.storeMaskAppState(false, getBaseContext());
-                Toast.makeText(getBaseContext(),"Mask Application has been disabled.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), R.string.mask_application_disable_message, Toast.LENGTH_LONG).show();
                 item.setTitle(getString(R.string.action_mask));
             }
 
