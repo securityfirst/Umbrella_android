@@ -94,8 +94,8 @@
     <!--Location Dialog-->
     <dimen name="location_dialog_medium_height">140dp</dimen>
     <dimen name="location_dialog_small_padding">10dp</dimen>
-    <dimen name="location_dialog_smallest_width">72dp</dimen>
-    <dimen name="location_dialog_smallest_height">72dp</dimen>
+    <dimen name="location_dialog_smallest_width">52dp</dimen>
+    <dimen name="location_dialog_smallest_height">52dp</dimen>
     <dimen name="location_dialog_default_margin">15dp</dimen>
     <dimen name="location_dialog_big_margin_top">20dp</dimen>
     <dimen name="location_dialog_big_padding">20dp</dimen>
