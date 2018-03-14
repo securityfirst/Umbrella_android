@@ -31,6 +31,7 @@
         android:id="@+id/tour_language"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/tour_normal_margin_top"
         android:text="@string/select_language" />
 
 

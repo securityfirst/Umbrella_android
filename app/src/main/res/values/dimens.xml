@@ -161,5 +161,6 @@
     <dimen name="hands_shake_info_height_ok">36dp</dimen>
     <dimen name="hands_shake_info_smallest_margin_left">8dp</dimen>
     <dimen name="hands_shake_info_biggest_margin_left">25dp</dimen>
-    
+    <dimen name="tour_normal_margin_top">10dp</dimen>
+
 </resources>
