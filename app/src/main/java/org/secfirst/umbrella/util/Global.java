@@ -416,7 +416,7 @@ public class Global extends Application {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Toast.makeText(context, R.string.content_reset_to_default, Toast.LENGTH_SHORT).show();
                 ((Activity) context).finish();
-                ;
+
                 password = isLoggedIn = false;
                 startActivity(i);
             }

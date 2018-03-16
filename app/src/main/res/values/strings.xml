@@ -34,9 +34,12 @@
     <string name="log_in">Log In</string>
     <string name="general">General</string>
     <string name="beginner">Beginner</string>
+    <string name="md_error_label">Error</string>
+    <string name="md_storage_perm_error">Umbrella has not been granted the READ_EXTERNAL_STORAGE permission.</string>
     <string name="expert">Expert</string>
     <string name="intermediate">Advanced</string>
     <string name="action_export_checklist">Share checklist</string>
+    <string name="action_export_db_file">Export your data</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
     <string name="refresh_interval_feeds">Refresh interval for feeds</string>
@@ -188,4 +191,12 @@
     <string name="hands_shake_info_cancel_label">CANCEL</string>
     <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
     <string name="feed_no_connection">There is no internet access.</string>
+    <string name="export_database_file_title">Export database file</string>
+    <string name="export_database_file_description">File\'s name:</string>
+    <string name="export_database_file_positive">Export</string>
+    <string name="export_database_file_negative">Cancel</string>
+    <string name="export_database_file_name_hint">Eg. Michael Backup November</string>
+    <string name="export_database_wipe_data">Delete and reset all current Umbrella content after export</string>
+    <string name="export_database_wipe_title">Warning</string>
+    <string name="export_database_wipe_content">After export your database file you will losing any data that you might have entered so far.</string>
 </resources>

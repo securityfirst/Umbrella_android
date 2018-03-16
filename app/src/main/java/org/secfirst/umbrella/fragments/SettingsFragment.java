@@ -3,6 +3,7 @@ package org.secfirst.umbrella.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.RingtoneManager;
@@ -11,11 +12,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,15 +31,19 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
+import org.secfirst.umbrella.TourActivity;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
+import org.secfirst.umbrella.util.OrmHelper;
 import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -50,12 +58,15 @@ import static android.media.RingtoneManager.getRingtone;
 public class SettingsFragment extends PreferenceFragmentCompat implements SyncProgressListener {
     private static final int REQUEST_RINGTONE = 93;
     private ArrayList<Address> mAddressList;
-
-    ListPreference refreshInterval, selectLanguage;
-    Preference serverRefresh, setLocation, feedSources, notificationRingtone;
-    SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
+    private static final int STORAGE_PERMISSION_RC = 69;
+    private ListPreference refreshInterval, selectLanguage;
+    private Preference serverRefresh, setLocation, feedSources, notificationRingtone, databasePreference;
+    private SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
     private Address mAddress;
     private MaterialDialog materialDialog;
+    private static boolean isDeleteDatabase;
+    public static final int EXPORTED_DB_REQUEST = 1;
+
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -79,7 +90,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 String languageToLoad = (String) newValue;
                 Global.INSTANCE.setRegistry("language", languageToLoad);
-                if (getActivity()!=null) ((SettingsActivity) getActivity()).setLocale(languageToLoad);
+                if (getActivity() != null)
+                    ((SettingsActivity) getActivity()).setLocale(languageToLoad);
 
                 materialDialog = new MaterialDialog.Builder(getContext())
                         .title(R.string.update_from_server)
@@ -109,6 +121,34 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
             }
         });
 
+        databasePreference = findPreference("share_db_file");
+        databasePreference.setOnPreferenceClickListener(preference -> {
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.export_database_file_title)
+                    .content(R.string.export_database_file_description)
+                    .inputType(
+                            InputType.TYPE_CLASS_TEXT
+                                    | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
+                                    | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
+                    .inputRange(2, 30)
+                    .positiveText(R.string.export_database_file_positive)
+                    .negativeText(R.string.export_database_file_negative)
+                    .input(getString(R.string.export_database_file_name_hint), "",
+                            false, (dialog, input) -> shareDbFile(input.toString()))
+                    .checkBoxPromptRes(R.string.export_database_wipe_data, false, (buttonView, isChecked) -> {
+                        if (isChecked) {
+                            new MaterialDialog.Builder(getContext())
+                                    .title(R.string.export_database_wipe_title)
+                                    .content(R.string.export_database_wipe_content, true)
+                                    .positiveText(R.string.ok)
+                                    .show();
+                            isDeleteDatabase = isChecked;
+                        }
+                    })
+                    .show();
+            return true;
+        });
+
         Preference showData = findPreference("mask_app");
         showData.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -122,7 +162,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 UmbrellaUtil.setMaskMode(getActivity(), true);
-                                if (Global.INSTANCE.hasPasswordSet(false)) Global.INSTANCE.logout(getActivity(), false);
+                                if (Global.INSTANCE.hasPasswordSet(false))
+                                    Global.INSTANCE.logout(getActivity(), false);
                                 Intent i = new Intent(getActivity(), CalcActivity.class);
                                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i);
@@ -167,15 +208,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                     View forDialog = inflater.inflate(R.layout.item_set_location, null);
                     final DelayAutoCompleteTextView cityPrediction = (DelayAutoCompleteTextView) forDialog.findViewById(R.id.set_location);
                     Registry selLoc = Global.INSTANCE.getRegistry("location");
-                    if (selLoc!=null) cityPrediction.setText(selLoc.getValue());
+                    if (selLoc != null) cityPrediction.setText(selLoc.getValue());
                     cityPrediction.setThreshold(1);
                     cityPrediction.setAdapter(new GeoCodingAutoCompleteAdapter(getContext(), R.layout.autocomplete_list_item));
                     cityPrediction.setLoadingIndicator((android.widget.ProgressBar) forDialog.findViewById(R.id.progress_bar));
-                    cityPrediction.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                    {
+                    cityPrediction.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long id)
-                        {
+                        public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                             if (Global.INSTANCE.hasPasswordSet(false)) {
                                 if (position != 0 && mAddressList != null && mAddressList.size() >= position) {
                                     mAddress = mAddressList.get(position - 1);
@@ -185,7 +224,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                                     setLocation.setSummary(chosenAddress);
 
                                     Registry selLoc = Global.INSTANCE.getRegistry("location");
-                                    if (selLoc!=null) {
+                                    if (selLoc != null) {
                                         selLoc.setValue(chosenAddress);
                                         try {
                                             Global.INSTANCE.getDaoRegistry().update(selLoc);
@@ -200,7 +239,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                                         }
                                     }
                                     Registry iso2 = Global.INSTANCE.getRegistry("iso2");
-                                    if (iso2!=null) {
+                                    if (iso2 != null) {
                                         iso2.setValue(mAddress.getCountryCode().toLowerCase());
                                         try {
                                             Global.INSTANCE.getDaoRegistry().update(iso2);
@@ -214,8 +253,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                                             Timber.e(e);
                                         }
                                     }
-                                    Registry selCountry  = Global.INSTANCE.getRegistry("country");
-                                    if (selCountry!=null) {
+                                    Registry selCountry = Global.INSTANCE.getRegistry("country");
+                                    if (selCountry != null) {
                                         selCountry.setValue(mAddress.getCountryName());
                                         try {
                                             Global.INSTANCE.getDaoRegistry().update(selCountry);
@@ -303,7 +342,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, Settings.System.DEFAULT_NOTIFICATION_URI);
                 Uri existingRIngtone = Global.INSTANCE.getNotificationRingtone();
-                if (existingRIngtone!=null) {
+                if (existingRIngtone != null) {
                     if (existingRIngtone.toString().length() == 0) {
                         intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, (Uri) null);
                     } else {
@@ -319,10 +358,47 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
         });
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         updateSummaries();
+        if (isDeleteDatabase) {
+            Global.INSTANCE.closeDbAndDAOs();
+            Global.deleteDatabase(getContext().getDatabasePath(OrmHelper.DATABASE_NAME));
+            Global.INSTANCE.removeSharedPreferences();
+            Intent i = new Intent(getContext(), TourActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(i);
+            isDeleteDatabase = false;
+        }
+    }
+
+
+    private void shareDbFile(String fileName) {
+        File databaseFile = getContext().getDatabasePath(OrmHelper.DATABASE_NAME);
+        try {
+            File dstDatabase = new File(Global.INSTANCE.getCacheDir().getPath() + "/" + fileName + ".db");
+            UmbrellaUtil.copyFile(databaseFile, dstDatabase);
+            Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID, dstDatabase);
+            Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+                    .setType(getActivity().getContentResolver().getType(uri))
+                    .setStream(uri)
+                    .getIntent();
+            //Provide read access
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            PackageManager pm = getActivity().getPackageManager();
+
+            if (shareIntent.resolveActivity(pm) != null) {
+                getActivity().startActivityForResult
+                        (Intent.createChooser(shareIntent, getString(R.string.share_form)),
+                                EXPORTED_DB_REQUEST);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showFeedSources() {
@@ -390,7 +466,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
 
     public void updateSummaries() {
         Registry language = Global.INSTANCE.getRegistry("language");
-        if (language==null || language.getValue().equals("")) language = new Registry("language", "en");
+        if (language == null || language.getValue().equals(""))
+            language = new Registry("language", "en");
         selectLanguage.setSummary(UmbrellaUtil.getLanguageEntryByValue(language.getValue()));
         selectLanguage.setValue(language.getValue());
         skipPassword.setChecked(Global.INSTANCE.getSkipPassword());
@@ -399,7 +476,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
         refreshInterval.setValue(String.valueOf(refValue));
         refreshInterval.setSummary(!refLabel.equals("") ? refLabel : Global.INSTANCE.getString(R.string.choose_refresh_inteval));
         Registry selLoc = Global.INSTANCE.getRegistry("location");
-        setLocation.setSummary(selLoc!=null ? selLoc.getValue() : Global.INSTANCE.getString(R.string.set_location));
+        setLocation.setSummary(selLoc != null ? selLoc.getValue() : Global.INSTANCE.getString(R.string.set_location));
         String selectedFeedSources = Global.INSTANCE.getSelectedFeedSourcesLabel(true);
         feedSources.setSummary(!selectedFeedSources.equals("") ? selectedFeedSources : Global.INSTANCE.getString(R.string.feed_sources));
         toggleNotificationPref(null);
@@ -412,10 +489,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_RINGTONE && resultCode == RESULT_OK) {
-            if(data != null) {
+        if (requestCode == REQUEST_RINGTONE && resultCode == RESULT_OK) {
+            if (data != null) {
                 Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                if(uri != null) {
+                if (uri != null) {
 
                     Global.INSTANCE.setNotificationRingtoneEnabled(true);
                     Global.INSTANCE.setNotificationRingtone(uri);
@@ -428,15 +505,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
     }
 
     public void toggleNotificationPref(Boolean visible) {
-        if (visible==null) {
+        if (visible == null) {
             visible = Global.INSTANCE.hasPasswordSet(false) && Global.INSTANCE.getNotificationsEnabled();
         }
         notificationVibration.setVisible(visible);
-        if (!visible || (notificationVibration.isVisible() && notificationVibration.isChecked() )) notificationRingtone.setVisible(visible);
+        if (!visible || (notificationVibration.isVisible() && notificationVibration.isChecked()))
+            notificationRingtone.setVisible(visible);
     }
 
     public void toggleVibrationPref(Boolean visible) {
-        if (visible==null) {
+        if (visible == null) {
             visible = Global.INSTANCE.hasPasswordSet(false) && Global.INSTANCE.getNotificationsEnabled() && Global.INSTANCE.getNotificationVibrationEnabled();
         }
         notificationRingtone.setVisible(visible);
@@ -444,27 +522,33 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
 
     public void showRingtoneName() {
         notificationRingtone.setSummary(String.format(getString(R.string.notification_ringtone),
-                Global.INSTANCE.getNotificationRingtoneEnabled() && RingtoneManager.getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone())!=null
+                Global.INSTANCE.getNotificationRingtoneEnabled() && RingtoneManager.getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone()) != null
                         ? getRingtone(getContext(), Global.INSTANCE.getNotificationRingtone()).getTitle(getContext())
                         : getString(R.string.none)));
     }
 
     @Override
     public void onProgressChange(int progress) {
-        if (materialDialog!=null && !materialDialog.isCancelled())
+        if (materialDialog != null && !materialDialog.isCancelled())
             materialDialog.setProgress(progress);
     }
 
     @Override
     public void onStatusChange(String status) {
-        if (materialDialog!=null && !materialDialog.isCancelled())
+        if (materialDialog != null && !materialDialog.isCancelled())
             materialDialog.setContent(status);
     }
 
     @Override
     public void onDone() {
-        if (materialDialog!=null && !materialDialog.isCancelled())
+        if (materialDialog != null && !materialDialog.isCancelled())
             materialDialog.dismiss();
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     private class GeoCodingAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {

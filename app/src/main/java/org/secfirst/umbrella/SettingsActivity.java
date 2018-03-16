@@ -8,13 +8,14 @@ import org.secfirst.umbrella.fragments.SettingsFragment;
 public class SettingsActivity extends BaseActivity {
 
     Toolbar toolbar;
+    private SettingsFragment mSettingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar()!=null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, new SettingsFragment())
                 .commit();
@@ -28,8 +29,10 @@ public class SettingsActivity extends BaseActivity {
     @Override
     public void setLocale(String languageToLoad) {
         super.setLocale(languageToLoad);
+        mSettingsFragment = new SettingsFragment();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, new SettingsFragment())
                 .commit();
+
     }
 }
