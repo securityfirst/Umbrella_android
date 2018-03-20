@@ -235,7 +235,7 @@ information.
 
 **License**
 
-Copyright 2013-2017 Global Security First Ltd. (trading as Security
+Copyright 2013-2018 Global Security First Ltd. (trading as Security
 First)
 
 Licensed under the
