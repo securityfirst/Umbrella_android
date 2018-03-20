@@ -3,7 +3,6 @@ package org.secfirst.umbrella.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.media.RingtoneManager;
@@ -12,14 +11,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ShareCompat;
-import android.support.v4.content.FileProvider;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.SwitchPreferenceCompat;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,7 +28,6 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
@@ -43,7 +39,6 @@ import org.secfirst.umbrella.util.OrmHelper;
 import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -65,7 +60,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
     private Address mAddress;
     private MaterialDialog materialDialog;
     private static boolean isDeleteDatabase;
-    public static final int EXPORTED_DB_REQUEST = 1;
+
 
 
     @Override
@@ -123,29 +118,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
 
         databasePreference = findPreference("share_db_file");
         databasePreference.setOnPreferenceClickListener(preference -> {
-            new MaterialDialog.Builder(getContext())
-                    .title(R.string.export_database_file_title)
-                    .content(R.string.export_database_file_description)
-                    .inputType(
-                            InputType.TYPE_CLASS_TEXT
-                                    | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-                                    | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
-                    .inputRange(2, 30)
-                    .positiveText(R.string.export_database_file_positive)
-                    .negativeText(R.string.export_database_file_negative)
-                    .input(getString(R.string.export_database_file_name_hint), "",
-                            false, (dialog, input) -> shareDbFile(input.toString()))
-                    .checkBoxPromptRes(R.string.export_database_wipe_data, false, (buttonView, isChecked) -> {
-                        if (isChecked) {
-                            new MaterialDialog.Builder(getContext())
-                                    .title(R.string.export_database_wipe_title)
-                                    .content(R.string.export_database_wipe_content, true)
-                                    .positiveText(R.string.ok)
-                                    .show();
-                            isDeleteDatabase = isChecked;
-                        }
-                    })
-                    .show();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            BackupDatabaseDialog custom = BackupDatabaseDialog.newInstance();
+            custom.show(fragmentManager, "");
             return true;
         });
 
@@ -374,32 +349,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
         }
     }
 
-
-    private void shareDbFile(String fileName) {
-        File databaseFile = getContext().getDatabasePath(OrmHelper.DATABASE_NAME);
-        try {
-            File dstDatabase = new File(Global.INSTANCE.getCacheDir().getPath() + "/" + fileName + ".db");
-            UmbrellaUtil.copyFile(databaseFile, dstDatabase);
-            Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID, dstDatabase);
-            Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
-                    .setType(getActivity().getContentResolver().getType(uri))
-                    .setStream(uri)
-                    .getIntent();
-            //Provide read access
-            shareIntent.setAction(Intent.ACTION_SEND);
-            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            PackageManager pm = getActivity().getPackageManager();
-
-            if (shareIntent.resolveActivity(pm) != null) {
-                getActivity().startActivityForResult
-                        (Intent.createChooser(shareIntent, getString(R.string.share_form)),
-                                EXPORTED_DB_REQUEST);
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void showFeedSources() {
         final CharSequence[] items = Global.INSTANCE.getFeedSourcesArray();
