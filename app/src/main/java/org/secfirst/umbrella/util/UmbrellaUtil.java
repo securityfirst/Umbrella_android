@@ -5,10 +5,12 @@ import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -420,6 +422,15 @@ public class UmbrellaUtil {
             if (outChannel != null)
                 outChannel.close();
         }
+    }
+
+
+    public static int fetchAccentColor(Context context) {
+        TypedValue typedValue = new TypedValue();
+        TypedArray typedArray = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
+        int color = typedArray.getColor(0, 0);
+        typedArray.recycle();
+        return color;
     }
 
 }

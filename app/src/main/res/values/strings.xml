@@ -199,4 +199,13 @@
     <string name="export_database_wipe_data">Delete and reset all current Umbrella content after export</string>
     <string name="export_database_wipe_title">Warning</string>
     <string name="export_database_wipe_content">After export your database file you will losing any data that you might have entered so far.</string>
+    <string name="write_external_permission_granted">Write external storage permission was granted.</string>
+    <string name="write_external_permission_denied">Write external storage permission request was denied.</string>
+    <string name="write_external_permission_available">Write external permission is available.</string>
+    <string name="write_external_unavailable">Save your file could not be possible.</string>
+    <string name="write_external_access_required">Write external storage access is required to display.</string>
+    <string name="choose">Choose</string>
+    <string name="new_folder">New folder</string>
+    <string name="backup_database_file_title">Backup database file</string>
+
 </resources>

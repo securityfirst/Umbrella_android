@@ -3,39 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="org.secfirst.umbrella.MainActivity">
+    android:padding="20dp"
+    tools:context="org.secfirst.umbrella.MainActivity"
+    tools:ignore="MissingPrefix">
 
     <LinearLayout
+        android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
+            fontPath="fonts/Roboto-Medium.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Backup database file" />
+            android:text="@string/backup_database_file_title"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-        <android.support.design.widget.TextInputLayout
+        <EditText
+            android:id="@+id/backup_file_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/location_dialog_default_margin"
-            android:layout_marginRight="@dimen/location_dialog_default_margin"
-            android:layout_marginTop="@dimen/location_dialog_big_margin_top"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
-
-            <android.support.v7.widget.AppCompatEditText
-                android:id="@+id/backup_file_name"
-                fontPath="fonts/Roboto-Regular.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Set your file name"
-                android:imeOptions="actionDone"
-                android:inputType="textCapSentences"
-                android:textSize="@dimen/text_size_small" />
-        </android.support.design.widget.TextInputLayout>
-
+            android:hint="Set your file name" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,37 +36,49 @@
 
 
             <TextView
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wipe data" />
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="Wipe data"
+                android:textSize="14sp" />
 
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/backup_wipe_data"
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="asdfadf" />
+                android:paddingBottom="10dp"
+                android:text="@string/export_database_wipe_data" />
 
         </LinearLayout>
 
         <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Backup type" />
+            android:paddingBottom="10dp"
+            android:text="Backup type"
+            android:textSize="14sp" />
 
         <RadioGroup
             android:id="@+id/backup_type_group"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingBottom="10dp">
 
             <RadioButton
                 android:id="@+id/share_type"
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Share" />
 
             <RadioButton
                 android:id="@+id/export_type"
+                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Export" />
@@ -83,29 +87,30 @@
         <TextView
             android:id="@+id/backup_path"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="path" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="220dp"
+        android:gravity="right"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/backup_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="CANCEL" />
+            android:layout_marginRight="20dp"
+            android:text="CANCEL"
+            android:textStyle="bold" />
 
-        <Button
+        <TextView
             android:id="@+id/backup_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="OK" />
+            android:text="OK"
+            android:textStyle="bold" />
     </LinearLayout>
 
 

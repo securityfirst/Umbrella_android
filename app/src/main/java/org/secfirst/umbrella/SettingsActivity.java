@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import org.secfirst.umbrella.fragments.SettingsFragment;
+import org.secfirst.umbrella.util.FolderChooserDialog;
 
-public class SettingsActivity extends BaseActivity {
+import java.io.File;
+
+public class SettingsActivity extends BaseActivity implements FolderChooserDialog.FolderCallback {
 
     Toolbar toolbar;
     private SettingsFragment mSettingsFragment;
@@ -33,6 +36,16 @@ public class SettingsActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content, new SettingsFragment())
                 .commit();
+
+    }
+
+    @Override
+    public void onFolderSelection(FolderChooserDialog dialog, File folder) {
+
+    }
+
+    @Override
+    public void onFolderChooserDismissed(FolderChooserDialog dialog) {
 
     }
 }
