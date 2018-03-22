@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
@@ -35,16 +37,18 @@ import org.secfirst.umbrella.util.UmbrellaUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by dougl on 20/03/2018.
  */
 
-public class BackupDatabaseDialog extends DialogFragment implements View.OnClickListener {
+public class BackupDatabaseDialog extends DialogFragment implements View.OnClickListener, Validator.ValidationListener {
 
     public static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 1;
     private TextView mOk;
     private TextView mCancel;
+    @NotEmpty
     private EditText mFileName;
     public static String mPath;
     private RadioGroup mBackupTypeGroup;
@@ -54,6 +58,7 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     private View mView;
     private static boolean isCallbackShare = false;
     private static boolean isWipeData = false;
+    private Validator mValidator;
 
 
     public static BackupDatabaseDialog newInstance() {
@@ -66,9 +71,12 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("test", "wipe data" + isWipeData);
         if (isCallbackShare && isWipeData) {
             wipeDatabase();
+        } else if (isCallbackShare) {
+            dismiss();
+            Toast.makeText(getContext(), R.string.backup_file_shared, Toast.LENGTH_LONG).show();
+            isCallbackShare = false;
         }
     }
 
@@ -83,7 +91,8 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
         mWipeData = mView.findViewById(R.id.backup_wipe_data);
         mShare = mView.findViewById(R.id.share_type);
         mExport = mView.findViewById(R.id.export_type);
-
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
         mOk.setTextColor(UmbrellaUtil.fetchAccentColor(getContext()));
         mCancel.setTextColor(UmbrellaUtil.fetchAccentColor(getContext()));
 
@@ -129,45 +138,35 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     private void showFileChooserPreview() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) {
-            // Permission is already available, start camera preview
             showFileChooser();
         } else {
-            // Permission is missing and must be requested.
             requestExternalStoragePermission();
         }
-        // END_INCLUDE(startCamera)
+
     }
 
     private void showFileChooser() {
-
         new FolderChooserDialog.Builder(((SettingsActivity) getActivity()))
                 .chooseButton(R.string.choose)
                 .allowNewFolder(true, 0)
                 .show();
+
     }
 
     private void requestExternalStoragePermission() {
-        // Permission has not been granted and must be requested.
         if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            // Provide an additional rationale to the user if the permission was not granted
-            // and the user would benefit from additional context for the use of the permission.
-            // Display a SnackBar with cda button to request the missing permission.
+
             Snackbar.make(mView, R.string.write_external_access_required,
-                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // Request the permission
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            PERMISSION_REQUEST_EXTERNAL_STORAGE);
-                }
+                    Snackbar.LENGTH_INDEFINITE).setAction(R.string.ok, view -> {
+                // Request the permission
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSION_REQUEST_EXTERNAL_STORAGE);
             }).show();
 
         } else {
-            Snackbar.make(mView, R.string.write_external_unavailable, Snackbar.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_EXTERNAL_STORAGE);
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_EXTERNAL_STORAGE);
         }
     }
 
@@ -199,26 +198,34 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.backup_ok:
-                if (mShare.isChecked()) {
-                    shareDbFile(mFileName.getText().toString());
-                } else if (mExport.isChecked()) {
-                    storeBackupFileIntoMemory(mPath);
-                    if (isWipeData) wipeDatabase();
-                    dismiss();
-
-                }
+                mValidator.validate();
                 break;
             case R.id.backup_cancel:
                 dismiss();
                 break;
             case R.id.backup_wipe_data:
-                new MaterialDialog.Builder(getContext())
-                        .title(R.string.export_database_wipe_title)
-                        .content(R.string.export_database_wipe_content, true)
-                        .positiveText(R.string.ok)
-                        .show();
-                isWipeData = mWipeData.isChecked();
+                onWipeButton();
                 break;
+        }
+    }
+
+    private void onWipeButton() {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.export_database_wipe_title)
+                .content(R.string.export_database_wipe_content, true)
+                .positiveText(R.string.ok)
+                .show();
+        isWipeData = mWipeData.isChecked();
+    }
+
+    private void onOkButton() {
+        if (mShare.isChecked()) {
+            shareDbFile(mFileName.getText().toString());
+        } else if (mExport.isChecked()) {
+            storeBackupFileIntoMemory(mPath);
+            if (isWipeData) wipeDatabase();
+            dismiss();
+
         }
     }
 
@@ -242,4 +249,19 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     }
 
 
+    @Override
+    public void onValidationSucceeded() {
+        onOkButton();
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(getContext());
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            }
+        }
+    }
 }

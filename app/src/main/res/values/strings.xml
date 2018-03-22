@@ -209,5 +209,6 @@
     <string name="saved_backup">Backup has been saved.</string>
     <string name="backup_database_file_title">Backup database file</string>
     <string name="error_backup_store">Error while trying to save the file.</string>
+    <string name="backup_file_shared">Backup file has been shared.</string>
 
 </resources>
