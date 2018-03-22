@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
@@ -23,12 +24,14 @@ import android.widget.ImageButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.BuildConfig;
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.models.Category;
@@ -431,6 +434,12 @@ public class UmbrellaUtil {
         int color = typedArray.getColor(0, 0);
         typedArray.recycle();
         return color;
+    }
+
+    public static void doRestartApplication(Context context) {
+        Intent tourIntent = new Intent(context, MainActivity.class);
+        tourIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        ProcessPhoenix.triggerRebirth(context, tourIntent);
     }
 
 }

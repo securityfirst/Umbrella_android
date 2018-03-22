@@ -31,11 +31,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import org.secfirst.umbrella.CalcActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
-import org.secfirst.umbrella.TourActivity;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
 import org.secfirst.umbrella.util.Global;
-import org.secfirst.umbrella.util.OrmHelper;
 import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
@@ -59,8 +57,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
     private SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
     private Address mAddress;
     private MaterialDialog materialDialog;
-    private static boolean isDeleteDatabase;
-
 
 
     @Override
@@ -338,15 +334,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
     public void onResume() {
         super.onResume();
         updateSummaries();
-        if (isDeleteDatabase) {
-            Global.INSTANCE.closeDbAndDAOs();
-            Global.deleteDatabase(getContext().getDatabasePath(OrmHelper.DATABASE_NAME));
-            Global.INSTANCE.removeSharedPreferences();
-            Intent i = new Intent(getContext(), TourActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(i);
-            isDeleteDatabase = false;
-        }
     }
 
 

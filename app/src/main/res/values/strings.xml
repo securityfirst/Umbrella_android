@@ -206,6 +206,8 @@
     <string name="write_external_access_required">Write external storage access is required to display.</string>
     <string name="choose">Choose</string>
     <string name="new_folder">New folder</string>
+    <string name="saved_backup">Backup has been saved.</string>
     <string name="backup_database_file_title">Backup database file</string>
+    <string name="error_backup_store">Error while trying to save the file.</string>
 
 </resources>

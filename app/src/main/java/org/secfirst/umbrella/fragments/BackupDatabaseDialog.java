@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.secfirst.umbrella.BuildConfig;
 import org.secfirst.umbrella.R;
@@ -43,12 +46,14 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     private TextView mOk;
     private TextView mCancel;
     private EditText mFileName;
-    private TextView mPath;
+    public static String mPath;
     private RadioGroup mBackupTypeGroup;
     private RadioButton mShare;
     private RadioButton mExport;
     private CheckBox mWipeData;
     private View mView;
+    private static boolean isCallbackShare = false;
+    private static boolean isWipeData = false;
 
 
     public static BackupDatabaseDialog newInstance() {
@@ -58,13 +63,20 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
         return fragment;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("test", "wipe data" + isWipeData);
+        if (isCallbackShare && isWipeData) {
+            wipeDatabase();
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.backup_database_dialog, container, false);
         mBackupTypeGroup = mView.findViewById(R.id.backup_type_group);
-        mPath = mView.findViewById(R.id.backup_path);
         mFileName = mView.findViewById(R.id.backup_file_name);
         mCancel = mView.findViewById(R.id.backup_cancel);
         mOk = mView.findViewById(R.id.backup_ok);
@@ -86,7 +98,7 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
         mBackupTypeGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.share_type:
-                    Toast.makeText(getContext(), "share", Toast.LENGTH_SHORT).show();
+
                     break;
                 case R.id.export_type:
                     showFileChooserPreview();
@@ -174,12 +186,10 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             PackageManager pm = getActivity().getPackageManager();
 
-            if (shareIntent.resolveActivity(pm) != null) {
-                getActivity().startActivityForResult
-                        (Intent.createChooser(shareIntent, getString(R.string.share_form)),
-                                PERMISSION_REQUEST_EXTERNAL_STORAGE);
+            if (shareIntent.resolveActivity(pm) != null)
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_form)));
 
-            }
+            isCallbackShare = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -190,16 +200,46 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
         switch (v.getId()) {
             case R.id.backup_ok:
                 if (mShare.isChecked()) {
-                    Toast.makeText(getActivity(), "share", Toast.LENGTH_SHORT).show();
+                    shareDbFile(mFileName.getText().toString());
                 } else if (mExport.isChecked()) {
-                    Toast.makeText(getActivity(), "export", Toast.LENGTH_SHORT).show();
+                    storeBackupFileIntoMemory(mPath);
+                    if (isWipeData) wipeDatabase();
+                    dismiss();
+
                 }
                 break;
             case R.id.backup_cancel:
                 dismiss();
                 break;
             case R.id.backup_wipe_data:
+                new MaterialDialog.Builder(getContext())
+                        .title(R.string.export_database_wipe_title)
+                        .content(R.string.export_database_wipe_content, true)
+                        .positiveText(R.string.ok)
+                        .show();
+                isWipeData = mWipeData.isChecked();
                 break;
         }
     }
+
+    private void wipeDatabase() {
+        Global.INSTANCE.closeDbAndDAOs();
+        Global.deleteDatabase(getContext().getDatabasePath(OrmHelper.DATABASE_NAME));
+        Global.INSTANCE.removeSharedPreferences();
+        isCallbackShare = false;
+        UmbrellaUtil.doRestartApplication(getContext());
+    }
+
+    private void storeBackupFileIntoMemory(String path) {
+        File dstDatabase = new File(path + "/" + mFileName.getText().toString() + ".db");
+        File databaseFile = getContext().getDatabasePath(OrmHelper.DATABASE_NAME);
+        try {
+            UmbrellaUtil.copyFile(databaseFile, dstDatabase);
+            Toast.makeText(getContext(), R.string.saved_backup, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(getContext(), R.string.error_backup_store, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
 }

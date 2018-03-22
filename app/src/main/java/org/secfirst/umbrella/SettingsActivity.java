@@ -3,6 +3,7 @@ package org.secfirst.umbrella;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import org.secfirst.umbrella.fragments.BackupDatabaseDialog;
 import org.secfirst.umbrella.fragments.SettingsFragment;
 import org.secfirst.umbrella.util.FolderChooserDialog;
 
@@ -16,7 +17,7 @@ public class SettingsActivity extends BaseActivity implements FolderChooserDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportFragmentManager().beginTransaction()
@@ -41,7 +42,7 @@ public class SettingsActivity extends BaseActivity implements FolderChooserDialo
 
     @Override
     public void onFolderSelection(FolderChooserDialog dialog, File folder) {
-
+        BackupDatabaseDialog.mPath = folder.getPath();
     }
 
     @Override
