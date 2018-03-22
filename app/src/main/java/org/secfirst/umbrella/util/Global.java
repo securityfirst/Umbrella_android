@@ -979,6 +979,7 @@ public class Global extends Application {
         }
         localDbStream.close();
         externalDbStream.close();
+
     }
 
     public static boolean deleteDatabase(File file) {

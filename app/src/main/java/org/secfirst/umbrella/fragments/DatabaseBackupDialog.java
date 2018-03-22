@@ -43,7 +43,7 @@ import java.util.List;
  * Created by dougl on 20/03/2018.
  */
 
-public class BackupDatabaseDialog extends DialogFragment implements View.OnClickListener, Validator.ValidationListener {
+public class DatabaseBackupDialog extends DialogFragment implements View.OnClickListener, Validator.ValidationListener {
 
     public static final int PERMISSION_REQUEST_EXTERNAL_STORAGE = 1;
     private TextView mOk;
@@ -61,9 +61,9 @@ public class BackupDatabaseDialog extends DialogFragment implements View.OnClick
     private Validator mValidator;
 
 
-    public static BackupDatabaseDialog newInstance() {
+    public static DatabaseBackupDialog newInstance() {
         Bundle args = new Bundle();
-        BackupDatabaseDialog fragment = new BackupDatabaseDialog();
+        DatabaseBackupDialog fragment = new DatabaseBackupDialog();
         fragment.setArguments(args);
         return fragment;
     }

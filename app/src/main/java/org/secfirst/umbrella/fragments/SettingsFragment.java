@@ -33,6 +33,7 @@ import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.SettingsActivity;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.util.DelayAutoCompleteTextView;
+import org.secfirst.umbrella.util.FileChooserDialog;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.SyncProgressListener;
 import org.secfirst.umbrella.util.UmbrellaUtil;
@@ -53,7 +54,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
     private ArrayList<Address> mAddressList;
     private static final int STORAGE_PERMISSION_RC = 69;
     private ListPreference refreshInterval, selectLanguage;
-    private Preference serverRefresh, setLocation, feedSources, notificationRingtone, databasePreference;
+    private Preference serverRefresh, setLocation, feedSources, notificationRingtone, exportBackupPreference, importDatabasePreference;
     private SwitchPreferenceCompat skipPassword, showNotifications, notificationVibration;
     private Address mAddress;
     private MaterialDialog materialDialog;
@@ -112,10 +113,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements SyncPr
             }
         });
 
-        databasePreference = findPreference("share_db_file");
-        databasePreference.setOnPreferenceClickListener(preference -> {
+        importDatabasePreference = findPreference("import_db_file");
+        importDatabasePreference.setOnPreferenceClickListener(preference -> {
+            new FileChooserDialog
+                    .Builder(((SettingsActivity) getActivity()))
+                    .initialPath("/sdcard")
+                    .mimeType("*/*")
+                    .show();
+            return true;
+        });
+
+        exportBackupPreference = findPreference("export_db_file");
+        exportBackupPreference.setOnPreferenceClickListener(preference -> {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            BackupDatabaseDialog custom = BackupDatabaseDialog.newInstance();
+            DatabaseBackupDialog custom = DatabaseBackupDialog.newInstance();
             custom.show(fragmentManager, "");
             return true;
         });

@@ -40,6 +40,7 @@
     <string name="intermediate">Advanced</string>
     <string name="action_export_checklist">Share checklist</string>
     <string name="action_export_db_file">Export your data</string>
+    <string name="action_import_db_file">Import your data</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
     <string name="refresh_interval_feeds">Refresh interval for feeds</string>
@@ -210,5 +211,6 @@
     <string name="backup_database_file_title">Backup database file</string>
     <string name="error_backup_store">Error while trying to save the file.</string>
     <string name="backup_file_shared">Backup file has been shared.</string>
+    <string name="import_database_key">import_db</string>
 
 </resources>

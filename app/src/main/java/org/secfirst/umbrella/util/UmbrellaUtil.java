@@ -442,4 +442,8 @@ public class UmbrellaUtil {
         ProcessPhoenix.triggerRebirth(context, tourIntent);
     }
 
+    public static boolean rename(File from, File to) {
+        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
+    }
+
 }
