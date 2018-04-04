@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    tools:ignore="MissingPrefix">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/article_item"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/article_rss_smallest_margin_left"
+            android:layout_marginTop="@dimen/article_rss_smallest_margin_top"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/article_simple_list_title"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/article_simple_list_last_update"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="By Author name"
+                android:textSize="@dimen/text_size_like_extremely_small" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/article_rss_smallest_height"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/article_simple_list_description"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:text="descriptions"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_like_small" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

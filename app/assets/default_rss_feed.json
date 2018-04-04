@@ -1,0 +1,13 @@
+{
+  "feed": {
+    "items": [
+        { "link":"https://threatpost.com/feed/"},
+        { "link":"https://krebsonsecurity.com/feed/"},
+        { "link":"http://feeds.feedburner.com/NakedSecurity"},
+        { "link":"http://feeds.bbci.co.uk/news/world/rss.xml?edition=uk"},
+        { "link":"http://rss.cnn.com/rss/edition.rss"},
+        { "link":"https://www.aljazeera.com/xml/rss/all.xml"},
+        { "link":"https://www.theguardian.com/world/rss"}
+    ]
+  }
+}

@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.einmalfel.earl.Item;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -38,10 +39,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -155,7 +160,8 @@ public class UmbrellaUtil {
                 if (parentCategory.getId() == 1) {
                     child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
                     child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
-                    child.add(new DrawerChildItem(context.getString(R.string.forms), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.rss_menu_name), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.forms), -4));
                 }
                 childItem.add(child);
             }
@@ -387,9 +393,9 @@ public class UmbrellaUtil {
     }
 
     public static int getDifficultyFromString(String difficultyString) {
-        if (difficultyString.equals("advanced")) {
+        if (difficultyString.equals(Global.INSTANCE.getString(R.string.advanced))) {
             return DifficultyFragment.INTERMEDIATE + 1;
-        } else if (difficultyString.equals("expert")) {
+        } else if (difficultyString.equals(Global.INSTANCE.getString(R.string.expert))) {
             return DifficultyFragment.EXPERT + 1;
         }
         return DifficultyFragment.BEGINNER + 1;
@@ -403,6 +409,41 @@ public class UmbrellaUtil {
         } else {
             return "EXPERT";
         }
+    }
+
+    public static String inputStreamToString(InputStream inputStream) {
+        try {
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, bytes.length);
+            String json = new String(bytes);
+            return json;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static String convertDateToString(Date date) {
+        DateFormat dateFormat;
+        String dateConvert = "";
+        try {
+            if (date != null) {
+                dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
+                dateConvert = dateFormat.format(date);
+            }
+        } catch (Exception e) {
+            return dateConvert;
+        }
+
+        return dateConvert;
+    }
+
+    public static String splitArticleLinkToShare(List<Item> selectedItems) {
+        StringBuilder string = new StringBuilder();
+        for (Item item : selectedItems) {
+            string.append(item.getLink());
+            string.append(System.getProperty("line.separator"));
+        }
+        return string.toString();
     }
 
 }

@@ -64,6 +64,7 @@ import org.secfirst.umbrella.models.NewDifficulty;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.models.Tree;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -101,6 +102,7 @@ public class Global extends Application {
     private Dao<Language, String> daoLanguage;
     private Dao<FeedItem, String> daoFeedItem;
     private Dao<FeedSource, String> daoFeedSource;
+    private Dao<CustomFeed, String> daoRSS;
     private OrmHelper dbHelper;
     public static Global INSTANCE;
     private boolean needsRefreshActivity;
@@ -166,6 +168,16 @@ public class Global extends Application {
         List<FeedItem> items = new ArrayList<>();
         try {
             items = getDaoFeedItem().queryForAll();
+        } catch (SQLiteException | SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    public List<CustomFeed> getCustomFeed() {
+        List<CustomFeed> items = new ArrayList<>();
+        try {
+            items = getDaoRSS().queryForAll();
         } catch (SQLiteException | SQLException e) {
             e.printStackTrace();
         }
@@ -468,6 +480,7 @@ public class Global extends Application {
             getDaoFormOption();
             getDaoFormScreen();
             getDaoFormValue();
+            getDaoRSS();
             startService();
             SQLiteDatabase db = getOrmHelper().getWritableDatabase(getOrmHelper().getPassword());
             if (db != null) {
@@ -542,6 +555,19 @@ public class Global extends Application {
         }
         return daoFeedItem;
     }
+
+    public Dao<CustomFeed, String> getDaoRSS() {
+        if (daoRSS == null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), CustomFeed.class);
+                daoRSS = getOrmHelper().getDao(CustomFeed.class);
+            } catch (SQLiteException | SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoRSS;
+    }
+
 
     public Dao<Form, String> getDaoForm() {
         if (daoForm == null) {

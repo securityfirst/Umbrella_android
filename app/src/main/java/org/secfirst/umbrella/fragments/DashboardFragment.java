@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
+import org.secfirst.umbrella.rss.views.CustomFeedFragment;
 
 import java.util.Locale;
 
@@ -37,7 +38,7 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_tabbed, container, false);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-        mViewPager = (ViewPager) v.findViewById(R.id.pager);
+        mViewPager = v.findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(-1 * getArguments().getInt("dashboard", 0));
 
@@ -77,6 +78,9 @@ public class DashboardFragment extends Fragment {
                     fragment = TabbedFeedRootFragment.newInstance(mViewPager);
                     break;
                 case 2:
+                    fragment = CustomFeedFragment.newInstance();
+                    break;
+                case 3:
                     fragment = new TabbedFormsFragment();
                     break;
                 default:
@@ -87,7 +91,7 @@ public class DashboardFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -97,6 +101,8 @@ public class DashboardFragment extends Fragment {
                 case 1:
                     return getString(R.string.feeds).toUpperCase(l);
                 case 2:
+                    return getString(R.string.rss_menu_name).toUpperCase(l);
+                case 3:
                     return getString(R.string.forms).toUpperCase(l);
                 default:
                     return getString(R.string.my_checklists).toUpperCase(l);

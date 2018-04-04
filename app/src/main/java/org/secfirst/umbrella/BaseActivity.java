@@ -72,8 +72,7 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
-                WindowManager.LayoutParams.FLAG_SECURE);
+        enableScreenShot();
         Registry language = Global.INSTANCE.getRegistry("language");
         if (language != null && !language.getValue().equals("")) {
             setLocale(language.getValue());
@@ -88,6 +87,12 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
         mFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
     }
 
+    private void enableScreenShot() {
+        if (!BuildConfig.DEBUG) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE,
+                    WindowManager.LayoutParams.FLAG_SECURE);
+        }
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
