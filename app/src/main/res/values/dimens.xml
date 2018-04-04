@@ -192,5 +192,6 @@
     <dimen name="article_rss_normal_width">50dp</dimen>
     <dimen name="article_rss_big_margin_left">20dp</dimen>
 
+    <dimen name="tour_normal_margin_top">10dp</dimen>
 
 </resources>
