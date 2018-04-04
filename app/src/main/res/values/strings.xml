@@ -189,7 +189,6 @@
     <string name="hands_shake_info_ok_label">OK</string>
     <string name="hands_shake_info_cancel_label">CANCEL</string>
     <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
-    <string name="feed_no_connection">There is no internet access.</string>
     <string name="rss_dialog_hit_text">Feed Sources</string>
     <string name="send_to">Share</string>
     <string name="error_channel_fragment">There is a problem to store your feed.</string>
@@ -215,4 +214,10 @@
     <string name="feed_no_connection">There is no internet access.</string>
     <string name="mask_application_message">Disable Mask Application</string>
     <string name="mask_application_disable_message">Mask Application has been disabled.</string>
+    <string name="choose">CHOOSE</string>
+    <string-array name="language_array">
+        <item>English</item>
+        <item>Español</item>
+        <item>Chinese</item>
+    </string-array>
 </resources>
