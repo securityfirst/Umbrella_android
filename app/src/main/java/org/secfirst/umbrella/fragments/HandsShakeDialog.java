@@ -36,7 +36,7 @@ public class HandsShakeDialog extends DialogFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.hands_shake_enter_dialog, container, false);
 
-        mNextButton = (ContentFrameLayout) view.findViewById(R.id.hands_shake_next_button);
+        mNextButton = view.findViewById(R.id.hands_shake_next_button);
         mNextButton.setOnClickListener(this);
         return view;
     }
