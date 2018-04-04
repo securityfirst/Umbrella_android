@@ -21,7 +21,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -428,7 +427,7 @@ public class Global extends Application {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Toast.makeText(context, R.string.content_reset_to_default, Toast.LENGTH_SHORT).show();
                 ((Activity) context).finish();
-                ;
+
                 password = isLoggedIn = false;
                 startActivity(i);
             }
@@ -1009,6 +1008,7 @@ public class Global extends Application {
         }
         localDbStream.close();
         externalDbStream.close();
+
     }
 
     public static boolean deleteDatabase(File file) {
@@ -1096,10 +1096,6 @@ public class Global extends Application {
 
     private void setupCrashlytics() {
         // Set up Crashlytics, disabled for debug builds
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
-        // Initialize Fabric with the debug-disabled crashlytics.
-        Fabric.with(this, crashlyticsKit);
+        Fabric.with(this, new Crashlytics());
     }
 }

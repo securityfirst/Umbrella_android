@@ -36,9 +36,13 @@
     <string name="log_in">Log In</string>
     <string name="general">General</string>
     <string name="beginner">Beginner</string>
+    <string name="md_error_label">Error</string>
+    <string name="md_storage_perm_error">Umbrella has not been granted the READ_EXTERNAL_STORAGE permission.</string>
     <string name="expert">Expert</string>
     <string name="intermediate">Advanced</string>
     <string name="action_export_checklist">Share checklist</string>
+    <string name="action_export_db_file">Export your data</string>
+    <string name="action_import_db_file">Import your data</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
     <string name="refresh_interval_feeds">Refresh interval for customFeeds</string>
@@ -214,10 +218,29 @@
     <string name="feed_no_connection">There is no internet access.</string>
     <string name="mask_application_message">Disable Mask Application</string>
     <string name="mask_application_disable_message">Mask Application has been disabled.</string>
-    <string name="choose">CHOOSE</string>
     <string-array name="language_array">
         <item>English</item>
         <item>Español</item>
         <item>Chinese</item>
     </string-array>
+    <string name="export_database_file_title">Export database file</string>
+    <string name="export_database_file_description">File\'s name:</string>
+    <string name="export_database_file_positive">Export</string>
+    <string name="export_database_file_negative">Cancel</string>
+    <string name="export_database_file_name_hint">Eg. Michael Backup November</string>
+    <string name="export_database_wipe_data">Delete and reset all current Umbrella content after export</string>
+    <string name="export_database_wipe_title">Warning</string>
+    <string name="export_database_wipe_content">After export your database file you will losing any data that you might have entered so far.</string>
+    <string name="write_external_permission_granted">Write external storage permission was granted.</string>
+    <string name="write_external_permission_denied">Write external storage permission request was denied.</string>
+    <string name="write_external_permission_available">Write external permission is available.</string>
+    <string name="write_external_unavailable">Save your file could not be possible.</string>
+    <string name="write_external_access_required">Write external storage access is required to display.</string>
+    <string name="choose">Choose</string>
+    <string name="new_folder">New folder</string>
+    <string name="saved_backup">Backup has been saved.</string>
+    <string name="backup_database_file_title">Backup database file</string>
+    <string name="error_backup_store">Error while trying to save the file.</string>
+    <string name="backup_file_shared">Backup file has been shared.</string>
+    <string name="import_database_key">import_db</string>
 </resources>
