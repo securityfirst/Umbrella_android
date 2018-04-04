@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.hardware.SensorManager;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -139,6 +141,26 @@ public abstract class BaseActivity extends AppCompatActivity implements ShakeDet
         if (sd != null) sd.stop();
     }
 
+    private static final int STORAGE_PERMISSION_RC = 69;
+    private int chooserDialog;
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == STORAGE_PERMISSION_RC) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                handler.postDelayed(() -> findViewById(chooserDialog).performClick(), 1000);
+            } else {
+                Toast.makeText(
+                        this,
+                        "The folder or file chooser will not work without "
+                                + "permission to read external storage.",
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
