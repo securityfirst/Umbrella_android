@@ -24,7 +24,7 @@ android {
         applicationId "org.secfirst.umbrella"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 32
+        versionCode 33
         versionName "0.4.5"
         multiDexEnabled true
         ndk {
