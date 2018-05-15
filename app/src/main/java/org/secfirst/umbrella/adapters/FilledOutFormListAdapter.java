@@ -2,7 +2,6 @@ package org.secfirst.umbrella.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,14 +39,15 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
         ImageButton btnShare;
         ImageButton btnEdit;
         ImageButton btnDelete;
+
         FilledOutFormViewHolder(View itemView) {
             super(itemView);
-            this.formTitle = (TextView) itemView.findViewById(R.id.form_title);
-            this.formLastModified = (TextView) itemView.findViewById(R.id.form_last_modified);
-            this.textHolder = (LinearLayout) itemView.findViewById(R.id.text_holder);
-            this.btnShare = (ImageButton) itemView.findViewById(R.id.btn_share);
-            this.btnEdit = (ImageButton) itemView.findViewById(R.id.btn_edit);
-            this.btnDelete = (ImageButton) itemView.findViewById(R.id.btn_delete);
+            this.formTitle = itemView.findViewById(R.id.form_title);
+            this.formLastModified = itemView.findViewById(R.id.form_last_modified);
+            this.textHolder = itemView.findViewById(R.id.text_holder);
+            this.btnShare = itemView.findViewById(R.id.btn_share);
+            this.btnEdit = itemView.findViewById(R.id.btn_edit);
+            this.btnDelete = itemView.findViewById(R.id.btn_delete);
         }
     }
 
@@ -68,57 +68,36 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
         final Form current = forms.get(holder.getAdapterPosition()).getFormItem().getFormScreen().getForm();
         formViewHolder.formTitle.setText(current.getTitle());
         formViewHolder.formLastModified.setText(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(currentValue.getLastModified()));
-        formViewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle(context.getString(R.string.select_action));
-                builder.setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.setPositiveButton(context.getString(R.string.delete), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            DeleteBuilder<FormValue, String> deleteBuilder = Global.INSTANCE.getDaoFormValue().deleteBuilder();
-                            deleteBuilder.where().eq(FormValue.FIELD_SESSION, currentValue.getSessionID());
-                            deleteBuilder.delete();
-                            forms.remove(holder.getAdapterPosition());
-                            notifyDataSetChanged();
-                        } catch (SQLException e) {
-                            Timber.e(e);
-                        }
-                    }
-                });
-                builder.show();
-            }
+        formViewHolder.btnDelete.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(context.getString(R.string.select_action));
+            builder.setNegativeButton(context.getString(R.string.cancel), (dialog, which) -> dialog.cancel());
+            builder.setPositiveButton(context.getString(R.string.delete), (dialog, which) -> {
+                try {
+                    DeleteBuilder<FormValue, String> deleteBuilder = Global.INSTANCE.getDaoFormValue().deleteBuilder();
+                    deleteBuilder.where().eq(FormValue.FIELD_SESSION, currentValue.getSessionID());
+                    deleteBuilder.delete();
+                    forms.remove(holder.getAdapterPosition());
+                    notifyDataSetChanged();
+                } catch (SQLException e) {
+                    Timber.e(e);
+                }
+            });
+            builder.show();
         });
-        formViewHolder.btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sessionHTMLCreate.onSessionHTMLCreated(currentValue.getSessionID());
-            }
+        formViewHolder.btnShare.setOnClickListener(v -> sessionHTMLCreate.onSessionHTMLCreated(currentValue.getSessionID()));
+
+        formViewHolder.btnEdit.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FormActivity.class);
+            intent.putExtra("form_id", current.get_id());
+            intent.putExtra("session_id", forms.get(holder.getAdapterPosition()).getSessionID());
+            context.startActivity(intent);
         });
-        formViewHolder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, FormActivity.class);
-                intent.putExtra("form_id", current.get_id());
-                intent.putExtra("session_id", forms.get(holder.getAdapterPosition()).getSessionID());
-                context.startActivity(intent);
-            }
-        });
-        formViewHolder.textHolder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, FormActivity.class);
-                intent.putExtra("form_id", current.get_id());
-                intent.putExtra("session_id", forms.get(holder.getAdapterPosition()).getSessionID());
-                context.startActivity(intent);
-            }
+        formViewHolder.textHolder.setOnClickListener(v -> {
+            Intent intent = new Intent(context, FormActivity.class);
+            intent.putExtra("form_id", current.get_id());
+            intent.putExtra("session_id", forms.get(holder.getAdapterPosition()).getSessionID());
+            context.startActivity(intent);
         });
     }
 
