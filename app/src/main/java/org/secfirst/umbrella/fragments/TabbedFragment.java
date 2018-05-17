@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,6 +23,10 @@ import android.widget.TextView;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.secfirst.umbrella.AboutActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
@@ -325,11 +330,17 @@ public class TabbedFragment extends Fragment {
             if (segments != null && !segments.isEmpty() && segments.size() >= segmentInt + 1) {
                 final String html = segments.get(segmentInt).getBody();
                 if (html != null) {
-                    content.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            content.loadDataWithBaseURL("file:///android_res/drawable/", "<style>body{color:#444444}img{width:100%}h1{color:#33b5e5; font-weight:normal;}h2{color:#9ABE2E; font-weight:normal;}getDifficultyFromId{color:#33b5e5}.button,.button:link{display:block;text-decoration:none;color:white;border:none;width:100%;text-align:center;border-radius:3px;padding-top:10px;padding-bottom:10px;}.green{background:#9ABE2E}.purple{background:#b83656}.yellow{background:#f3bc2b}</style>" + html, "text/html", "UTF-8", "UTF-8");
+                    content.postDelayed(() -> {
+                        String newPath  = "file://"+getContext().getFilesDir()+"/";
+                        String body = "<style>body{color:#444444}img{width:100%}h1{color:#33b5e5; font-weight:normal;}h2{color:#9ABE2E; font-weight:normal;}getDifficultyFromId{color:#33b5e5}.button,.button:link{display:block;text-decoration:none;color:white;border:none;width:100%;text-align:center;border-radius:3px;padding-top:10px;padding-bottom:10px;}.green{background:#9ABE2E}.purple{background:#b83656}.yellow{background:#f3bc2b}</style>" + html;
+                        Document doc = Jsoup.parse(body);
+                        Elements elems = doc.getElementsByTag("img");
+                        for (Element el : elems) {
+                            String filename = el.attr("src"); //presumably only name
+                            String picUri = newPath+filename;
+                            el.attr("src", picUri);
                         }
+                        content.loadDataWithBaseURL(null, doc.toString(), "text/html", "UTF-8", null);
                     }, 100);
                 }
             }
