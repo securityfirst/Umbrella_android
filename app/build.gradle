@@ -9,7 +9,7 @@ android {
         }
     }
     compileSdkVersion 27
-    buildToolsVersion '26.0.2'
+    buildToolsVersion '27.0.3'
     dataBinding.enabled = true
     useLibrary 'org.apache.http.legacy'
 
