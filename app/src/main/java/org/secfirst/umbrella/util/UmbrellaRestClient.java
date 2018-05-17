@@ -58,7 +58,7 @@ public class UmbrellaRestClient {
         return isReady;
     }
 
-    private static String getAbsoluteUrl(String url) {
+    public static String getAbsoluteUrl(String url) {
         return BASE_URL + "/" + VERSION + "/"+url;
     }
 

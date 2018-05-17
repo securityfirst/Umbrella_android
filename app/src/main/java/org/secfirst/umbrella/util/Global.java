@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.PRDownloader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -800,6 +803,25 @@ public class Global extends Application {
                 }.getType();
                 final Tree receivedTree = gson.fromJson(response.toString(), treeType);
                 if (receivedTree != null) {
+                    for (String s : receivedTree.getAssets()) {
+                        File file = new File(getFilesDir()+"/"+s);
+                        if(file.exists() && file.length()>0) {
+                            Timber.d("Already exists as %s, length %d", file.getAbsolutePath(), file.length());
+                        } else {
+                            PRDownloader.download(UmbrellaRestClient.getAbsoluteUrl(String.format("api/repo/asset/%s", s)), getFilesDir().getAbsolutePath(), s).build().start(new OnDownloadListener() {
+                                @Override
+                                public void onDownloadComplete() {
+                                    Timber.d(s);
+                                }
+
+                                @Override
+                                public void onError(Error error) {
+                                    Timber.e(error.toString());
+                                }
+                            });
+                        }
+                    }
+
                     listener.onProgressChange(88);
                     Registry language = Global.INSTANCE.getRegistry("language");
                     Configuration conf = getResources().getConfiguration();
