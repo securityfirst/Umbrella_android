@@ -121,7 +121,7 @@ public class Global extends Application {
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
         INSTANCE = this;
-        setupCrashlytics();
+        if (BuildConfig.DEBUG) setupCrashlytics();
     }
 
     @Override
