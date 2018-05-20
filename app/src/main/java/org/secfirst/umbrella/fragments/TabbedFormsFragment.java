@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -50,7 +51,8 @@ import timber.log.Timber;
 
 import static org.secfirst.umbrella.util.IOCipherContentProvider.SHARE_FILE;
 
-public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionHTMLCreate {
+public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        FilledOutFormListAdapter.OnSessionHTMLCreate, FilledOutFormListAdapter.FilledOutFormListen {
 
     private FormListAdapter formListAdapter;
     private FilledOutFormListAdapter filledOutAdapter;
@@ -59,6 +61,7 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
     SwipeRefreshLayout mSwipeRefresh;
     LinearLayout filledOutHolder;
     private ProgressDialog progressDialog;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,7 +74,7 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
         RecyclerView formListView = rootView.findViewById(R.id.form_list);
         RecyclerView filledOutList = rootView.findViewById(R.id.filled_out_list);
 
-        mSwipeRefresh =  rootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefresh = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefresh.setOnRefreshListener(this);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -264,5 +267,11 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
                 }
             });
         }
+    }
+
+    @Override
+    public void onDeleteFilledOutForm() {
+        filledOutHolder.setVisibility((fValues == null || fValues.size() < 1) ? View.GONE : View.VISIBLE);
+        formListAdapter.notifyDataSetChanged();
     }
 }

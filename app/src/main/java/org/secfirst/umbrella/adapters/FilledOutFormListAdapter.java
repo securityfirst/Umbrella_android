@@ -31,6 +31,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
     private List<FormValue> forms = new ArrayList<>();
     private Context context;
     private OnSessionHTMLCreate sessionHTMLCreate;
+    private FilledOutFormListen filledOutFormListen;
 
     static class FilledOutFormViewHolder extends RecyclerView.ViewHolder {
         TextView formTitle;
@@ -54,6 +55,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
     public FilledOutFormListAdapter(Context context, TabbedFormsFragment fragment) {
         this.context = context;
         this.sessionHTMLCreate = fragment;
+        this.filledOutFormListen = fragment;
     }
 
     @Override
@@ -79,6 +81,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
                     deleteBuilder.delete();
                     forms.remove(holder.getAdapterPosition());
                     notifyDataSetChanged();
+                    if (forms.size() == 0) filledOutFormListen.onDeleteFilledOutForm();
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
@@ -115,4 +118,7 @@ public class FilledOutFormListAdapter extends RecyclerView.Adapter<RecyclerView.
         void onSessionHTMLCreated(long sessionId);
     }
 
+    public interface FilledOutFormListen {
+        void onDeleteFilledOutForm();
+    }
 }
