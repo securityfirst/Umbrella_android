@@ -45,6 +45,7 @@
     <string name="action_import_db_file">Import your data</string>
     <string name="title_activity_lesson">LessonActivity</string>
     <string name="favourite">Favourite</string>
+    <string name="feed">Feed</string>
     <string name="refresh_interval_feeds">Refresh interval for customFeeds</string>
     <string name="refresh_umbrella_data">Refresh from the server</string>
     <string name="set_location">Your location</string>
