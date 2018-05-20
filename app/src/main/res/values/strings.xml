@@ -244,4 +244,8 @@
     <string name="error_backup_store">Error while trying to save the file.</string>
     <string name="backup_file_shared">Backup file has been shared.</string>
     <string name="import_database_key">import_db</string>
+
+    <string name="difficult_level_beginner">beginner</string>
+    <string name="difficult_level_advanced">advanced</string>
+    <string name="difficult_level_expert">expert</string>
 </resources>
