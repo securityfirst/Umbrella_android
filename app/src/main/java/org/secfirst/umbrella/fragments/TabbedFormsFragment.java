@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.j256.ormlite.stmt.PreparedQuery;
 
@@ -50,7 +51,8 @@ import timber.log.Timber;
 
 import static org.secfirst.umbrella.util.IOCipherContentProvider.SHARE_FILE;
 
-public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, FilledOutFormListAdapter.OnSessionHTMLCreate {
+public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        FilledOutFormListAdapter.OnSessionHTMLCreate, FilledOutFormListAdapter.FilledOutFormListen {
 
     private FormListAdapter formListAdapter;
     private FilledOutFormListAdapter filledOutAdapter;
@@ -60,18 +62,19 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
     LinearLayout filledOutHolder;
     private ProgressDialog progressDialog;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_dashboard_forms,
                 container, false);
 
-        filledOutHolder = (LinearLayout) rootView.findViewById(R.id.filled_out_holder);
+        filledOutHolder = rootView.findViewById(R.id.filled_out_holder);
 
-        RecyclerView formListView = (RecyclerView) rootView.findViewById(R.id.form_list);
-        RecyclerView filledOutList = (RecyclerView) rootView.findViewById(R.id.filled_out_list);
+        RecyclerView formListView = rootView.findViewById(R.id.form_list);
+        RecyclerView filledOutList = rootView.findViewById(R.id.filled_out_list);
 
-        mSwipeRefresh = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefresh = rootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefresh.setOnRefreshListener(this);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -99,12 +102,7 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
         super.onResume();
         onRefresh();
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onRefresh();
-            }
-        }, 800);
+        handler.postDelayed(this::onRefresh, 800);
     }
 
     @Override
@@ -146,131 +144,134 @@ public class TabbedFormsFragment extends Fragment implements SwipeRefreshLayout.
         if (form != null && formValues.size() > 0) {
 
             final Form finalForm = form;
-            new Handler().post(new Runnable() {
-                @Override
-                public void run() {
-                    String fileName = finalForm.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
-                    if (fileName.length() > 50) fileName = fileName.substring(0, 50);
-                    final Document doc = Jsoup.parse("");
-                    Element head = doc.head();
-                    head.append("<meta charset='UTF-8'>");
-                    Element body = doc.body();
-                    body.attr("style", "display:block;width:100%;");
-                    doc.title(fileName);
-                    body.append("<h1>" + finalForm.getTitle() + "</h1>");
-                    for (FormScreen screen : finalForm.getScreens()) {
-                        body.append("<h3>" + screen.getTitle() + "</h3>");
-                        body.append("<form>");
-                        for (FormItem formItem : screen.getItems()) {
-                            try {
-                                PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
-                                formItem.setValues(Global.INSTANCE.getDaoFormValue().query(queryBuilder));
-                            } catch (SQLException e) {
-                                e.printStackTrace();
-                            }
-                            Element paragraph = body.append("<p></p>");
-                            paragraph.append("<h5>" + formItem.getTitle() + "</h5>");
-                            switch (formItem.getType()) {
-                                case "text_input":
-                                    String textInput = "";
-                                    if (formItem.getValues() != null && formItem.getValues().size() > 0)
-                                        textInput = formItem.getValues().get(0).getValue();
-                                    paragraph.append("<input type='text' value='" + textInput + "' readonly />");
-                                    break;
-                                case "text_area":
-                                    String textArea = "";
-                                    if (formItem.getValues() != null && formItem.getValues().size() > 0)
-                                        textArea = formItem.getValues().get(0).getValue();
-                                    paragraph.append("<textarea rows='4' cols='50' readonly>" + textArea + "</textarea>");
-                                    break;
-                                case "multiple_choice":
-                                    List<String> mcValList = new ArrayList<>();
-                                    if (formItem.getValues() != null && formItem.getValues().size() > 0 && !formItem.getValues().get(0).getValue().equals("")) {
-                                        mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
-                                    }
-                                    for (FormOption formOption : formItem.getOptions()) {
-                                        boolean isChecked = false;
-                                        if (mcValList.size() > 0) {
-                                            isChecked = Boolean.parseBoolean(mcValList.get(0));
-                                            mcValList.remove(0);
-                                        }
-                                        paragraph.append("<label><input type='checkbox' " + (isChecked ? "checked" : "") + " readonly>" + formOption.getOption() + "</label><br>");
-                                    }
-                                    break;
-                                case "single_choice":
-                                    List<String> scValList = new ArrayList<>();
-                                    if (formItem.getValues() != null && formItem.getValues().size() > 0 && !formItem.getValues().get(0).getValue().equals("")) {
-                                        scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
-                                    }
-                                    for (FormOption formOption : formItem.getOptions()) {
-                                        boolean isChecked = false;
-                                        if (scValList.size() > 0) {
-                                            isChecked = Boolean.parseBoolean(scValList.get(0));
-                                            scValList.remove(0);
-                                        }
-                                        paragraph.append("<label><input type='radio' " + (isChecked ? "checked" : "") + " readonly>" + formOption.getOption() + "</label><br>");
-                                    }
-                                    break;
-                                case "toggle_button":
-                                    String toggleText = "";
-                                    if (formItem.getValues() != null && formItem.getValues().size() > 0)
-                                        toggleText = formItem.getValues().get(0).getValue();
-                                    paragraph.append("<br><span>" + toggleText + "</span><br>");
-                                    break;
-                            }
-                        }
-                        body.append("</form>");
-                    }
-
-                    java.io.File f = new java.io.File(Global.INSTANCE.getCacheDir(), SHARE_FILE);
-                    if (!f.exists()) {
+            new Handler().post(() -> {
+                String fileName = finalForm.getTitle().replaceAll("[^a-zA-Z0-9.-]", "_");
+                if (fileName.length() > 50) fileName = fileName.substring(0, 50);
+                final Document doc = Jsoup.parse("");
+                Element head = doc.head();
+                head.append("<meta charset='UTF-8'>");
+                Element body = doc.body();
+                body.attr("style", "display:block;width:100%;");
+                doc.title(fileName);
+                body.append("<h1>" + finalForm.getTitle() + "</h1>");
+                for (FormScreen screen : finalForm.getScreens()) {
+                    body.append("<h3>" + screen.getTitle() + "</h3>");
+                    body.append("<form>");
+                    for (FormItem formItem : screen.getItems()) {
                         try {
-                            f.createNewFile();
-                        } catch (IOException e) {
+                            PreparedQuery<FormValue> queryBuilder = Global.INSTANCE.getDaoFormValue().queryBuilder().where().eq(FormValue.FIELD_SESSION, sessionId).and().eq(FormValue.FIELD_FORM_ITEM_ID, formItem.get_id()).prepare();
+                            formItem.setValues(Global.INSTANCE.getDaoFormValue().query(queryBuilder));
+                        } catch (SQLException e) {
                             e.printStackTrace();
                         }
-                    }
-                    String path = f.getPath();
-
-                    VirtualFileSystem vfs = VirtualFileSystem.get();
-                    vfs.setContainerPath(path);
-                    try {
-                        if (!vfs.isMounted())
-                            vfs.mount(Global.INSTANCE.getOrmHelper().getPassword());
-                        if (!vfs.isMounted())
-                            vfs.createNewContainer(path, Global.INSTANCE.getOrmHelper().getPassword());
-
-                        File file = new File(Global.INSTANCE.getCacheDir(), fileName + ".html");
-                        try {
-                            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                            writer.write(doc.toString());
-                            writer.flush();
-                            writer.close();
-                            Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID, file);
-                            Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
-                                    .setType(getActivity().getContentResolver().getType(uri))
-                                    .setStream(uri)
-                                    .getIntent();
-
-                            //Provide read access
-                            shareIntent.setAction(Intent.ACTION_SEND);
-                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            PackageManager pm = getActivity().getPackageManager();
-
-                            if (shareIntent.resolveActivity(pm) != null) {
-                                startActivity(Intent.createChooser(shareIntent, getString(R.string.share_form)));
-                            }
-
-                        } catch (IOException e) {
-                            Timber.e(e);
-                        } finally {
-                            if (progressDialog.isShowing()) progressDialog.dismiss();
+                        Element paragraph = body.append("<p></p>");
+                        paragraph.append("<h5>" + formItem.getTitle() + "</h5>");
+                        switch (formItem.getType()) {
+                            case "text_input":
+                                String textInput = "";
+                                if (formItem.getValues() != null && formItem.getValues().size() > 0)
+                                    textInput = formItem.getValues().get(0).getValue();
+                                paragraph.append("<input type='text' value='" + textInput + "' readonly />");
+                                break;
+                            case "text_area":
+                                String textArea = "";
+                                if (formItem.getValues() != null && formItem.getValues().size() > 0)
+                                    textArea = formItem.getValues().get(0).getValue();
+                                paragraph.append("<textarea rows='4' cols='50' readonly>" + textArea + "</textarea>");
+                                break;
+                            case "multiple_choice":
+                                List<String> mcValList = new ArrayList<>();
+                                if (formItem.getValues() != null && formItem.getValues().size() > 0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                    mcValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                                }
+                                for (FormOption formOption : formItem.getOptions()) {
+                                    boolean isChecked = false;
+                                    if (mcValList.size() > 0) {
+                                        isChecked = Boolean.parseBoolean(mcValList.get(0));
+                                        mcValList.remove(0);
+                                    }
+                                    paragraph.append("<label><input type='checkbox' " + (isChecked ? "checked" : "") + " readonly>" + formOption.getOption() + "</label><br>");
+                                }
+                                break;
+                            case "single_choice":
+                                List<String> scValList = new ArrayList<>();
+                                if (formItem.getValues() != null && formItem.getValues().size() > 0 && !formItem.getValues().get(0).getValue().equals("")) {
+                                    scValList = new LinkedList<>(Arrays.asList(formItem.getValues().get(0).getValue().split(",")));
+                                }
+                                for (FormOption formOption : formItem.getOptions()) {
+                                    boolean isChecked = false;
+                                    if (scValList.size() > 0) {
+                                        isChecked = Boolean.parseBoolean(scValList.get(0));
+                                        scValList.remove(0);
+                                    }
+                                    paragraph.append("<label><input type='radio' " + (isChecked ? "checked" : "") + " readonly>" + formOption.getOption() + "</label><br>");
+                                }
+                                break;
+                            case "toggle_button":
+                                String toggleText = "";
+                                if (formItem.getValues() != null && formItem.getValues().size() > 0)
+                                    toggleText = formItem.getValues().get(0).getValue();
+                                paragraph.append("<br><span>" + toggleText + "</span><br>");
+                                break;
                         }
-                    } catch (IllegalStateException | IllegalArgumentException e) {
-                        Timber.e(e);
                     }
+                    body.append("</form>");
+                }
+
+                java.io.File f = new java.io.File(Global.INSTANCE.getCacheDir(), SHARE_FILE);
+                if (!f.exists()) {
+                    try {
+                        f.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                String path = f.getPath();
+
+                VirtualFileSystem vfs = VirtualFileSystem.get();
+                vfs.setContainerPath(path);
+                try {
+                    if (!vfs.isMounted())
+                        vfs.mount(Global.INSTANCE.getOrmHelper().getPassword());
+                    if (!vfs.isMounted())
+                        vfs.createNewContainer(path, Global.INSTANCE.getOrmHelper().getPassword());
+
+                    File file = new File(Global.INSTANCE.getCacheDir(), fileName + ".html");
+                    try {
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                        writer.write(doc.toString());
+                        writer.flush();
+                        writer.close();
+                        Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID, file);
+                        Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+                                .setType(getActivity().getContentResolver().getType(uri))
+                                .setStream(uri)
+                                .getIntent();
+
+                        //Provide read access
+                        shareIntent.setAction(Intent.ACTION_SEND);
+                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        PackageManager pm = getActivity().getPackageManager();
+
+                        if (shareIntent.resolveActivity(pm) != null) {
+                            startActivity(Intent.createChooser(shareIntent, getString(R.string.share_form)));
+                        }
+
+                    } catch (IOException e) {
+                        Timber.e(e);
+                    } finally {
+                        if (progressDialog.isShowing()) progressDialog.dismiss();
+                    }
+                } catch (IllegalStateException | IllegalArgumentException e) {
+                    Timber.e(e);
                 }
             });
         }
+    }
+
+    @Override
+    public void onDeleteFilledOutForm() {
+        filledOutHolder.setVisibility((fValues == null || fValues.size() < 1) ? View.GONE : View.VISIBLE);
+        formListAdapter.notifyDataSetChanged();
     }
 }

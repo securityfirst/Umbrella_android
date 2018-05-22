@@ -16,6 +16,7 @@ import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.util.Global;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import timber.log.Timber;
 
@@ -56,32 +57,20 @@ public class DifficultyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_select, container, false);
         Difficulty d = getSelectedDifficulty();
-        if (d!=null && d.getSelected()>= 0 && d.getSelected()<3) {
+        if (d != null && d.getSelected() >= 0 && d.getSelected() < 3) {
             onDifficultySelected(d.getSelected());
         } else {
             try {
                 final Category childCategory = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(mSection));
                 View btnBeginner = v.findViewById(R.id.card_beginner);
-                btnBeginner.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onDifficultySelected(BEGINNER);
-                    }
-                });
+                btnBeginner.setOnClickListener(v13 -> onDifficultySelected(BEGINNER));
+
                 View btnIntermediate = v.findViewById(R.id.card_intermediate);
-                btnIntermediate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onDifficultySelected(INTERMEDIATE);
-                    }
-                });
+                btnIntermediate.setOnClickListener(v12 -> onDifficultySelected(INTERMEDIATE));
+
                 View btnExpert = v.findViewById(R.id.card_expert);
-                btnExpert.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onDifficultySelected(EXPERT);
-                    }
-                });
+                btnExpert.setOnClickListener(v1 -> onDifficultySelected(EXPERT));
+
                 ((TextView) v.findViewById(R.id.beginner_description)).setText(childCategory.getTextBeginner());
                 ((TextView) v.findViewById(R.id.advanced_description)).setText(childCategory.getTextAdvanced());
                 ((TextView) v.findViewById(R.id.expert_description)).setText(childCategory.getTextExpert());
@@ -97,7 +86,7 @@ public class DifficultyFragment extends Fragment {
 
     public void onDifficultySelected(int difficulty) {
         Difficulty d = getSelectedDifficulty();
-        if (d!=null) {
+        if (d != null) {
             d.setSelected(difficulty);
             try {
                 Global.INSTANCE.getDaoDifficulty().update(d);
