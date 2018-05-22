@@ -469,7 +469,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                if (s.length() > 2) {
+                if (s.length() > 1) {
                     Intent i = new Intent(MainActivity.this, SearchActivity.class);
                     i.setAction(Intent.ACTION_SEARCH);
                     i.putExtra(SearchManager.QUERY, s);

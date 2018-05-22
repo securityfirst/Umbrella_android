@@ -120,7 +120,7 @@
     <string name="licences">Licences</string>
     <string name="thank_you">Thank You</string>
     <string name="advanced">Advanced</string>
-    <string name="search_query_needs_to_be_at_least">The search query needs to be at least 3 characters long</string>
+    <string name="search_query_needs_to_be_at_least">The search query needs to be at least 2 characters long</string>
     <string name="click_here_to_change_level">Click here to change level</string>
     <string name="swipe_left_to_read">Swipe left to read through the lesson or click on a tab to go straight to that section\n\nYou can also skip straight to the checklist</string>
     <string name="swipe_to_view_menu">Click here or swipe from the side of your screen to view the menu at any time</string>

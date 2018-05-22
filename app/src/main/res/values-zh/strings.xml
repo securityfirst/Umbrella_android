@@ -134,7 +134,7 @@
     <string name="results">个结果</string>
     <string name="review_sources_for_feed">请审阅您想订阅的来源</string>
     <string name="search">搜索</string>
-    <string name="search_query_needs_to_be_at_least">搜索查询不得少于3个字符</string>
+    <string name="search_query_needs_to_be_at_least">搜索查询不得少于2个字符</string>
     <string name="search_result">搜索结果</string>
     <string name="section1_tab_title1">课程</string>
     <string name="section1_tab_title2">情况分析</string>
