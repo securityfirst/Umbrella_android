@@ -79,11 +79,11 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
 
     @Override
     public void onBackPressed() {
+        backButtonPressed = true;
         final int currentStepPosition = mStepperLayout.getCurrentStepPosition();
         if (currentStepPosition > 0) {
             mStepperLayout.onBackClicked();
         } else {
-            backButtonPressed = true;
             finish();
         }
     }
