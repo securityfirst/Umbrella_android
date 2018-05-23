@@ -33,6 +33,7 @@ public class FormDeserializer implements JsonDeserializer<Form> {
             throw new JsonParseException("Name not found");
         }
         form.setTitle(name);
+        form.setId(jObject.get("id").getAsString());
         ArrayList<FormScreen> screens = new ArrayList<>();
         JsonArray jScreens = jObject.getAsJsonArray("screens");
         for (JsonElement jScreen : jScreens) {
