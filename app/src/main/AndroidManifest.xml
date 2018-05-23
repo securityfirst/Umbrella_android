@@ -80,6 +80,9 @@
                 <data
                     android:host="lesson"
                     android:scheme="umbrella" />
+                <data
+                    android:host="lessons"
+                    android:scheme="umbrella" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -90,6 +93,9 @@
                 <data
                     android:host="checklist"
                     android:scheme="umbrella" />
+                <data
+                    android:host="checklists"
+                    android:scheme="umbrella" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -99,6 +105,32 @@
 
                 <data
                     android:host="tools"
+                    android:scheme="umbrella" />
+                <data
+                    android:host="tool"
+                    android:scheme="umbrella" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="forms"
+                    android:scheme="umbrella" />
+                <data
+                    android:host="form"
+                    android:scheme="umbrella" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="glossary"
                     android:scheme="umbrella" />
             </intent-filter>
         </activity-alias>
