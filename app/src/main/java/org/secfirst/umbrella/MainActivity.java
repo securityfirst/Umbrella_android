@@ -24,9 +24,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.secfirst.umbrella.adapters.DrawerAdapter;
 import org.secfirst.umbrella.fragments.DashboardFragment;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
@@ -37,6 +40,8 @@ import org.secfirst.umbrella.models.Category;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.models.Difficulty;
 import org.secfirst.umbrella.models.DrawerChildItem;
+import org.secfirst.umbrella.models.Form;
+import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.util.Global;
 import org.secfirst.umbrella.util.UmbrellaUtil;
 
@@ -64,7 +69,6 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     private TextView loginHeader;
     private View header;
     private boolean ran = false;
-    private int page = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,11 +176,106 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             });
 
             drawer.setDrawerListener(this);
+            boolean checklist = false;
+            int page = 0;
             if (getIntent() != null && getIntent().getData() != null && !getIntent().getData().getPathSegments().isEmpty()) {
+                String first = Jsoup.clean(getIntent().getData().getPathSegments().get(0), Whitelist.simpleText());
+                String replaced = first.replace('-', ' ').replace('_', '-');
+                switch (getIntent().getData().getHost().toLowerCase()) {
+                    case "glossary":
+                        try {
+                            QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
+                            Where<Segment, String> where = queryBuilder.where();
+                            where.eq(Segment.FIELD_ID, first);
+                            Segment segment = queryBuilder.queryForFirst();
+                            Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
+                            replaced = category.getCategory();
+                            QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
+                            Where<Segment, String> where1 = queryBuilder1.where();
+                            where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
+                            List<Segment> segments = queryBuilder1.query();
+                            for (int i = 0; i < segments.size(); i++) {
+                                if (segments.get(i).getIdString().equals(segment.getIdString())) {
+                                    page = i+1;
+                                }
+                            }
+                            drawerItem = category.getId();
+                            setFragment(2, category.getCategory(), true, page, false);
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "checklists":
+                    case "checklist":
+                        checklist = true;
+                        break;
+                    case "tools":
+                    case "tool":
+                        try {
+                            QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
+                            Where<Segment, String> where = queryBuilder.where();
+                            where.eq(Segment.FIELD_ID, first);
+                            Segment segment = queryBuilder.queryForFirst();
+                            Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
+                            replaced = category.getCategory();
+                            QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
+                            Where<Segment, String> where1 = queryBuilder1.where();
+                            where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
+                            List<Segment> segments = queryBuilder1.query();
+                            for (int i = 0; i < segments.size(); i++) {
+                                if (segments.get(i).getIdString().equals(segment.getIdString())) {
+                                    page = i+1;
+                                }
+                            }
+                            drawerItem = category.getId();
+                            setFragment(4, category.getCategory(), true, 1, false);
+                            return;
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "lessons":
+                    case "lesson":
+                        try {
+                            QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
+                            Where<Segment, String> where = queryBuilder.where();
+                            where.eq(Segment.FIELD_ID, first);
+                            Segment segment = queryBuilder.queryForFirst();
+                            Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
+                            replaced = category.getCategory();
+                            QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
+                            Where<Segment, String> where1 = queryBuilder1.where();
+                            where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
+                            List<Segment> segments = queryBuilder1.query();
+                            for (int i = 0; i < segments.size(); i++) {
+                                if (segments.get(i).getIdString().equals(segment.getIdString())) {
+                                    page = i+1;
+                                }
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case "form":
+                    case "forms":
+                        try {
+                            PreparedQuery<Form> queryBuilder = Global.INSTANCE.getDaoForm().queryBuilder().where().eq(Form.FIELD_IDSTRING, first).prepare();
+                            Form form = Global.INSTANCE.getDaoForm().queryForFirst(queryBuilder);
+                            if (form!=null) {
+                                setFragment(0, getString(R.string.my_security), true);
+                                Intent intent = new Intent(MainActivity.this, FormActivity.class);
+                                intent.putExtra("form_id", form.get_id());
+                                startActivity(intent);
+                                return;
+                            }
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
                 for (ArrayList<DrawerChildItem> groupItem : UmbrellaUtil.getChildItems(MainActivity.this)) {
                     for (DrawerChildItem childItem : groupItem) {
-                        if (childItem.getTitle().equalsIgnoreCase(getIntent().getData().
-                                getPathSegments().get(0).replace('-', ' ').replace('_', '-'))) {
+                        if (childItem.getTitle().equalsIgnoreCase(replaced)) {
                             this.childItem = childItem;
                         }
                     }
@@ -185,11 +284,12 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     try {
                         Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(childItem.getPosition()));
                         if (category.hasDifficulty()) {
-                            setFragment(1, "", true);
+                            setFragment(1, "", true, page, checklist);
                         } else {
                             drawerItem = childItem.getPosition();
-                            setFragment(2, category.getCategory(), true);
+                            setFragment(2, category.getCategory(), true, page, false);
                         }
+                        setIntent(null);
                     } catch (SQLException e) {
                         Timber.e(e);
                     }
@@ -231,6 +331,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
     }
 
     public void setFragment(int fragType, String groupName, boolean isFirst) {
+        setFragment(fragType, groupName, isFirst, 0, false);
+    }
+
+    public void setFragment(int fragType, String groupName, boolean isFirst, int page, boolean checklist) {
         titleSpinner.setVisibility(fragType == 1 ? View.VISIBLE : View.GONE);
         FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -279,17 +383,8 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 int spinnerNumber = 0;
                 if (!hasDifficulty.isEmpty()) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
-                boolean checklist = false;
-                if (getIntent() != null && getIntent().getData() != null && getIntent().getData().getHost() != null) {
-                    if (getIntent().getData().getHost().equalsIgnoreCase("checklist"))
-                        checklist = true;
-                    else if (getIntent().getData().getHost().equalsIgnoreCase("lesson") &&
-                            getIntent().getData().getPathSegments() != null && getIntent().getData().getPathSegments().size() > 2)
-                        page = Integer.valueOf(getIntent().getData().getPathSegments().get(2));
-                }
-                setIntent(null);
                 android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
-                        TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
+                        TabbedFragment.newInstance(childItem.getPosition(), 0, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
@@ -303,7 +398,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         } else if (fragType == 2) {
             setTitle(groupName);
             android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
-                    TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, 0), "tabbed");
+                    TabbedFragment.newInstance(drawerItem, DifficultyFragment.BEGINNER, false, page), "tabbed");
             if (!isFirst) trans.addToBackStack(null);
             trans.commit();
         } else if (fragType == 3) {
