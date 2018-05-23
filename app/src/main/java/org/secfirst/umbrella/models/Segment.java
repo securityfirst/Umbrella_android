@@ -12,6 +12,7 @@ public class Segment implements Serializable {
     public static final String FIELD_BODY = "body";
     public static final String FIELD_CATEGORY = "category";
     public static final String FIELD_DIFFICULTY = "difficulty";
+    public static final String FIELD_ID = "id";
     @SerializedName("_id")
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
@@ -27,6 +28,7 @@ public class Segment implements Serializable {
     @SerializedName("difficulty")
     private String difficultyString;
     @SerializedName("id")
+    @DatabaseField(columnName = FIELD_ID)
     private String idString;
 
     public String getDifficultyString() {
@@ -96,6 +98,7 @@ public class Segment implements Serializable {
     @Override
     public String toString() {
         return "Segment{" + "id='" + id + '\'' +
+                ",idString='" + idString + '\'' +
                 ",title='" + title + '\'' +
                 ", body='" + body + '\'' +
                 ", difficulty='" + difficulty + '\'' +

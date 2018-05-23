@@ -12,8 +12,9 @@ import java.util.ArrayList;
 
 @DatabaseTable(tableName = "forms")
 public class Form {
-    public static final String FIELD_TITLE = "title";
     public static final String FIELD_ID = "_id";
+    public static final String FIELD_IDSTRING = "id";
+    public static final String FIELD_TITLE = "title";
     @DatabaseField(columnName = FIELD_ID, generatedId = true, allowGeneratedIdInsert = true)
     private int _id;
     @DatabaseField(columnName = FIELD_TITLE)
@@ -23,6 +24,9 @@ public class Form {
     ArrayList<FormScreen> screenArrayList;
     @ForeignCollectionField(eager = true)
     ForeignCollection<FormScreen> screens;
+    @DatabaseField(columnName = FIELD_IDSTRING)
+    @SerializedName("id")
+    private String id;
 
     public Form() {}
 
@@ -62,6 +66,14 @@ public class Form {
 
     public void setScreens(ForeignCollection<FormScreen> screens) {
         this.screens = screens;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
