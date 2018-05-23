@@ -121,7 +121,7 @@ public class Global extends Application {
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
         INSTANCE = this;
-        if (BuildConfig.DEBUG) setupCrashlytics();
+//        if (BuildConfig.DEBUG) setupCrashlytics();
     }
 
     @Override
@@ -708,10 +708,10 @@ public class Global extends Application {
                     getDaoCategory().create(category);
                     for (NewCategory newCategory : item.getSubcategories()) {
                         Category subCategory = newCategory.getCategory();
+                        subCategory.setHasDifficulty(item.getId().equals("about") | item.getId().equals("tools") ? 0 : 1);
                         if (newCategory.getId().equals("_")) {
                             subCategory.setId(category.getId());
                             subCategory.setCategory(category.getCategory());
-                            subCategory.setHasDifficulty(item.getId().equals("about") ? 0 : 1);
                             getDaoCategory().update(subCategory);
                         } else {
                             subCategory.setParent(category.getId());

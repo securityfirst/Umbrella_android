@@ -26,7 +26,7 @@ import timber.log.Timber;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     private Context context;
 
     public OrmHelper(Context context) {
