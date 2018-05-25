@@ -689,7 +689,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (!Global.INSTANCE.hasShownCoachMark("swipe_side")) {
             new MaterialTapTargetPrompt.Builder(MainActivity.this)
                     .setTarget(this.toolbar.getChildAt(2))
-                    .setSecondaryText(getString(R.string.swipe_to_view_menu))
+                    .setSecondaryText(getString(R.string.coach_marks_menu_message))
                     .setTextGravity(Gravity.CENTER)
                     .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
                     .setSecondaryText(getString(R.string.coach_marks_menu_message))
