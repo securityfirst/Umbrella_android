@@ -183,4 +183,7 @@
     <string name="you_have_added_new_item">新的项目已添加。</string>
     <string name="you_have_successfully_changed_your_password">您已成功更改了密码。</string>
     <string name="you_have_successfully_set_your_password">您已成功设置密码。</string>
+    <string name="coach_marks_message">完成任務時標記任務按住任務以刪除或禁用任務</string>
+    <string name="coach_marks_menu_message">點擊此處或從屏幕側面輕掃即可隨時查看菜單。</string>
+
 </resources>
