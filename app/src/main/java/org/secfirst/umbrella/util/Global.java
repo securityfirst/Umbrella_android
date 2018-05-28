@@ -487,6 +487,11 @@ public class Global extends Application {
             SQLiteDatabase db = getOrmHelper().getWritableDatabase(getOrmHelper().getPassword());
             if (db != null) {
                 if (db.getVersion() == 1) db.setVersion(5); // Fix for an old regression
+                if (db.getVersion() < OrmHelper.DATABASE_VERSION) {
+                    while ((db.getVersion() < OrmHelper.DATABASE_VERSION) && (db.getVersion() > 1) ) {
+                        UpgradeHelper.addUpgrade(db.getVersion()+1);
+                    }
+                }
                 getOrmHelper().onUpgrade(db, getOrmHelper().getConnectionSource(), db.getVersion(), OrmHelper.DATABASE_VERSION);
             }
             if (!password.equals(getString(R.string.default_db_password))) setLoggedIn(true);
