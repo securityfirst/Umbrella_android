@@ -52,6 +52,8 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
                 try {
                     database.execSQL(statement);
                     database.setTransactionSuccessful();
+                } catch (Exception e) {
+                    database.setTransactionSuccessful();
                 } finally {
                     database.endTransaction();
                 }
