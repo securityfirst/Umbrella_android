@@ -384,7 +384,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 if (!hasDifficulty.isEmpty()) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
                 android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
-                        TabbedFragment.newInstance(childItem.getPosition(), 0, checklist, page), "tabbed");
+                        TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
