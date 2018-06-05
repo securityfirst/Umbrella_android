@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.secfirst.umbrella.FormActivity;
 import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.rss.views.CustomFeedFragment;
@@ -61,6 +62,10 @@ public class DashboardFragment extends Fragment {
         if (getActivity() != null) {
             ((MainActivity) getActivity()).titleSpinner.setVisibility(View.GONE);
             getActivity().setTitle(getString(R.string.my_security));
+        }
+        if (FormActivity.backButtonPressed) {
+            mViewPager.setCurrentItem(3);
+            FormActivity.backButtonPressed = false;
         }
     }
 
