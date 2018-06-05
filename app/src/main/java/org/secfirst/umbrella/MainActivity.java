@@ -241,15 +241,17 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                             Where<Segment, String> where = queryBuilder.where();
                             where.eq(Segment.FIELD_ID, first);
                             Segment segment = queryBuilder.queryForFirst();
-                            Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
-                            replaced = category.getCategory();
-                            QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
-                            Where<Segment, String> where1 = queryBuilder1.where();
-                            where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
-                            List<Segment> segments = queryBuilder1.query();
-                            for (int i = 0; i < segments.size(); i++) {
-                                if (segments.get(i).getIdString().equals(segment.getIdString())) {
-                                    page = i+1;
+                            if (segment!=null) {
+                                Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
+                                replaced = category.getCategory();
+                                QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
+                                Where<Segment, String> where1 = queryBuilder1.where();
+                                where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
+                                List<Segment> segments = queryBuilder1.query();
+                                for (int i = 0; i < segments.size(); i++) {
+                                    if (segments.get(i).getIdString().equals(segment.getIdString())) {
+                                        page = i+1;
+                                    }
                                 }
                             }
                         } catch (SQLException e) {
