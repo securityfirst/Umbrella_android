@@ -24,9 +24,10 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
     public static final int REQUEST_ID = 4414;
 
     protected StepperLayout mStepperLayout;
-    protected  FragmentStepAdapter adapter;
+    protected FragmentStepAdapter adapter;
     private Form f;
     private Long sessionId;
+    public static boolean backButtonPressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,14 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (f==null) {
+        if (f == null) {
             Toast.makeText(this, "Not a valid form", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
         sessionId = getIntent().getExtras().getLong("session_id", -1);
-        if (sessionId<0) {
-            sessionId = System.currentTimeMillis()/1000;
+        if (sessionId < 0) {
+            sessionId = System.currentTimeMillis() / 1000;
         }
         setTitle(f.getTitle());
 
@@ -78,6 +79,7 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
 
     @Override
     public void onBackPressed() {
+        backButtonPressed = true;
         final int currentStepPosition = mStepperLayout.getCurrentStepPosition();
         if (currentStepPosition > 0) {
             mStepperLayout.onBackClicked();
@@ -91,6 +93,7 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
         switch (item.getItemId()) {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
+                backButtonPressed = true;
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -102,10 +105,12 @@ public class FormActivity extends BaseActivity implements StepperLayout.StepperL
     }
 
     @Override
-    public void onError(VerificationError verificationError) {}
+    public void onError(VerificationError verificationError) {
+    }
 
     @Override
-    public void onStepSelected(int newStepPosition) {}
+    public void onStepSelected(int newStepPosition) {
+    }
 
     public Form getForm() {
         return f;

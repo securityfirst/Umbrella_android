@@ -384,7 +384,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                 if (!hasDifficulty.isEmpty()) spinnerNumber = hasDifficulty.get(0).getSelected();
                 setTitle("");
                 android.support.v4.app.FragmentTransaction trans = fragmentTransaction.replace(R.id.container,
-                        TabbedFragment.newInstance(childItem.getPosition(), 0, checklist, page), "tabbed");
+                        TabbedFragment.newInstance(childItem.getPosition(), spinnerNumber, checklist, page), "tabbed");
                 if (!isFirst) {
                     trans.addToBackStack(null);
                 }
@@ -469,7 +469,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                if (s.length() > 2) {
+                if (s.length() > 1) {
                     Intent i = new Intent(MainActivity.this, SearchActivity.class);
                     i.setAction(Intent.ACTION_SEARCH);
                     i.putExtra(SearchManager.QUERY, s);
@@ -689,7 +689,7 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
         if (!Global.INSTANCE.hasShownCoachMark("swipe_side")) {
             new MaterialTapTargetPrompt.Builder(MainActivity.this)
                     .setTarget(this.toolbar.getChildAt(2))
-                    .setSecondaryText(getString(R.string.swipe_to_view_menu))
+                    .setSecondaryText(getString(R.string.coach_marks_menu_message))
                     .setTextGravity(Gravity.CENTER)
                     .setFocalColour(getResources().getColor(R.color.coachmark_focal_background))
                     .setSecondaryText(getString(R.string.coach_marks_menu_message))

@@ -134,7 +134,7 @@
     <string name="results">resultado</string>
     <string name="review_sources_for_feed">Por favor, revise las fuentes que desee recibir en su suscripción (feed)</string>
     <string name="search">Buscar</string>
-    <string name="search_query_needs_to_be_at_least">La texto a buscar debe tener al menos 3 caracteres de largo</string>
+    <string name="search_query_needs_to_be_at_least">La texto a buscar debe tener al menos 2 caracteres de largo</string>
     <string name="search_result">resultado de la búsqueda</string>
     <string name="section1_tab_title1">Lección</string>
     <string name="section1_tab_title2">Caso de estudio</string>
