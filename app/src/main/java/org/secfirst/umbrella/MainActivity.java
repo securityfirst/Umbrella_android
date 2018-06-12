@@ -236,26 +236,52 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                         break;
                     case "lessons":
                     case "lesson":
-                        try {
-                            QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
-                            Where<Segment, String> where = queryBuilder.where();
-                            where.eq(Segment.FIELD_ID, first);
-                            Segment segment = queryBuilder.queryForFirst();
-                            if (segment!=null) {
-                                Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
-                                replaced = category.getCategory();
-                                QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
-                                Where<Segment, String> where1 = queryBuilder1.where();
-                                where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
-                                List<Segment> segments = queryBuilder1.query();
-                                for (int i = 0; i < segments.size(); i++) {
-                                    if (segments.get(i).getIdString().equals(segment.getIdString())) {
-                                        page = i+1;
+                        if (getIntent().getData().getPathSegments().size()==3) {
+                            try {
+                                Category category = Global.INSTANCE.getDaoCategory().queryBuilder().where().eq(Category.FIELD_STRING_ID, first).queryForFirst();
+                                if (category != null) {
+                                    replaced = category.getCategory();
+                                    int difficulty = UmbrellaUtil.getDifficultyFromString(Jsoup.clean(getIntent().getData().getPathSegments().get(1), Whitelist.simpleText()));
+                                    Where<Segment, String> wh = Global.INSTANCE.getDaoSegment().queryBuilder().where();
+                                    Segment segment = wh.and(
+                                            wh.eq(Segment.FIELD_DIFFICULTY, difficulty),
+                                            wh.eq(Segment.FIELD_CATEGORY, category.getId()),
+                                            wh.eq(Segment.FIELD_ID, Jsoup.clean(getIntent().getData().getPathSegments().get(2), Whitelist.simpleText()))
+                                    ).queryForFirst();
+                                    if (segment!=null) {
+                                        List<Segment> segments = Global.INSTANCE.getDaoSegment().queryBuilder().where().eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty()).query();
+                                        for (int i = 0; i < segments.size(); i++) {
+                                            if (segments.get(i).getIdString()!=null && segments.get(i).getIdString().equals(segment.getIdString())) {
+                                                page = i+1;
+                                            }
+                                        }
                                     }
                                 }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
                             }
-                        } catch (SQLException e) {
-                            e.printStackTrace();
+                        } else {
+                            try {
+                                QueryBuilder<Segment, String> queryBuilder = Global.INSTANCE.getDaoSegment().queryBuilder();
+                                Where<Segment, String> where = queryBuilder.where();
+                                where.eq(Segment.FIELD_ID, first);
+                                Segment segment = queryBuilder.queryForFirst();
+                                if (segment!=null) {
+                                    Category category = Global.INSTANCE.getDaoCategory().queryForId(String.valueOf(segment.getCategory()));
+                                    replaced = category.getCategory();
+                                    QueryBuilder<Segment, String> queryBuilder1 = Global.INSTANCE.getDaoSegment().queryBuilder();
+                                    Where<Segment, String> where1 = queryBuilder1.where();
+                                    where1.eq(Segment.FIELD_CATEGORY, segment.getCategory()).and().eq(Segment.FIELD_DIFFICULTY, segment.getDifficulty());
+                                    List<Segment> segments = queryBuilder1.query();
+                                    for (int i = 0; i < segments.size(); i++) {
+                                        if (segments.get(i).getIdString().equals(segment.getIdString())) {
+                                            page = i+1;
+                                        }
+                                    }
+                                }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     case "form":
@@ -356,10 +382,18 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             } catch (SQLException e) {
                 Timber.e(e);
             }
+            Integer difficulty;
+            try {
+                difficulty = Integer.valueOf(getIntent().getData().getPathSegments().get(1));
+            } catch (NumberFormatException e) {
+                difficulty = UmbrellaUtil.getDifficultyFromString(getIntent().getData().getPathSegments().get(1)) - 1;
+            } catch (NullPointerException e) {
+                difficulty = null;
+            }
             if (hasDifficulty != null && !hasDifficulty.isEmpty() && getIntent() != null
                     && getIntent().getData() != null && getIntent().getData().getPathSegments() != null
                     && getIntent().getData().getPathSegments().size() > 1) {
-                hasDifficulty.get(0).setSelected(Integer.valueOf(getIntent().getData().getPathSegments().get(1)));
+                hasDifficulty.get(0).setSelected(difficulty);
                 try {
                     Global.INSTANCE.getDaoDifficulty().update(hasDifficulty.get(0));
                 } catch (SQLException e) {
@@ -369,15 +403,10 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
                     .getPathSegments() != null && getIntent().getData().getPathSegments().size() > 1) {
                 try {
                     Global.INSTANCE.getDaoDifficulty().create(new Difficulty(childItem.getPosition(),
-                            Integer.valueOf(getIntent().getData().getPathSegments().get(1))));
+                            difficulty));
                 } catch (SQLException e) {
                     Timber.e(e);
                 }
-            }
-            try {
-                hasDifficulty = Global.INSTANCE.getDaoDifficulty().queryForEq(Difficulty.FIELD_CATEGORY, String.valueOf(childItem.getPosition()));
-            } catch (SQLException e) {
-                Timber.e(e);
             }
             drawerItem = childItem.getPosition();
             setNavItems(childItem.getTitle());

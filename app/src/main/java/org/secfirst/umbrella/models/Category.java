@@ -7,6 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 import java.io.Serializable;
 
 public class Category implements Serializable {
+    public static final String FIELD_STRING_ID = "id";
     @DatabaseField(columnName = "_id", generatedId = true, allowGeneratedIdInsert = true)
     private int id;
     @DatabaseField
@@ -34,7 +35,7 @@ public class Category implements Serializable {
     @DatabaseField
     @SerializedName("text_expert")
     private String textExpert;
-    @DatabaseField(columnName = "id")
+    @DatabaseField(columnName = FIELD_STRING_ID)
     private String stringId;
 
     public Category() {}
