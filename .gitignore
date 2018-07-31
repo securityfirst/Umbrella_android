@@ -15,7 +15,10 @@ app/app-release.apk
 *.apk
 app/release/output.json
 app/fabric.properties
+app/.scannerwork/
 app/sonar-project.properties
 
 app/*.jks
 keystore.properties
+com.crashlytics.settings.json
+session_analytics.tap

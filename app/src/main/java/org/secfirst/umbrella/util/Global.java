@@ -21,7 +21,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.core.CrashlyticsCore;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.PRDownloader;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -64,6 +66,7 @@ import org.secfirst.umbrella.models.NewDifficulty;
 import org.secfirst.umbrella.models.Registry;
 import org.secfirst.umbrella.models.Segment;
 import org.secfirst.umbrella.models.Tree;
+import org.secfirst.umbrella.rss.entities.CustomFeed;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -101,6 +104,7 @@ public class Global extends Application {
     private Dao<Language, String> daoLanguage;
     private Dao<FeedItem, String> daoFeedItem;
     private Dao<FeedSource, String> daoFeedSource;
+    private Dao<CustomFeed, String> daoRSS;
     private OrmHelper dbHelper;
     public static Global INSTANCE;
     private boolean needsRefreshActivity;
@@ -117,7 +121,7 @@ public class Global extends Application {
         sped = prefs.edit();
         if (BuildConfig.DEBUG) Timber.plant(new Timber.DebugTree());
         INSTANCE = this;
-        setupCrashlytics();
+//        if (BuildConfig.DEBUG) setupCrashlytics();
     }
 
     @Override
@@ -166,6 +170,16 @@ public class Global extends Application {
         List<FeedItem> items = new ArrayList<>();
         try {
             items = getDaoFeedItem().queryForAll();
+        } catch (SQLiteException | SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    public List<CustomFeed> getCustomFeed() {
+        List<CustomFeed> items = new ArrayList<>();
+        try {
+            items = getDaoRSS().queryForAll();
         } catch (SQLiteException | SQLException e) {
             e.printStackTrace();
         }
@@ -416,7 +430,7 @@ public class Global extends Application {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Toast.makeText(context, R.string.content_reset_to_default, Toast.LENGTH_SHORT).show();
                 ((Activity) context).finish();
-                ;
+
                 password = isLoggedIn = false;
                 startActivity(i);
             }
@@ -468,6 +482,7 @@ public class Global extends Application {
             getDaoFormOption();
             getDaoFormScreen();
             getDaoFormValue();
+            getDaoRSS();
             startService();
             SQLiteDatabase db = getOrmHelper().getWritableDatabase(getOrmHelper().getPassword());
             if (db != null) {
@@ -542,6 +557,19 @@ public class Global extends Application {
         }
         return daoFeedItem;
     }
+
+    public Dao<CustomFeed, String> getDaoRSS() {
+        if (daoRSS == null) {
+            try {
+                TableUtils.createTableIfNotExists(getOrmHelper().getConnectionSource(), CustomFeed.class);
+                daoRSS = getOrmHelper().getDao(CustomFeed.class);
+            } catch (SQLiteException | SQLException e) {
+                Timber.e(e);
+            }
+        }
+        return daoRSS;
+    }
+
 
     public Dao<Form, String> getDaoForm() {
         if (daoForm == null) {
@@ -680,10 +708,10 @@ public class Global extends Application {
                     getDaoCategory().create(category);
                     for (NewCategory newCategory : item.getSubcategories()) {
                         Category subCategory = newCategory.getCategory();
+                        subCategory.setHasDifficulty(item.getId().equals("about") | item.getId().equals("tools") ? 0 : 1);
                         if (newCategory.getId().equals("_")) {
                             subCategory.setId(category.getId());
                             subCategory.setCategory(category.getCategory());
-                            subCategory.setHasDifficulty(item.getId().equals("about") ? 0 : 1);
                             getDaoCategory().update(subCategory);
                         } else {
                             subCategory.setParent(category.getId());
@@ -775,13 +803,36 @@ public class Global extends Application {
                 }.getType();
                 final Tree receivedTree = gson.fromJson(response.toString(), treeType);
                 if (receivedTree != null) {
+                    for (String s : receivedTree.getAssets()) {
+                        File file = new File(getFilesDir()+"/"+s);
+                        if(file.exists() && file.length()>0) {
+                            Timber.d("Already exists as %s, length %d", file.getAbsolutePath(), file.length());
+                        } else {
+                            PRDownloader.download(UmbrellaRestClient.getAbsoluteUrl(String.format("api/repo/asset/%s", s)), getFilesDir().getAbsolutePath(), s).build().start(new OnDownloadListener() {
+                                @Override
+                                public void onDownloadComplete() {
+                                    Timber.d(s);
+                                }
+
+                                @Override
+                                public void onError(Error error) {
+                                    Timber.e(error.toString());
+                                }
+                            });
+                        }
+                    }
+
                     listener.onProgressChange(88);
                     Registry language = Global.INSTANCE.getRegistry("language");
                     Configuration conf = getResources().getConfiguration();
                     if (language != null && !language.getValue().equals("")) {
                         conf.locale = new Locale(language.getValue());
                     }
+
                     final Resources resources = new Resources(getAssets(), new DisplayMetrics(), conf);
+                    DisplayMetrics dm = resources.getDisplayMetrics();
+                    resources.updateConfiguration(conf, dm);
+
                     listener.onStatusChange(resources.getString(R.string.updating_the_database));
                     new Thread() {
                         @Override
@@ -803,7 +854,6 @@ public class Global extends Application {
                 } else {
                     listener.onDone();
                 }
-
             }
 
             @Override
@@ -980,6 +1030,7 @@ public class Global extends Application {
         }
         localDbStream.close();
         externalDbStream.close();
+
     }
 
     public static boolean deleteDatabase(File file) {
@@ -1067,10 +1118,6 @@ public class Global extends Application {
 
     private void setupCrashlytics() {
         // Set up Crashlytics, disabled for debug builds
-        Crashlytics crashlyticsKit = new Crashlytics.Builder()
-                .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build();
-        // Initialize Fabric with the debug-disabled crashlytics.
-        Fabric.with(this, crashlyticsKit);
+        Fabric.with(this, new Crashlytics());
     }
 }

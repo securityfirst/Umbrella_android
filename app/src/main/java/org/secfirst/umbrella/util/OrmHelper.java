@@ -26,7 +26,7 @@ import timber.log.Timber;
 
 public class OrmHelper extends OrmLiteSqliteOpenHelper {
     public static final String DATABASE_NAME = "database.db";
-    public static final int DATABASE_VERSION = 6;
+    public static final int DATABASE_VERSION = 8;
     private Context context;
 
     public OrmHelper(Context context) {
@@ -51,6 +51,8 @@ public class OrmHelper extends OrmLiteSqliteOpenHelper {
                 database.beginTransaction();
                 try {
                     database.execSQL(statement);
+                    database.setTransactionSuccessful();
+                } catch (Exception e) {
                     database.setTransactionSuccessful();
                 } finally {
                     database.endTransaction();

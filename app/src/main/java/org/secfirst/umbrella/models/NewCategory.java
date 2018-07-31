@@ -93,7 +93,7 @@ public class NewCategory implements Serializable {
                 textBeginner = difficulty.getDescription();
             }
         }
-        return new Category(0, 0, getName(), hasDifficulty, hasBeginner(), hasAdvanced(), hasExpert(), textBeginner, textAdvanced, textExpert);
+        return new Category(0, 0, getName(), hasDifficulty, hasBeginner(), hasAdvanced(), hasExpert(), textBeginner, textAdvanced, textExpert, getId());
     }
 
     public boolean hasDifficulty() {

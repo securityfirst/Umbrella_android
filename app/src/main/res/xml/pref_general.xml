@@ -4,51 +4,64 @@
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
-            android:persistent="false"
-            android:title="@string/skip_password"
-            android:summary="@string/disable_password"
             android:key="skip_password"
-            />
+            android:persistent="false"
+            android:summary="@string/disable_password"
+            android:title="@string/skip_password" />
 
-        <Preference android:key="refresh_data"
-            android:title="@string/refresh_umbrella_data"
+        <Preference
+            android:key="refresh_data"
+            android:persistent="false"
             android:summary="@string/refresh_umbrella_data"
-            android:persistent="false"
-            />
+            android:title="@string/refresh_umbrella_data" />
 
-        <Preference android:key="mask_app"
-            android:title="@string/action_mask"
-            android:summary="@string/masking_mode_title"
+        <Preference
+            android:key="mask_app"
             android:persistent="false"
-            />
+            android:summary="@string/masking_mode_title"
+            android:title="@string/action_mask" />
 
         <ListPreference
+            android:key="select_language"
             android:persistent="false"
-            android:title="@string/select_language"
             android:summary="@string/select_language"
-            android:key="select_language" />
+            android:title="@string/select_language" />
+
+        <Preference
+            android:defaultValue="false"
+            android:key="import_db_file"
+            android:persistent="false"
+            android:summary="@string/action_import_db_file"
+            android:title="@string/action_import_db_file" />
+
+        <Preference
+            android:defaultValue="false"
+            android:key="export_db_file"
+            android:persistent="false"
+            android:summary="@string/action_export_db_file"
+            android:title="@string/action_export_db_file" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/feed">
 
         <ListPreference
+            android:key="refresh_interval"
             android:persistent="false"
-            android:title="@string/refresh_interval_feeds"
             android:summary="@string/choose_refresh_inteval"
-            android:key="refresh_interval" />
+            android:title="@string/refresh_interval_feeds" />
 
-        <Preference android:key="set_location"
-            android:title="@string/set_location"
+        <Preference
+            android:key="set_location"
+            android:persistent="false"
             android:summary="@string/set_location"
-            android:persistent="false"
-            />
+            android:title="@string/set_location" />
 
-        <Preference android:key="feed_sources"
-            android:title="@string/feed_sources"
-            android:summary="@string/feed_sources"
+        <Preference
+            android:key="feed_sources"
             android:persistent="false"
-            />
+            android:summary="@string/feed_sources"
+            android:title="@string/feed_sources" />
 
     </PreferenceCategory>
 
@@ -56,25 +69,23 @@
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
-            android:persistent="false"
-            android:title="@string/show_notifications"
-            android:summary="@string/show_notifications"
             android:key="show_notifications"
-            />
+            android:persistent="false"
+            android:summary="@string/show_notifications"
+            android:title="@string/show_notifications" />
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
-            android:persistent="false"
-            android:title="@string/notification_vibration"
-            android:summary="@string/notification_vibration"
             android:key="notification_vibration"
-            />
-
-        <Preference android:key="notification_ringtone"
-            android:title="@string/select_ringtone"
-            android:summary="@string/notification_ringtone"
             android:persistent="false"
-            />
+            android:summary="@string/notification_vibration"
+            android:title="@string/notification_vibration" />
+
+        <Preference
+            android:key="notification_ringtone"
+            android:persistent="false"
+            android:summary="@string/notification_ringtone"
+            android:title="@string/select_ringtone" />
 
     </PreferenceCategory>
 

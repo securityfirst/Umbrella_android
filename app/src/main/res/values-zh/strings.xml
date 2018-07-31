@@ -65,7 +65,7 @@
     <string name="feed_set_now">现在设置</string>
     <string name="feed_set_your_feed">设置您的Feed</string>
     <string name="feed_sources">安全Feed源</string>
-    <string name="feeds">面板</string>
+    <string name="customFeeds">面板</string>
     <string name="filled">已填写</string>
     <string name="filled_out_forms">填写表格</string>
     <string name="forms">形式</string>
@@ -134,7 +134,7 @@
     <string name="results">个结果</string>
     <string name="review_sources_for_feed">请审阅您想订阅的来源</string>
     <string name="search">搜索</string>
-    <string name="search_query_needs_to_be_at_least">搜索查询不得少于3个字符</string>
+    <string name="search_query_needs_to_be_at_least">搜索查询不得少于2个字符</string>
     <string name="search_result">搜索结果</string>
     <string name="section1_tab_title1">课程</string>
     <string name="section1_tab_title2">情况分析</string>
@@ -183,4 +183,7 @@
     <string name="you_have_added_new_item">新的项目已添加。</string>
     <string name="you_have_successfully_changed_your_password">您已成功更改了密码。</string>
     <string name="you_have_successfully_set_your_password">您已成功设置密码。</string>
+    <string name="coach_marks_message">完成任務時標記任務按住任務以刪除或禁用任務</string>
+    <string name="coach_marks_menu_message">點擊此處或從屏幕側面輕掃即可隨時查看菜單。</string>
+
 </resources>

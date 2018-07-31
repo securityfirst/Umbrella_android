@@ -27,7 +27,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.mobsandgeeks.saripaar.QuickRule;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -56,7 +55,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private OnLocationEventListener mOnLocationEventListener;
     private List<Address> mAddressList;
     private Address mAddress;
-    @NotEmpty
+    
     private AppCompatAutoCompleteTextView mAutocompleteLocation;
     private Validator mValidator;
     private TextView mButtonOk;
@@ -64,6 +63,7 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     private FragmentActivity mActivity;
     private boolean mSourceFeedEnable;
     private String mChosenAddress;
+
 
     public static LocationDialog newInstance(TabbedFeedFragment tabbedFeedFragment, boolean openSource) {
         Bundle args = new Bundle();
@@ -79,9 +79,9 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.location_view, container, false);
-        mButtonCancel = (TextView) view.findViewById(R.id.place_search_dialog_cancel_TV);
-        mButtonOk = (TextView) view.findViewById(R.id.place_search_dialog_ok_TV);
-        mAutocompleteLocation = (AppCompatAutoCompleteTextView) view.findViewById(R.id.place_search_dialog_location_ET);
+        mButtonCancel = view.findViewById(R.id.place_search_dialog_cancel_TV);
+        mButtonOk = view.findViewById(R.id.place_search_dialog_ok_TV);
+        mAutocompleteLocation = view.findViewById(R.id.place_search_dialog_location_ET);
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
         mValidator.put(mAutocompleteLocation, new AutocompleteLocationRule());
@@ -91,11 +91,20 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     private void initOkButtons() {
         mButtonOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValidator.validate();
+                if (UmbrellaUtil.isOnline(getContext())) {
+                    mValidator.validate();
+                } else {
+                    Toast.makeText(getContext(), R.string.feed_no_connection, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         mButtonCancel.setOnClickListener(new View.OnClickListener() {
@@ -194,9 +203,9 @@ public class LocationDialog extends DialogFragment implements Validator.Validati
             Timber.e(e);
         }
 
+
         return foundGeocode;
     }
-
 
     public boolean getFeeds(final Context context) {
         Registry selISO2 = Global.INSTANCE.getRegistry("iso2");

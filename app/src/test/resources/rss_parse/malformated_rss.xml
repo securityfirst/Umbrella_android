@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet title="XSL_formatting" type="text/xsl" href="/shared/bsp/xsl/rss/nolsol.xsl"?>
+<rss xmlns:media="http://search.yahoo.com/mrss/" version="2.0">
+    <channel>
+        <title><![CDATA[BBC News - Business]]></title>
+        <description><![CDATA[BBC News - Business]]></description>
+        <link>http://www.bbc.co.uk/news/</link>
+        <image>
+            http://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif
+        </feedUrl>
+        <title>BBC News - Business</title>
+        <link>http://www.bbc.co.uk/news/</link>
+    </image>
+    <generator>RSS for Node</generator>
+    <lastBuildDate>Sat, 20 Jan 2018 11:31:17 GMT</lastBuildDate>
+    <copyright>
+        <![CDATA[Copyright: (C) British Broadcasting Corporation, see http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.]]></copyright>
+    <language><![CDATA[en-gb]]></language>
+    <ttl>15</ttl>
+    <item>
+        <title><![CDATA[Donald Trump and the US economy in six charts]]></title>
+        <description>
+            <![CDATA[How has US growth, jobs, stocks and trade fared in the first year of Donald Trump's presidency?]]></description>
+        <link>http://www.bbc.co.uk/news/business-42748243</link>
+        <guid isPermaLink="true">http://www.bbc.co.uk/news/business-42748243</guid>
+        <pubDate>Sat, 20 Jan 2018 00:22:52 GMT</pubDate>
+        <media:thumbnail height="549" feedUrl="http://c.files.bbci.co.uk/15E25/production/_99673698_mediaitem99673697.jpg"
+            width="976" />
+    </item>
+</channel></rss>

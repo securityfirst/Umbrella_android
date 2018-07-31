@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +21,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.einmalfel.earl.Item;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.jakewharton.processphoenix.ProcessPhoenix;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
 import org.secfirst.umbrella.BaseActivity;
 import org.secfirst.umbrella.BuildConfig;
+import org.secfirst.umbrella.MainActivity;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.fragments.DifficultyFragment;
 import org.secfirst.umbrella.models.Category;
@@ -34,14 +40,22 @@ import org.secfirst.umbrella.models.DrawerChildItem;
 import org.secfirst.umbrella.models.FeedItem;
 import org.secfirst.umbrella.models.Registry;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.channels.FileChannel;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -155,7 +169,8 @@ public class UmbrellaUtil {
                 if (parentCategory.getId() == 1) {
                     child.add(new DrawerChildItem(context.getString(R.string.my_checklists), -1));
                     child.add(new DrawerChildItem(context.getString(R.string.dashboard), -2));
-                    child.add(new DrawerChildItem(context.getString(R.string.forms), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.rss_menu_name), -3));
+                    child.add(new DrawerChildItem(context.getString(R.string.forms), -4));
                 }
                 childItem.add(child);
             }
@@ -285,6 +300,13 @@ public class UmbrellaUtil {
         return languageLabels.toArray(new CharSequence[languageLabels.size()]);
     }
 
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     public static HashMap<String, Integer> getRefreshValues(Context context) {
         LinkedHashMap<String, Integer> refreshInterval = new LinkedHashMap<>();
         refreshInterval.put(context.getString(R.string.half_hour), (int) TimeUnit.MINUTES.toMillis(30));
@@ -380,15 +402,16 @@ public class UmbrellaUtil {
     }
 
     public static int getDifficultyFromString(String difficultyString) {
-        if (difficultyString.equals("advanced")) {
+
+        if (difficultyString.equals(Global.INSTANCE.getString(R.string.difficult_level_advanced))) {
             return DifficultyFragment.INTERMEDIATE + 1;
-        } else if (difficultyString.equals("expert")) {
+        } else if (difficultyString.equals(Global.INSTANCE.getString(R.string.difficult_level_expert))) {
             return DifficultyFragment.EXPERT + 1;
         }
         return DifficultyFragment.BEGINNER + 1;
     }
 
-    public static String a(int difficulty) {
+    public static String getDifficultyFromId(int difficulty) {
         if (difficulty == DifficultyFragment.BEGINNER) {
             return "BEGINNER";
         } else if (difficulty == DifficultyFragment.INTERMEDIATE) {
@@ -396,6 +419,72 @@ public class UmbrellaUtil {
         } else {
             return "EXPERT";
         }
+    }
+
+    public static String inputStreamToString(InputStream inputStream) {
+        try {
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes, 0, bytes.length);
+            String json = new String(bytes);
+            return json;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public static String convertDateToString(Date date) {
+        DateFormat dateFormat;
+        String dateConvert = "";
+        try {
+            if (date != null) {
+                dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH);
+                dateConvert = dateFormat.format(date);
+            }
+        } catch (Exception e) {
+            return dateConvert;
+        }
+
+        return dateConvert;
+    }
+
+    public static String splitArticleLinkToShare(List<Item> selectedItems) {
+        StringBuilder string = new StringBuilder();
+        for (Item item : selectedItems) {
+            string.append(item.getLink());
+            string.append(System.getProperty("line.separator"));
+        }
+        return string.toString();
+    }
+
+    public static void copyFile(File src, File dst) throws IOException {
+        FileChannel inChannel = new FileInputStream(src).getChannel();
+        FileChannel outChannel = new FileOutputStream(dst).getChannel();
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
+        }
+    }
+
+    public static int fetchAccentColor(Context context) {
+        TypedValue typedValue = new TypedValue();
+        TypedArray typedArray = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
+        int color = typedArray.getColor(0, 0);
+        typedArray.recycle();
+        return color;
+    }
+
+    public static void doRestartApplication(Context context) {
+        Intent tourIntent = new Intent(context, MainActivity.class);
+        tourIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        ProcessPhoenix.triggerRebirth(context, tourIntent);
+    }
+
+    public static boolean rename(File from, File to) {
+        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
     }
 
 }

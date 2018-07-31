@@ -8,7 +8,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath files('gradle/gradle-witness.jar')
         classpath 'io.fabric.tools:gradle:1.+'
         // NOTE: Do not place your application dependencies here; they belong
@@ -25,5 +25,6 @@ allprojects {
             url "https://maven.google.com"
         }
         maven { url "https://jitpack.io" }
+        google()
     }
 }

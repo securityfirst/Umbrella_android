@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/custom_normal_rss_big_margin_top"
+    android:background="@color/light_grey"
+    android:orientation="horizontal"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:id="@+id/channel_item_view_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/light_grey"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/circle_view"
+            android:layout_width="@dimen/custom_rss_width"
+            android:layout_height="@dimen/custom_rss_height"
+            android:layout_marginLeft="@dimen/custom_rss_small_margin_left"
+            android:layout_marginTop="@dimen/custom_rss_smallest_margin_top"
+            android:background="@drawable/circle_shape" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/custom_rss_biggest_margin_left"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/rss_channel_title"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_smallest" />
+
+            <TextView
+                android:id="@+id/rss_channel_description"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_like_really_small" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
