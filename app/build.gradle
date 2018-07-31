@@ -24,8 +24,8 @@ android {
         applicationId "org.secfirst.umbrella"
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 37
-        versionName "0.4.9"
+        versionCode 39
+        versionName "0.5.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86", "armeabi", "mips"
