@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/shareForm"
+        android:icon="@drawable/ic_share"
+        android:title="Share" />
+
+    <item
+        android:id="@+id/deleteForm"
+        android:icon="@drawable/ic_delete"
+        android:title="Delete" />
+
+    <item
+        android:id="@+id/editForm"
+        android:icon="@drawable/ic_mode_edit"
+        android:title="Edite" />
+
+
+</menu>

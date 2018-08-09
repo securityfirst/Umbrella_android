@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/umbrella_purple</color>
+    <color name="colorPrimaryDark">@color/umbrella_purple_dark</color>
+    <color name="colorAccent">@color/umbrella_green</color>
+    <color name="light_grey">#e5e5e5</color>
+    <color name="light_white">#e5e5e5</color>
+
+    <color name="umbrella_green">#FF9ABE2E</color>
+    <color name="umbrella_purple">#FFB83657</color>
+    <color name="umbrella_purple_dark">#FF8D2A43</color>
+    <color name="umbrella_yellow">#FFF2BC2B</color>
+
+    <color name="dialog_background">#fafafa</color>
+    <color name="immersive_background">#88000000</color>
+</resources>
