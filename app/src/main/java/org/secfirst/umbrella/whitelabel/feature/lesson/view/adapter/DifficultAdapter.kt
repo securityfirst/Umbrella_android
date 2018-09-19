@@ -22,7 +22,7 @@ class DifficultAdapter(private val onClickDiff: (Difficult) -> Unit) : RecyclerV
 
 
     override fun onBindViewHolder(holder: DifficultHolder, position: Int) {
-        holder.bind(difficulties[position], clickListener = { onClickDiff })
+        holder.bind(difficulties[position], clickListener = { onClickDiff(difficulties[position]) })
     }
 
     override fun getItemCount() = difficulties.size
@@ -34,6 +34,7 @@ class DifficultAdapter(private val onClickDiff: (Difficult) -> Unit) : RecyclerV
 
     class DifficultHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(difficult: Difficult, clickListener: (DifficultHolder) -> Unit) {
+            itemView.setOnClickListener { clickListener(this) }
             with(difficult) {
                 itemView.difficultTitle.text = title
                 itemView.difficultDescription.text = description

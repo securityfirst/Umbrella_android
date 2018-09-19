@@ -14,6 +14,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePrese
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonPresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.LessonMenuController
+import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.SegmentController
 import javax.inject.Singleton
 
 @Module
@@ -43,4 +44,6 @@ interface LessonComponent {
     }
 
     fun inject(lessonMenuController: LessonMenuController)
+
+    fun inject(segmentController: SegmentController)
 }

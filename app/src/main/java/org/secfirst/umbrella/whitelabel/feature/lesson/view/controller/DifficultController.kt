@@ -27,7 +27,7 @@ class DifficultController(bundle: Bundle) : BaseController(bundle), LessonView {
     }
 
     private fun onDifficultClick(difficult: Difficult) {
-
+        //router.pushController(RouterTransaction.with(SegmentController(difficult)))
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -53,7 +53,9 @@ class DifficultController(bundle: Bundle) : BaseController(bundle), LessonView {
     @Suppress("UNCHECKED_CAST")
     override fun getToolbarTitle(): String {
         val difficultiesList = difficulties as Array<Difficult>
-        return difficultiesList.last().titleToolbar
+        var title = ""
+        difficultiesList.forEach { title = it.titleToolbar }
+        return title
     }
 
     override fun getEnableBackAction() = true

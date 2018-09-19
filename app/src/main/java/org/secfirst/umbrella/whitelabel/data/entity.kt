@@ -82,6 +82,11 @@ data class Markdown(
 
         var text: String = "") : BaseModel() {
     constructor(text: String) : this(0, null, null, null, text)
+
+    companion object {
+        const val TAG_INDEX = "index: "
+        const val TAG_TITLE = "title: "
+    }
 }
 
 @Table(database = AppDatabase::class)

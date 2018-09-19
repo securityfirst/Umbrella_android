@@ -1,8 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
-import org.secfirst.umbrella.whitelabel.data.database.lesson.toDifficult
-import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
+import org.secfirst.umbrella.whitelabel.data.database.lesson.*
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
@@ -14,11 +12,19 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), LessonBasePresenter<V, I> {
 
-    override fun submitSelectTopic(topicSelected: Lesson.Topic) {
-
+    override fun submitSegments(difficultSelected: Difficult) {
         launchSilent(uiContext) {
             interactor?.let {
-                val subcategory = it.fetchCategoryBy(topicSelected.idReference)
+                val child = it.fetchChildBy(difficultSelected.idReference, difficultSelected.title)
+                getView()?.showSegments(child.markdowns.toSegment())
+            }
+        }
+    }
+
+    override fun submitSelectTopic(topicSelected: Lesson.Topic) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val subcategory = it.fetchSubcategoryBy(topicSelected.idReference)
                 getView()?.showSelectDifficult(subcategory.toDifficult())
             }
         }
@@ -28,7 +34,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitLoadAllLesson() {
         launchSilent(uiContext) {
             interactor?.let {
-                val categories = it.fetchLesson()
+                val categories = it.fetchCategories()
                         .asSequence()
                         .filter { category -> category.title != "" }
                         .toList()

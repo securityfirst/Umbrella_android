@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
@@ -12,4 +13,6 @@ interface LessonBasePresenter<V : LessonView, I : LessonBaseInteractor> : BasePr
     fun submitLoadAllLesson()
 
     fun submitSelectTopic(topicSelected: Lesson.Topic)
+
+    fun submitSegments(difficultSelected : Difficult)
 }
