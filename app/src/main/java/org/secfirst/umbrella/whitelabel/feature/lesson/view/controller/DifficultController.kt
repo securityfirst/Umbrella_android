@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficult_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
@@ -27,7 +28,7 @@ class DifficultController(bundle: Bundle) : BaseController(bundle), LessonView {
     }
 
     private fun onDifficultClick(difficult: Difficult) {
-        //router.pushController(RouterTransaction.with(SegmentController(difficult)))
+        router.pushController(RouterTransaction.with(SegmentController(difficult)))
     }
 
     @Suppress("UNCHECKED_CAST")
