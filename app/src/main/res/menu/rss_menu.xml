@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.secfirst.umbrella.whitelabel.feature.main.MainActivity">
+
+    <item
+        android:id="@+id/action_rss_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/send_to"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_rss_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
+
+</menu>

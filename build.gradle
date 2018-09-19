@@ -1,30 +1,98 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
+    ext.kotlin_version = '1.2.61'
     repositories {
         google()
         jcenter()
-        mavenCentral()
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
-        classpath files('gradle/gradle-witness.jar')
-        classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.android.tools.build:gradle:3.3.0-alpha06'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.jacoco:org.jacoco.core:0.8.1'
+        classpath 'io.fabric.tools:gradle:1.25.4'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
+}
+plugins {
+    id "org.sonarqube" version "2.6"
+}
 allprojects {
     repositories {
-        maven { url "http://dl.bintray.com/populov/maven" }
-        mavenCentral()
-        jcenter()
-        maven {
-            url "https://maven.google.com"
-        }
-        maven { url "https://jitpack.io" }
         google()
+        jcenter()
+        maven { url "https://repo.eclipse.org/content/groups/releases/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://www.jitpack.io" }
     }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+//Static code analysis for Kotlin
+detekt {
+    version = "1.0.0.RC6-4"
+    defaultProfile {
+        input = file("app/src/main/java")
+        config = file("/config/detekt-config.yml")
+        filters = ".*/resources/.*,.*/tmp/.*"
+        output = file("reports")
+        outputName = "detekt-report"
+        baseline = file("reports/baseline.xml")
+    }
+}
+
+ext {
+
+    minSdkVersion = 15
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+    buildToolsVersion = '26.0.2'
+
+
+    support_library_version = '27.1.1'
+    support_constraint_version = '1.1.3'
+    dagger2_version = '2.16'
+    runner_version = '1.0.1'
+    espresso_version = '3.0.2'
+    junit_version = '4.12'
+    rx_android_version = '2.0.2'
+    rx_java_version = '2.1.14'
+    retrofit_version = '2.3.0'
+    okHttp_version = '3.10.0'
+    interceptor_version = '3.9.1'
+    moshiKotlin_version = '1.5.0'
+    dbflow_version= '4.2.4'
+    sqlcipher_version = '3.5.9'
+    gson_version= '2.8.0'
+    anko_version= '0.10.3'
+    okHttpLog_version = '3.9.1'
+    jgit_version = '3.7.1.201504261725-r'
+    commonsIo_version = '2.5'
+    jackson_databind_version = '2.9.5'
+    jackson_yaml_version = '2.7.1'
+    jackson_module_version = '2.9.5'
+    stetho_version = '1.5.0'
+    hamcrest_core_version = '1.3'
+    hamcrest_version = '1.3'
+    test_support_version = '0.1'
+    test_rule_version = '1.0.2'
+    mockito_version = '2.10.0'
+    junit_version = '4.12'
+    coroutine_version = "0.22.5"
+    conductor_version = "2.1.6-SNAPSHOT"
+    stepper_version = "4.3.1"
+    multidex_version = "1.0.3"
+    caligraphy_version = "2.3.0"
+    crashlytics_version = "2.9.4@aar"
+    jsoup = '1.8.2'
+    io_cipher = '0.4'
+    sectioned_recycle = '1.2.0'
 }

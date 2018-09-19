@@ -1,197 +1,21 @@
 <resources>
-    <dimen name="navigation_drawer_width">240dp</dimen>
-    <dimen name="text_size_xlarge">26sp</dimen>
-    <dimen name="text_size_large">24sp</dimen>
-    <dimen name="text_size_like_extremely_small">11sp</dimen>
-    <dimen name="text_size_larger">22sp</dimen>
-    <dimen name="text_size_normal">20sp</dimen>
-    <dimen name="text_size_smaller">18sp</dimen>
-    <dimen name="text_size_small">16sp</dimen>
-    <dimen name="text_size_smallest">14sp</dimen>
-    <dimen name="text_size_like_really_small">12sp</dimen>
-    <dimen name="text_size_like_small">13sp</dimen>
-    <dimen name="fab_size">56dp</dimen>
-    <dimen name="button_elevation">2dp</dimen>
-    <dimen name="button_press_elevation">4dp</dimen>
-    <dimen name="gridHalfx">4dp</dimen>
-    <dimen name="grid1x">8dp</dimen>
-    <dimen name="grid1_5x">12dp</dimen>
-    <dimen name="grid2x">16dp</dimen>
-    <dimen name="grid3x">24dp</dimen>
-    <dimen name="grid4x">32dp</dimen>
-    <dimen name="grid5x">40dp</dimen>
-    <dimen name="grid6x">48dp</dimen>
-    <dimen name="grid7x">56dp</dimen>
-    <dimen name="grid8x">64dp</dimen>
-    <dimen name="grid9x">72dp</dimen>
-    <dimen name="grid10x">80dp</dimen>
-    <dimen name="grid11x">88dp</dimen>
-    <dimen name="grid12x">96dp</dimen>
-    <dimen name="grid13x">104dp</dimen>
-    <dimen name="grid14x">112dp</dimen>
-    <dimen name="grid15x">120dp</dimen>
-    <dimen name="grid16x">128dp</dimen>
-    <dimen name="grid17x">136dp</dimen>
-    <dimen name="grid18x">144dp</dimen>
-    <dimen name="grid19x">152dp</dimen>
-    <dimen name="grid20x">160dp</dimen>
-    <dimen name="grid21x">168dp</dimen>
-    <dimen name="grid22x">176dp</dimen>
-    <dimen name="grid23x">184dp</dimen>
-    <dimen name="grid24x">192dp</dimen>
-    <dimen name="grid25x">200dp</dimen>
-    <dimen name="grid26x">208dp</dimen>
-    <dimen name="grid27x">216dp</dimen>
-    <dimen name="grid28x">224dp</dimen>
-    <dimen name="grid29x">232dp</dimen>
-    <dimen name="grid30x">240dp</dimen>
-
-    <dimen name="elevationLevel1">4dp</dimen>
-    <dimen name="elevationLevel2">8dp</dimen>
-
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">12dp</dimen>
-    <dimen name="activity_vertical_margin">12dp</dimen>
-    <dimen name="activity_vertical_margin_smaller">10dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
-
-    <dimen name="text_smallest">10sp</dimen>
-    <dimen name="text_smaller">12sp</dimen>
-    <dimen name="text_small">14sp</dimen>
-    <dimen name="text_medium">18sp</dimen>
-    <dimen name="text_larger">20sp</dimen>
-    <dimen name="text_large">22sp</dimen>
-    <dimen name="text_xlarge">24sp</dimen>
-    <dimen name="text_xxlarge">30sp</dimen>
-    <dimen name="login_button_padding_left">5dp</dimen>
-    <dimen name="login_button_padding_right">5dp</dimen>
-    <dimen name="login_panel_margin_horizontal">40dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
 
-    <!--Dashboard Feed-->
-    <dimen name="card_view_default_radius">2dp</dimen>
-    <dimen name="dashboard_feed_padding">10dp</dimen>
-    <dimen name="dashboard_feed_small_padding">5dp</dimen>
-    <dimen name="dashboard_feed_smallest_padding">3dp</dimen>
-    <dimen name="dashboard_feed_normal_padding">8dp</dimen>
-    <dimen name="dashboard_feed_margin_top">15dp</dimen>
-    <dimen name="dashboard_feed_medium_margin_top">10dp</dimen>
-    <dimen name="dashboard_feed_smallest_margin_top">3dp</dimen>
-    <dimen name="dashboard_feed_small_margin_top">5dp</dimen>
-    <dimen name="dashboard_feed_smallest_margin_bottom">3dp</dimen>
-    <dimen name="dashboard_feed_big_margin_bottom">16dp</dimen>
-    <dimen name="dashboard_feed_normal_margin_start">16dp</dimen>
-    <dimen name="dashboard_feed_big_margin_start">16dp</dimen>
-    <dimen name="dashboard_feed_big_margin_right">16dp</dimen>
+    <!-- font sizes -->
+    <dimen name="font_larger">22sp</dimen>
+    <dimen name="font_large">18sp</dimen>
+    <dimen name="font_normal">15sp</dimen>
+    <dimen name="font_small">12sp</dimen>
+    <dimen name="card_radius">2dp</dimen>
 
+    <dimen name="md_dialog_frame_margin">24dp</dimen>
+    <dimen name="md_content_padding_top">8dp</dimen>
+    <dimen name="md_content_textsize">16sp</dimen>
 
-    <!--Location Dialog-->
-    <dimen name="location_dialog_medium_height">140dp</dimen>
-    <dimen name="location_dialog_small_padding">10dp</dimen>
-    <dimen name="location_dialog_smallest_width">52dp</dimen>
-    <dimen name="location_dialog_smallest_height">52dp</dimen>
-    <dimen name="location_dialog_default_margin">15dp</dimen>
-    <dimen name="location_dialog_big_margin_top">20dp</dimen>
-    <dimen name="location_dialog_big_padding">20dp</dimen>
-
-
-    <!--Feed empty view-->
-    <dimen name="feed_empty_big_margin_top">20dp</dimen>
-    <dimen name="feed_empty_smallest_margin_top">3dp</dimen>
-    <dimen name="feed_empty_small_margin_top">5dp</dimen>
-    <dimen name="feed_empty_smallest_margin_bottom">3dp</dimen>
-    <dimen name="feed_empty_card_view">2dp</dimen>
-    <dimen name="feed_empty_normal_padding">10dp</dimen>
-    <dimen name="feed_empty_small_padding">5dp</dimen>
-
-
-    <!--Feed list view-->
-    <dimen name="feed_list_small_margin_top">10dp</dimen>
-    <dimen name="feed_list_normal_margin_top">20dp</dimen>
-    <dimen name="feed_list_big_margin_bottom">20dp</dimen>
-    <dimen name="feed_list_card_view_radius">2dp</dimen>
-    <dimen name="feed_list_small_padding">10dp</dimen>
-    <dimen name="feed_list_smallest_margin_left">5dp</dimen>
-    <dimen name="feed_list_small_margin_bottom">5dp</dimen>
-    <dimen name="feed_list_normal_padding">10dp</dimen>
-
-
-    <!--Feed Location view-->
-    <dimen name="feed_location_width">344dp</dimen>
-    <dimen name="feed_location_smallest_margin_top">8dp</dimen>
-    <dimen name="feed_location_button_width">48dp</dimen>
-    <dimen name="feed_location_empty_view">18dp</dimen>
-    <dimen name="feed_location_small_padding">10dp</dimen>
-    <dimen name="feed_location_height_expandable_layout">120dp</dimen>
-    <dimen name="feed_location_normal_margin_bottom">15dp</dimen>
-    <dimen name="feed_location_smallest_margin_right">5dp</dimen>
-    <dimen name="feed_location_dialog_small_padding">10dp</dimen>
-    <dimen name="location_big_margin_left">20dp</dimen>
-
-    <!--Hands Shake Dialog-->
-    <dimen name="hands_shake_biggest_margin_top">28dp</dimen>
-    <dimen name="hands_shake_big_margin_top">22dp</dimen>
-    <dimen name="hands_shake_smallest_margin_top">5dp</dimen>
-    <dimen name="hands_shake_width">260dp</dimen>
-    <dimen name="hands_shake_width_description">235dp</dimen>
-    <dimen name="hands_shake_normal_margin_top">14dp</dimen>
-    <dimen name="hands_shake_normal_text">13sp</dimen>
-    <dimen name="hands_shake_width_button">74dp</dimen>
-    <dimen name="hands_shake_height_button">36dp</dimen>
-    <dimen name="hands_shake_biggest_margin_left">100dp</dimen>
-    <dimen name="hands_shake_small_margin_left">20dp</dimen>
-    <dimen name="hand_shake_normal_padding">10dp</dimen>
-
-    <!--Info Hands Shake Dialog-->
-    <dimen name="hands_shake_info_normal_padding">10dp</dimen>
-    <dimen name="hands_shake_info_normal_margin_top">22dp</dimen>
-    <dimen name="hands_shake_info_biggest_margin_top">28dp</dimen>
-    <dimen name="hands_shake_info_width_title">260dp</dimen>
-    <dimen name="hands_shake_info_width_description">235dp</dimen>
-    <dimen name="hands_shake_info_small_margin_top">14dp</dimen>
-    <dimen name="hands_shake_info_norma_text_size">13sp</dimen>
-    <dimen name="hands_shake_info_smallest_margin_top">15dp</dimen>
-    <dimen name="hands_shake_info_width_cancel_button">36dp</dimen>
-    <dimen name="hands_shake_info_normal_margin_left">20dp</dimen>
-    <dimen name="hands_shake_info_width_ok">60dp</dimen>
-    <dimen name="hands_shake_info_height_ok">36dp</dimen>
-    <dimen name="hands_shake_info_smallest_margin_left">8dp</dimen>
-    <dimen name="hands_shake_info_biggest_margin_left">25dp</dimen>
-
-    <!--WebVeiw Dialog-->
-    <dimen name="web_view_big_margin_right">60dp</dimen>
-    <dimen name="web_view_small_margin_right">10dp</dimen>
-
-    <!--Custom feed-->
-    <dimen name="custom_rss_biggest_margin_left">20dp</dimen>
-    <dimen name="custom_rss_smallest_margin_top">5dp</dimen>
-    <dimen name="custom_rss_small_margin_left">13dp</dimen>
-    <dimen name="custom_rss_height">23dp</dimen>
-    <dimen name="custom_rss_width">23dp</dimen>
-    <dimen name="custom_rss_biggest_margin_right">30dp</dimen>
-    <dimen name="custom_rss_normal_margin_right">10dp</dimen>
-    <dimen name="custom_rss_normal_height">30dp</dimen>
-    <dimen name="custom_normal_rss_width">30dp</dimen>
-    <dimen name="custom_normal_rss_big_margin_top">15dp</dimen>
-    <dimen name="title_size">13sp</dimen>
-
-    <!--Article Feed-->
-    <dimen name="article_rss_biggest_height">320dp</dimen>
-    <dimen name="article_rss_smallest_margin_bottom">2dp</dimen>
-    <dimen name="article_rss_big_height">176dp</dimen>
-    <dimen name="article_rss_smallest_margin_left">16dp</dimen>
-    <dimen name="article_rss_smallest_margin_top">5dp</dimen>
-    <dimen name="article_rss_smallest_height">10dp</dimen>
-    <dimen name="article_rss_big_margin_top">20dp</dimen>
-    <dimen name="article_rss_normal_width">50dp</dimen>
-    <dimen name="article_rss_big_margin_left">20dp</dimen>
-
-    <dimen name="tour_normal_margin_top">10dp</dimen>
+    <dimen name="dialog_elevation">6dp</dimen>
+    <dimen name="dialog_corners">2dp</dimen>
 
 </resources>

@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      ANDROID_HOME: "/opt/android/sdk"
+      JAVA_OPTIONS: "-Xms512m -Xmx3200m"
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "build.gradle" }}
+          - v1-dependencies-
+
+      - run: ./gradlew dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - run: echo $BETA_KEYSTORE_BASE64 | base64 -d > app/config/beta_keystore.jks
+# Uncomment this when tests get fixed
+#      - run:
+#          name: Run Unit Tests
+#          command: ./gradlew test
+      - run:
+          name: Build
+          command: ./gradlew assemble

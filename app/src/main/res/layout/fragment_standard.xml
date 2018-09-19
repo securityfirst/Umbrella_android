@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/db_bt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="export db" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Click on First Access and waiting for a alert" />
+
+    <Button
+        android:id="@+id/firstAccess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="First Access" />
+
+</LinearLayout>

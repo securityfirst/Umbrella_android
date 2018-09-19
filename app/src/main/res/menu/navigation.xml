@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/navigation_feeds"
+        android:enabled="true"
+        android:icon="@drawable/ic_view_feed"
+        android:title="@string/feed_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_forms"
+        android:enabled="true"
+        android:icon="@drawable/ic_form"
+        android:title="@string/form_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_checklists"
+        android:enabled="true"
+        android:icon="@drawable/ic_checklist"
+        android:title="@string/checklist_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_lessons"
+        android:enabled="true"
+        android:icon="@drawable/ic_local_library"
+        android:title="@string/lesson_title"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/navigation_account"
+        android:enabled="true"
+        android:icon="@drawable/ic_account_box"
+        android:title="@string/account_title"
+        app:showAsAction="ifRoom" />
+
+</menu>
