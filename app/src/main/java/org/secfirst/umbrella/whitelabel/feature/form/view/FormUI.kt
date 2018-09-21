@@ -12,8 +12,8 @@ import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import org.jetbrains.anko.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.Answer
-import org.secfirst.umbrella.whitelabel.data.Screen
+import org.secfirst.umbrella.whitelabel.data.disk.Answer
+import org.secfirst.umbrella.whitelabel.data.disk.Screen
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
 import org.secfirst.umbrella.whitelabel.feature.form.view.controller.FormController

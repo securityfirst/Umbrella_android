@@ -1,6 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.*
+import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.lesson.toDifficult
+import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
+import org.secfirst.umbrella.whitelabel.data.database.lesson.toSegment
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
@@ -12,24 +15,38 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), LessonBasePresenter<V, I> {
 
-    override fun submitSegments(difficultSelected: Difficult) {
+    override fun submitSelectDifficult(idReference: Long) {
         launchSilent(uiContext) {
             interactor?.let {
-                val child = it.fetchChildBy(difficultSelected.idReference, difficultSelected.title)
-                getView()?.showSegments(child.markdowns.toSegment())
+                it.fetchChildBy(idReference)?.let { child ->
+                    val subcategorySelected = it.fetchSubcategoryBy(idReference)
+                    it.insertTopicPreferred(TopicPreferred(subcategorySelected, child))
+                    getView()?.showDeferredSegment(child.markdowns.toSegment(idReference, subcategorySelected.title))
+                }
             }
         }
     }
 
-    override fun submitSelectTopic(topicSelected: Lesson.Topic) {
+
+    override fun submitSelecteLesson(idReference: Long) {
         launchSilent(uiContext) {
             interactor?.let {
-                val subcategory = it.fetchSubcategoryBy(topicSelected.idReference)
-                getView()?.showSelectDifficult(subcategory.toDifficult())
+
+                val topicPreferred = it.fetchTopicPreferredBy(idReference)
+                if (topicPreferred != null)
+                    topicPreferred.subcategorySelected?.let { subcategory ->
+                        topicPreferred.childSelected?.let { child ->
+                            getView()?.showDeferredSegment(child.markdowns.toSegment(subcategory.id, subcategory.title))
+                        }
+                    }
+                else {
+                    val subCategory = it.fetchSubcategoryBy(idReference)
+                    getView()?.showDifficulties(subCategory.toDifficult())
+                }
+
             }
         }
     }
-
 
     override fun submitLoadAllLesson() {
         launchSilent(uiContext) {

@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.database.content
 
-import org.secfirst.umbrella.whitelabel.data.Root
+import org.secfirst.umbrella.whitelabel.data.disk.Root
 
 
 interface ContentRepo {

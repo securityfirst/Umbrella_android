@@ -4,7 +4,11 @@ import javax.inject.Inject
 
 class LessonRepository @Inject constructor(private val lessonDao: LessonDao) : LessonRepo {
 
-    override suspend fun loadChildBy(subcategoryId: Long, difficultTitle: String) = lessonDao.getChildBy(subcategoryId, difficultTitle)
+    override suspend fun saveTopicPreffered(topicPreferred: TopicPreferred) = lessonDao.save(topicPreferred)
+
+    override suspend fun loadTopicPreferredBy(subcategoryId: Long) = lessonDao.getTopic(subcategoryId)
+
+    override suspend fun loadChildBy(subcategoryId: Long) = lessonDao.getChildBy(subcategoryId)
 
     override suspend fun loadAllMarkdowns(subcategoryId: Long) = lessonDao.getAllMarkdownsBy(subcategoryId)
 

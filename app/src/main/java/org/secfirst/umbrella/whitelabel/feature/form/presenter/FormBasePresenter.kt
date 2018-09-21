@@ -1,8 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.form.presenter
 
-import org.secfirst.umbrella.whitelabel.data.ActiveForm
-import org.secfirst.umbrella.whitelabel.data.Answer
-import org.secfirst.umbrella.whitelabel.data.Form
+import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.disk.Answer
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenter
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView

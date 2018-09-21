@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
@@ -16,20 +15,20 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInte
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.SegmentAdapter
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.DifficultController.Companion.EXTRA_SELECTED_DIFFICULTY
+import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.DifficultController.Companion.EXTRA_SELECTED_SEGMENT
 import javax.inject.Inject
 
 
 class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
-    private val difficult by lazy { args.getParcelable(EXTRA_SELECTED_DIFFICULTY) as Difficult }
+    private val segments by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
     private val segmentClick: (Segment) -> Unit = this::onSegmentClicked
     private val adapter = SegmentAdapter(segmentClick)
 
 
-    constructor(difficult: Difficult) : this(Bundle().apply {
-        putParcelable(DifficultController.EXTRA_SELECTED_DIFFICULTY, difficult)
+    constructor(segments: List<Segment>) : this(Bundle().apply {
+        putParcelableArray(EXTRA_SELECTED_SEGMENT, segments.toTypedArray())
     })
 
     private fun onSegmentClicked(segment: Segment) {
@@ -39,8 +38,14 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         presenter.onAttach(this)
-        presenter.submitSegments(difficult)
-        segmentToolbar?.title = "${difficult.titleToolbar} ${difficult.title}"
+        setUpToolbar()
+        showAllSegments()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun setUpToolbar() {
+        val segmentList = segments as Array<Segment>
+        segmentToolbar?.let { it.title = "${segmentList.last().title} $segmentList.last().titleToolbar" }
     }
 
     override fun onInject() {
@@ -58,14 +63,14 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
-    override fun showSegments(segments: List<Segment>) {
+    @Suppress("UNCHECKED_CAST")
+    fun showAllSegments() {
         val mGridLayoutManager = GridLayoutManager(context, 2)
-        adapter.addAll(segments)
+        val segmentsList = segments as Array<Segment>
+        adapter.addAll(segmentsList.toList())
         segmentRecyclerView?.let {
             it.layoutManager = mGridLayoutManager
             it.adapter = adapter
         }
-
-
     }
 }

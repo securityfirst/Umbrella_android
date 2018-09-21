@@ -6,6 +6,7 @@ open class BaseInteractorImp() : BaseInteractor {
 
     protected lateinit var apiHelper: ApiHelper
 
+
     constructor(apiHelper: ApiHelper) : this() {
         this.apiHelper = apiHelper
     }

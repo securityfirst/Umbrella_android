@@ -1,14 +1,20 @@
 package org.secfirst.umbrella.whitelabel.data.database.lesson
 
 import android.os.Parcelable
+import com.raizlabs.android.dbflow.annotation.ForeignKey
+import com.raizlabs.android.dbflow.annotation.PrimaryKey
+import com.raizlabs.android.dbflow.annotation.Table
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.parcel.Parcelize
-import org.secfirst.umbrella.whitelabel.data.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.content.Category
+import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.ADVANCED_COLOR
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.BEGINNER_COLOR
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.EXPERT_COLOR
+import org.secfirst.umbrella.whitelabel.data.disk.Markdown
 
 @Parcelize
 data class Difficult(val title: String,
@@ -36,9 +42,20 @@ data class Lesson(var subject: String = "",
 
 @Parcelize
 data class Segment(var title: String,
-                   var description: String,
-                   var layoutColor: String,
+                   var index: String,
+                   var titleToolbar: String,
                    var idReference: Long) : Parcelable
+
+
+@Table(database = AppDatabase::class)
+data class TopicPreferred(@PrimaryKey(autoincrement = true)
+                          var id: Long = 0,
+                          @ForeignKey(stubbedRelationship = false)
+                          var subcategorySelected: Subcategory? = null,
+                          @ForeignKey(stubbedRelationship = false)
+                          var childSelected: Child? = null) : BaseModel() {
+    constructor(subcategorySelected: Subcategory, childSelected: Child?) : this(0, subcategorySelected, childSelected)
+}
 
 fun Subcategory.toDifficult(): MutableList<Difficult> {
     val difficulties = mutableListOf<Difficult>()
@@ -56,12 +73,10 @@ fun Subcategory.toDifficult(): MutableList<Difficult> {
     return difficulties
 }
 
-fun List<Markdown>.toSegment(): MutableList<Segment> {
+fun MutableList<Markdown>.toSegment(subcategoryId: Long, titleToolbar: String): MutableList<Segment> {
     val segments = mutableListOf<Segment>()
-    //val childSorted = this.children.sortedWith(compareBy { it.index })
     this.forEach { markdown ->
-        val title = markdown.text.substringAfter(Markdown.TAG_TITLE)
-        val index = markdown.text.substringAfter(Markdown.TAG_INDEX)
+        segments.add(Segment(markdown.title, markdown.index, titleToolbar, subcategoryId))
     }
     return segments
 }

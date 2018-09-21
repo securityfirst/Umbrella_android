@@ -8,31 +8,46 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficult_view.*
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
+import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
+import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.DifficultAdapter
+import javax.inject.Inject
 
 class DifficultController(bundle: Bundle) : BaseController(bundle), LessonView {
-
+    @Inject
+    internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val difficultClick: (Difficult) -> Unit = this::onDifficultClick
-    private val difficulties by lazy { args.getParcelableArray(EXTRA_SELECTED_DIFFICULTY) }
+    private val difficulties by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
     private val difficultAdapter: DifficultAdapter = DifficultAdapter(difficultClick)
 
     constructor(difficulties: List<Difficult>) : this(Bundle().apply {
-        putParcelableArray(EXTRA_SELECTED_DIFFICULTY, difficulties.toTypedArray())
+        putParcelableArray(EXTRA_SELECTED_SEGMENT, difficulties.toTypedArray())
     })
 
     companion object {
-        const val EXTRA_SELECTED_DIFFICULTY = "selected_difficulty"
+        const val EXTRA_SELECTED_SEGMENT = "selected_difficulty"
+    }
+
+    override fun onInject() {
+        DaggerLessonComponent.builder()
+                .application(UmbrellaApplication.instance)
+                .build()
+                .inject(this)
     }
 
     private fun onDifficultClick(difficult: Difficult) {
-        router.pushController(RouterTransaction.with(SegmentController(difficult)))
+        presenter.submitSelectDifficult(difficult.idReference)
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onAttach(view: View) {
+        presenter.onAttach(this)
         enableArrowBack(true)
         difficultRecyclerView?.let {
             it.layoutManager = LinearLayoutManager(context)
@@ -61,6 +76,7 @@ class DifficultController(bundle: Bundle) : BaseController(bundle), LessonView {
 
     override fun getEnableBackAction() = true
 
-    override fun onInject() {}
-
+    override fun showDeferredSegment(segments: List<Segment>) {
+        router.pushController(RouterTransaction.with(SegmentController(segments)))
+    }
 }

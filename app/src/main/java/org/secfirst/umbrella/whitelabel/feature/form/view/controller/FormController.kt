@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.form_progress.*
 import kotlinx.android.synthetic.main.form_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.ActiveForm
-import org.secfirst.umbrella.whitelabel.data.Answer
+import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.disk.Answer
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.form.DaggerFormComponent
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor

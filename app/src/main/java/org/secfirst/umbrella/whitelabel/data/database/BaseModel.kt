@@ -1,10 +1,12 @@
 package org.secfirst.umbrella.whitelabel.data.database
 
 import com.raizlabs.android.dbflow.rx2.structure.BaseRXModel
-import org.secfirst.umbrella.whitelabel.data.*
 import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
+import org.secfirst.umbrella.whitelabel.data.disk.Checklist
+import org.secfirst.umbrella.whitelabel.data.disk.Form
+import org.secfirst.umbrella.whitelabel.data.disk.Markdown
 
 open class BaseModel : BaseRXModel() {
     fun associateForeignKey(category: Category) {
@@ -23,6 +25,8 @@ open class BaseModel : BaseRXModel() {
             }
         }
     }
+
+
 
     private inline fun <reified T> associateChecklist(checklists: MutableList<Checklist>, foreignKey: T) {
         checklists.forEach { checklist ->

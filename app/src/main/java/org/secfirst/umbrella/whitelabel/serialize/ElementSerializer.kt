@@ -2,8 +2,8 @@ package org.secfirst.umbrella.whitelabel.serialize
 
 import android.util.Log
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.Element
-import org.secfirst.umbrella.whitelabel.data.Root
+import org.secfirst.umbrella.whitelabel.data.disk.Element
+import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext

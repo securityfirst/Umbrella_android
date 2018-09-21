@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.tour.interactor
 
-import org.secfirst.umbrella.whitelabel.data.Root
+import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface TourBaseInteractor : BaseInteractor {

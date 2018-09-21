@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.data
+package org.secfirst.umbrella.whitelabel.data.disk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -78,15 +78,22 @@ data class Markdown(
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
         var child: Child? = null,
+        var text: String = "",
+        var title: String = "",
+        var index: String = "") : BaseModel() {
 
-
-        var text: String = "") : BaseModel() {
-    constructor(text: String) : this(0, null, null, null, text)
+    constructor(text: String) : this(0,
+            null,
+            null,
+            null, text, recoveryTitle(text), recoveryIndex(text))
 
     companion object {
-        const val TAG_INDEX = "index: "
-        const val TAG_TITLE = "title: "
+        private const val TAG_INDEX = "index: "
+        private const val TAG_TITLE = "title: "
+        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfter(TAG_TITLE)
+        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfter(TAG_INDEX)
     }
+
 }
 
 @Table(database = AppDatabase::class)
@@ -131,7 +138,6 @@ data class Checklist(
         return content
     }
 }
-
 
 @Table(database = AppDatabase::class)
 class Content(

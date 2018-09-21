@@ -1,8 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.form
 
-import org.secfirst.umbrella.whitelabel.data.Answer
-import org.secfirst.umbrella.whitelabel.data.Item
-import org.secfirst.umbrella.whitelabel.data.Option
+import org.secfirst.umbrella.whitelabel.data.disk.Answer
+import org.secfirst.umbrella.whitelabel.data.disk.Item
+import org.secfirst.umbrella.whitelabel.data.disk.Option
 
 enum class FieldType(val value: String) {
     TEXT_INPUT("text_input"),

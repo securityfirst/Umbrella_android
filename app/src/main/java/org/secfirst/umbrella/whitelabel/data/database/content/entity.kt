@@ -2,15 +2,17 @@ package org.secfirst.umbrella.whitelabel.data.database.content
 
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import org.secfirst.umbrella.whitelabel.data.Checklist
-import org.secfirst.umbrella.whitelabel.data.Checklist_Table
-import org.secfirst.umbrella.whitelabel.data.Markdown
-import org.secfirst.umbrella.whitelabel.data.Markdown_Table
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
+import org.secfirst.umbrella.whitelabel.data.disk.Checklist
+import org.secfirst.umbrella.whitelabel.data.disk.Checklist_Table
+import org.secfirst.umbrella.whitelabel.data.disk.Markdown
+import org.secfirst.umbrella.whitelabel.data.disk.Markdown_Table
 
 
 class ContentData(val categories: MutableList<Category> = arrayListOf())
+
+
 @Table(database = AppDatabase::class)
 data class Category(
         @PrimaryKey(autoincrement = true)
@@ -128,7 +130,6 @@ data class Subcategory(
 
 }
 
-
 @Table(database = AppDatabase::class)
 data class Child(
         @PrimaryKey(autoincrement = true)
@@ -157,7 +158,7 @@ data class Child(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.category_id.eq(id))
+                    .where(Markdown_Table.child_id.eq(id))
                     .queryList()
         }
         return markdowns
@@ -168,7 +169,7 @@ data class Child(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.category_id.eq(id))
+                    .where(Checklist_Table.child_id.eq(id))
                     .queryList()
         }
         return checklist

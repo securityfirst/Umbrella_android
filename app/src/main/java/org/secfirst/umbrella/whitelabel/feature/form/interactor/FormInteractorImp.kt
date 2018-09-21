@@ -1,8 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.form.interactor
 
-import org.secfirst.umbrella.whitelabel.data.ActiveForm
-import org.secfirst.umbrella.whitelabel.data.Answer
-import org.secfirst.umbrella.whitelabel.data.Screen
+import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.disk.Answer
+import org.secfirst.umbrella.whitelabel.data.disk.Screen
 import org.secfirst.umbrella.whitelabel.data.database.form.FormRepo
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import javax.inject.Inject
