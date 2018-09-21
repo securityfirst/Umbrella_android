@@ -1,18 +1,18 @@
 package org.secfirst.umbrella.whitelabel.data.database.content
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
-import org.secfirst.umbrella.whitelabel.data.disk.*
 
 
 class ContentData(val categories: MutableList<Category> = arrayListOf())
 
 
 @Table(database = AppDatabase::class)
-data class Category(
+open class Category(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
         @Column
@@ -30,6 +30,7 @@ data class Category(
         var path: String = "",
         var icon: String = "",
         @Column
+        @JsonIgnore
         var resourcePath: String = "") : BaseModel() {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
@@ -188,21 +189,15 @@ data class Markdown(
         var id: Long = 0,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var category: Category? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var subcategory: Subcategory? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var child: Child? = null,
         var text: String = "",
         var title: String = "",

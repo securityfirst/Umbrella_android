@@ -36,7 +36,8 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 if (topicPreferred != null)
                     topicPreferred.subcategorySelected?.let { subcategory ->
                         topicPreferred.childSelected?.let { child ->
-                            getView()?.showDeferredSegment(child.markdowns.toSegment(subcategory.id, subcategory.title))
+                            val toolbarTitle = "${subcategory.title} ${child.title}"
+                            getView()?.showDeferredSegment(child.markdowns.toSegment(subcategory.id, toolbarTitle))
                         }
                     }
                 else {

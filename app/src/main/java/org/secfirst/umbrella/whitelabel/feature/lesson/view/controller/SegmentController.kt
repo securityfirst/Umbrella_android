@@ -45,7 +45,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
     @Suppress("UNCHECKED_CAST")
     private fun setUpToolbar() {
         val segmentList = segments as Array<Segment>
-        segmentToolbar?.let { it.title = "${segmentList.last().title} $segmentList.last().titleToolbar" }
+        segmentToolbar?.let { it.title = segmentList.last().toolbarTitle }
     }
 
     override fun onInject() {

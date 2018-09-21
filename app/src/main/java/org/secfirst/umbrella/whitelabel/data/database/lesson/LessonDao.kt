@@ -5,7 +5,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.content.*
 import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface LessonDao {
@@ -15,6 +14,7 @@ interface LessonDao {
             modelAdapter<TopicPreferred>().insert(topicPreferred)
         }
     }
+
     suspend fun getAllCategory(): List<Category> = withContext(ioContext) {
         SQLite.select()
                 .from(Category::class.java)

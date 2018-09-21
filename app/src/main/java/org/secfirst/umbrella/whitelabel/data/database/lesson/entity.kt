@@ -10,11 +10,11 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.ADVANCED_COLOR
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.BEGINNER_COLOR
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.EXPERT_COLOR
-import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
 @Parcelize
 data class Difficult(val title: String,
@@ -43,7 +43,7 @@ data class Lesson(var subject: String = "",
 @Parcelize
 data class Segment(var title: String,
                    var index: String,
-                   var titleToolbar: String,
+                   var toolbarTitle: String,
                    var idReference: Long) : Parcelable
 
 
