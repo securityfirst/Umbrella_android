@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.misc
 
 import org.jsoup.Jsoup
-import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
 import java.text.DateFormat

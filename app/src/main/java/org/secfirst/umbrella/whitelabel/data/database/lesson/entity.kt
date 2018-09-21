@@ -14,7 +14,7 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.ADVANCED_COLOR
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.BEGINNER_COLOR
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.EXPERT_COLOR
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
 @Parcelize
 data class Difficult(val title: String,

@@ -7,7 +7,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
 import kotlinx.android.synthetic.main.active_form_item_view.view.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
 import org.secfirst.umbrella.whitelabel.misc.HeaderViewHolder
 
 

@@ -3,7 +3,7 @@ package org.secfirst.umbrella.whitelabel.data.database.lesson
 import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
 interface LessonRepo {
 

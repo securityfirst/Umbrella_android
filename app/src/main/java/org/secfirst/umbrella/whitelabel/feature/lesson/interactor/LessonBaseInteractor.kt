@@ -4,7 +4,7 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface LessonBaseInteractor : BaseInteractor {

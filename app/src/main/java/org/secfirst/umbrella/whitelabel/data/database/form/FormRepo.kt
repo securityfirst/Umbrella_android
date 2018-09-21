@@ -1,10 +1,5 @@
 package org.secfirst.umbrella.whitelabel.data.database.form
 
-import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
-import org.secfirst.umbrella.whitelabel.data.disk.Answer
-import org.secfirst.umbrella.whitelabel.data.disk.Form
-import org.secfirst.umbrella.whitelabel.data.disk.Screen
-
 interface FormRepo {
 
     suspend fun removeActiveForm(activeForm: ActiveForm)

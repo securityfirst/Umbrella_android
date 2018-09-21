@@ -4,7 +4,6 @@ import android.util.Log
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.*
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 

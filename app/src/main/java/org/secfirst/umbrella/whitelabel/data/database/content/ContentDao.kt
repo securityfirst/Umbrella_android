@@ -2,7 +2,8 @@ package org.secfirst.umbrella.whitelabel.data.database.content
 
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.form.Item
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 
@@ -10,7 +11,7 @@ interface ContentDao {
 
     suspend fun insertAllLessons(root: Root) {
         withContext(AppExecutors.ioContext) {
-            val dataLesson = root.convertRootTo()
+            val dataLesson = root.convertTo()
 
             dataLesson.categories.forEach { category ->
                 category.associateForeignKey(category)

@@ -1,8 +1,5 @@
 package org.secfirst.umbrella.whitelabel.data.database.form
 
-import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
-import org.secfirst.umbrella.whitelabel.data.disk.Answer
-import org.secfirst.umbrella.whitelabel.data.disk.Screen
 import javax.inject.Inject
 
 class FormRepository @Inject constructor(private val formDao: FormDao) : FormRepo {

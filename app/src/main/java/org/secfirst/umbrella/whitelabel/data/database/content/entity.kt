@@ -1,13 +1,11 @@
 package org.secfirst.umbrella.whitelabel.data.database.content
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
-import org.secfirst.umbrella.whitelabel.data.disk.Checklist
-import org.secfirst.umbrella.whitelabel.data.disk.Checklist_Table
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown_Table
+import org.secfirst.umbrella.whitelabel.data.disk.*
 
 
 class ContentData(val categories: MutableList<Category> = arrayListOf())
@@ -183,3 +181,100 @@ inline fun MutableList<Category>.walkChild(action: (Child) -> Unit) {
         }
     }
 }
+
+@Table(database = AppDatabase::class, allFields = true)
+data class Markdown(
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
+
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        var category: Category? = null,
+
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        var subcategory: Subcategory? = null,
+
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        var child: Child? = null,
+        var text: String = "",
+        var title: String = "",
+        var index: String = "") : BaseModel() {
+
+    constructor(text: String) : this(0,
+            null,
+            null,
+            null, text, recoveryTitle(text), recoveryIndex(text))
+
+    companion object {
+        private const val TAG_INDEX = "index: "
+        private const val TAG_TITLE = "title: "
+        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfter(TAG_TITLE)
+        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfter(TAG_INDEX)
+    }
+
+}
+
+@Table(database = AppDatabase::class)
+data class Checklist(
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
+
+        @Column
+        var index: Int = 0,
+
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        var category: Category? = null,
+
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        var subcategory: Subcategory? = null,
+
+
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        var child: Child? = null,
+
+        @JsonProperty("list")
+        var content: MutableList<Content> = arrayListOf()) : BaseModel() {
+
+
+    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "content")
+    fun oneToManyContent(): MutableList<Content> {
+        if (content.isEmpty()) {
+            content = SQLite.select()
+                    .from(Content::class.java)
+                    .where(Content_Table.checklist_id.eq(id))
+                    .queryList()
+        }
+        return content
+    }
+}
+
+@Table(database = AppDatabase::class)
+class Content(
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
+        @Column
+        var check: String = "",
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
+        var checklist: Checklist? = null,
+        @Column
+        var label: String = "") : BaseModel()

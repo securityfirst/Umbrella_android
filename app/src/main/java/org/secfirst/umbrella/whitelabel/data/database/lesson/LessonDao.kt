@@ -4,7 +4,7 @@ import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.content.*
-import org.secfirst.umbrella.whitelabel.data.disk.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Markdown_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 

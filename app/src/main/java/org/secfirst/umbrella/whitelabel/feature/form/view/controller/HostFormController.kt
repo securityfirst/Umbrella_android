@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.host_form_view.*
 import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.disk.ActiveForm
-import org.secfirst.umbrella.whitelabel.data.disk.Form
+import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.form.DaggerFormComponent
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor

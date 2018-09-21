@@ -1,46 +1,11 @@
 package org.secfirst.umbrella.whitelabel.data.disk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonProperty
-import com.raizlabs.android.dbflow.annotation.*
-import com.raizlabs.android.dbflow.sql.language.SQLite
-import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.BaseModel
-import org.secfirst.umbrella.whitelabel.data.database.content.Category
-import org.secfirst.umbrella.whitelabel.data.database.content.Child
-import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
-import java.io.Serializable
+import org.secfirst.umbrella.whitelabel.data.database.content.*
+import org.secfirst.umbrella.whitelabel.data.database.form.Form
 
 
-class Root(val elements: MutableList<Element> = arrayListOf(), val forms: MutableList<Form> = arrayListOf()) {
-
-    fun convertRootTo(): ContentData {
-        val categories: MutableList<Category> = mutableListOf()
-        var subCategories: MutableList<Subcategory> = mutableListOf()
-        var children: MutableList<Child> = mutableListOf()
-
-        this.elements.forEach { element ->
-            val category = element.convertToCategory
-            categories.add(category)
-            element.children.forEach { subElement ->
-
-                val subCategory = subElement.convertToSubCategory
-                subCategories.add(subCategory)
-                subElement.children.forEach { subElementChild ->
-
-                    val child = subElementChild.convertToChild
-                    children.add(child)
-                }
-                subCategory.children = children
-                children = mutableListOf()
-            }
-            category.subcategories = subCategories
-            subCategories = mutableListOf()
-        }
-        return ContentData(categories)
-    }
-}
+class Root(val elements: MutableList<Element> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())
 
 data class Element(
         var id: Long = 0,
@@ -56,238 +21,6 @@ data class Element(
         @JsonIgnore
         var resourcePath: String = "")
 
-@Table(database = AppDatabase::class, allFields = true)
-data class Markdown(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        var category: Category? = null,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        var subcategory: Subcategory? = null,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        var child: Child? = null,
-        var text: String = "",
-        var title: String = "",
-        var index: String = "") : BaseModel() {
-
-    constructor(text: String) : this(0,
-            null,
-            null,
-            null, text, recoveryTitle(text), recoveryIndex(text))
-
-    companion object {
-        private const val TAG_INDEX = "index: "
-        private const val TAG_TITLE = "title: "
-        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfter(TAG_TITLE)
-        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfter(TAG_INDEX)
-    }
-
-}
-
-@Table(database = AppDatabase::class)
-data class Checklist(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-
-        @Column
-        var index: Int = 0,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        var category: Category? = null,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        var subcategory: Subcategory? = null,
-
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        var child: Child? = null,
-
-        @JsonProperty("list")
-        var content: MutableList<Content> = arrayListOf()) : BaseModel() {
-
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "content")
-    fun oneToManyContent(): MutableList<Content> {
-        if (content.isEmpty()) {
-            content = SQLite.select()
-                    .from(Content::class.java)
-                    .where(Content_Table.checklist_id.eq(id))
-                    .queryList()
-        }
-        return content
-    }
-}
-
-@Table(database = AppDatabase::class)
-class Content(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var check: String = "",
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
-        var checklist: Checklist? = null,
-        @Column
-        var label: String = "") : BaseModel()
-
-
-@Table(database = AppDatabase::class, useBooleanGetterSetters = false)
-data class Form(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var title: String = "",
-        var screens: MutableList<Screen> = arrayListOf()) : BaseModel(), Serializable {
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "screens")
-    fun oneToManyScreens(): MutableList<Screen> {
-        if (screens.isEmpty()) {
-            screens = SQLite.select()
-                    .from(Screen::class.java)
-                    .where(Screen_Table.form_id.eq(id))
-                    .queryList()
-        }
-        return screens
-    }
-}
-
-@Table(database = AppDatabase::class)
-data class Screen(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var title: String = "",
-        @JsonIgnore
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                deleteForeignKeyModel = false,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "form_id")
-        var form: Form? = null,
-        var items: MutableList<Item> = arrayListOf()) : BaseModel(), Serializable {
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "items")
-    fun oneToManyItems(): MutableList<Item> {
-        if (items.isEmpty()) {
-            items = SQLite.select()
-                    .from(Item::class.java)
-                    .where(Item_Table.screen_id.eq(id))
-                    .queryList()
-        }
-        return items
-    }
-}
-
-@Table(database = AppDatabase::class)
-data class Item(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var name: String = "",
-        @Column
-        var type: String = "",
-        @Column
-        var label: String = "",
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                deleteForeignKeyModel = false,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "screen_id")
-        var screen: Screen? = null,
-        var options: MutableList<Option> = arrayListOf(),
-        @Column
-        var value: String = "",
-        @Column
-        var hint: String = "") : BaseModel(), Serializable {
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "options")
-    fun oneToManyOptions(): MutableList<Option> {
-        if (options.isEmpty()) {
-            options = SQLite.select()
-                    .from(Option::class.java)
-                    .where(Option_Table.item_id.eq(id))
-                    .queryList()
-        }
-        return options
-    }
-}
-
-@Table(database = AppDatabase::class, allFields = false)
-data class Option(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var label: String = "",
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                deleteForeignKeyModel = false,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "item_id")
-        var item: Item? = null,
-        @Column
-        var value: String = "") : BaseModel(), Serializable
-
-@Table(database = AppDatabase::class, useBooleanGetterSetters = false)
-data class Answer(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var textInput: String = "",
-        @Column
-        var choiceInput: Boolean = false,
-        @Column
-        var itemId: Long = 0,
-        @Column
-        var optionId: Long = 0,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                deleteForeignKeyModel = false,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "active_form_id")
-        var activeForm: ActiveForm? = null) : Serializable
-
-@Table(database = AppDatabase::class)
-data class ActiveForm(@PrimaryKey
-                      var id: Long = 0,
-                      var form: Form = Form(),
-                      @Column(name = "form_model_id")
-                      var referenceId: Long = 0,
-                      @Column
-                      var date: String = "",
-                      @Column
-                      var title: String = "",
-                      var answers: MutableList<Answer> = arrayListOf()) : BaseModel(), Serializable {
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "answers")
-    fun oneToManyAnswers(): MutableList<Answer> {
-        if (answers.isEmpty()) {
-            answers = SQLite.select()
-                    .from(Answer::class.java)
-                    .where(Answer_Table.activeForm_id.eq(id))
-                    .queryList()
-        }
-        return answers
-    }
-}
 
 val Element.convertToCategory: Category
     get() {
@@ -341,5 +74,31 @@ inline fun MutableList<Element>.walkChild(action: (Element) -> Unit) {
             subElement.children.forEach(action)
         }
     }
+}
+
+fun Root.convertTo(): ContentData {
+    val categories: MutableList<Category> = mutableListOf()
+    var subCategories: MutableList<Subcategory> = mutableListOf()
+    var children: MutableList<Child> = mutableListOf()
+
+    this.elements.forEach { element ->
+        val category = element.convertToCategory
+        categories.add(category)
+        element.children.forEach { subElement ->
+
+            val subCategory = subElement.convertToSubCategory
+            subCategories.add(subCategory)
+            subElement.children.forEach { subElementChild ->
+
+                val child = subElementChild.convertToChild
+                children.add(child)
+            }
+            subCategory.children = children
+            children = mutableListOf()
+        }
+        category.subcategories = subCategories
+        subCategories = mutableListOf()
+    }
+    return ContentData(categories)
 }
 

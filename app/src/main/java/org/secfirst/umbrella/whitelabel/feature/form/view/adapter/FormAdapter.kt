@@ -9,7 +9,7 @@ import com.stepstone.stepper.adapter.AbstractStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
 import org.jetbrains.anko.AnkoContext
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.disk.Form
+import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormUI
 import org.secfirst.umbrella.whitelabel.feature.form.view.controller.FormController
 
