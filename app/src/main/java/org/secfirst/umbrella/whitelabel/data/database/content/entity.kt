@@ -8,7 +8,7 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 
 
-class ContentData(val categories: MutableList<Category> = arrayListOf())
+class ContentData(val categories: MutableList<Category> = mutableListOf())
 
 
 @Table(database = AppDatabase::class)
@@ -211,8 +211,9 @@ data class Markdown(
     companion object {
         private const val TAG_INDEX = "index: "
         private const val TAG_TITLE = "title: "
-        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfter(TAG_TITLE)
-        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfter(TAG_INDEX)
+
+        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
+        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
     }
 
 }

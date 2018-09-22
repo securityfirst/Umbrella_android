@@ -24,7 +24,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val segments by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
     private val segmentClick: (Segment) -> Unit = this::onSegmentClicked
-    private val adapter = SegmentAdapter(segmentClick)
 
 
     constructor(segments: List<Segment>) : this(Bundle().apply {
@@ -67,10 +66,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
     fun showAllSegments() {
         val mGridLayoutManager = GridLayoutManager(context, 2)
         val segmentsList = segments as Array<Segment>
-        adapter.addAll(segmentsList.toList())
+        val segmentAdapter = SegmentAdapter(segmentClick, segmentsList.toMutableList())
         segmentRecyclerView?.let {
             it.layoutManager = mGridLayoutManager
-            it.adapter = adapter
+            it.adapter = segmentAdapter
         }
     }
 }

@@ -42,8 +42,10 @@ data class Lesson(var subject: String = "",
 
 @Parcelize
 data class Segment(var title: String,
-                   var index: String,
+                   var indexItem: String,
+                   var indexDifficult: Int,
                    var toolbarTitle: String,
+                   var colorItem: String,
                    var idReference: Long) : Parcelable
 
 
@@ -73,10 +75,16 @@ fun Subcategory.toDifficult(): MutableList<Difficult> {
     return difficulties
 }
 
-fun MutableList<Markdown>.toSegment(subcategoryId: Long, titleToolbar: String): MutableList<Segment> {
+fun MutableList<Markdown>.toSegment(subcategoryId: Long, titleToolbar: String, difficultIndex: Int): MutableList<Segment> {
     val segments = mutableListOf<Segment>()
     this.forEach { markdown ->
-        segments.add(Segment(markdown.title, markdown.index, titleToolbar, subcategoryId))
+        when (difficultIndex) {
+            Difficult.BEGINNER -> segments.add(Segment(markdown.title, markdown.index, difficultIndex, titleToolbar, BEGINNER_COLOR, subcategoryId))
+            Difficult.ADVANCED -> segments.add(Segment(markdown.title, markdown.index, difficultIndex, titleToolbar, ADVANCED_COLOR, subcategoryId))
+            else -> {
+                segments.add(Segment(markdown.title, markdown.index, difficultIndex, titleToolbar, EXPERT_COLOR, subcategoryId))
+            }
+        }
     }
     return segments
 }

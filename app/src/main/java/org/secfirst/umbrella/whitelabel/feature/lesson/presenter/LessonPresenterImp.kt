@@ -21,7 +21,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 it.fetchChildBy(idReference)?.let { child ->
                     val subcategorySelected = it.fetchSubcategoryBy(idReference)
                     it.insertTopicPreferred(TopicPreferred(subcategorySelected, child))
-                    getView()?.showDeferredSegment(child.markdowns.toSegment(idReference, subcategorySelected.title))
+                    getView()?.showDeferredSegment(child.markdowns.toSegment(idReference, subcategorySelected.title, child.index))
                 }
             }
         }
@@ -37,7 +37,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                     topicPreferred.subcategorySelected?.let { subcategory ->
                         topicPreferred.childSelected?.let { child ->
                             val toolbarTitle = "${subcategory.title} ${child.title}"
-                            getView()?.showDeferredSegment(child.markdowns.toSegment(subcategory.id, toolbarTitle))
+                            getView()?.showDeferredSegment(child.markdowns.toSegment(subcategory.id, toolbarTitle, child.index))
                         }
                     }
                 else {
