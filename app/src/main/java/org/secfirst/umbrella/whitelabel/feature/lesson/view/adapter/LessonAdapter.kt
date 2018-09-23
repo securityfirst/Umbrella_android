@@ -15,9 +15,9 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import java.io.File
 
 
-class LessonMenuAdapter(groups: List<ExpandableGroup<*>>,
-                        private val onclickLesson: (Lesson.Topic) -> Unit)
-    : ExpandableRecyclerViewAdapter<LessonMenuAdapter.HeadHolder, LessonMenuAdapter.LessonMenuHolder>(groups) {
+class LessonAdapter(groups: List<ExpandableGroup<*>>,
+                    private val onclickLesson: (Lesson.Topic) -> Unit)
+    : ExpandableRecyclerViewAdapter<LessonAdapter.HeadHolder, LessonAdapter.LessonMenuHolder>(groups) {
 
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): HeadHolder {

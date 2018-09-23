@@ -17,15 +17,15 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.LessonMenuAdapter
+import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.LessonAdapter
 import javax.inject.Inject
 
-class LessonMenuController : BaseController(), LessonView {
+class LessonController : BaseController(), LessonView {
 
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val lessonClick: (Lesson.Topic) -> Unit = this::onLessonClicked
-    private lateinit var lessonAdapter: LessonMenuAdapter
+    private lateinit var lessonAdapter: LessonAdapter
 
     override fun onInject() {
         DaggerLessonComponent.builder()
@@ -35,7 +35,7 @@ class LessonMenuController : BaseController(), LessonView {
     }
 
     private fun onLessonClicked(topic: Lesson.Topic) {
-        presenter.submitSelecteLesson(topic.idReference)
+        presenter.submitSelectLesson(topic.idReference)
 
     }
 
@@ -52,7 +52,7 @@ class LessonMenuController : BaseController(), LessonView {
 
 
     override fun showAllLesson(lessons: List<Lesson>) {
-        lessonAdapter = LessonMenuAdapter(lessons, lessonClick)
+        lessonAdapter = LessonAdapter(lessons, lessonClick)
         lessonMenu?.adapter = lessonAdapter
     }
 
@@ -60,8 +60,8 @@ class LessonMenuController : BaseController(), LessonView {
         router.pushController(RouterTransaction.with(DifficultController(difficulties)))
     }
 
-    override fun showDeferredSegment(segments: List<Segment>) {
-        router.pushController(RouterTransaction.with(SegmentController(segments)))
+    override fun showDeferredSegment(segment: Segment) {
+        router.pushController(RouterTransaction.with(SegmentController(segment)))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

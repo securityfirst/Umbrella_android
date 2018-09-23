@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.view
 
+
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
@@ -9,9 +10,9 @@ interface LessonView : BaseView {
 
     fun showAllLesson(lessons: List<Lesson>) {}
 
-    fun showDeferredDifficult(difficulties: List<Difficult>) {}
+    fun showDifficultLevel(segmentList: ArrayList<Segment>) {}
 
-    fun showDeferredSegment(segments: List<Segment>) {}
+    fun showDeferredSegment(segment: Segment) {}
 
     fun showDifficulties(difficulties: List<Difficult>) {}
 

@@ -10,7 +10,20 @@ import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
 
-class SegmentAdapter(private val onClickSegment: (Segment) -> Unit, private val segments: MutableList<Segment>) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
+class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit,
+                     private val segments: MutableList<Segment.Item>) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
+
+
+    private fun clean() {
+        segments.clear()
+        notifyDataSetChanged()
+    }
+
+    fun add(segmentsItem: List<Segment.Item>) {
+        this.segments.clear()
+        segmentsItem.forEach { this.segments.add(it) }
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SegmentHolder {
         val view = LayoutInflater.from(parent.context)
@@ -25,11 +38,10 @@ class SegmentAdapter(private val onClickSegment: (Segment) -> Unit, private val 
 
     override fun getItemCount() = segments.size
 
-
     class SegmentHolder(itemView: View, var size: Int) : RecyclerView.ViewHolder(itemView) {
         val colours = intArrayOf(R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow)
 
-        fun bind(segment: Segment, clickListener: (SegmentHolder) -> Unit) {
+        fun bind(segment: Segment.Item, clickListener: (SegmentHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
             with(segment) {
                 itemView.segmentIndex.text = adapterPosition.toString()

@@ -76,7 +76,7 @@ class DifficultController(bundle: Bundle) : BaseController(bundle), LessonView {
 
     override fun getEnableBackAction() = true
 
-    override fun showDeferredSegment(segments: List<Segment>) {
-        router.pushController(RouterTransaction.with(SegmentController(segments)))
+    override fun showDeferredSegment(segment: Segment) {
+        router.pushController(RouterTransaction.with(SegmentController(segment)))
     }
 }

@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -14,38 +15,24 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
+import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.DifficultLevelAdapter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.SegmentAdapter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.DifficultController.Companion.EXTRA_SELECTED_SEGMENT
 import javax.inject.Inject
 
 
 class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
+
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
-    private val segments by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
-    private val segmentClick: (Segment) -> Unit = this::onSegmentClicked
+    private val currentSegment by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT) as Segment }
+    private val segmentClick: (Segment.Item) -> Unit = this::onSegmentClicked
+    private lateinit var segments: ArrayList<Segment>
+    private val segmentAdapter = SegmentAdapter(segmentClick, currentSegment.items.toMutableList())
 
-
-    constructor(segments: List<Segment>) : this(Bundle().apply {
-        putParcelableArray(EXTRA_SELECTED_SEGMENT, segments.toTypedArray())
+    constructor(segment: Segment) : this(Bundle().apply {
+        putParcelable(EXTRA_SELECTED_SEGMENT, segment)
     })
-
-    private fun onSegmentClicked(segment: Segment) {
-
-    }
-
-    override fun onAttach(view: View) {
-        super.onAttach(view)
-        presenter.onAttach(this)
-        setUpToolbar()
-        showAllSegments()
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun setUpToolbar() {
-        val segmentList = segments as Array<Segment>
-        segmentToolbar?.let { it.title = segmentList.last().toolbarTitle }
-    }
 
     override fun onInject() {
         DaggerLessonComponent.builder()
@@ -54,22 +41,47 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
                 .inject(this)
     }
 
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
+    override fun onAttach(view: View) {
+        super.onAttach(view)
+        presenter.onAttach(this)
+        showAllSegments()
+        presenter.submitLoadLessonInSegment(currentSegment.idReference)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    fun showAllSegments() {
+
+    override fun getEnableBackAction() = false
+
+    override fun getToolbarTitle() = ""
+
+    private fun onSegmentClicked(segment: Segment.Item) {
+
+    }
+
+    override fun showDifficultLevel(segmentList: ArrayList<Segment>) {
+        segments = segmentList
+        segmentSpinner?.let {
+            it.adapter = DifficultLevelAdapter(context, android.R.layout.simple_dropdown_item_1line, segments)
+            it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    segmentAdapter.add(segments[position].items)
+                }
+            }
+        }
+    }
+
+    private fun showAllSegments() {
         val mGridLayoutManager = GridLayoutManager(context, 2)
-        val segmentsList = segments as Array<Segment>
-        val segmentAdapter = SegmentAdapter(segmentClick, segmentsList.toMutableList())
         segmentRecyclerView?.let {
             it.layoutManager = mGridLayoutManager
             it.adapter = segmentAdapter
         }
     }
+
 }

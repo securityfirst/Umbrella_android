@@ -12,9 +12,9 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.ADVANCED_COLOR
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.BEGINNER_COLOR
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.EXPERT_COLOR
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_ADVANCED
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_BEGINNER
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_EXPERT
 
 @Parcelize
 data class Difficult(val title: String,
@@ -27,9 +27,9 @@ data class Difficult(val title: String,
         const val BEGINNER = 1
         const val ADVANCED = 2
         const val EXPERT = 3
-        const val BEGINNER_COLOR = "#87BD34"
-        const val ADVANCED_COLOR = "#F3BC2B"
-        const val EXPERT_COLOR = "#B83657"
+        const val COLOR_BEGINNER = "#87BD34"
+        const val COLOR_ADVANCED = "#F3BC2B"
+        const val COLOR_EXPERT = "#B83657"
     }
 }
 
@@ -41,12 +41,12 @@ data class Lesson(var subject: String = "",
 }
 
 @Parcelize
-data class Segment(var title: String,
-                   var indexItem: String,
-                   var indexDifficult: Int,
-                   var toolbarTitle: String,
-                   var colorItem: String,
-                   var idReference: Long) : Parcelable
+data class Segment(var toolbarTitle: String,
+                   var idReference: Long,
+                   var items: List<Item> = listOf()) : Parcelable {
+    @Parcelize
+    data class Item(var indexItem: String, var title: String) : Parcelable
+}
 
 
 @Table(database = AppDatabase::class)
@@ -64,29 +64,23 @@ fun Subcategory.toDifficult(): MutableList<Difficult> {
     val subcategorySorted = this.children.sortedWith(compareBy { it.index })
     subcategorySorted.forEach { child ->
         when (child.index) {
-            Difficult.BEGINNER -> difficulties.add(Difficult(child.title, child.description, this.id, BEGINNER_COLOR, this.title))
-            Difficult.ADVANCED -> difficulties.add(Difficult(child.title, child.description, this.id, ADVANCED_COLOR, this.title))
-            Difficult.EXPERT -> difficulties.add(Difficult(child.title, child.description, this.id, EXPERT_COLOR, this.title))
+            Difficult.BEGINNER -> difficulties.add(Difficult(child.title, child.description, this.id, COLOR_BEGINNER, this.title))
+            Difficult.ADVANCED -> difficulties.add(Difficult(child.title, child.description, this.id, COLOR_ADVANCED, this.title))
+            Difficult.EXPERT -> difficulties.add(Difficult(child.title, child.description, this.id, COLOR_EXPERT, this.title))
             else -> {
-                difficulties.add(Difficult(child.title, child.description, this.id, EXPERT_COLOR, this.title))
+                difficulties.add(Difficult(child.title, child.description, this.id, COLOR_EXPERT, this.title))
             }
         }
     }
     return difficulties
 }
 
-fun MutableList<Markdown>.toSegment(subcategoryId: Long, titleToolbar: String, difficultIndex: Int): MutableList<Segment> {
-    val segments = mutableListOf<Segment>()
+fun MutableList<Markdown>.toSegment(subcategoryId: Long, title: String): Segment {
+    val items = mutableListOf<Segment.Item>()
     this.forEach { markdown ->
-        when (difficultIndex) {
-            Difficult.BEGINNER -> segments.add(Segment(markdown.title, markdown.index, difficultIndex, titleToolbar, BEGINNER_COLOR, subcategoryId))
-            Difficult.ADVANCED -> segments.add(Segment(markdown.title, markdown.index, difficultIndex, titleToolbar, ADVANCED_COLOR, subcategoryId))
-            else -> {
-                segments.add(Segment(markdown.title, markdown.index, difficultIndex, titleToolbar, EXPERT_COLOR, subcategoryId))
-            }
-        }
+        items.add(Segment.Item(markdown.index, markdown.title))
     }
-    return segments
+    return Segment(title, subcategoryId, items)
 }
 
 fun List<Category>.toLesson(): List<Lesson> {
