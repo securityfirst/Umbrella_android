@@ -13,12 +13,6 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
 class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit,
                      private val segments: MutableList<Segment.Item>) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
 
-
-    private fun clean() {
-        segments.clear()
-        notifyDataSetChanged()
-    }
-
     fun add(segmentsItem: List<Segment.Item>) {
         this.segments.clear()
         segmentsItem.forEach { this.segments.add(it) }

@@ -81,6 +81,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), LessonView {
         segmentRecyclerView?.let {
             it.layoutManager = mGridLayoutManager
             it.adapter = segmentAdapter
+            it.setHasFixedSize(true)
         }
     }
 
