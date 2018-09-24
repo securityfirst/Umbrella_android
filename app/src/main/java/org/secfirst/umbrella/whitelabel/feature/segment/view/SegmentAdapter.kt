@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -8,10 +8,11 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.segment_item.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
+import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 
-class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit,
-                     private val segments: MutableList<Segment.Item>) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
+class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
+
+    private val segments: MutableList<Segment.Item> = mutableListOf()
 
     fun add(segmentsItem: List<Segment.Item>) {
         this.segments.clear()

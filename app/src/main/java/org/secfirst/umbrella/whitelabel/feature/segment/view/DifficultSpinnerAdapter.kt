@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.content.Context
 import android.support.annotation.LayoutRes
@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
+import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 
 
-class DifficultLevelAdapter(context: Context,
-                            @LayoutRes private val layoutResource: Int,
-                            private val displayNames: List<Segment>) :
+class DifficultSpinnerAdapter(context: Context,
+                              @LayoutRes private val layoutResource: Int,
+                              private val displayNames: List<Segment>) :
         ArrayAdapter<Segment>(context, layoutResource, displayNames) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

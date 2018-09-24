@@ -10,7 +10,6 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
-import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_ADVANCED
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_BEGINNER
@@ -40,14 +39,6 @@ data class Lesson(var subject: String = "",
     class Topic(var title: String = "", var idReference: Long = 0) : Parcelable
 }
 
-@Parcelize
-data class Segment(var toolbarTitle: String,
-                   var idReference: Long,
-                   var items: List<Item> = listOf()) : Parcelable {
-    @Parcelize
-    data class Item(var indexItem: String, var title: String) : Parcelable
-}
-
 
 @Table(database = AppDatabase::class)
 data class TopicPreferred(@PrimaryKey(autoincrement = true)
@@ -73,14 +64,6 @@ fun Subcategory.toDifficult(): MutableList<Difficult> {
         }
     }
     return difficulties
-}
-
-fun MutableList<Markdown>.toSegment(subcategoryId: Long, title: String): Segment {
-    val items = mutableListOf<Segment.Item>()
-    this.forEach { markdown ->
-        items.add(Segment.Item(markdown.index, markdown.title))
-    }
-    return Segment(title, subcategoryId, items)
 }
 
 fun List<Category>.toLesson(): List<Lesson> {

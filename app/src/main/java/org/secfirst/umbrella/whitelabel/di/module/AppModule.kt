@@ -20,6 +20,9 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepository
 import org.secfirst.umbrella.whitelabel.data.database.reader.RssDao
 import org.secfirst.umbrella.whitelabel.data.database.reader.RssRepo
 import org.secfirst.umbrella.whitelabel.data.database.reader.RssRepository
+import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentDao
+import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentRepo
+import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentRepository
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.data.disk.TentDao
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
@@ -83,6 +86,9 @@ class RepositoryModule {
     internal val lessonDao
         get() = object : LessonDao {}
 
+    internal val segmentDao
+        get() = object : SegmentDao {}
+
     @Provides
     @Singleton
     internal fun provideLessonDao(): LessonRepo = LessonRepository(lessonDao)
@@ -101,7 +107,11 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    internal fun provideReaderRepo(): RssRepo = RssRepository(rssDao)
+    internal fun provideReaderDao(): RssRepo = RssRepository(rssDao)
+
+    @Provides
+    @Singleton
+    internal fun provideSegmentDao(): SegmentRepo = SegmentRepository(segmentDao)
 }
 
 @Module

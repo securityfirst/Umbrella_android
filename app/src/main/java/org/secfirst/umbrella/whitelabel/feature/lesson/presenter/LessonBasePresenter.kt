@@ -12,6 +12,4 @@ interface LessonBasePresenter<V : LessonView, I : LessonBaseInteractor> : BasePr
     fun submitSelectLesson(idReference: Long)
 
     fun submitSelectDifficult(idReference: Long)
-
-    fun submitLoadLessonInSegment(idReference: Long)
 }

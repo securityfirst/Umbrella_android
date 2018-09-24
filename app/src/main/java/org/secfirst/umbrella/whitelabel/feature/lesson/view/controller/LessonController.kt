@@ -11,13 +11,13 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.LessonAdapter
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import javax.inject.Inject
 
 class LessonController : BaseController(), LessonView {
@@ -60,8 +60,8 @@ class LessonController : BaseController(), LessonView {
         router.pushController(RouterTransaction.with(DifficultController(difficulties)))
     }
 
-    override fun showDeferredSegment(segment: Segment) {
-        router.pushController(RouterTransaction.with(SegmentController(segment)))
+    override fun showDeferredSegment(subcategoryId: Long) {
+        router.pushController(RouterTransaction.with(SegmentController(subcategoryId)))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

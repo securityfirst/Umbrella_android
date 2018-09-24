@@ -1,6 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.*
+import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.lesson.toDifficult
+import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
+import org.secfirst.umbrella.whitelabel.data.database.segment.toSegment
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
@@ -13,28 +16,14 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor = interactor), LessonBasePresenter<V, I> {
 
 
-    override fun submitLoadLessonInSegment(idReference: Long) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                val subcategory = it.fetchSubcategoryBy(idReference)
-                val segments = arrayListOf<Segment>()
-                subcategory.children.forEach { child ->
-                    val spinnerTitle = "${subcategory.title} ${child.title}"
-                    val segment = child.markdowns.toSegment(subcategory.id,spinnerTitle)
-                    segments.add(segment)
-                }
-                getView()?.showDifficultLevel(segments)
-            }
-        }
-    }
-
     override fun submitSelectDifficult(idReference: Long) {
         launchSilent(uiContext) {
             interactor?.let {
                 it.fetchChildBy(idReference)?.let { child ->
                     val subcategorySelected = it.fetchSubcategoryBy(idReference)
                     it.insertTopicPreferred(TopicPreferred(subcategorySelected, child))
-                    getView()?.showDeferredSegment(child.markdowns.toSegment(idReference, subcategorySelected.title))
+                    val segment = child.markdowns.toSegment(idReference, subcategorySelected.title)
+                    getView()?.showDeferredSegment(segment.subcategoryId)
                 }
             }
         }
@@ -50,7 +39,8 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                     topicPreferred.subcategorySelected?.let { subcategory ->
                         topicPreferred.childSelected?.let { child ->
                             val toolbarTitle = "${subcategory.title} ${child.title}"
-                            getView()?.showDeferredSegment(child.markdowns.toSegment(subcategory.id, toolbarTitle))
+                            val segment = child.markdowns.toSegment(subcategory.id, toolbarTitle)
+                            getView()?.showDeferredSegment(segment.subcategoryId)
                         }
                     }
                 else {
