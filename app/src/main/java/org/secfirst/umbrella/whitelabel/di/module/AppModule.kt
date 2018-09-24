@@ -11,6 +11,9 @@ import org.secfirst.umbrella.whitelabel.data.VirtualStorage
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentDao
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentRepo
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentRepository
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyDao
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyRepo
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyRepository
 import org.secfirst.umbrella.whitelabel.data.database.form.FormDao
 import org.secfirst.umbrella.whitelabel.data.database.form.FormRepo
 import org.secfirst.umbrella.whitelabel.data.database.form.FormRepository
@@ -89,6 +92,10 @@ class RepositoryModule {
     internal val segmentDao
         get() = object : SegmentDao {}
 
+
+    internal val difficultyDao
+        get() = object : DifficultyDao {}
+
     @Provides
     @Singleton
     internal fun provideLessonDao(): LessonRepo = LessonRepository(lessonDao)
@@ -112,6 +119,10 @@ class RepositoryModule {
     @Provides
     @Singleton
     internal fun provideSegmentDao(): SegmentRepo = SegmentRepository(segmentDao)
+
+    @Provides
+    @Singleton
+    internal fun provideDifficultyDao(): DifficultyRepo = DifficultyRepository(difficultyDao)
 }
 
 @Module

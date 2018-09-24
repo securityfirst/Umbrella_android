@@ -8,13 +8,8 @@ import javax.inject.Inject
 
 class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo) : BaseInteractorImp(), LessonBaseInteractor {
 
-    override suspend fun insertTopicPreferred(topicPreferred: TopicPreferred) = lessonRepo.saveTopicPreffered(topicPreferred)
 
     override suspend fun fetchTopicPreferredBy(subcategory: Long): TopicPreferred? = lessonRepo.loadTopicPreferredBy(subcategory)
-
-    override suspend fun fetchChildBy(subcategory: Long) = lessonRepo.loadChildBy(subcategory)
-
-    override suspend fun fetchAllMarkdownsBy(subcategory: Long) = lessonRepo.loadAllMarkdowns(subcategory)
 
     override suspend fun fetchSubcategoryBy(categoryId: Long) = lessonRepo.loadSubcategoryBy(categoryId)
 

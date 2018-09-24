@@ -1,15 +1,13 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
-@Parcelize
+
 data class Segment(var toolbarTitle: String,
                    var subcategoryId: Long,
-                   var items: List<Item> = listOf()) : Parcelable {
-    @Parcelize
-    data class Item(var indexItem: String, var title: String) : Parcelable
+                   var items: List<Item> = listOf()) {
+
+    data class Item(var indexItem: String, var title: String)
 }
 
 fun MutableList<Markdown>.toSegment(subcategoryId: Long, title: String): Segment {

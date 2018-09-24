@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.difficulty.view
 
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.difficult_item_view.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficult
 
 class DifficultAdapter(private val onClickDiff: (Difficult) -> Unit) : RecyclerView.Adapter<DifficultAdapter.DifficultHolder>() {
 
@@ -27,7 +27,7 @@ class DifficultAdapter(private val onClickDiff: (Difficult) -> Unit) : RecyclerV
 
     override fun getItemCount() = difficulties.size
 
-    fun addAll(difficulties: Array<Difficult>) {
+    fun addAll(difficulties: List<Difficult>) {
         difficulties.forEach { this.difficulties.add(it) }
         notifyDataSetChanged()
     }

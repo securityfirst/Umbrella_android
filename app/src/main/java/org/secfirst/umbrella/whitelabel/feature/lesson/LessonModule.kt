@@ -13,8 +13,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonInteract
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonPresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.DifficultController
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.controller.LessonController
+import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import javax.inject.Singleton
 
 @Module
@@ -44,6 +43,4 @@ interface LessonComponent {
     }
 
     fun inject(lessonController: LessonController)
-
-    fun inject(difficultController: DifficultController)
 }

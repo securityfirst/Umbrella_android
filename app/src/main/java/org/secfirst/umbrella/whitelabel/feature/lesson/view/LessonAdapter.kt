@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.lesson.view
 
 import android.view.LayoutInflater
 import android.view.View

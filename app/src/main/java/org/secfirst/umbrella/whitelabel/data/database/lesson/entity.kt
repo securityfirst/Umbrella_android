@@ -11,26 +11,6 @@ import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.content.Category
 import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_ADVANCED
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_BEGINNER
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult.Companion.COLOR_EXPERT
-
-@Parcelize
-data class Difficult(val title: String,
-                     val description: String,
-                     val idReference: Long,
-                     val layoutColor: String,
-                     val titleToolbar: String) : Parcelable {
-
-    companion object {
-        const val BEGINNER = 1
-        const val ADVANCED = 2
-        const val EXPERT = 3
-        const val COLOR_BEGINNER = "#87BD34"
-        const val COLOR_ADVANCED = "#F3BC2B"
-        const val COLOR_EXPERT = "#B83657"
-    }
-}
 
 data class Lesson(var subject: String = "",
                   var pathIcon: String = "",
@@ -48,22 +28,6 @@ data class TopicPreferred(@PrimaryKey(autoincrement = true)
                           @ForeignKey(stubbedRelationship = false)
                           var childSelected: Child? = null) : BaseModel() {
     constructor(subcategorySelected: Subcategory, childSelected: Child?) : this(0, subcategorySelected, childSelected)
-}
-
-fun Subcategory.toDifficult(): MutableList<Difficult> {
-    val difficulties = mutableListOf<Difficult>()
-    val subcategorySorted = this.children.sortedWith(compareBy { it.index })
-    subcategorySorted.forEach { child ->
-        when (child.index) {
-            Difficult.BEGINNER -> difficulties.add(Difficult(child.title, child.description, this.id, COLOR_BEGINNER, this.title))
-            Difficult.ADVANCED -> difficulties.add(Difficult(child.title, child.description, this.id, COLOR_ADVANCED, this.title))
-            Difficult.EXPERT -> difficulties.add(Difficult(child.title, child.description, this.id, COLOR_EXPERT, this.title))
-            else -> {
-                difficulties.add(Difficult(child.title, child.description, this.id, COLOR_EXPERT, this.title))
-            }
-        }
-    }
-    return difficulties
 }
 
 fun List<Category>.toLesson(): List<Lesson> {

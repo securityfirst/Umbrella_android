@@ -1,9 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
-import org.secfirst.umbrella.whitelabel.data.database.lesson.toDifficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
-import org.secfirst.umbrella.whitelabel.data.database.segment.toSegment
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
@@ -16,20 +13,6 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor = interactor), LessonBasePresenter<V, I> {
 
 
-    override fun submitSelectDifficult(idReference: Long) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                it.fetchChildBy(idReference)?.let { child ->
-                    val subcategorySelected = it.fetchSubcategoryBy(idReference)
-                    it.insertTopicPreferred(TopicPreferred(subcategorySelected, child))
-                    val segment = child.markdowns.toSegment(idReference, subcategorySelected.title)
-                    getView()?.showDeferredSegment(segment.subcategoryId)
-                }
-            }
-        }
-    }
-
-
     override fun submitSelectLesson(idReference: Long) {
         launchSilent(uiContext) {
             interactor?.let {
@@ -37,17 +20,9 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 val topicPreferred = it.fetchTopicPreferredBy(idReference)
                 if (topicPreferred != null)
                     topicPreferred.subcategorySelected?.let { subcategory ->
-                        topicPreferred.childSelected?.let { child ->
-                            val toolbarTitle = "${subcategory.title} ${child.title}"
-                            val segment = child.markdowns.toSegment(subcategory.id, toolbarTitle)
-                            getView()?.showDeferredSegment(segment.subcategoryId)
-                        }
+                        getView()?.startDeferredSegment(subcategory.id)
                     }
-                else {
-                    val subCategory = it.fetchSubcategoryBy(idReference)
-                    getView()?.showDifficulties(subCategory.toDifficult())
-                }
-
+                else getView()?.startDifficultyController(idReference)
             }
         }
     }

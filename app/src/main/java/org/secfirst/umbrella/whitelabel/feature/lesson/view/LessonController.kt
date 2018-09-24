@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.lesson.view.controller
+package org.secfirst.umbrella.whitelabel.feature.lesson.view
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -9,14 +9,12 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.lesson_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Difficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.adapter.LessonAdapter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import javax.inject.Inject
 
@@ -56,11 +54,11 @@ class LessonController : BaseController(), LessonView {
         lessonMenu?.adapter = lessonAdapter
     }
 
-    override fun showDifficulties(difficulties: List<Difficult>) {
-        router.pushController(RouterTransaction.with(DifficultController(difficulties)))
+    override fun startDifficultyController(categoryId: Long) {
+        router.pushController(RouterTransaction.with(DifficultyController(categoryId)))
     }
 
-    override fun showDeferredSegment(subcategoryId: Long) {
+    override fun startDeferredSegment(subcategoryId: Long) {
         router.pushController(RouterTransaction.with(SegmentController(subcategoryId)))
     }
 
