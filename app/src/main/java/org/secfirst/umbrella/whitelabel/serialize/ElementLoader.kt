@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.serialize
 
+import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.content.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
@@ -8,6 +9,7 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.CHILD_LEV
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.SUB_ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimiter
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import java.io.File
@@ -17,10 +19,12 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
 
     private lateinit var root: Root
 
-    fun load(pRoot: Root): Root {
-        root = pRoot
-        val files = tentRepo.loadFile()
-        create(files)
+    suspend fun load(pRoot: Root): Root {
+        withContext(ioContext) {
+            root = pRoot
+            val files = tentRepo.loadFile()
+            create(files)
+        }
         return pRoot
     }
 
