@@ -1,11 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
@@ -49,6 +45,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
@@ -56,7 +53,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     override fun showSegments(segments: List<Segment>) {
         val segmentAdapter = SegmentAdapter(segmentClick)
         segmentRecyclerView?.initGridView(segmentAdapter)
-        difficultAdapter = DifficultSpinnerAdapter(context,segments)
+        difficultAdapter = DifficultSpinnerAdapter(context, segments)
         segmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -68,6 +65,17 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        return inflater.inflate(R.menu.search_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+
+        }
+        return true
+    }
+
 
     private fun setUpToolbar() {
         segmentToolbar?.let {
@@ -77,7 +85,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
-    private fun onFavoriteClick(){
+    private fun onFavoriteClick() {
         favoriteImg?.let {
 
         }
