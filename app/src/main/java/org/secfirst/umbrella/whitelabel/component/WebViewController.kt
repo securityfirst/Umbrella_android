@@ -36,8 +36,7 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
     override fun onAttach(view: View) {
         super.onAttach(view)
         setUpWebView()
-        enableToolbar()
-        enableArrowBack(true)
+        setUpToolbar()
         disableNavigation()
     }
 
@@ -85,8 +84,16 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
 
     }
 
-    override fun getEnableBackAction() = true
+    private fun setUpToolbar() {
+        webViewToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+    }
 
-    override fun getToolbarTitle() = "Umbrella"
+    override fun getEnableBackAction() = false
+
+    override fun getToolbarTitle() = ""
 
 }
