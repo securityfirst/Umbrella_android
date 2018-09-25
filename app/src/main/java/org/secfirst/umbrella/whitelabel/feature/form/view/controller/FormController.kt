@@ -48,10 +48,10 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     override fun onAttach(view: View) {
         super.onAttach(view)
         disableNavigation()
-        enableArrowBack(true)
         stepperLayout.adapter = FormAdapter(activeForm.form, this, listOfViews)
         stepperLayout.setListener(this)
         presenter.onAttach(this)
+        setUpToolbar()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -164,9 +164,16 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     override fun onReturn() {}
 
 
-    override fun getEnableBackAction() = true
+    override fun getEnableBackAction() = false
 
-    override fun getToolbarTitle() = activeForm.title
+    override fun getToolbarTitle() = ""
 
 
+    private fun setUpToolbar() {
+        formToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.title = activeForm.title
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+    }
 }

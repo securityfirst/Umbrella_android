@@ -52,8 +52,9 @@ class HostFormController : BaseController(), FormView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         enableArrowBack(false)
+        setUpToolbar()
+        hostFormRecycleView.layoutManager = LinearLayoutManager(view.context)
         presenter.onAttach(this)
-        allFormRecycleView.layoutManager = LinearLayoutManager(view.context)
         presenter.submitLoadAllForms()
     }
 
@@ -93,16 +94,12 @@ class HostFormController : BaseController(), FormView {
             activeFormTag = it.getString(R.string.message_title_active_forms)
         }
 
-        allFormRecycleView?.let {
-
+        hostFormRecycleView?.let {
             allFormSection = AllFormSection(editClick, allFormTag, modelForms)
             activeFormSection = ActiveFormSection(editActiveFormClick, deleteClick, shareClick, activeFormTag, activeForms)
-
             sectionAdapter.addSection(allFormSection)
             sectionAdapter.addSection(activeFormSection)
-
             it.adapter = sectionAdapter
-
         }
     }
 
@@ -122,9 +119,14 @@ class HostFormController : BaseController(), FormView {
         }
     }
 
-    override fun getEnableBackAction() = true
+    private fun setUpToolbar() {
+        hostFormToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.title = context.getString(R.string.form_title)
+        }
+    }
 
-    override fun getToolbarTitle() = context.getString(R.string.form_title)
+    override fun getEnableBackAction() = false
 
-
+    override fun getToolbarTitle() = ""
 }
