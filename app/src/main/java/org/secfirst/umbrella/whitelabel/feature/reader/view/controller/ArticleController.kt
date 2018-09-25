@@ -35,7 +35,7 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
     override fun onAttach(view: View) {
         iniRecycle()
         disableNavigation()
-        enableArrowBack(true)
+        setUpToolbar()
         openCardListAdapter()
         super.onAttach(view)
     }
@@ -79,9 +79,9 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
         }
     }
 
-    override fun getEnableBackAction() = true
+    override fun getEnableBackAction() = false
 
-    override fun getToolbarTitle() = context.getString(R.string.app_name)
+    override fun getToolbarTitle() = ""
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         return inflater.inflate(R.menu.article_menu, menu)
@@ -101,6 +101,15 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
         } else {
             menuItem.title = context.getString(R.string.article_simple_list)
             openCardListAdapter()
+        }
+    }
+
+
+    private fun setUpToolbar() {
+        articleToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
 }
