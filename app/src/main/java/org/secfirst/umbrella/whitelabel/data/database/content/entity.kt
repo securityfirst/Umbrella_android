@@ -79,7 +79,7 @@ data class Subcategory(
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "category_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         var category: Category? = null,
         @Column
         var index: Int = 0,
@@ -139,7 +139,7 @@ data class Child(
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "child_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         var subcategory: Subcategory? = null,
         @Column
         var index: Int = 0,
@@ -191,15 +191,15 @@ data class Markdown(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
 
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "category_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(stubbedRelationship = true)
         var category: Category? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "subcategory_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
         @ForeignKey(stubbedRelationship = true)
         var subcategory: Subcategory? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "child_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(stubbedRelationship = true)
         var child: Child? = null,
         var text: String = "",
@@ -229,20 +229,20 @@ data class Checklist(
         @Column
         var index: Int = 0,
 
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "category_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
         var category: Category? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "subcategory_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
         var subcategory: Subcategory? = null,
 
 
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "child_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
@@ -273,7 +273,7 @@ class Content(
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "checklist_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
         var checklist: Checklist? = null,
         @Column
         var label: String = "") : BaseModel()

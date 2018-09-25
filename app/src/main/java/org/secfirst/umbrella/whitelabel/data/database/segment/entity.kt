@@ -4,7 +4,7 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
 
 data class Segment(var toolbarTitle: String,
-                   var subcategoryId: Long,
+                   var idReference: Long,
                    var items: List<Item> = listOf()) {
 
     data class Item(var indexItem: String, var title: String)

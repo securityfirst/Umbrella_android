@@ -36,7 +36,7 @@ data class Screen(
         var title: String = "",
         @JsonIgnore
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "form_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "form_id")
         var form: Form? = null,
         var items: MutableList<Item> = arrayListOf()) : BaseModel(), Serializable {
 
@@ -64,7 +64,7 @@ data class Item(
         @Column
         var label: String = "",
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "screen_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "screen_id")
         var screen: Screen? = null,
         var options: MutableList<Option> = arrayListOf(),
         @Column
@@ -92,7 +92,7 @@ data class Option(
         @Column
         var label: String = "",
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "item_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "item_id")
         var item: Item? = null,
         @Column
         var value: String = "") : BaseModel(), Serializable
@@ -136,5 +136,5 @@ data class Answer(
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 deleteForeignKeyModel = false,
                 stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "subcategoryId", columnName = "active_form_id")
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "active_form_id")
         var activeForm: ActiveForm? = null) : Serializable
