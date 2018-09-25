@@ -1,10 +1,13 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.TransitionDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -42,6 +45,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         presenter.onAttach(this)
         presenter.submitLoadSegments(categoryId)
         setUpToolbar()
+        onFavoriteClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -52,7 +56,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     override fun showSegments(segments: List<Segment>) {
         val segmentAdapter = SegmentAdapter(segmentClick)
         segmentRecyclerView?.initGridView(segmentAdapter)
-        difficultAdapter = DifficultSpinnerAdapter(context, android.R.layout.simple_dropdown_item_1line, segments)
+        difficultAdapter = DifficultSpinnerAdapter(context,segments)
         segmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -70,6 +74,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             mainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+        }
+    }
+
+    private fun onFavoriteClick(){
+        favoriteImg?.let {
+
         }
     }
 
