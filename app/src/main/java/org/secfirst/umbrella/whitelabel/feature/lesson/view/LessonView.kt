@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.view
 
 
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficult
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 

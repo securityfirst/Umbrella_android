@@ -2,11 +2,7 @@ package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 
-data class Difficult(val title: String,
-                     val description: String,
-                     val idReference: Long,
-                     val layoutColor: String,
-                     val titleToolbar: String) {
+data class Difficulty(val titleToolbar: String, val items: List<Item>) {
 
     companion object {
         const val BEGINNER = 1
@@ -16,20 +12,25 @@ data class Difficult(val title: String,
         const val COLOR_ADVANCED = "#F3BC2B"
         const val COLOR_EXPERT = "#B83657"
     }
+
+    data class Item(val title: String,
+                    val description: String,
+                    val layoutColor: String,
+                    val idReference: Long)
 }
 
-fun Subcategory.toDifficult(): MutableList<Difficult> {
-    val difficulties = mutableListOf<Difficult>()
+fun Subcategory.toDifficult(): Difficulty {
+    val items = mutableListOf<Difficulty.Item>()
     val subcategorySorted = this.children.sortedWith(compareBy { it.index })
     subcategorySorted.forEach { child ->
         when (child.index) {
-            Difficult.BEGINNER -> difficulties.add(Difficult(child.title, child.description, this.id, Difficult.COLOR_BEGINNER, this.title))
-            Difficult.ADVANCED -> difficulties.add(Difficult(child.title, child.description, this.id, Difficult.COLOR_ADVANCED, this.title))
-            Difficult.EXPERT -> difficulties.add(Difficult(child.title, child.description, this.id, Difficult.COLOR_EXPERT, this.title))
+            Difficulty.BEGINNER -> items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_BEGINNER, this.id))
+            Difficulty.ADVANCED -> items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_ADVANCED, this.id))
+            Difficulty.EXPERT -> items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_EXPERT, this.id))
             else -> {
-                difficulties.add(Difficult(child.title, child.description, this.id, Difficult.COLOR_EXPERT, this.title))
+                items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_EXPERT, this.id))
             }
         }
     }
-    return difficulties
+    return Difficulty(this.title, items)
 }

@@ -41,6 +41,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         super.onAttach(view)
         presenter.onAttach(this)
         presenter.submitLoadSegments(categoryId)
+        setUpToolbar()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -60,6 +61,15 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 }
             }
             it.adapter = difficultAdapter
+        }
+    }
+
+
+    private fun setUpToolbar() {
+        segmentToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
 

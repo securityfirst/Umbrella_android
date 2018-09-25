@@ -9,7 +9,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficult_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficult
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
@@ -21,7 +21,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     @Inject
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
-    private val difficultClick: (Difficult) -> Unit = this::onDifficultClick
+    private val difficultClick: (Difficulty.Item) -> Unit = this::onDifficultClick
     private val categoryId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
     private val difficultAdapter: DifficultAdapter = DifficultAdapter(difficultClick)
 
@@ -40,14 +40,13 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
                 .inject(this)
     }
 
-    private fun onDifficultClick(difficult: Difficult) {
-        router.pushController(RouterTransaction.with(SegmentController(difficult.idReference)))
+    private fun onDifficultClick(difficulty: Difficulty.Item) {
+        router.pushController(RouterTransaction.with(SegmentController(difficulty.idReference)))
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onAttach(view: View) {
         presenter.onAttach(this)
-        enableArrowBack(true)
         presenter.submitSelectDifficult(categoryId)
     }
 
@@ -56,10 +55,11 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         return inflater.inflate(R.layout.difficult_view, container, false)
     }
 
-    override fun showDifficulties(difficulties: List<Difficult>) {
-        difficultRecyclerView?.let {
+    override fun showDifficulties(difficulty: Difficulty) {
+        setUpToolbar(difficulty.titleToolbar)
+        difficultyRecyclerView?.let {
             it.layoutManager = LinearLayoutManager(context)
-            difficultAdapter.addAll(difficulties)
+            difficultAdapter.addAll(difficulty.items)
             it.adapter = difficultAdapter
         }
     }
@@ -69,7 +69,15 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         setToolbarTitle(context.getString(R.string.lesson_title))
     }
 
+    private fun setUpToolbar(toolbarTitle: String) {
+        difficultyToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.title = toolbarTitle
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
     override fun getToolbarTitle() = ""
 
-    override fun getEnableBackAction() = true
+    override fun getEnableBackAction() = false
 }
