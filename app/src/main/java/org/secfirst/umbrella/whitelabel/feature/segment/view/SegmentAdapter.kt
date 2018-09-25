@@ -39,7 +39,8 @@ class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit) : Recyc
         fun bind(segment: Segment.Item, clickListener: (SegmentHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
             with(segment) {
-                itemView.segmentIndex.text = adapterPosition.toString()
+                val index = adapterPosition + 1
+                itemView.segmentIndex.text = index.toString()
                 itemView.segmentDescription.text = title
                 itemView.segmentLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
             }

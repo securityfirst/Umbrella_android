@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="168dp"
-    android:layout_height="181dp"
+    android:layout_height="170dp"
     android:padding="5dp">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -30,7 +30,7 @@
                 android:lineSpacingExtra="0sp"
                 android:text="1"
                 android:textColor="@color/ms_white"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="normal" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:lineSpacingExtra="0sp"
                 android:text="Why do kidnappings occur?"
                 android:textColor="@color/ms_white"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="normal" />
         </FrameLayout>
 
@@ -58,16 +58,16 @@
 
             <CheckBox
                 android:id="@+id/favoriteImg"
-                android:layout_width="20dp"
-                android:layout_height="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="80dp"
                 android:layout_marginLeft="80dp"
                 android:background="@drawable/favorite_bg"
                 android:button="@android:color/transparent" />
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
