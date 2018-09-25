@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
-import kotlinx.android.synthetic.main.difficult_view.*
+import kotlinx.android.synthetic.main.difficulty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
@@ -23,7 +23,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
     private val difficultClick: (Difficulty.Item) -> Unit = this::onDifficultClick
     private val categoryId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
-    private val difficultAdapter: DifficultAdapter = DifficultAdapter(difficultClick)
+    private val difficultyAdapter: DifficultyAdapter = DifficultyAdapter(difficultClick)
 
     constructor(categoryId: Long) : this(Bundle().apply {
         putLong(EXTRA_SELECTED_SEGMENT, categoryId)
@@ -50,19 +50,24 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         presenter.submitSelectDifficult(categoryId)
     }
 
+    override fun onDestroyView(view: View) {
+        super.onDestroyView(view)
+        difficultyAdapter.clear()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.difficult_view, container, false)
+        return inflater.inflate(R.layout.difficulty_view, container, false)
     }
 
     override fun showDifficulties(difficulty: Difficulty) {
         setUpToolbar(difficulty.titleToolbar)
         difficultyRecyclerView?.let {
             it.layoutManager = LinearLayoutManager(context)
-            difficultAdapter.addAll(difficulty.items)
-            it.adapter = difficultAdapter
+            difficultyAdapter.addAll(difficulty.items)
+            it.adapter = difficultyAdapter
         }
     }
+
     private fun setUpToolbar(toolbarTitle: String) {
         difficultyToolbar?.let {
             mainActivity.setSupportActionBar(it)

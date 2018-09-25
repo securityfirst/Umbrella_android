@@ -68,8 +68,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun setUpToolbar() {
         segmentToolbar?.let {
             mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
         }
     }
 

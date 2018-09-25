@@ -7,7 +7,7 @@ import android.util.Patterns
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
 import com.einmalfel.earl.Item
-import kotlinx.android.synthetic.main.host_article_view.*
+import kotlinx.android.synthetic.main.article_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.component.WebViewController
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
@@ -48,7 +48,7 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.host_article_view, container, false)
+        return inflater.inflate(R.layout.article_view, container, false)
     }
 
     private fun openCardListAdapter() {

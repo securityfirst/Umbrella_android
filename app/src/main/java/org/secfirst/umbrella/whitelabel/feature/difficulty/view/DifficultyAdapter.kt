@@ -5,18 +5,18 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.difficult_item_view.view.*
+import kotlinx.android.synthetic.main.difficulty_item_view.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
-class DifficultAdapter(private val onClickDiff: (Difficulty.Item) -> Unit) : RecyclerView.Adapter<DifficultAdapter.DifficultHolder>() {
+class DifficultyAdapter(private val onClickDiff: (Difficulty.Item) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
 
     private val difficulties = mutableListOf<Difficulty.Item>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DifficultHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.difficult_item_view, parent, false)
+                .inflate(R.layout.difficulty_item_view, parent, false)
         return DifficultHolder(view)
     }
 
@@ -31,6 +31,8 @@ class DifficultAdapter(private val onClickDiff: (Difficulty.Item) -> Unit) : Rec
         difficulties.forEach { this.difficulties.add(it) }
         notifyDataSetChanged()
     }
+
+    fun clear() = difficulties.clear()
 
     class DifficultHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(difficulty: Difficulty.Item, clickListener: (DifficultHolder) -> Unit) {
