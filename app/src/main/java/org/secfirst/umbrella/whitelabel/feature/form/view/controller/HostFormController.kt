@@ -51,7 +51,6 @@ class HostFormController : BaseController(), FormView {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        enableArrowBack(false)
         setUpToolbar()
         hostFormRecycleView.layoutManager = LinearLayoutManager(view.context)
         presenter.onAttach(this)
@@ -125,8 +124,4 @@ class HostFormController : BaseController(), FormView {
             mainActivity.supportActionBar?.title = context.getString(R.string.form_title)
         }
     }
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
 }

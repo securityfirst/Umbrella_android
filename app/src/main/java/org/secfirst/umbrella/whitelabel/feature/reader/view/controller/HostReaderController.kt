@@ -30,9 +30,5 @@ class HostReaderController : BaseController() {
 
         super.onDestroyView(view)
     }
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
 }
 

@@ -163,12 +163,6 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
 
     override fun onReturn() {}
 
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
-
-
     private fun setUpToolbar() {
         formToolbar?.let {
             mainActivity.setSupportActionBar(it)

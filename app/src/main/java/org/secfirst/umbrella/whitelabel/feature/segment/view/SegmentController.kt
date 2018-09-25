@@ -73,10 +73,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
-
     private fun onSegmentClicked(segment: Segment.Item) {
 
     }

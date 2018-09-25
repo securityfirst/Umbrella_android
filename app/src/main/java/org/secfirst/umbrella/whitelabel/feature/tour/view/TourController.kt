@@ -53,7 +53,6 @@ class TourController : BaseController(), TourView {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        disableToolbar()
         disableNavigation()
         initViewPager()
         onAcceptButton()
@@ -116,9 +115,4 @@ class TourController : BaseController(), TourView {
             }
         })
     }
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
-
 }

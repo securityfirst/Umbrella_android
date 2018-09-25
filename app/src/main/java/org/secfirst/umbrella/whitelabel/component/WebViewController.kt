@@ -91,9 +91,4 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
-
 }

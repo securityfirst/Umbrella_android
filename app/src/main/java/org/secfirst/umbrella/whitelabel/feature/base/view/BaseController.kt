@@ -25,11 +25,7 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
 
     override fun onContextAvailable(context: Context) {
         this.context = context
-        activity.let {
-            mainActivity = activity as MainActivity
-            mainActivity.setToolbarTitle(getToolbarTitle())
-            mainActivity.enableToolbar(getEnableBackAction())
-        }
+        activity.let { mainActivity = activity as MainActivity }
         super.onContextAvailable(context)
     }
 
@@ -38,19 +34,7 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
         clearFindViewByIdCache()
     }
 
-    protected abstract fun getEnableBackAction(): Boolean
-
-    protected abstract fun getToolbarTitle(): String
-
-    fun setToolbarTitle(title: String) = mainActivity.setToolbarTitle(title)
-
     fun disableNavigation() = mainActivity.hideNavigation()
 
     fun enableNavigation() = mainActivity.showNavigation()
-
-    fun enableToolbar() = mainActivity.showToolbar()
-
-    fun disableToolbar() = mainActivity.hideToolbar()
-
-    fun enableArrowBack(enable: Boolean = false) = mainActivity.enableUpArrow(enable)
 }

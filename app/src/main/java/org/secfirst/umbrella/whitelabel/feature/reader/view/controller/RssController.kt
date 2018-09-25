@@ -149,9 +149,4 @@ class RssController : BaseController(), ReaderView {
             mode.finish()
         }
     }
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
-
 }

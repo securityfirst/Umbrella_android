@@ -38,30 +38,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_view)
         performDI()
         initRoute(savedInstanceState)
-        setUpToolbar()
     }
 
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
-    }
-
-    private fun setUpToolbar() {
-        setSupportActionBar(mainToolbar)
-    }
-
-    fun setToolbarTitle(title: String) {
-        mainToolbar?.let { it.title = title }
-    }
-
-    fun enableUpArrow(enabled: Boolean) {
-        supportActionBar?.let {
-            it.setDisplayHomeAsUpEnabled(enabled)
-            it.setDisplayShowHomeEnabled(enabled)
-        }
-    }
-
-    fun enableToolbar(enabled: Boolean) {
-        if (enabled) showToolbar() else hideToolbar()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -107,10 +87,6 @@ class MainActivity : AppCompatActivity() {
         }
         false
     }
-
-    fun hideToolbar() = supportActionBar?.hide()
-
-    fun showToolbar() = supportActionBar?.show()
 
     fun hideNavigation() = navigation?.let { it.visibility = INVISIBLE }
 

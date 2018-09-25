@@ -63,12 +63,6 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
             it.adapter = difficultAdapter
         }
     }
-
-    override fun onDestroyView(view: View) {
-        enableArrowBack(false)
-        setToolbarTitle(context.getString(R.string.lesson_title))
-    }
-
     private fun setUpToolbar(toolbarTitle: String) {
         difficultyToolbar?.let {
             mainActivity.setSupportActionBar(it)
@@ -76,8 +70,4 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
-
-    override fun getToolbarTitle() = ""
-
-    override fun getEnableBackAction() = false
 }

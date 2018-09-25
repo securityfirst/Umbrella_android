@@ -41,7 +41,6 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
     }
 
     override fun onDestroyView(view: View) {
-        disableToolbar()
         enableNavigation()
         super.onDestroyView(view)
     }
@@ -78,10 +77,6 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
             router.pushController(RouterTransaction.with(WebViewController(item.link!!)))
         }
     }
-
-    override fun getEnableBackAction() = false
-
-    override fun getToolbarTitle() = ""
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         return inflater.inflate(R.menu.article_menu, menu)
