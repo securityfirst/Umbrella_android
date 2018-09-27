@@ -6,5 +6,7 @@ import javax.inject.Inject
 
 class SegmentInteractorImp @Inject constructor(private val segmentRepo: SegmentRepo) : BaseInteractorImp(), SegmentBaseInteractor {
 
-    override suspend fun fetchSubcategoryBy(categoryId: Long) = segmentRepo.loadSubcategoryBy(categoryId)
+    override suspend fun fetchCategoryBy(categoryId: Long) = segmentRepo.loadCategoryBy(categoryId)
+
+    override suspend fun fetchSubcategoryBy(subcategoryId: Long) = segmentRepo.loadSubcategoryBy(subcategoryId)
 }

@@ -7,6 +7,6 @@ import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 
 interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : BasePresenter<V, I> {
 
-    fun submitLoadSegments(subcategoryId: Long)
+    fun submitLoadSegments(idReference: Long)
 
 }

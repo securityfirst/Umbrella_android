@@ -16,7 +16,8 @@ import java.io.File
 
 
 class LessonAdapter(groups: List<ExpandableGroup<*>>,
-                    private val onclickLesson: (Lesson.Topic) -> Unit)
+                    private val onclickLesson: (Long) -> Unit,
+                    private val onGroupClicked: (String, Long) -> Unit)
     : ExpandableRecyclerViewAdapter<LessonAdapter.HeadHolder, LessonAdapter.LessonMenuHolder>(groups) {
 
 
@@ -32,9 +33,15 @@ class LessonAdapter(groups: List<ExpandableGroup<*>>,
         return LessonMenuHolder(view)
     }
 
+    override fun onGroupClick(flatPos: Int): Boolean {
+        val itemSection = groups[flatPos] as Lesson
+        onGroupClicked(itemSection.subject, itemSection.idReference)
+        return super.onGroupClick(flatPos)
+    }
+
     override fun onBindChildViewHolder(holder: LessonMenuHolder, flatPosition: Int, group: ExpandableGroup<*>, childIndex: Int) {
         val itemGroup = (group as Lesson).items[childIndex]
-        holder.bind(itemGroup.title, clickListener = { onclickLesson(itemGroup) })
+        holder.bind(itemGroup.title, clickListener = { onclickLesson(itemGroup.idReference) })
     }
 
     override fun onBindGroupViewHolder(holder: HeadHolder, flatPosition: Int, group: ExpandableGroup<*>) {

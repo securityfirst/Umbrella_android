@@ -2,13 +2,14 @@ package org.secfirst.umbrella.whitelabel.feature.lesson.view
 
 
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
+import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface LessonView : BaseView {
 
-    fun showAllLesson(lessons: List<Lesson>) {}
+    fun showAllLesson(lessons: List<Lesson>)
 
-    fun startDeferredSegment(subcategoryId: Long) {}
+    fun startDeferredSegment(segments : List<Segment>)
 
     fun startDifficultyController(categoryId : Long)
 

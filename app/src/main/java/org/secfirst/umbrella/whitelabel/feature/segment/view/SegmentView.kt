@@ -5,5 +5,4 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface SegmentView : BaseView {
 
-    fun showSegments(segments: List<Segment>) {}
 }

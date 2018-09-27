@@ -10,4 +10,5 @@ interface DifficultyBasePresenter<V : DifficultyView, I : DifficultyBaseInteract
 
     fun saveDifficultySelected(idReference: Long)
 
+    fun submitLoadSegments(idReference: Long)
 }

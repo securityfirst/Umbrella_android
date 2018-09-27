@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.lesson_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
+import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
@@ -22,7 +23,8 @@ class LessonController : BaseController(), LessonView {
 
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
-    private val lessonClick: (Lesson.Topic) -> Unit = this::onLessonClicked
+    private val lessonClick: (Long) -> Unit = this::onLessonClicked
+    private val groupClick: (String, Long) -> Unit = this::onGroupClicked
     private lateinit var lessonAdapter: LessonAdapter
 
     override fun onInject() {
@@ -32,9 +34,12 @@ class LessonController : BaseController(), LessonView {
                 .inject(this)
     }
 
-    private fun onLessonClicked(topic: Lesson.Topic) {
-        presenter.submitSelectLesson(topic.idReference)
+    private fun onLessonClicked(idReference: Long) {
+        presenter.submitSelectLesson(idReference)
+    }
 
+    private fun onGroupClicked(subject: String, idReference: Long) {
+        presenter.submitSelectLesson(subject, idReference)
     }
 
     override fun onAttach(view: View) {
@@ -50,7 +55,7 @@ class LessonController : BaseController(), LessonView {
 
 
     override fun showAllLesson(lessons: List<Lesson>) {
-        lessonAdapter = LessonAdapter(lessons, lessonClick)
+        lessonAdapter = LessonAdapter(lessons, lessonClick, groupClick)
         lessonMenu?.adapter = lessonAdapter
     }
 
@@ -58,8 +63,8 @@ class LessonController : BaseController(), LessonView {
         router.pushController(RouterTransaction.with(DifficultyController(categoryId)))
     }
 
-    override fun startDeferredSegment(subcategoryId: Long) {
-        router.pushController(RouterTransaction.with(SegmentController(subcategoryId)))
+    override fun startDeferredSegment(segments: List<Segment>) {
+        router.pushController(RouterTransaction.with(SegmentController(segments)))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

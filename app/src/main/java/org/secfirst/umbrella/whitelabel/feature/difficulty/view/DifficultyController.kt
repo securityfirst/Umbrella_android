@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.difficulty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
@@ -42,10 +43,13 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     private fun onDifficultClick(difficulty: Difficulty.Item) {
         presenter.saveDifficultySelected(difficulty.idReference)
-        router.pushController(RouterTransaction.with(SegmentController(difficulty.idReference)))
+        presenter.submitLoadSegments(categoryId)
     }
 
-    @Suppress("UNCHECKED_CAST")
+    override fun startSegment(segments: List<Segment>) {
+        router.pushController(RouterTransaction.with(SegmentController(segments)))
+    }
+
     override fun onAttach(view: View) {
         presenter.onAttach(this)
         presenter.submitSelectDifficult(categoryId)

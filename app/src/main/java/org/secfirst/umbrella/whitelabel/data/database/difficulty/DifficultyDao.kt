@@ -3,6 +3,8 @@ package org.secfirst.umbrella.whitelabel.data.database.difficulty
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
+import org.secfirst.umbrella.whitelabel.data.database.content.Child
+import org.secfirst.umbrella.whitelabel.data.database.content.Child_Table
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
 import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
@@ -16,10 +18,17 @@ interface DifficultyDao {
         }
     }
 
-    suspend fun getSubcategoryBy(id: Long): Subcategory = withContext(AppExecutors.ioContext) {
+    suspend fun getSubcategoryBy(id: Long): Subcategory? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Subcategory::class.java)
                 .where(Subcategory_Table.id.`is`(id))
-                .queryList().last()
+                .querySingle()
+    }
+
+    suspend fun getChildBy(id: Long): Child? = withContext(AppExecutors.ioContext) {
+        SQLite.select()
+                .from(Child::class.java)
+                .where(Child_Table.id.`is`(id))
+                .querySingle()
     }
 }

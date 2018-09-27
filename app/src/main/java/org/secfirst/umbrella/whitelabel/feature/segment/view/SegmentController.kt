@@ -19,14 +19,15 @@ import javax.inject.Inject
 
 class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
+
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
-    private val categoryId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
     private val segmentClick: (Segment.Item) -> Unit = this::onSegmentClicked
     private lateinit var difficultAdapter: DifficultSpinnerAdapter
+    private val segments by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
 
-    constructor(subcategoryId: Long) : this(Bundle().apply {
-        putLong(EXTRA_SELECTED_SEGMENT, subcategoryId)
+    constructor(segments: List<Segment>) : this(Bundle().apply {
+        putParcelableArray(EXTRA_SELECTED_SEGMENT, segments.toTypedArray())
     })
 
     override fun onInject() {
@@ -39,9 +40,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         presenter.onAttach(this)
-        presenter.submitLoadSegments(categoryId)
         setUpToolbar()
         onFavoriteClick()
+        showSegments()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -49,8 +50,13 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
+    @Suppress("UNCHECKED_CAST")
+    private fun showSegments() {
+        val segmentList = segments as Array<Segment>
+        initSegmentView(segmentList.toList())
+    }
 
-    override fun showSegments(segments: List<Segment>) {
+    private fun initSegmentView(segments: List<Segment>) {
         val segmentAdapter = SegmentAdapter(segmentClick)
         segmentRecyclerView?.initGridView(segmentAdapter)
         difficultAdapter = DifficultSpinnerAdapter(context, segments)

@@ -9,6 +9,8 @@ interface DifficultyBaseInteractor : BaseInteractor {
 
     suspend fun insertTopicPreferred(topicPreferred: TopicPreferred)
 
-    suspend fun fetchSubcategoryBy(subcategoryId: Long): Subcategory
+    suspend fun fetchSubcategoryBy(subcategoryId: Long): Subcategory?
+
+    suspend fun fetchChildBy(id: Long): Child?
 
 }

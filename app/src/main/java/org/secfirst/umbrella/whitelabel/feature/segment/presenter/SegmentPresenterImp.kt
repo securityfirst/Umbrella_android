@@ -14,17 +14,17 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), SegmentBasePresenter<V, I> {
 
-    override fun submitLoadSegments(subcategoryId: Long) {
+    override fun submitLoadSegments(idReference: Long) {
         launchSilent(uiContext) {
             interactor?.let {
-                val subcategory = it.fetchSubcategoryBy(subcategoryId)
+                val subcategory = it.fetchSubcategoryBy(idReference)
                 val segments = arrayListOf<Segment>()
-                subcategory.children.forEach { child ->
+                subcategory?.children?.forEach { child ->
                     val difficultTitle = "${subcategory.title} ${child.title}"
                     val segment = child.markdowns.toSegment(subcategory.id, difficultTitle)
                     segments.add(segment)
                 }
-                getView()?.showSegments(segments)
+                //getView()?.showSegments(segments)
             }
         }
     }
