@@ -41,6 +41,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     }
 
     private fun onDifficultClick(difficulty: Difficulty.Item) {
+        presenter.saveDifficultySelected(difficulty.idReference)
         router.pushController(RouterTransaction.with(SegmentController(difficulty.idReference)))
     }
 

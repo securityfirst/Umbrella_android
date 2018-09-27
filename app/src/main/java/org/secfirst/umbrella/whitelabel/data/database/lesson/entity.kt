@@ -24,10 +24,8 @@ data class Lesson(var subject: String = "",
 data class TopicPreferred(@PrimaryKey(autoincrement = true)
                           var id: Long = 0,
                           @ForeignKey(stubbedRelationship = false)
-                          var subcategorySelected: Subcategory? = null,
-                          @ForeignKey(stubbedRelationship = false)
-                          var childSelected: Child? = null) : BaseModel() {
-    constructor(subcategorySelected: Subcategory, childSelected: Child?) : this(0, subcategorySelected, childSelected)
+                          var subcategorySelected: Subcategory? = null) : BaseModel() {
+    constructor(subcategorySelected: Subcategory) : this(0, subcategorySelected)
 }
 
 fun List<Category>.toLesson(): List<Lesson> {
