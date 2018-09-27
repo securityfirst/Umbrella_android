@@ -1,12 +1,10 @@
 package org.secfirst.umbrella.whitelabel.data.database.content
 
-import android.os.Parcelable
+
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
-import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 
@@ -183,6 +181,12 @@ inline fun MutableList<Category>.walkChild(action: (Child) -> Unit) {
         category.subcategories.forEach { subcategory ->
             subcategory.children.forEach(action)
         }
+    }
+}
+
+inline fun MutableList<Category>.walkSubcategory(action: (Subcategory) -> Unit) {
+    this.forEach { category ->
+        category.subcategories.forEach(action)
     }
 }
 
