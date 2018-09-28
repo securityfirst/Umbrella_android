@@ -11,7 +11,9 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.lesson_menu_head.view.*
 import kotlinx.android.synthetic.main.lesson_menu_item.view.*
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
+
 import java.io.File
 
 
@@ -35,13 +37,13 @@ class LessonAdapter(groups: List<ExpandableGroup<*>>,
 
     override fun onGroupClick(flatPos: Int): Boolean {
         val itemSection = groups[flatPos] as Lesson
-        onGroupClicked(itemSection.subject, itemSection.idReference)
+        onGroupClicked(itemSection.moduleTitle, itemSection.moduleId)
         return super.onGroupClick(flatPos)
     }
 
     override fun onBindChildViewHolder(holder: LessonMenuHolder, flatPosition: Int, group: ExpandableGroup<*>, childIndex: Int) {
-        val itemGroup = (group as Lesson).items[childIndex]
-        holder.bind(itemGroup.title, clickListener = { onclickLesson(itemGroup.idReference) })
+        val itemGroup = (group as Lesson).topics[childIndex]
+        holder.bind(itemGroup.title, clickListener = { onclickLesson(itemGroup.id) })
     }
 
     override fun onBindGroupViewHolder(holder: HeadHolder, flatPosition: Int, group: ExpandableGroup<*>) {

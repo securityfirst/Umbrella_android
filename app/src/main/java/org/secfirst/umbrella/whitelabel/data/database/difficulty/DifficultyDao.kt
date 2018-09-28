@@ -3,32 +3,30 @@ package org.secfirst.umbrella.whitelabel.data.database.difficulty
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.database.content.Child
-import org.secfirst.umbrella.whitelabel.data.database.content.Child_Table
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory_Table
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 
 interface DifficultyDao {
 
     suspend fun save(topicPreferred: TopicPreferred) {
-        withContext(AppExecutors.ioContext) {
+      //  withContext(AppExecutors.ioContext) {
             modelAdapter<TopicPreferred>().insert(topicPreferred)
-        }
+       // }
     }
 
-    suspend fun getSubcategoryBy(id: Long): Subcategory? = withContext(AppExecutors.ioContext) {
+    suspend fun getSubcategoryBy(id: Long): Subject? = withContext(AppExecutors.ioContext) {
         SQLite.select()
-                .from(Subcategory::class.java)
-                .where(Subcategory_Table.id.`is`(id))
+                .from(Subject::class.java)
+                .where(Subject_Table.id.`is`(id))
                 .querySingle()
     }
 
-    suspend fun getChildBy(id: Long): Child? = withContext(AppExecutors.ioContext) {
+    suspend fun getChildBy(id: Long): Difficulty? = withContext(AppExecutors.ioContext) {
         SQLite.select()
-                .from(Child::class.java)
-                .where(Child_Table.id.`is`(id))
+                .from(Difficulty::class.java)
+                .where(Difficulty_Table.id.`is`(id))
                 .querySingle()
     }
 }

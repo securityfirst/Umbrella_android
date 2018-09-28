@@ -2,44 +2,49 @@ package org.secfirst.umbrella.whitelabel.data.database.lesson
 
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.database.content.*
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.content.Module_Table
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject_Table
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface LessonDao {
 
 
-    suspend fun getAllCategory(): List<Category> = withContext(ioContext) {
+    suspend fun getAllCategory(): List<Module> = withContext(ioContext) {
         SQLite.select()
-                .from(Category::class.java)
+                .from(Module::class.java)
                 .queryList()
     }
 
-    suspend fun getSubcategoryBy(id: Long): Subcategory? = withContext(ioContext) {
+    suspend fun getSubcategoryBy(id: Long): Subject? = withContext(ioContext) {
         SQLite.select()
-                .from(Subcategory::class.java)
-                .where(Subcategory_Table.id.`is`(id))
+                .from(Subject::class.java)
+                .where(Subject_Table.id.`is`(id))
                 .querySingle()
     }
 
-    suspend fun getChildBy(id: Long): Child? = withContext(ioContext) {
+    suspend fun getChildBy(id: Long): Difficulty? = withContext(ioContext) {
         SQLite.select()
-                .from(Child::class.java)
-                .where(Child_Table.id.`is`(id))
+                .from(Difficulty::class.java)
+                .where(Difficulty_Table.id.`is`(id))
                 .querySingle()
     }
 
     suspend fun getTopic(subcategoryId: Long): TopicPreferred? = withContext(ioContext) {
         SQLite.select()
                 .from(TopicPreferred::class.java)
-                .where(TopicPreferred_Table.subcategoryId.`is`(subcategoryId))
+                .where(TopicPreferred_Table.subject_id.`is`(subcategoryId))
                 .querySingle()
     }
 
-    suspend fun getCategoryBy(id: Long): Category? = withContext(AppExecutors.ioContext) {
+    suspend fun getCategoryBy(id: Long): Module? = withContext(AppExecutors.ioContext) {
         SQLite.select()
-                .from(Category::class.java)
-                .where(Category_Table.id.`is`(id))
+                .from(Module::class.java)
+                .where(Module_Table.id.`is`(id))
                 .querySingle()
     }
 

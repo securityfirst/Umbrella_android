@@ -1,25 +1,25 @@
 package org.secfirst.umbrella.whitelabel.data.database
 
 import com.raizlabs.android.dbflow.rx2.structure.BaseRXModel
-import org.secfirst.umbrella.whitelabel.data.database.content.Category
-import org.secfirst.umbrella.whitelabel.data.database.content.Child
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.content.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
 open class BaseModel : BaseRXModel() {
-    fun associateForeignKey(category: Category) {
+    fun associateForeignKey(module: Module) {
 
-        associateMarkdown(category.markdowns, category)
-        associateChecklist(category.checklist, category)
+        associateMarkdown(module.markdowns, module)
+        associateChecklist(module.checklist, module)
 
-        category.subcategories.forEach { subcategory ->
-            subcategory.category = category
+        module.subjects.forEach { subcategory ->
+            subcategory.module = module
             associateMarkdown(subcategory.markdowns, subcategory)
             associateChecklist(subcategory.checklist, subcategory)
-            subcategory.children.forEach { child ->
-                child.subcategory = subcategory
+            subcategory.difficulties.forEach { child ->
+                child.subject = subcategory
                 associateChecklist(child.checklist, child)
                 associateMarkdown(child.markdowns, child)
             }
@@ -31,9 +31,9 @@ open class BaseModel : BaseRXModel() {
     private inline fun <reified T> associateChecklist(checklists: MutableList<Checklist>, foreignKey: T) {
         checklists.forEach { checklist ->
             when (foreignKey) {
-                is Category -> checklist.category = foreignKey
-                is Subcategory -> checklist.subcategory = foreignKey
-                is Child -> checklist.child = foreignKey
+                is Module -> checklist.module = foreignKey
+                is Subject -> checklist.subject = foreignKey
+                is Difficulty -> checklist.difficulty = foreignKey
             }
             checklist.content.forEach { content ->
                 content.checklist = checklist
@@ -44,9 +44,9 @@ open class BaseModel : BaseRXModel() {
     private inline fun <reified T> associateMarkdown(markdowns: MutableList<Markdown>, foreignKey: T) {
         markdowns.forEach { mark ->
             when (foreignKey) {
-                is Category -> mark.category = foreignKey
-                is Subcategory -> mark.subcategory = foreignKey
-                is Child -> mark.child = foreignKey
+                is Module -> mark.module = foreignKey
+                is Subject -> mark.subject = foreignKey
+                is Difficulty -> mark.child = foreignKey
             }
         }
 

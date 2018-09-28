@@ -9,8 +9,8 @@ interface LessonView : BaseView {
 
     fun showAllLesson(lessons: List<Lesson>)
 
-    fun startDeferredSegment(segments : List<Segment>)
+    fun startDeferredSegment(segments: List<Segment>)
 
-    fun startDifficultyController(categoryId : Long)
+    fun startDifficultyController(categoryId: Long)
 
 }

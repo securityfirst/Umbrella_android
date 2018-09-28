@@ -1,8 +1,62 @@
 package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
+import android.os.Parcelable
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.raizlabs.android.dbflow.annotation.*
+import com.raizlabs.android.dbflow.sql.language.SQLite
+import kotlinx.android.parcel.Parcelize
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.BaseModel
+import org.secfirst.umbrella.whitelabel.data.database.content.*
 
-data class Difficulty(val titleToolbar: String, val items: List<Item>) {
+
+@Parcelize
+@Table(database = AppDatabase::class)
+data class Difficulty(
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
+                stubbedRelationship = true)
+        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
+        var subject: Subject? = null,
+        @Column
+        var index: Int = 0,
+        @Column
+        var title: String = "",
+        @Column
+        var description: String = "",
+        var markdowns: MutableList<Markdown> = arrayListOf(),
+        var checklist: MutableList<Checklist> = arrayListOf(),
+        @Column
+        var rootDir: String = "",
+        @Column
+        var path: String = "",
+        @JsonIgnore
+        var layoutColor: String = "") : BaseModel(), Parcelable {
+
+
+    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
+    fun oneToManyMarkdowns(): MutableList<Markdown> {
+        if (markdowns.isEmpty()) {
+            markdowns = SQLite.select()
+                    .from(Markdown::class.java)
+                    .where(Markdown_Table.child_id.eq(id))
+                    .queryList()
+        }
+        return markdowns
+    }
+
+    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "checklist")
+    fun oneToManyChecklist(): MutableList<Checklist> {
+        if (checklist.isEmpty()) {
+            checklist = SQLite.select()
+                    .from(Checklist::class.java)
+                    .where(Checklist_Table.difficulty_id.eq(id))
+                    .queryList()
+        }
+        return checklist
+    }
 
     companion object {
         const val BEGINNER = 1
@@ -12,25 +66,27 @@ data class Difficulty(val titleToolbar: String, val items: List<Item>) {
         const val COLOR_ADVANCED = "#F3BC2B"
         const val COLOR_EXPERT = "#B83657"
     }
-
-    data class Item(val title: String,
-                    val description: String,
-                    val layoutColor: String,
-                    val idReference: Long)
 }
 
-fun Subcategory.toDifficult(): Difficulty {
-    val items = mutableListOf<Difficulty.Item>()
-    val subcategorySorted = this.children.sortedWith(compareBy { it.index })
-    subcategorySorted.forEach { child ->
-        when (child.index) {
-            Difficulty.BEGINNER -> items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_BEGINNER, this.id))
-            Difficulty.ADVANCED -> items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_ADVANCED, this.id))
-            Difficulty.EXPERT -> items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_EXPERT, this.id))
+fun MutableList<Difficulty>.orderBySelected(subjectSelected: Subject) {
+    this.forEach { difficulty ->
+
+
+    }
+}
+
+fun MutableList<Difficulty>.withColors(): List<Difficulty> {
+    val sortedList = this.sortedWith(compareBy { it.index })
+    sortedList.forEach { difficulty ->
+        when (difficulty.index) {
+            Difficulty.BEGINNER -> difficulty.layoutColor = Difficulty.COLOR_BEGINNER
+            Difficulty.ADVANCED -> difficulty.layoutColor = Difficulty.COLOR_ADVANCED
+            Difficulty.EXPERT -> difficulty.layoutColor = Difficulty.COLOR_EXPERT
             else -> {
-                items.add(Difficulty.Item(child.title, child.description, Difficulty.COLOR_EXPERT, this.id))
+                difficulty.layoutColor = Difficulty.COLOR_EXPERT
             }
         }
+
     }
-    return Difficulty(this.title, items)
+    return sortedList
 }

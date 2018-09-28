@@ -10,9 +10,9 @@ import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
-class DifficultyAdapter(private val onClickDiff: (Difficulty.Item) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
+class DifficultyAdapter(private val onClickDiff: (Difficulty) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
 
-    private val difficulties = mutableListOf<Difficulty.Item>()
+    private val difficulties = mutableListOf<Difficulty>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DifficultHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,7 +27,7 @@ class DifficultyAdapter(private val onClickDiff: (Difficulty.Item) -> Unit) : Re
 
     override fun getItemCount() = difficulties.size
 
-    fun addAll(difficulties: List<Difficulty.Item>) {
+    fun addAll(difficulties: List<Difficulty>) {
         difficulties.forEach { this.difficulties.add(it) }
         notifyDataSetChanged()
     }
@@ -35,7 +35,7 @@ class DifficultyAdapter(private val onClickDiff: (Difficulty.Item) -> Unit) : Re
     fun clear() = difficulties.clear()
 
     class DifficultHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(difficulty: Difficulty.Item, clickListener: (DifficultHolder) -> Unit) {
+        fun bind(difficulty: Difficulty, clickListener: (DifficultHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
             with(difficulty) {
                 itemView.difficultTitle.text = title

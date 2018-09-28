@@ -1,19 +1,24 @@
 package org.secfirst.umbrella.whitelabel.data.database.content
 
 
+import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 
 
-class ContentData(val categories: MutableList<Category> = mutableListOf())
+class ContentData(val modules: MutableList<Module> = mutableListOf())
 
 
 @Table(database = AppDatabase::class)
-open class Category(
+@Parcelize
+open class Module(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
         @Column
@@ -23,7 +28,7 @@ open class Category(
         @Column
         var description: String = "",
         var markdowns: MutableList<Markdown> = arrayListOf(),
-        var subcategories: MutableList<Subcategory> = arrayListOf(),
+        var subjects: MutableList<Subject> = arrayListOf(),
         var checklist: MutableList<Checklist> = arrayListOf(),
         @Column
         var rootDir: String = "",
@@ -32,37 +37,36 @@ open class Category(
         var icon: String = "",
         @Column
         @JsonIgnore
-        var resourcePath: String = "") : BaseModel() {
+        var resourcePath: String = "") : BaseModel(), Parcelable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
     fun oneToManyMarkdowns(): MutableList<Markdown> {
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.category_id.eq(id))
+                    .where(Markdown_Table.module_id.eq(id))
                     .queryList()
         }
         return markdowns
     }
 
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "subcategories")
-    fun oneToManySubcategory(): MutableList<Subcategory> {
-        if (subcategories.isEmpty()) {
-            subcategories = SQLite.select()
-                    .from(Subcategory::class.java)
-                    .where(Subcategory_Table.category_id.eq(id))
+    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "subjects")
+    fun oneToManySubcategory(): MutableList<Subject> {
+        if (subjects.isEmpty()) {
+            subjects = SQLite.select()
+                    .from(Subject::class.java)
+                    .where(Subject_Table.module_id.eq(id))
                     .queryList()
         }
-        return subcategories
+        return subjects
     }
-
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "checklist")
     fun oneToManyChecklist(): MutableList<Checklist> {
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.category_id.eq(id))
+                    .where(Checklist_Table.module_id.eq(id))
                     .queryList()
         }
         return checklist
@@ -70,15 +74,16 @@ open class Category(
 
 }
 
+@Parcelize
 @Table(database = AppDatabase::class)
-data class Subcategory(
+data class Subject(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
-        var category: Category? = null,
+        var module: Module? = null,
         @Column
         var index: Int = 0,
         @Column
@@ -86,34 +91,35 @@ data class Subcategory(
         @Column
         var description: String = "",
         var markdowns: MutableList<Markdown> = arrayListOf(),
-        var children: MutableList<Child> = arrayListOf(),
+        var difficulties: MutableList<Difficulty> = arrayListOf(),
         var checklist: MutableList<Checklist> = arrayListOf(),
         @Column
         var rootDir: String = "",
         @Column
-        var path: String = "") : BaseModel() {
+        var path: String = "") : BaseModel(), Parcelable {
 
+    constructor() : this(0, null, 0, "", "", arrayListOf(), arrayListOf(), arrayListOf(), "", "")
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
     fun oneToManyMarkdowns(): MutableList<Markdown> {
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.category_id.eq(id))
+                    .where(Markdown_Table.module_id.eq(id))
                     .queryList()
         }
         return markdowns
     }
 
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "children")
-    fun oneToManyChildren(): MutableList<Child> {
-        if (children.isEmpty()) {
-            children = SQLite.select()
-                    .from(Child::class.java)
-                    .where(Child_Table.subcategory_id.eq(id))
+    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "difficulties")
+    fun oneToManyChildren(): MutableList<Difficulty> {
+        if (difficulties.isEmpty()) {
+            difficulties = SQLite.select()
+                    .from(Difficulty::class.java)
+                    .where(Difficulty_Table.subject_id.eq(id))
                     .queryList()
         }
-        return children
+        return difficulties
     }
 
 
@@ -122,74 +128,28 @@ data class Subcategory(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.category_id.eq(id))
-                    .queryList()
-        }
-        return checklist
-    }
-
-}
-
-@Table(database = AppDatabase::class)
-data class Child(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
-        var subcategory: Subcategory? = null,
-        @Column
-        var index: Int = 0,
-        @Column
-        var title: String = "",
-        @Column
-        var description: String = "",
-        var markdowns: MutableList<Markdown> = arrayListOf(),
-        var checklist: MutableList<Checklist> = arrayListOf(),
-        @Column
-        var rootDir: String = "",
-        @Column
-        var path: String = "") : BaseModel() {
-
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
-    fun oneToManyMarkdowns(): MutableList<Markdown> {
-        if (markdowns.isEmpty()) {
-            markdowns = SQLite.select()
-                    .from(Markdown::class.java)
-                    .where(Markdown_Table.child_id.eq(id))
-                    .queryList()
-        }
-        return markdowns
-    }
-
-    @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "checklist")
-    fun oneToManyChecklist(): MutableList<Checklist> {
-        if (checklist.isEmpty()) {
-            checklist = SQLite.select()
-                    .from(Checklist::class.java)
-                    .where(Checklist_Table.child_id.eq(id))
+                    .where(Checklist_Table.module_id.eq(id))
                     .queryList()
         }
         return checklist
     }
 }
 
-inline fun MutableList<Category>.walkChild(action: (Child) -> Unit) {
+inline fun MutableList<Module>.walkChild(action: (Difficulty) -> Unit) {
     this.forEach { category ->
-        category.subcategories.forEach { subcategory ->
-            subcategory.children.forEach(action)
+        category.subjects.forEach { subcategory ->
+            subcategory.difficulties.forEach(action)
         }
     }
 }
 
-inline fun MutableList<Category>.walkSubcategory(action: (Subcategory) -> Unit) {
+inline fun MutableList<Module>.walkSubcategory(action: (Subject) -> Unit) {
     this.forEach { category ->
-        category.subcategories.forEach(action)
+        category.subjects.forEach(action)
     }
 }
 
+@Parcelize
 @Table(database = AppDatabase::class, allFields = true)
 data class Markdown(
         @PrimaryKey(autoincrement = true)
@@ -197,18 +157,18 @@ data class Markdown(
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(stubbedRelationship = true)
-        var category: Category? = null,
+        var module: Module? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
         @ForeignKey(stubbedRelationship = true)
-        var subcategory: Subcategory? = null,
+        var subject: Subject? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(stubbedRelationship = true)
-        var child: Child? = null,
+        var child: Difficulty? = null,
         var text: String = "",
         var title: String = "",
-        var index: String = "") : BaseModel() {
+        var index: String = "") : BaseModel(), Parcelable {
 
     constructor(text: String) : this(0,
             null,
@@ -225,6 +185,7 @@ data class Markdown(
 
 }
 
+@Parcelize
 @Table(database = AppDatabase::class)
 data class Checklist(
         @PrimaryKey(autoincrement = true)
@@ -237,23 +198,23 @@ data class Checklist(
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
-        var category: Category? = null,
+        var module: Module? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
-        var subcategory: Subcategory? = null,
+        var subject: Subject? = null,
 
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
-        var child: Child? = null,
+        var difficulty: Difficulty? = null,
 
         @JsonProperty("list")
-        var content: MutableList<Content> = arrayListOf()) : BaseModel() {
+        var content: MutableList<Content> = arrayListOf()) : BaseModel(), Parcelable {
 
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "content")
@@ -268,6 +229,7 @@ data class Checklist(
     }
 }
 
+@Parcelize
 @Table(database = AppDatabase::class)
 class Content(
         @PrimaryKey(autoincrement = true)
@@ -280,4 +242,4 @@ class Content(
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
         var checklist: Checklist? = null,
         @Column
-        var label: String = "") : BaseModel()
+        var label: String = "") : BaseModel(), Parcelable

@@ -1,20 +1,20 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.interactor
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Category
-import org.secfirst.umbrella.whitelabel.data.database.content.Child
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface LessonBaseInteractor : BaseInteractor {
 
-    suspend fun fetchCategories(): List<Category>
+    suspend fun fetchCategories(): List<Module>
 
-    suspend fun fetchCategoryBy(id: Long): Category?
+    suspend fun fetchCategoryBy(id: Long): Module?
 
-    suspend fun fetchSubcategoryBy(id: Long): Subcategory?
+    suspend fun fetchSubcategoryBy(id: Long): Subject?
 
-    suspend fun fetchChildBy(id: Long): Child?
+    suspend fun fetchChildBy(id: Long): Difficulty?
 
     suspend fun fetchTopicPreferredBy(subcategory: Long): TopicPreferred?
 }

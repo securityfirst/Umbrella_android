@@ -19,7 +19,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             interactor?.let {
                 val subcategory = it.fetchSubcategoryBy(idReference)
                 val segments = arrayListOf<Segment>()
-                subcategory?.children?.forEach { child ->
+                subcategory?.difficulties?.forEach { child ->
                     val difficultTitle = "${subcategory.title} ${child.title}"
                     val segment = child.markdowns.toSegment(subcategory.id, difficultTitle)
                     segments.add(segment)

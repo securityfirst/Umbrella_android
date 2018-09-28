@@ -40,7 +40,7 @@ class TentConfigTest {
 
     @Test
     fun `should return a valid prefix Of the Category`() {
-        assertEquals(TypeFile.CATEGORY.value, ".category")
+        assertEquals(TypeFile.CATEGORY.value, ".module")
     }
 
     @Test

@@ -34,12 +34,12 @@ class LessonController : BaseController(), LessonView {
                 .inject(this)
     }
 
-    private fun onLessonClicked(idReference: Long) {
-        presenter.submitSelectLesson(idReference)
+    private fun onLessonClicked(moduleId: Long) {
+        presenter.submitSelectLesson(moduleId)
     }
 
-    private fun onGroupClicked(subject: String, idReference: Long) {
-        presenter.submitSelectLesson(subject, idReference)
+    private fun onGroupClicked(subject: String, moduleId: Long) {
+        presenter.submitSelectLesson(subject, moduleId)
     }
 
     override fun onAttach(view: View) {
@@ -59,8 +59,8 @@ class LessonController : BaseController(), LessonView {
         lessonMenu?.adapter = lessonAdapter
     }
 
-    override fun startDifficultyController(categoryId: Long) {
-        router.pushController(RouterTransaction.with(DifficultyController(categoryId)))
+    override fun startDifficultyController(moduleId: Long) {
+        router.pushController(RouterTransaction.with(DifficultyController(moduleId)))
     }
 
     override fun startDeferredSegment(segments: List<Segment>) {

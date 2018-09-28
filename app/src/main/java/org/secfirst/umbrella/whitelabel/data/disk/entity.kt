@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.data.disk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.secfirst.umbrella.whitelabel.data.database.content.*
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 
 
@@ -22,9 +23,9 @@ data class Element(
         var resourcePath: String = "")
 
 
-val Element.convertToCategory: Category
+val Element.convertToModule: Module
     get() {
-        val category = Category()
+        val category = Module()
         category.checklist = this.checklist
         category.index = this.index
         category.description = this.description
@@ -36,9 +37,9 @@ val Element.convertToCategory: Category
         return category
     }
 
-val Element.convertToSubCategory: Subcategory
+val Element.convertToSubCategory: Subject
     get() {
-        val subcategory = Subcategory()
+        val subcategory = Subject()
         subcategory.checklist = this.checklist
         subcategory.index = this.index
         subcategory.description = this.description
@@ -49,9 +50,9 @@ val Element.convertToSubCategory: Subcategory
         return subcategory
     }
 
-val Element.convertToChild: Child
+val Element.convertToDifficulty: Difficulty
     get() {
-        val child = Child()
+        val child = Difficulty()
         child.checklist = this.checklist
         child.index = this.index
         child.description = this.description
@@ -77,28 +78,28 @@ inline fun MutableList<Element>.walkChild(action: (Element) -> Unit) {
 }
 
 fun Root.convertTo(): ContentData {
-    val categories: MutableList<Category> = mutableListOf()
-    var subCategories: MutableList<Subcategory> = mutableListOf()
-    var children: MutableList<Child> = mutableListOf()
+    val modules: MutableList<Module> = mutableListOf()
+    var subCategories: MutableList<Subject> = mutableListOf()
+    var difficulties: MutableList<Difficulty> = mutableListOf()
 
     this.elements.forEach { element ->
-        val category = element.convertToCategory
-        categories.add(category)
+        val category = element.convertToModule
+        modules.add(category)
         element.children.forEach { subElement ->
 
             val subCategory = subElement.convertToSubCategory
             subCategories.add(subCategory)
             subElement.children.forEach { subElementChild ->
 
-                val child = subElementChild.convertToChild
-                children.add(child)
+                val child = subElementChild.convertToDifficulty
+                difficulties.add(child)
             }
-            subCategory.children = children
-            children = mutableListOf()
+            subCategory.difficulties = difficulties
+            difficulties = mutableListOf()
         }
-        category.subcategories = subCategories
+        category.subjects = subCategories
         subCategories = mutableListOf()
     }
-    return ContentData(categories)
+    return ContentData(modules)
 }
 

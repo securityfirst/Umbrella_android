@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.data.database.content
 
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import kotlinx.coroutines.experimental.withContext
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Item
 import org.secfirst.umbrella.whitelabel.data.disk.Root
@@ -14,22 +15,22 @@ interface ContentDao {
         withContext(AppExecutors.ioContext) {
             val dataLesson = root.convertTo()
 
-            dataLesson.categories.forEach { category ->
+            dataLesson.modules.forEach { category ->
                 category.associateForeignKey(category)
-                modelAdapter<Category>().save(category)
+                modelAdapter<Module>().save(category)
             }
 
-            dataLesson.categories.walkSubcategory { subcategory ->
+            dataLesson.modules.walkSubcategory { subcategory ->
                 modelAdapter<Markdown>().saveAll(subcategory.markdowns)
                 modelAdapter<Checklist>().saveAll(subcategory.checklist)
             }
 
-            dataLesson.categories.walkChild { child ->
-                modelAdapter<Child>().save(child)
+            dataLesson.modules.walkChild { child ->
+                modelAdapter<Difficulty>().save(child)
                 insertChecklistContent(child.checklist)
             }
             insertFormsContent(root.forms)
-        }
+       }
 
     }
 

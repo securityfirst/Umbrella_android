@@ -1,43 +1,39 @@
 package org.secfirst.umbrella.whitelabel.data.database.lesson
 
-import android.os.Parcelable
+import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
-import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
-import org.secfirst.umbrella.whitelabel.data.database.content.Category
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
-data class Lesson(var idReference: Long,
-                  var subject: String = "",
+data class Lesson(var moduleId: Long,
+                  var moduleTitle: String = "",
                   var pathIcon: String = "",
-                  var topics: List<Topic> = listOf()) : ExpandableGroup<Lesson.Topic>(subject, topics) {
-    @Parcelize
-    class Topic(var title: String = "", var idReference: Long = 0) : Parcelable
+                  var topics: List<Subject> = listOf()) : ExpandableGroup<Subject>(moduleTitle, topics) {
 
     companion object {
         const val GLOSSARY = "Glossary"
     }
 }
 
-
 @Table(database = AppDatabase::class)
-data class TopicPreferred(@PrimaryKey
-                          var subcategoryId: Long? = 0,
-                          @PrimaryKey
-                          var childId: Long? = 0) : BaseModel()
+data class TopicPreferred(@PrimaryKey(autoincrement = true)
+                          var id: Long = 0,
+                          @ForeignKey
+                          var subject: Subject? = null,
+                          @ForeignKey
+                          var difficulty: Difficulty? = null) : BaseModel() {
+    constructor(subject: Subject?, difficulty: Difficulty?) : this(0, subject, difficulty)
+}
 
-fun List<Category>.toLesson(): List<Lesson> {
+fun List<Module>.toLesson(): List<Lesson> {
     val lessons = mutableListOf<Lesson>()
-    val categoriesSorted = this.sortedWith(compareBy { it.index })
-    categoriesSorted.forEach { category ->
-        val topics = mutableListOf<Lesson.Topic>()
-        category.subcategories.forEach { subcategory ->
-            val topic = Lesson.Topic(subcategory.title, subcategory.id)
-            topics.add(topic)
-        }
-        val lesson = Lesson(category.id, category.title, category.resourcePath, topics)
+    this.forEach { module ->
+        val lesson = Lesson(module.id, module.title, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
     return lessons

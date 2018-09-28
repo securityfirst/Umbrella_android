@@ -34,7 +34,7 @@ This is the part the user sees first. It explains briefly how the app works and 
 This where you access checklists you have favourited in "My Checklists" and real time updates in "The Dashboard"
 
 **Lessons:**
-Lessons are where users can learn about topics and things that they can do to improve their security. Some of the lessons have different levels (Beginner, Advanced, Expert) depending on the your needs, ability and risk. Each lesson is broken down into sections. At the end of each lesson is a list for other resources and further reading.
+Lessons are where users can learn about topics and things that they can do to improve their security. Some of the lessons have different levels (Beginner, Advanced, Expert) depending on the your needs, ability and risk. Each module is broken down into sections. At the end of each module is a list for other resources and further reading.
 
 **Checklists:**
 Checklists are quick and easy references to help users implement the advice in the lessons. You can tick them off as you complete each item. Items can be added, disabled deleted and edited. If you favourite them by clicking the star, you will then see them in "My Checklists." Checklists can also be shared in through other apps such as your email.

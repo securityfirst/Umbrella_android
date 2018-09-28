@@ -9,7 +9,7 @@ interface LessonBasePresenter<V : LessonView, I : LessonBaseInteractor> : BasePr
 
     fun submitLoadAllLesson()
 
-    fun submitSelectLesson(idReference: Long)
+    fun submitSelectLesson(moduleId: Long)
 
-    fun submitSelectLesson(subject: String, idReference : Long)
+        fun submitSelectLesson(subject: String, moduleId : Long)
 }

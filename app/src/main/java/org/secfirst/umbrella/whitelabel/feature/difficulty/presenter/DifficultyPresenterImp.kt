@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.difficulty.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.toDifficult
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.withColors
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegment
@@ -15,12 +16,12 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), DifficultyBasePresenter<V, I> {
 
-    override fun submitLoadSegments(idReference: Long) {
+    override fun submitLoadSegments(moduleId: Long) {
         launchSilent(uiContext) {
             interactor?.let {
                 val segments = mutableListOf<Segment>()
-                val subcategory = it.fetchSubcategoryBy(idReference)
-                subcategory?.children?.forEach { child ->
+                val subcategory = it.fetchSubcategoryBy(moduleId)
+                subcategory?.difficulties?.forEach { child ->
                     val difficultTitle = "${subcategory.title} ${child.title}"
                     val segment = child.markdowns.toSegment(subcategory.id, difficultTitle)
                     segments.add(segment)
@@ -30,22 +31,24 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
         }
     }
 
-    override fun saveDifficultySelected(idReference: Long) {
+    override fun saveDifficultySelected(moduleId: Long, difficulty: Difficulty) {
         launchSilent(uiContext) {
             interactor?.let {
-                val subCategory = it.fetchSubcategoryBy(idReference)
-                val childSelect = it.fetchChildBy(idReference)
-                it.insertTopicPreferred(TopicPreferred(subCategory?.id, childSelect?.id))
+                val subject = it.fetchSubcategoryBy(moduleId)
+                if (subject != null) {
+                    it.insertTopicPreferred(TopicPreferred(subject, difficulty))
+                }
             }
         }
     }
 
-    override fun submitSelectDifficult(idReference: Long) {
+    override fun submitSelectDifficult(moduleId: Long) {
         launchSilent(uiContext) {
             interactor?.let { it ->
-                val subCategory = it.fetchSubcategoryBy(idReference)
-                subCategory?.let { subIt ->
-                    getView()?.showDifficulties(subIt.toDifficult())
+                val subject = it.fetchSubcategoryBy(moduleId)
+                subject?.let { subIt ->
+                    val toolbarTitle = subIt.title
+                    getView()?.showDifficulties(subIt.difficulties.withColors(), toolbarTitle)
                 }
             }
         }

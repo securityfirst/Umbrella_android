@@ -1,10 +1,10 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Category
-import org.secfirst.umbrella.whitelabel.data.database.content.Subcategory
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 
 interface SegmentRepo {
-    suspend fun loadSubcategoryBy(subcategoryId: Long): Subcategory?
+    suspend fun loadSubcategoryBy(subcategoryId: Long): Subject?
 
-    suspend fun loadCategoryBy(categoryId: Long): Category?
+    suspend fun loadCategoryBy(categoryId: Long): Module?
 }

@@ -6,6 +6,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface DifficultyView : BaseView {
 
-    fun showDifficulties(difficulty: Difficulty)
+    fun showDifficulties(difficulties: List<Difficulty>, toolbarTitle : String)
+
     fun startSegment(segments: List<Segment>)
 }

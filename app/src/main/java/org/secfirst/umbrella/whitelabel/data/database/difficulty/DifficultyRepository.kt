@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Child
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import javax.inject.Inject
 

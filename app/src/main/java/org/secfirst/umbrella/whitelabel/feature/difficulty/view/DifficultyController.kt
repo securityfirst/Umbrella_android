@@ -22,8 +22,8 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     @Inject
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
-    private val difficultClick: (Difficulty.Item) -> Unit = this::onDifficultClick
-    private val categoryId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
+    private val difficultClick: (Difficulty) -> Unit = this::onDifficultClick
+    private val moduleId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
     private val difficultyAdapter: DifficultyAdapter = DifficultyAdapter(difficultClick)
 
     constructor(idReference: Long) : this(Bundle().apply {
@@ -41,9 +41,9 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
                 .inject(this)
     }
 
-    private fun onDifficultClick(difficulty: Difficulty.Item) {
-        presenter.saveDifficultySelected(difficulty.idReference)
-        presenter.submitLoadSegments(categoryId)
+    private fun onDifficultClick(difficulty: Difficulty) {
+        presenter.saveDifficultySelected(moduleId, difficulty)
+        presenter.submitLoadSegments(moduleId)
     }
 
     override fun startSegment(segments: List<Segment>) {
@@ -52,7 +52,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     override fun onAttach(view: View) {
         presenter.onAttach(this)
-        presenter.submitSelectDifficult(categoryId)
+        presenter.submitSelectDifficult(moduleId)
     }
 
     override fun onDestroyView(view: View) {
@@ -64,11 +64,11 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         return inflater.inflate(R.layout.difficulty_view, container, false)
     }
 
-    override fun showDifficulties(difficulty: Difficulty) {
-        setUpToolbar(difficulty.titleToolbar)
+    override fun showDifficulties(difficulties: List<Difficulty>, toolbarTitle: String) {
+        setUpToolbar(toolbarTitle)
         difficultyRecyclerView?.let {
             it.layoutManager = LinearLayoutManager(context)
-            difficultyAdapter.addAll(difficulty.items)
+            difficultyAdapter.addAll(difficulties)
             it.adapter = difficultyAdapter
         }
     }
