@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.feature.segment.view
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
+import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -98,7 +99,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
-    private fun onSegmentClicked(segment: Markdown) {
-
+    private fun onSegmentClicked(markdown: Markdown) {
+        router.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
     }
 }
