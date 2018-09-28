@@ -9,6 +9,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.lesson_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
@@ -26,7 +27,7 @@ class LessonController : BaseController(), LessonView {
 
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
-    private val lessonClick: (Long) -> Unit = this::onLessonClicked
+    private val lessonClick: (Subject) -> Unit = this::onLessonClicked
     private val groupClick: (String, Long) -> Unit = this::onGroupClicked
     private lateinit var lessonAdapter: LessonAdapter
 
@@ -37,12 +38,12 @@ class LessonController : BaseController(), LessonView {
                 .inject(this)
     }
 
-    private fun onLessonClicked(moduleId: Long) {
-        presenter.submitSelectLesson(moduleId)
+    private fun onLessonClicked(subject: Subject) {
+        presenter.submitSelectLesson(subject)
     }
 
     private fun onGroupClicked(subject: String, moduleId: Long) {
-        presenter.submitSelectLesson(subject, moduleId)
+        presenter.submitSelectHead(subject, moduleId)
     }
 
     override fun onAttach(view: View) {

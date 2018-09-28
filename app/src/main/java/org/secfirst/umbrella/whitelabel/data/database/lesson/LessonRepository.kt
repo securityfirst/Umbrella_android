@@ -4,7 +4,11 @@ import javax.inject.Inject
 
 class LessonRepository @Inject constructor(private val lessonDao: LessonDao) : LessonRepo {
 
-    override suspend fun loadMarkdownBy(id: Long) = lessonDao.getMarkdown(id)
+    override suspend fun loadMarkdownByModule(moduleId: Long) = lessonDao.getMarkdownByModule(moduleId)
+
+    override suspend fun loadMarkdownsBy(id: Long) = lessonDao.getMarkdowns(id)
+
+    override suspend fun loadMarkdownBySubject(id: Long) = lessonDao.getMarkdownBySubject(id)
 
     override suspend fun loadChildBy(id: Long) = lessonDao.getChildBy(id)
 

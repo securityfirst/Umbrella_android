@@ -12,13 +12,14 @@ import kotlinx.android.synthetic.main.lesson_menu_head.view.*
 import kotlinx.android.synthetic.main.lesson_menu_item.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 
 import java.io.File
 
 
 class LessonAdapter(groups: List<ExpandableGroup<*>>,
-                    private val onclickLesson: (Long) -> Unit,
+                    private val onclickLesson: (Subject) -> Unit,
                     private val onGroupClicked: (String, Long) -> Unit)
     : ExpandableRecyclerViewAdapter<LessonAdapter.HeadHolder, LessonAdapter.LessonMenuHolder>(groups) {
 
@@ -43,7 +44,7 @@ class LessonAdapter(groups: List<ExpandableGroup<*>>,
 
     override fun onBindChildViewHolder(holder: LessonMenuHolder, flatPosition: Int, group: ExpandableGroup<*>, childIndex: Int) {
         val itemGroup = (group as Lesson).topics[childIndex]
-        holder.bind(itemGroup.title, clickListener = { onclickLesson(itemGroup.id) })
+        holder.bind(itemGroup.title, clickListener = { onclickLesson(itemGroup) })
     }
 
     override fun onBindGroupViewHolder(holder: HeadHolder, flatPosition: Int, group: ExpandableGroup<*>) {

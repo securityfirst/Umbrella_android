@@ -42,7 +42,7 @@ data class Markdown(
     constructor(text: String) : this(0,
             null,
             null,
-            null, text, "", "")
+            null, text, recoveryTitle(text), recoveryIndex(text))
 
     companion object {
         const val TAG_INDEX = "index: "

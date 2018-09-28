@@ -16,7 +16,8 @@ data class Lesson(var moduleId: Long,
                   var topics: List<Subject> = listOf()) : ExpandableGroup<Subject>(moduleTitle, topics) {
 
     companion object {
-        const val GLOSSARY = "Glossary"
+        const val GLOSSARY = "glossary"
+        const val ABOUT = "about"
     }
 }
 

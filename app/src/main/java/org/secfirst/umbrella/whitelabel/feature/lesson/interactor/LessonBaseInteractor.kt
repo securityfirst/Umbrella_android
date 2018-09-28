@@ -13,11 +13,15 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchCategoryBy(id: Long): Module?
 
-    suspend fun fetchSubcategoryBy(id: Long): Subject?
+    suspend fun fetchSubject(id: Long): Subject?
 
     suspend fun fetchChildBy(id: Long): Difficulty?
 
-    suspend fun fetchMarkdownBy(id: Long): Markdown?
+    suspend fun fetchMarkdownBySubject(subjectId: Long): Markdown?
+
+    suspend fun fetchMarkdownByModule(moduleId: Long): Markdown?
+
+    suspend fun fetchMarkdownsBy(id: Long): List<Markdown>
 
     suspend fun fetchTopicPreferredBy(subcategory: Long): TopicPreferred?
 }

@@ -22,10 +22,10 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getSubcategoryBy(id: Long): Subject? = withContext(ioContext) {
+    suspend fun getSubcategoryBy(moduleId: Long): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(id))
+                .where(Subject_Table.module_id.`is`(moduleId))
                 .querySingle()
     }
 
@@ -36,17 +36,31 @@ interface LessonDao {
                 .querySingle()
     }
 
-    suspend fun getMarkdown(id: Long): Markdown? = withContext(ioContext) {
+    suspend fun getMarkdownBySubject(subjectId: Long): Markdown? = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.id.`is`(id))
+                .where(Markdown_Table.subject_id.`is`(subjectId))
                 .querySingle()
     }
 
-    suspend fun getTopic(subcategoryId: Long): TopicPreferred? = withContext(ioContext) {
+    suspend fun getMarkdownByModule(moduleId: Long): Markdown? = withContext(ioContext) {
+        SQLite.select()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.module_id.`is`(moduleId))
+                .querySingle()
+    }
+
+    suspend fun getMarkdowns(id: Long): List<Markdown> = withContext(ioContext) {
+        SQLite.select()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.id.`is`(id))
+                .queryList()
+    }
+
+    suspend fun getTopic(subjectId: Long): TopicPreferred? = withContext(ioContext) {
         SQLite.select()
                 .from(TopicPreferred::class.java)
-                .where(TopicPreferred_Table.subject_id.`is`(subcategoryId))
+                .where(TopicPreferred_Table.subject_id.`is`(subjectId))
                 .querySingle()
     }
 
