@@ -32,7 +32,8 @@ data class TopicPreferred(@PrimaryKey(autoincrement = true)
 
 fun List<Module>.toLesson(): List<Lesson> {
     val lessons = mutableListOf<Lesson>()
-    this.forEach { module ->
+    val moduleSorted = this.sortedWith(compareBy { it.index })
+    moduleSorted.forEach { module ->
         val lesson = Lesson(module.id, module.title, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
