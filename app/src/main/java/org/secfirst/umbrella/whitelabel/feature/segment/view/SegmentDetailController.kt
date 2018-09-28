@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.segment_detail.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 
 class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {

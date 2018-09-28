@@ -11,6 +11,8 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 
 
 class ContentData(val modules: MutableList<Module> = mutableListOf())
@@ -147,42 +149,6 @@ inline fun MutableList<Module>.walkSubcategory(action: (Subject) -> Unit) {
     this.forEach { category ->
         category.subjects.forEach(action)
     }
-}
-
-@Parcelize
-@Table(database = AppDatabase::class, allFields = true)
-data class Markdown(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
-        @ForeignKey(stubbedRelationship = true)
-        var module: Module? = null,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
-        @ForeignKey(stubbedRelationship = true)
-        var subject: Subject? = null,
-
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
-        @ForeignKey(stubbedRelationship = true)
-        var difficulty: Difficulty? = null,
-        var text: String = "",
-        var title: String = "",
-        var index: String = "") : BaseModel(), Parcelable {
-
-    constructor(text: String) : this(0,
-            null,
-            null,
-            null, text, recoveryTitle(text), recoveryIndex(text))
-
-    companion object {
-        private const val TAG_INDEX = "index: "
-        private const val TAG_TITLE = "title: "
-
-        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
-        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
-    }
-
 }
 
 @Parcelize

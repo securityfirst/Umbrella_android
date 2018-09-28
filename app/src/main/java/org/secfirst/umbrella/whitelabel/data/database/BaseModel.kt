@@ -6,7 +6,7 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.content.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
-import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 open class BaseModel : BaseRXModel() {
     fun associateForeignKey(module: Module) {

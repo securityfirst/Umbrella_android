@@ -3,10 +3,13 @@ package org.secfirst.umbrella.whitelabel.feature.lesson.interactor
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepo
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import javax.inject.Inject
 
 class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo) : BaseInteractorImp(), LessonBaseInteractor {
+
+    override suspend fun fetchMarkdownBy(id: Long): Markdown? = lessonRepo.loadMarkdownBy(id)
 
     override suspend fun fetchChildBy(id: Long) = lessonRepo.loadChildBy(id)
 

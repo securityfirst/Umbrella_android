@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController.Companion.EXTRA_SELECTED_SEGMENT

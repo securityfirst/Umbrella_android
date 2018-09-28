@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.lesson_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
@@ -17,9 +18,11 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 import javax.inject.Inject
 
 class LessonController : BaseController(), LessonView {
+
 
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
@@ -65,6 +68,10 @@ class LessonController : BaseController(), LessonView {
 
     override fun startDeferredSegment(segments: List<Segment>) {
         router.pushController(RouterTransaction.with(SegmentController(segments)))
+    }
+
+    override fun startSegmentDetail(markdown: Markdown) {
+        router.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

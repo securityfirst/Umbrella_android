@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import org.secfirst.umbrella.whitelabel.data.database.content.*
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 
 class Root(val elements: MutableList<Element> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())

@@ -8,6 +8,8 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject_Table
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
@@ -31,6 +33,13 @@ interface LessonDao {
         SQLite.select()
                 .from(Difficulty::class.java)
                 .where(Difficulty_Table.id.`is`(id))
+                .querySingle()
+    }
+
+    suspend fun getMarkdown(id: Long): Markdown? = withContext(ioContext) {
+        SQLite.select()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.id.`is`(id))
                 .querySingle()
     }
 

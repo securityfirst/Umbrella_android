@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.segment_item.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
 
