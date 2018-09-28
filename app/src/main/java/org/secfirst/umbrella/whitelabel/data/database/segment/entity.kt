@@ -7,17 +7,13 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
 @Parcelize
 data class Segment(var toolbarTitle: String,
-                   var idReference: Long,
-                   var items: List<Item> = listOf()) : Parcelable {
-
-    @Parcelize
-    data class Item(var indexItem: String, var title: String) : Parcelable
-}
+                   var subjectId: Long,
+                   var markdowns: List<Markdown> = listOf()) : Parcelable
 
 fun MutableList<Markdown>.toSegment(subcategoryId: Long, title: String): Segment {
-    val items = mutableListOf<Segment.Item>()
+    val markdowns = mutableListOf<Markdown>()
     this.forEach { markdown ->
-        items.add(Segment.Item(markdown.index, markdown.title))
+        markdowns.add(markdown)
     }
-    return Segment(title, subcategoryId, items)
+    return Segment(title, subcategoryId, markdowns)
 }

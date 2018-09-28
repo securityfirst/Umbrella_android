@@ -46,7 +46,7 @@ open class BaseModel : BaseRXModel() {
             when (foreignKey) {
                 is Module -> mark.module = foreignKey
                 is Subject -> mark.subject = foreignKey
-                is Difficulty -> mark.child = foreignKey
+                is Difficulty -> mark.difficulty = foreignKey
             }
         }
 

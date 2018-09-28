@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.difficulty.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderBySelected
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.withColors
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment

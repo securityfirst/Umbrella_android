@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderBySelected
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson.Companion.GLOSSARY
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
@@ -41,7 +42,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 if (topicPreferred != null) {
                     val segments = mutableListOf<Segment>()
                     val subjectPreferred = it.fetchSubcategoryBy(moduleId)
-                    val difficultyOrder =  subjectPreferred?.difficulties?.orderBySelected(topicPreferred.difficulty)
+                    val difficultyOrder = subjectPreferred?.difficulties?.orderBySelected(topicPreferred.difficulty)
                     difficultyOrder?.forEach { child ->
                         val difficultTitle = "${subjectPreferred.title} ${child.title}"
                         val segment = child.markdowns.toSegment(subjectPreferred.id, difficultTitle)

@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController.Companion.EXTRA_SELECTED_SEGMENT
@@ -22,7 +23,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
-    private val segmentClick: (Segment.Item) -> Unit = this::onSegmentClicked
+    private val segmentClick: (Markdown) -> Unit = this::onSegmentClicked
     private lateinit var difficultAdapter: DifficultSpinnerAdapter
     private val segments by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
 
@@ -64,7 +65,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    segmentAdapter.add(segments[position].items)
+                    segmentAdapter.add(segments[position].markdowns)
                 }
             }
             it.adapter = difficultAdapter
@@ -97,7 +98,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
-    private fun onSegmentClicked(segment: Segment.Item) {
+    private fun onSegmentClicked(segment: Markdown) {
 
     }
 }

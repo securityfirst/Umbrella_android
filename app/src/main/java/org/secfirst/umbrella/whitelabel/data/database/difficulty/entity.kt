@@ -41,7 +41,7 @@ data class Difficulty(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.child_id.eq(id))
+                    .where(Markdown_Table.difficulty_id.eq(id))
                     .queryList()
         }
         return markdowns

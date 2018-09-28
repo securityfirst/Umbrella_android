@@ -26,8 +26,8 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     private val moduleId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
     private val difficultyAdapter: DifficultyAdapter = DifficultyAdapter(difficultClick)
 
-    constructor(idReference: Long) : this(Bundle().apply {
-        putLong(EXTRA_SELECTED_SEGMENT, idReference)
+    constructor(subjectId: Long) : this(Bundle().apply {
+        putLong(EXTRA_SELECTED_SEGMENT, subjectId)
     })
 
     companion object {

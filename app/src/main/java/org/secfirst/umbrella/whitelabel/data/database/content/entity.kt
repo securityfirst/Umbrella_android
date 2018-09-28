@@ -165,7 +165,7 @@ data class Markdown(
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(stubbedRelationship = true)
-        var child: Difficulty? = null,
+        var difficulty: Difficulty? = null,
         var text: String = "",
         var title: String = "",
         var index: String = "") : BaseModel(), Parcelable {

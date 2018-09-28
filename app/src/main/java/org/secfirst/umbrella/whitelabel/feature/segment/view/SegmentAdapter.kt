@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.segment_item.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
+import org.secfirst.umbrella.whitelabel.data.database.content.Markdown
 
-class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
+class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerView.Adapter<SegmentAdapter.SegmentHolder>() {
 
-    private val segments: MutableList<Segment.Item> = mutableListOf()
+    private val segments: MutableList<Markdown> = mutableListOf()
 
-    fun add(segmentsItem: List<Segment.Item>) {
+    fun add(segmentsItem: List<Markdown>) {
         this.segments.clear()
         segmentsItem.forEach { this.segments.add(it) }
         notifyDataSetChanged()
@@ -36,9 +36,9 @@ class SegmentAdapter(private val onClickSegment: (Segment.Item) -> Unit) : Recyc
     class SegmentHolder(itemView: View, var size: Int) : RecyclerView.ViewHolder(itemView) {
         val colours = intArrayOf(R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow)
 
-        fun bind(segment: Segment.Item, clickListener: (SegmentHolder) -> Unit) {
+        fun bind(markdown: Markdown, clickListener: (SegmentHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
-            with(segment) {
+            with(markdown) {
                 val index = adapterPosition + 1
                 itemView.segmentIndex.text = index.toString()
                 itemView.segmentDescription.text = title
