@@ -20,10 +20,10 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
         launchSilent(uiContext) {
             interactor?.let {
                 val segments = mutableListOf<Segment>()
-                val subcategory = it.fetchSubcategoryBy(moduleId)
-                subcategory?.difficulties?.forEach { child ->
-                    val difficultTitle = "${subcategory.title} ${child.title}"
-                    val segment = child.markdowns.toSegment(subcategory.id, difficultTitle)
+                val subject = it.fetchSubjectByModule(moduleId)
+                subject?.difficulties?.forEach { child ->
+                    val difficultTitle = "${subject.title} ${child.title}"
+                    val segment = child.markdowns.toSegment(subject.id, difficultTitle)
                     segments.add(segment)
                 }
                 getView()?.startSegment(segments)
@@ -31,10 +31,11 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
         }
     }
 
-    override fun saveDifficultySelected(moduleId: Long, difficulty: Difficulty) {
+    override fun saveDifficultySelected(difficulty: Difficulty) {
         launchSilent(uiContext) {
             interactor?.let {
-                val subject = it.fetchSubcategoryBy(moduleId)
+                val subjectId = if (difficulty.subject != null) difficulty.subject!!.id else 0
+                val subject = it.fetchSubjectBy(subjectId)
                 if (subject != null) {
                     it.insertTopicPreferred(TopicPreferred(subject, difficulty))
                 }
@@ -45,7 +46,7 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
     override fun submitSelectDifficult(moduleId: Long) {
         launchSilent(uiContext) {
             interactor?.let { it ->
-                val subject = it.fetchSubcategoryBy(moduleId)
+                val subject = it.fetchSubjectByModule(moduleId)
                 subject?.let { subIt ->
                     val toolbarTitle = subIt.title
                     getView()?.showDifficulties(subIt.difficulties.withColors(), toolbarTitle)

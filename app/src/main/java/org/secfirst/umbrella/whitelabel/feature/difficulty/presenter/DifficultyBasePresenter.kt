@@ -9,7 +9,7 @@ interface DifficultyBasePresenter<V : DifficultyView, I : DifficultyBaseInteract
 
     fun submitSelectDifficult(moduleId: Long)
 
-    fun saveDifficultySelected(moduleId: Long, difficulty : Difficulty)
+    fun saveDifficultySelected(difficulty : Difficulty)
 
     fun submitLoadSegments(moduleId: Long)
 }

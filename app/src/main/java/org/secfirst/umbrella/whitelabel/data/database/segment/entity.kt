@@ -75,9 +75,6 @@ fun Markdown.removeHead(): Markdown {
         }
 
     }
-//    if (this.text.lines()[3].contains("-"))
-//        this.text = this.text.removeRange(0, 3)
-//    else if (this.text.lines()[2].contains("-"))
-//        this.text = this.text.removeRange(0, 2)
+    //this.text = this.text.substringAfterLast(this.text.lines()[0]) + "#"
     return this
 }

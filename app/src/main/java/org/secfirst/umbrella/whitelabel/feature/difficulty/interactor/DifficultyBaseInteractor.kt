@@ -9,8 +9,10 @@ interface DifficultyBaseInteractor : BaseInteractor {
 
     suspend fun insertTopicPreferred(topicPreferred: TopicPreferred)
 
-    suspend fun fetchSubcategoryBy(subcategoryId: Long): Subject?
+    suspend fun fetchSubjectBy(subjectId: Long): Subject?
 
-    suspend fun fetchChildBy(id: Long): Difficulty?
+    suspend fun fetchSubjectByModule(moduleId: Long): Subject?
+
+    suspend fun fetchDifficultyBy(id: Long): Difficulty?
 
 }

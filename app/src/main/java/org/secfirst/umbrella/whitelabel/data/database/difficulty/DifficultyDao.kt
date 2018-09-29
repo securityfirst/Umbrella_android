@@ -16,10 +16,17 @@ interface DifficultyDao {
         }
     }
 
-    suspend fun getSubcategoryBy(id: Long): Subject? = withContext(AppExecutors.ioContext) {
+    suspend fun getSubjectByModule(moduleId: Long): Subject? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(id))
+                .where(Subject_Table.module_id.`is`(moduleId))
+                .querySingle()
+    }
+
+    suspend fun getSubjectBy(subjectId: Long): Subject? = withContext(AppExecutors.ioContext) {
+        SQLite.select()
+                .from(Subject::class.java)
+                .where(Subject_Table.id.`is`(subjectId))
                 .querySingle()
     }
 

@@ -49,18 +49,17 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
             interactor?.let {
 
                 val moduleId = if (subject.module != null) subject.module!!.id else 0
-                val topicPreferred = it.fetchTopicPreferredBy(moduleId)
-                val markdowns = it.fetchMarkdownBySubject(subject.id)
+                val topicPreferred = it.fetchTopicPreferredBy(subject.id)
+                val markdown = it.fetchMarkdownBySubject(subject.id)
 
                 if (topicPreferred != null)
                     subjectInSegment(topicPreferred.subject)
-                else if (subject.difficulties.isEmpty() && markdowns != null) {
-                    subjectInSegmentDetail(markdowns)
+                else if (subject.difficulties.isEmpty() && markdown != null) {
+                    subjectInSegmentDetail(markdown)
                 } else {
                     subjectInDifficulty(moduleId)
                 }
             }
-
         }
     }
 
