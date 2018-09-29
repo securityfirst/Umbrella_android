@@ -8,6 +8,9 @@ import dagger.Provides
 import dagger.Reusable
 import io.reactivex.disposables.CompositeDisposable
 import org.secfirst.umbrella.whitelabel.data.VirtualStorage
+import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistDao
+import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepo
+import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepository
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentDao
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentRepo
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentRepository
@@ -96,6 +99,9 @@ class RepositoryModule {
     internal val difficultyDao
         get() = object : DifficultyDao {}
 
+    internal val checklistDao
+        get() = object : ChecklistDao {}
+
     @Provides
     @Singleton
     internal fun provideLessonDao(): LessonRepo = LessonRepository(lessonDao)
@@ -123,6 +129,10 @@ class RepositoryModule {
     @Provides
     @Singleton
     internal fun provideDifficultyDao(): DifficultyRepo = DifficultyRepository(difficultyDao)
+
+    @Provides
+    @Singleton
+    internal fun provideChecklistDao(): ChecklistRepo = ChecklistRepository(checklistDao)
 }
 
 @Module

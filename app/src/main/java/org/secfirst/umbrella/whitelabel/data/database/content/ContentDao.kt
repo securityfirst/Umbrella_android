@@ -2,7 +2,10 @@ package org.secfirst.umbrella.whitelabel.data.database.content
 
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import kotlinx.coroutines.experimental.withContext
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.walkThroughDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Item
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -21,12 +24,12 @@ interface ContentDao {
                 modelAdapter<Module>().save(category)
             }
 
-            dataLesson.modules.walkSubcategory { subcategory ->
+            dataLesson.modules.walkThroughSubject { subcategory ->
                 modelAdapter<Markdown>().saveAll(subcategory.markdowns)
                 modelAdapter<Checklist>().saveAll(subcategory.checklist)
             }
 
-            dataLesson.modules.walkChild { child ->
+            dataLesson.modules.walkThroughDifficulty { child ->
                 modelAdapter<Difficulty>().save(child)
                 insertChecklistContent(child.checklist)
             }

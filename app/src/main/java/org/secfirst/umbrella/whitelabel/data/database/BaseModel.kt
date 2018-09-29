@@ -4,7 +4,7 @@ import com.raizlabs.android.dbflow.rx2.structure.BaseRXModel
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
-import org.secfirst.umbrella.whitelabel.data.database.content.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 

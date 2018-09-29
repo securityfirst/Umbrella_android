@@ -7,8 +7,9 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
-import org.secfirst.umbrella.whitelabel.data.database.content.Checklist
-import org.secfirst.umbrella.whitelabel.data.database.content.Checklist_Table
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
@@ -97,4 +98,12 @@ fun MutableList<Difficulty>.withColors(): List<Difficulty> {
 
     }
     return sortedList
+}
+
+inline fun MutableList<Module>.walkThroughDifficulty(action: (Difficulty) -> Unit) {
+    this.forEach { module ->
+        module.subjects.forEach { subject ->
+            subject.difficulties.forEach(action)
+        }
+    }
 }

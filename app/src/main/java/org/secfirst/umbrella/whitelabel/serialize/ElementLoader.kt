@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.serialize
 
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.database.content.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead

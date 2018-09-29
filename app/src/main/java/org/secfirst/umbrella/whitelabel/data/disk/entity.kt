@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.disk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.*
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
