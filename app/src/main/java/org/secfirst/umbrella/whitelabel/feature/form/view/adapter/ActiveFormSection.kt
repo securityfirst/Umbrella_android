@@ -18,7 +18,7 @@ class ActiveFormSection(private val onEditItemClick: (ActiveForm) -> Unit,
                         private val activeForms: MutableList<ActiveForm>) : StatelessSection(SectionParameters.builder()
         .itemResourceId(R.layout.active_form_item_view)
         .headerResourceId(R.layout.head_section)
-        .footerResourceId(R.layout.foot_section)
+        .footerResourceId(R.layout.section_foot)
         .build()) {
 
     override fun getContentItemsTotal() = activeForms.size

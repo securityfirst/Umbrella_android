@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import android.widget.AdapterView
 import com.bluelinelabs.conductor.RouterTransaction
@@ -61,6 +62,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun initSegmentView(segments: List<Segment>) {
         val segmentAdapter = SegmentAdapter(segmentClick)
         segmentRecyclerView?.initGridView(segmentAdapter)
+        setFootList(segmentAdapter)
         difficultAdapter = DifficultSpinnerAdapter(context, segments)
         segmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -84,6 +86,14 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         return true
     }
 
+    private fun setFootList(segmentAdapter: SegmentAdapter) {
+        val manager = segmentRecyclerView?.layoutManager as GridLayoutManager
+        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                return if (segmentAdapter.isHeader(position)) manager.spanCount else 1
+            }
+        }
+    }
 
     private fun setUpToolbar() {
         segmentToolbar?.let {
