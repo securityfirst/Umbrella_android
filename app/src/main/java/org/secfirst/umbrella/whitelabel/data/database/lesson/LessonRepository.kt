@@ -14,7 +14,7 @@ class LessonRepository @Inject constructor(private val lessonDao: LessonDao) : L
 
     override suspend fun loadCategoryBy(id: Long) = lessonDao.getCategoryBy(id)
 
-    override suspend fun loadTopicPreferredBy(subcategoryId: Long) = lessonDao.getTopic(subcategoryId)
+    override suspend fun loadTopicPreferredBy(difficultyId: Long) = lessonDao.getTopicPreferred(difficultyId)
 
     override suspend fun loadSubcategoryBy(id: Long) = lessonDao.getSubcategoryBy(id)
 

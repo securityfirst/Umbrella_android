@@ -12,5 +12,5 @@ interface LessonBasePresenter<V : LessonView, I : LessonBaseInteractor> : BasePr
 
     fun submitSelectLesson(subject: Subject)
 
-    fun submitSelectHead(subject: String, moduleId: Long)
+    fun submitSelectHead(moduleId: Long)
 }

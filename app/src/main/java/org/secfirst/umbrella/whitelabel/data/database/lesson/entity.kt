@@ -25,10 +25,8 @@ data class Lesson(var moduleId: Long,
 data class TopicPreferred(@PrimaryKey(autoincrement = true)
                           var id: Long = 0,
                           @ForeignKey
-                          var subject: Subject? = null,
-                          @ForeignKey
                           var difficulty: Difficulty? = null) : BaseModel() {
-    constructor(subject: Subject?, difficulty: Difficulty?) : this(0, subject, difficulty)
+    constructor(difficulty: Difficulty?) : this(0, difficulty)
 }
 
 fun List<Module>.toLesson(): List<Lesson> {

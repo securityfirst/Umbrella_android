@@ -8,5 +8,5 @@ interface DifficultyView : BaseView {
 
     fun showDifficulties(difficulties: List<Difficulty>, toolbarTitle : String)
 
-    fun startSegment(segments: List<Segment>)
+    fun startSegment(selectDifficulty : Difficulty)
 }

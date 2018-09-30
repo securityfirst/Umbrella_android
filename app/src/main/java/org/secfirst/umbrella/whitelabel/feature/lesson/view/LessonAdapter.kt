@@ -11,16 +11,14 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.lesson_menu_head.view.*
 import kotlinx.android.synthetic.main.lesson_menu_item.view.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
-
 import java.io.File
 
 
 class LessonAdapter(groups: List<ExpandableGroup<*>>,
                     private val onclickLesson: (Subject) -> Unit,
-                    private val onGroupClicked: (String, Long) -> Unit)
+                    private val onGroupClicked: (Long) -> Unit)
     : ExpandableRecyclerViewAdapter<LessonAdapter.HeadHolder, LessonAdapter.LessonMenuHolder>(groups) {
 
 
@@ -37,8 +35,10 @@ class LessonAdapter(groups: List<ExpandableGroup<*>>,
     }
 
     override fun onGroupClick(flatPos: Int): Boolean {
-        val itemSection = groups[flatPos] as Lesson
-        onGroupClicked(itemSection.moduleTitle, itemSection.moduleId)
+        if (flatPos < groups.size) {
+            val itemSection = groups[flatPos] as Lesson
+            onGroupClicked(itemSection.moduleId)
+        }
         return super.onGroupClick(flatPos)
     }
 

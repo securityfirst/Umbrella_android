@@ -10,11 +10,9 @@ import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
-class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit,
+                     private val onFootSegment: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
-    private val ITEM_VIEW_TYPE_HEADER = 0
-    private val ITEM_VIEW_TYPE_ITEM = 1
 
     private val markdowns: MutableList<Markdown> = mutableListOf()
 
@@ -35,9 +33,9 @@ class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerV
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             val headerView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.segment_foot, parent, false)
-            return HeaderHolder(headerView)
+            return FooterHolder(headerView)
         }
-        return SegmentHolder(view, markdowns.size)
+        return SegmentHolder(view)
     }
 
 
@@ -45,6 +43,9 @@ class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerV
         if (!isHeader(position)) {
             holder as SegmentHolder
             holder.bind(markdowns[position], clickListener = { onClickSegment(markdowns[position]) })
+        } else {
+            holder as FooterHolder
+            holder.bind(clickListener = { onFootSegment() })
         }
     }
 
@@ -55,10 +56,14 @@ class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerV
     override fun getItemCount() = markdowns.size + 1
 
 
-    class HeaderHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    class FooterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(clickListener: (FooterHolder) -> Unit) {
+            itemView.setOnClickListener { clickListener(this) }
+        }
+    }
 
-    class SegmentHolder(itemView: View, var size: Int) : RecyclerView.ViewHolder(itemView) {
-        val colours = intArrayOf(R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow)
+    class SegmentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val colours = intArrayOf(R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow)
 
         fun bind(markdown: Markdown, clickListener: (SegmentHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
@@ -69,5 +74,10 @@ class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit) : RecyclerV
                 itemView.segmentLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
             }
         }
+    }
+
+    companion object {
+        private const val ITEM_VIEW_TYPE_HEADER = 0
+        private const val ITEM_VIEW_TYPE_ITEM = 1
     }
 }

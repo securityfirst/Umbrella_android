@@ -29,4 +29,9 @@
         <item name="colorControlNormal">@color/green_button</item>
         <item name="colorControlActivated">@color/green_button</item>
     </style>
+
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+
+    </style>
 </resources>

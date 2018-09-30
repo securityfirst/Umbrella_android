@@ -73,15 +73,18 @@ data class Difficulty(
     }
 }
 
-fun MutableList<Difficulty>.orderBySelected(difficultSelected: Difficulty?): MutableList<Difficulty> {
-    val difficultOrder = mutableListOf<Difficulty>()
-    difficultSelected?.let { difficultOrder.add(it) }
-    this.forEach { difficulty ->
-        if (difficulty.id != difficultSelected?.id)
-            difficultOrder.add(difficulty)
 
+fun MutableList<Difficulty>.orderByDifficultySelected(selectDifficultyId: Long) : MutableList<Difficulty> {
+    val baseIndex = 0
+    var selectDifficulty : Difficulty
+    for ((index, value) in this.withIndex()) {
+        if (value.id == selectDifficultyId){
+            selectDifficulty = value
+            this[index] = this[baseIndex]
+            this[baseIndex] = selectDifficulty
+        }
     }
-    return difficultOrder
+    return this
 }
 
 fun MutableList<Difficulty>.withColors(): List<Difficulty> {

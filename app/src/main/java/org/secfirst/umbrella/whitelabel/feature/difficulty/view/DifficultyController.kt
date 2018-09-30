@@ -9,8 +9,8 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficulty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
@@ -23,15 +23,16 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     @Inject
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
     private val difficultClick: (Difficulty) -> Unit = this::onDifficultClick
-    private val moduleId by lazy { args.getLong(EXTRA_SELECTED_SEGMENT) }
+    private val selectSubject by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT) as Subject }
     private val difficultyAdapter: DifficultyAdapter = DifficultyAdapter(difficultClick)
 
-    constructor(subjectId: Long) : this(Bundle().apply {
-        putLong(EXTRA_SELECTED_SEGMENT, subjectId)
+    constructor(subject: Subject) : this(Bundle().apply {
+        putParcelable(EXTRA_SELECTED_SEGMENT, subject)
     })
 
     companion object {
         const val EXTRA_SELECTED_SEGMENT = "selected_difficulty"
+
     }
 
     override fun onInject() {
@@ -42,17 +43,17 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     }
 
     private fun onDifficultClick(difficulty: Difficulty) {
-        presenter.saveDifficultySelected(difficulty)
-        presenter.submitLoadSegments(moduleId)
+        presenter.saveSelectedDifficulty(difficulty)
+        presenter.submitSelectedDifficulty(difficulty)
     }
 
-    override fun startSegment(segments: List<Segment>) {
-        router.pushController(RouterTransaction.with(SegmentController(segments)))
+    override fun startSegment(selectDifficulty: Difficulty) {
+        router.pushController(RouterTransaction.with(SegmentController(selectDifficulty)))
     }
 
     override fun onAttach(view: View) {
         presenter.onAttach(this)
-        presenter.submitSelectDifficult(moduleId)
+        presenter.submitDifficulty(selectSubject)
     }
 
     override fun onDestroyView(view: View) {

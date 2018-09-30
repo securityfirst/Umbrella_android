@@ -12,7 +12,7 @@ interface DifficultyDao {
 
     suspend fun save(topicPreferred: TopicPreferred) {
         withContext(AppExecutors.ioContext) {
-            modelAdapter<TopicPreferred>().insert(topicPreferred)
+            modelAdapter<TopicPreferred>().save(topicPreferred)
         }
     }
 

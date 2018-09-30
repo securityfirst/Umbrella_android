@@ -47,7 +47,7 @@ data class Markdown(
     companion object {
         const val TAG_INDEX = "index: "
         const val TAG_TITLE = "title: "
-
+        const val SINGLE_CHOICE = 1
         fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
         fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
     }

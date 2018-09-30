@@ -1,12 +1,10 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson.Companion.ABOUT
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson.Companion.GLOSSARY
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
-import org.secfirst.umbrella.whitelabel.data.database.segment.toSegment
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
@@ -19,26 +17,14 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor = interactor), LessonBasePresenter<V, I> {
 
 
-    override fun submitSelectHead(subject: String, moduleId: Long) {
+    override fun submitSelectHead(moduleId: Long) {
         launchSilent(uiContext) {
             interactor?.let {
-                val segments = mutableListOf<Segment>()
-                when (subject.toLowerCase()) {
-                    GLOSSARY -> {
-                        val category = it.fetchCategoryBy(moduleId)
-                        category?.let { catIt ->
-                            val segment = catIt.markdowns.toSegment(category.id, category.title)
-                            segments.add(segment)
-                        }
-                        getView()?.startDeferredSegment(segments)
-                    }
-                    ABOUT -> {
-                        val markdown = it.fetchMarkdownByModule(moduleId)
-                        markdown?.let { mark ->
-                            getView()?.startSegmentDetail(mark)
-                        }
-                    }
-                    else -> ""
+
+                val module = it.fetchCategoryBy(moduleId)
+                module?.let { safeModule ->
+                    if (safeModule.markdowns.isNotEmpty())
+                        getView()?.startSegmentController(safeModule)
                 }
             }
         }
@@ -47,35 +33,31 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectLesson(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let {
-
-                val moduleId = if (subject.module != null) subject.module!!.id else 0
-                val topicPreferred = it.fetchTopicPreferredBy(subject.id)
+                var topicPreferred: TopicPreferred? = null
+                subject.difficulties.forEach { difficulty ->
+                    val candidateTopic = it.fetchTopicPreferredBy(difficulty.id)
+                    if (candidateTopic != null)
+                        topicPreferred = candidateTopic
+                }
                 val markdown = it.fetchMarkdownBySubject(subject.id)
 
                 if (topicPreferred != null)
-                    subjectInSegment(topicPreferred.subject)
+                    subjectInSegment(topicPreferred?.difficulty)
                 else if (subject.difficulties.isEmpty() && markdown != null) {
                     subjectInSegmentDetail(markdown)
                 } else {
-                    subjectInDifficulty(moduleId)
+                    subjectInDifficulty(subject)
                 }
             }
         }
     }
 
-    private fun subjectInDifficulty(moduleId: Long) {
-        getView()?.startDifficultyController(moduleId)
+    private fun subjectInDifficulty(subject: Subject) {
+        getView()?.startDifficultyController(subject)
     }
 
-    private fun subjectInSegment(subjectPreferred: Subject?) {
-
-        val segments = mutableListOf<Segment>()
-        subjectPreferred?.difficulties?.forEach { child ->
-            val difficultTitle = "${subjectPreferred.title} ${child.title}"
-            val segment = child.markdowns.toSegment(subjectPreferred.id, difficultTitle)
-            segments.add(segment)
-            getView()?.startDeferredSegment(segments)
-        }
+    private fun subjectInSegment(selectDifficulty: Difficulty?) {
+        selectDifficulty?.let { getView()?.startDeferredSegment(it) }
     }
 
     private fun subjectInSegmentDetail(markdown: Markdown) {

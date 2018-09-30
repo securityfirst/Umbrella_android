@@ -23,5 +23,5 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchMarkdownsBy(id: Long): List<Markdown>
 
-    suspend fun fetchTopicPreferredBy(subcategory: Long): TopicPreferred?
+    suspend fun fetchTopicPreferredBy(difficultyId: Long): TopicPreferred?
 }

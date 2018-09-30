@@ -9,9 +9,12 @@ import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.checklist.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController.Companion.EXTRA_SELECTED_SEGMENT
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
@@ -22,15 +25,20 @@ import javax.inject.Inject
 
 class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
-
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val segmentClick: (Markdown) -> Unit = this::onSegmentClicked
+    private val footClick: () -> Unit = this::onFootClicked
     private lateinit var difficultAdapter: DifficultSpinnerAdapter
-    private val segments by lazy { args.getParcelableArray(EXTRA_SELECTED_SEGMENT) }
+    private val selectDifficulty by lazy { args.getParcelable(EXTRA_SEGMENT_BY_DIFFICULTY) as Difficulty? }
+    private val selectModule by lazy { args.getParcelable(EXTRA_SEGMENT_BY_MODULE) as Module? }
 
-    constructor(segments: List<Segment>) : this(Bundle().apply {
-        putParcelableArray(EXTRA_SELECTED_SEGMENT, segments.toTypedArray())
+    constructor(difficulty: Difficulty) : this(Bundle().apply {
+        putParcelable(EXTRA_SEGMENT_BY_DIFFICULTY, difficulty)
+    })
+
+    constructor(module: Module) : this(Bundle().apply {
+        putParcelable(EXTRA_SEGMENT_BY_MODULE, module)
     })
 
     override fun onInject() {
@@ -43,9 +51,16 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         presenter.onAttach(this)
+
+
+        if (selectModule != null) {
+            selectModule?.let { presenter.submitLoadSegments(it) }
+        } else {
+            selectDifficulty?.let { presenter.submitLoadSegments(it) }
+        }
+
         setUpToolbar()
         onFavoriteClick()
-        showSegments()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -53,16 +68,18 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun showSegments() {
-        val segmentList = segments as Array<Segment>
-        initSegmentView(segmentList.toList())
+    override fun showSegmentDetail(markdown: Markdown) {
+        router.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
+    }
+
+    override fun showSegments(segments: List<Segment>) {
+        initSegmentView(segments)
     }
 
     private fun initSegmentView(segments: List<Segment>) {
-        val segmentAdapter = SegmentAdapter(segmentClick)
+        val segmentAdapter = SegmentAdapter(segmentClick, footClick)
         segmentRecyclerView?.initGridView(segmentAdapter)
-        setFootList(segmentAdapter)
+        setFooterList(segmentAdapter)
         difficultAdapter = DifficultSpinnerAdapter(context, segments)
         segmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -86,7 +103,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         return true
     }
 
-    private fun setFootList(segmentAdapter: SegmentAdapter) {
+    private fun setFooterList(segmentAdapter: SegmentAdapter) {
         val manager = segmentRecyclerView?.layoutManager as GridLayoutManager
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -109,7 +126,17 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
+    private fun onFootClicked() {
+        router.pushController(RouterTransaction.with(ChecklistController()))
+    }
+
     private fun onSegmentClicked(markdown: Markdown) {
         router.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
+    }
+
+
+    companion object {
+        const val EXTRA_SEGMENT_BY_MODULE = "selected_module"
+        const val EXTRA_SEGMENT_BY_DIFFICULTY = "selected_difficulty"
     }
 }

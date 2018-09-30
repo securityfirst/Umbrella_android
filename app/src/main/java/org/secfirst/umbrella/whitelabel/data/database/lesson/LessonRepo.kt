@@ -21,6 +21,6 @@ interface LessonRepo {
 
     suspend fun loadChildBy(id: Long): Difficulty?
 
-    suspend fun loadTopicPreferredBy(subcategoryId: Long): TopicPreferred?
+    suspend fun loadTopicPreferredBy(difficultyId: Long): TopicPreferred?
 
 }

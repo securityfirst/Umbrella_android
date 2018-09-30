@@ -9,10 +9,11 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.lesson_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
@@ -24,11 +25,10 @@ import javax.inject.Inject
 
 class LessonController : BaseController(), LessonView {
 
-
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val lessonClick: (Subject) -> Unit = this::onLessonClicked
-    private val groupClick: (String, Long) -> Unit = this::onGroupClicked
+    private val groupClick: (Long) -> Unit = this::onGroupClicked
     private lateinit var lessonAdapter: LessonAdapter
 
     override fun onInject() {
@@ -42,8 +42,8 @@ class LessonController : BaseController(), LessonView {
         presenter.submitSelectLesson(subject)
     }
 
-    private fun onGroupClicked(subject: String, moduleId: Long) {
-        presenter.submitSelectHead(subject, moduleId)
+    private fun onGroupClicked(moduleId: Long) {
+        presenter.submitSelectHead(moduleId)
     }
 
     override fun onAttach(view: View) {
@@ -63,12 +63,16 @@ class LessonController : BaseController(), LessonView {
         lessonMenu?.adapter = lessonAdapter
     }
 
-    override fun startDifficultyController(moduleId: Long) {
-        router.pushController(RouterTransaction.with(DifficultyController(moduleId)))
+    override fun startDifficultyController(subject: Subject) {
+        router.pushController(RouterTransaction.with(DifficultyController(subject)))
     }
 
-    override fun startDeferredSegment(segments: List<Segment>) {
-        router.pushController(RouterTransaction.with(SegmentController(segments)))
+    override fun startDeferredSegment(selectDifficulty: Difficulty) {
+        router.pushController(RouterTransaction.with(SegmentController(selectDifficulty)))
+    }
+
+    override fun startSegmentController(module: Module) {
+        router.pushController(RouterTransaction.with(SegmentController(module)))
     }
 
     override fun startSegmentDetail(markdown: Markdown) {
