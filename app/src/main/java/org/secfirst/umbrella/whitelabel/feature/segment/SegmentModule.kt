@@ -12,6 +12,7 @@ import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseIn
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentPresenterImp
+import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import javax.inject.Singleton
@@ -44,4 +45,6 @@ interface SegmentComponent {
     }
 
     fun inject(segmentController: SegmentController)
+
+    fun inject(hostSegmentController: HostSegmentController)
 }

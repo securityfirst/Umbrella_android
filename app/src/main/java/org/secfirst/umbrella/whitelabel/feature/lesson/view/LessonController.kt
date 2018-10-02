@@ -19,6 +19,7 @@ import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyContro
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 import javax.inject.Inject
@@ -68,11 +69,11 @@ class LessonController : BaseController(), LessonView {
     }
 
     override fun startDeferredSegment(selectDifficulty: Difficulty) {
-        router.pushController(RouterTransaction.with(SegmentController(selectDifficulty)))
+        router.pushController(RouterTransaction.with(HostSegmentController(selectDifficulty)))
     }
 
     override fun startSegmentController(module: Module) {
-        router.pushController(RouterTransaction.with(SegmentController(module)))
+        router.pushController(RouterTransaction.with(HostSegmentController(module)))
     }
 
     override fun startSegmentDetail(markdown: Markdown) {

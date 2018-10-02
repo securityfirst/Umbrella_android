@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_lessons -> {
-                router.pushController(RouterTransaction.with(LessonController()))
+                router.pushController(RouterTransaction.with(LessonController()).tag("test"))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_account -> {

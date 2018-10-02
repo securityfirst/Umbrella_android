@@ -6,7 +6,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface SegmentView : BaseView {
 
-    fun showSegments(segments: List<Segment>)
+    fun showSegments(segments: MutableList<Segment>){}
 
-    fun showSegmentDetail(markdown: Markdown)
+    fun showSegmentDetail(markdown: Markdown){}
 }

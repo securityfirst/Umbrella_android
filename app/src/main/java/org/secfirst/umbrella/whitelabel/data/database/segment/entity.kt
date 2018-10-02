@@ -11,11 +11,13 @@ import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 
 
 @Parcelize
 data class Segment(var toolbarTitle: String,
-                   var subjectId: Long,
+                   var tabTitle: String,
                    var markdowns: List<Markdown> = listOf()) : Parcelable
 
 @Parcelize
@@ -53,12 +55,26 @@ data class Markdown(
     }
 }
 
-fun MutableList<Markdown>.toSegment(subcategoryId: Long, title: String): Segment {
+fun MutableList<Markdown>.toSegment(toolbarTitle: String, title: String): Segment {
     val markdowns = mutableListOf<Markdown>()
     this.forEach { markdown ->
         markdowns.add(markdown)
     }
-    return Segment(title, subcategoryId, markdowns)
+    return Segment(toolbarTitle, title, markdowns)
+}
+
+
+fun Segment.toController() = SegmentController(this.markdowns, this.tabTitle)
+
+fun List<Markdown>.toControllers(): List<SegmentDetailController> {
+    val controllers = mutableListOf<SegmentDetailController>()
+    this.forEach { markdown ->
+        val markdowns = mutableListOf<Markdown>()
+        markdowns.add(markdown)
+        val controller = SegmentDetailController(markdown)
+        controllers.add(controller)
+    }
+    return controllers
 }
 
 fun Markdown.removeHead(): Markdown {
@@ -77,4 +93,9 @@ fun Markdown.removeHead(): Markdown {
     }
     //this.text = this.text.substringAfterLast(this.text.lines()[0]) + "#"
     return this
+}
+
+interface HostSegmentTabControl {
+
+    fun onTabHostManager(position: Int)
 }

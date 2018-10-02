@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view
+package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
 
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
@@ -10,22 +10,19 @@ import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
-class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit,
-                     private val onFootSegment: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
+                     private val onFootSegment: () -> Unit,
+                     private val markdowns: MutableList<Markdown>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
-    private val markdowns: MutableList<Markdown> = mutableListOf()
-
-    fun add(segmentsItem: List<Markdown>) {
-        this.markdowns.clear()
-        segmentsItem.forEach { this.markdowns.add(it) }
-        notifyDataSetChanged()
-    }
 
     fun isHeader(position: Int): Boolean {
         return position == markdowns.size
     }
 
+    fun addAll(markdowns: MutableList<Markdown>) {
+        this.markdowns.addAll(markdowns)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -42,7 +39,7 @@ class SegmentAdapter(private val onClickSegment: (Markdown) -> Unit,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (!isHeader(position)) {
             holder as SegmentHolder
-            holder.bind(markdowns[position], clickListener = { onClickSegment(markdowns[position]) })
+            holder.bind(markdowns[position], clickListener = { onClickSegment(position) })
         } else {
             holder as FooterHolder
             holder.bind(clickListener = { onFootSegment() })

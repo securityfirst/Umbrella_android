@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view
+package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

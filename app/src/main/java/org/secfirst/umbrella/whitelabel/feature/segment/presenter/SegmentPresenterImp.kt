@@ -22,7 +22,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         val segments = mutableListOf<Segment>()
         with(selectModule) {
             if (markdowns.size > Markdown.SINGLE_CHOICE) {
-                val segment = markdowns.toSegment(id, title)
+                val segment = markdowns.toSegment(title, title)
                 segments.add(segment)
                 getView()?.showSegments(segments)
             } else {
@@ -38,31 +38,12 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 val subject = safeInteractor.fetchSubcategoryBy(selectDifficulty.subject!!.id)
                 val orderDifficulties = subject?.difficulties?.orderByDifficultySelected(selectDifficulty.id)
                 orderDifficulties?.forEach { safeOrderDiff ->
-                    val difficultTitle = "${subject.title} ${safeOrderDiff.title}"
-                    val segment = safeOrderDiff.markdowns.toSegment(subject.id, difficultTitle)
+                    val toolbarTitle = "${subject.title} ${safeOrderDiff.title}"
+                    val segment = safeOrderDiff.markdowns.toSegment(toolbarTitle, subject.title)
                     segments.add(segment)
                 }
                 getView()?.showSegments(segments)
             }
         }
     }
-
-    private fun test(orderDifficulties: List<Difficulty>) {
-
-    }
-//
-//    override fun submitSelectedDifficulty(idReference: Long) {
-//        launchSilent(uiContext) {
-//            interactor?.let {
-//                val subcategory = it.fetchSubcategoryBy(idReference)
-//                val segments = arrayListOf<Segment>()
-//                subcategory?.difficulties?.forEach { child ->
-//                    val difficultTitle = "${subcategory.title} ${child.title}"
-//                    val segment = child.markdowns.toSegment(subcategory.id, difficultTitle)
-//                    segments.add(segment)
-//                }
-//                //getView()?.showSegments(segments)
-//            }
-//        }
-//    }
 }
