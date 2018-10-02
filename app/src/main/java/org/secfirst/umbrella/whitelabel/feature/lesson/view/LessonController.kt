@@ -14,6 +14,7 @@ import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.feature.about.AboutController
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
@@ -77,7 +78,7 @@ class LessonController : BaseController(), LessonView {
     }
 
     override fun startSegmentDetail(markdown: Markdown) {
-        router.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
+        router.pushController(RouterTransaction.with(AboutController(markdown)))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -81,7 +81,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     private fun refreshView(segment: Segment) {
         val controllers = mutableListOf<BaseController>()
-        val selectSegment = segment.toController()
+        val selectSegment = segment.toController(this)
         hostAdapter = HostSegmentAdapter(this, controllers)
         controllers.add(selectSegment)
         controllers.addAll(segment.markdowns.toControllers())

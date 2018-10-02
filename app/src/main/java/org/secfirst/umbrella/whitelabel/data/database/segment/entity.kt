@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
 import android.os.Parcelable
+import com.bluelinelabs.conductor.Controller
 import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
@@ -64,7 +65,11 @@ fun MutableList<Markdown>.toSegment(toolbarTitle: String, title: String): Segmen
 }
 
 
-fun Segment.toController() = SegmentController(this.markdowns, this.tabTitle)
+fun Segment.toController(host: Controller): SegmentController {
+    val controller = SegmentController(this.markdowns, this.tabTitle)
+    controller.hostSegmentTabControl = host as HostSegmentTabControl
+    return controller
+}
 
 fun List<Markdown>.toControllers(): List<SegmentDetailController> {
     val controllers = mutableListOf<SegmentDetailController>()

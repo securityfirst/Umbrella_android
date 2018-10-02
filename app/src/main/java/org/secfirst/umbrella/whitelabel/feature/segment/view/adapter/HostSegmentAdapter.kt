@@ -20,7 +20,7 @@ class HostSegmentAdapter(private val host: Controller,
             if (position == 0) {
                 val segmentController = controllers[position] as SegmentController
                 segmentController.setIndexTab(position)
-                segmentController.hostSegmentTabControl = host as HostSegmentTabControl
+             //   segmentController.hostSegmentTabControl = host as HostSegmentTabControl
                 router.setRoot(RouterTransaction.with(segmentController))
             } else if (position >= 1 && position < controllers.size) {
                 val detailController = controllers[position] as SegmentDetailController
