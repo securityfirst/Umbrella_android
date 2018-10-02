@@ -83,19 +83,6 @@ fun List<Markdown>.toControllers(): List<SegmentDetailController> {
 }
 
 fun Markdown.removeHead(): Markdown {
-//    for ((cont, line) in this.text.lines().withIndex()) {
-//        if (cont < 3) {
-//            if (line.contains(Markdown.TAG_TITLE)) {
-//                this.title = line.trim().substringAfterLast(Markdown.TAG_TITLE)
-//                break
-//            } else if (line.contains(Markdown.TAG_INDEX)) {
-//                this.index = line.trim().substringAfterLast(Markdown.TAG_INDEX)
-//                break
-//            }
-//
-//        }
-//
-//    }
     this.text = this.text.substringAfterLast(this.text.lines()[3])
     return this
 }
