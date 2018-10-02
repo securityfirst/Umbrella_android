@@ -9,7 +9,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 open class BaseModel : BaseRXModel() {
-    fun associateForeignKey(module: Module) {
+    fun  associateForeignKey(module: Module) {
 
         associateMarkdown(module.markdowns, module)
         associateChecklist(module.checklist, module)

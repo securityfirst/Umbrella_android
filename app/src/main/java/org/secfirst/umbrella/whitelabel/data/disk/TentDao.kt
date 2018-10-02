@@ -55,15 +55,16 @@ interface TentDao {
 
     suspend fun filterBySubElement(tentConfig: TentConfig): List<File> {
         val files: MutableList<File> = arrayListOf()
-        withContext(ioContext) {
+        //withContext(ioContext) {
             File(tentConfig.getPathRepository())
-                    .walk()
+                    .walk(FileWalkDirection.BOTTOM_UP)
                     .filter { file -> !file.path.contains(".git") }
                     .filter { file -> file.name == ".category.yml" }
                     .filter { it.isFile }
                     .forEach { file -> files.add(file) }
             files.reverse()
-        }
+            files.sort()
+      //  }
         return files
     }
 
