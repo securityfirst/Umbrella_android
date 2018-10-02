@@ -87,7 +87,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         controllers.addAll(segment.markdowns.toControllers())
         hostSegmentPager?.let {
             it.adapter = hostAdapter
-            it.offscreenPageLimit = 500
+            it.offscreenPageLimit = PAGE_LIMIT
             hostSegmentTab?.setupWithViewPager(it)
         }
     }
@@ -99,6 +99,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     companion object {
         const val EXTRA_SEGMENT_BY_MODULE = "selected_module"
         const val EXTRA_SEGMENT_BY_DIFFICULTY = "selected_difficulty"
+        private const val PAGE_LIMIT = 6
     }
 
     private fun setUpToolbar() {

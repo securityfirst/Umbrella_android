@@ -1,10 +1,12 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
+import android.util.Log
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.SINGLE_CHOICE
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
@@ -20,11 +22,19 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectHead(moduleId: Long) {
         launchSilent(uiContext) {
             interactor?.let {
-
                 val module = it.fetchCategoryBy(moduleId)
                 module?.let { safeModule ->
-                    if (safeModule.markdowns.isNotEmpty())
+                    Log.e("test", "$module")
+                    if (safeModule.markdowns.size > SINGLE_CHOICE) {
                         getView()?.startSegmentController(safeModule)
+                    } else {
+                        if (safeModule.markdowns.size == SINGLE_CHOICE) {
+                            val singleMarkdown = safeModule.markdowns.last()
+                            getView()?.startSegmentDetail(singleMarkdown)
+                        } else {
+
+                        }
+                    }
                 }
             }
         }

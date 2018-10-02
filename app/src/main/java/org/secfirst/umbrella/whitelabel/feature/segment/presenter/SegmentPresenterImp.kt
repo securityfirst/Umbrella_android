@@ -25,8 +25,6 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 val segment = markdowns.toSegment(title, title)
                 segments.add(segment)
                 getView()?.showSegments(segments)
-            } else {
-                getView()?.showSegmentDetail(markdowns.last())
             }
         }
     }
