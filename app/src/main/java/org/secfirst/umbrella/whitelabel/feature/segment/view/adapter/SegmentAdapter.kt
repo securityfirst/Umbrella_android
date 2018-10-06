@@ -11,7 +11,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
-                     private val onFootSegment: () -> Unit,
+                     private val onFootSegment: (Int) -> Unit,
                      private val markdowns: MutableList<Markdown>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -42,7 +42,7 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
             holder.bind(markdowns[position], clickListener = { onClickSegment(position) })
         } else {
             holder as FooterHolder
-            holder.bind(clickListener = { onFootSegment() })
+            holder.bind(clickListener = { onFootSegment(position) })
         }
     }
 

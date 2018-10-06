@@ -25,7 +25,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val segmentClick: (Int) -> Unit = this::onSegmentClicked
-    private val footClick: () -> Unit = this::onFootClicked
+    private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
     private val titleTab by lazy { args.getString(EXTRA_SEGMENT_TAB_TITLE) }
     private var indexTab = 0
@@ -95,8 +95,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
-    private fun onFootClicked() {
-        // router.pushController(RouterTransaction.with(ChecklistController()))
+    private fun onFootClicked(position: Int) {
+        hostSegmentTabControl.onTabHostManager(position + 1)
     }
 
     private fun onSegmentClicked(position: Int) {
