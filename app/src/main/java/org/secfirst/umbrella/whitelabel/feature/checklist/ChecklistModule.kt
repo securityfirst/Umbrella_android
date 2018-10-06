@@ -12,7 +12,8 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBa
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistPresenterImp
-import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import javax.inject.Singleton
 
 

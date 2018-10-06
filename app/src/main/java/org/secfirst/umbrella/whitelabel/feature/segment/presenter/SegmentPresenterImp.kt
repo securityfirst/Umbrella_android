@@ -22,7 +22,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         val segments = mutableListOf<Segment>()
         with(selectModule) {
             if (markdowns.size > Markdown.SINGLE_CHOICE) {
-                val segment = markdowns.toSegment(title, title)
+                val segment = markdowns.toSegment(title, title, checklist)
                 segments.add(segment)
                 getView()?.showSegments(segments)
             }
@@ -37,7 +37,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 val orderDifficulties = subject?.difficulties?.orderByDifficultySelected(selectDifficulty.id)
                 orderDifficulties?.forEach { safeOrderDiff ->
                     val toolbarTitle = "${subject.title} ${safeOrderDiff.title}"
-                    val segment = safeOrderDiff.markdowns.toSegment(toolbarTitle, subject.title)
+                    val segment = safeOrderDiff.markdowns.toSegment(toolbarTitle, subject.title, safeOrderDiff.checklist)
                     segments.add(segment)
                 }
                 getView()?.showSegments(segments)

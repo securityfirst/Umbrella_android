@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.checklist.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
-import org.secfirst.umbrella.whitelabel.feature.checklist.ChecklistView
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import javax.inject.Inject
 

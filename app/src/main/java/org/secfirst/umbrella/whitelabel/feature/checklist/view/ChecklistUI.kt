@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist
+package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
 import android.graphics.Color
 import android.graphics.Color.WHITE

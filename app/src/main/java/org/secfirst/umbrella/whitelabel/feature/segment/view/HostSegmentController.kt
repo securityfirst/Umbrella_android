@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import kotlinx.android.synthetic.main.host_segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.checklist.toControllers
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
@@ -82,9 +83,11 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     private fun refreshView(segment: Segment) {
         val controllers = mutableListOf<BaseController>()
         val selectSegment = segment.toController(this)
-        hostAdapter = HostSegmentAdapter(this, controllers)
+        val segmentPageLimit = segment.markdowns.size
+        hostAdapter = HostSegmentAdapter(this, controllers, segmentPageLimit)
         controllers.add(selectSegment)
         controllers.addAll(segment.markdowns.toControllers())
+        controllers.addAll(segment.checklists.toControllers())
         hostSegmentPager?.let {
             it.adapter = hostAdapter
             it.offscreenPageLimit = PAGE_LIMIT
@@ -99,7 +102,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     companion object {
         const val EXTRA_SEGMENT_BY_MODULE = "selected_module"
         const val EXTRA_SEGMENT_BY_DIFFICULTY = "selected_difficulty"
-        private const val PAGE_LIMIT = 6
+        private const val PAGE_LIMIT = 8
     }
 
     private fun setUpToolbar() {

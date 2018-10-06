@@ -1,5 +1,6 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist
+package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,12 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
 
 class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
     private lateinit var checklistView: View
+
     var titleTab = ""
 
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
@@ -19,6 +22,10 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     constructor(checklist: Checklist) : this(Bundle().apply {
         putParcelable(EXTRA_CHECKLIST, checklist)
     })
+
+    override fun onContextAvailable(context: Context) {
+        titleTab = context.getString(R.string.checklist_title)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         checklistView = inflater.inflate(R.layout.segment_view, container, false)

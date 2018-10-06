@@ -9,6 +9,7 @@ import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
@@ -19,7 +20,8 @@ import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailContro
 @Parcelize
 data class Segment(var toolbarTitle: String,
                    var tabTitle: String,
-                   var markdowns: List<Markdown> = listOf()) : Parcelable
+                   var markdowns: List<Markdown> = listOf(),
+                   var checklists: List<Checklist>) : Parcelable
 
 @Parcelize
 @Table(database = AppDatabase::class, allFields = true)
@@ -56,14 +58,16 @@ data class Markdown(
     }
 }
 
-fun MutableList<Markdown>.toSegment(toolbarTitle: String, title: String): Segment {
+fun MutableList<Markdown>.toSegment(toolbarTitle: String,
+                                    title: String,
+                                    checklists: List<Checklist>): Segment {
+
     val markdowns = mutableListOf<Markdown>()
     this.forEach { markdown ->
         markdowns.add(markdown)
     }
-    return Segment(toolbarTitle, title, markdowns)
+    return Segment(toolbarTitle, title, markdowns, checklists)
 }
-
 
 fun Segment.toController(host: Controller): SegmentController {
     val controller = SegmentController(this.markdowns, this.tabTitle)
