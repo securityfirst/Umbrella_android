@@ -24,7 +24,7 @@ class HostSegmentAdapter(host: Controller,
                     //   segmentController.hostSegmentTabControl = host as HostSegmentTabControl
                     router.setRoot(RouterTransaction.with(segmentController))
                 }
-                in 1..(segmentPageLimit) -> {
+                in 1..segmentPageLimit -> {
                     val detailController = controllers[position] as SegmentDetailController
                     router.setRoot(RouterTransaction.with(detailController))
                 }
@@ -43,7 +43,7 @@ class HostSegmentAdapter(host: Controller,
                 currentController.context.getString(R.string.lesson_tab)
 
             }
-            in 1..(segmentPageLimit) -> {
+            in 1..segmentPageLimit -> {
                 val currentController = controllers[position] as SegmentDetailController
                 currentController.getTitle()
 
