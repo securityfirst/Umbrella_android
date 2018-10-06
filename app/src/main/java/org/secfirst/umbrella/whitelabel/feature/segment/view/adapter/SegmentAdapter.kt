@@ -9,6 +9,8 @@ import kotlinx.android.synthetic.main.segment_item.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
+import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                      private val onFootSegment: (Int) -> Unit,
@@ -71,10 +73,5 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 itemView.segmentLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
             }
         }
-    }
-
-    companion object {
-        private const val ITEM_VIEW_TYPE_HEADER = 0
-        private const val ITEM_VIEW_TYPE_ITEM = 1
     }
 }

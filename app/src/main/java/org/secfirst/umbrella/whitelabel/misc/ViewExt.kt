@@ -26,8 +26,8 @@ fun Context.shareLink(link: String) {
     this.startActivity(Intent.createChooser(sendIntent, this.resources.getText(R.string.send_to)))
 }
 
-fun RecyclerView.initRecyclerView(layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
-                                  adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
+fun RecyclerView.initRecyclerView(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
+                                  layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
                                   hasFixedSize: Boolean = true) {
     this.layoutManager = layoutManager
     this.adapter = adapter
@@ -56,5 +56,9 @@ fun MainActivity.hideKeyboard() {
 class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
     val sectionText = headerView.sectionText
 }
+
+
+const val ITEM_VIEW_TYPE_HEADER = 0
+const val ITEM_VIEW_TYPE_ITEM = 1
 
 

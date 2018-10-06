@@ -67,7 +67,6 @@ fun List<Checklist>.toControllers(): List<ChecklistController> {
     return controllers
 }
 
-
 @Parcelize
 @Table(database = AppDatabase::class)
 class Content(
@@ -81,4 +80,5 @@ class Content(
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
         var checklist: Checklist? = null,
         @Column
-        var label: String = "") : BaseModel(), Parcelable
+        var label: String = "",
+        var value: Boolean = false) : BaseModel(), Parcelable

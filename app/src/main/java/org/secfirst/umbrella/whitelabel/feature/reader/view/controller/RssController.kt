@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.AppCompatTextView
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
@@ -18,8 +17,9 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.reader.view.adapter.RssAdapter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
+import org.secfirst.umbrella.whitelabel.feature.reader.view.adapter.RssAdapter
+import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import org.secfirst.umbrella.whitelabel.misc.shareLink
 import javax.inject.Inject
 
@@ -67,10 +67,7 @@ class RssController : BaseController(), ReaderView {
     }
 
     private fun initRecyclerView() {
-        rssRecycleView?.let {
-            it.layoutManager = LinearLayoutManager(activity)
-            it.adapter = rssAdapter
-        }
+        rssRecycleView?.initRecyclerView(rssAdapter)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

@@ -5,10 +5,12 @@
     android:background="#e5e5e5"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/form_progress"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/checklistRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp"
+        android:padding="10dp" />
 
 </LinearLayout>

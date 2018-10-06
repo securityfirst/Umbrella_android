@@ -128,7 +128,6 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
                 }
             }
         }
-
     }
 
     private fun closeView() {
