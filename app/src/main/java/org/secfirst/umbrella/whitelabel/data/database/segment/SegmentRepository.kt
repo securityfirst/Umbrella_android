@@ -1,8 +1,11 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import javax.inject.Inject
 
 class SegmentRepository @Inject constructor(private val segmentDao: SegmentDao) : SegmentRepo {
+
+    override suspend fun saveChecklist(checklist: Checklist) = segmentDao.saveChecklist(checklist)
 
     override suspend fun loadCategoryBy(categoryId: Long) = segmentDao.getCategoryBy(categoryId)
 

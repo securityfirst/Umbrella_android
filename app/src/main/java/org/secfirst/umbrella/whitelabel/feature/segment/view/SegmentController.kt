@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
-import kotlinx.android.synthetic.main.segment_item.*
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -25,14 +25,17 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val segmentClick: (Int) -> Unit = this::onSegmentClicked
+    private val favoriteClick: (Boolean) -> Unit = this::onFavoriteClick
     private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
+    private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
     private val titleTab by lazy { args.getString(EXTRA_SEGMENT_TAB_TITLE) }
     private var indexTab = 0
     lateinit var hostSegmentTabControl: HostSegmentTabControl
 
-    constructor(markdowns: List<Markdown>, titleTab: String) : this(Bundle().apply {
+    constructor(markdowns: List<Markdown>, titleTab: String, checklist: Checklist) : this(Bundle().apply {
         putParcelableArray(EXTRA_SEGMENT, markdowns.toTypedArray())
+        putParcelable(EXTRA_CHECKLIST, checklist)
         putString(EXTRA_SEGMENT_TAB_TITLE, titleTab)
     })
 
@@ -47,7 +50,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         super.onAttach(view)
         presenter.onAttach(this)
         showSegmentView(markdowns.toList())
-        onFavoriteClick()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -60,7 +62,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun initSegmentView(markdowns: List<Markdown>) {
-        val segmentAdapter = SegmentAdapter(segmentClick, footClick, markdowns.toMutableList())
+        val segmentAdapter = SegmentAdapter(segmentClick, footClick, favoriteClick, checklist.favorite, markdowns.toMutableList())
         segmentRecyclerView?.initGridView(segmentAdapter)
         setFooterList(segmentAdapter)
     }
@@ -89,10 +91,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         parentController?.router?.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
     }
 
-    private fun onFavoriteClick() {
-        favoriteImg?.let {
-
-        }
+    private fun onFavoriteClick(isFavorite: Boolean) {
+        checklist.favorite = isFavorite
+        presenter.submitChecklistFavorite(checklist)
     }
 
     private fun onFootClicked(position: Int) {
@@ -103,9 +104,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         hostSegmentTabControl.onTabHostManager(position + 1)
     }
 
-
     companion object {
         const val EXTRA_SEGMENT = "selected_segment"
+        const val EXTRA_CHECKLIST = "selected_checklist"
         const val EXTRA_SEGMENT_TAB_TITLE = "selected_tab_title"
     }
 

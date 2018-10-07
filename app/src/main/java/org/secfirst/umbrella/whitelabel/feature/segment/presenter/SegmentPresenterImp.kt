@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.presenter
 
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderByDifficultySelected
@@ -17,6 +18,12 @@ import javax.inject.Inject
 class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), SegmentBasePresenter<V, I> {
+
+    override fun submitChecklistFavorite(checklist: Checklist) {
+        launchSilent(uiContext) {
+            interactor?.insertChecklist(checklist)
+        }
+    }
 
     override fun submitLoadSegments(selectModule: Module) {
         val segments = mutableListOf<Segment>()

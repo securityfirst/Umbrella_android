@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.segment_foot.view.*
 import kotlinx.android.synthetic.main.segment_item.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
@@ -13,7 +14,9 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
-                     private val onFootSegment: (Int) -> Unit,
+                     private val onFootClicked: (Int) -> Unit,
+                     private val onFavoriteClicked: (Boolean) -> Unit,
+                     private val favorited: Boolean,
                      private val markdowns: MutableList<Markdown>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -44,7 +47,9 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
             holder.bind(markdowns[position], clickListener = { onClickSegment(position) })
         } else {
             holder as FooterHolder
-            holder.bind(clickListener = { onFootSegment(position) })
+            holder.bind(favorited,
+                    footClick = { onFootClicked(position) },
+                    favoriteClick = { onFavoriteClicked(isChecklistFavorite) })
         }
     }
 
@@ -54,16 +59,19 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
 
     override fun getItemCount() = markdowns.size + 1
 
-
     class FooterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(clickListener: (FooterHolder) -> Unit) {
-            itemView.setOnClickListener { clickListener(this) }
+        fun bind(favorited: Boolean, footClick: (FooterHolder) -> Unit, favoriteClick: (FooterHolder) -> Unit) {
+            itemView.setOnClickListener { footClick(this) }
+            itemView.checklistFavorite.isChecked = favorited
+            itemView.checklistFavorite.setOnClickListener {
+                isChecklistFavorite = itemView.checklistFavorite.isChecked
+                favoriteClick(this)
+            }
         }
     }
 
     class SegmentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val colours = intArrayOf(R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow)
-
         fun bind(markdown: Markdown, clickListener: (SegmentHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
             with(markdown) {
@@ -75,3 +83,5 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
         }
     }
 }
+
+private var isChecklistFavorite: Boolean = false

@@ -13,7 +13,7 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
 
 @Parcelize
-@Table(database = AppDatabase::class)
+@Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 data class Checklist(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
@@ -23,6 +23,9 @@ data class Checklist(
 
         @Column
         var progress: Int = 0,
+
+        @Column
+        var favorite: Boolean = false,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
