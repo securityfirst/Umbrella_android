@@ -14,17 +14,20 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
+import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
+import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
+import javax.inject.Inject
 
 class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
+    @Inject
+    internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private lateinit var checklistView: View
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
-
-    var titleTab = ""
-
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
+    var titleTab = ""
 
     constructor(checklist: Checklist) : this(Bundle().apply {
         putParcelable(EXTRA_CHECKLIST, checklist)
@@ -36,7 +39,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
 
     private fun onChecklistItemClicked(checklistItem: Content) {
-
+        presenter.submitInsertChecklist(checklistItem)
     }
 
     @SuppressLint("SetTextI18n")

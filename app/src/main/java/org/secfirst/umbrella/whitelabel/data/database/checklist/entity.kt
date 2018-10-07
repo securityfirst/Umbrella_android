@@ -68,7 +68,7 @@ fun List<Checklist>.toControllers(): List<ChecklistController> {
 }
 
 @Parcelize
-@Table(database = AppDatabase::class)
+@Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 class Content(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
@@ -81,4 +81,5 @@ class Content(
         var checklist: Checklist? = null,
         @Column
         var label: String = "",
+        @Column
         var value: Boolean = false) : BaseModel(), Parcelable
