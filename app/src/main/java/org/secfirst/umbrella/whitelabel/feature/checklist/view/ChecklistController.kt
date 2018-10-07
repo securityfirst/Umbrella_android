@@ -48,7 +48,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun onAttach(view: View) {
-        val adapter = ChecklistAdapter(checklist.progress, checklist.content, checklistItemClick, checklistProgress)
+        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
         checklistRecyclerView?.initRecyclerView(adapter)
         presenter.onAttach(this)
         currentProgress()

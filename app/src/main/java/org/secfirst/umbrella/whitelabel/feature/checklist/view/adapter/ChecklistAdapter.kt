@@ -11,8 +11,7 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
-class ChecklistAdapter(private val baseProgress: Int,
-                       private val checklistContent: List<Content>,
+class ChecklistAdapter(private val checklistContent: List<Content>,
                        private val onItemChecked: (Content) -> Unit,
                        private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
