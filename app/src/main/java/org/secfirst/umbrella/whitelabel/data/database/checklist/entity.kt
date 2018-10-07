@@ -85,3 +85,13 @@ class Content(
         var label: String = "",
         @Column
         var value: Boolean = false) : BaseModel(), Parcelable
+
+class Dashboard(items: List<Item>) {
+
+    @Table(database = AppDatabase::class, name = "dashboard_item", allFields = true)
+    data class Item(@PrimaryKey(autoincrement = true)
+                    var id: Long = 0,
+                    var label: String = "",
+                    var progress: Int = 0,
+                    var title: String = "")
+}

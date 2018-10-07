@@ -11,9 +11,14 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
-class ChecklistAdapter(private val checklistContent: List<Content>,
+class ChecklistAdapter(private val baseProgress: Int,
+                       private val checklistContent: List<Content>,
                        private val onItemChecked: (Content) -> Unit,
                        private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    override fun getItemCount() = checklistContent.size
+
+    override fun getItemViewType(position: Int) = if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -28,26 +33,20 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
         return ChecklistHolder(view)
     }
 
-    override fun getItemCount() = checklistContent.size
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (isHeader(position)) {
             holder as ChecklistHeaderViewHolder
             holder.bind(checklistContent[position].label)
         } else {
             holder as ChecklistHolder
-            holder.bind(checklistContent[position], checklistContent.size,
+            holder.bind(checklistContent[position], checklistContent,
                     onItemChecked = { onItemChecked(checklistContent[position]) },
-                    onUpdateChecked = { onUpdateProgress(percentage) })
+                    onUpdateChecked = { onUpdateProgress(percentage.toInt()) })
         }
     }
 
     private fun isHeader(position: Int) = checklistContent[position].label.isNotBlank()
 
-
-    override fun getItemViewType(position: Int): Int {
-        return if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
-    }
 
     class ChecklistHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(title: String) {
@@ -57,36 +56,33 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
 
     class ChecklistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(checklistContent: Content,
-                 sizeList: Int,
+        fun bind(currentContent: Content,
+                 list: List<Content>,
                  onItemChecked: (ChecklistHolder) -> Unit,
                  onUpdateChecked: (ChecklistHolder) -> Unit) {
 
-            with(checklistContent) {
+            itemView.checkItem.isChecked = currentContent.value
+            itemView.checkItem.text = currentContent.check
+
+            with(currentContent) {
                 itemView.checkItem.setOnClickListener {
                     value = itemView.checkItem.isChecked
-                    updateProgress(sizeList)
+                    updateProgress(list.filter { item -> item.label.isEmpty() })
                     onItemChecked(this@ChecklistHolder)
                     onUpdateChecked(this@ChecklistHolder)
                 }
             }
-            itemView.checkItem.isChecked = checklistContent.value
-            itemView.checkItem.text = checklistContent.check
+
         }
 
-        private fun updateProgress(sizeList: Int) {
-            if (itemView.checkItem.isChecked) {
-                itemSelected += 1
-            } else {
-                itemSelected -= 1
-            }
-            percentage = if (itemSelected == sizeList) 100 else itemSelected * 100 / sizeList
+        private fun updateProgress(list: List<Content>) {
+            val ratio = list.filter { it.value }.size
+            percentage = Math.ceil(ratio * 100.0 / list.size)
         }
     }
 
     companion object {
-        private var itemSelected = 0
-        private var percentage = 0
+        private var percentage = 0.0
     }
 }
 

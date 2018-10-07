@@ -19,7 +19,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         }
     }
 
-    override fun submitInsertChecklist(checklist: Checklist) {
+    override fun submitUpdateChecklist(checklist: Checklist) {
         launchSilent(uiContext) {
             interactor?.persistChecklist(checklist)
         }
