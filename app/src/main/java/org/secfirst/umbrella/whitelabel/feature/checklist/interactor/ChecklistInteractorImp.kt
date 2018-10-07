@@ -8,7 +8,9 @@ import javax.inject.Inject
 
 class ChecklistInteractorImp @Inject constructor(private val checklistRepo: ChecklistRepo) : BaseInteractorImp(), ChecklistBaseInteractor {
 
-    override suspend fun persistChecklist(checklistContent: Content) = checklistRepo.insertChecklist(checklistContent)
+    override suspend fun persistChecklist(checklist: Checklist)  = checklistRepo.insertChecklist(checklist)
+
+    override suspend fun persistChecklistContent(checklistContent: Content) = checklistRepo.insertChecklistContent(checklistContent)
 
     override suspend fun fetchChecklistBy(id: Long) = checklistRepo.loadChecklist(id)
 }

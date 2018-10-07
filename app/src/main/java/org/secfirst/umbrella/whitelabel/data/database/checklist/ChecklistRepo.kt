@@ -4,5 +4,7 @@ interface ChecklistRepo {
 
     suspend fun loadChecklist(id: Long): Checklist?
 
-    suspend fun insertChecklist(checklistContent: Content)
+    suspend fun insertChecklistContent(checklistContent: Content)
+
+    suspend fun insertChecklist(checklist: Checklist)
 }

@@ -14,6 +14,12 @@ interface ChecklistDao {
         }
     }
 
+    suspend fun save(checklist: Checklist) {
+        withContext(ioContext) {
+            modelAdapter<Checklist>().save(checklist)
+        }
+    }
+
     suspend fun getChecklist(id: Long): Checklist? = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)

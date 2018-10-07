@@ -16,9 +16,11 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.ChecklistAdapter
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
+@SuppressLint("SetTextI18n")
 class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
     @Inject
@@ -33,37 +35,49 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         putParcelable(EXTRA_CHECKLIST, checklist)
     })
 
-    override fun onContextAvailable(context: Context) {
-        titleTab = context.getString(R.string.checklist_title)
-    }
-
-
-    private fun onChecklistItemClicked(checklistItem: Content) {
-        presenter.submitInsertChecklist(checklistItem)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun onUpdateChecklistProgress(percentage: Int) {
-        progressAnswer?.progress = percentage
-        titleProgressAnswer.text = "$percentage%"
-    }
-
-    override fun onAttach(view: View) {
-        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
-        checklistRecyclerView?.initRecyclerView(adapter)
-    }
-
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        checklistView = inflater.inflate(R.layout.checklist_view, container, false)
-        return checklistView
-    }
 
     override fun onInject() {
         DaggerChecklistComponent.builder()
                 .application(UmbrellaApplication.instance)
                 .build()
                 .inject(this)
+    }
+
+    override fun onContextAvailable(context: Context) {
+        titleTab = context.getString(R.string.checklist_title)
+    }
+
+    override fun onAttach(view: View) {
+        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+        checklistRecyclerView?.initRecyclerView(adapter)
+        presenter.onAttach(this)
+        currentProgress()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        checklistView = inflater.inflate(R.layout.checklist_view, container, false)
+        return checklistView
+    }
+
+    private fun onChecklistItemClicked(checklistItem: Content) {
+        presenter.submitInsertChecklistContent(checklistItem)
+    }
+
+    private fun currentProgress() {
+        progressAnswer.progress = checklist.progress
+        titleProgressAnswer.text = "${checklist.progress}%"
+    }
+
+    private fun onUpdateChecklistProgress(percentage: Int) {
+        if (percentage <= 0) {
+            titleProgressAnswer.text = "0%"
+            progressAnswer.progress = 0
+        } else {
+            titleProgressAnswer.text = "$percentage%"
+            progressAnswer.progress = progressAnswer.progress + percentage
+        }
+        checklist.progress = progressAnswer.progress
+        presenter.submitInsertChecklist(checklist)
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view
+package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -36,7 +36,7 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
             holder.bind(checklistContent[position].label)
         } else {
             holder as ChecklistHolder
-            holder.bind(checklistContent[position], checklistContent.size - 1,
+            holder.bind(checklistContent[position], checklistContent.size,
                     onItemChecked = { onItemChecked(checklistContent[position]) },
                     onUpdateChecked = { onUpdateProgress(percentage) })
         }
@@ -80,13 +80,13 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
             } else {
                 itemSelected -= 1
             }
-            percentage = itemSelected * 100 / sizeList
+            percentage = if (itemSelected == sizeList) 100 else itemSelected * 100 / sizeList
         }
     }
 
     companion object {
-        var itemSelected = 0
-        var percentage = 0
+        private var itemSelected = 0
+        private var percentage = 0
     }
 }
 

@@ -8,5 +8,7 @@ interface ChecklistBaseInteractor : BaseInteractor {
 
     suspend fun fetchChecklistBy(id: Long): Checklist?
 
-    suspend fun persistChecklist(checklistContent: Content)
+    suspend fun persistChecklistContent(checklistContent: Content)
+
+    suspend fun persistChecklist(checklist: Checklist)
 }

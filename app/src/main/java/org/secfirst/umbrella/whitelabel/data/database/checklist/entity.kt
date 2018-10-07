@@ -21,6 +21,9 @@ data class Checklist(
         @Column
         var index: Int = 0,
 
+        @Column
+        var progress: Int = 0,
+
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
@@ -32,7 +35,6 @@ data class Checklist(
                 onDelete = ForeignKeyAction.CASCADE,
                 stubbedRelationship = true)
         var subject: Subject? = null,
-
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
