@@ -12,17 +12,19 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class ChecklistAdapter(private val checklistContent: List<Content>,
-                       private val onItemChecked: (Content) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+                       private val onItemChecked: (Content) -> Unit,
+                       private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.checklist_item, parent, false)
+
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             val headerView = LayoutInflater.from(parent.context)
                     .inflate(R.layout.head_section, parent, false)
             return ChecklistHeaderViewHolder(headerView)
         }
+
         return ChecklistHolder(view)
     }
 
@@ -34,7 +36,9 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
             holder.bind(checklistContent[position].label)
         } else {
             holder as ChecklistHolder
-            holder.bind(checklistContent[position], onItemChecked = { onItemChecked(checklistContent[position]) })
+            holder.bind(checklistContent[position], checklistContent.size - 1,
+                    onItemChecked = { onItemChecked(checklistContent[position]) },
+                    onUpdateChecked = { onUpdateProgress(percentage) })
         }
     }
 
@@ -53,15 +57,38 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
 
     class ChecklistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(checklistContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
+        fun bind(checklistContent: Content,
+                 sizeList: Int,
+                 onItemChecked: (ChecklistHolder) -> Unit,
+                 onUpdateChecked: (ChecklistHolder) -> Unit) {
+
             with(checklistContent) {
                 itemView.checkItem.setOnClickListener {
                     value = itemView.checkItem.isChecked
+                    updateProgress(sizeList)
                     onItemChecked(this@ChecklistHolder)
+                    onUpdateChecked(this@ChecklistHolder)
                 }
             }
             itemView.checkItem.isChecked = checklistContent.value
             itemView.checkItem.text = checklistContent.check
         }
+
+        private fun updateProgress(sizeList: Int) {
+            if (itemView.checkItem.isChecked) {
+                itemSelected += 1
+            } else {
+                itemSelected -= 1
+            }
+            percentage = itemSelected * 100 / sizeList
+        }
+    }
+
+    companion object {
+        var itemSelected = 0
+        var percentage = 0
     }
 }
+
+
+
