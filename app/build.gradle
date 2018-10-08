@@ -79,8 +79,8 @@ dependencies {
     implementation 'com.thoughtbot:expandablerecyclerview:1.3'
     implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'
     implementation "org.jsoup:jsoup:$jsoup"
-    implementation 'us.feras.mdv:markdownview:1.1.0'
-
+    implementation "ru.noties:markwon:2.0.0"
+    implementation "ru.noties:markwon-image-loader:2.0.0"
 
     //Sectioned recyclerview
     implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'

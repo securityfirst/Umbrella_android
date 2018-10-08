@@ -10,6 +10,7 @@ import kotlinx.coroutines.experimental.launch
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import ru.noties.markwon.Markwon
 
 class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
@@ -30,10 +31,7 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-
-       // launch(UI) {
-            markdownView?.loadMarkdown(markdown.text)
-        ///}
+        Markwon.setMarkdown(markdownView, markdown.text)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

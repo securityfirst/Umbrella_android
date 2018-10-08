@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <us.feras.mdv.MarkdownView
+    <TextView
         android:id="@+id/markdownView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
