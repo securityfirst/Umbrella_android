@@ -12,5 +12,5 @@ interface ChecklistBasePresenter<V : ChecklistView, I : ChecklistBaseInteractor>
 
     fun submitUpdateChecklist(checklist: Checklist)
 
-    fun submitChecklistProgressDone()
+    fun submitLoadDashboard()
 }

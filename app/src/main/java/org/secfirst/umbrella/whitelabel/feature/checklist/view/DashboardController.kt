@@ -3,9 +3,11 @@ package org.secfirst.umbrella.whitelabel.feature.checklist.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.checklist_dashboard.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
@@ -18,6 +20,7 @@ import javax.inject.Inject
 class DashboardController : BaseController(), ChecklistView {
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
+    private val dashboardItemClick: (Checklist?) -> Unit = this::onDashboardItemClicked
 
     override fun onInject() {
         DaggerChecklistComponent.builder()
@@ -28,7 +31,13 @@ class DashboardController : BaseController(), ChecklistView {
 
     override fun onAttach(view: View) {
         presenter.onAttach(this)
-        presenter.submitChecklistProgressDone()
+        presenter.submitLoadDashboard()
+    }
+
+
+    private fun onDashboardItemClicked(checklist: Checklist?) {
+        if (checklist != null)
+            router.pushController(RouterTransaction.with(ChecklistController(checklist)))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -36,7 +45,7 @@ class DashboardController : BaseController(), ChecklistView {
     }
 
     override fun showDashboard(dashboards: List<Dashboard.Item>) {
-        val dashboardAdapter = DashboardAdapter(dashboards)
+        val dashboardAdapter = DashboardAdapter(dashboards, dashboardItemClick)
         checklistDashboardRecyclerView?.initRecyclerView(dashboardAdapter)
     }
 }

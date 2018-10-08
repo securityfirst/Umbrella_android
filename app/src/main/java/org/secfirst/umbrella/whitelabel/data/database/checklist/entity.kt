@@ -91,14 +91,18 @@ class Content(
 
 class Dashboard(var items: List<Item> = listOf()) {
 
-    @Table(database = AppDatabase::class, name = "dashboard_item", allFields = true)
-    data class Item(@PrimaryKey(autoincrement = true)
-                    var id: Long = 0,
+    data class Item(var id: Long = 0,
                     var progress: Int = 0,
                     var title: String = "",
-                    var label: String = "") {
+                    var label: String = "",
+                    var checklist: Checklist? = null,
+                    var difficulty: Difficulty?) {
 
-        constructor(progress: Int, label: String) : this(0, progress, "", label)
-        constructor(title: String) : this(0, 0, title, "")
+        constructor(progress: Int, label: String,
+                    checklist: Checklist?,
+                    difficulty: Difficulty?) : this(0, progress, "", label, checklist, difficulty)
+
+        constructor(title: String) : this(0, 0, title, "", null, null)
     }
 }
+

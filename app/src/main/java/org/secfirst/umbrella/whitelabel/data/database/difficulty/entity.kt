@@ -74,17 +74,27 @@ data class Difficulty(
 }
 
 
-fun MutableList<Difficulty>.orderByDifficultySelected(selectDifficultyId: Long) : MutableList<Difficulty> {
+fun MutableList<Difficulty>.orderDifficultyBy(selectDifficultyId: Long): MutableList<Difficulty> {
     val baseIndex = 0
-    var selectDifficulty : Difficulty
+    var selectDifficulty: Difficulty
     for ((index, value) in this.withIndex()) {
-        if (value.id == selectDifficultyId){
+        if (value.id == selectDifficultyId) {
             selectDifficulty = value
             this[index] = this[baseIndex]
             this[baseIndex] = selectDifficulty
         }
     }
     return this
+}
+
+fun MutableList<Checklist>.toMergeDifficulty() {
+    val checklistSorteByDifficulty = mutableListOf<Checklist>()
+
+    for (i in this.indices) {
+
+
+
+    }
 }
 
 fun MutableList<Difficulty>.withColors(): List<Difficulty> {

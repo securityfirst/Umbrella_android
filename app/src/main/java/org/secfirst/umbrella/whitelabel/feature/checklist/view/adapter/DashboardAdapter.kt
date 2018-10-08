@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
 import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 @SuppressLint("SetTextI18n")
-class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
+                       private val onDashboardItemClicked: (Checklist?) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
@@ -40,7 +42,7 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>) : Recyc
             holder.bind(dashboardItems[position].title)
         } else {
             holder as DashboardHolder
-            holder.bind(dashboardItems[position])
+            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist) })
         }
     }
 
@@ -51,10 +53,11 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>) : Recyc
     }
 
     class DashboardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(dashboardItem: Dashboard.Item) {
+        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit) {
             with(dashboardItem) {
                 itemView.itemLabel.text = label
                 itemView.itemPercentage.text = "$progress%"
+                itemView.setOnClickListener { clickListener(this@DashboardHolder) }
             }
         }
     }
