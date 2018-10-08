@@ -28,12 +28,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val favoriteClick: (Boolean) -> Unit = this::onFavoriteClick
     private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
-    private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
+    private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist? }
     private val titleTab by lazy { args.getString(EXTRA_SEGMENT_TAB_TITLE) }
     private var indexTab = 0
     lateinit var hostSegmentTabControl: HostSegmentTabControl
 
-    constructor(markdowns: List<Markdown>, titleTab: String, checklist: Checklist) : this(Bundle().apply {
+    constructor(markdowns: List<Markdown>, titleTab: String, checklist: Checklist?) : this(Bundle().apply {
         putParcelableArray(EXTRA_SEGMENT, markdowns.toTypedArray())
         putParcelable(EXTRA_CHECKLIST, checklist)
         putString(EXTRA_SEGMENT_TAB_TITLE, titleTab)
@@ -62,7 +62,11 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun initSegmentView(markdowns: List<Markdown>) {
-        val segmentAdapter = SegmentAdapter(segmentClick, footClick, favoriteClick, checklist.favorite, markdowns.toMutableList())
+        var favorite = checklist?.favorite
+        if (favorite == null) {
+            favorite = false
+        }
+        val segmentAdapter = SegmentAdapter(segmentClick, footClick, favoriteClick, favorite, markdowns.toMutableList())
         segmentRecyclerView?.initGridView(segmentAdapter)
         setFooterList(segmentAdapter)
     }
@@ -92,8 +96,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun onFavoriteClick(isFavorite: Boolean) {
-        checklist.favorite = isFavorite
-        presenter.submitChecklistFavorite(checklist)
+        checklist?.favorite = isFavorite
+        if (checklist != null) {
+            presenter.submitChecklistFavorite(checklist!!)
+        }
     }
 
     private fun onFootClicked(position: Int) {

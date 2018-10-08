@@ -70,7 +70,8 @@ fun MutableList<Markdown>.toSegment(toolbarTitle: String,
 }
 
 fun Segment.toController(host: Controller): SegmentController {
-    val controller = SegmentController(this.markdowns, this.tabTitle, this.checklists.last())
+    val checklist = if (this.checklists.isEmpty()) null else this.checklists.last()
+    val controller = SegmentController(this.markdowns, this.tabTitle, checklist)
     controller.hostSegmentTabControl = host as HostSegmentTabControl
     return controller
 }

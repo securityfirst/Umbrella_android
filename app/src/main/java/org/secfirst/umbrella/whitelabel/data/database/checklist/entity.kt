@@ -89,12 +89,16 @@ class Content(
         @Column
         var value: Boolean = false) : BaseModel(), Parcelable
 
-class Dashboard(items: List<Item>) {
+class Dashboard(var items: List<Item> = listOf()) {
 
     @Table(database = AppDatabase::class, name = "dashboard_item", allFields = true)
     data class Item(@PrimaryKey(autoincrement = true)
                     var id: Long = 0,
-                    var label: String = "",
                     var progress: Int = 0,
-                    var title: String = "")
+                    var title: String = "",
+                    var label: String = "") {
+
+        constructor(progress: Int, label: String) : this(0, progress, "", label)
+        constructor(title: String) : this(0, 0, title, "")
+    }
 }
