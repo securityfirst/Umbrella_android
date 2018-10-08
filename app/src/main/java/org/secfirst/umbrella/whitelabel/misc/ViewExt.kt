@@ -1,8 +1,12 @@
 package org.secfirst.umbrella.whitelabel.misc
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.support.design.internal.BottomNavigationItemView
+import android.support.design.internal.BottomNavigationMenuView
+import android.support.design.widget.BottomNavigationView
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -57,6 +61,19 @@ class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
     val sectionText = headerView.sectionText
 }
 
+@SuppressLint("RestrictedApi")
+fun BottomNavigationView.removeShiftMode() {
+    val menuView = this.getChildAt(0) as BottomNavigationMenuView
+    val shiftingMode = menuView.javaClass.getDeclaredField("mShiftingMode")
+    shiftingMode.isAccessible = true
+    shiftingMode.setBoolean(menuView, false)
+    shiftingMode.isAccessible = false
+    for (i in 0 until menuView.childCount) {
+        val item = menuView.getChildAt(i) as BottomNavigationItemView
+        item.setShiftingMode(false)
+        item.setChecked(item.itemData.isChecked)
+    }
+}
 
 const val ITEM_VIEW_TYPE_HEADER = 0
 const val ITEM_VIEW_TYPE_ITEM = 1

@@ -21,6 +21,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.controller.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
+import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import javax.inject.Inject
 
@@ -55,6 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRoute(savedInstanceState: Bundle?) {
+        navigation.removeShiftMode()
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
         if (!router.hasRootController() && tentConfig.isRepCreate())
