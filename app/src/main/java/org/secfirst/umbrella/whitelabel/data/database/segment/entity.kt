@@ -54,7 +54,13 @@ data class Markdown(
         const val TAG_TITLE = "title: "
         const val SINGLE_CHOICE = 1
         fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
-        fun recoveryTitle(text: String) = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
+        fun recoveryTitle(text: String): String {
+            val res = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
+            if (res == "---") {
+                return text.lines()[1].trim().substringAfterLast(TAG_TITLE)
+            }
+            return res
+        }
     }
 }
 
