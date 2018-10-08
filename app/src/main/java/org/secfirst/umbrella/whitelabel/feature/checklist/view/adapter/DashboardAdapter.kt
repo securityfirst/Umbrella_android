@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
-import kotlinx.android.synthetic.main.head_section.view.*
+import kotlinx.android.synthetic.main.head_checklist_dashboard.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
@@ -30,7 +30,7 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
 
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             val headerView = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.head_section, parent, false)
+                    .inflate(R.layout.head_checklist_dashboard, parent, false)
             return DashboardHeaderViewHolder(headerView)
         }
         return DashboardHolder(view)
@@ -48,7 +48,7 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
 
     class DashboardHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(title: String) {
-            itemView.sectionText.text = title
+            itemView.headChecklistDashboard.text = title
         }
     }
 
