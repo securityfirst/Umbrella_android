@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
-    var titleTab = ""
+
 
     constructor(checklist: Checklist) : this(Bundle().apply {
         putParcelable(EXTRA_CHECKLIST, checklist)
@@ -41,10 +40,6 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .application(UmbrellaApplication.instance)
                 .build()
                 .inject(this)
-    }
-
-    override fun onContextAvailable(context: Context) {
-        titleTab = context.getString(R.string.checklist_title)
     }
 
     override fun onAttach(view: View) {
@@ -83,4 +78,6 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     companion object {
         const val EXTRA_CHECKLIST = "extra_checklist"
     }
+
+    fun getTitle() = "Checklist"
 }

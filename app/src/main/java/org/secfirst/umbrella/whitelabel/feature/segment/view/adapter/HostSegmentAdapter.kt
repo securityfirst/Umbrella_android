@@ -21,7 +21,6 @@ class HostSegmentAdapter(host: Controller,
                 0 -> {
                     val segmentController = controllers[position] as SegmentController
                     segmentController.setIndexTab(position)
-                    //   segmentController.hostSegmentTabControl = host as HostSegmentTabControl
                     router.setRoot(RouterTransaction.with(segmentController))
                 }
                 in 1..segmentPageLimit -> {
@@ -50,7 +49,7 @@ class HostSegmentAdapter(host: Controller,
             }
             else -> {
                 val currentController = controllers[position] as ChecklistController
-                currentController.titleTab
+                currentController.getTitle()
             }
         }
     }
