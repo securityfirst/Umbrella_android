@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import br.tiagohm.markdownview.css.styles.Github
 import kotlinx.android.synthetic.main.about.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -27,7 +28,8 @@ class AboutController(bundle: Bundle) : BaseController(bundle) {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        aboutMarkdownView?.loadMarkdown(markdown.text)
+        aboutMarkdownView.addStyleSheet(Github())
+        aboutMarkdownView.loadMarkdown(markdown.text)
         setUpToolbar()
     }
 

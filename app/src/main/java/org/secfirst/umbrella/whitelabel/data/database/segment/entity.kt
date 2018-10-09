@@ -103,7 +103,10 @@ fun Markdown.removeHead(): Markdown {
     return this
 }
 
-interface HostSegmentTabControl {
+//fun Markdown.setupImage() : Markdown{
+//
+//}
 
+interface HostSegmentTabControl {
     fun onTabHostManager(position: Int)
 }

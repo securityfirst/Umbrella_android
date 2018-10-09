@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import br.tiagohm.markdownview.css.styles.Github
 import kotlinx.android.synthetic.main.segment_detail.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import ru.noties.markwon.Markwon
+
 
 class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
@@ -31,7 +30,8 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        Markwon.setMarkdown(markdownView, markdown.text)
+        markdownView.addStyleSheet(Github())
+        markdownView.loadMarkdown(markdown.text)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
