@@ -97,11 +97,10 @@ fun List<Markdown>.toControllers(): List<SegmentDetailController> {
 }
 
 fun Markdown.removeHead(): Markdown {
-
-    if (Markdown.recoveryIndex(text).isNotBlank()) {
-        this.text = this.text.substringAfterLast(this.text.lines()[3])
+    text = if (Markdown.recoveryIndex(text).isNotBlank()) {
+        text.substringAfterLast(text.lines()[3])
     } else {
-        this.text = this.text.substringAfterLast(this.text.lines()[2])
+        text.substringAfter(text.lines()[2])
     }
     return this
 }

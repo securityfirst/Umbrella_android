@@ -33,5 +33,6 @@ enum class TypeFile(val value: String) {
 
 enum class ExtensionFile(val value: String) {
     YML("yml"),
-    MD("md")
+    MD("md"),
+    PNG("png")
 }

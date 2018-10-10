@@ -12,31 +12,25 @@ import java.io.File
 import javax.inject.Inject
 
 
-class ElementSerializer @Inject constructor(private val tentRepo: TentRepo) : Serializer {
+class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) : Serializer {
 
     private val root: Root = Root()
-    private var fileList = listOf<File>()
 
-    suspend fun serialize(): Root {
+    suspend fun process(): Root {
         withContext(ioContext) {
-            fileList = tentRepo.loadElementsFile()
-            create()
+            tentRepo.loadElementsFile().forEach { currentFile ->
+                val absolutePath = currentFile.path
+                        .substringAfterLast(PathUtils.basePath(), "")
+                val pwd = getWorkDirectory(absolutePath)
+                Log.d("test", "path - $absolutePath")
+                addElement(pwd, currentFile)
+            }
         }
-
         return root
     }
 
-    private fun create() {
-        fileList.forEach { currentFile ->
-            val absolutePath = currentFile.path
-                    .substringAfterLast(PathUtils.basePath(), "")
-            val pwd = getWorkDirectory(absolutePath)
-            Log.e("test", "path - $absolutePath")
-            addElement(pwd, currentFile)
-        }
-    }
-
     private fun addElement(pwd: String, currentFile: File) {
+
         val element = parseYmlFile(currentFile, Element::class)
         element.path = pwd
         element.resourcePath = if (element.icon.isNotEmpty()) tentRepo.loadCategoryImage(element.icon) else ""

@@ -21,54 +21,56 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
 
     private lateinit var root: Root
 
-    suspend fun load(pRoot: Root): Root {
+    suspend fun load(root: Root): Root {
         withContext(ioContext) {
-            root = pRoot
-            val files = tentRepo.loadFile()
-            create(files)
+            this.root = root
+            tentRepo.loadFile().filter { it.extension != ExtensionFile.PNG.value }.forEach { currentFile ->
+                val absolutePath = currentFile.path.substringAfterLast(PathUtils.basePath(), "")
+                val pwd = getWorkDirectory(absolutePath)
+                loadElement(pwd, currentFile)
+                loadForm(currentFile)
+            }
         }
-        return pRoot
+        return this.root
     }
 
-    private fun create(files: List<File>) {
-        files.forEach { currentFile ->
-            val absolutePath = currentFile.path.substringAfterLast(PathUtils.basePath(), "")
-            val pwd = getWorkDirectory(absolutePath)
-            addProperties(pwd, currentFile)
-            addForms(currentFile)
-        }
-    }
-
-    private fun addProperties(pwd: String, file: File) {
+    private fun loadElement(pwd: String, file: File) {
 
         when (getLevelOfPath(pwd)) {
             ELEMENT_LEVEL -> {
                 root.elements.forEach {
                     if (it.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
-                            TypeFile.SEGMENT.value -> it.markdowns.add(Markdown(file.readText().replaceMarkdownImage(pwd)).removeHead())
+                            TypeFile.SEGMENT.value -> {
+                                val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
+                                it.markdowns.add(Markdown(markdownFormatted).removeHead())
+                            }
                             TypeFile.CHECKLIST.value -> it.checklist.add(parseYmlFile(file, Checklist::class))
                         }
                     }
                 }
             }
-
             SUB_ELEMENT_LEVEL -> {
                 root.elements.walkSubElement { subElement ->
                     if (subElement.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
-                            TypeFile.SEGMENT.value -> subElement.markdowns.add(Markdown(file.readText().replaceMarkdownImage(pwd)).removeHead())
+                            TypeFile.SEGMENT.value -> {
+                                val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
+                                subElement.markdowns.add(Markdown(markdownFormatted).removeHead())
+                            }
                             TypeFile.CHECKLIST.value -> subElement.checklist.add(parseYmlFile(file, Checklist::class))
                         }
                     }
                 }
             }
-
             CHILD_LEVEL -> {
                 root.elements.walkChild { child ->
                     if (child.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
-                            TypeFile.SEGMENT.value -> child.markdowns.add(Markdown(file.readText().replaceMarkdownImage(pwd)).removeHead())
+                            TypeFile.SEGMENT.value -> {
+                                val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
+                                child.markdowns.add(Markdown(markdownFormatted).removeHead())
+                            }
                             TypeFile.CHECKLIST.value -> child.checklist.add(parseYmlFile(file, Checklist::class))
                         }
                     }
@@ -77,7 +79,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
         }
     }
 
-    private fun addForms(file: File) {
+    private fun loadForm(file: File) {
         if (getDelimiter(file.nameWithoutExtension) == TypeFile.FORM.value)
             root.forms.add(parseYmlFile(file, Form::class))
     }
