@@ -15,8 +15,9 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                      private val onFootClicked: (Int) -> Unit,
-                     private val onFavoriteClicked: (Boolean) -> Unit,
-                     private val favorited: Boolean,
+                     private val onChecklistFavoriteClick: (Boolean) -> Unit,
+                     private val onSegmentFavoriteClick: (Markdown) -> Unit,
+                     private val checklistFavorite: Boolean,
                      private val markdowns: MutableList<Markdown>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -42,14 +43,15 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (!isHeader(position)) {
-            holder as SegmentHolder
-            holder.bind(markdowns[position], clickListener = { onClickSegment(position) })
-        } else {
+        if (isHeader(position)) {
             holder as FooterHolder
-            holder.bind(favorited,
+            holder.bind(checklistFavorite,
                     footClick = { onFootClicked(position) },
-                    favoriteClick = { onFavoriteClicked(isChecklistFavorite) })
+                    checklistFavoriteClick = { onChecklistFavoriteClick(isChecklistFavorite) })
+        } else {
+            holder as SegmentHolder
+            holder.bind(markdowns[position], clickListener = { onClickSegment(position) },
+                    segmentFavoriteClick = { onSegmentFavoriteClick(markdowns[position]) })
         }
     }
 
@@ -60,20 +62,30 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
     override fun getItemCount() = markdowns.size + 1
 
     class FooterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(favorited: Boolean, footClick: (FooterHolder) -> Unit, favoriteClick: (FooterHolder) -> Unit) {
+        fun bind(favorited: Boolean, footClick: (FooterHolder) -> Unit, checklistFavoriteClick: (FooterHolder) -> Unit) {
             itemView.setOnClickListener { footClick(this) }
             itemView.checklistFavorite.isChecked = favorited
             itemView.checklistFavorite.setOnClickListener {
                 isChecklistFavorite = itemView.checklistFavorite.isChecked
-                favoriteClick(this)
+                checklistFavoriteClick(this)
             }
         }
     }
 
     class SegmentHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val colours = intArrayOf(R.color.umbrella_purple, R.color.umbrella_green, R.color.umbrella_yellow)
-        fun bind(markdown: Markdown, clickListener: (SegmentHolder) -> Unit) {
-            itemView.setOnClickListener { clickListener(this) }
+        private val colours = intArrayOf(R.color.umbrella_purple,
+                R.color.umbrella_green,
+                R.color.umbrella_yellow)
+
+        fun bind(markdown: Markdown, clickListener: (SegmentHolder) -> Unit,
+                 segmentFavoriteClick: (SegmentHolder) -> Unit) {
+
+            itemView.segmentFavorite.isChecked = markdown.favorite
+            itemView.setOnClickListener {
+                markdown.favorite = itemView.segmentFavorite.isChecked
+                segmentFavoriteClick(this)
+                clickListener(this)
+            }
             with(markdown) {
                 val index = adapterPosition + 1
                 itemView.segmentIndex.text = index.toString()

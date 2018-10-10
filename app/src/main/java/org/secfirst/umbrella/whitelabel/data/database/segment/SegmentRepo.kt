@@ -10,4 +10,6 @@ interface SegmentRepo {
     suspend fun loadCategoryBy(categoryId: Long): Module?
 
     suspend fun saveChecklist(checklist: Checklist)
+
+    suspend fun saveMarkdown(markdown: Markdown)
 }

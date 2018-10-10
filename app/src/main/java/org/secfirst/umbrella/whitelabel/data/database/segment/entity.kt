@@ -24,7 +24,7 @@ data class Segment(var toolbarTitle: String,
                    var checklists: List<Checklist>) : Parcelable
 
 @Parcelize
-@Table(database = AppDatabase::class, allFields = true)
+@Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = false)
 data class Markdown(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
@@ -42,7 +42,9 @@ data class Markdown(
         var difficulty: Difficulty? = null,
         var text: String = "",
         var title: String = "",
-        var index: String = "") : BaseModel(), Parcelable {
+        var index: String = "",
+        var favorite: Boolean = false,
+        var basePath: String = "") : BaseModel(), Parcelable {
 
     constructor(text: String) : this(0,
             null,
@@ -53,6 +55,7 @@ data class Markdown(
         const val TAG_INDEX = "index: "
         const val TAG_TITLE = "title: "
         const val SINGLE_CHOICE = 1
+        const val MARKDOWN_IMAGE_TAG = "![image]("
         fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
         fun recoveryTitle(text: String): String {
             val res = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
@@ -102,10 +105,6 @@ fun Markdown.removeHead(): Markdown {
     }
     return this
 }
-
-//fun Markdown.setupImage() : Markdown{
-//
-//}
 
 interface HostSegmentTabControl {
     fun onTabHostManager(position: Int)

@@ -2,8 +2,8 @@ package org.secfirst.umbrella.whitelabel.serialize
 
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
-import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.CHILD_LEVEL
@@ -11,6 +11,7 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.ELEMENT_L
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.SUB_ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimiter
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
+import org.secfirst.umbrella.whitelabel.misc.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import java.io.File
@@ -31,7 +32,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
 
     private fun create(files: List<File>) {
         files.forEach { currentFile ->
-            val absolutePath = currentFile.path.substringAfterLast("en/", "")
+            val absolutePath = currentFile.path.substringAfterLast(PathUtils.basePath(), "")
             val pwd = getWorkDirectory(absolutePath)
             addProperties(pwd, currentFile)
             addForms(currentFile)
@@ -45,7 +46,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                 root.elements.forEach {
                     if (it.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
-                            TypeFile.SEGMENT.value -> it.markdowns.add(Markdown(file.readText()).removeHead())
+                            TypeFile.SEGMENT.value -> it.markdowns.add(Markdown(file.readText().replaceMarkdownImage(pwd)).removeHead())
                             TypeFile.CHECKLIST.value -> it.checklist.add(parseYmlFile(file, Checklist::class))
                         }
                     }
@@ -56,7 +57,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                 root.elements.walkSubElement { subElement ->
                     if (subElement.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
-                            TypeFile.SEGMENT.value -> subElement.markdowns.add(Markdown(file.readText()).removeHead())
+                            TypeFile.SEGMENT.value -> subElement.markdowns.add(Markdown(file.readText().replaceMarkdownImage(pwd)).removeHead())
                             TypeFile.CHECKLIST.value -> subElement.checklist.add(parseYmlFile(file, Checklist::class))
                         }
                     }
@@ -67,7 +68,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                 root.elements.walkChild { child ->
                     if (child.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
-                            TypeFile.SEGMENT.value -> child.markdowns.add(Markdown(file.readText()).removeHead())
+                            TypeFile.SEGMENT.value -> child.markdowns.add(Markdown(file.readText().replaceMarkdownImage(pwd)).removeHead())
                             TypeFile.CHECKLIST.value -> child.checklist.add(parseYmlFile(file, Checklist::class))
                         }
                     }

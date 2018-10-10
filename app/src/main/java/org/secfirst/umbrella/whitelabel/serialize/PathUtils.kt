@@ -1,7 +1,10 @@
 package org.secfirst.umbrella.whitelabel.serialize
 
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+
 abstract class PathUtils {
     companion object {
+
         fun getLastDirectory(path: String): String {
             val splitPath = path.split("/").filter { it.isNotEmpty() }
             return splitPath[splitPath.lastIndex]
@@ -18,5 +21,7 @@ abstract class PathUtils {
                 pwd += splitPath[i] + "/"
             return pwd
         }
+
+        fun basePath(): String = UmbrellaApplication.instance.cacheDir.path
     }
 }

@@ -20,7 +20,6 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val rate = it.fetchAllChecklistInProgress()
                 val totalDone = it.fetchChecklistCount().toInt()
                 val allDashboard = mutableListOf<Dashboard.Item>()
-
                 allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
                 val favoriteList = dashBoardMount(it.fetchAllChecklistFavorite(), "Favorites")
                 allDashboard.addAll(favoriteList)

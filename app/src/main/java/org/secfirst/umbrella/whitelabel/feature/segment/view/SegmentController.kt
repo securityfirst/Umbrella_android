@@ -25,7 +25,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val segmentClick: (Int) -> Unit = this::onSegmentClicked
-    private val favoriteClick: (Boolean) -> Unit = this::onFavoriteClick
+    private val checklistFavoriteClick: (Boolean) -> Unit = this::onChecklistFavoriteClick
+    private val segmentFavoriteClick: (Markdown) -> Unit = this::onSegmentFavoriteClick
     private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist? }
@@ -62,11 +63,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun initSegmentView(markdowns: List<Markdown>) {
-        var favorite = checklist?.favorite
-        if (favorite == null) {
-            favorite = false
-        }
-        val segmentAdapter = SegmentAdapter(segmentClick, footClick, favoriteClick, favorite, markdowns.toMutableList())
+        val favorite = checklist?.favorite ?: false
+        val segmentAdapter = SegmentAdapter(segmentClick, footClick, checklistFavoriteClick,
+                segmentFavoriteClick, favorite, markdowns.toMutableList())
+
         segmentRecyclerView?.initGridView(segmentAdapter)
         setFooterList(segmentAdapter)
     }
@@ -77,7 +77,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-
         }
         return true
     }
@@ -95,11 +94,14 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         parentController?.router?.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
     }
 
-    private fun onFavoriteClick(isFavorite: Boolean) {
+    private fun onChecklistFavoriteClick(isFavorite: Boolean) {
         checklist?.favorite = isFavorite
-        if (checklist != null) {
-            presenter.submitChecklistFavorite(checklist!!)
-        }
+        checklist ?: presenter.submitChecklistFavorite(checklist!!)
+    }
+
+
+    private fun onSegmentFavoriteClick(markdown: Markdown) {
+        presenter.submitMarkdownFavorite(markdown)
     }
 
     private fun onFootClicked(position: Int) {

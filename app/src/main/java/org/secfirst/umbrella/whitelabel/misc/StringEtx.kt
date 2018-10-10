@@ -2,8 +2,10 @@ package org.secfirst.umbrella.whitelabel.misc
 
 import org.jsoup.Jsoup
 import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
+import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,3 +76,6 @@ fun ActiveForm.asHTML(): String {
     }
     return doc.html()
 }
+
+fun String.replaceMarkdownImage(pwd: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
+        "${Markdown.MARKDOWN_IMAGE_TAG}file://${PathUtils.basePath()}/$pwd")

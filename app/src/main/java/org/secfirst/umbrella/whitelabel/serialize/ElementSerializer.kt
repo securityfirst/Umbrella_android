@@ -29,7 +29,7 @@ class ElementSerializer @Inject constructor(private val tentRepo: TentRepo) : Se
     private fun create() {
         fileList.forEach { currentFile ->
             val absolutePath = currentFile.path
-                    .substringAfterLast("en/", "")
+                    .substringAfterLast(PathUtils.basePath(), "")
             val pwd = getWorkDirectory(absolutePath)
             Log.e("test", "path - $absolutePath")
             addElement(pwd, currentFile)

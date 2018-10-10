@@ -12,6 +12,13 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface SegmentDao {
 
+
+    suspend fun save(markdown: Markdown) {
+        withContext(ioContext) {
+            modelAdapter<Markdown>().save(markdown)
+        }
+    }
+
     suspend fun getSubcategoryBy(id: Long): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
@@ -26,7 +33,7 @@ interface SegmentDao {
                 .querySingle()
     }
 
-    suspend fun saveChecklist(checklist: Checklist) {
+    suspend fun save(checklist: Checklist) {
         withContext(ioContext) {
             modelAdapter<Checklist>().save(checklist)
         }

@@ -19,6 +19,12 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), SegmentBasePresenter<V, I> {
 
+    override fun submitMarkdownFavorite(markdown: Markdown) {
+        launchSilent(uiContext) {
+            interactor?.insertMarkdown(markdown)
+        }
+    }
+
     override fun submitChecklistFavorite(checklist: Checklist) {
         launchSilent(uiContext) {
             interactor?.insertChecklist(checklist)
