@@ -14,11 +14,6 @@ data class Lesson(var moduleId: Long,
                   var moduleTitle: String = "",
                   var pathIcon: String = "",
                   var topics: List<Subject> = listOf()) : ExpandableGroup<Subject>(moduleTitle, topics) {
-
-    companion object {
-        const val GLOSSARY = "glossary"
-        const val ABOUT = "about"
-    }
 }
 
 @Table(database = AppDatabase::class)
@@ -33,6 +28,8 @@ fun List<Module>.toLesson(): List<Lesson> {
     val lessons = mutableListOf<Lesson>()
     val moduleSorted = this.sortedWith(compareBy { it.index })
     moduleSorted.forEach { module ->
+        val subjectSorted = module.subjects.sortedWith(compareBy { it.index })
+        module.subjects = subjectSorted.toMutableList()
         val lesson = Lesson(module.id, module.title, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
