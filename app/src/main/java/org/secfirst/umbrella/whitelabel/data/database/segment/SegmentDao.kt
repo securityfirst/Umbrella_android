@@ -19,14 +19,22 @@ interface SegmentDao {
         }
     }
 
-    suspend fun getSubcategoryBy(id: Long): Subject? = withContext(ioContext) {
+    suspend fun getMarkdowns(subjectId: Long): List<Markdown> = withContext(ioContext) {
+        SQLite.select()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.subject_id.`is`(subjectId))
+                .queryList()
+    }
+
+
+    suspend fun getSubject(id: Long): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
                 .where(Subject_Table.id.`is`(id))
                 .querySingle()
     }
 
-    suspend fun getCategoryBy(id: Long): Module? = withContext(ioContext) {
+    suspend fun getModule(id: Long): Module? = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
                 .where(Module_Table.id.`is`(id))

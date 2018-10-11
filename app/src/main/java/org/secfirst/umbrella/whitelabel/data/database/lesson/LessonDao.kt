@@ -22,10 +22,10 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getSubcategoryBy(moduleId: Long): Subject? = withContext(ioContext) {
+    suspend fun getSubject(subjectId: Long): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.module_id.`is`(moduleId))
+                .where(Subject_Table.id.`is`(subjectId))
                 .querySingle()
     }
 
@@ -36,11 +36,11 @@ interface LessonDao {
                 .querySingle()
     }
 
-    suspend fun getMarkdownBySubject(subjectId: Long): Markdown? = withContext(ioContext) {
+    suspend fun getMarkdownBySubject(subjectId: Long): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
                 .where(Markdown_Table.subject_id.`is`(subjectId))
-                .querySingle()
+                .queryList()
     }
 
     suspend fun getMarkdownByModule(moduleId: Long): Markdown? = withContext(ioContext) {

@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import android.util.Log
 import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
@@ -24,7 +23,6 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
             interactor?.let {
                 val module = it.fetchCategoryBy(moduleId)
                 module?.let { safeModule ->
-                    Log.e("test", "$module")
                     if (safeModule.markdowns.size > SINGLE_CHOICE) {
                         getView()?.startSegmentController(safeModule)
                     } else {
@@ -49,12 +47,12 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                     if (candidateTopic != null)
                         topicPreferred = candidateTopic
                 }
-                val markdown = it.fetchMarkdownBySubject(subject.id)
+                val subjectMarkdown = it.fetchMarkdownsBy(subject.id)
 
                 if (topicPreferred != null)
                     subjectInSegment(topicPreferred?.difficulty)
-                else if (subject.difficulties.isEmpty() && markdown != null) {
-                    subjectInSegmentDetail(markdown)
+                else if (subject.difficulties.isEmpty() && subjectMarkdown.isNotEmpty()) {
+                    getView()?.startSegmentController(subject)
                 } else {
                     subjectInDifficulty(subject)
                 }

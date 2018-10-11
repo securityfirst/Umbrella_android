@@ -17,7 +17,7 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchChildBy(id: Long): Difficulty?
 
-    suspend fun fetchMarkdownBySubject(subjectId: Long): Markdown?
+    suspend fun fetchMarkdownBySubject(subjectId: Long): List<Markdown>
 
     suspend fun fetchMarkdownByModule(moduleId: Long): Markdown?
 

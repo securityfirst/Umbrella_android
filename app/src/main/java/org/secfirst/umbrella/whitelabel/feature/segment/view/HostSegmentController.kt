@@ -10,6 +10,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.toControllers
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
@@ -29,6 +30,8 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val selectDifficulty by lazy { args.getParcelable(EXTRA_SEGMENT_BY_DIFFICULTY) as Difficulty? }
     private val selectModule by lazy { args.getParcelable(EXTRA_SEGMENT_BY_MODULE) as Module? }
+    private val selectSubject by lazy { args.getParcelable(EXTRA_SEGMENT_BY_SUBJECT) as Subject? }
+
     private lateinit var hostAdapter: HostSegmentAdapter
 
     constructor(difficulty: Difficulty) : this(Bundle().apply {
@@ -37,6 +40,10 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     constructor(module: Module) : this(Bundle().apply {
         putParcelable(EXTRA_SEGMENT_BY_MODULE, module)
+    })
+
+    constructor(subject: Subject) : this(Bundle().apply {
+        putParcelable(EXTRA_SEGMENT_BY_SUBJECT, subject)
     })
 
     override fun onInject() {
@@ -50,10 +57,10 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         super.onAttach(view)
         presenter.onAttach(this)
 
-        if (selectModule != null) {
-            selectModule?.let { presenter.submitLoadSegments(it) }
-        } else {
-            selectDifficulty?.let { presenter.submitLoadSegments(it) }
+        when {
+            selectModule != null -> selectModule?.let { presenter.submitLoadSegments(it) }
+            selectDifficulty != null -> selectDifficulty?.let { presenter.submitLoadSegments(it) }
+            else -> selectSubject?.let { presenter.submitLoadSubject(it)}
         }
         setUpToolbar()
     }
@@ -102,6 +109,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     companion object {
         const val EXTRA_SEGMENT_BY_MODULE = "selected_module"
         const val EXTRA_SEGMENT_BY_DIFFICULTY = "selected_difficulty"
+        const val EXTRA_SEGMENT_BY_SUBJECT = "selected_subject"
         private const val PAGE_LIMIT = 8
     }
 

@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.segment.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.Module
+import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficultyBy
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -31,6 +32,20 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         }
     }
 
+    override fun submitLoadSubject(subject: Subject) {
+        val segments = mutableListOf<Segment>()
+        launchSilent(uiContext) {
+            interactor?.let {
+                val markdowns = it.fetchMarkdowns(subject.id)
+                if (markdowns.size > Markdown.SINGLE_CHOICE) {
+                    val segment = markdowns.toMutableList().toSegment(subject.title, subject.title, subject.checklist)
+                    segments.add(segment)
+                    getView()?.showSegments(segments)
+                }
+            }
+        }
+    }
+
     override fun submitLoadSegments(selectModule: Module) {
         val segments = mutableListOf<Segment>()
         with(selectModule) {
@@ -46,7 +61,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         launchSilent(uiContext) {
             interactor?.let { safeInteractor ->
                 val segments = mutableListOf<Segment>()
-                val subject = safeInteractor.fetchSubcategoryBy(selectDifficulty.subject!!.id)
+                val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.id)
                 val orderDifficulties = subject?.difficulties?.orderDifficultyBy(selectDifficulty.id)
                 orderDifficulties?.forEach { safeOrderDiff ->
                     val toolbarTitle = "${subject.title} ${safeOrderDiff.title}"

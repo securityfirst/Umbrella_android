@@ -16,6 +16,8 @@ interface LessonView : BaseView {
 
     fun startSegmentController(module: Module)
 
+    fun startSegmentController(subject: Subject)
+
     fun startDifficultyController(subject: Subject)
 
     fun startSegmentDetail(markdown: Markdown)

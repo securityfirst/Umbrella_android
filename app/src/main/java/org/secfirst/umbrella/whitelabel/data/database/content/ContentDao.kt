@@ -19,14 +19,15 @@ interface ContentDao {
         withContext(AppExecutors.ioContext) {
             val dataLesson = root.convertTo()
 
-            dataLesson.modules.forEach { category ->
-                category.associateForeignKey(category)
-                modelAdapter<Module>().save(category)
+            dataLesson.modules.forEach { module ->
+                module.associateForeignKey(module)
+                modelAdapter<Module>().save(module)
             }
 
-            dataLesson.modules.walkThroughSubject { subcategory ->
-                modelAdapter<Markdown>().saveAll(subcategory.markdowns)
-                modelAdapter<Checklist>().saveAll(subcategory.checklist)
+            dataLesson.modules.walkThroughSubject { subject ->
+                modelAdapter<Subject>().save(subject)
+                modelAdapter<Markdown>().saveAll(subject.markdowns)
+                modelAdapter<Checklist>().saveAll(subject.checklist)
             }
 
             dataLesson.modules.walkThroughDifficulty { child ->
