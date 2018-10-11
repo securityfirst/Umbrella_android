@@ -19,6 +19,13 @@ interface SegmentDao {
         }
     }
 
+
+    suspend fun save(checklist: Checklist) {
+        withContext(ioContext) {
+            modelAdapter<Checklist>().save(checklist)
+        }
+    }
+
     suspend fun getMarkdowns(subjectId: Long): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
@@ -41,9 +48,4 @@ interface SegmentDao {
                 .querySingle()
     }
 
-    suspend fun save(checklist: Checklist) {
-        withContext(ioContext) {
-            modelAdapter<Checklist>().save(checklist)
-        }
-    }
 }

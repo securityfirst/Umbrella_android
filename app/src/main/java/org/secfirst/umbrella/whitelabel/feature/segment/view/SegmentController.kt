@@ -96,7 +96,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun onChecklistFavoriteClick(isFavorite: Boolean) {
         checklist?.favorite = isFavorite
-        checklist ?: presenter.submitChecklistFavorite(checklist!!)
+        if (checklist != null)
+            presenter.submitChecklistFavorite(checklist!!)
     }
 
 
