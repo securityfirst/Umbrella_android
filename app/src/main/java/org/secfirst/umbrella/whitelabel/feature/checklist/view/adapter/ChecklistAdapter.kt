@@ -25,7 +25,7 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
 
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             val headerView = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.head_section, parent, false)
+                    .inflate(R.layout.head_checklist, parent, false)
             return ChecklistHeaderViewHolder(headerView)
         }
 
