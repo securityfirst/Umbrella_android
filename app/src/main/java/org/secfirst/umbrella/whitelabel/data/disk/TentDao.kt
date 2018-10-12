@@ -15,7 +15,7 @@ interface TentDao {
             withContext(ioContext) {
                 if (tentConfig.isNotRepCreate()) {
                     Git.cloneRepository()
-                            .setURI(TentConfig.URI_REPOSITORY)
+                            .setURI(TentConfig.uriRepository)
                             .setDirectory(File(tentConfig.getPathRepository()))
                             .setBranchesToClone(Arrays.asList(TentConfig.BRANCH_NAME))
                             .setBranch(TentConfig.BRANCH_NAME)
@@ -55,7 +55,7 @@ interface TentDao {
 
     suspend fun filterBySubElement(tentConfig: TentConfig): List<File> {
         val files: MutableList<File> = arrayListOf()
-        //withContext(ioContext) {
+        withContext(ioContext) {
             File(tentConfig.getPathRepository())
                     .walk(FileWalkDirection.BOTTOM_UP)
                     .filter { file -> !file.path.contains(".git") }
@@ -64,7 +64,7 @@ interface TentDao {
                     .forEach { file -> files.add(file) }
             files.reverse()
             files.sort()
-      //  }
+        }
         return files
     }
 

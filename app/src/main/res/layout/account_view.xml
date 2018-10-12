@@ -6,22 +6,17 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="25dp">
 
-    <TextView
-        android:id="@+id/textID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lesson"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/sharedb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="12dp"
         android:text="share db"
-        app:layout_constraintEnd_toEndOf="@+id/textID"
-        app:layout_constraintStart_toEndOf="@+id/textID"
-        app:layout_constraintTop_toTopOf="@+id/textID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
         tools:ignore="HardcodedText" />
+
 </android.support.constraint.ConstraintLayout>

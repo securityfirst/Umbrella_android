@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="2"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/place_search_dialog_location_TIL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="15dp"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/urlServer"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/url_server"
+                android:imeOptions="actionDone"
+                android:inputType="textNoSuggestions"
+                android:textSize="16sp"
+                android:text="https://github.com/douglasalipio/umbrella-content"
+                android:theme="@style/Autocomplete" />
+        </android.support.design.widget.TextInputLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/urlServerCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/urlServerOk"
+                android:layout_toLeftOf="@+id/urlServerOk"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:text="@android:string/cancel"
+                android:textColor="@color/grey_location" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/urlServerOk"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="10dp"
+                android:text="@android:string/ok"
+                android:textColor="@color/green_dashboard" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

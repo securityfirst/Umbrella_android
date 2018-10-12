@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.github.tbouron.shakedetector.library.ShakeDetector
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -29,7 +30,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     lateinit var router: Router
-
     @Inject
     internal lateinit var tentConfig: TentConfig
 
@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_view)
         performDI()
         initRoute(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ShakeDetector.start()
     }
 
     override fun attachBaseContext(newBase: Context?) {
@@ -59,45 +64,56 @@ class MainActivity : AppCompatActivity() {
         navigation.removeShiftMode()
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
-        if (!router.hasRootController() && tentConfig.isRepCreate())
-            router.setRoot(RouterTransaction.with(HostReaderController()))
-        else router.setRoot(RouterTransaction.with(TourController()))
+        if (!router.hasRootController() && tentConfig.isRepCreate()) {
+            router.setRoot(RouterTransaction.with(HostChecklistController()))
+            navigation.menu.getItem(2).isChecked = true
+        } else router.setRoot(RouterTransaction.with(TourController()))
     }
 
-    private val navigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+    private val navigationItemSelectedListener =
+            BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
-        when (item.itemId) {
-            R.id.navigation_feeds -> {
-                router.pushController(RouterTransaction.with(HostReaderController()))
-                return@OnNavigationItemSelectedListener true
+                when (item.itemId) {
+                    R.id.navigation_feeds -> {
+                        router.pushController(RouterTransaction.with(HostReaderController()))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_forms -> {
+                        router.pushController(RouterTransaction.with(HostFormController()))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_checklists -> {
+                        router.pushController(RouterTransaction.with(HostChecklistController()))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_lessons -> {
+                        router.pushController(RouterTransaction.with(LessonController()))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                    R.id.navigation_account -> {
+                        router.pushController(RouterTransaction.with(AccountController()))
+                        return@OnNavigationItemSelectedListener true
+                    }
+                }
+                false
             }
-            R.id.navigation_forms -> {
-                router.pushController(RouterTransaction.with(HostFormController()))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_checklists -> {
-                router.pushController(RouterTransaction.with(HostChecklistController()))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_lessons -> {
-                router.pushController(RouterTransaction.with(LessonController()).tag("test"))
-                return@OnNavigationItemSelectedListener true
-            }
-            R.id.navigation_account -> {
-                router.pushController(RouterTransaction.with(AccountController()))
-                return@OnNavigationItemSelectedListener true
-            }
-        }
-        false
+
+    override fun onStop() {
+        super.onStop()
+        ShakeDetector.stop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ShakeDetector.destroy()
+    }
+
+    override fun onBackPressed() {
+        if (!router.handleBack())
+            super.onBackPressed()
     }
 
     fun hideNavigation() = navigation?.let { it.visibility = INVISIBLE }
 
     fun showNavigation() = navigation?.let { it.visibility = VISIBLE }
-
-    override fun onBackPressed() {
-        if (!router.handleBack()) {
-            super.onBackPressed()
-        }
-    }
 }

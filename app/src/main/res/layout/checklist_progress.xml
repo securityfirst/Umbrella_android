@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <ProgressBar
         android:id="@+id/progressAnswer"
@@ -17,8 +18,8 @@
         android:id="@+id/titleProgressAnswer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
-        tools:text="100%"
         android:textColor="@color/umbrella_green"
-        tools:ignore="SmallSp" />
+        android:textSize="12sp"
+        tools:ignore="SmallSp"
+        tools:text="100%" />
 </LinearLayout>

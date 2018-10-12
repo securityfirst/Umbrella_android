@@ -31,5 +31,6 @@
     <string name="difficult_title">Kidnapping</string>
     <string name="title_checklist">Checklist</string>
     <string name="lesson_tab">Lesson</string>
+    <string name="url_server">URL server</string>
 
 </resources>

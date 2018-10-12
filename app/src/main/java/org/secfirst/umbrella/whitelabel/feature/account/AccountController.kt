@@ -8,26 +8,27 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import com.bluelinelabs.conductor.Controller
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 
-class AccountController : Controller() {
+class AccountController : BaseController() {
+
+
+    override fun onInject() {
+    }
 
     private val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.account_view, container, false)
-        val button = view.findViewById<Button>(R.id.sharedb)
-        button.setOnClickListener { showFileChooserPreview() }
         return view
     }
 
     override fun onAttach(view: View) {
-
     }
+
 
     private fun showFileChooserPreview() {
         if (ContextCompat.checkSelfPermission(activity!!,
