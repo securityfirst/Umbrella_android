@@ -92,7 +92,7 @@ class RssController : BaseController(), ReaderView {
         val dialogManager = DialogManager(this)
         addRss?.let { floatButton ->
             floatButton.setOnClickListener {
-                dialogManager.showDialog("TEST", object : DialogManager.DialogFactory {
+                dialogManager.showDialog(object : DialogManager.DialogFactory {
                     override fun createDialog(context: Context?): Dialog {
                         return alertDialog
                     }

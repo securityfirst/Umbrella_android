@@ -16,7 +16,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 class FeedController : BaseController() {
 
     private lateinit var undefinedFeedView: View
-
+    private lateinit var alertDialog: AlertDialog
     override fun onInject() {
         DaggerReanderComponent.builder()
                 .application(UmbrellaApplication.instance)
@@ -31,18 +31,16 @@ class FeedController : BaseController() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         undefinedFeedView = inflater.inflate(R.layout.feed_source_dialog, container, false)
-
+        alertDialog = AlertDialog
+                .Builder(activity)
+                .setView(undefinedFeedView)
+                .create()
         return inflater.inflate(R.layout.feed_view, container, false)
     }
 
     private fun onClickUndefinedFeed() {
         val dialogManager = DialogManager(this)
-        val alertDialog = AlertDialog
-                .Builder(activity)
-                .setView(undefinedFeedView)
-                .create()
-
-        dialogManager.showDialog("undefinedFeed", object : DialogManager.DialogFactory {
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
             override fun createDialog(context: Context?): Dialog {
                 return alertDialog
             }

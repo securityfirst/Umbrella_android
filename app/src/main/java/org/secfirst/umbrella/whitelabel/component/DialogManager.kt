@@ -53,10 +53,9 @@ class DialogManager(private val controller: Controller) {
                 return found
             }
         }
-
         val dialog = factory.createDialog(controller.activity)
-        dialog.show()
 
+        dialog.show()
         combos.add(Combo(dialog, tag, factory))
         return dialog
     }
