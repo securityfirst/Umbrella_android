@@ -47,13 +47,17 @@
     <string name="feed_source_cdc">CDC</string>
     <string name="feed_source_un">UN/ ReliefWeb</string>
     <string name="feed_source_name">Select The Feed Sources</string>
-    <string name="feed_interval_30_min">30 min</string>
-    <string name="feed_interval_1_hour">1 hour</string>
-    <string name="feed_interval_4_hours">4 hours</string>
-    <string name="feed_interval_6_hours">6 hours</string>
-    <string name="feed_interval_12_hours">12 hours</string>
-    <string name="feed_interval_24_hours">24 hours</string>
-    <string name="feed_interval_manually">Manually</string>
     <string name="feed_choose_refresh_interval">Choose refresh interval</string>
+    <string name="feed_location_enter_location">Enter location</string>
+
+    <string-array name="refresh_interval_array">
+        <item>30 min</item>
+        <item>1 hour</item>
+        <item>4 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+        <item>Manually</item>
+    </string-array>
 
 </resources>

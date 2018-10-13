@@ -5,7 +5,7 @@
     <color name="colorAccent">@color/umbrella_green</color>
     <color name="light_grey">#e5e5e5</color>
     <color name="light_white">#e5e5e5</color>
-
+    <color name="macaroni_and_cheese">#f3bc2b</color>
     <color name="umbrella_green">#FF9ABE2E</color>
     <color name="umbrella_purple">#FFB83657</color>
     <color name="umbrella_purple_dark">#FF8D2A43</color>
