@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.database.checklist
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
 interface ChecklistRepo {

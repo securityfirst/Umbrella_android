@@ -1,8 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.lesson
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Module
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 interface LessonRepo {

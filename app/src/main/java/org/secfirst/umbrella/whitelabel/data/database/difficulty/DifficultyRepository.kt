@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
 import javax.inject.Inject
 
 class DifficultyRepository @Inject constructor(private val diffDao: DifficultyDao) : DifficultyRepo {

@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.interactor
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Module
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 

@@ -1,8 +1,8 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
-import org.secfirst.umbrella.whitelabel.data.database.content.Module
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface SegmentRepo {
     suspend fun loadSubject(subjectId: Long): Subject?

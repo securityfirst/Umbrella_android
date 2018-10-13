@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
-import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface DifficultyRepo {
 

@@ -1,8 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.difficulty.interactor
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
-import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface DifficultyBaseInteractor : BaseInteractor {

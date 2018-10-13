@@ -8,15 +8,19 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.walkThroughDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Item
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.database.lesson.walkThroughSubject
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.data.disk.convertTo
-import org.secfirst.umbrella.whitelabel.misc.AppExecutors
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface ContentDao {
 
     suspend fun insertAllLessons(root: Root) {
-        withContext(AppExecutors.ioContext) {
+        withContext(ioContext) {
             val dataLesson = root.convertTo()
 
             dataLesson.modules.forEach { module ->
@@ -35,7 +39,7 @@ interface ContentDao {
                 insertChecklistContent(child.checklist)
             }
             insertFormsContent(root.forms)
-       }
+        }
 
     }
 
@@ -59,6 +63,12 @@ interface ContentDao {
                     modelAdapter<Item>().save(item)
                 }
             }
+        }
+    }
+
+    suspend fun insertFeedSource(feedSources: List<FeedSource>) {
+        withContext(ioContext) {
+            modelAdapter<FeedSource>().saveAll(feedSources)
         }
     }
 }

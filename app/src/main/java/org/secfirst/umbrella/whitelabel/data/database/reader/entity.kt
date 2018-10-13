@@ -1,11 +1,14 @@
 package org.secfirst.umbrella.whitelabel.data.database.reader
 
+import android.os.Parcelable
 import com.einmalfel.earl.Enclosure
 import com.einmalfel.earl.Feed
 import com.einmalfel.earl.Item
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
+import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import java.io.Serializable
 import java.util.*
 
@@ -40,6 +43,7 @@ data class RSS(@PrimaryKey
     constructor(link: String = "") : this(link, "", "", Date(), "", "", "")
 
 }
+
 
 data class Article(var url_: String = "", var title_: String = "",
                    var description_: String = "", var publicationDate_: Date = Date(),
@@ -85,5 +89,20 @@ val Feed.convertToRSS: RSS
         rss.items_ = articleList
         return rss
     }
+
 const val RSS_FILE_NAME: String = "default_rss.json"
 
+@Table(database = AppDatabase::class, allFields = true)
+@Parcelize
+data class FeedLocation(var id: Long = 0, var location: String = "", var code: String = "") : BaseModel(), Parcelable
+
+@Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = true)
+@Parcelize
+data class FeedSource(
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
+        var code: Int = 0,
+        var name: String = "",
+        var lastChecked: Boolean = false) : BaseModel(), Parcelable {
+    constructor(code: Int, name: String, lastChecked: Boolean) : this(0, code, name, lastChecked)
+}

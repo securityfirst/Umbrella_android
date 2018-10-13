@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.difficulty.interactor
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyRepo
-import org.secfirst.umbrella.whitelabel.data.database.lesson.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import javax.inject.Inject
 

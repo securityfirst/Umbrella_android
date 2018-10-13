@@ -9,14 +9,13 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficulty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import javax.inject.Inject
 
 class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyView {
