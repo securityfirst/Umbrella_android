@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/titleChooseInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/feed_choose_refresh_interval"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/myRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:checkedButton="@+id/thirtyMinutes"
+        app:layout_constraintStart_toStartOf="@+id/titleChooseInterval"
+        app:layout_constraintTop_toTopOf="@+id/titleChooseInterval">
+
+        <RadioButton
+            android:id="@+id/thirtyMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_30_min"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/oneHour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_1_hour"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/fourHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_4_hours"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/sixHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_6_hours"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/twelveHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_12_hours"
+            android:textSize="16sp" />
+
+        <RadioButton
+            android:id="@+id/twentyFourHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_24_hours" />
+
+        <RadioButton
+            android:id="@+id/manually"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/feed_interval_manually"
+            android:textSize="16sp" />
+    </RadioGroup>
+
+    <include
+        android:id="@+id/alertControlLayout"
+        layout="@layout/alert_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myRadioGroup" />
+
+</android.support.constraint.ConstraintLayout>

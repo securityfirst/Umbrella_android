@@ -16,7 +16,11 @@ import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 class FeedController : BaseController() {
 
     private lateinit var undefinedFeedView: View
-    private lateinit var alertDialog: AlertDialog
+    private lateinit var refreshIntervalView: View
+    private lateinit var undefinedFeedAlertDialog: AlertDialog
+    private lateinit var refreshIntervalAlertDialog: AlertDialog
+
+
     override fun onInject() {
         DaggerReanderComponent.builder()
                 .application(UmbrellaApplication.instance)
@@ -27,13 +31,20 @@ class FeedController : BaseController() {
     override fun onAttach(view: View) {
         super.onAttach(view)
         setUndefinedFeed?.let { linear -> linear.setOnClickListener { onClickUndefinedFeed() } }
+        setRefreshInterval?.let { linear -> linear.setOnClickListener { onClickRefreshInterval() } }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         undefinedFeedView = inflater.inflate(R.layout.feed_source_dialog, container, false)
-        alertDialog = AlertDialog
+        refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
+
+        undefinedFeedAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(undefinedFeedView)
+                .create()
+        refreshIntervalAlertDialog = AlertDialog
+                .Builder(activity)
+                .setView(refreshIntervalView)
                 .create()
         return inflater.inflate(R.layout.feed_view, container, false)
     }
@@ -42,7 +53,16 @@ class FeedController : BaseController() {
         val dialogManager = DialogManager(this)
         dialogManager.showDialog(object : DialogManager.DialogFactory {
             override fun createDialog(context: Context?): Dialog {
-                return alertDialog
+                return undefinedFeedAlertDialog
+            }
+        })
+    }
+
+    private fun onClickRefreshInterval() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return refreshIntervalAlertDialog
             }
         })
     }
