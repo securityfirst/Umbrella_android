@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.controller
+package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -18,7 +18,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
-import org.secfirst.umbrella.whitelabel.feature.reader.view.adapter.RssAdapter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter.RssAdapter
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import org.secfirst.umbrella.whitelabel.misc.shareLink
 import javax.inject.Inject

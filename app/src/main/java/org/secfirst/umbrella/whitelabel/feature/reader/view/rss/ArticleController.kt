@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.controller
+package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -12,8 +12,8 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.component.WebViewController
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import org.secfirst.umbrella.whitelabel.feature.reader.view.adapter.ArticleCardAdapter
-import org.secfirst.umbrella.whitelabel.feature.reader.view.adapter.ArticleSimpleAdapter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter.ArticleCardAdapter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter.ArticleSimpleAdapter
 
 class ArticleController(bundle: Bundle) : BaseController(bundle) {
 

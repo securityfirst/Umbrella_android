@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.controller
+package org.secfirst.umbrella.whitelabel.feature.reader.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.host_reader_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import org.secfirst.umbrella.whitelabel.feature.reader.view.adapter.ReaderAdapter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter.ReaderAdapter
 
 
 class HostReaderController : BaseController() {

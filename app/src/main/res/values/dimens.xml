@@ -18,4 +18,21 @@
     <dimen name="dialog_elevation">6dp</dimen>
     <dimen name="dialog_corners">2dp</dimen>
 
+    <dimen name="card_view_default_radius">2dp</dimen>
+    <dimen name="dashboard_feed_padding">10dp</dimen>
+    <dimen name="dashboard_feed_small_padding">5dp</dimen>
+    <dimen name="dashboard_feed_smallest_padding">3dp</dimen>
+    <dimen name="dashboard_feed_normal_padding">8dp</dimen>
+    <dimen name="dashboard_feed_margin_top">15dp</dimen>
+    <dimen name="dashboard_feed_medium_margin_top">10dp</dimen>
+    <dimen name="dashboard_feed_smallest_margin_top">3dp</dimen>
+    <dimen name="dashboard_feed_small_margin_top">5dp</dimen>
+    <dimen name="dashboard_feed_smallest_margin_bottom">3dp</dimen>
+    <dimen name="dashboard_feed_big_margin_bottom">16dp</dimen>
+    <dimen name="dashboard_feed_normal_margin_start">16dp</dimen>
+    <dimen name="dashboard_feed_big_margin_start">16dp</dimen>
+    <dimen name="dashboard_feed_big_margin_right">16dp</dimen>
+
+
+
 </resources>

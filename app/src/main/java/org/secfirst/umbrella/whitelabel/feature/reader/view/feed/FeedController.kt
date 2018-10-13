@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.controller
+package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,5 +11,4 @@ class FeedController : Controller() {
         val view = inflater.inflate(R.layout.feed_view, container, false)
         return view
     }
-
 }

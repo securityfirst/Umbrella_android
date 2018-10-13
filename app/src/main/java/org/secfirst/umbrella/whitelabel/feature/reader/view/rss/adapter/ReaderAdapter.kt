@@ -1,11 +1,11 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter
 
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
-import org.secfirst.umbrella.whitelabel.feature.reader.view.controller.FeedController
-import org.secfirst.umbrella.whitelabel.feature.reader.view.controller.RssController
+import org.secfirst.umbrella.whitelabel.feature.reader.view.feed.FeedController
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.RssController
 
 class ReaderAdapter(host: Controller) : RouterPagerAdapter(host) {
     override fun configureRouter(router: Router, position: Int) {

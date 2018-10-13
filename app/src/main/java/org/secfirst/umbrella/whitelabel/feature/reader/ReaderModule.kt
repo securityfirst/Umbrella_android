@@ -13,7 +13,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInte
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderPresenterImp
-import org.secfirst.umbrella.whitelabel.feature.reader.view.controller.RssController
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.RssController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 import javax.inject.Singleton
 
