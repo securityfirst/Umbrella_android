@@ -42,5 +42,10 @@
     <string name="feed_sources">Feed sources</string>
     <string name="feed_source_label">Set Sources</string>
     <string name="set_now">SET NOW</string>
+    <string name="feed_source_department">US State Department Country \nWarnings</string>
+    <string name="feed_source_global">Global Disaster Alert \nCoordination System</string>
+    <string name="feed_source_cdc">CDC</string>
+    <string name="feed_source_un">UN/ ReliefWeb</string>
+    <string name="feed_source_name">Select The Feed Sources</string>
 
 </resources>

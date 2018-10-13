@@ -13,8 +13,9 @@ import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInte
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderPresenterImp
-import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.RssController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
+import org.secfirst.umbrella.whitelabel.feature.reader.view.feed.FeedController
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.RssController
 import javax.inject.Singleton
 
 
@@ -46,4 +47,6 @@ interface ReanderComponent {
     }
 
     fun inject(rssController: RssController)
+
+    fun inject(feeController: FeedController)
 }
