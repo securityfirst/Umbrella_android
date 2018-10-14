@@ -10,7 +10,6 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject_Table
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown

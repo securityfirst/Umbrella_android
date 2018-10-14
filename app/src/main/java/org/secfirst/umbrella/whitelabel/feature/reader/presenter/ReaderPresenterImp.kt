@@ -4,10 +4,7 @@ import android.util.Log
 import com.einmalfel.earl.EarlParser
 import com.google.gson.Gson
 import getAssetFileBy
-import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
-import org.secfirst.umbrella.whitelabel.data.database.reader.RSS_FILE_NAME
-import org.secfirst.umbrella.whitelabel.data.database.reader.RefRSS
-import org.secfirst.umbrella.whitelabel.data.database.reader.convertToRSS
+import org.secfirst.umbrella.whitelabel.data.database.reader.*
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
@@ -20,7 +17,6 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
 @Inject internal constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), ReaderBasePresenter<V, I> {
-
 
     private val tag: String = ReaderPresenterImp::class.java.name
 
@@ -96,5 +92,19 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         val input = getAssetFileBy(RSS_FILE_NAME)
         val jsonInString = input.bufferedReader().use { it.readText() }
         return Gson().fromJson(jsonInString, RefRSS::class.java)
+    }
+
+    override fun submitLoadFeedSources() {
+        launchSilent(uiContext) {
+            val feedSources = interactor?.fetchFeedSources()
+            if (feedSources != null)
+                getView()?.prepareFeedSource(feedSources)
+        }
+    }
+
+    override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
+        launchSilent(uiContext) {
+            interactor?.insertAllFeedSources(feedSources)
+        }
     }
 }

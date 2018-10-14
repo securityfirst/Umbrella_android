@@ -12,6 +12,7 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import dagger.android.AndroidInjection
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
@@ -23,7 +24,6 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 import javax.inject.Inject
 
 
@@ -47,9 +47,6 @@ class MainActivity : AppCompatActivity() {
         ShakeDetector.start()
     }
 
-    override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {

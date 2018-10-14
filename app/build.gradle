@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.github.tbouron.shakedetector:library:1.0.0@aar'
     implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
 
+
     //Sectioned recyclerview
     implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
     // Stepper Viewer
@@ -89,7 +90,8 @@ dependencies {
     //enable multi-dex
     implementation "com.android.support:multidex:$multidex_version"
     //Font lib
-    implementation "uk.co.chrisjenx:calligraphy:$caligraphy_version"
+    implementation 'io.github.inflationx:calligraphy3:3.0.0'
+    implementation 'io.github.inflationx:viewpump:1.0.0'
     //Deploy beta version
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true

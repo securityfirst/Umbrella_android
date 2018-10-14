@@ -12,11 +12,14 @@ import com.raizlabs.android.dbflow.config.FlowLog
 import com.raizlabs.android.dbflow.config.FlowManager
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.github.inflationx.calligraphy3.CalligraphyConfig
+import io.github.inflationx.calligraphy3.CalligraphyInterceptor
+import io.github.inflationx.viewpump.ViewPump
+import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
 import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import javax.inject.Inject
 
 
@@ -33,7 +36,8 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     }
 
     override fun attachBaseContext(base: Context?) {
-        super.attachBaseContext(base)
+        if (base != null)
+            super.attachBaseContext(ViewPumpContextWrapper.wrap(base))
         MultiDex.install(this)
     }
 
@@ -45,7 +49,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         initTentRepository()
         initFonts()
         initFabric()
-
     }
 
     private fun initDaggerComponent() {
@@ -72,9 +75,12 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     }
 
     private fun initFonts() {
-        CalligraphyConfig.initDefault(CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-RobotoRegular.ttf")
-                .setFontAttrId(R.attr.fontPath)
+        ViewPump.init(ViewPump.builder()
+                .addInterceptor(CalligraphyInterceptor(
+                        CalligraphyConfig.Builder()
+                                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
+                                .setFontAttrId(R.attr.fontPath)
+                                .build()))
                 .build())
     }
 
@@ -82,7 +88,7 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         Crashlytics.Builder()
                 .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build()
-       // Fabric.with(this, Crashlytics())
+        // Fabric.with(this, Crashlytics())
     }
 
     private fun initTentRepository() {

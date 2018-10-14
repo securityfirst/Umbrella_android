@@ -5,9 +5,9 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.content.Module_Table
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.content.Subject_Table
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface SegmentDao {

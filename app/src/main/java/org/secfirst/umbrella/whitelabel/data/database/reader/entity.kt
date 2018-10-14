@@ -94,15 +94,19 @@ const val RSS_FILE_NAME: String = "default_rss.json"
 
 @Table(database = AppDatabase::class, allFields = true)
 @Parcelize
-data class FeedLocation(var id: Long = 0, var location: String = "", var code: String = "") : BaseModel(), Parcelable
+data class FeedLocation(
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
+        var location: String = "",
+        var iso2: String = "",
+        var country: String= "") : BaseModel(), Parcelable
 
-@Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = true)
+@Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = false)
 @Parcelize
 data class FeedSource(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
-        var code: Int = 0,
         var name: String = "",
         var lastChecked: Boolean = false) : BaseModel(), Parcelable {
-    constructor(code: Int, name: String, lastChecked: Boolean) : this(0, code, name, lastChecked)
+    constructor(name: String, lastChecked: Boolean) : this(0, name, lastChecked)
 }

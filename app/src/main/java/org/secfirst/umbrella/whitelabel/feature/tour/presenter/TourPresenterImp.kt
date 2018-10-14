@@ -32,11 +32,11 @@ class TourPresenterImp<V : TourView, I : TourBaseInteractor>
     }
 
     private fun createFeedSources(): List<FeedSource> {
-        val feedSource1 = FeedSource(0, "UN/ ReliefWeb", false)
-        val feedSource2 = FeedSource(1, "CDC", false)
-        val feedSource3 = FeedSource(2, "Global Disaster Alert \\nCoordination System", false)
-        val feedSource4 = FeedSource(3, "US State Department Country \\nWarnings", false)
         val feedSources = mutableListOf<FeedSource>()
+        val feedSource1 = FeedSource("UN/ ReliefWeb", false)
+        val feedSource2 = FeedSource("CDC", false)
+        val feedSource3 = FeedSource("Global Disaster Alert\nCoordination System", false)
+        val feedSource4 = FeedSource("US State Department Country\nWarnings", false)
         feedSources.add(feedSource1)
         feedSources.add(feedSource2)
         feedSources.add(feedSource3)
