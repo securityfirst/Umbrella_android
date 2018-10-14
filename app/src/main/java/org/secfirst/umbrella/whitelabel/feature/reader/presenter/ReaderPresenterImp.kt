@@ -107,4 +107,33 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
             interactor?.insertAllFeedSources(feedSources)
         }
     }
+
+    override fun submitInsertFeedLocation(feedLocation: FeedLocation) {
+        launchSilent(uiContext) {
+            interactor?.insertFeedLocation(feedLocation)
+        }
+    }
+
+
+    override fun submitLoadFeedLocation() {
+        launchSilent(uiContext) {
+            val feedLocation = interactor?.fetchFeedLocation()
+            if (feedLocation != null)
+                getView()?.prepareFeedLocation(feedLocation)
+        }
+    }
+
+    override fun submitLoadRefreshInterval(){
+        launchSilent (uiContext){
+            val position = interactor?.fetchRefreshInterval()
+            if (position != null)
+                getView()?.prepareRefreshInterval(position)
+        }
+    }
+
+    override fun submitPutRefreshInterval(position: Int) {
+        launchSilent (uiContext){
+            interactor?.putRefreshInterval(position)
+        }
+    }
 }

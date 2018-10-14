@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.presenter
 
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenter
@@ -17,4 +18,13 @@ interface ReaderBasePresenter<V : ReaderView, I : ReaderBaseInteractor> : BasePr
     fun submitLoadFeedSources()
 
     fun submitInsertFeedSource(feedSources: List<FeedSource>)
+
+    fun submitLoadFeedLocation()
+
+    fun submitInsertFeedLocation(feedLocation: FeedLocation)
+
+    fun submitLoadRefreshInterval()
+
+    fun submitPutRefreshInterval(position: Int)
+
 }

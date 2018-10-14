@@ -28,4 +28,8 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun doRSsCall(url: String): Deferred<ResponseBody>
 
+    suspend fun fetchRefreshInterval(): Int
+
+    suspend fun putRefreshInterval(position: Int) : Boolean
+
 }

@@ -11,19 +11,18 @@ class AppPreferenceHelper @Inject constructor(context: Context,
     private val prefs: SharedPreferences = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE)
 
     companion object {
-        private const val PREF_KEY_TOPIC_SELECTED = "PREF_KEY_TOPIC_SELECTED"
+        private const val EXTRA_REFRESH_INTERVAL = "refresh_interval"
     }
 
-    override fun getTopicSelected() = prefs.getLong(PREF_KEY_TOPIC_SELECTED, 0)
+    override fun setRefreshInterval(position: Int) = prefs.edit().putInt(EXTRA_REFRESH_INTERVAL, position).commit()
 
-    override fun setTopicSelected(subcategoryId: Long) = prefs.edit().putLong(PREF_KEY_TOPIC_SELECTED, subcategoryId).commit()
-
+    override fun getRefreshInterval() = prefs.getInt(EXTRA_REFRESH_INTERVAL, 0)
 
 }
 
 interface PreferenceHelper {
 
-    fun getTopicSelected(): Long
+    fun setRefreshInterval(position: Int): Boolean
 
-    fun setTopicSelected(subcategoryId: Long): Boolean
+    fun getRefreshInterval(): Int
 }

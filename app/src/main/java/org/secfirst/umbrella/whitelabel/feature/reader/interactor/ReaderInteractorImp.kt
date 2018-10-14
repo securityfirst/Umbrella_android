@@ -7,11 +7,16 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepo
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import javax.inject.Inject
 
-class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper, private val readerRepo: ReaderRepo)
-    : BaseInteractorImp(apiHelper), ReaderBaseInteractor {
+class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper, preferenceHelper: AppPreferenceHelper, private val readerRepo: ReaderRepo)
+    : BaseInteractorImp(apiHelper, preferenceHelper), ReaderBaseInteractor {
+
+    override suspend fun fetchRefreshInterval() = preferenceHelper.getRefreshInterval()
+
+    override suspend fun putRefreshInterval(position: Int) = preferenceHelper.setRefreshInterval(position)
 
     override suspend fun insertFeedLocation(feedLocation: FeedLocation) = readerRepo.saveFeedLocation(feedLocation)
 

@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.feed_view.*
 import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.textColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
@@ -50,10 +52,14 @@ class FeedController : BaseController(), ReaderView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         presenter.onAttach(this)
-        presenter.submitLoadFeedSources()
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
         feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
-        refreshIntervalView.refreshInterval.init(R.array.refresh_interval_array)
+        presenter.submitLoadFeedSources()
+        presenter.submitLoadRefreshInterval()
+
+        refreshIntervalView.alertControlOk.setOnClickListener { refreshIntervalOk() }
+        refreshIntervalView.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
+
         refreshIntervalAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(refreshIntervalView)
@@ -105,19 +111,41 @@ class FeedController : BaseController(), ReaderView {
         feedSourceAlertDialog.dismiss()
     }
 
+    private fun refreshIntervalOk() {
+        val intervalSelected = refreshIntervalView.refreshInterval.selectedItem.toString()
+        feedRefreshInterval?.text = intervalSelected
+        refreshIntervalAlertDialog.dismiss()
+        val position = refreshIntervalView.refreshInterval.selectedItemPosition
+        presenter.submitPutRefreshInterval(position)
+    }
+
+    private fun refreshIntervalCancel() {
+        refreshIntervalAlertDialog.dismiss()
+    }
+
     private fun feedSourceCancel() {
         feedSourceAlertDialog.dismiss()
     }
 
     private fun populateFeedSource(feedsChecked: List<FeedSource>) {
         var feedCheckInString = ""
-        feedsChecked.forEach { feedChecked ->
-            if (feedChecked.lastChecked)
-                feedCheckInString += "- ${feedChecked.name}\n"
+        feedsChecked.forEach { if (it.lastChecked) feedCheckInString += "- ${it.name}\n" }
+
+        if (feedCheckInString.isEmpty()) {
+            feedSource?.textColor = ContextCompat.getColor(context, R.color.feedSources_color)
+            feedSource?.text = context.getString(R.string.set_your_feed_label)
+        } else {
+            feedSource?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
+            feedSource?.text = feedCheckInString
         }
-        feedSource?.text = feedCheckInString
     }
 
+    override fun prepareRefreshInterval(position: Int) {
+        val spinner = refreshIntervalView.refreshInterval
+        spinner.init(R.array.refresh_interval_array)
+        refreshIntervalView.refreshInterval.setSelection(position)
+        feedRefreshInterval?.text = spinner.selectedItem.toString()
+    }
 
     override fun prepareFeedSource(feedSources: List<FeedSource>) {
         populateFeedSource(feedSources)
@@ -130,6 +158,5 @@ class FeedController : BaseController(), ReaderView {
         feedSourceView.alertControlOk.setOnClickListener { feedSourceOK() }
         feedSourceView.alertControlCancel.setOnClickListener { feedSourceCancel() }
         setFeedSource?.setOnClickListener { onClickFeedSource() }
-
     }
 }
