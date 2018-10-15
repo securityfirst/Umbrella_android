@@ -62,9 +62,15 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
     override fun getItemCount() = markdowns.size + 1
 
     class FooterHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val colours = intArrayOf(R.color.umbrella_purple,
+                R.color.umbrella_green,
+                R.color.umbrella_yellow)
+
         fun bind(favorited: Boolean, footClick: (FooterHolder) -> Unit, checklistFavoriteClick: (FooterHolder) -> Unit) {
             itemView.setOnClickListener { footClick(this) }
             itemView.checklistFavorite.isChecked = favorited
+            itemView.footLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
             itemView.checklistFavorite.setOnClickListener {
                 isChecklistFavorite = itemView.checklistFavorite.isChecked
                 checklistFavoriteClick(this)
