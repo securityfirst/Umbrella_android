@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.tour.view
 
 import android.graphics.Color
 import android.view.Gravity
+import android.widget.LinearLayout
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import org.jetbrains.anko.*
@@ -36,10 +37,13 @@ class TourUI(private val color: Int,
                 padding = dip(20)
             }.lparams { gravity = Gravity.CENTER }
 
+            val params = LinearLayout.LayoutParams(matchParent, matchParent)
+            params.bottomMargin = dip(30)
             webView {
                 loadUrl("file:///android_asset/terms.html")
                 visibility = visibilityWebView
-            }.lparams(width = matchParent, height = dip(460))
+                bottomPadding = dip(20)
+            }.lparams(params)
         }
     }.view
 

@@ -21,6 +21,8 @@
     <color name="blue">#21449e</color>
     <color name="avocado">#87bd34</color>
     <color name="macaroni_cheese">#f3bc2b</color>
+    <color name="form_background">#f6f6f6</color>
+    <color name="chilist_view_background">#e5e5e5</color>
     <color name="feedSources_color">#8a000000</color>
     <string name="chilist_view_background">#e5e5e5</string>
 </resources>
