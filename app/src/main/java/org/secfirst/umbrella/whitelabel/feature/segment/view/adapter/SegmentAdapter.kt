@@ -67,9 +67,9 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 R.color.umbrella_green,
                 R.color.umbrella_yellow)
 
-        fun bind(favorited: Boolean, footClick: (FooterHolder) -> Unit, checklistFavoriteClick: (FooterHolder) -> Unit) {
+        fun bind(isFavorite: Boolean, footClick: (FooterHolder) -> Unit, checklistFavoriteClick: (FooterHolder) -> Unit) {
             itemView.setOnClickListener { footClick(this) }
-            itemView.checklistFavorite.isChecked = favorited
+            itemView.checklistFavorite.isChecked = isFavorite
             itemView.footLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
             itemView.checklistFavorite.setOnClickListener {
                 isChecklistFavorite = itemView.checklistFavorite.isChecked
