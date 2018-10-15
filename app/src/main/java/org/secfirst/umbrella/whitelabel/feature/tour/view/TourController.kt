@@ -17,6 +17,7 @@ import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.DialogManager.Companion.PROGRESS_DIALOG_TAG
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.DaggerTourComponent
 import org.secfirst.umbrella.whitelabel.feature.tour.interactor.TourBaseInteractor
@@ -82,7 +83,7 @@ class TourController : BaseController(), TourView {
     override fun downloadContentCompleted(res: Boolean) {
         progressDialog.dismiss()
         if (res) {
-            router.pushController(RouterTransaction.with(HostReaderController()))
+            router.pushController(RouterTransaction.with(HostChecklistController()))
             enableNavigation()
         } else
             view?.let {

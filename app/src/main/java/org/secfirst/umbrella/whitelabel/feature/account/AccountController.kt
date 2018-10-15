@@ -8,11 +8,18 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import com.bluelinelabs.conductor.RouterTransaction
+import com.raizlabs.android.dbflow.config.FlowManager
+import kotlinx.android.synthetic.main.account_view.*
+import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 
-class AccountController : BaseController() {
+class AccountController : BaseController(), View.OnClickListener {
 
 
     override fun onInject() {
@@ -23,12 +30,28 @@ class AccountController : BaseController() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.account_view, container, false)
+        val button = view.findViewById<Button>(R.id.sharedb)
+        button.setOnClickListener { showFileChooserPreview() }
+        val okButton = view.findViewById<Button>(R.id.okserver)
+        okButton.setOnClickListener(this)
         return view
     }
 
     override fun onAttach(view: View) {
+
     }
 
+    override fun onClick(v: View) {
+        v.isEnabled = false
+        changeUrlServer()
+    }
+
+    private fun changeUrlServer() {
+        TentConfig.uriRepository = editServer?.text.toString()
+        FileUtils.deleteQuietly(context.cacheDir)
+        FlowManager.getDatabase(AppDatabase.NAME).reset()
+        router.pushController(RouterTransaction.with(TourController()))
+    }
 
     private fun showFileChooserPreview() {
         if (ContextCompat.checkSelfPermission(activity!!,
