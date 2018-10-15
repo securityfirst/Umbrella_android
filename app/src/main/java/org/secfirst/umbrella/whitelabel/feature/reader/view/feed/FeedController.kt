@@ -133,7 +133,7 @@ class FeedController : BaseController(), ReaderView {
 
         if (feedCheckInString.isEmpty()) {
             feedSource?.textColor = ContextCompat.getColor(context, R.color.feedSources_color)
-            feedSource?.text = context.getString(R.string.set_your_feed_label)
+            feedSource?.text = context.getString(R.string.feed_source_label)
         } else {
             feedSource?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
             feedSource?.text = feedCheckInString
