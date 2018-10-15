@@ -10,9 +10,9 @@ import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 
@@ -70,12 +70,9 @@ data class Markdown(
 fun MutableList<Markdown>.toSegment(toolbarTitle: String,
                                     title: String,
                                     checklists: List<Checklist>): Segment {
-
     val markdowns = mutableListOf<Markdown>()
-    this.forEach { markdown ->
-        markdowns.add(markdown)
-    }
-    return Segment(toolbarTitle, title, markdowns, checklists)
+    this.forEach { markdown -> markdowns.add(markdown) }
+    return Segment(toolbarTitle, title, markdowns.sortedWith(compareBy { it.index }), checklists)
 }
 
 fun Segment.toController(host: Controller): SegmentController {
