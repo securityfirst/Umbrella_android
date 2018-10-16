@@ -15,6 +15,8 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                      private val onFootClicked: (Int) -> Unit,
+                     private val onChecklistShareClick: () -> Unit,
+                     private val onSegmentShareClick: (Markdown) -> Unit,
                      private val onChecklistFavoriteClick: (Boolean) -> Unit,
                      private val onSegmentFavoriteClick: (Markdown) -> Unit,
                      private val checklistFavorite: Boolean,
@@ -47,11 +49,13 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
             holder as FooterHolder
             holder.bind(checklistFavorite,
                     footClick = { onFootClicked(position) },
-                    checklistFavoriteClick = { onChecklistFavoriteClick(isChecklistFavorite) })
+                    checklistFavoriteClick = { onChecklistFavoriteClick(isChecklistFavorite) },
+                    checklistShareClick = { onChecklistShareClick() })
         } else {
             holder as SegmentHolder
             holder.bind(markdowns[position], clickListener = { onClickSegment(position) },
-                    segmentFavoriteClick = { onSegmentFavoriteClick(markdowns[position]) })
+                    segmentFavoriteClick = { onSegmentFavoriteClick(markdowns[position]) },
+                    segmentShareClick = { onSegmentShareClick(markdowns[position]) })
         }
     }
 
@@ -67,7 +71,12 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 R.color.umbrella_green,
                 R.color.umbrella_yellow)
 
-        fun bind(isFavorite: Boolean, footClick: (FooterHolder) -> Unit, checklistFavoriteClick: (FooterHolder) -> Unit) {
+        fun bind(isFavorite: Boolean,
+                 footClick: (FooterHolder) -> Unit,
+                 checklistFavoriteClick: (FooterHolder) -> Unit,
+                 checklistShareClick: (FooterHolder) -> Unit) {
+
+            itemView.checklistShare.setOnClickListener { checklistShareClick(this) }
             itemView.setOnClickListener { footClick(this) }
             itemView.checklistFavorite.isChecked = isFavorite
             itemView.footLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
@@ -84,7 +93,8 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 R.color.umbrella_yellow)
 
         fun bind(markdown: Markdown, clickListener: (SegmentHolder) -> Unit,
-                 segmentFavoriteClick: (SegmentHolder) -> Unit) {
+                 segmentFavoriteClick: (SegmentHolder) -> Unit,
+                 segmentShareClick: (SegmentHolder) -> Unit) {
 
             itemView.segmentFavorite.isChecked = markdown.favorite
             itemView.setOnClickListener {
@@ -92,6 +102,8 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 segmentFavoriteClick(this)
                 clickListener(this)
             }
+            itemView.segmentShare.setOnClickListener { segmentShareClick(this) }
+
             with(markdown) {
                 val index = adapterPosition + 1
                 itemView.segmentIndex.text = index.toString()

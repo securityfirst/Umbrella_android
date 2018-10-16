@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
@@ -8,6 +10,7 @@ import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.checklist.covertToHTML
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -27,6 +30,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val segmentClick: (Int) -> Unit = this::onSegmentClicked
     private val checklistFavoriteClick: (Boolean) -> Unit = this::onChecklistFavoriteClick
     private val segmentFavoriteClick: (Markdown) -> Unit = this::onSegmentFavoriteClick
+    private val checklistShareClick: () -> Unit = this::onChecklistShareClick
+    private val segmentShareClick: (Markdown) -> Unit = this::onSegmentShareClick
     private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist? }
@@ -64,8 +69,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun initSegmentView(markdowns: List<Markdown>) {
         val favorite = checklist?.favorite ?: false
-        val segmentAdapter = SegmentAdapter(segmentClick, footClick, checklistFavoriteClick,
-                segmentFavoriteClick, favorite, markdowns.toMutableList())
+        val segmentAdapter = SegmentAdapter(segmentClick, footClick,
+                checklistShareClick, segmentShareClick,
+                checklistFavoriteClick, segmentFavoriteClick, favorite, markdowns.toMutableList())
 
         segmentRecyclerView?.initGridView(segmentAdapter)
         setFooterList(segmentAdapter)
@@ -103,6 +109,16 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun onSegmentFavoriteClick(markdown: Markdown) {
         presenter.submitMarkdownFavorite(markdown)
+    }
+
+    private fun onChecklistShareClick() {
+        val checklistHtml = checklist?.covertToHTML()
+        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(checklistHtml)))
+        startActivity(intent)
+    }
+
+    private fun onSegmentShareClick(markdown: Markdown) {
+
     }
 
     private fun onFootClicked(position: Int) {

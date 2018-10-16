@@ -11,7 +11,7 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.ELEMENT_L
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.SUB_ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimiter
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
-import org.secfirst.umbrella.whitelabel.misc.replaceMarkdownImage
+import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import java.io.File

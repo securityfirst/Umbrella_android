@@ -15,6 +15,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
+import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 
 @Parcelize
@@ -101,6 +102,9 @@ fun Markdown.removeHead(): Markdown {
     }
     return this
 }
+
+fun String.replaceMarkdownImage(pwd: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
+        "${Markdown.MARKDOWN_IMAGE_TAG}file://${PathUtils.basePath()}/$pwd")
 
 interface HostSegmentTabControl {
     fun onTabHostManager(position: Int)

@@ -7,10 +7,11 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
+
 
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
@@ -104,5 +105,13 @@ class Dashboard(var items: List<Item> = listOf()) {
 
         constructor(title: String) : this(0, 0, title, "", null, null)
     }
+}
+
+fun Checklist.covertToHTML(): String {
+    var body = ""
+    this.content.forEach { content ->
+        body += "\n" + if (content.value) "\u2713" + " ${content.check}" else "\u2717" + " ${content.check}"
+    }
+    return body
 }
 

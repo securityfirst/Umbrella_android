@@ -45,14 +45,23 @@
             android:background="@drawable/favorite_bg"
             android:button="@android:color/transparent" />
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/checklistShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="end|center"
             android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginRight="30dp"
-            android:src="@drawable/ic_share_segment" />
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_share_segment" />
+        </LinearLayout>
+
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

@@ -9,7 +9,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.asHTML
+import org.secfirst.umbrella.whitelabel.data.database.form.asHTML
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
