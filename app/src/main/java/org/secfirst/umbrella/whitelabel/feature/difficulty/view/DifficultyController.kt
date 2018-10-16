@@ -9,8 +9,8 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficulty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
@@ -51,17 +51,14 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         router.pushController(RouterTransaction.with(HostSegmentController(selectDifficulty)))
     }
 
-    override fun onAttach(view: View) {
-        presenter.onAttach(this)
-        presenter.submitDifficulty(selectSubject)
-    }
-
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
         difficultyAdapter.clear()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        presenter.onAttach(this)
+        presenter.submitDifficulty(selectSubject)
         return inflater.inflate(R.layout.difficulty_view, container, false)
     }
 
