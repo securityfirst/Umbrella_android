@@ -54,7 +54,9 @@
                     android:textColor="@color/dark_grey"
                     android:fontFamily="sans-serif-light"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:autoLink="web"
+                    android:linksClickable="true"/>
 
                 <TextView
                     android:layout_marginTop="15dp"
