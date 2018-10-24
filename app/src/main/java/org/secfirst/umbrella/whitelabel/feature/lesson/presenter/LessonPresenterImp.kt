@@ -1,8 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.SINGLE_CHOICE
@@ -41,16 +40,11 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectLesson(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let {
-                var topicPreferred: TopicPreferred? = null
-                subject.difficulties.forEach { difficulty ->
-                    val candidateTopic = it.fetchTopicPreferredBy(difficulty.id)
-                    if (candidateTopic != null)
-                        topicPreferred = candidateTopic
-                }
+                val topicPreferred = it.fetchTopicPreferredBy(subject.id)
                 val subjectMarkdown = it.fetchMarkdownsBy(subject.id)
 
                 if (topicPreferred != null)
-                    subjectInSegment(topicPreferred?.difficulty)
+                    subjectInSegment(topicPreferred.difficulty)
                 else if (subject.difficulties.isEmpty() && subjectMarkdown.isNotEmpty()) {
                     getView()?.startSegmentController(subject)
                 } else {

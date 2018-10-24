@@ -3,10 +3,10 @@ package org.secfirst.umbrella.whitelabel.data.database.segment
 import android.os.Parcelable
 import com.bluelinelabs.conductor.Controller
 import com.raizlabs.android.dbflow.annotation.ForeignKey
-import com.raizlabs.android.dbflow.annotation.ForeignKeyReference
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
+import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
@@ -22,23 +22,26 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 data class Segment(var toolbarTitle: String,
                    var tabTitle: String,
                    var markdowns: List<Markdown> = listOf(),
-                   var checklists: List<Checklist>) : Parcelable
+                   var checklists: List<Checklist>) : Parcelable {
+//    @Parcelize
+//    data class Content(val labels: String, val subjectId: Long, val difficultyId: Long) : Parcelable
+}
 
 @Parcelize
-@Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = false)
+@Table(database = AppDatabase::class,
+        allFields = true,
+        useBooleanGetterSetters = false,
+        cachingEnabled = true)
 data class Markdown(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
 
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
         @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(stubbedRelationship = true)
         var difficulty: Difficulty? = null,
         var text: String = "",
@@ -72,13 +75,16 @@ fun MutableList<Markdown>.toSegment(toolbarTitle: String,
                                     title: String,
                                     checklists: List<Checklist>): Segment {
     val markdowns = mutableListOf<Markdown>()
-    this.forEach { markdown -> markdowns.add(markdown) }
+    this.forEach { markdown ->
+        markdowns.add(markdown)
+    }
     return Segment(toolbarTitle, title, markdowns.sortedWith(compareBy { it.index }), checklists)
 }
 
-fun Segment.toController(host: Controller): SegmentController {
-    val checklist = if (this.checklists.isEmpty()) null else this.checklists.last()
-    val controller = SegmentController(this.markdowns, this.tabTitle, checklist)
+fun Difficulty.toSegmentController(host: Controller): SegmentController {
+    val checklist = if (this.checklist.isEmpty()) null else this.checklist.last()
+    val controller = SegmentController(this.markdowns,
+            host.applicationContext!!.getString(R.string.lesson_tab), checklist)
     controller.hostSegmentTabControl = host as HostSegmentTabControl
     return controller
 }
@@ -109,3 +115,4 @@ fun String.replaceMarkdownImage(pwd: String) = this.replace(Markdown.MARKDOWN_IM
 interface HostSegmentTabControl {
     fun onTabHostManager(position: Int)
 }
+

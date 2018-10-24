@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
@@ -14,11 +14,13 @@ interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : Bas
 
     fun submitLoadSegments(selectDifficulty: Difficulty)
 
-    fun submitLoadSegments(selectModule: Module)
+    fun submitLoadModule(selectModule: Module)
 
     fun submitLoadSubject(subject: Subject)
 
     fun submitChecklistFavorite(checklist: Checklist)
 
     fun submitMarkdownFavorite(markdown: Markdown)
+
+    fun submitDifficultySelected(subjectId: Long, difficulty: Difficulty)
 }

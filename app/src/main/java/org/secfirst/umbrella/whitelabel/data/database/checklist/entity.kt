@@ -14,7 +14,7 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistControll
 
 
 @Parcelize
-@Table(database = AppDatabase::class, useBooleanGetterSetters = false)
+@Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Checklist(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
@@ -62,7 +62,7 @@ data class Checklist(
     }
 }
 
-fun List<Checklist>.toControllers(): List<ChecklistController> {
+fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
     val controllers = mutableListOf<ChecklistController>()
     this.forEach { checklist ->
         val checklists = mutableListOf<Checklist>()

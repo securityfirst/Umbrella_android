@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
 import android.os.Parcelable
+import com.bluelinelabs.conductor.Controller
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
@@ -11,12 +12,14 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 
 
 @Parcelize
-@Table(database = AppDatabase::class)
+@Table(database = AppDatabase::class, cachingEnabled = true)
 data class Difficulty(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
@@ -93,7 +96,6 @@ fun MutableList<Checklist>.toMergeDifficulty() {
     for (i in this.indices) {
 
 
-
     }
 }
 
@@ -121,10 +123,10 @@ inline fun MutableList<Module>.walkThroughDifficulty(action: (Difficulty) -> Uni
     }
 }
 
+
 @Table(database = AppDatabase::class)
-data class TopicPreferred(@PrimaryKey(autoincrement = true)
-                          var id: Long = 0,
+data class TopicPreferred(@PrimaryKey
+                          var subjectId: Long = 0,
                           @ForeignKey
-                          var difficulty: Difficulty? = null) : BaseModel() {
-    constructor(difficulty: Difficulty?) : this(0, difficulty)
-}
+                          var difficulty: Difficulty? = null) : BaseModel()
+

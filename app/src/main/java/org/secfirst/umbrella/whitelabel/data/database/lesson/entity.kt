@@ -79,14 +79,12 @@ open class Module(
 }
 
 @Parcelize
-@Table(database = AppDatabase::class)
+@Table(database = AppDatabase::class, cachingEnabled = true)
 data class Subject(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
+                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
         var module: Module? = null,
         @Column
         var index: Int = 0,

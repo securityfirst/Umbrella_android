@@ -4,7 +4,6 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
-import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
@@ -39,7 +38,7 @@ class HostSegmentAdapter(host: Controller,
         return when (position) {
             0 -> {
                 val currentController = controllers[position] as SegmentController
-                currentController.context.getString(R.string.lesson_tab)
+                currentController.getTitle()
 
             }
             in 1..segmentPageLimit -> {

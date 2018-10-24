@@ -8,14 +8,13 @@ import android.widget.AdapterView
 import kotlinx.android.synthetic.main.host_segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.checklist.toControllers
+import org.secfirst.umbrella.whitelabel.data.database.checklist.toChecklistControllers
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
-import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
-import org.secfirst.umbrella.whitelabel.data.database.segment.toController
 import org.secfirst.umbrella.whitelabel.data.database.segment.toControllers
+import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
@@ -58,9 +57,9 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         presenter.onAttach(this)
 
         when {
-            selectModule != null -> selectModule?.let { presenter.submitLoadSegments(it) }
+            selectModule != null -> selectModule?.let { presenter.submitLoadModule(it) }
             selectDifficulty != null -> selectDifficulty?.let { presenter.submitLoadSegments(it) }
-            else -> selectSubject?.let { presenter.submitLoadSubject(it)}
+            else -> selectSubject?.let { presenter.submitLoadSubject(it) }
         }
         setUpToolbar()
     }
@@ -69,32 +68,34 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         return inflater.inflate(R.layout.host_segment_view, container, false)
     }
 
-    private fun initSpinner(segments: MutableList<Segment>) {
-        val difficultAdapter = DifficultSpinnerAdapter(context, segments)
+
+    override fun showSegments(difficulties: MutableList<Difficulty>) {
+        initSpinner(difficulties)
+    }
+
+    private fun initSpinner(difficulties: MutableList<Difficulty>) {
+        val difficultAdapter = DifficultSpinnerAdapter(context, difficulties)
         hostSegmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     hostSegmentTab?.getTabAt(0)?.select()
-                    refreshView(segments[position])
+                    refreshView(difficulties[position])
+                    saveDifficultySelect()
                 }
             }
             it.adapter = difficultAdapter
         }
     }
 
-    override fun showSegments(segments: MutableList<Segment>) {
-        initSpinner(segments)
-    }
-
-    private fun refreshView(segment: Segment) {
+    private fun refreshView(difficulty: Difficulty) {
         val controllers = mutableListOf<BaseController>()
-        val selectSegment = segment.toController(this)
-        val segmentPageLimit = segment.markdowns.size
+        val selectSegment = difficulty.toSegmentController(this)
+        val segmentPageLimit = difficulty.markdowns.size
         hostAdapter = HostSegmentAdapter(this, controllers, segmentPageLimit)
         controllers.add(selectSegment)
-        controllers.addAll(segment.markdowns.toControllers())
-        controllers.addAll(segment.checklists.toControllers())
+        controllers.addAll(difficulty.markdowns.toControllers())
+        controllers.addAll(difficulty.checklist.toChecklistControllers())
         hostSegmentPager?.let {
             it.adapter = hostAdapter
             it.offscreenPageLimit = PAGE_LIMIT
@@ -118,6 +119,14 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             mainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)
+        }
+    }
+
+    private fun saveDifficultySelect() {
+        selectDifficulty?.let { difficulty ->
+            difficulty.subject?.let { subject ->
+                presenter.submitDifficultySelected(subject.id, difficulty)
+            }
         }
     }
 }

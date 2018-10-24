@@ -1,10 +1,10 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficultyBy
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegment
@@ -19,6 +19,13 @@ import javax.inject.Inject
 class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), SegmentBasePresenter<V, I> {
+
+
+    override fun submitDifficultySelected(subjectId: Long, difficulty: Difficulty) {
+        launchSilent(uiContext) {
+            interactor?.insertDifficultySelect(subjectId, difficulty)
+        }
+    }
 
     override fun submitMarkdownFavorite(markdown: Markdown) {
         launchSilent(uiContext) {
@@ -40,19 +47,19 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 if (markdowns.size > Markdown.SINGLE_CHOICE) {
                     val segment = markdowns.toMutableList().toSegment(subject.title, subject.title, subject.checklist)
                     segments.add(segment)
-                    getView()?.showSegments(segments)
+                    getView()?.showSegmentBy(markdowns)
                 }
             }
         }
     }
 
-    override fun submitLoadSegments(selectModule: Module) {
+    override fun submitLoadModule(selectModule: Module) {
         val segments = mutableListOf<Segment>()
         with(selectModule) {
             if (markdowns.size > Markdown.SINGLE_CHOICE) {
-                val segment = markdowns.toSegment(title, title, checklist)
-                segments.add(segment)
-                getView()?.showSegments(segments)
+                //val segment = markdowns.toSegment(title, title, checklist)
+                //segments.add(segment)
+                getView()?.showSegmentBy(markdowns)
             }
         }
     }
@@ -63,12 +70,15 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 val segments = mutableListOf<Segment>()
                 val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.id)
                 val orderDifficulties = subject?.difficulties?.orderDifficultyBy(selectDifficulty.id)
-                orderDifficulties?.forEach { safeOrderDiff ->
-                    val toolbarTitle = "${subject.title} ${safeOrderDiff.title}"
-                    val segment = safeOrderDiff.markdowns.toSegment(toolbarTitle, subject.title, safeOrderDiff.checklist)
-                    segments.add(segment)
+                orderDifficulties.to
+//                orderDifficulties?.forEach { safeOrderDiff ->
+//                    val toolbarTitle = "${subject.title} ${safeOrderDiff.title}"
+//                    val segment = safeOrderDiff.markdowns.toSegment(toolbarTitle, subject.title, safeOrderDiff.checklist)
+//                    segments.add(segment)
+//                }
+                orderDifficulties?.let {
+                    getView()?.showSegments(it)
                 }
-                getView()?.showSegments(segments)
             }
         }
     }

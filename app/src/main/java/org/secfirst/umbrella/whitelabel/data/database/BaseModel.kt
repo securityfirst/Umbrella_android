@@ -1,15 +1,17 @@
 package org.secfirst.umbrella.whitelabel.data.database
 
+import com.raizlabs.android.dbflow.config.FlowManager
+import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.rx2.structure.BaseRXModel
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 open class BaseModel : BaseRXModel() {
-    fun  associateForeignKey(module: Module) {
+    fun associateForeignKey(module: Module) {
 
         associateMarkdown(module.markdowns, module)
         associateChecklist(module.checklist, module)
@@ -25,7 +27,6 @@ open class BaseModel : BaseRXModel() {
             }
         }
     }
-
 
 
     private inline fun <reified T> associateChecklist(checklists: MutableList<Checklist>, foreignKey: T) {
@@ -62,5 +63,45 @@ open class BaseModel : BaseRXModel() {
                 }
             }
         }
+    }
+
+    inline fun <reified T> loadFullChildren(entity: T): T {
+        val databaseWrapper = FlowManager.getWritableDatabase(AppDatabase::class.java)
+        when (entity) {
+            is Subject -> {
+                entity.module?.let { module ->
+                    modelAdapter<Module>().load(module, databaseWrapper)
+                }
+            }
+            is Difficulty -> {
+                entity.subject?.let { subject ->
+                    modelAdapter<Subject>().load(subject, databaseWrapper)
+                    subject.module?.let { module ->
+                        modelAdapter<Module>().load(module, databaseWrapper)
+                    }
+                }
+            }
+            is Markdown -> {
+                entity.module?.let { module ->
+                    modelAdapter<Module>().load(module, databaseWrapper)
+                }
+                entity.subject?.let { subject ->
+                    modelAdapter<Subject>().load(subject, databaseWrapper)
+                    subject.module?.let { module ->
+                        modelAdapter<Module>().load(module, databaseWrapper)
+                    }
+                }
+                entity.difficulty?.let { difficulty ->
+                    modelAdapter<Difficulty>().load(difficulty, databaseWrapper)
+                    difficulty.subject?.let { subject ->
+                        modelAdapter<Subject>().load(subject, databaseWrapper)
+                        subject.module?.let { module ->
+                            modelAdapter<Module>().load(module, databaseWrapper)
+                        }
+                    }
+                }
+            }
+        }
+        return entity
     }
 }

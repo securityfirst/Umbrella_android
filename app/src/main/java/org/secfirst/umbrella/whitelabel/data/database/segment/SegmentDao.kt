@@ -3,15 +3,17 @@ package org.secfirst.umbrella.whitelabel.data.database.segment
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
+import org.secfirst.umbrella.whitelabel.data.database.BaseDao
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
-interface SegmentDao {
-
+interface SegmentDao : BaseDao{
 
     suspend fun save(markdown: Markdown) {
         withContext(ioContext) {
@@ -26,13 +28,20 @@ interface SegmentDao {
         }
     }
 
+    suspend fun save(subjectId: Long, difficulty: Difficulty) {
+        withContext(ioContext) {
+            modelAdapter<TopicPreferred>().save(TopicPreferred(subjectId, difficulty))
+        }
+    }
+
+
     suspend fun getMarkdowns(subjectId: Long): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
                 .where(Markdown_Table.subject_id.`is`(subjectId))
                 .queryList()
-    }
 
+    }
 
     suspend fun getSubject(id: Long): Subject? = withContext(ioContext) {
         SQLite.select()
@@ -47,5 +56,4 @@ interface SegmentDao {
                 .where(Module_Table.id.`is`(id))
                 .querySingle()
     }
-
 }

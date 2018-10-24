@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.interactor
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepo
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo
 
     override suspend fun fetchCategoryBy(id: Long) = lessonRepo.loadCategoryBy(id)
 
-    override suspend fun fetchTopicPreferredBy(difficultyId: Long) = lessonRepo.loadTopicPreferredBy(difficultyId)
+    override suspend fun fetchTopicPreferredBy(subjectId: Long) = lessonRepo.loadTopicPreferredBy(subjectId)
 
     override suspend fun fetchSubject(id: Long) = lessonRepo.loadSubcategoryBy(id)
 

@@ -55,10 +55,10 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getTopicPreferred(difficultyId: Long): TopicPreferred? = withContext(ioContext) {
+    suspend fun getTopicPreferred(subjectId: Long): TopicPreferred? = withContext(ioContext) {
         SQLite.select()
                 .from(TopicPreferred::class.java)
-                .where(TopicPreferred_Table.difficulty_id.`is`(difficultyId))
+                .where(TopicPreferred_Table.subjectId.`is`(subjectId))
                 .querySingle()
     }
 
