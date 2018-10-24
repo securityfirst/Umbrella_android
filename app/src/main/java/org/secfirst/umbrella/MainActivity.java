@@ -384,9 +384,11 @@ public class MainActivity extends BaseActivity implements DifficultyFragment.OnD
             }
             Integer difficulty;
             try {
-                difficulty = Integer.valueOf(getIntent().getData().getPathSegments().get(1));
+                difficulty = Integer.valueOf(
+                        getIntent().getData().getPathSegments().size() > 1 ? getIntent().getData().getPathSegments().get(1) : getIntent().getData().getPathSegments().get(0));
             } catch (NumberFormatException e) {
-                difficulty = UmbrellaUtil.getDifficultyFromString(getIntent().getData().getPathSegments().get(1)) - 1;
+                difficulty = UmbrellaUtil.getDifficultyFromString(
+                        getIntent().getData().getPathSegments().size() > 1 ? getIntent().getData().getPathSegments().get(1) : getIntent().getData().getPathSegments().get(0)) - 1;
             } catch (NullPointerException e) {
                 difficulty = null;
             }
