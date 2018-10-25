@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.segment.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficultyBy
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -67,16 +67,12 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     override fun submitLoadSegments(selectDifficulty: Difficulty) {
         launchSilent(uiContext) {
             interactor?.let { safeInteractor ->
-                val segments = mutableListOf<Segment>()
                 val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.id)
-                val orderDifficulties = subject?.difficulties?.orderDifficultyBy(selectDifficulty.id)
-                orderDifficulties.to
-//                orderDifficulties?.forEach { safeOrderDiff ->
-//                    val toolbarTitle = "${subject.title} ${safeOrderDiff.title}"
-//                    val segment = safeOrderDiff.markdowns.toSegment(toolbarTitle, subject.title, safeOrderDiff.checklist)
-//                    segments.add(segment)
-//                }
+                val orderDifficulties = subject?.difficulties?.orderDifficulty(selectDifficulty)
                 orderDifficulties?.let {
+                    it.forEach { difficulty ->
+                        difficulty.subject = safeInteractor.fetchSubject(subject.id)
+                    }
                     getView()?.showSegments(it)
                 }
             }

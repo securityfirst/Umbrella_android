@@ -27,14 +27,14 @@ class DifficultSpinnerAdapter(context: Context,
     private fun createViewFromResource(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: TextView = convertView as TextView?
                 ?: LayoutInflater.from(context).inflate(R.layout.difficulty_spinner_view, parent, false) as TextView
-        view.text = "${displayNames[position].title} ${displayNames[0].subject?.title}"
+        view.text = "${displayNames[0].subject?.title} ${displayNames[position].title}"
         return view
     }
 
     private fun createViewFromDropdown(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: TextView = convertView as TextView?
                 ?: LayoutInflater.from(context).inflate(android.R.layout.simple_dropdown_item_1line, parent, false) as TextView
-        view.text = "${displayNames[position].title} ${displayNames[0].subject?.title}"
+        view.text = "${displayNames[0].subject?.title} ${displayNames[position].title}"
         return view
     }
 }

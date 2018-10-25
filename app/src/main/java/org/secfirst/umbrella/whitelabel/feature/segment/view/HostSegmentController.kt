@@ -81,7 +81,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     hostSegmentTab?.getTabAt(0)?.select()
                     refreshView(difficulties[position])
-                    saveDifficultySelect()
+                    saveDifficultySelect(difficulties[position])
                 }
             }
             it.adapter = difficultAdapter
@@ -122,11 +122,9 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         }
     }
 
-    private fun saveDifficultySelect() {
-        selectDifficulty?.let { difficulty ->
-            difficulty.subject?.let { subject ->
-                presenter.submitDifficultySelected(subject.id, difficulty)
-            }
+    private fun saveDifficultySelect(spinnerSelected: Difficulty) {
+        spinnerSelected.subject?.let { subject ->
+            presenter.submitDifficultySelected(subject.id, spinnerSelected)
         }
     }
 }

@@ -12,8 +12,6 @@ interface SegmentRepo {
 
     suspend fun loadMarkdowns(subjectId: Long): List<Markdown>
 
-    suspend fun loadDifficultyChild(difficulties: List<Difficulty>): List<Difficulty>
-
     suspend fun saveChecklist(checklist: Checklist)
 
     suspend fun saveMarkdown(markdown: Markdown)

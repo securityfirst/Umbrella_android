@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
 import android.os.Parcelable
-import com.bluelinelabs.conductor.Controller
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
@@ -12,10 +11,8 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 
 
 @Parcelize
@@ -77,17 +74,14 @@ data class Difficulty(
 }
 
 
-fun MutableList<Difficulty>.orderDifficultyBy(selectDifficultyId: Long): MutableList<Difficulty> {
-    val baseIndex = 0
-    var selectDifficulty: Difficulty
-    for ((index, value) in this.withIndex()) {
-        if (value.id == selectDifficultyId) {
-            selectDifficulty = value
-            this[index] = this[baseIndex]
-            this[baseIndex] = selectDifficulty
-        }
+fun MutableList<Difficulty>.orderDifficulty(selectDifficulty : Difficulty): MutableList<Difficulty> {
+    val auxDifficulties = mutableListOf<Difficulty>()
+    auxDifficulties.add(selectDifficulty)
+    this.forEach {
+        if (selectDifficulty.id != it.id)
+            auxDifficulties.add(it)
     }
-    return this
+    return auxDifficulties
 }
 
 fun MutableList<Checklist>.toMergeDifficulty() {

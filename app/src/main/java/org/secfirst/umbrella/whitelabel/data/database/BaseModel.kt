@@ -64,44 +64,4 @@ open class BaseModel : BaseRXModel() {
             }
         }
     }
-
-    inline fun <reified T> loadFullChildren(entity: T): T {
-        val databaseWrapper = FlowManager.getWritableDatabase(AppDatabase::class.java)
-        when (entity) {
-            is Subject -> {
-                entity.module?.let { module ->
-                    modelAdapter<Module>().load(module, databaseWrapper)
-                }
-            }
-            is Difficulty -> {
-                entity.subject?.let { subject ->
-                    modelAdapter<Subject>().load(subject, databaseWrapper)
-                    subject.module?.let { module ->
-                        modelAdapter<Module>().load(module, databaseWrapper)
-                    }
-                }
-            }
-            is Markdown -> {
-                entity.module?.let { module ->
-                    modelAdapter<Module>().load(module, databaseWrapper)
-                }
-                entity.subject?.let { subject ->
-                    modelAdapter<Subject>().load(subject, databaseWrapper)
-                    subject.module?.let { module ->
-                        modelAdapter<Module>().load(module, databaseWrapper)
-                    }
-                }
-                entity.difficulty?.let { difficulty ->
-                    modelAdapter<Difficulty>().load(difficulty, databaseWrapper)
-                    difficulty.subject?.let { subject ->
-                        modelAdapter<Subject>().load(subject, databaseWrapper)
-                        subject.module?.let { module ->
-                            modelAdapter<Module>().load(module, databaseWrapper)
-                        }
-                    }
-                }
-            }
-        }
-        return entity
-    }
 }
