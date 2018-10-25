@@ -55,7 +55,6 @@
                     android:fontFamily="sans-serif-light"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:autoLink="web"
                     android:linksClickable="true"/>
 
                 <TextView
