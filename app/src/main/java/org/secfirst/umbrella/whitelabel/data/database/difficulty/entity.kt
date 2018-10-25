@@ -74,7 +74,7 @@ data class Difficulty(
 }
 
 
-fun MutableList<Difficulty>.orderDifficulty(selectDifficulty : Difficulty): MutableList<Difficulty> {
+fun MutableList<Difficulty>.orderDifficulty(selectDifficulty: Difficulty): MutableList<Difficulty> {
     val auxDifficulties = mutableListOf<Difficulty>()
     auxDifficulties.add(selectDifficulty)
     this.forEach {
@@ -84,14 +84,15 @@ fun MutableList<Difficulty>.orderDifficulty(selectDifficulty : Difficulty): Muta
     return auxDifficulties
 }
 
-fun MutableList<Checklist>.toMergeDifficulty() {
-    val checklistSorteByDifficulty = mutableListOf<Checklist>()
-
-    for (i in this.indices) {
-
-
-    }
+fun defaultDifficulty(markdowns: List<Markdown>, subjectTitle: String): Difficulty {
+    val difficulty = Difficulty()
+    val subject = Subject()
+    subject.title = subjectTitle
+    difficulty.markdowns.addAll(markdowns)
+    difficulty.subject = subject
+    return difficulty
 }
+
 
 fun MutableList<Difficulty>.withColors(): List<Difficulty> {
     val sortedList = this.sortedWith(compareBy { it.index })
