@@ -83,13 +83,12 @@ fun MutableList<Markdown>.toSegment(toolbarTitle: String,
 
 fun Difficulty.toSegmentController(host: Controller): SegmentController {
     val checklist = if (this.checklist.isEmpty()) null else this.checklist.last()
-    val controller = SegmentController(this.markdowns,
-            host.applicationContext!!.getString(R.string.lesson_tab), checklist)
+    val controller = SegmentController(this.markdowns, host.applicationContext!!.getString(R.string.lesson_tab), checklist)
     controller.hostSegmentTabControl = host as HostSegmentTabControl
     return controller
 }
 
-fun List<Markdown>.toControllers(): List<SegmentDetailController> {
+fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
     val controllers = mutableListOf<SegmentDetailController>()
     this.forEach { markdown ->
         val markdowns = mutableListOf<Markdown>()

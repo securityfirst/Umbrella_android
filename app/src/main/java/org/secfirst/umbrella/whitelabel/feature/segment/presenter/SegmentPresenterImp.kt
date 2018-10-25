@@ -45,9 +45,12 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             interactor?.let {
                 val markdowns = it.fetchMarkdowns(subject.id)
                 if (markdowns.size > Markdown.SINGLE_CHOICE) {
-                    val segment = markdowns.toMutableList().toSegment(subject.title, subject.title, subject.checklist)
-                    segments.add(segment)
-                    getView()?.showSegmentBy(markdowns)
+                    val defaultDifficulty = Difficulty()
+                    defaultDifficulty.markdowns.addAll(markdowns)
+                    defaultDifficulty.subject = subject
+                    val base = mutableListOf<Difficulty>()
+                    base.add(defaultDifficulty)
+                    getView()?.showSegments(base)
                 }
             }
         }
@@ -59,7 +62,15 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             if (markdowns.size > Markdown.SINGLE_CHOICE) {
                 //val segment = markdowns.toSegment(title, title, checklist)
                 //segments.add(segment)
-                getView()?.showSegmentBy(markdowns)
+                val defaultDifficulty = Difficulty()
+                defaultDifficulty.title = ""
+                defaultDifficulty.markdowns.addAll(markdowns)
+                val defaultSubject = Subject()
+                defaultSubject.title = title
+                defaultDifficulty.subject = defaultSubject
+                val base = mutableListOf<Difficulty>()
+                base.add(defaultDifficulty)
+                getView()?.showSegments(base)
             }
         }
     }

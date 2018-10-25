@@ -13,7 +13,7 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
-import org.secfirst.umbrella.whitelabel.data.database.segment.toControllers
+import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
@@ -70,10 +70,10 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
 
     override fun showSegments(difficulties: MutableList<Difficulty>) {
-        initSpinner(difficulties)
+        pickUpDifficulty(difficulties)
     }
 
-    private fun initSpinner(difficulties: MutableList<Difficulty>) {
+    private fun pickUpDifficulty(difficulties: MutableList<Difficulty>) {
         val difficultAdapter = DifficultSpinnerAdapter(context, difficulties)
         hostSegmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -94,7 +94,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         val segmentPageLimit = difficulty.markdowns.size
         hostAdapter = HostSegmentAdapter(this, controllers, segmentPageLimit)
         controllers.add(selectSegment)
-        controllers.addAll(difficulty.markdowns.toControllers())
+        controllers.addAll(difficulty.markdowns.toSegmentDetailControllers())
         controllers.addAll(difficulty.checklist.toChecklistControllers())
         hostSegmentPager?.let {
             it.adapter = hostAdapter
@@ -123,8 +123,9 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     private fun saveDifficultySelect(spinnerSelected: Difficulty) {
-        spinnerSelected.subject?.let { subject ->
-            presenter.submitDifficultySelected(subject.id, spinnerSelected)
-        }
+        if (spinnerSelected.id != 0L)
+            spinnerSelected.subject?.let { subject ->
+                presenter.submitDifficultySelected(subject.id, spinnerSelected)
+            }
     }
 }

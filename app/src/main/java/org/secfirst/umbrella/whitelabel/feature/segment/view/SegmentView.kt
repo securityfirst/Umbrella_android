@@ -8,7 +8,5 @@ interface SegmentView : BaseView {
 
     fun showSegments(difficulties: MutableList<Difficulty>) {}
 
-    fun showSegmentBy(markdowns: Collection<Markdown>) {}
-
     fun showSegmentDetail(markdown: Markdown) {}
 }
