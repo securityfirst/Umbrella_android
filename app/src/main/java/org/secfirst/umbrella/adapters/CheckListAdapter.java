@@ -63,8 +63,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
         holder.checkBox.setVisibility(checkList.get(position).getNoCheck() ? View.GONE : View.VISIBLE);
         String text = Jsoup.clean(checkList.get(position).getTitle(),Whitelist.basic().removeTags("p"));
 
-        //String test = String.format("<html><head><style>p{color:grey;}</style></head><body><p>%s</p></body></html>", text);
-        String test = String.format("<font color=''>%s</font>", text);
+        String test = String.format("<font color='#333333'>%s</font>", text);
         Spanned htmlDescription = Html.fromHtml(test);
         String descriptionWithOutExtraSpace = new String(htmlDescription.toString()).trim();
 
