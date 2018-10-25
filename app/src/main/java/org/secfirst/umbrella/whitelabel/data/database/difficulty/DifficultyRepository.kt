@@ -10,5 +10,5 @@ class DifficultyRepository @Inject constructor(private val diffDao: DifficultyDa
 
     override suspend fun loadSubjectBy(subjectId: Long) = diffDao.getSubjectBy(subjectId)
 
-    override suspend fun saveTopicPreferred(topicPreferred: TopicPreferred) = diffDao.save(topicPreferred)
+    override suspend fun saveTopicPreferred(difficultyPreferred: DifficultyPreferred) = diffDao.save(difficultyPreferred)
 }

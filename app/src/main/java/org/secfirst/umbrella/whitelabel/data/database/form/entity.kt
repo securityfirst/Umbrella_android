@@ -39,7 +39,6 @@ data class Screen(
         var title: String = "",
         @JsonIgnore
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "form_id")
         var form: Form? = null,
         var items: MutableList<Item> = arrayListOf()) : BaseModel(), Serializable {
 
@@ -67,7 +66,6 @@ data class Item(
         @Column
         var label: String = "",
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "screen_id")
         var screen: Screen? = null,
         var options: MutableList<Option> = arrayListOf(),
         @Column
@@ -95,13 +93,12 @@ data class Option(
         @Column
         var label: String = "",
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "item_id")
         var item: Item? = null,
         @Column
         var value: String = "") : BaseModel(), Serializable
 
 @Table(database = AppDatabase::class)
-data class ActiveForm(@PrimaryKey
+data class ActiveForm(@PrimaryKey(autoincrement = true)
                       var id: Long = 0,
                       var form: Form = Form(),
                       @Column(name = "form_model_id")
@@ -110,15 +107,17 @@ data class ActiveForm(@PrimaryKey
                       var date: String = "",
                       @Column
                       var title: String = "",
-                      var answers: MutableList<Answer> = arrayListOf()) : BaseModel(), Serializable {
+                      var answers: MutableList<Answer>? = arrayListOf()) : BaseModel(), Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "answers")
-    fun oneToManyAnswers(): MutableList<Answer> {
-        if (answers.isEmpty()) {
-            answers = SQLite.select()
-                    .from(Answer::class.java)
-                    .where(Answer_Table.activeForm_id.eq(id))
-                    .queryList()
+    fun oneToManyAnswers(): MutableList<Answer>? {
+        answers?.let {
+            if (it.isEmpty()) {
+                answers = SQLite.select()
+                        .from(Answer::class.java)
+                        .where(Answer_Table.activeForm_id.eq(id))
+                        .queryList()
+            }
         }
         return answers
     }
@@ -137,9 +136,9 @@ data class Answer(
         @Column
         var optionId: Long = 0,
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE,
                 deleteForeignKeyModel = false,
                 stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "active_form_id")
         var activeForm: ActiveForm? = null) : Serializable
 
 fun ActiveForm.asHTML(): String {

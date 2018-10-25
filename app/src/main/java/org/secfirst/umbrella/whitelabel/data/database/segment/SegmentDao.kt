@@ -5,7 +5,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
@@ -29,7 +29,7 @@ interface SegmentDao {
 
     suspend fun save(subjectId: Long, difficulty: Difficulty) {
         withContext(ioContext) {
-            modelAdapter<TopicPreferred>().save(TopicPreferred(subjectId, difficulty))
+            modelAdapter<DifficultyPreferred>().save(DifficultyPreferred(subjectId, difficulty))
         }
     }
 

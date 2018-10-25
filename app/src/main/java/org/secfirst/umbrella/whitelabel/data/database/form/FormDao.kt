@@ -22,11 +22,10 @@ interface FormDao {
 
     suspend fun delete(activeForm: ActiveForm) {
         withContext(ioContext) {
-            try {
-                modelAdapter<ActiveForm>().delete(activeForm)
-            } catch (e: Exception) {
-                Log.e(FormDao::class.simpleName, "Error when tried to delete a activeForm - ${e.stackTrace}")
+            activeForm.answers?.let {
+                modelAdapter<Answer>().deleteAll(it)
             }
+            modelAdapter<ActiveForm>().delete(activeForm)
         }
     }
 

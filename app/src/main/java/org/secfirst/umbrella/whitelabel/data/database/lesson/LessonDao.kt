@@ -4,8 +4,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred_Table
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
@@ -55,10 +55,10 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getTopicPreferred(subjectId: Long): TopicPreferred? = withContext(ioContext) {
+    suspend fun getTopicPreferred(subjectId: Long): DifficultyPreferred? = withContext(ioContext) {
         SQLite.select()
-                .from(TopicPreferred::class.java)
-                .where(TopicPreferred_Table.subjectId.`is`(subjectId))
+                .from(DifficultyPreferred::class.java)
+                .where(DifficultyPreferred_Table.subjectId.`is`(subjectId))
                 .querySingle()
     }
 

@@ -24,13 +24,10 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 module?.let { safeModule ->
                     if (safeModule.markdowns.size > SINGLE_CHOICE) {
                         getView()?.startSegmentController(safeModule)
-                    } else {
-                        if (safeModule.markdowns.size == SINGLE_CHOICE) {
-                            val singleMarkdown = safeModule.markdowns.last()
-                            getView()?.startSegmentDetail(singleMarkdown)
-                        } else {
-
-                        }
+                    }
+                    if (safeModule.markdowns.size == SINGLE_CHOICE) {
+                        val singleMarkdown = safeModule.markdowns.last()
+                        getView()?.startSegmentDetail(singleMarkdown)
                     }
                 }
             }
@@ -40,30 +37,20 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectLesson(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let {
-                val topicPreferred = it.fetchTopicPreferredBy(subject.id)
+                val difficultyPreferred = it.fetchTopicPreferredBy(subject.id)
                 val subjectMarkdown = it.fetchMarkdownsBy(subject.id)
 
-                if (topicPreferred != null)
-                    subjectInSegment(topicPreferred.difficulty)
+                if (difficultyPreferred != null)
+                    difficultyPreferred.difficulty?.let { safePreferred ->
+                        getView()?.startDeferredSegment(safePreferred)
+                    }
                 else if (subject.difficulties.isEmpty() && subjectMarkdown.isNotEmpty()) {
                     getView()?.startSegmentController(subject)
                 } else {
-                    subjectInDifficulty(subject)
+                    getView()?.startDifficultyController(subject)
                 }
             }
         }
-    }
-
-    private fun subjectInDifficulty(subject: Subject) {
-        getView()?.startDifficultyController(subject)
-    }
-
-    private fun subjectInSegment(selectDifficulty: Difficulty?) {
-        selectDifficulty?.let { getView()?.startDeferredSegment(it) }
-    }
-
-    private fun subjectInSegmentDetail(markdown: Markdown) {
-        getView()?.startSegmentDetail(markdown)
     }
 
     override fun submitLoadAllLesson() {

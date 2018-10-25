@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.lesson
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 interface LessonRepo {
@@ -20,6 +20,6 @@ interface LessonRepo {
 
     suspend fun loadChildBy(id: Long): Difficulty?
 
-    suspend fun loadTopicPreferredBy(subjectId: Long): TopicPreferred?
+    suspend fun loadTopicPreferredBy(subjectId: Long): DifficultyPreferred?
 
 }

@@ -9,9 +9,9 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 
 interface DifficultyDao {
 
-    suspend fun save(topicPreferred: TopicPreferred) {
+    suspend fun save(difficultyPreferred: DifficultyPreferred) {
         withContext(AppExecutors.ioContext) {
-            modelAdapter<TopicPreferred>().save(topicPreferred)
+            modelAdapter<DifficultyPreferred>().save(difficultyPreferred)
         }
     }
 

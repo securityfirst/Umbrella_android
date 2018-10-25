@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.difficulty.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.TopicPreferred
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.withColors
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
@@ -21,7 +21,7 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
 
     override fun saveDifficultySelect(difficulty: Difficulty, subjectId: Long) {
         launchSilent(uiContext) {
-            interactor?.insertTopicPreferred(TopicPreferred(subjectId, difficulty))
+            interactor?.insertTopicPreferred(DifficultyPreferred(subjectId, difficulty))
         }
     }
 

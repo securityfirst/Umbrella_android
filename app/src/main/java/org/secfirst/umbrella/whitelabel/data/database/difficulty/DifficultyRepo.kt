@@ -10,5 +10,5 @@ interface DifficultyRepo {
 
     suspend fun loadSubjectByModule(moduleId: Long): Subject?
 
-    suspend fun saveTopicPreferred(topicPreferred: TopicPreferred)
+    suspend fun saveTopicPreferred(difficultyPreferred: DifficultyPreferred)
 }

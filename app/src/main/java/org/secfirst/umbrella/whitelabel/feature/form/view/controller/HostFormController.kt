@@ -60,7 +60,6 @@ class HostFormController : BaseController(), FormView {
     private fun onEditFormClicked(form: Form) {
         val activeForm = ActiveForm()
         activeForm.form = form
-        activeForm.id = System.currentTimeMillis()
         activeForm.title = form.title
         activeForm.date = currentTime
         activeForm.referenceId = form.id

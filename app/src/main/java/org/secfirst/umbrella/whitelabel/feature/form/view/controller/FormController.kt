@@ -63,6 +63,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
 
     override fun onDestroy() {
         enableNavigation()
+        //presenter.submitActiveForm(activeForm)
         super.onDestroy()
     }
 
@@ -96,7 +97,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
                 answer.activeForm = activeForm
                 answer.choiceInput = checkbox.isChecked
                 if (answer.choiceInput) {
-                    activeForm.answers.add(answer)
+                    activeForm.answers?.add(answer)
                 }
             }
         }
@@ -110,7 +111,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
                 answer.activeForm = activeForm
                 answer.textInput = editText.text.toString()
                 if (answer.textInput.isNotEmpty()) {
-                    activeForm.answers.add(answer)
+                    activeForm.answers?.add(answer)
                 }
             }
         }
@@ -124,7 +125,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
                 answer.activeForm = activeForm
                 answer.choiceInput = radioButton.isChecked
                 if (answer.choiceInput) {
-                    activeForm.answers.add(answer)
+                    activeForm.answers?.add(answer)
                 }
             }
         }
