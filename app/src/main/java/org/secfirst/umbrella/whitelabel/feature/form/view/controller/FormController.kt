@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.RadioButton
+import android.widget.*
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.form_progress.*
@@ -26,6 +24,7 @@ import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.FormAdapter
 import org.secfirst.umbrella.whitelabel.misc.BundleExt.Companion.EXTRA_ACTIVE_FORM
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import javax.inject.Inject
+
 
 class FormController(bundle: Bundle) : BaseController(bundle), FormView, StepperLayout.StepperListener {
 
@@ -61,12 +60,6 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         return view
     }
 
-    override fun onDestroy() {
-        enableNavigation()
-        //presenter.submitActiveForm(activeForm)
-        super.onDestroy()
-    }
-
     private fun createFormUI() {
         activeForm.form.let {
             for (view in it.screens)
@@ -74,13 +67,13 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         }
     }
 
-    override fun onCompleted(completeButton: View?) {
+    private fun bindAllComponents() {
         bindCheckboxValue()
         bindEditTextValue()
         bindRadioButtonValue()
         hideKeyboard()
-        presenter.submitActiveForm(activeForm)
     }
+
 
     override fun onInject() {
         DaggerFormComponent.builder()
@@ -88,6 +81,69 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
                 .build()
                 .inject(this)
     }
+
+
+    private fun closeView() {
+        router.popCurrentController()
+    }
+
+    override fun onStepSelected(newStepPosition: Int) {
+        setProgress(newStepPosition)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setProgress(newStepPosition: Int) {
+        val size = totalScreens
+        var percentage = newStepPosition * 100 / totalScreens
+        if (newStepPosition > 0) {
+            progressAnswer.progress = percentage
+            titleProgressAnswer.text = "$percentage%"
+        }
+
+        if (newStepPosition == size - 1) {
+            percentage = 100
+            progressAnswer.progress = percentage
+            titleProgressAnswer.text = "$percentage%"
+        }
+    }
+
+    override fun showActiveFormWLoad(result: Boolean) {
+    }
+
+    override fun onError(verificationError: VerificationError?) {}
+
+    override fun onReturn() {}
+
+    private fun setUpToolbar() {
+        formToolbar?.let { toolbar ->
+            mainActivity.setSupportActionBar(toolbar)
+            mainActivity.supportActionBar?.title = activeForm.title
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            toolbar.setNavigationOnClickListener { onAppBarBackAction() }
+        }
+    }
+
+
+    override fun onCompleted(completeButton: View?) {
+        bindAllComponents()
+        presenter.submitActiveForm(activeForm)
+        closeView()
+    }
+
+    private fun onAppBarBackAction() {
+        bindAllComponents()
+        presenter.submitActiveForm(activeForm)
+        enableNavigation()
+        closeView()
+    }
+
+    override fun handleBack(): Boolean {
+        bindAllComponents()
+        presenter.submitActiveForm(activeForm)
+        enableNavigation()
+        return super.handleBack()
+    }
+
 
     private fun bindCheckboxValue() {
         checkboxList.forEach { map ->
@@ -131,43 +187,4 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         }
     }
 
-    private fun closeView() {
-        router.popCurrentController()
-    }
-
-    override fun onStepSelected(newStepPosition: Int) {
-        setProgress(newStepPosition)
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun setProgress(newStepPosition: Int) {
-        val size = totalScreens
-        var percentage = newStepPosition * 100 / totalScreens
-        if (newStepPosition > 0) {
-            progressAnswer.progress = percentage
-            titleProgressAnswer.text = "$percentage%"
-        }
-
-        if (newStepPosition == size - 1) {
-            percentage = 100
-            progressAnswer.progress = percentage
-            titleProgressAnswer.text = "$percentage%"
-        }
-    }
-
-    override fun showActiveFormWLoad(result: Boolean) {
-        if (result) closeView()
-    }
-
-    override fun onError(verificationError: VerificationError?) {}
-
-    override fun onReturn() {}
-
-    private fun setUpToolbar() {
-        formToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = activeForm.title
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-    }
 }
