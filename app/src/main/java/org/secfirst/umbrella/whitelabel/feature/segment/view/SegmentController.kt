@@ -68,10 +68,11 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun initSegmentView(markdowns: List<Markdown>) {
+        val sortedMarkdowns = markdowns.sortedWith(compareBy { it.index })
         val favorite = checklist?.favorite ?: false
         val segmentAdapter = SegmentAdapter(segmentClick, footClick,
                 checklistShareClick, segmentShareClick,
-                checklistFavoriteClick, segmentFavoriteClick, favorite, markdowns.toMutableList())
+                checklistFavoriteClick, segmentFavoriteClick, favorite, sortedMarkdowns.toMutableList())
 
         segmentRecyclerView?.initGridView(segmentAdapter)
         setFooterList(segmentAdapter)

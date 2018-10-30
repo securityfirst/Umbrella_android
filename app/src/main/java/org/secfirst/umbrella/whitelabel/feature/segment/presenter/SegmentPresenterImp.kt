@@ -4,10 +4,10 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.defaultDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficulty
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.withColors
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.database.segment.Segment
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
@@ -41,8 +41,8 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
 
     override fun submitLoadSubject(subject: Subject) {
         launchSilent(uiContext) {
-            interactor?.let {
-                val markdowns = it.fetchMarkdowns(subject.id)
+            interactor?.let { safeInteractor ->
+                val markdowns = safeInteractor.fetchMarkdowns(subject.id)
                 if (markdowns.size > Markdown.SINGLE_CHOICE) {
                     val list = mutableListOf<Difficulty>()
                     list.add(defaultDifficulty(markdowns, subject.title))

@@ -17,16 +17,6 @@ import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
-
-@Parcelize
-data class Segment(var toolbarTitle: String,
-                   var tabTitle: String,
-                   var markdowns: List<Markdown> = listOf(),
-                   var checklists: List<Checklist>) : Parcelable {
-//    @Parcelize
-//    data class Content(val labels: String, val subjectId: Long, val difficultyId: Long) : Parcelable
-}
-
 @Parcelize
 @Table(database = AppDatabase::class,
         allFields = true,
@@ -69,16 +59,6 @@ data class Markdown(
             return res
         }
     }
-}
-
-fun MutableList<Markdown>.toSegment(toolbarTitle: String,
-                                    title: String,
-                                    checklists: List<Checklist>): Segment {
-    val markdowns = mutableListOf<Markdown>()
-    this.forEach { markdown ->
-        markdowns.add(markdown)
-    }
-    return Segment(toolbarTitle, title, markdowns.sortedWith(compareBy { it.index }), checklists)
 }
 
 fun Difficulty.toSegmentController(host: Controller): SegmentController {
