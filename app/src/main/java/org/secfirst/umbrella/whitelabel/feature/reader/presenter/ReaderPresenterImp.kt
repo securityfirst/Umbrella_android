@@ -1,15 +1,19 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.presenter
 
+import android.location.Geocoder
 import android.util.Log
 import com.einmalfel.earl.EarlParser
 import com.google.gson.Gson
 import getAssetFileBy
+import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.reader.*
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import java.util.*
 import javax.inject.Inject
 
 
@@ -19,6 +23,15 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         interactor = interactor), ReaderBasePresenter<V, I> {
 
     private val tag: String = ReaderPresenterImp::class.java.name
+
+    override fun submitAutocompleteAddress(locationName: String) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val res = it.fetchGeolocation(locationName)
+                getView()?.newAddressAvailable(res)
+            }
+        }
+    }
 
     override fun submitDeleteRss(rss: RSS) {
         launchSilent(uiContext) {
@@ -123,8 +136,8 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         }
     }
 
-    override fun submitLoadRefreshInterval(){
-        launchSilent (uiContext){
+    override fun submitLoadRefreshInterval() {
+        launchSilent(uiContext) {
             val position = interactor?.fetchRefreshInterval()
             if (position != null)
                 getView()?.prepareRefreshInterval(position)
@@ -132,7 +145,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     }
 
     override fun submitPutRefreshInterval(position: Int) {
-        launchSilent (uiContext){
+        launchSilent(uiContext) {
             interactor?.putRefreshInterval(position)
         }
     }

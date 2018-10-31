@@ -30,6 +30,8 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun fetchRefreshInterval(): Int
 
-    suspend fun putRefreshInterval(position: Int) : Boolean
+    suspend fun putRefreshInterval(position: Int): Boolean
+
+    suspend fun fetchGeolocation(nameLocation: String): List<String>
 
 }

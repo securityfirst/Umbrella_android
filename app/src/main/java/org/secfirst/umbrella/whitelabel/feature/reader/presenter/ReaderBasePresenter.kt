@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.presenter
 
+import android.location.Geocoder
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
@@ -26,5 +27,7 @@ interface ReaderBasePresenter<V : ReaderView, I : ReaderBaseInteractor> : BasePr
     fun submitLoadRefreshInterval()
 
     fun submitPutRefreshInterval(position: Int)
+
+    fun submitAutocompleteAddress(locationName: String)
 
 }

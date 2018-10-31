@@ -16,4 +16,6 @@ interface ReaderView : BaseView {
     fun prepareFeedLocation(feedLocation: FeedLocation) {}
 
     fun prepareRefreshInterval(position: Int) {}
+
+    fun newAddressAvailable(address: List<String>) {}
 }

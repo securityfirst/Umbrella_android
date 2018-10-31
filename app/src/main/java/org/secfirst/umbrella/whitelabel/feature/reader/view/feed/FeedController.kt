@@ -23,6 +23,8 @@ import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePrese
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 import org.secfirst.umbrella.whitelabel.misc.init
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.feed_location_dialog.view.*
+
 
 class FeedController : BaseController(), ReaderView {
 
@@ -59,7 +61,7 @@ class FeedController : BaseController(), ReaderView {
 
         refreshIntervalView.alertControlOk.setOnClickListener { refreshIntervalOk() }
         refreshIntervalView.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
-
+        test()
         refreshIntervalAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(refreshIntervalView)
@@ -101,7 +103,11 @@ class FeedController : BaseController(), ReaderView {
                 return feedSourceAlertDialog
             }
         })
+    }
 
+
+    private fun test() {
+        FeedLocationAutoText(feedLocationView.autocompleteLocation, context, presenter)
     }
 
     private fun feedSourceOK() {
