@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
+import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_view.*
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.textColor
@@ -16,6 +17,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
@@ -23,7 +25,6 @@ import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePrese
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 import org.secfirst.umbrella.whitelabel.misc.init
 import javax.inject.Inject
-import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 
 
 class FeedController : BaseController(), ReaderView {
@@ -36,7 +37,7 @@ class FeedController : BaseController(), ReaderView {
     private lateinit var refreshIntervalAlertDialog: AlertDialog
     private lateinit var feedLocationAlertDialog: AlertDialog
     private lateinit var feedSourceAlertDialog: AlertDialog
-
+    private lateinit var feedLocationAutoText: FeedLocationAutoText
 
     override fun onInject() {
         DaggerReanderComponent.builder()
@@ -59,9 +60,10 @@ class FeedController : BaseController(), ReaderView {
         presenter.submitLoadFeedSources()
         presenter.submitLoadRefreshInterval()
 
+        feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation, context, presenter)
         refreshIntervalView.alertControlOk.setOnClickListener { refreshIntervalOk() }
         refreshIntervalView.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
-        test()
+
         refreshIntervalAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(refreshIntervalView)
@@ -103,11 +105,6 @@ class FeedController : BaseController(), ReaderView {
                 return feedSourceAlertDialog
             }
         })
-    }
-
-
-    private fun test() {
-        FeedLocationAutoText(feedLocationView.autocompleteLocation, context, presenter)
     }
 
     private fun feedSourceOK() {
@@ -164,5 +161,10 @@ class FeedController : BaseController(), ReaderView {
         feedSourceView.alertControlOk.setOnClickListener { feedSourceOK() }
         feedSourceView.alertControlCancel.setOnClickListener { feedSourceCancel() }
         setFeedSource?.setOnClickListener { onClickFeedSource() }
+    }
+
+    override fun newAddressAvailable(locationInfo: LocationInfo) {
+        if (locationInfo.locationNames.isNotEmpty())
+            feedLocationAutoText.updateAddress(locationInfo)
     }
 }

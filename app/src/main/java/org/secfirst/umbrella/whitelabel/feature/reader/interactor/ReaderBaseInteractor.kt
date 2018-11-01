@@ -5,6 +5,7 @@ import kotlinx.coroutines.experimental.Deferred
 import okhttp3.ResponseBody
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
@@ -32,6 +33,6 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun putRefreshInterval(position: Int): Boolean
 
-    suspend fun fetchGeolocation(nameLocation: String): List<String>
+    suspend fun fetchGeolocation(nameLocation: String): LocationInfo
 
 }

@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
+import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
@@ -14,7 +15,7 @@ import java.util.*
 
 class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoCompleteTextView,
                            private val context: Context,
-                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>) : ReaderView {
+                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>) {
 
     private var geocoder: Geocoder
 
@@ -26,26 +27,24 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
     private fun startAutocompleteLocation() {
         val test = listOf("Apple", "Banana", "Pear", "Mango", "Lemon")
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, test)
-        autocompleteLocation.autocompleteLocation.threshold = 3
+        autocompleteLocation.autocompleteLocation.threshold = 2
         autocompleteLocation.autocompleteLocation.setAdapter(adapter)
         autocompleteLocation.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (count == 3)
-                    presenter.submitAutocompleteAddress(s.toString())
+                presenter.submitAutocompleteAddress(s.toString())
             }
         })
     }
 
-    override fun newAddressAvailable(address: List<String>) {
-        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, address)
+    fun updateAddress(locationInfo: LocationInfo) {
+        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, locationInfo.locationNames)
+        autocompleteLocation.autocompleteLocation.threshold = 2
         autocompleteLocation.setAdapter(adapter)
     }
 }

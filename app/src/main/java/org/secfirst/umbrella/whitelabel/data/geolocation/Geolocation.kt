@@ -2,21 +2,25 @@ package org.secfirst.umbrella.whitelabel.data.geolocation
 
 import android.location.Geocoder
 import kotlinx.coroutines.experimental.withContext
+import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface Geolocation {
 
-    suspend fun getAddress(locationName: String, geocoder: Geocoder): List<String> {
+    suspend fun getAddress(locationName: String, geocoder: Geocoder): LocationInfo {
         val addressLabelList = mutableListOf<String>()
+        var countryCode = ""
+        var locationInfo = LocationInfo()
         withContext(ioContext) {
-            val addressList = geocoder.getFromLocationName(locationName, 5)
-            addressList.forEach { fullAddress ->
-                val city = fullAddress.locality
-                val country = fullAddress.countryName
-                val address = fullAddress.getAddressLine(0)
-                addressLabelList.add("$address, $city, $country")
+            if (locationName.isNotBlank()) {
+                val addressList = geocoder.getFromLocationName(locationName, 5)
+                addressList.forEach { fullAddress ->
+                    countryCode = fullAddress.countryCode ?: ""
+                    addressLabelList.add(fullAddress.getAddressLine(0))
+                }
+                locationInfo = LocationInfo(addressLabelList, countryCode)
             }
         }
-        return addressLabelList
+        return locationInfo
     }
 }

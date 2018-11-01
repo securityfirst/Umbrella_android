@@ -110,3 +110,7 @@ data class FeedSource(
         var lastChecked: Boolean = false) : BaseModel(), Parcelable {
     constructor(name: String, lastChecked: Boolean) : this(0, name, lastChecked)
 }
+
+data class LocationInfo(val locationNames: List<String> = mutableListOf(), val countryCode: String? = "") {
+    constructor() : this(mutableListOf(), "")
+}
