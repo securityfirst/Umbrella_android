@@ -98,8 +98,8 @@ data class FeedLocation(
         @PrimaryKey
         var id: Long = 1,
         var location: String = "",
-        var iso2: String = "",
-        var country: String = "") : BaseModel(), Parcelable
+        var iso2: String = "") : BaseModel(), Parcelable {
+}
 
 @Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = false)
 @Parcelize
@@ -107,8 +107,10 @@ data class FeedSource(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
         var name: String = "",
-        var lastChecked: Boolean = false) : BaseModel(), Parcelable {
-    constructor(name: String, lastChecked: Boolean) : this(0, name, lastChecked)
+        var lastChecked: Boolean = false,
+        var code: Int = 0) : BaseModel(), Parcelable {
+
+    constructor(name: String, lastChecked: Boolean, code: Int) : this(0, name, lastChecked, code)
 }
 
 data class LocationInfo(val locationNames: List<String> = mutableListOf(), val countryCode: String? = "") {

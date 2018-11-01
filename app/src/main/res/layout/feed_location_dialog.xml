@@ -44,8 +44,7 @@
                 android:hint="@string/feed_location_enter_location"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
-                android:textSize="16sp"
-                android:theme="@style/Autocomplete" />
+                android:textSize="16sp" />
         </android.support.design.widget.TextInputLayout>
 
         <include

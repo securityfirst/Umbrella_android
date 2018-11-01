@@ -7,6 +7,7 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
+import org.secfirst.umbrella.whitelabel.data.network.FeedListResponse
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface ReaderBaseInteractor : BaseInteractor {
@@ -34,5 +35,7 @@ interface ReaderBaseInteractor : BaseInteractor {
     suspend fun putRefreshInterval(position: Int): Boolean
 
     suspend fun fetchGeolocation(nameLocation: String): LocationInfo
+
+    suspend fun doFeedCall(countryCode: String, source: String): Deferred<FeedListResponse>
 
 }

@@ -16,6 +16,7 @@ import org.jetbrains.anko.textColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -57,10 +58,15 @@ class FeedController : BaseController(), ReaderView {
         presenter.onAttach(this)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
         feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
+
         presenter.submitLoadFeedSources()
         presenter.submitLoadRefreshInterval()
+        presenter.submitLoadFeedLocation()
 
         feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation, context, presenter)
+        feedLocationView.alertControlCancel.setOnClickListener { feedLocationCancel() }
+        feedLocationView.alertControlOk.setOnClickListener { feedLocationOk() }
+
         refreshIntervalView.alertControlOk.setOnClickListener { refreshIntervalOk() }
         refreshIntervalView.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
 
@@ -122,12 +128,12 @@ class FeedController : BaseController(), ReaderView {
         presenter.submitPutRefreshInterval(position)
     }
 
-    private fun refreshIntervalCancel() {
-        refreshIntervalAlertDialog.dismiss()
-    }
-
-    private fun feedSourceCancel() {
-        feedSourceAlertDialog.dismiss()
+    private fun feedLocationOk() {
+        val locationSelected = feedLocationView.autocompleteLocation.text.toString()
+        feedViewLocation?.text = locationSelected
+        presenter.submitInsertFeedLocation(FeedLocation(1, locationSelected,
+                feedLocationAutoText.getCountryCode() ?: ""))
+        feedLocationAlertDialog.dismiss()
     }
 
     private fun populateFeedSource(feedsChecked: List<FeedSource>) {
@@ -150,6 +156,15 @@ class FeedController : BaseController(), ReaderView {
         feedRefreshInterval?.text = spinner.selectedItem.toString()
     }
 
+    override fun prepareFeedLocation(feedLocation: FeedLocation) {
+        if (feedLocation.location.isNotBlank()) {
+            feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
+            feedLocationView.autocompleteLocation.setText(feedLocation.location)
+            feedViewLocation?.text = feedLocation.location
+            feedLocationView.autocompleteLocation.setSelection(feedLocation.location.length)
+        }
+    }
+
     override fun prepareFeedSource(feedSources: List<FeedSource>) {
         populateFeedSource(feedSources)
         feedSourceDialog = FeedSourceDialog(feedSources)
@@ -167,4 +182,10 @@ class FeedController : BaseController(), ReaderView {
         if (locationInfo.locationNames.isNotEmpty())
             feedLocationAutoText.updateAddress(locationInfo)
     }
+
+    private fun refreshIntervalCancel() = refreshIntervalAlertDialog.dismiss()
+
+    private fun feedSourceCancel() = feedSourceAlertDialog.dismiss()
+
+    private fun feedLocationCancel() = feedLocationAlertDialog.dismiss()
 }

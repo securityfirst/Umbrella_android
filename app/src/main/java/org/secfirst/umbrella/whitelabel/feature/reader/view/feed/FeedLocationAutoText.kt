@@ -18,6 +18,7 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
                            private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>) {
 
     private var geocoder: Geocoder
+    private lateinit var locationInfo: LocationInfo
 
     init {
         startAutocompleteLocation()
@@ -43,8 +44,11 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
     }
 
     fun updateAddress(locationInfo: LocationInfo) {
+        this.locationInfo = locationInfo
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, locationInfo.locationNames)
         autocompleteLocation.autocompleteLocation.threshold = 2
         autocompleteLocation.setAdapter(adapter)
     }
+
+    fun getCountryCode() = locationInfo.countryCode
 }

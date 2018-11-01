@@ -20,6 +20,12 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
 
     private val tag: String = ReaderPresenterImp::class.java.name
 
+    override fun submitFeedLocation(feedLocation: FeedLocation) {
+        interactor?.let {
+            launchSilent(uiContext) { it.insertFeedLocation(feedLocation) }
+        }
+    }
+
     override fun submitAutocompleteAddress(locationName: String) {
         launchSilent(uiContext) {
             interactor?.let { getView()?.newAddressAvailable(it.fetchGeolocation(locationName)) }
