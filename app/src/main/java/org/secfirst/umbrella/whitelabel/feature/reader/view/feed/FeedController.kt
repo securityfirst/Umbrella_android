@@ -131,6 +131,7 @@ class FeedController : BaseController(), ReaderView {
     private fun feedLocationOk() {
         val locationSelected = feedLocationView.autocompleteLocation.text.toString()
         feedViewLocation?.text = locationSelected
+        feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
         presenter.submitInsertFeedLocation(FeedLocation(1, locationSelected,
                 feedLocationAutoText.getCountryCode() ?: ""))
         feedLocationAlertDialog.dismiss()
@@ -169,10 +170,12 @@ class FeedController : BaseController(), ReaderView {
         populateFeedSource(feedSources)
         feedSourceDialog = FeedSourceDialog(feedSources)
         val feedSourceView = feedSourceDialog.createView(AnkoContext.create(context, this, false))
-        feedSourceAlertDialog = AlertDialog
-                .Builder(activity)
-                .setView(feedSourceView)
-                .create()
+        activity?.let {
+            feedSourceAlertDialog = AlertDialog
+                    .Builder(it)
+                    .setView(feedSourceView)
+                    .create()
+        }
         feedSourceView.alertControlOk.setOnClickListener { feedSourceOK() }
         feedSourceView.alertControlCancel.setOnClickListener { feedSourceCancel() }
         setFeedSource?.setOnClickListener { onClickFeedSource() }
