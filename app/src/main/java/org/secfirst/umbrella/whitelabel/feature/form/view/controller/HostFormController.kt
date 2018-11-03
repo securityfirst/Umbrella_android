@@ -36,7 +36,7 @@ class HostFormController : BaseController(), FormView {
     private val editActiveFormClick: (ActiveForm) -> Unit = this::onEditActiveFormClicked
     private val deleteClick: (Int, ActiveForm) -> Unit = this::onDeleteFormClicked
     private val shareClick: (ActiveForm) -> Unit = this::onShareFormClicked
-    private val sectionAdapter: SectionedRecyclerViewAdapter by lazy { SectionedRecyclerViewAdapter() }
+    private val sectionAdapter by lazy { SectionedRecyclerViewAdapter() }
     private var allFormTag = ""
     private var activeFormTag = ""
     private lateinit var allFormSection: AllFormSection

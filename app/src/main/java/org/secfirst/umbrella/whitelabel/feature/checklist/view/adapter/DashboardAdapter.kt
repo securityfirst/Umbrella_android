@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.checklist_dashboard_header.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
-import kotlinx.android.synthetic.main.head_checklist_dashboard.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
@@ -30,7 +30,7 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
 
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             val headerView = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.head_checklist_dashboard, parent, false)
+                    .inflate(R.layout.checklist_dashboard_header, parent, false)
             return DashboardHeaderViewHolder(headerView)
         }
         return DashboardHolder(view)

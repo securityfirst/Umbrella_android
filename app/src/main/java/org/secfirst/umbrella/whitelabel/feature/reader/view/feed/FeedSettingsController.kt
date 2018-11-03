@@ -39,7 +39,7 @@ class FeedSettingsController : BaseController(), ReaderView {
     private lateinit var refreshIntervalAlertDialog: AlertDialog
     private lateinit var feedSourceAlertDialog: AlertDialog
     private lateinit var feedLocationAutoText: FeedLocationAutoText
-    private var feedsChecked = listOf<FeedSource>()
+    private var feedsCheckbox = listOf<FeedSource>()
     private lateinit var feedLocationView: View
     private lateinit var feedLocationAlertDialog: AlertDialog
     private var feedLocation: FeedLocation? = null
@@ -67,7 +67,6 @@ class FeedSettingsController : BaseController(), ReaderView {
         presenter.submitLoadRefreshInterval()
         presenter.submitLoadFeedLocation()
 
-        feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation, context, presenter)
         feedLocationView.alertControlCancel.setOnClickListener { feedLocationCancel() }
         feedLocationView.alertControlOk.setOnClickListener { feedLocationOk() }
 
@@ -87,11 +86,12 @@ class FeedSettingsController : BaseController(), ReaderView {
     }
 
     private fun onClickUndefinedFeed() {
+        val feedsChecked = feedsCheckbox.filter { it.lastChecked }
         when {
             feedLocation == null -> onClickFeedLocation()
             feedsChecked.isEmpty() -> onClickFeedSource()
             else -> {
-                feedLocation?.let { presenter.submitFeedRequest(it, feedsChecked) }
+                feedLocation?.let { presenter.submitFeedRequest(it, feedsCheckbox) }
             }
         }
     }
@@ -124,11 +124,12 @@ class FeedSettingsController : BaseController(), ReaderView {
     }
 
     private fun feedSourceOK() {
-        feedsChecked = feedSourceDialog.getFeedSourcesUpdated()
-        presenter.submitInsertFeedSource(feedsChecked)
-        populateFeedSource(feedsChecked)
-        if (feedLocation != null)
-            feedLocation?.let { dispatchFeedRequest(it, feedsChecked) }
+        feedsCheckbox = feedSourceDialog.getFeedSourcesUpdated()
+        val feedChecked = feedsCheckbox.filter { it.lastChecked }
+        presenter.submitInsertFeedSource(feedsCheckbox)
+        populateFeedSource(feedsCheckbox)
+        if (feedLocation != null && feedChecked.isNotEmpty())
+            feedLocation?.let { dispatchFeedRequest(it, feedsCheckbox) }
         else
             onClickFeedLocation()
 
@@ -148,8 +149,10 @@ class FeedSettingsController : BaseController(), ReaderView {
         feedViewLocation?.text = locationSelected
         feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
         val newLocation = FeedLocation(1, locationSelected, feedLocationAutoText.getCountryCode())
+        feedLocation = newLocation
+        val feedsChecked = feedsCheckbox.filter { it.lastChecked }
         if (feedsChecked.isNotEmpty())
-            dispatchFeedRequest(newLocation, feedsChecked)
+            dispatchFeedRequest(newLocation, feedsCheckbox)
         else
             onClickFeedSource()
 
@@ -160,7 +163,7 @@ class FeedSettingsController : BaseController(), ReaderView {
     private fun populateFeedSource(feedsChecked: List<FeedSource>) {
         var feedCheckInString = ""
         feedsChecked.forEach { if (it.lastChecked) feedCheckInString += "- ${it.name}\n" }
-        this.feedsChecked = feedsChecked
+        this.feedsCheckbox = feedsChecked
         if (feedCheckInString.isEmpty()) {
             feedSource?.textColor = ContextCompat.getColor(context, R.color.feedSources_color)
             feedSource?.text = context.getString(R.string.feed_source_label)
@@ -178,6 +181,8 @@ class FeedSettingsController : BaseController(), ReaderView {
     }
 
     override fun prepareFeedLocation(feedLocation: FeedLocation) {
+        populateFeedAutoText(feedLocation)
+
         if (feedLocation.location.isNotBlank()) {
             this.feedLocation = feedLocation
             feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
@@ -185,6 +190,14 @@ class FeedSettingsController : BaseController(), ReaderView {
             feedViewLocation?.text = feedLocation.location
             feedLocationView.autocompleteLocation.setSelection(feedLocation.location.length)
         }
+    }
+
+    private fun populateFeedAutoText(feedLocation: FeedLocation) {
+        val selectedPlace = mutableListOf<String>()
+        selectedPlace.add(feedLocation.location)
+        val locationInfo = LocationInfo(selectedPlace, feedLocation.iso2)
+        feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation,
+                context, presenter, locationInfo)
     }
 
     override fun prepareFeedSource(feedSources: List<FeedSource>) {
@@ -209,7 +222,10 @@ class FeedSettingsController : BaseController(), ReaderView {
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>) {
         feedProgress?.visibility = View.INVISIBLE
-        router?.pushController(RouterTransaction.with(FeedController(feedItemResponse)))
+        feedLocation?.let {
+            router?.pushController(RouterTransaction
+                    .with(FeedController(feedItemResponse, it.location)))
+        }
     }
 
     private fun dispatchFeedRequest(feedLocation: FeedLocation, feedsChecked: List<FeedSource>) {

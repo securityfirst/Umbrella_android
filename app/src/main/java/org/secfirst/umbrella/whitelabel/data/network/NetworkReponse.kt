@@ -27,14 +27,14 @@ data class FeedResponse(val feedItemResponse: List<FeedItemResponse>)
 @Parcelize
 data class FeedItemResponse(
         @SerializedName("title")
-        var title: String? = null,
+        var title: String = "",
         @SerializedName("description")
-        var description: String? = null,
+        var description: String = "",
         @SerializedName("url")
-        var url: String? = null,
+        var url: String = "",
         @field:Json(name = "")
         @SerializedName("updated_at")
-        var updatedAt: Long? = null) : Parcelable
+        var updatedAt: Long = 0) : Parcelable
 
 
 class FeedJsonConverter {

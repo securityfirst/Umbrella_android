@@ -61,6 +61,8 @@
     </string-array>
 
     <string name="feed_list_via">Via\u0020</string>
+    <string name="feed_change_header">CHANGE</string>
+    <string name="feed_location_header">Location</string>
 
 
 </resources>

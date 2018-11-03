@@ -4,20 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.feed_view.*
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.component.WebViewController
 import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 
 class FeedController(bundle: Bundle) : BaseController(bundle) {
 
-    private val feeds by lazy { args.getParcelableArray(SegmentController.EXTRA_SEGMENT) as Array<FeedItemResponse> }
-    private val onClickOpenArticle: (String?) -> Unit = this::onClickFeedItem
+    private val feeds by lazy { args.getParcelableArray(EXTRA_FEED_LIST) as Array<FeedItemResponse> }
+    private val onClickOpenArticle: (String) -> Unit = this::onClickFeedItem
+    private val onClickLocation: () -> Unit = this::onClickChangeLocation
+    private val placeName by lazy { args.getString(EXTRA_FEED_PLACE) }
 
-    constructor(feedItemResponse: Array<FeedItemResponse>) : this(Bundle().apply {
-        putParcelableArray(SegmentController.EXTRA_SEGMENT, feedItemResponse)
+    constructor(feedItemResponse: Array<FeedItemResponse>, placeName: String) : this(Bundle().apply {
+        putParcelableArray(EXTRA_FEED_LIST, feedItemResponse)
+        putString(EXTRA_FEED_PLACE, placeName)
     })
 
     override fun onInject() {
@@ -27,14 +31,22 @@ class FeedController(bundle: Bundle) : BaseController(bundle) {
         return inflater.inflate(R.layout.feed_view, container, false)
     }
 
-    private fun onClickFeedItem(url: String?) {
+    private fun onClickFeedItem(url: String) {
+        parentController?.router?.pushController(RouterTransaction.with(WebViewController(url)))
+    }
 
+    private fun onClickChangeLocation() {
+        router.popCurrentController()
     }
 
     override fun onAttach(view: View) {
-        val adapter = FeedAdapter(onClickOpenArticle)
+        val adapter = FeedAdapter(onClickOpenArticle, onClickLocation, placeName)
         feedItemRecyclerView?.initRecyclerView(adapter)
         adapter.addAll(feeds.toList())
     }
 
+    companion object {
+        const val EXTRA_FEED_LIST = "extra_feed_list"
+        const val EXTRA_FEED_PLACE = "extra_feed_place"
+    }
 }

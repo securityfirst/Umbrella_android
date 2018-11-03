@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
 import android.content.Context
-import android.location.Geocoder
 import android.support.v7.widget.AppCompatAutoCompleteTextView
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,18 +10,13 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
-import java.util.*
 
 class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoCompleteTextView,
                            private val context: Context,
-                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>) {
-
-    private var geocoder: Geocoder
-    private lateinit var locationInfo: LocationInfo
-
+                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>,
+                           private var locationInfo: LocationInfo) {
     init {
         startAutocompleteLocation()
-        geocoder = Geocoder(context, Locale.getDefault())
     }
 
     private fun startAutocompleteLocation() {
