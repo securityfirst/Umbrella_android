@@ -21,13 +21,10 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
 
     private val tag: String = ReaderPresenterImp::class.java.name
 
-
     override fun submitFeedRequest(feedLocation: FeedLocation, feedSources: List<FeedSource>) {
         interactor?.let {
             launchSilent(uiContext) {
-                var sourcesInString = ""
-                feedSources.forEach { source -> sourcesInString += "${source.code}," }
-                val feedResponseBody = it.doFeedCall(feedLocation.iso2, sourcesInString, "0").await()
+                val feedResponseBody = it.doFeedCall(feedLocation.iso2, getSelectedFeedSources(feedSources), "0").await()
                 val feedItemResponse = Gson().fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
                 getView()?.startFeedController(feedItemResponse)
             }
@@ -52,7 +49,6 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         }
     }
 
-
     override fun submitFetchRss() {
         launchSilent(uiContext) {
             var refRss: RefRSS
@@ -73,6 +69,57 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     private fun submitRss(rssList: MutableList<RSS>) {
         launchSilent(uiContext) {
             interactor?.insertAllRss(rssList)
+        }
+    }
+
+    override fun submitInsertRss(rss: RSS) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                it.insertRss(rss)
+                processRss(rss.link)?.let { rss -> getView()?.showNewestRss(rss) }
+            }
+        }
+    }
+
+    override fun submitLoadFeedSources() {
+        launchSilent(uiContext) {
+            val feedSources = interactor?.fetchFeedSources()
+            if (feedSources != null)
+                getView()?.prepareFeedSource(feedSources)
+        }
+    }
+
+    override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
+        launchSilent(uiContext) {
+            interactor?.insertAllFeedSources(feedSources)
+        }
+    }
+
+    override fun submitInsertFeedLocation(feedLocation: FeedLocation) {
+        launchSilent(uiContext) {
+            interactor?.insertFeedLocation(feedLocation)
+        }
+    }
+
+    override fun submitLoadFeedLocation() {
+        launchSilent(uiContext) {
+            val feedLocation = interactor?.fetchFeedLocation()
+            if (feedLocation != null)
+                getView()?.prepareFeedLocation(feedLocation)
+        }
+    }
+
+    override fun submitLoadRefreshInterval() {
+        launchSilent(uiContext) {
+            val position = interactor?.fetchRefreshInterval()
+            if (position != null)
+                getView()?.prepareRefreshInterval(position)
+        }
+    }
+
+    override fun submitPutRefreshInterval(position: Int) {
+        launchSilent(uiContext) {
+            interactor?.putRefreshInterval(position)
         }
     }
 
@@ -105,61 +152,16 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         return null
     }
 
-    override fun submitInsertRss(rss: RSS) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                it.insertRss(rss)
-                processRss(rss.link)?.let { rss -> getView()?.showNewestRss(rss) }
-            }
-        }
+    private fun getSelectedFeedSources(feedSources: List<FeedSource>): String {
+        val selectedSources = feedSources.filter { it.lastChecked }
+        val codeSources = mutableListOf<Int>()
+        selectedSources.forEach { codeSources.add(it.code) }
+        return codeSources.joinToString(",")
     }
 
     private fun getRssFromAssert(): RefRSS {
         val input = getAssetFileBy(RSS_FILE_NAME)
         val jsonInString = input.bufferedReader().use { it.readText() }
         return Gson().fromJson(jsonInString, RefRSS::class.java)
-    }
-
-    override fun submitLoadFeedSources() {
-        launchSilent(uiContext) {
-            val feedSources = interactor?.fetchFeedSources()
-            if (feedSources != null)
-                getView()?.prepareFeedSource(feedSources)
-        }
-    }
-
-    override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
-        launchSilent(uiContext) {
-            interactor?.insertAllFeedSources(feedSources)
-        }
-    }
-
-    override fun submitInsertFeedLocation(feedLocation: FeedLocation) {
-        launchSilent(uiContext) {
-            interactor?.insertFeedLocation(feedLocation)
-        }
-    }
-
-
-    override fun submitLoadFeedLocation() {
-        launchSilent(uiContext) {
-            val feedLocation = interactor?.fetchFeedLocation()
-            if (feedLocation != null)
-                getView()?.prepareFeedLocation(feedLocation)
-        }
-    }
-
-    override fun submitLoadRefreshInterval() {
-        launchSilent(uiContext) {
-            val position = interactor?.fetchRefreshInterval()
-            if (position != null)
-                getView()?.prepareRefreshInterval(position)
-        }
-    }
-
-    override fun submitPutRefreshInterval(position: Int) {
-        launchSilent(uiContext) {
-            interactor?.putRefreshInterval(position)
-        }
     }
 }

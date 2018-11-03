@@ -147,12 +147,13 @@ class FeedSettingsController : BaseController(), ReaderView {
         val locationSelected = feedLocationView.autocompleteLocation.text.toString()
         feedViewLocation?.text = locationSelected
         feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
-        feedLocation?.let {
-            presenter.submitInsertFeedLocation(it)
-            if (feedsChecked.isNotEmpty())
-                dispatchFeedRequest(it, feedsChecked)
-            else onClickFeedSource()
-        }
+        val newLocation = FeedLocation(1, locationSelected, feedLocationAutoText.getCountryCode())
+        if (feedsChecked.isNotEmpty())
+            dispatchFeedRequest(newLocation, feedsChecked)
+        else
+            onClickFeedSource()
+
+        presenter.submitInsertFeedLocation(newLocation)
         feedLocationAlertDialog.dismiss()
     }
 
