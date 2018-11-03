@@ -7,10 +7,11 @@ import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
-import kotlinx.android.synthetic.main.feed_view.*
+import kotlinx.android.synthetic.main.feed_settings_view.*
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.textColor
 import org.secfirst.umbrella.whitelabel.R
@@ -82,7 +83,7 @@ class FeedSettingsController : BaseController(), ReaderView {
                 .setView(feedLocationView)
                 .create()
 
-        return inflater.inflate(R.layout.feed_view, container, false)
+        return inflater.inflate(R.layout.feed_settings_view, container, false)
     }
 
     private fun onClickUndefinedFeed() {
@@ -127,7 +128,7 @@ class FeedSettingsController : BaseController(), ReaderView {
         presenter.submitInsertFeedSource(feedsChecked)
         populateFeedSource(feedsChecked)
         if (feedLocation != null)
-            feedLocation?.let { presenter.submitFeedRequest(it, feedsChecked) }
+            feedLocation?.let { dispatchFeedRequest(it, feedsChecked) }
         else
             onClickFeedLocation()
 
@@ -149,7 +150,7 @@ class FeedSettingsController : BaseController(), ReaderView {
         feedLocation?.let {
             presenter.submitInsertFeedLocation(it)
             if (feedsChecked.isNotEmpty())
-                presenter.submitFeedRequest(it, feedsChecked)
+                dispatchFeedRequest(it, feedsChecked)
             else onClickFeedSource()
         }
         feedLocationAlertDialog.dismiss()
@@ -206,7 +207,13 @@ class FeedSettingsController : BaseController(), ReaderView {
     }
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>) {
-        super.startFeedController(feedItemResponse)
+        feedProgress?.visibility = View.INVISIBLE
+        router?.pushController(RouterTransaction.with(FeedController(feedItemResponse)))
+    }
+
+    private fun dispatchFeedRequest(feedLocation: FeedLocation, feedsChecked: List<FeedSource>) {
+        feedProgress?.visibility = View.VISIBLE
+        presenter.submitFeedRequest(feedLocation, feedsChecked)
     }
 
     private fun refreshIntervalCancel() = refreshIntervalAlertDialog.dismiss()
