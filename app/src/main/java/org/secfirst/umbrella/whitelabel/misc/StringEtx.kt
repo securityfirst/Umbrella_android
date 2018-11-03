@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.misc
 
+import java.net.URL
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,5 +25,17 @@ fun convertDateToString(date: Date?): String {
         return dateConvert
     }
     return dateConvert
+}
+
+fun String?.hostURL(): String {
+    val stringUrl = this ?: ""
+    val url = URL(stringUrl)
+    return url.host
+}
+
+fun Long?.timestampToStringFormat(): String {
+    val timestamp = this ?: 0
+    return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+            .format(Date(timestamp * 1000))
 }
 

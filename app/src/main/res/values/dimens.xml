@@ -10,6 +10,16 @@
     <dimen name="font_normal">15sp</dimen>
     <dimen name="font_small">12sp</dimen>
     <dimen name="card_radius">2dp</dimen>
+    <dimen name="text_size_xlarge">26sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_like_extremely_small">11sp</dimen>
+    <dimen name="text_size_larger">22sp</dimen>
+    <dimen name="text_size_normal">20sp</dimen>
+    <dimen name="text_size_smaller">18sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_smallest">14sp</dimen>
+    <dimen name="text_size_like_really_small">12sp</dimen>
+    <dimen name="text_size_like_small">13sp</dimen>
 
     <dimen name="md_dialog_frame_margin">24dp</dimen>
     <dimen name="md_content_padding_top">8dp</dimen>
@@ -33,6 +43,16 @@
     <dimen name="dashboard_feed_big_margin_start">16dp</dimen>
     <dimen name="dashboard_feed_big_margin_right">16dp</dimen>
 
+
+    <!--Feed list view-->
+    <dimen name="feed_list_small_margin_top">10dp</dimen>
+    <dimen name="feed_list_normal_margin_top">20dp</dimen>
+    <dimen name="feed_list_big_margin_bottom">20dp</dimen>
+    <dimen name="feed_list_card_view_radius">2dp</dimen>
+    <dimen name="feed_list_small_padding">10dp</dimen>
+    <dimen name="feed_list_smallest_margin_left">5dp</dimen>
+    <dimen name="feed_list_small_margin_bottom">5dp</dimen>
+    <dimen name="feed_list_normal_padding">10dp</dimen>
 
 
 </resources>

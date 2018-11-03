@@ -25,4 +25,8 @@
     <color name="chilist_view_background">#e5e5e5</color>
     <color name="feedSources_color">#8a000000</color>
     <string name="chilist_view_background">#e5e5e5</string>
+    <color name="dark_grey">#FF333333</color>
+    <color name="feed_list_site_name">#828282</color>
+    <color name="coachmark_background_dark">#BB000000</color>
+
 </resources>

@@ -60,4 +60,7 @@
         <item>Manually</item>
     </string-array>
 
+    <string name="feed_list_via">Via\u0020</string>
+
+
 </resources>
