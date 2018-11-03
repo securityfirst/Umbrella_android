@@ -8,9 +8,9 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.misc.medium
 
-class FeedSourceDialog(private val feedSources: List<FeedSource>) : AnkoComponent<FeedController> {
+class FeedSourceDialog(private val feedSources: List<FeedSource>) : AnkoComponent<FeedSettingsController> {
 
-    override fun createView(ui: AnkoContext<FeedController>) = ui.apply {
+    override fun createView(ui: AnkoContext<FeedSettingsController>) = ui.apply {
         linearLayout {
             orientation = LinearLayout.VERTICAL
             setPadding(0, 0, 0, dip(5))

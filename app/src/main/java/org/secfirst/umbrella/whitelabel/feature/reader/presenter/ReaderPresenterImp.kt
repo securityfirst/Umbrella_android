@@ -5,6 +5,7 @@ import com.einmalfel.earl.EarlParser
 import com.google.gson.Gson
 import getAssetFileBy
 import org.secfirst.umbrella.whitelabel.data.database.reader.*
+import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
@@ -19,6 +20,19 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         interactor = interactor), ReaderBasePresenter<V, I> {
 
     private val tag: String = ReaderPresenterImp::class.java.name
+
+
+    override fun submitFeedRequest(feedLocation: FeedLocation, feedSources: List<FeedSource>) {
+        interactor?.let {
+            launchSilent(uiContext) {
+                var sourcesInString = ""
+                feedSources.forEach { source -> sourcesInString += "${source.code}," }
+                val feedResponseBody = it.doFeedCall(feedLocation.iso2, sourcesInString, "0").await()
+                val feedItemResponse = Gson().fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
+                getView()?.startFeedController(feedItemResponse)
+            }
+        }
+    }
 
     override fun submitFeedLocation(feedLocation: FeedLocation) {
         interactor?.let {

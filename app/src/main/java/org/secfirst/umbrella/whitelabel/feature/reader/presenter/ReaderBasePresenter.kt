@@ -21,6 +21,8 @@ interface ReaderBasePresenter<V : ReaderView, I : ReaderBaseInteractor> : BasePr
 
     fun submitLoadFeedLocation()
 
+    fun submitFeedRequest(feedLocation: FeedLocation, feedSources: List<FeedSource>)
+
     fun submitFeedLocation(feedLocation: FeedLocation)
 
     fun submitInsertFeedLocation(feedLocation: FeedLocation)

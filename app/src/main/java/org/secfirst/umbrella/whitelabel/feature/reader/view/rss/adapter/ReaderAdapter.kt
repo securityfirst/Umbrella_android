@@ -4,7 +4,7 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
-import org.secfirst.umbrella.whitelabel.feature.reader.view.feed.FeedController
+import org.secfirst.umbrella.whitelabel.feature.reader.view.feed.FeedSettingsController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.RssController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.server.ServerController
 
@@ -12,7 +12,7 @@ class ReaderAdapter(host: Controller) : RouterPagerAdapter(host) {
     override fun configureRouter(router: Router, position: Int) {
         if (!router.hasRootController()) {
             when (position) {
-                0 -> router.setRoot(RouterTransaction.with(FeedController()))
+                0 -> router.setRoot(RouterTransaction.with(FeedSettingsController()))
                 1 -> router.setRoot(RouterTransaction.with(RssController()))
                 2 -> router.setRoot(RouterTransaction.with(ServerController()))
             }

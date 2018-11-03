@@ -8,7 +8,6 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepo
 import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationService
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
-import org.secfirst.umbrella.whitelabel.data.network.FeedListResponse
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import javax.inject.Inject
@@ -38,7 +37,9 @@ class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun doRSsCall(url: String): Deferred<ResponseBody> = apiHelper.getRss(url)
 
-    override suspend fun doFeedCall(countryCode: String, source: String): Deferred<FeedListResponse> = apiHelper.getFeedList(countryCode, source)
+    override suspend fun doFeedCall(countryCode: String,
+                                    source: String,
+                                    since: String) = apiHelper.getFeedList(countryCode, source, since)
 
     override suspend fun deleteRss(rss: RSS) = readerRepo.delete(rss)
 

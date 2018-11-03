@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.location.Geocoder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -38,6 +39,7 @@ import org.secfirst.umbrella.whitelabel.data.geolocation.Geolocation
 import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationService
 import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationServiceImp
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
+import org.secfirst.umbrella.whitelabel.data.network.FeedJsonConverter
 import org.secfirst.umbrella.whitelabel.data.network.NetworkEndPoint.BASE_URL
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
@@ -163,9 +165,10 @@ class NetworkModule {
     @Provides
     @Reusable
     internal fun provideRetrofitInterface(): Retrofit {
+        val moshi = Moshi.Builder().add(FeedJsonConverter()).build()
         return Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .build()
     }

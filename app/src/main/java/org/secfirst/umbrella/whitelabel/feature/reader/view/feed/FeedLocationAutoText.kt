@@ -26,8 +26,7 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
     }
 
     private fun startAutocompleteLocation() {
-        val test = listOf("Apple", "Banana", "Pear", "Mango", "Lemon")
-        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, test)
+        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, listOf())
         autocompleteLocation.autocompleteLocation.threshold = 2
         autocompleteLocation.autocompleteLocation.setAdapter(adapter)
         autocompleteLocation.addTextChangedListener(object : TextWatcher {
@@ -50,5 +49,5 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
         autocompleteLocation.setAdapter(adapter)
     }
 
-    fun getCountryCode() = locationInfo.countryCode
+    fun getCountryCode() = locationInfo.countryCode ?: ""
 }
