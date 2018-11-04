@@ -40,9 +40,14 @@ class FeedController(bundle: Bundle) : BaseController(bundle) {
     }
 
     override fun onAttach(view: View) {
-        val adapter = FeedAdapter(onClickOpenArticle, onClickLocation, placeName)
-        feedItemRecyclerView?.initRecyclerView(adapter)
-        adapter.addAll(feeds.toList())
+        if (feeds.isNotEmpty()) {
+            val adapter = FeedAdapter(onClickOpenArticle, onClickLocation, placeName)
+            feedItemRecyclerView?.initRecyclerView(adapter)
+            adapter.addAll(feeds.toList())
+        } else {
+            router.popCurrentController()
+            router.pushController(RouterTransaction.with(FeedEmptyController(placeName)))
+        }
     }
 
     companion object {

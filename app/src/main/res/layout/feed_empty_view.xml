@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e5e5e5"
+    android:padding="@dimen/feed_empty_normal_padding"
+    tools:ignore="MissingPrefix">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/empty_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/feed_empty_big_margin_top"
+        card_view:cardCornerRadius="@dimen/feed_empty_card_view">
+
+        <LinearLayout
+            android:id="@+id/location_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/feed_empty_normal_padding">
+
+            <TextView
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/feed_empty_smallest_margin_top"
+                android:text="@string/empty_dashboard_title"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_large" />
+
+            <TextView
+                android:id="@+id/feedEmptyTitle"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/feed_empty_smallest_margin_top"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/umbrella_purple"
+                android:textSize="@dimen/text_size_large" />
+
+            <TextView
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/feed_empty_small_margin_top"
+                android:lineSpacingExtra="7sp"
+                android:padding="@dimen/feed_empty_small_padding"
+                android:text="@string/dashboard_empty_text"
+                android:textColor="#000000"
+                android:textSize="@dimen/text_size_like_really_small" />
+
+            <TextView
+                android:id="@+id/feedEmptyChangeLocation"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="@dimen/feed_empty_smallest_margin_bottom"
+                android:gravity="right"
+                android:padding="@dimen/feed_empty_small_padding"
+                android:singleLine="true"
+                android:text="@string/dashboard_feed_empty_change_location"
+                android:textColor="@color/green_dashboard"
+                android:textSize="@dimen/text_size_smallest" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>

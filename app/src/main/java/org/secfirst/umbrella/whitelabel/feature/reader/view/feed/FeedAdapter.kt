@@ -29,21 +29,22 @@ class FeedAdapter(private val onClickFeedItem: (String) -> Unit,
                     .inflate(R.layout.feed_header, parent, false)
             return FeedHeadHolder(headerView)
         }
-
         return FeedItemHolder(view)
     }
 
     override fun getItemViewType(position: Int) = if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (isHeader(position)) {
-            holder as FeedHeadHolder
-            holder.bind(placeName, clickListener = { onClickChangeLocation() })
-        } else {
-            holder as FeedItemHolder
-            holder.bind(feedItems[position], clickListener = { onClickFeedItem(feedItems[position].url) })
+        when {
+            isHeader(position) -> {
+                holder as FeedHeadHolder
+                holder.bind(placeName, clickListener = { onClickChangeLocation() })
+            }
+            else -> {
+                holder as FeedItemHolder
+                holder.bind(feedItems[position], clickListener = { onClickFeedItem(feedItems[position].url) })
+            }
         }
-
     }
 
     override fun getItemCount() = feedItems.size
@@ -61,13 +62,11 @@ class FeedAdapter(private val onClickFeedItem: (String) -> Unit,
 
     class FeedItemHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(feedItem: FeedItemResponse, clickListener: (FeedItemHolder) -> Unit) {
-            with(feedItem) {
-                itemView.feedTitle.text = title
-                itemView.feedSite.text = url.hostURL()
-                itemView.feedBody.text = Jsoup.parse(description).text()
-                itemView.feedDate.text = updatedAt.timestampToStringFormat()
-                itemView.feedItemCard.setOnClickListener { clickListener(this@FeedItemHolder) }
-            }
+            itemView.feedTitle.text = feedItem.title
+            itemView.feedSite.text = feedItem.url.hostURL()
+            itemView.feedBody.text = Jsoup.parse(feedItem.description).text()
+            itemView.feedDate.text = feedItem.updatedAt.timestampToStringFormat()
+            itemView.feedItemCard.setOnClickListener { clickListener(this@FeedItemHolder) }
         }
     }
 }

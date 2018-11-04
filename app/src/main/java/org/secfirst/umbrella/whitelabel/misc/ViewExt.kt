@@ -79,6 +79,7 @@ fun BottomNavigationView.removeShiftMode() {
 
 const val ITEM_VIEW_TYPE_HEADER = 0
 const val ITEM_VIEW_TYPE_ITEM = 1
+const val ITEM_VIEW_EMPTY= 2
 
 fun Spinner.init(array: Int) {
     ArrayAdapter.createFromResource(
