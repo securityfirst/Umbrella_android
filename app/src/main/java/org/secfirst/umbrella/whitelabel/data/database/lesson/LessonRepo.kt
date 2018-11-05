@@ -20,6 +20,8 @@ interface LessonRepo {
 
     suspend fun loadDifficultyBy(id: Long): Difficulty?
 
+    suspend fun loadAllFavoriteSubjects(): List<Markdown>
+
     suspend fun loadDifficultyPreferredBy(subjectId: Long): DifficultyPreferred?
 
 }
