@@ -6,6 +6,8 @@ interface ReaderRepo {
 
     suspend fun saveFeedLocation(feedLocation: FeedLocation)
 
+    suspend fun deleteLocation()
+
     suspend fun saveAllRss(rssList: List<RSS>)
 
     suspend fun saveAllFeedSources(feedSources: List<FeedSource>)

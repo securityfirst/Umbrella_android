@@ -15,22 +15,22 @@ interface ReaderBasePresenter<V : ReaderView, I : ReaderBaseInteractor> : BasePr
 
     fun submitDeleteRss(rss: RSS)
 
-    fun submitLoadFeedSources()
+    fun submitDeleteFeedLocation()
 
     fun submitInsertFeedSource(feedSources: List<FeedSource>)
 
-    fun submitLoadFeedLocation()
-
-    fun submitFeedRequest(feedLocation: FeedLocation, feedSources: List<FeedSource>)
+    fun submitFeedRequest(feedLocation: FeedLocation,
+                          feedSources: List<FeedSource>,
+                          isFirstRequest: Boolean = false)
 
     fun submitFeedLocation(feedLocation: FeedLocation)
 
     fun submitInsertFeedLocation(feedLocation: FeedLocation)
 
-    fun submitLoadRefreshInterval()
-
     fun submitPutRefreshInterval(position: Int)
 
     fun submitAutocompleteAddress(locationName: String)
+
+    fun prepareView()
 
 }

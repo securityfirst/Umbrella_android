@@ -7,13 +7,21 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.feed_view.*
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.WebViewController
 import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
+import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
+import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
+import javax.inject.Inject
 
 class FeedController(bundle: Bundle) : BaseController(bundle) {
 
+    @Inject
+    internal lateinit var presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>
     private val feeds by lazy { args.getParcelableArray(EXTRA_FEED_LIST) as Array<FeedItemResponse> }
     private val onClickOpenArticle: (String) -> Unit = this::onClickFeedItem
     private val onClickLocation: () -> Unit = this::onClickChangeLocation
@@ -25,6 +33,10 @@ class FeedController(bundle: Bundle) : BaseController(bundle) {
     })
 
     override fun onInject() {
+        DaggerReanderComponent.builder()
+                .application(UmbrellaApplication.instance)
+                .build()
+                .inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -36,6 +48,7 @@ class FeedController(bundle: Bundle) : BaseController(bundle) {
     }
 
     private fun onClickChangeLocation() {
+        presenter.submitDeleteFeedLocation()
         router.popCurrentController()
     }
 

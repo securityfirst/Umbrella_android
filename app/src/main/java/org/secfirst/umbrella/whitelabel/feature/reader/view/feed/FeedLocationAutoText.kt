@@ -13,8 +13,10 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 
 class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoCompleteTextView,
                            private val context: Context,
-                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>,
-                           private var locationInfo: LocationInfo) {
+                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>) {
+
+    private var locationInfo: LocationInfo? = null
+
     init {
         startAutocompleteLocation()
     }
@@ -36,6 +38,10 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
         })
     }
 
+    fun setLocationInfo(locationInfo: LocationInfo) {
+        this.locationInfo = locationInfo
+    }
+
     fun updateAddress(locationInfo: LocationInfo) {
         this.locationInfo = locationInfo
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, locationInfo.locationNames)
@@ -43,5 +49,5 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
         autocompleteLocation.setAdapter(adapter)
     }
 
-    fun getCountryCode() = locationInfo.countryCode ?: ""
+    fun getCountryCode() = locationInfo?.countryCode ?: ""
 }

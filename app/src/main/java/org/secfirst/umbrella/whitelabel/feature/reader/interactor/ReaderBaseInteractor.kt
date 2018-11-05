@@ -27,6 +27,8 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun deleteRss(rss: RSS): Boolean
 
+    suspend fun deleteLocation()
+
     suspend fun doRSsCall(url: String): Deferred<ResponseBody>
 
     suspend fun fetchRefreshInterval(): Int

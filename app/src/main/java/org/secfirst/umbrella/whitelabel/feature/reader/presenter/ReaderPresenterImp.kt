@@ -21,12 +21,25 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
 
     private val tag: String = ReaderPresenterImp::class.java.name
 
-    override fun submitFeedRequest(feedLocation: FeedLocation, feedSources: List<FeedSource>) {
+    override fun prepareView() {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val feedSources = it.fetchFeedSources()
+                val refreshIntervalPosition = it.fetchRefreshInterval()
+                val feedLocation = it.fetchFeedLocation() ?: FeedLocation()
+                getView()?.prepareView(feedSources, refreshIntervalPosition, feedLocation)
+            }
+        }
+    }
+
+    override fun submitFeedRequest(feedLocation: FeedLocation,
+                                   feedSources: List<FeedSource>,
+                                   isFirstRequest: Boolean) {
         interactor?.let {
             launchSilent(uiContext) {
                 val feedResponseBody = it.doFeedCall(feedLocation.iso2, getSelectedFeedSources(feedSources), "0").await()
                 val feedItemResponse = Gson().fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
-                getView()?.startFeedController(feedItemResponse)
+                getView()?.startFeedController(feedItemResponse, isFirstRequest)
             }
         }
     }
@@ -46,6 +59,12 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     override fun submitDeleteRss(rss: RSS) {
         launchSilent(uiContext) {
             interactor?.deleteRss(rss)
+        }
+    }
+
+    override fun submitDeleteFeedLocation() {
+        launchSilent(uiContext) {
+            interactor?.deleteLocation()
         }
     }
 
@@ -81,14 +100,6 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         }
     }
 
-    override fun submitLoadFeedSources() {
-        launchSilent(uiContext) {
-            val feedSources = interactor?.fetchFeedSources()
-            if (feedSources != null)
-                getView()?.prepareFeedSource(feedSources)
-        }
-    }
-
     override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
         launchSilent(uiContext) {
             interactor?.insertAllFeedSources(feedSources)
@@ -98,22 +109,6 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     override fun submitInsertFeedLocation(feedLocation: FeedLocation) {
         launchSilent(uiContext) {
             interactor?.insertFeedLocation(feedLocation)
-        }
-    }
-
-    override fun submitLoadFeedLocation() {
-        launchSilent(uiContext) {
-            val feedLocation = interactor?.fetchFeedLocation()
-            if (feedLocation != null)
-                getView()?.prepareFeedLocation(feedLocation)
-        }
-    }
-
-    override fun submitLoadRefreshInterval() {
-        launchSilent(uiContext) {
-            val position = interactor?.fetchRefreshInterval()
-            if (position != null)
-                getView()?.prepareRefreshInterval(position)
         }
     }
 

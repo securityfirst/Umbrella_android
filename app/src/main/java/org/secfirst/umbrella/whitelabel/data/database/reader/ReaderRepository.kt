@@ -4,9 +4,11 @@ import javax.inject.Inject
 
 class ReaderRepository @Inject constructor(private val readerDao: ReaderDao) : ReaderRepo {
 
+    override suspend fun deleteLocation() = readerDao.deleteLocation()
+
     override suspend fun saveFeedLocation(feedLocation: FeedLocation) = readerDao.saveFeedLocation(feedLocation)
 
-    override suspend fun saveAllFeedSources(feedSources: List<FeedSource>) = readerDao.saveAllFeedsource(feedSources)
+    override suspend fun saveAllFeedSources(feedSources: List<FeedSource>) = readerDao.saveAllFeedSource(feedSources)
 
     override suspend fun getFeedLocation() = readerDao.getFeedLocation()
 

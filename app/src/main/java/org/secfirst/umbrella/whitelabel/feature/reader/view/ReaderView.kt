@@ -13,13 +13,12 @@ interface ReaderView : BaseView {
 
     fun showNewestRss(rss: RSS) {}
 
-    fun prepareFeedSource(feedSources: List<FeedSource>) {}
-
-    fun prepareFeedLocation(feedLocation: FeedLocation) {}
-
-    fun prepareRefreshInterval(position: Int) {}
-
     fun newAddressAvailable(locationInfo: LocationInfo) {}
 
-    fun startFeedController(feedItemResponse: Array<FeedItemResponse>) {}
+    fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean = false) {}
+
+    fun prepareView(feedSources: List<FeedSource>,
+                    refreshIntervalPosition: Int,
+                    feedLocation: FeedLocation) {
+    }
 }

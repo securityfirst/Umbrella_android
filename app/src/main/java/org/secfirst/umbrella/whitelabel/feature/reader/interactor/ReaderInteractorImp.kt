@@ -19,6 +19,8 @@ class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     : BaseInteractorImp(apiHelper, preferenceHelper), ReaderBaseInteractor {
 
+    override suspend fun deleteLocation()  = readerRepo.deleteLocation()
+
     override suspend fun fetchGeolocation(nameLocation: String) = geolocationService.retrieveAddress(nameLocation)
 
     override suspend fun fetchRefreshInterval() = preferenceHelper.getRefreshInterval()

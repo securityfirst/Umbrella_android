@@ -98,8 +98,7 @@ data class FeedLocation(
         @PrimaryKey
         var id: Long = 1,
         var location: String = "",
-        var iso2: String = "") : BaseModel(), Parcelable {
-}
+        var iso2: String = "") : BaseModel(), Parcelable
 
 @Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = false)
 @Parcelize

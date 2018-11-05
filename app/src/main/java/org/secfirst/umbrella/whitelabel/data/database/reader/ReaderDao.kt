@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.reader
 
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
+import com.raizlabs.android.dbflow.sql.language.Delete
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
@@ -25,7 +26,13 @@ interface ReaderDao {
         }
     }
 
-    suspend fun saveAllFeedsource(feedSources: List<FeedSource>) {
+    suspend fun deleteLocation() {
+        withContext(ioContext) {
+            Delete.table(FeedLocation::class.java)
+        }
+    }
+
+    suspend fun saveAllFeedSource(feedSources: List<FeedSource>) {
         withContext(ioContext) {
             modelAdapter<FeedSource>().saveAll(feedSources)
         }
