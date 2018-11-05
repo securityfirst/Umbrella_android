@@ -10,7 +10,7 @@ interface LessonRepo {
 
     suspend fun loadSubcategoryBy(id: Long): Subject?
 
-    suspend fun loadCategoryBy(id: Long): Module?
+    suspend fun loadLessonBy(id: Long): Module?
 
     suspend fun loadMarkdownBySubject(subjectId: Long): List<Markdown>
 
@@ -18,8 +18,8 @@ interface LessonRepo {
 
     suspend fun loadMarkdownsBy(id: Long): List<Markdown>
 
-    suspend fun loadChildBy(id: Long): Difficulty?
+    suspend fun loadDifficultyBy(id: Long): Difficulty?
 
-    suspend fun loadTopicPreferredBy(subjectId: Long): DifficultyPreferred?
+    suspend fun loadDifficultyPreferredBy(subjectId: Long): DifficultyPreferred?
 
 }

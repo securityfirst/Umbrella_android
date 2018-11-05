@@ -48,7 +48,7 @@ class LessonAdapter(groups: List<ExpandableGroup<*>>,
     }
 
     override fun onBindGroupViewHolder(holder: HeadHolder, flatPosition: Int, group: ExpandableGroup<*>) {
-        holder.setHeadTitle(group)
+        holder.setHeadTitle(grounp)
     }
 
     class HeadHolder(itemView: View) : GroupViewHolder(itemView) {

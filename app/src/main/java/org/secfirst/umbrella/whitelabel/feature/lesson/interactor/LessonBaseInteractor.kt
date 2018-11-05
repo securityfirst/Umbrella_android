@@ -9,13 +9,13 @@ import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface LessonBaseInteractor : BaseInteractor {
 
-    suspend fun fetchCategories(): List<Module>
+    suspend fun fetchLessons(): List<Module>
 
-    suspend fun fetchCategoryBy(id: Long): Module?
+    suspend fun fetchLesson(id: Long): Module?
 
     suspend fun fetchSubject(id: Long): Subject?
 
-    suspend fun fetchChildBy(id: Long): Difficulty?
+    suspend fun fetchDifficulty(id: Long): Difficulty?
 
     suspend fun fetchMarkdownBySubject(subjectId: Long): List<Markdown>
 
@@ -23,5 +23,5 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchMarkdownsBy(id: Long): List<Markdown>
 
-    suspend fun fetchTopicPreferredBy(subjectId : Long): DifficultyPreferred?
+    suspend fun fetchDifficultyPreferredBy(subjectId : Long): DifficultyPreferred?
 }

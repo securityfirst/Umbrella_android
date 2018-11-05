@@ -13,13 +13,13 @@ class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo
 
     override suspend fun fetchMarkdownBySubject(id: Long) = lessonRepo.loadMarkdownBySubject(id)
 
-    override suspend fun fetchChildBy(id: Long) = lessonRepo.loadChildBy(id)
+    override suspend fun fetchDifficulty(id: Long) = lessonRepo.loadDifficultyBy(id)
 
-    override suspend fun fetchCategoryBy(id: Long) = lessonRepo.loadCategoryBy(id)
+    override suspend fun fetchLesson(id: Long) = lessonRepo.loadLessonBy(id)
 
-    override suspend fun fetchTopicPreferredBy(subjectId: Long) = lessonRepo.loadTopicPreferredBy(subjectId)
+    override suspend fun fetchDifficultyPreferredBy(subjectId: Long) = lessonRepo.loadDifficultyPreferredBy(subjectId)
 
     override suspend fun fetchSubject(id: Long) = lessonRepo.loadSubcategoryBy(id)
 
-    override suspend fun fetchCategories(): List<Module> = lessonRepo.loadAllCategories()
+    override suspend fun fetchLessons(): List<Module> = lessonRepo.loadAllCategories()
 }

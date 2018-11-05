@@ -1,9 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
-import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.SINGLE_CHOICE
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
@@ -20,7 +18,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectHead(moduleId: Long) {
         launchSilent(uiContext) {
             interactor?.let {
-                val module = it.fetchCategoryBy(moduleId)
+                val module = it.fetchLesson(moduleId)
                 module?.let { safeModule ->
                     if (safeModule.markdowns.size > SINGLE_CHOICE) {
                         getView()?.startSegmentController(safeModule)
@@ -37,7 +35,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectLesson(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let {
-                val difficultyPreferred = it.fetchTopicPreferredBy(subject.id)
+                val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
                 val subjectMarkdown = it.fetchMarkdownsBy(subject.id)
 
                 if (difficultyPreferred != null)
@@ -56,11 +54,11 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitLoadAllLesson() {
         launchSilent(uiContext) {
             interactor?.let {
-                val categories = it.fetchCategories()
+                val lessons = it.fetchLessons()
                         .asSequence()
-                        .filter { category -> category.title != "" }
+                        .filter { lesson -> lesson.title != "" }
                         .toList()
-                getView()?.showAllLesson(categories.toLesson())
+                getView()?.showAllLesson(lessons.toLesson())
             }
         }
     }

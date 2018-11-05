@@ -3,9 +3,9 @@ package org.secfirst.umbrella.whitelabel.data.database.lesson
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred_Table
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
@@ -14,7 +14,7 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 interface LessonDao {
 
 
-    suspend fun getAllCategory(): List<Module> = withContext(ioContext) {
+    suspend fun getAllLesson(): List<Module> = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
                 .queryList()
@@ -27,7 +27,7 @@ interface LessonDao {
                 .querySingle()
     }
 
-    suspend fun getChildBy(id: Long): Difficulty? = withContext(ioContext) {
+    suspend fun getDifficultydBy(id: Long): Difficulty? = withContext(ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
                 .where(Difficulty_Table.id.`is`(id))
@@ -55,14 +55,14 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getTopicPreferred(subjectId: Long): DifficultyPreferred? = withContext(ioContext) {
+    suspend fun getDifficultyPreferred(subjectId: Long): DifficultyPreferred? = withContext(ioContext) {
         SQLite.select()
                 .from(DifficultyPreferred::class.java)
                 .where(DifficultyPreferred_Table.subjectId.`is`(subjectId))
                 .querySingle()
     }
 
-    suspend fun getCategoryBy(id: Long): Module? = withContext(AppExecutors.ioContext) {
+    suspend fun getLessonBy(id: Long): Module? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Module::class.java)
                 .where(Module_Table.id.`is`(id))
