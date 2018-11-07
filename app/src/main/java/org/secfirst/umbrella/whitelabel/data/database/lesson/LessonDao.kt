@@ -12,7 +12,6 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface LessonDao {
 
-
     suspend fun getAllLesson(): List<Module> = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
@@ -70,9 +69,8 @@ interface LessonDao {
 
     suspend fun getFavoriteMarkdown(): List<Markdown> = withContext(ioContext) {
         SQLite.select()
-                .from(Markdown_Table::class.java)
+                .from(Markdown::class.java)
                 .where(Markdown_Table.favorite.`is`(true))
                 .queryList()
     }
-
 }

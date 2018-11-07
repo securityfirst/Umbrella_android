@@ -4,9 +4,9 @@ import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.raizlabs.android.dbflow.structure.BaseModel
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
@@ -16,14 +16,13 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 
 
 @Parcelize
-@Table(database = AppDatabase::class, cachingEnabled = true)
+@Table(database = AppDatabase::class)
 data class Difficulty(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
+
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
+                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
         var subject: Subject? = null,
         @Column
         var index: Int = 0,
@@ -38,7 +37,7 @@ data class Difficulty(
         @Column
         var path: String = "",
         @JsonIgnore
-        var layoutColor: String = "") : BaseModel(), Parcelable {
+        var layoutColor: String = "") : Parcelable {
 
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
@@ -121,7 +120,7 @@ inline fun MutableList<Module>.walkThroughDifficulty(action: (Difficulty) -> Uni
 
 @Table(database = AppDatabase::class)
 data class DifficultyPreferred(@PrimaryKey
-                          var subjectId: Long = 0,
+                               var subjectId: Long = 0,
                                @ForeignKey
-                          var difficulty: Difficulty? = null) : BaseModel()
+                               var difficulty: Difficulty? = null) : BaseModel()
 

@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.SINGLE_CHOICE
@@ -54,12 +56,35 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitLoadAllLesson() {
         launchSilent(uiContext) {
             interactor?.let {
-                val lessons = it.fetchLessons()
+                val lessons = mutableListOf<Lesson>()
+                val markdownsFavorite = it.fetchAllFavoriteSujects()
+                markdownsFavorite.forEach { markdownFavorite ->
+                    var subjectId = 0L
+                    markdownFavorite.subject?.let { subject -> subjectId = subject.id }
+                    val subject = it.fetchSubject(subjectId)
+                }
+                val modules = it.fetchModules()
                         .asSequence()
                         .filter { lesson -> lesson.title != "" }
                         .toList()
-                getView()?.showAllLesson(lessons.toLesson())
+
+
+
+                modules[0].markdowns = markdownsFavorite.toMutableList()
+                getView()?.showAllLesson(modules.toLesson())
             }
         }
+    }
+
+    private suspend fun getFavoriteLesson(favoriteModule: Module): Module {
+        interactor?.let {
+            val markdownsFavorite = it.fetchAllFavoriteSujects()
+            markdownsFavorite.forEach { markdown ->
+                val fullDifficulty = it.fetchDifficulty(markdown.difficulty!!.id)
+                val fullSubject = it.fetchSubject(fullDifficulty!!.subject!!.id)
+                favoriteModule.subjects.add(fullSubject!!)
+            }
+        }
+        return favoriteModule
     }
 }

@@ -8,9 +8,8 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.walkThroughDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Item
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.lesson.walkThroughSubject
+import org.secfirst.umbrella.whitelabel.data.database.form.associateFormForeignKey
+import org.secfirst.umbrella.whitelabel.data.database.lesson.*
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
@@ -23,8 +22,10 @@ interface ContentDao {
         withContext(ioContext) {
             val dataLesson = root.convertTo()
 
+            modelAdapter<Module>().save(createDefaultFavoriteModule())
+
             dataLesson.modules.forEach { module ->
-                module.associateForeignKey(module)
+                module.associateForeignKey()
                 modelAdapter<Module>().save(module)
             }
 
@@ -41,6 +42,7 @@ interface ContentDao {
             insertFormsContent(root.forms)
         }
 
+
     }
 
     private fun insertChecklistContent(checklist: MutableList<Checklist>) {
@@ -52,11 +54,10 @@ interface ContentDao {
     }
 
     private fun insertFormsContent(forms: MutableList<Form>) {
+        forms.associateFormForeignKey()
         forms.forEach { form ->
-            form.associateFormForeignKey(forms)
             modelAdapter<Form>().save(form)
         }
-
         forms.forEach { form ->
             form.screens.forEach { screen ->
                 screen.items.forEach { item ->

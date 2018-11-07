@@ -4,9 +4,9 @@ import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.raizlabs.android.dbflow.structure.BaseModel
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
@@ -47,7 +47,7 @@ data class Checklist(
         var difficulty: Difficulty? = null,
 
         @JsonProperty("list")
-        var content: MutableList<Content> = arrayListOf()) : BaseModel(), Parcelable {
+        var content: MutableList<Content> = arrayListOf()) : Parcelable {
 
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "content")
@@ -114,4 +114,18 @@ fun Checklist.covertToHTML(): String {
     }
     return body
 }
+
+inline fun <reified T> MutableList<Checklist>.associateChecklist(foreignKey: T) {
+    this.forEach { checklist ->
+        when (foreignKey) {
+            is Module -> checklist.module = foreignKey
+            is Subject -> checklist.subject = foreignKey
+            is Difficulty -> checklist.difficulty = foreignKey
+        }
+        checklist.content.forEach { content ->
+            content.checklist = checklist
+        }
+    }
+}
+
 

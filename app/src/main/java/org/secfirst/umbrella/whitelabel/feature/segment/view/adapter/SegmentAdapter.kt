@@ -97,11 +97,11 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                  segmentShareClick: (SegmentHolder) -> Unit) {
 
             itemView.segmentFavorite.isChecked = markdown.favorite
-            itemView.setOnClickListener {
+            itemView.segmentFavorite.setOnClickListener {
                 markdown.favorite = itemView.segmentFavorite.isChecked
                 segmentFavoriteClick(this)
-                clickListener(this)
             }
+            itemView.setOnClickListener { clickListener(this) }
             itemView.segmentShare.setOnClickListener { segmentShareClick(this) }
 
             with(markdown) {

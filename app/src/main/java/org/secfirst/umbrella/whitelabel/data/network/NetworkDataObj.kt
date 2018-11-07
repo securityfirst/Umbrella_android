@@ -27,4 +27,3 @@ data class Blog(@Expose
                 @Expose
                 @SerializedName("published_at")
                 var date: String? = null)
-

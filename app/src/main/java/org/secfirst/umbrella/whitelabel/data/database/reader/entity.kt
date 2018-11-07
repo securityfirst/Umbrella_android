@@ -8,7 +8,6 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import java.io.Serializable
 import java.util.*
 
@@ -98,7 +97,7 @@ data class FeedLocation(
         @PrimaryKey
         var id: Long = 1,
         var location: String = "",
-        var iso2: String = "") : BaseModel(), Parcelable
+        var iso2: String = "") : Parcelable
 
 @Table(database = AppDatabase::class, allFields = true, useBooleanGetterSetters = false)
 @Parcelize
@@ -107,7 +106,7 @@ data class FeedSource(
         var id: Long = 0,
         var name: String = "",
         var lastChecked: Boolean = false,
-        var code: Int = 0) : BaseModel(), Parcelable {
+        var code: Int = 0) : Parcelable {
 
     constructor(name: String, lastChecked: Boolean, code: Int) : this(0, name, lastChecked, code)
 }

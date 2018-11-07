@@ -11,8 +11,9 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.lesson_menu_head.view.*
 import kotlinx.android.synthetic.main.lesson_menu_item.view.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.FAVORITE_INDEX
 import java.io.File
 
 
@@ -48,16 +49,22 @@ class LessonAdapter(groups: List<ExpandableGroup<*>>,
     }
 
     override fun onBindGroupViewHolder(holder: HeadHolder, flatPosition: Int, group: ExpandableGroup<*>) {
-        holder.setHeadTitle(grounp)
+        holder.setHeadTitle(group)
     }
 
     class HeadHolder(itemView: View) : GroupViewHolder(itemView) {
         fun setHeadTitle(group: ExpandableGroup<*>) {
             val itemSection = group as Lesson
             itemView.subheaderText.text = group.title
-            Picasso.with(itemView.context)
-                    .load(File(itemSection.pathIcon))
-                    .into(itemView.iconHeader)
+
+            if (itemSection.moduleId == FAVORITE_INDEX)
+                Picasso.with(itemView.context)
+                        .load(R.drawable.ic_fav)
+                        .into(itemView.iconHeader)
+            else
+                Picasso.with(itemView.context)
+                        .load(File(itemSection.pathIcon))
+                        .into(itemView.iconHeader)
         }
     }
 

@@ -3,9 +3,9 @@ package org.secfirst.umbrella.whitelabel.data.database.form
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
+import com.raizlabs.android.dbflow.structure.BaseModel
 import org.jsoup.Jsoup
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
 import java.io.Serializable
@@ -71,7 +71,7 @@ data class Item(
         @Column
         var value: String = "",
         @Column
-        var hint: String = "") : BaseModel(), Serializable {
+        var hint: String = "") : Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "options")
     fun oneToManyOptions(): MutableList<Option> {
@@ -184,4 +184,16 @@ fun ActiveForm.asHTML(): String {
         body.append("</form>")
     }
     return doc.html()
+}
+
+fun MutableList<Form>.associateFormForeignKey() {
+    this.forEach { form ->
+        form.screens.forEach { screen ->
+            screen.form = form
+            screen.items.forEach { item ->
+                item.screen = screen
+                item.options.forEach { option -> option.item = item }
+            }
+        }
+    }
 }

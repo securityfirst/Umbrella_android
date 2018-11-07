@@ -6,9 +6,9 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
 interface LessonRepo {
 
-    suspend fun loadAllCategories(): List<Module>
+    suspend fun loadAllModules(): List<Module>
 
-    suspend fun loadSubcategoryBy(id: Long): Subject?
+    suspend fun loadSubject(id: Long): Subject?
 
     suspend fun loadLessonBy(id: Long): Module?
 

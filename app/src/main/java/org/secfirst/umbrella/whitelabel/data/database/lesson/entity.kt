@@ -7,13 +7,14 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.BaseModel
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
+import org.secfirst.umbrella.whitelabel.data.database.checklist.associateChecklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
+import org.secfirst.umbrella.whitelabel.data.database.segment.associateMarkdown
 
 data class Lesson(var moduleId: Long,
                   var moduleTitle: String = "",
@@ -41,7 +42,7 @@ open class Module(
         var icon: String = "",
         @Column
         @JsonIgnore
-        var resourcePath: String = "") : BaseModel(), Parcelable {
+        var resourcePath: String = "") : Parcelable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
     fun oneToManyMarkdowns(): MutableList<Markdown> {
@@ -79,7 +80,7 @@ open class Module(
 }
 
 @Parcelize
-@Table(database = AppDatabase::class, cachingEnabled = true)
+@Table(database = AppDatabase::class)
 data class Subject(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
@@ -98,7 +99,7 @@ data class Subject(
         @Column
         var rootDir: String = "",
         @Column
-        var path: String = "") : BaseModel(), Parcelable {
+        var path: String = "") : Parcelable {
 
     constructor() : this(0, null, 0, "", "", arrayListOf(), arrayListOf(), arrayListOf(), "", "")
 
@@ -137,12 +138,6 @@ data class Subject(
     }
 }
 
-inline fun MutableList<Module>.walkThroughSubject(action: (Subject) -> Unit) {
-    this.forEach { module ->
-        module.subjects.forEach(action)
-    }
-}
-
 fun List<Module>.toLesson(): List<Lesson> {
     val lessons = mutableListOf<Lesson>()
     val moduleSorted = this.sortedWith(compareBy { it.index })
@@ -153,4 +148,33 @@ fun List<Module>.toLesson(): List<Lesson> {
         lessons.add(lesson)
     }
     return lessons
+}
+
+fun createDefaultFavoriteModule(): Module {
+    val favoriteModule = Module()
+    favoriteModule.id = 1
+    favoriteModule.title = "Bookmarked Lessons"
+    favoriteModule.index = 1
+    return favoriteModule
+}
+
+inline fun MutableList<Module>.walkThroughSubject(action: (Subject) -> Unit) {
+    this.forEach { module ->
+        module.subjects.forEach(action)
+    }
+}
+
+fun Module.associateForeignKey() {
+    markdowns.associateMarkdown(this)
+    checklist.associateChecklist(this)
+    this.subjects.forEach { subject ->
+        subject.module = this
+        subject.markdowns.associateMarkdown(subject)
+        subject.checklist.associateChecklist(subject)
+        subject.difficulties.forEach { difficulty ->
+            difficulty.subject = subject
+            difficulty.checklist.associateChecklist(difficulty)
+            difficulty.markdowns.associateMarkdown(difficulty)
+        }
+    }
 }

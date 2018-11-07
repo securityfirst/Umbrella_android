@@ -7,6 +7,9 @@ import javax.inject.Inject
 
 class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo) : BaseInteractorImp(), LessonBaseInteractor {
 
+
+    override suspend fun fetchAllFavoriteSujects() = lessonRepo.loadAllFavoriteSubjects()
+
     override suspend fun fetchMarkdownByModule(moduleId: Long) = lessonRepo.loadMarkdownByModule(moduleId)
 
     override suspend fun fetchMarkdownsBy(id: Long) = lessonRepo.loadMarkdownsBy(id)
@@ -19,7 +22,7 @@ class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo
 
     override suspend fun fetchDifficultyPreferredBy(subjectId: Long) = lessonRepo.loadDifficultyPreferredBy(subjectId)
 
-    override suspend fun fetchSubject(id: Long) = lessonRepo.loadSubcategoryBy(id)
+    override suspend fun fetchSubject(id: Long) = lessonRepo.loadSubject(id)
 
-    override suspend fun fetchLessons(): List<Module> = lessonRepo.loadAllCategories()
+    override suspend fun fetchModules(): List<Module> = lessonRepo.loadAllModules()
 }
