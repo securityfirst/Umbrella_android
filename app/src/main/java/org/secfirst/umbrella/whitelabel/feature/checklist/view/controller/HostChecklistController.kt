@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view
+package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.app.AlertDialog
 import android.app.Dialog

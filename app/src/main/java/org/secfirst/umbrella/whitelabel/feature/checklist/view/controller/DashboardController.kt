@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view
+package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +13,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.DashboardAdapter
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
@@ -37,7 +38,7 @@ class DashboardController : BaseController(), ChecklistView {
 
     private fun onDashboardItemClicked(checklist: Checklist?) {
         if (checklist != null)
-            router.pushController(RouterTransaction.with(ChecklistController(checklist)))
+            parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist)))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

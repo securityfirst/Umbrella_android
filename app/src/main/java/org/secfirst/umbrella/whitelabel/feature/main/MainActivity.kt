@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.whitelabel.feature.main
 
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -12,12 +11,11 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import dagger.android.AndroidInjection
-import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.feature.account.AccountController
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.HostChecklistController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController

@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view
+package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 
-class CustomChecklist : BaseController() {
+class CustomChecklistController : BaseController() {
 
     override fun onInject() {}
 

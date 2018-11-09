@@ -67,5 +67,6 @@
     <string name="dashboard_feed_empty_change_location">CHANGE LOCATION</string>
     <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour.</string>
     <string name="empty_dashboard_title">Security feed set to:</string>
+    <string name="checklistDetail_title">Checklist</string>
 
 </resources>
