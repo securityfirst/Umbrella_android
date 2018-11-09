@@ -69,10 +69,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun initSegmentView(markdowns: List<Markdown>) {
         val sortedMarkdowns = markdowns.sortedWith(compareBy { it.index })
-        val favorite = checklist?.favorite ?: false
         val segmentAdapter = SegmentAdapter(segmentClick, footClick,
                 checklistShareClick, segmentShareClick,
-                checklistFavoriteClick, segmentFavoriteClick, favorite, sortedMarkdowns.toMutableList())
+                checklistFavoriteClick, segmentFavoriteClick, checklist, sortedMarkdowns.toMutableList())
 
         segmentRecyclerView?.initGridView(segmentAdapter)
         setFooterList(segmentAdapter)
@@ -92,7 +91,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         val manager = segmentRecyclerView?.layoutManager as GridLayoutManager
         manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return if (segmentAdapter.isHeader(position)) manager.spanCount else 1
+                return if (segmentAdapter.isChecklistFoot(position)) manager.spanCount else 1
             }
         }
     }

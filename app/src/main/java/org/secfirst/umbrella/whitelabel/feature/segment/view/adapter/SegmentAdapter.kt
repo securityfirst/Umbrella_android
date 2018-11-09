@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.segment_foot.view.*
 import kotlinx.android.synthetic.main.segment_item.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
@@ -19,11 +20,11 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                      private val onSegmentShareClick: (Markdown) -> Unit,
                      private val onChecklistFavoriteClick: (Boolean) -> Unit,
                      private val onSegmentFavoriteClick: (Markdown) -> Unit,
-                     private val checklistFavorite: Boolean,
+                     private val checklist: Checklist?,
                      private val markdowns: MutableList<Markdown>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    fun isHeader(position: Int): Boolean {
+    fun isChecklistFoot(position: Int): Boolean {
         return position == markdowns.size
     }
 
@@ -45,9 +46,9 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
 
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (isHeader(position)) {
+        if (isChecklistFoot(position)) {
             holder as FooterHolder
-            holder.bind(checklistFavorite,
+            holder.bind(checklist,
                     footClick = { onFootClicked(position) },
                     checklistFavoriteClick = { onChecklistFavoriteClick(isChecklistFavorite) },
                     checklistShareClick = { onChecklistShareClick() })
@@ -60,7 +61,7 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
+        return if (isChecklistFoot(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
     }
 
     override fun getItemCount() = markdowns.size + 1
@@ -71,18 +72,24 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 R.color.umbrella_green,
                 R.color.umbrella_yellow)
 
-        fun bind(isFavorite: Boolean,
+        fun bind(checklist: Checklist?,
                  footClick: (FooterHolder) -> Unit,
                  checklistFavoriteClick: (FooterHolder) -> Unit,
                  checklistShareClick: (FooterHolder) -> Unit) {
 
-            itemView.checklistShare.setOnClickListener { checklistShareClick(this) }
-            itemView.setOnClickListener { footClick(this) }
-            itemView.checklistFavorite.isChecked = isFavorite
-            itemView.footLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
-            itemView.checklistFavorite.setOnClickListener {
-                isChecklistFavorite = itemView.checklistFavorite.isChecked
-                checklistFavoriteClick(this)
+            if (checklist == null) {
+                itemView.visibility = View.GONE
+            } else {
+                checklist.let {
+                    itemView.checklistShare.setOnClickListener { checklistShareClick(this) }
+                    itemView.setOnClickListener { footClick(this) }
+                    itemView.checklistFavorite.isChecked = it.favorite
+                    itemView.footLayout.backgroundColor = ContextCompat.getColor(itemView.context, colours[adapterPosition % 3])
+                    itemView.checklistFavorite.setOnClickListener {
+                        isChecklistFavorite = itemView.checklistFavorite.isChecked
+                        checklistFavoriteClick(this)
+                    }
+                }
             }
         }
     }
