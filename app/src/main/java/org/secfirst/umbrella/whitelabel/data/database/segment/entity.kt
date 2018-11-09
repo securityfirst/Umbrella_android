@@ -3,7 +3,6 @@ package org.secfirst.umbrella.whitelabel.data.database.segment
 import android.os.Parcelable
 import com.bluelinelabs.conductor.Controller
 import com.raizlabs.android.dbflow.annotation.ForeignKey
-import com.raizlabs.android.dbflow.annotation.ForeignKeyAction
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
@@ -42,15 +41,13 @@ data class Markdown(
     companion object {
         const val FAVORITE_INDEX = 1L
         private const val TAG_INDEX = "index: "
-        private const val TAG_TITLE = "moduleTitle: "
+        private const val TAG_TITLE = "title: "
         const val SINGLE_CHOICE = 1
         const val MARKDOWN_IMAGE_TAG = "![image]("
         fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
         fun recoveryTitle(text: String): String {
-            val res = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
-            if (res == "---") {
-                return text.lines()[1].trim().substringAfterLast(TAG_TITLE)
-            }
+            var res = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
+            if (res.trim() == "_") res = ""
             return res
         }
     }
@@ -75,11 +72,7 @@ fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
 }
 
 fun Markdown.removeHead(): Markdown {
-    text = if (Markdown.recoveryIndex(text).isNotBlank()) {
-        text.substringAfterLast(text.lines()[3])
-    } else {
-        text.substringAfter(text.lines()[2])
-    }
+    text = text.substringAfterLast(text.lines()[3])
     return this
 }
 
