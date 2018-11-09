@@ -36,7 +36,7 @@ val Element.convertToModule: Module
         category.markdowns = this.markdowns
         category.path = this.path
         category.rootDir = this.rootDir
-        category.title = this.title
+        category.moduleTitle = this.title
         category.resourcePath = this.resourcePath
         return category
     }

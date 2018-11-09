@@ -114,13 +114,16 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun onChecklistShareClick() {
         val checklistHtml = checklist?.covertToHTML()
-        val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:?subject=Checklist&body=" + Uri.encode(checklistHtml)))
+        val intent = Intent(Intent.ACTION_SENDTO,
+                Uri.parse("mailto:?subject=Checklist&body=${Uri.encode(checklistHtml)}"))
         startActivity(intent)
 
     }
 
     private fun onSegmentShareClick(markdown: Markdown) {
-
+        val intent = Intent(Intent.ACTION_SENDTO,
+                Uri.parse("mailto:?subject=${markdown.title}&body=${Uri.encode(markdown.text)}"))
+        startActivity(intent)
     }
 
     private fun onFootClicked(position: Int) {

@@ -18,20 +18,15 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 @Parcelize
 @Table(database = AppDatabase::class,
-        allFields = true,
-        useBooleanGetterSetters = false,
-        cachingEnabled = true)
+        allFields = true, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var difficulty: Difficulty? = null,
         var text: String = "",
         var title: String = "",
@@ -47,7 +42,7 @@ data class Markdown(
     companion object {
         const val FAVORITE_INDEX = 1L
         private const val TAG_INDEX = "index: "
-        private const val TAG_TITLE = "title: "
+        private const val TAG_TITLE = "moduleTitle: "
         const val SINGLE_CHOICE = 1
         const val MARKDOWN_IMAGE_TAG = "![image]("
         fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)

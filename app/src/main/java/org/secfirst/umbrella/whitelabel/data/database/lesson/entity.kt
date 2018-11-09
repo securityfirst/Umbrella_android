@@ -29,7 +29,7 @@ open class Module(
         @Column
         var index: Int = 0,
         @Column
-        var title: String = "",
+        var moduleTitle: String = "",
         @Column
         var description: String = "",
         var markdowns: MutableList<Markdown> = arrayListOf(),
@@ -144,7 +144,7 @@ fun List<Module>.toLesson(): List<Lesson> {
     moduleSorted.forEach { module ->
         val subjectSorted = module.subjects.sortedWith(compareBy { it.index })
         module.subjects = subjectSorted.toMutableList()
-        val lesson = Lesson(module.id, module.title, module.resourcePath, module.subjects)
+        val lesson = Lesson(module.id, module.moduleTitle, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
     return lessons
@@ -153,7 +153,7 @@ fun List<Module>.toLesson(): List<Lesson> {
 fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
     favoriteModule.id = 1
-    favoriteModule.title = "Bookmarked Lessons"
+    favoriteModule.moduleTitle = "Bookmarked Lessons"
     favoriteModule.index = 1
     return favoriteModule
 }

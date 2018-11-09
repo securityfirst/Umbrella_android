@@ -26,7 +26,7 @@ data class BlogResponse(@Expose
 data class FeedResponse(val feedItemResponse: List<FeedItemResponse>)
 @Parcelize
 data class FeedItemResponse(
-        @SerializedName("title")
+        @SerializedName("moduleTitle")
         var title: String = "",
         @SerializedName("description")
         var description: String = "",

@@ -4,7 +4,6 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.defaultDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.withColors
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -56,7 +55,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         with(selectModule) {
             if (markdowns.size > Markdown.SINGLE_CHOICE) {
                 val list = mutableListOf<Difficulty>()
-                list.add(defaultDifficulty(markdowns, title))
+                list.add(defaultDifficulty(markdowns, moduleTitle))
                 getView()?.showSegments(list)
             }
         }

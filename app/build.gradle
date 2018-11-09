@@ -25,7 +25,6 @@ android {
         }
 
     }
-    compileSdkVersion 27
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -42,7 +41,8 @@ android {
     defaultConfig {
         applicationId "org.secfirst.umbrella.whitelabel"
         minSdkVersion 16
-        targetSdkVersion 27
+        compileSdkVersion 28
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
@@ -99,6 +99,7 @@ dependencies {
     //Framework for replacing fragments
     implementation "com.bluelinelabs:conductor:$conductor_version"
     implementation "com.bluelinelabs:conductor-support:$conductor_version"
+
 
     //OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
