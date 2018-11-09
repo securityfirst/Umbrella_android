@@ -108,7 +108,7 @@ class SegmentAdapter(private val onClickSegment: (Int) -> Unit,
                 markdown.favorite = itemView.segmentFavorite.isChecked
                 segmentFavoriteClick(this)
             }
-            itemView.setOnClickListener { clickListener(this) }
+            itemView.segmentLayout.setOnClickListener { clickListener(this) }
             itemView.segmentShare.setOnClickListener { segmentShareClick(this) }
 
             with(markdown) {
