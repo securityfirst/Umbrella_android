@@ -17,6 +17,8 @@ interface ReaderView : BaseView {
 
     fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean = false) {}
 
+    fun feedError() {}
+
     fun prepareView(feedSources: List<FeedSource>,
                     refreshIntervalPosition: Int,
                     feedLocation: FeedLocation) {

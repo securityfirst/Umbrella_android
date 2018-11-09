@@ -37,9 +37,15 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
                                    isFirstRequest: Boolean) {
         interactor?.let {
             launchSilent(uiContext) {
-                val feedResponseBody = it.doFeedCall(feedLocation.iso2, getSelectedFeedSources(feedSources), "0").await()
-                val feedItemResponse = Gson().fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
-                getView()?.startFeedController(feedItemResponse, isFirstRequest)
+
+                try {
+                    val feedResponseBody = it.doFeedCall(feedLocation.iso2, getSelectedFeedSources(feedSources), "0").await()
+                    val feedItemResponse = Gson().fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
+                    getView()?.startFeedController(feedItemResponse, isFirstRequest)
+                } catch (exception: Exception) {
+                    getView()?.feedError()
+                    Log.e("test", "Error when try to fetch feed.")
+                }
             }
         }
     }

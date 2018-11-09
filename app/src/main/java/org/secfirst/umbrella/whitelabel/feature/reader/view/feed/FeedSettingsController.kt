@@ -257,6 +257,10 @@ class FeedSettingsController : BaseController(), ReaderView {
         presenter.submitFeedRequest(feedLocation, feedsChecked, isFirstRequest)
     }
 
+    override fun feedError() {
+        feedProgress?.visibility = View.INVISIBLE
+    }
+
     private fun refreshIntervalCancel() = refreshIntervalAlertDialog.dismiss()
 
     private fun feedSourceCancel() = feedSourceAlertDialog.dismiss()
