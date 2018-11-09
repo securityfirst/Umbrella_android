@@ -25,5 +25,5 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchDifficultyPreferredBy(subjectId : Long): DifficultyPreferred?
 
-    suspend fun fetchAllFavoriteSujects(): List<Markdown>
+    suspend fun fetchAllFavorites(): List<Markdown>
 }

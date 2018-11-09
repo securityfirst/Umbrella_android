@@ -153,7 +153,7 @@ fun List<Module>.toLesson(): List<Lesson> {
 fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
     favoriteModule.id = 1
-    favoriteModule.moduleTitle = "Bookmarked Lessons"
+    favoriteModule.moduleTitle = "Bookmarked"
     favoriteModule.index = 1
     return favoriteModule
 }

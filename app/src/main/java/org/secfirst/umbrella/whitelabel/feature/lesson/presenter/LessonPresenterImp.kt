@@ -21,7 +21,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         launchSilent(uiContext) {
             interactor?.let {
                 val module = it.fetchLesson(moduleId)
-                val markdownsFavorite = it.fetchAllFavoriteSujects()
+                val markdownsFavorite = it.fetchAllFavorites()
                 module?.let { safeModule ->
                     if (safeModule.markdowns.size > SINGLE_CHOICE) {
                         getView()?.startSegmentController(safeModule)
@@ -61,12 +61,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitLoadAllLesson() {
         launchSilent(uiContext) {
             interactor?.let {
-                val markdownsFavorite = it.fetchAllFavoriteSujects()
-                markdownsFavorite.forEach { markdownFavorite ->
-                    var subjectId = 0L
-                    markdownFavorite.subject?.let { subject -> subjectId = subject.id }
-                    val subject = it.fetchSubject(subjectId)
-                }
+                val markdownsFavorite = it.fetchAllFavorites()
                 val modules = it.fetchModules()
                         .asSequence()
                         .filter { lesson -> lesson.moduleTitle != "" }

@@ -53,11 +53,9 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
 
     override fun submitLoadModule(selectModule: Module) {
         with(selectModule) {
-            if (markdowns.size > Markdown.SINGLE_CHOICE) {
-                val list = mutableListOf<Difficulty>()
-                list.add(defaultDifficulty(markdowns, moduleTitle))
-                getView()?.showSegments(list)
-            }
+            val list = mutableListOf<Difficulty>()
+            list.add(defaultDifficulty(markdowns, moduleTitle))
+            getView()?.showSegments(list)
         }
     }
 

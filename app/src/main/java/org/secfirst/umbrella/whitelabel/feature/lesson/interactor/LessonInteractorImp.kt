@@ -8,7 +8,7 @@ import javax.inject.Inject
 class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo) : BaseInteractorImp(), LessonBaseInteractor {
 
 
-    override suspend fun fetchAllFavoriteSujects() = lessonRepo.loadAllFavoriteSubjects()
+    override suspend fun fetchAllFavorites() = lessonRepo.loadAllFavoriteSubjects()
 
     override suspend fun fetchMarkdownByModule(moduleId: Long) = lessonRepo.loadMarkdownByModule(moduleId)
 
