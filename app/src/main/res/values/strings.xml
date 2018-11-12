@@ -50,6 +50,9 @@
     <string name="feed_choose_refresh_interval">Choose refresh interval</string>
     <string name="feed_location_enter_location">Enter location</string>
 
+    <string name="account_set_password">Set password</string>
+    <string name="account_settings">Settings</string>
+    <string name="account_mask">Mask</string>
     <string-array name="refresh_interval_array">
         <item>30 min</item>
         <item>1 hour</item>
@@ -68,5 +71,6 @@
     <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour.</string>
     <string name="empty_dashboard_title">Security feed set to:</string>
     <string name="checklistDetail_title">Checklist</string>
+    <string name="title_account">Account</string>
 
 </resources>
