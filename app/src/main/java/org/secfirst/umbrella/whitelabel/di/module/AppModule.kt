@@ -8,7 +8,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import io.reactivex.disposables.CompositeDisposable
-import org.secfirst.umbrella.whitelabel.data.disk.VirtualStorage
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistDao
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepo
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepository
@@ -24,16 +23,16 @@ import org.secfirst.umbrella.whitelabel.data.database.form.FormRepository
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonDao
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepo
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepository
+import org.secfirst.umbrella.whitelabel.data.database.login.LoginDao
+import org.secfirst.umbrella.whitelabel.data.database.login.LoginRepo
+import org.secfirst.umbrella.whitelabel.data.database.login.LoginRepository
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderDao
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepo
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepository
 import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentDao
 import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentRepo
 import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentRepository
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
-import org.secfirst.umbrella.whitelabel.data.disk.TentDao
-import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
-import org.secfirst.umbrella.whitelabel.data.disk.TentRepository
+import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.data.geolocation.Geolocation
 import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationService
 import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationServiceImp
@@ -114,6 +113,9 @@ class RepositoryModule {
     internal val geolocation
         get() = object : Geolocation {}
 
+    internal val loginDao
+        get() = object : LoginDao {}
+
     @Provides
     @Singleton
     internal fun provideGeolocation(context: Context): GeolocationService = GeolocationServiceImp(Geocoder(context), geolocation)
@@ -149,6 +151,10 @@ class RepositoryModule {
     @Provides
     @Singleton
     internal fun provideChecklistDao(): ChecklistRepo = ChecklistRepository(checklistDao)
+
+    @Provides
+    @Singleton
+    internal fun provideLoginDao(): LoginRepo = LoginRepository(loginDao)
 }
 
 @Module

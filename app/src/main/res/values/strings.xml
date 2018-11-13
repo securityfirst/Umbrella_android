@@ -81,5 +81,6 @@
     <string name="title_account">Account</string>
     <string name="account_password_alert_password">Password</string>
     <string name="account_password_alert_confirm">Confirm</string>
+    <string name="app_default">umbrella</string>
 
 </resources>
