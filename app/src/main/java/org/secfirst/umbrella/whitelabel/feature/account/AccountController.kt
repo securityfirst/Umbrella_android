@@ -19,6 +19,7 @@ class AccountController : BaseController() {
     private lateinit var passwordView: View
 
     override fun onInject() {
+        //database<AppDatabase>().reopen()
     }
 
     override fun onAttach(view: View) {

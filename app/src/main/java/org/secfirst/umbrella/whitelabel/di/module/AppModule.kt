@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import io.reactivex.disposables.CompositeDisposable
-import org.secfirst.umbrella.whitelabel.data.VirtualStorage
+import org.secfirst.umbrella.whitelabel.data.disk.VirtualStorage
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistDao
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepo
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepository

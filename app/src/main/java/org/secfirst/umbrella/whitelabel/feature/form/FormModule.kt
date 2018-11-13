@@ -13,8 +13,8 @@ import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormInteractorIm
 import org.secfirst.umbrella.whitelabel.feature.form.presenter.FormBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.form.presenter.FormPresenterImp
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
-import org.secfirst.umbrella.whitelabel.feature.form.view.controller.FormController
-import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
+import org.secfirst.umbrella.whitelabel.feature.form.view.FormController
+import org.secfirst.umbrella.whitelabel.feature.form.view.HostFormController
 import javax.inject.Singleton
 
 

@@ -17,7 +17,6 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
 import org.secfirst.umbrella.whitelabel.misc.initGridView
 import javax.inject.Inject
 

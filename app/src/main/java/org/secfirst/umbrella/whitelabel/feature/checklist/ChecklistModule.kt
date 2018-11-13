@@ -13,9 +13,9 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistIn
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistPresenterImp
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistDetailController
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.DashboardController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistDetailController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.DashboardController
 import javax.inject.Singleton
 
 

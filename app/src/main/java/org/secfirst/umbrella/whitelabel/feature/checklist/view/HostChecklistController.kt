@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
+package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -17,7 +17,7 @@ import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.HostChecklistAdapter
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.HostChecklistAdapter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 
 

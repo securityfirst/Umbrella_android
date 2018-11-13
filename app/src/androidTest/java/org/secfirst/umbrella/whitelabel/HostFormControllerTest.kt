@@ -12,7 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
-import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
+import org.secfirst.umbrella.whitelabel.feature.form.view.HostFormController
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 
 

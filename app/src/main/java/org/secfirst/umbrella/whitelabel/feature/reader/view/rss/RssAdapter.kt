@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter
+package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

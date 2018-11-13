@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
+package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
 import android.view.LayoutInflater
 import android.view.View

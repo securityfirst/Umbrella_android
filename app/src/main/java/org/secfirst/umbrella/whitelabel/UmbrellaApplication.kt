@@ -69,7 +69,7 @@ class UmbrellaApplication : Application(), HasActivityInjector {
                         }
                         .build())
                 .build()
-
+        //FlowManager.getWritableDatabase(AppDatabase.NAME).execSQL("PRAGMA rekey = 'new-pass';")
         FlowManager.init(dbConfig)
         FlowLog.setMinimumLoggingLevel(FlowLog.Level.V)
     }

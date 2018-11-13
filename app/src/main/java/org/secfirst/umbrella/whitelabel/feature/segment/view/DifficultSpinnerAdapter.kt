@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.annotation.SuppressLint
 import android.content.Context

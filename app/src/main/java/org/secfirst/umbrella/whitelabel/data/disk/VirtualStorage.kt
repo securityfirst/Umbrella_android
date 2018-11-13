@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.data
+package org.secfirst.umbrella.whitelabel.data.disk
 
 import android.app.Application
 import info.guardianproject.iocipher.VirtualFileSystem

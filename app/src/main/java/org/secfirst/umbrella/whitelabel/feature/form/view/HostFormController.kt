@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.form.view.controller
+package org.secfirst.umbrella.whitelabel.feature.form.view
 
 import android.content.Intent
 import android.support.v4.app.ShareCompat
@@ -20,9 +20,6 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.form.DaggerFormComponent
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.presenter.FormBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
-import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.ActiveFormSection
-import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.AllFormSection
 import org.secfirst.umbrella.whitelabel.misc.currentTime
 import java.io.File
 import javax.inject.Inject

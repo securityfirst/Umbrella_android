@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.form.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.form.view
 
 import android.support.annotation.IntRange
 import android.util.SparseArray
@@ -10,8 +10,6 @@ import com.stepstone.stepper.viewmodel.StepViewModel
 import org.jetbrains.anko.AnkoContext
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
-import org.secfirst.umbrella.whitelabel.feature.form.view.FormUI
-import org.secfirst.umbrella.whitelabel.feature.form.view.controller.FormController
 
 class FormAdapter(private val form: Form, private val controller: FormController, private val listOfViews: MutableList<FormUI>)
     : AbstractStepAdapter(UmbrellaApplication.instance) {

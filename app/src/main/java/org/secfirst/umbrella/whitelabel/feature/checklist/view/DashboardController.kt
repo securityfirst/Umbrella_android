@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
+package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +13,6 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.DashboardAdapter
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 

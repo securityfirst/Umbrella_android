@@ -10,7 +10,7 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
 
 
 @Parcelize

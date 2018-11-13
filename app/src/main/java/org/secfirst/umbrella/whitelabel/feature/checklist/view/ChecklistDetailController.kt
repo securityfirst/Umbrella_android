@@ -1,11 +1,11 @@
-package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
+package org.secfirst.umbrella.whitelabel.feature.checklist.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.checklist_view.*
+import kotlinx.android.synthetic.main.checklist_detail_view.*
 import kotlinx.android.synthetic.main.form_progress.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -15,13 +15,12 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistComponent
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.ChecklistAdapter
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
+
 @SuppressLint("SetTextI18n")
-class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistView {
+class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
@@ -45,13 +44,15 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     override fun onAttach(view: View) {
         val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
-        checklistRecyclerView?.initRecyclerView(adapter)
+        setUpToolbar()
+        checklistDetailRecyclerView?.initRecyclerView(adapter)
         presenter.onAttach(this)
         currentProgress()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        checklistView = inflater.inflate(R.layout.checklist_view, container, false)
+        disableNavigation()
+        checklistView = inflater.inflate(R.layout.checklist_detail_view, container, false)
         return checklistView
     }
 
@@ -62,6 +63,19 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private fun currentProgress() {
         progressAnswer.progress = checklist.progress
         titleProgressAnswer.text = "${checklist.progress}%"
+    }
+
+    private fun setUpToolbar() {
+        checklistDetailToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mainActivity.supportActionBar?.title = getTitle()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        enableNavigation()
     }
 
     private fun onUpdateChecklistProgress(percentage: Int) {
@@ -80,5 +94,5 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         const val EXTRA_CHECKLIST = "extra_checklist"
     }
 
-    fun getTitle() = "Checklist"
+    private fun getTitle() = context.getString(R.string.checklistDetail_title)
 }

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import kotlinx.android.synthetic.main.host_reader_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter.ReaderAdapter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.rss.ReaderAdapter
 
 
 class HostReaderController : BaseController() {

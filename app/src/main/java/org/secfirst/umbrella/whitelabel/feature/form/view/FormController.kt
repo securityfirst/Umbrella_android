@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.form.view.controller
+package org.secfirst.umbrella.whitelabel.feature.form.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -18,9 +18,6 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.form.DaggerFormComponent
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.presenter.FormBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.form.view.FormUI
-import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
-import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.FormAdapter
 import org.secfirst.umbrella.whitelabel.misc.BundleExt.Companion.EXTRA_ACTIVE_FORM
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.rss.adapter
+package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router

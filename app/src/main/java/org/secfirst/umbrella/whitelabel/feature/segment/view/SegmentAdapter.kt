@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView

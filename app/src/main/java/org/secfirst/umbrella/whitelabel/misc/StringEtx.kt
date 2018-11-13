@@ -1,9 +1,12 @@
 package org.secfirst.umbrella.whitelabel.misc
 
+import android.content.Context
+import org.secfirst.umbrella.whitelabel.R
 import java.net.URL
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 
 val currentTime: String
@@ -25,6 +28,15 @@ fun convertDateToString(date: Date?): String {
         return dateConvert
     }
     return dateConvert
+}
+
+fun String.checkPasswordStrength(context: Context): String {
+    return when (this.length > 8) {
+        !Pattern.compile("\\d").matcher(this).find() -> context.getString(R.string.password_one_digit)
+        !Pattern.compile("[A-Z]").matcher(this).find() -> context.getString(R.string.password_one_capital)
+        !Pattern.compile("[A-Z]").matcher(this).find() -> context.getString(R.string.password_one_small)
+        else -> context.getString(R.string.password_too_short)
+    }
 }
 
 fun String?.hostURL(): String {

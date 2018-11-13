@@ -4,7 +4,7 @@ import kotlinx.coroutines.experimental.launch
 import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
 import org.secfirst.umbrella.whitelabel.data.database.form.Answer
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
-import org.secfirst.umbrella.whitelabel.data.VirtualStorage
+import org.secfirst.umbrella.whitelabel.data.disk.VirtualStorage
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView

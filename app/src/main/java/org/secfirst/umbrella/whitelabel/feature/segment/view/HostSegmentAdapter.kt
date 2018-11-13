@@ -1,10 +1,10 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 

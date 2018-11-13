@@ -48,6 +48,12 @@
     <string name="feed_source_un">UN/ ReliefWeb</string>
     <string name="feed_source_name">Select The Feed Sources</string>
     <string name="feed_choose_refresh_interval">Choose refresh interval</string>
+
+    <string name="password_too_short">Password too short</string>
+    <string name="password_one_digit">Password must have at least one digit</string>
+    <string name="password_one_capital">Password must have at least one capital letter</string>
+    <string name="password_one_small">Password must have at least one small letter</string>
+
     <string name="feed_location_enter_location">Enter location</string>
     <string name="account_password_alert_title">Set your password</string>
     <string name="account_password_alert_description">Your password must be at least 8 characters long and must contain at least one digit and one capital letter</string>

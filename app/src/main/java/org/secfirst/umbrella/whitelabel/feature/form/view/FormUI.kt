@@ -5,28 +5,20 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.AppCompatCheckBox
 import android.view.Gravity
-import android.view.ViewManager
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.linearLayoutCompat
 import org.jetbrains.anko.appcompat.v7.tintedCheckBox
 import org.jetbrains.anko.appcompat.v7.tintedRadioButton
-import org.jetbrains.anko.custom.ankoView
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.form.Answer
 import org.secfirst.umbrella.whitelabel.data.database.form.Screen
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
-import org.secfirst.umbrella.whitelabel.feature.form.view.controller.FormController
-import java.util.logging.Logger
 
 
 class FormUI(private val screen: Screen, private val answers: List<Answer>?) : AnkoComponent<FormController>, Step {
