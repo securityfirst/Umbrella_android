@@ -31,6 +31,7 @@ class AccountController : BaseController() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val accountView = inflater.inflate(R.layout.account_view, container, false)
+
         passwordView = inflater.inflate(R.layout.account_password_alert, container, false)
         passwordAlertDialog = AlertDialog
                 .Builder(activity)
