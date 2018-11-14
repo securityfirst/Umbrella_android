@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.account
+package org.secfirst.umbrella.whitelabel.feature.account.view
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,16 +10,26 @@ import kotlinx.android.synthetic.main.account_password_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
 import org.secfirst.umbrella.whitelabel.R
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
+import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
+import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
+import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import javax.inject.Inject
 
 class AccountController : BaseController() {
 
+    @Inject
+    internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     private lateinit var passwordAlertDialog: AlertDialog
     private lateinit var passwordView: View
 
     override fun onInject() {
-        //database<AppDatabase>().reopen()
+        DaggerAccountComponent.builder()
+                .application(UmbrellaApplication.instance)
+                .build()
+                .inject(this)
     }
 
     override fun onAttach(view: View) {

@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.login.view
+package org.secfirst.umbrella.whitelabel.feature.login
 
 import android.app.Application
 import dagger.BindsInstance
@@ -12,6 +12,8 @@ import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginBaseIntera
 import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.login.presenter.LoginBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.login.presenter.LoginPresenterImp
+import org.secfirst.umbrella.whitelabel.feature.login.view.LoginController
+import org.secfirst.umbrella.whitelabel.feature.login.view.LoginView
 import javax.inject.Singleton
 
 @Module

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.login.DaggerLoginComponent
 import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.login.presenter.LoginBasePresenter
 import javax.inject.Inject
