@@ -6,7 +6,10 @@ import javax.inject.Inject
 
 class LoginInteractorImp @Inject constructor(private val loginRepo: LoginRepo) : BaseInteractorImp(), LoginBaseInteractor {
 
-    override suspend fun dispatchLoginDatabaseAccess(userToken: String) = loginRepo.loginDatabase(userToken)
+
+    override fun dispatchDatabaseIntegrity() = loginRepo.verifyDatabaseIntegrity()
+
+    override fun dispatchLoginDatabaseAccess(userToken: String) = loginRepo.loginDatabase(userToken)
 
     override suspend fun changeDatabaseAccess(userToken: String) = loginRepo.changeToken(userToken)
 

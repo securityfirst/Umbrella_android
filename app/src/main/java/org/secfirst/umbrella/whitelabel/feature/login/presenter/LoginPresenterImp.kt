@@ -1,5 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.login.presenter
 
+import android.util.Log
+import com.raizlabs.android.dbflow.config.FlowManager
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.login.view.LoginView
@@ -13,8 +16,23 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
         interactor = interactor), LoginBasePresenter<V, I> {
 
     override fun submitChangeDatabaseAccess(userToken: String) {
-        launchSilent(uiContext) {
-            interactor?.let { getView()?.isLoginOk(it.dispatchLoginDatabaseAccess(userToken)) }
+        interactor?.let {
+            launchSilent(uiContext) {
+                it.dispatchLoginDatabaseAccess(userToken)
+                try {
+                    getView()?.isLoginOk(test())
+                } catch (ex: Exception) {
+                    FlowManager.close()
+                    getView()?.isLoginOk(false)
+                }
+            }
         }
     }
+
+    fun test(): Boolean {
+        val a = FlowManager.getDatabase(AppDatabase.NAME).helper.isDatabaseIntegrityOk
+        Log.i("test", "")
+        return a
+    }
+
 }

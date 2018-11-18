@@ -14,5 +14,5 @@ interface TourBaseInteractor : BaseInteractor {
 
     suspend fun persistFeedSource(feedSources: List<FeedSource>)
 
-    suspend fun initDatabase(userToken: String) : Boolean
+    suspend fun initDatabase(userToken: String)
 }

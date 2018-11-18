@@ -6,5 +6,7 @@ interface LoginBaseInteractor : BaseInteractor {
 
     suspend fun changeDatabaseAccess(userToken: String): Boolean
 
-    suspend fun dispatchLoginDatabaseAccess(userToken: String): Boolean
+    fun dispatchLoginDatabaseAccess(userToken: String)
+
+    fun dispatchDatabaseIntegrity(): Boolean
 }

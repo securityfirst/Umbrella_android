@@ -8,7 +8,7 @@ interface ContentRepo {
 
     suspend fun insertAllLessons(root: Root)
 
-    suspend fun initDatabase(userToken : String) : Boolean
+    suspend fun initDatabase(userToken : String)
 
     suspend fun insertFeedSource(feedSources: List<FeedSource>)
 }
