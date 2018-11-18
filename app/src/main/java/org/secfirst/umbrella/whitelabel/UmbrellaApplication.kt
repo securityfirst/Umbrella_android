@@ -19,6 +19,8 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_LOGGED_IN
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
 import javax.inject.Inject
 
@@ -43,9 +45,11 @@ class UmbrellaApplication : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+        val shared = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        val isLogged = shared.getBoolean(EXTRA_LOGGED_IN, false)
+        if (!isLogged) initDatabase()
         instance = this
         initDaggerComponent()
-        initDatabase()
         initTentRepository()
         initFonts()
         initFabric()
@@ -65,11 +69,10 @@ class UmbrellaApplication : Application(), HasActivityInjector {
                         .Builder(AppDatabase::class.java)
                         .databaseName(AppDatabase.NAME)
                         .openHelper { databaseDefinition, helperListener ->
-                            SQLCipherHelperImpl(databaseDefinition, helperListener)
+                            SQLCipherHelperImpl(databaseDefinition, helperListener, AppDatabase.DEFAULT)
                         }
                         .build())
                 .build()
-        //FlowManager.getWritableDatabase(AppDatabase.NAME).execSQL("PRAGMA rekey = 'new-pass';")
         FlowManager.init(dbConfig)
         FlowLog.setMinimumLoggingLevel(FlowLog.Level.V)
     }

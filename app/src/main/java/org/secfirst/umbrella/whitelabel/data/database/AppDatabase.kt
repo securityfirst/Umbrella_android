@@ -10,6 +10,7 @@ object AppDatabase {
 
     const val NAME = "AppDatabase"
     const val VERSION = 1
+    const val DEFAULT = "umbrella"
 }
 
 

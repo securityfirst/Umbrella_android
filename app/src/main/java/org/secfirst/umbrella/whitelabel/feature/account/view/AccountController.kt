@@ -6,6 +6,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import kotlinx.android.synthetic.main.account_password_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
@@ -18,7 +19,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePre
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import javax.inject.Inject
 
-class AccountController : BaseController() {
+class AccountController : BaseController(), AccountView {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
@@ -40,13 +41,14 @@ class AccountController : BaseController() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val accountView = inflater.inflate(R.layout.account_view, container, false)
 
+        val accountView = inflater.inflate(R.layout.account_view, container, false)
         passwordView = inflater.inflate(R.layout.account_password_alert, container, false)
         passwordAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(passwordView)
                 .create()
+        presenter.onAttach(this)
         accountView.accountPassword.setOnClickListener { onPasswordClick() }
         passwordView.passwordSkip.setOnClickListener { onSkip() }
         passwordView.passwordOk.setOnClickListener { onOk() }
@@ -56,7 +58,7 @@ class AccountController : BaseController() {
     }
 
     private fun onOk() {
-
+        presenter.submitChangeDatabaseAccess(passwordView.pwText.text.toString())
     }
 
     private fun onCancel() = passwordAlertDialog.dismiss()
@@ -79,4 +81,11 @@ class AccountController : BaseController() {
         }
     }
 
+    override fun isLogged(res: Boolean) {
+        if (res) {
+            passwordAlertDialog.dismiss()
+            presenter.setUserLogIn()
+            Toast.makeText(context, "Password created with success.", Toast.LENGTH_SHORT).show()
+        }
+    }
 }

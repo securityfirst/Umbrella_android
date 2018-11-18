@@ -17,7 +17,10 @@ class TourInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                             private val contentRepo: ContentRepo,
                                             private val elementSerialize: ElementSerialize,
                                             private val elementLoader: ElementLoader)
-    : BaseInteractorImp(apiHelper,preferenceHelper), TourBaseInteractor {
+    : BaseInteractorImp(apiHelper, preferenceHelper), TourBaseInteractor {
+
+
+    override suspend fun initDatabase(userToken: String) = contentRepo.initDatabase(userToken)
 
     override suspend fun persistFeedSource(feedSources: List<FeedSource>) = contentRepo.insertFeedSource(feedSources)
 

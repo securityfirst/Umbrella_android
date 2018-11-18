@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.tour.presenter
 
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.tour.interactor.TourBaseInteractor
@@ -18,6 +19,7 @@ class TourPresenterImp<V : TourView, I : TourBaseInteractor>
         var isFetchData: Boolean
         launchSilent(uiContext) {
             interactor?.let {
+                it.initDatabase(AppDatabase.DEFAULT)
                 getView()?.downloadContentInProgress()
                 isFetchData = it.fetchData()
 

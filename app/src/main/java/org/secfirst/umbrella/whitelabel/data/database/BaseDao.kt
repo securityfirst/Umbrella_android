@@ -8,7 +8,7 @@ import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 
 interface BaseDao {
 
-    fun loginDatabase(userToken: String): Boolean {
+    fun initDatabase(userToken: String): Boolean {
         return try {
             val dbConfig = FlowConfig.Builder(UmbrellaApplication.instance)
                     .addDatabaseConfig(DatabaseConfig
@@ -32,7 +32,7 @@ interface BaseDao {
             FlowManager.getWritableDatabase(AppDatabase.NAME).execSQL("PRAGMA rekey = '$userToken';")
             true
         } catch (exception: java.lang.Exception) {
-            Log.e("test", "Error when true to change the password. ${exception.message}")
+            Log.e("test", "Error when try to change the password. ${exception.message}")
             false
         }
     }

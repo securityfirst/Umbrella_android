@@ -12,5 +12,7 @@ interface TourBaseInteractor : BaseInteractor {
 
     suspend fun initParser(): Root
 
-    suspend fun persistFeedSource( feedSources : List<FeedSource>)
+    suspend fun persistFeedSource(feedSources: List<FeedSource>)
+
+    suspend fun initDatabase(userToken: String) : Boolean
 }

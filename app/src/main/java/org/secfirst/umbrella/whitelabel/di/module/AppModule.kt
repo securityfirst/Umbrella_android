@@ -42,6 +42,7 @@ import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationServiceImp
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
 import org.secfirst.umbrella.whitelabel.data.network.NetworkEndPoint.BASE_URL
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
 import org.secfirst.umbrella.whitelabel.serialize.ElementSerialize
 import retrofit2.Retrofit
@@ -68,7 +69,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun providePreference(context: Context) = AppPreferenceHelper(context, "test")
+    internal fun providePreference(context: Context) = AppPreferenceHelper(context, PREF_NAME)
 
 }
 
@@ -105,7 +106,6 @@ class RepositoryModule {
 
     internal val segmentDao
         get() = object : SegmentDao {}
-
 
     internal val difficultyDao
         get() = object : DifficultyDao {}

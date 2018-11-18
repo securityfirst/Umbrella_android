@@ -7,4 +7,6 @@ interface AccountBaseInteractor : BaseInteractor {
     suspend fun accessDatabase(userToken: String): Boolean
 
     suspend fun changeDatabaseAccess(userToken: String): Boolean
+
+    fun setLoggedIn(): Boolean
 }

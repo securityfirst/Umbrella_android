@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 class LoginRepository @Inject constructor(private val loginDao: LoginDao) : LoginRepo {
 
-    override suspend fun loginDatabase(userToken: String) = loginDao.loginDatabase(userToken)
+    override suspend fun loginDatabase(userToken: String) = loginDao.initDatabase(userToken)
 
     override suspend fun changeToken(userToken: String) = loginDao.changeDatabaseAccess(userToken)
 }
