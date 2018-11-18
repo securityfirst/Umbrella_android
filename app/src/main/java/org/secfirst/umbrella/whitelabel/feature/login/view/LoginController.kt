@@ -41,7 +41,6 @@ class LoginController : BaseController(), LoginView {
         return view
     }
 
-
     override fun isLoginOk(isLogged: Boolean) {
         if (isLogged) {
             hideKeyboard()

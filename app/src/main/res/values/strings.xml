@@ -85,5 +85,6 @@
     <string name="account_password_skip">SKIP</string>
     <string name="account_cancel">CANCEL</string>
     <string name="account_ok">OK</string>
+    <string name="login_message_button">Login</string>
 
 </resources>
