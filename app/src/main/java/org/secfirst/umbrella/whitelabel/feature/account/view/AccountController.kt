@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.account_password_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
@@ -49,7 +50,8 @@ class AccountController : BaseController(), AccountView {
                 .setView(passwordView)
                 .create()
         presenter.onAttach(this)
-        accountView.accountPassword.setOnClickListener { onPasswordClick() }
+        accountView.accountSettings.setOnClickListener { onSettingsClick() }
+        //accountView.accountPassword.setOnClickListener { onPasswordClick() }
         passwordView.passwordSkip.setOnClickListener { onSkip() }
         passwordView.passwordOk.setOnClickListener { onOk() }
         passwordView.passwordCancel.setOnClickListener { onCancel() }
@@ -79,6 +81,10 @@ class AccountController : BaseController(), AccountView {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.title = context.getString(R.string.title_account)
         }
+    }
+
+    private fun onSettingsClick() {
+        router.pushController(RouterTransaction.with(SettingsController()))
     }
 
     override fun isLogged(res: Boolean) {
