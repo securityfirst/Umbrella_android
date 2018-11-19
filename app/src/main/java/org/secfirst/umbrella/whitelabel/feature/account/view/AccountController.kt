@@ -37,8 +37,7 @@ class AccountController : BaseController(), AccountView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         setUpToolbar()
-
-
+        enableNavigation()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
