@@ -4,5 +4,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface AccountView : BaseView {
 
-    fun isLogged(res: Boolean)
+    fun isLogged(res: Boolean){}
+
+    fun exportDatabaseSuccessfully(){}
 }

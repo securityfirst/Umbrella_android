@@ -67,7 +67,6 @@ class ServerController : BaseController(), View.OnClickListener {
     private fun requestExternalStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
             // Request the permission
             requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     PERMISSION_REQUEST_EXTERNAL_STORAGE)
@@ -92,5 +91,4 @@ class ServerController : BaseController(), View.OnClickListener {
             }
         }
     }
-
 }

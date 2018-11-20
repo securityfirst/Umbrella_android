@@ -79,6 +79,7 @@
     <string name="empty_dashboard_title">Security feed set to:</string>
     <string name="checklistDetail_title">Checklist</string>
     <string name="title_account">Account</string>
+    <string name="title_settings">Settings</string>
     <string name="account_password_alert_password">Password</string>
     <string name="account_password_alert_confirm">Confirm</string>
     <string name="app_default">umbrella</string>

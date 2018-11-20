@@ -14,6 +14,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePre
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountPresenterImp
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
+import org.secfirst.umbrella.whitelabel.feature.account.view.SettingsController
 import javax.inject.Singleton
 
 @Module
@@ -43,4 +44,7 @@ interface AccountComponent {
     }
 
     fun inject(accountController: AccountController)
+
+    fun inject(settingsController: SettingsController)
+
 }

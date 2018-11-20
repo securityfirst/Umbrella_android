@@ -81,6 +81,8 @@ dependencies {
     implementation "org.jsoup:jsoup:$jsoup"
     implementation 'com.github.tbouron.shakedetector:library:1.0.0@aar'
     implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
+    implementation 'com.github.codekidX:storage-chooser:2.0.4.2'
+
 
     //Sectioned recyclerview
     implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
@@ -99,7 +101,6 @@ dependencies {
     //Framework for replacing fragments
     implementation "com.bluelinelabs:conductor:$conductor_version"
     implementation "com.bluelinelabs:conductor-support:$conductor_version"
-
 
     //OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -180,4 +181,5 @@ dependencies {
     implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
     implementation "net.zetetic:android-database-sqlcipher:${sqlcipher_version}@aar"
     implementation "info.guardianproject.iocipher:IOCipher:$io_cipher"
+
 }

@@ -32,4 +32,5 @@ interface BaseDao {
     }
 
     fun isDatabaseOK() = FlowManager.getDatabase(AppDatabase.NAME).isDatabaseIntegrityOk
+
 }
