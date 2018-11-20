@@ -14,7 +14,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
-import org.secfirst.umbrella.whitelabel.feature.account.AccountController
+import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController

@@ -69,4 +69,41 @@
     <string name="empty_dashboard_title">Security feed set to:</string>
     <string name="checklistDetail_title">Checklist</string>
 
+    <string name="account_password_alert_title">Set your password</string>
+    <string name="account_password_alert_description">Your password must be at least 8 characters long and must contain at least one digit and one capital letter</string>
+    <string name="account_set_password">Set password</string>
+    <string name="account_settings">Settings</string>
+    <string name="account_mask">Mask</string>
+    <string name="account_password_alert_password">Password</string>
+    <string name="account_password_skip">SKIP</string>
+    <string name="account_cancel">CANCEL</string>
+    <string name="account_ok">OK</string>
+    <string name="account_password_alert_confirm">Confirm</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_refresh_from_the_server">Refresh from the server</string>
+    <string name="settings_your_location">Your location</string>
+    <string name="settings_show_updates_as_notification">Show updates as notification</string>
+    <string name="settings_security_feed_sources">Security feed sources</string>
+    <string name="settings_refresh_interval_for_custom_feeds">Refresh interval for custom feeds</string>
+    <string name="settings_feed">Feed</string>
+    <string name="settings_export_your_data">Export your data</string>
+    <string name="settings_english">English</string>
+    <string name="settings_select_language">Select language</string>
+    <string name="export_database_success">Database exported with success.</string>
+
+
+    <string name="login_message_button">Login</string>
+    <string name="export_database_wipe_data">Delete and reset all current Umbrella content after export</string>
+    <string name="backup_database_file_title">Backup database file</string>
+    <string name="export_dialog_hint">Set your file name</string>
+    <string name="settings_umbrella_share_title">Umbrella backup</string>
+    <string name="export_dialog_cancel">CANCEL</string>
+    <string name="export_dialog_ok">OK</string>
+    <string name="export_view_export">Export</string>
+    <string name="export_view_share">Share</string>
+    <string name="export_view_backup_type">Backup type</string>
+    <string name="export_wipe_data">Wipe data</string>
+
+
 </resources>

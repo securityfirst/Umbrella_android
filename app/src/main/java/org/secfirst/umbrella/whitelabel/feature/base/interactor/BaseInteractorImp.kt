@@ -13,6 +13,9 @@ open class BaseInteractorImp() : BaseInteractor {
         this.preferenceHelper = preferenceHelper
     }
 
+    constructor(preferenceHelper: AppPreferenceHelper) : this() {
+        this.preferenceHelper = preferenceHelper
+    }
 
     override fun isUserLoggedIn() = true
 }

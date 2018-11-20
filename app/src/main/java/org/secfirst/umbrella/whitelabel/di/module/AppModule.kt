@@ -9,6 +9,9 @@ import dagger.Provides
 import dagger.Reusable
 import io.reactivex.disposables.CompositeDisposable
 import org.secfirst.umbrella.whitelabel.data.VirtualStorage
+import org.secfirst.umbrella.whitelabel.data.database.account.AccountDao
+import org.secfirst.umbrella.whitelabel.data.database.account.AccountRepo
+import org.secfirst.umbrella.whitelabel.data.database.account.AccountRepository
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistDao
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepo
 import org.secfirst.umbrella.whitelabel.data.database.checklist.ChecklistRepository
@@ -114,6 +117,9 @@ class RepositoryModule {
     internal val geolocation
         get() = object : Geolocation {}
 
+    internal val accountDao
+        get() = object : AccountDao {}
+
     @Provides
     @Singleton
     internal fun provideGeolocation(context: Context): GeolocationService = GeolocationServiceImp(Geocoder(context), geolocation)
@@ -149,6 +155,11 @@ class RepositoryModule {
     @Provides
     @Singleton
     internal fun provideChecklistDao(): ChecklistRepo = ChecklistRepository(checklistDao)
+
+    @Provides
+    @Singleton
+    internal fun provideAccountDao(): AccountRepo = AccountRepository(accountDao)
+
 }
 
 @Module

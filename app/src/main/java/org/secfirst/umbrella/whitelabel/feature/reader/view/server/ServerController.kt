@@ -11,6 +11,7 @@ import android.widget.Button
 import com.bluelinelabs.conductor.RouterTransaction
 import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.account_view.*
+import kotlinx.android.synthetic.main.server_view.*
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase

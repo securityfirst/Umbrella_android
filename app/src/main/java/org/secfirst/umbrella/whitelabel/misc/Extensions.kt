@@ -1,14 +1,20 @@
+import Extensions.Companion.PERMISSION_REQUEST_EXTERNAL_STORAGE
+import android.Manifest
 import android.content.Context
 import android.os.Environment
+import android.support.v4.app.ActivityCompat
 import android.util.Log
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
 class Extensions {
     companion object {
+        const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
+
         @Throws(IOException::class)
         fun copyFile(context: Context) {
             val outroPath = context.getDatabasePath(AppDatabase.NAME + ".db")
@@ -42,8 +48,20 @@ class Extensions {
             }
         }
     }
+}
 
+fun requestExternalStoragePermission(mainActivity: MainActivity) {
+    if (ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
+        ActivityCompat.requestPermissions(mainActivity,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                PERMISSION_REQUEST_EXTERNAL_STORAGE)
+    } else {
+        ActivityCompat.requestPermissions(mainActivity,
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                PERMISSION_REQUEST_EXTERNAL_STORAGE)
+    }
 }
 
 fun getAssetFileBy(fileName: String) = UmbrellaApplication.instance.assets.open(fileName)
