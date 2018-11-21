@@ -108,5 +108,7 @@
     <string name="export_dialog_default_message">umbrella_backup</string>
     <string name="import_dialog_fail_message">Invalid import file.</string>
 
+    <string name="write_external_permission_granted">Write external storage permission was granted.</string>
+    <string name="write_external_permission_denied">Write external storage permission request was denied.</string>
 
 </resources>

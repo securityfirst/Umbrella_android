@@ -52,15 +52,16 @@ class Extensions {
     }
 }
 
-fun requestExternalStoragePermission(mainActivity: MainActivity) {
-    if (ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,
+fun MainActivity.requestExternalStoragePermission() {
+
+    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-        ActivityCompat.requestPermissions(mainActivity,
+        ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 PERMISSION_REQUEST_EXTERNAL_STORAGE)
     } else {
-        ActivityCompat.requestPermissions(mainActivity,
+        ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 PERMISSION_REQUEST_EXTERNAL_STORAGE)
     }

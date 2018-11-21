@@ -11,7 +11,7 @@ interface AccountView : BaseView {
 
     fun onShareContent(backupFile : File){}
 
-    fun onImportPathSuccess(path : String){}
+    fun onImportBackupSuccess(){}
 
-    fun onImportPathFail(){}
+    fun onImportBackupFail(){}
 }

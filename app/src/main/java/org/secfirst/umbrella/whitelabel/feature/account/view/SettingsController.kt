@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
+import doRestartApplication
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
@@ -35,12 +36,13 @@ import javax.inject.Inject
 
 class SettingsController : BaseController(), AccountView {
 
+    @Inject
+    internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
     private lateinit var destinationPath: String
     private var isWipeData: Boolean = false
-    @Inject
-    internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
+    private lateinit var mainView: View
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -56,7 +58,7 @@ class SettingsController : BaseController(), AccountView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val view = inflater.inflate(R.layout.account_settings_view, container, false)
+        mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
         exportAlertDialog = AlertDialog
                 .Builder(activity)
@@ -67,10 +69,10 @@ class SettingsController : BaseController(), AccountView {
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
         exportView.exportDialogOk.onClick { exportDataOk() }
         exportView.exportDialogCancel.onClick { exportDataClose() }
-        view.settingsImportData.onClick { importDataClick() }
-        view.settingsExportData.setOnClickListener { exportDataClick() }
+        mainView.settingsImportData.onClick { importDataClick() }
+        mainView.settingsExportData.setOnClickListener { exportDataClick() }
         initExportGroup()
-        return view
+        return mainView
     }
 
     private fun importDataClick() {
@@ -127,12 +129,12 @@ class SettingsController : BaseController(), AccountView {
         if (isWipeData) router.pushController(RouterTransaction.with(TourController()))
     }
 
-    override fun onImportPathFail() {
+    override fun onImportBackupFail() {
         context.toast(context.getString(R.string.import_dialog_fail_message))
     }
 
-    override fun onImportPathSuccess(path: String) {
-
+    override fun onImportBackupSuccess() {
+        doRestartApplication(context)
     }
 
     private fun showFileChooserPreview() {
@@ -140,7 +142,7 @@ class SettingsController : BaseController(), AccountView {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             chooseFolderDialog()
         } else {
-            requestExternalStoragePermission(mainActivity)
+            mainActivity.requestExternalStoragePermission()
         }
     }
 
@@ -159,7 +161,6 @@ class SettingsController : BaseController(), AccountView {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_EXTERNAL_STORAGE) {
             if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showFileChooserPreview()
@@ -168,6 +169,7 @@ class SettingsController : BaseController(), AccountView {
             }
         }
     }
+
 
     private fun setUpToolbar() {
         settingsToolbar?.let {
