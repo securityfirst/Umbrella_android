@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.account.presenter
 
 import com.raizlabs.android.dbflow.config.FlowManager
+import doRestartApplication
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
@@ -47,10 +48,22 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         FlowManager.getDatabase(AppDatabase.NAME).reset()
     }
 
+
     override fun prepareShareContent(fileName: String) {
         val databaseFile = FlowManager.getContext().getDatabasePath("${AppDatabase.NAME}.db")
         val backupFile = File("${FlowManager.getContext().cacheDir}/$fileName.db")
         databaseFile.copyTo(backupFile, true)
         getView()?.onShareContent(backupFile)
+    }
+
+    override fun validateBackupPath(backupPath: String) {
+        val backupDatabase = File(backupPath)
+        val databaseFile = FlowManager.getContext().getDatabasePath("${AppDatabase.NAME}.db")
+        backupDatabase.copyTo(databaseFile, true)
+        if (backupDatabase.extension == AppDatabase.EXTENSION) {
+            doRestartApplication(FlowManager.getContext())
+            getView()?.onImportPathSuccess(backupPath)
+        } else
+            getView()?.onImportPathFail()
     }
 }

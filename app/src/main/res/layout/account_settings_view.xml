@@ -137,6 +137,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/settingsImportData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="8sp"
+                    android:text="@string/settings_import_your_data"
+                    android:textColor="#de000000"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/settings_import_your_data"
+                    android:textColor="#8b000000"
+                    android:textSize="14sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/settingsExportData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

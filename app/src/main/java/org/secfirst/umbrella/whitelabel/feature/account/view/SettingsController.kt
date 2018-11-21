@@ -67,9 +67,22 @@ class SettingsController : BaseController(), AccountView {
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
         exportView.exportDialogOk.onClick { exportDataOk() }
         exportView.exportDialogCancel.onClick { exportDataClose() }
+        view.settingsImportData.onClick { importDataClick() }
         view.settingsExportData.setOnClickListener { exportDataClick() }
         initExportGroup()
         return view
+    }
+
+    private fun importDataClick() {
+        val chooser = StorageChooser.Builder()
+                .withActivity(mainActivity)
+                .withFragmentManager(mainActivity.fragmentManager)
+                .withMemoryBar(true)
+                .allowCustomPath(true)
+                .setType(StorageChooser.FILE_PICKER)
+                .build()
+        chooser.show()
+        chooser.setOnSelectListener { path -> presenter.validateBackupPath(path) }
     }
 
     private fun exportDataClick() {
@@ -114,6 +127,13 @@ class SettingsController : BaseController(), AccountView {
         if (isWipeData) router.pushController(RouterTransaction.with(TourController()))
     }
 
+    override fun onImportPathFail() {
+        context.toast(context.getString(R.string.import_dialog_fail_message))
+    }
+
+    override fun onImportPathSuccess(path: String) {
+
+    }
 
     private fun showFileChooserPreview() {
         if (ContextCompat.checkSelfPermission(mainActivity,
@@ -167,9 +187,6 @@ class SettingsController : BaseController(), AccountView {
 
     private fun getFilename(): String {
         val fileName = exportView.ExportDialogFileName.text.toString()
-        return if (fileName.isBlank()) {
-            "Umbrella"
-        } else
-            fileName
+        return if (fileName.isBlank()) context.getString(R.string.export_dialog_default_message) else fileName
     }
 }

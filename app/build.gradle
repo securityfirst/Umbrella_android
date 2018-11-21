@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.github.tbouron.shakedetector:library:1.0.0@aar'
     implementation 'com.github.tiagohm.MarkdownView:library:0.19.0'
     implementation 'com.github.codekidX:storage-chooser:2.0.4.2'
+    compile 'com.jakewharton:process-phoenix:2.0.0'
     //Sectioned recyclerview
     implementation 'io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:1.2.0'
     // Stepper Viewer

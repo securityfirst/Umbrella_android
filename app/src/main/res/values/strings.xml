@@ -88,6 +88,7 @@
     <string name="settings_refresh_interval_for_custom_feeds">Refresh interval for custom feeds</string>
     <string name="settings_feed">Feed</string>
     <string name="settings_export_your_data">Export your data</string>
+    <string name="settings_import_your_data">Import your data</string>
     <string name="settings_english">English</string>
     <string name="settings_select_language">Select language</string>
     <string name="export_database_success">Database exported with success.</string>
@@ -104,6 +105,8 @@
     <string name="export_view_share">Share</string>
     <string name="export_view_backup_type">Backup type</string>
     <string name="export_wipe_data">Wipe data</string>
+    <string name="export_dialog_default_message">umbrella_backup</string>
+    <string name="import_dialog_fail_message">Invalid import file.</string>
 
 
 </resources>

@@ -1,9 +1,11 @@
 import Extensions.Companion.PERMISSION_REQUEST_EXTERNAL_STORAGE
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import com.jakewharton.processphoenix.ProcessPhoenix
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
@@ -62,6 +64,12 @@ fun requestExternalStoragePermission(mainActivity: MainActivity) {
                 arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                 PERMISSION_REQUEST_EXTERNAL_STORAGE)
     }
+}
+
+fun doRestartApplication(context: Context) {
+    val tourIntent = Intent(context, MainActivity::class.java)
+    tourIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+    ProcessPhoenix.triggerRebirth(context, tourIntent)
 }
 
 fun getAssetFileBy(fileName: String) = UmbrellaApplication.instance.assets.open(fileName)

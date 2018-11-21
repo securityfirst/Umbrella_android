@@ -12,5 +12,7 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun prepareShareContent(fileName: String)
 
+    fun validateBackupPath(backupPath: String)
+
     fun submitExportDatabase(destinationDir: String, fileName: String, isWipeData: Boolean)
 }

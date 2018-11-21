@@ -10,4 +10,8 @@ interface AccountView : BaseView {
     fun exportDatabaseSuccessfully(){}
 
     fun onShareContent(backupFile : File){}
+
+    fun onImportPathSuccess(path : String){}
+
+    fun onImportPathFail(){}
 }
