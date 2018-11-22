@@ -99,7 +99,7 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     }
 
     private fun setLocationClick() {
-        feedLocationDialog.startLocationView()
+        feedLocationDialog.show()
     }
 
     private fun importDataClick() {

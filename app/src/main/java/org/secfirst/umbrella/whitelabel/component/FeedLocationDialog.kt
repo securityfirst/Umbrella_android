@@ -1,8 +1,6 @@
 package org.secfirst.umbrella.whitelabel.component
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
 import android.location.Geocoder
 import android.text.Editable
 import android.text.TextWatcher
@@ -53,13 +51,8 @@ class FeedLocationDialog(private val feedLocationView: View,
         })
     }
 
-    fun startLocationView() {
-        val dialogManager = DialogManager(controller)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return feedLocationAlertDialog
-            }
-        })
+    fun show() {
+        feedLocationAlertDialog.show()
     }
 
     private fun feedLocationCancel() {
