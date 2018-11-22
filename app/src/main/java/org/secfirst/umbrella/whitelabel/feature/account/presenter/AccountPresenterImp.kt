@@ -68,7 +68,9 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
     }
 
     override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        launchSilent (uiContext){
+            interactor?.insertAllFeedSources(feedSources)
+        }
     }
 
     override fun submitFeedLocation(feedLocation: FeedLocation) {
@@ -82,7 +84,8 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             interactor?.let {
                 val feedLocation = it.fetchFeedLocation()
                 val refreshFeedInterval = it.fetchRefreshInterval()
-                getView()?.loadDefaultValue(feedLocation, refreshFeedInterval)
+                val feedSource = it.fetchFeedSources()
+                getView()?.loadDefaultValue(feedLocation, refreshFeedInterval, feedSource)
             }
         }
     }

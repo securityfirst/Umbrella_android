@@ -23,4 +23,5 @@ interface AccountBaseInteractor : BaseInteractor {
     suspend fun fetchRefreshInterval(): Int
 
     suspend fun putRefreshInterval(position: Int): Boolean
+
 }

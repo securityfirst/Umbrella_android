@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.account.view
 
 import Extensions.Companion.PERMISSION_REQUEST_EXTERNAL_STORAGE
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -27,8 +28,10 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
+import org.secfirst.umbrella.whitelabel.component.FeedSourceDialog
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
@@ -39,7 +42,7 @@ import java.io.File
 import javax.inject.Inject
 
 class SettingsController : BaseController(), AccountView, FeedLocationDialog.FeedLocationListener,
-        RefreshIntervalDialog.RefreshIntervalListener {
+        RefreshIntervalDialog.RefreshIntervalListener, FeedSourceDialog.FeedSourceListener {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
@@ -51,6 +54,7 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     private lateinit var feedLocationDialog: FeedLocationDialog
     private lateinit var refreshIntervalView: View
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
+    private lateinit var feedSourceDialog: FeedSourceDialog
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -86,12 +90,17 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
         mainView.settingsExportData.setOnClickListener { exportDataClick() }
         mainView.settingsLocation.setOnClickListener { setLocationClick() }
         mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
+        mainView.settingsSecurityFeed.setOnClickListener { feedSourceClick() }
 
         presenter.prepareView()
         initExportGroup()
         feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
 
         return mainView
+    }
+
+    private fun feedSourceClick() {
+        feedSourceDialog.show()
     }
 
     private fun refreshIntervalClick() {
@@ -180,15 +189,29 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     }
 
 
-    override fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int) {
+    override fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int
+                                  , feedSource: List<FeedSource>) {
+
         mainView.settingsLabelLocation.text = feedLocation?.location ?: context.getText(R.string.settings_your_location)
         refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval, this)
         mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
+        feedSourceDialog = FeedSourceDialog(feedSource, context, this)
+        prepareFeedSource(feedSource)
     }
 
     override fun onLocationSuccess(feedLocation: FeedLocation) {
         mainView.settingsLabelLocation.text = feedLocation.location
         presenter.submitFeedLocation(feedLocation)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun prepareFeedSource(feedSources: List<FeedSource>) {
+        if (feedSources.any { it.lastChecked }) mainView.settingsLabelFeedSource.text = ""
+        feedSources
+                .filter { it.lastChecked }
+                .forEach {
+                    mainView.settingsLabelFeedSource.text = "${mainView.settingsLabelFeedSource.text} " + it.name
+                }
     }
 
     private fun setUpToolbar() {
@@ -209,6 +232,11 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     override fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String) {
         presenter.submitPutRefreshInterval(selectedPosition)
         mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
+    }
+
+    override fun onFeedSourceSuccess(feedSources: List<FeedSource>) {
+        presenter.submitInsertFeedSource(feedSources)
+        prepareFeedSource(feedSources)
     }
 
     override fun onImportBackupFail() {
