@@ -180,8 +180,8 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     }
 
 
-    override fun loadDefaultValue(feedLocation: FeedLocation, refreshFeedInterval: Int) {
-        mainView.settingsLabelLocation.text = feedLocation.location
+    override fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int) {
+        mainView.settingsLabelLocation.text = feedLocation?.location
         refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval, this)
         mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
     }

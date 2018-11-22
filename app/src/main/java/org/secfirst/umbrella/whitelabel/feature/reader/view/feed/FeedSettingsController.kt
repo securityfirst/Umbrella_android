@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.alert_control.view.*
-import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_settings_view.*
 import kotlinx.android.synthetic.main.feed_settings_view.view.*
@@ -19,6 +18,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
+import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
@@ -27,22 +27,22 @@ import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
-import org.secfirst.umbrella.whitelabel.misc.init
 import javax.inject.Inject
 
 
-class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.FeedLocationListener {
+class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.FeedLocationListener,
+        RefreshIntervalDialog.RefreshIntervalListener {
 
     @Inject
     internal lateinit var presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>
     private lateinit var refreshIntervalView: View
     private lateinit var feedSourceDialog: FeedSourceDialog
-    private lateinit var refreshIntervalAlertDialog: AlertDialog
     private lateinit var feedSourceAlertDialog: AlertDialog
     private var feedsCheckbox = listOf<FeedSource>()
     private lateinit var feedLocationView: View
     private var feedLocation: FeedLocation? = null
     private lateinit var feedLocationDialog: FeedLocationDialog
+    private lateinit var feedRefreshIntervalDialog: RefreshIntervalDialog
 
     override fun onInject() {
         DaggerReanderComponent.builder()
@@ -61,15 +61,8 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         mainView.setUndefinedFeed.setOnClickListener { onClickUndefinedFeed() }
         mainView.setRefreshInterval.setOnClickListener { onClickRefreshInterval() }
         mainView.setLocation.setOnClickListener { onClickFeedLocation() }
-        refreshIntervalView.alertControlOk.setOnClickListener { refreshIntervalOk() }
-        refreshIntervalView.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
 
         feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
-        refreshIntervalAlertDialog = AlertDialog
-                .Builder(activity)
-                .setView(refreshIntervalView)
-                .create()
-
         return mainView
     }
 
@@ -87,12 +80,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     }
 
     private fun onClickRefreshInterval() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return refreshIntervalAlertDialog
-            }
-        })
+       feedRefreshIntervalDialog.show()
     }
 
     private fun onClickFeedLocation() {
@@ -122,14 +110,6 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
             onClickFeedLocation()
 
         feedSourceAlertDialog.dismiss()
-    }
-
-    private fun refreshIntervalOk() {
-        val intervalSelected = refreshIntervalView.refreshInterval.selectedItem.toString()
-        feedRefreshInterval?.text = intervalSelected
-        refreshIntervalAlertDialog.dismiss()
-        val position = refreshIntervalView.refreshInterval.selectedItemPosition
-        presenter.submitPutRefreshInterval(position)
     }
 
     private fun populateFeedSource(feedsChecked: List<FeedSource>) {
@@ -173,10 +153,8 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     }
 
     private fun prepareRefreshInterval(refreshPosition: Int) {
-        val spinner = refreshIntervalView.refreshInterval
-        spinner.init(R.array.refresh_interval_array)
-        refreshIntervalView.refreshInterval.setSelection(refreshPosition)
-        feedRefreshInterval?.text = spinner.selectedItem.toString()
+        feedRefreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshPosition, this)
+        feedRefreshInterval?.text = feedRefreshIntervalDialog.getCurrentChoice()
     }
 
     private fun prepareFeedLocation(feedLocation: FeedLocation) {
@@ -201,6 +179,10 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         presenter.submitInsertFeedLocation(feedLocation)
     }
 
+    override fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String) {
+        feedRefreshInterval?.text = selectedInterval
+        presenter.submitPutRefreshInterval(selectedPosition)
+    }
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean) {
         feedProgress?.visibility = View.INVISIBLE
@@ -227,8 +209,6 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     override fun feedError() {
         feedProgress?.visibility = View.INVISIBLE
     }
-
-    private fun refreshIntervalCancel() = refreshIntervalAlertDialog.dismiss()
 
     private fun feedSourceCancel() = feedSourceAlertDialog.dismiss()
 }

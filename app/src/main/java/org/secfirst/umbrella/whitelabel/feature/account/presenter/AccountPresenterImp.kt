@@ -82,8 +82,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             interactor?.let {
                 val feedLocation = it.fetchFeedLocation()
                 val refreshFeedInterval = it.fetchRefreshInterval()
-                feedLocation?.let { safeLocation -> getView()?.
-                        loadDefaultValue(safeLocation, refreshFeedInterval) }
+                getView()?.loadDefaultValue(feedLocation, refreshFeedInterval)
             }
         }
     }

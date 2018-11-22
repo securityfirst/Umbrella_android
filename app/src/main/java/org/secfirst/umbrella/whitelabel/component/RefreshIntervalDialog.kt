@@ -2,9 +2,9 @@ package org.secfirst.umbrella.whitelabel.component
 
 import android.app.AlertDialog
 import android.view.View
+import android.widget.Spinner
 import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.misc.init
 
@@ -16,6 +16,8 @@ class RefreshIntervalDialog(private val view: View, private val initialPosition:
             .setView(view)
             .create()
 
+    private lateinit var spinner : Spinner
+
     init {
         view.alertControlOk.setOnClickListener { refreshIntervalOk() }
         view.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
@@ -26,10 +28,10 @@ class RefreshIntervalDialog(private val view: View, private val initialPosition:
         refreshIntervalDialog.show()
     }
 
-    fun getCurrentChoice() = view.refreshInterval.text.toString()
+    fun getCurrentChoice() = spinner.selectedItem.toString()
 
     private fun prepareRefreshInterval() {
-        val spinner = view.refreshInterval
+        spinner = view.refreshInterval
         spinner.init(R.array.refresh_interval_array)
         spinner.setSelection(initialPosition)
     }
