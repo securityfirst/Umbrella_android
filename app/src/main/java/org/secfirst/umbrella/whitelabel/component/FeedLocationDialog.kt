@@ -30,11 +30,14 @@ class FeedLocationDialog(private val feedLocationView: View,
             .setView(feedLocationView)
             .create()
 
-    fun init() {
+    init {
+        initComponent()
+        startAutocompleteLocation()
+    }
+
+    private fun initComponent() {
         feedLocationView.alertControlCancel.setOnClickListener { feedLocationCancel() }
         feedLocationView.alertControlOk.setOnClickListener { feedLocationOk() }
-        startAutocompleteLocation()
-        startLocationView()
     }
 
     private fun startAutocompleteLocation() {
@@ -50,7 +53,7 @@ class FeedLocationDialog(private val feedLocationView: View,
         })
     }
 
-    private fun startLocationView() {
+    fun startLocationView() {
         val dialogManager = DialogManager(controller)
         dialogManager.showDialog(object : DialogManager.DialogFactory {
             override fun createDialog(context: Context?): Dialog {
@@ -76,7 +79,6 @@ class FeedLocationDialog(private val feedLocationView: View,
     private fun updateAddress(locationInfo: LocationInfo) {
         this.locationInfo = locationInfo
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, locationInfo.locationNames)
-        feedLocationView.autocompleteLocation.autocompleteLocation.threshold = 2
         feedLocationView.autocompleteLocation.setAdapter(adapter)
     }
 
@@ -84,7 +86,8 @@ class FeedLocationDialog(private val feedLocationView: View,
     private fun prepareAutocomplete(characters: String) {
         launchSilent(uiContext) {
             locationInfo = getAddress(characters)
-            updateAddress(locationInfo)
+            if (locationInfo.locationNames.isNotEmpty())
+                updateAddress(locationInfo)
         }
     }
 

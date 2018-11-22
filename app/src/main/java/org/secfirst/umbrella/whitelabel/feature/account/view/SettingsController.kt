@@ -46,6 +46,7 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     private lateinit var destinationPath: String
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
+    private lateinit var feedLocationDialog: FeedLocationDialog
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -81,11 +82,12 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
 
         presenter.prepareFeedLocation()
         initExportGroup()
+        feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
         return mainView
     }
 
     private fun setLocationClick() {
-        FeedLocationDialog(feedLocationView, this, this).init()
+        feedLocationDialog.startLocationView()
     }
 
     private fun importDataClick() {
