@@ -25,6 +25,8 @@ import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
+import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
@@ -34,12 +36,13 @@ import requestExternalStoragePermission
 import java.io.File
 import javax.inject.Inject
 
-class SettingsController : BaseController(), AccountView {
+class SettingsController : BaseController(), AccountView, FeedLocationDialog.FeedLocationListener {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
+    private lateinit var feedLocationView: View
     private lateinit var destinationPath: String
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
@@ -60,19 +63,29 @@ class SettingsController : BaseController(), AccountView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
+        feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
+        presenter.onAttach(this)
+
         exportAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(exportView)
                 .create()
-        presenter.onAttach(this)
 
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
         exportView.exportDialogOk.onClick { exportDataOk() }
         exportView.exportDialogCancel.onClick { exportDataClose() }
+
         mainView.settingsImportData.onClick { importDataClick() }
         mainView.settingsExportData.setOnClickListener { exportDataClick() }
+        mainView.settingsLocation.setOnClickListener { setLocationClick() }
+
+        presenter.prepareFeedLocation()
         initExportGroup()
         return mainView
+    }
+
+    private fun setLocationClick() {
+        FeedLocationDialog(feedLocationView, this, this).init()
     }
 
     private fun importDataClick() {
@@ -96,10 +109,6 @@ class SettingsController : BaseController(), AccountView {
         })
     }
 
-    private fun exportDataOk() {
-        presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
-    }
-
     private fun initExportGroup() {
         exportView.exportDialogGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
@@ -121,20 +130,6 @@ class SettingsController : BaseController(), AccountView {
         val pm = context.packageManager
         if (shareIntent.resolveActivity(pm) != null)
             startActivity(Intent.createChooser(shareIntent, context.getString(R.string.settings_umbrella_share_title)))
-    }
-
-    override fun exportDatabaseSuccessfully() {
-        context.toast(context.getString(R.string.export_database_success))
-        exportAlertDialog.dismiss()
-        if (isWipeData) router.pushController(RouterTransaction.with(TourController()))
-    }
-
-    override fun onImportBackupFail() {
-        context.toast(context.getString(R.string.import_dialog_fail_message))
-    }
-
-    override fun onImportBackupSuccess() {
-        doRestartApplication(context)
     }
 
     private fun showFileChooserPreview() {
@@ -171,6 +166,15 @@ class SettingsController : BaseController(), AccountView {
     }
 
 
+    override fun loadDefaultValue(feedLocation: FeedLocation) {
+        mainView.settingsLabelLocation.text = feedLocation.location
+    }
+
+    override fun onLocationSuccess(feedLocation: FeedLocation) {
+        mainView.settingsLabelLocation.text = feedLocation.location
+        presenter.submitFeedLocation(feedLocation)
+    }
+
     private fun setUpToolbar() {
         settingsToolbar?.let {
             it.title = context.getString(R.string.settings_title)
@@ -180,6 +184,23 @@ class SettingsController : BaseController(), AccountView {
         }
     }
 
+    override fun exportDatabaseSuccessfully() {
+        context.toast(context.getString(R.string.export_database_success))
+        exportAlertDialog.dismiss()
+        if (isWipeData) router.pushController(RouterTransaction.with(TourController()))
+    }
+
+    override fun onImportBackupFail() {
+        context.toast(context.getString(R.string.import_dialog_fail_message))
+    }
+
+    override fun onImportBackupSuccess() {
+        doRestartApplication(context)
+    }
+
+    private fun exportDataOk() {
+        presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
+    }
 
     private fun exportDataClose() = exportAlertDialog.dismiss()
 

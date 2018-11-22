@@ -4,6 +4,8 @@ import com.raizlabs.android.dbflow.config.FlowManager
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
@@ -15,7 +17,6 @@ import javax.inject.Inject
 class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
-
 
     override fun setUserLogIn() {
         interactor?.setLoggedIn()
@@ -63,5 +64,24 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             getView()?.onImportBackupSuccess()
         } else
             getView()?.onImportBackupFail()
+    }
+
+    override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun submitFeedLocation(feedLocation: FeedLocation) {
+        launchSilent(uiContext) {
+            interactor?.insertFeedLocation(feedLocation)
+        }
+    }
+
+    override fun prepareFeedLocation() {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val feedLocation = it.fetchFeedLocation()
+                feedLocation?.let { safeLocation -> getView()?.loadDefaultValue(safeLocation) }
+            }
+        }
     }
 }

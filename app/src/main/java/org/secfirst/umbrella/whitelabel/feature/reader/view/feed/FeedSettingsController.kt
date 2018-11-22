@@ -30,8 +30,7 @@ import org.secfirst.umbrella.whitelabel.misc.init
 import javax.inject.Inject
 
 
-class FeedSettingsController : BaseController(), ReaderView {
-
+class FeedSettingsController : BaseController(), ReaderView, FeedLocationListener {
     @Inject
     internal lateinit var presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>
     private lateinit var refreshIntervalView: View
@@ -225,9 +224,12 @@ class FeedSettingsController : BaseController(), ReaderView {
         val selectedPlace = mutableListOf<String>()
         selectedPlace.add(feedLocation.location)
         val locationInfo = LocationInfo(selectedPlace, feedLocation.iso2)
-        feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation,
-                context, presenter)
+        feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation, context, this)
         feedLocationAutoText.setLocationInfo(locationInfo)
+    }
+
+    override fun onTextChanged(text: String) {
+        presenter.submitAutocompleteAddress(text)
     }
 
     override fun newAddressAvailable(locationInfo: LocationInfo) {

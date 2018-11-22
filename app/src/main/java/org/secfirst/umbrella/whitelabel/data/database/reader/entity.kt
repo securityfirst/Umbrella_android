@@ -111,6 +111,6 @@ data class FeedSource(
     constructor(name: String, lastChecked: Boolean, code: Int) : this(0, name, lastChecked, code)
 }
 
-data class LocationInfo(val locationNames: List<String> = mutableListOf(), val countryCode: String? = "") {
+data class LocationInfo(val locationNames: List<String> = mutableListOf(), val countryCode: String = "") {
     constructor() : this(mutableListOf(), "")
 }

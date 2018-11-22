@@ -7,13 +7,10 @@ import android.text.TextWatcher
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
-import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
-import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 
 class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoCompleteTextView,
                            private val context: Context,
-                           private val presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>) {
+                           private val feedLocationListener: FeedLocationListener ) {
 
     private var locationInfo: LocationInfo? = null
 
@@ -26,14 +23,13 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
         autocompleteLocation.autocompleteLocation.threshold = 2
         autocompleteLocation.autocompleteLocation.setAdapter(adapter)
         autocompleteLocation.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                presenter.submitAutocompleteAddress(s.toString())
+                feedLocationListener.onTextChanged(s.toString())
             }
         })
     }
@@ -50,4 +46,8 @@ class FeedLocationAutoText(private val autocompleteLocation: AppCompatAutoComple
     }
 
     fun getCountryCode() = locationInfo?.countryCode ?: ""
+}
+
+interface FeedLocationListener {
+    fun onTextChanged(text: String)
 }
