@@ -18,6 +18,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
 
+
     override fun setUserLogIn() {
         interactor?.setLoggedIn()
     }
@@ -76,12 +77,20 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         }
     }
 
-    override fun prepareFeedLocation() {
+    override fun prepareView() {
         launchSilent(uiContext) {
             interactor?.let {
                 val feedLocation = it.fetchFeedLocation()
-                feedLocation?.let { safeLocation -> getView()?.loadDefaultValue(safeLocation) }
+                val refreshFeedInterval = it.fetchRefreshInterval()
+                feedLocation?.let { safeLocation -> getView()?.
+                        loadDefaultValue(safeLocation, refreshFeedInterval) }
             }
+        }
+    }
+
+    override fun submitPutRefreshInterval(position: Int) {
+        launchSilent(uiContext) {
+            interactor?.putRefreshInterval(position)
         }
     }
 }

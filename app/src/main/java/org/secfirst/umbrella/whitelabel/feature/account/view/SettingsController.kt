@@ -18,6 +18,7 @@ import com.codekidlabs.storagechooser.StorageChooser
 import doRestartApplication
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
+import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.toast
@@ -26,6 +27,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
+import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
@@ -36,17 +38,19 @@ import requestExternalStoragePermission
 import java.io.File
 import javax.inject.Inject
 
-class SettingsController : BaseController(), AccountView, FeedLocationDialog.FeedLocationListener {
+class SettingsController : BaseController(), AccountView, FeedLocationDialog.FeedLocationListener,
+        RefreshIntervalDialog.RefreshIntervalListener {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
-    private lateinit var feedLocationView: View
     private lateinit var destinationPath: String
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
+    private lateinit var refreshIntervalView: View
+    private lateinit var refreshIntervalDialog: RefreshIntervalDialog
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -64,7 +68,9 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
-        feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
+        val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
+        refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
+
         presenter.onAttach(this)
 
         exportAlertDialog = AlertDialog
@@ -79,11 +85,17 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
         mainView.settingsImportData.onClick { importDataClick() }
         mainView.settingsExportData.setOnClickListener { exportDataClick() }
         mainView.settingsLocation.setOnClickListener { setLocationClick() }
+        mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
 
-        presenter.prepareFeedLocation()
+        presenter.prepareView()
         initExportGroup()
         feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
+
         return mainView
+    }
+
+    private fun refreshIntervalClick() {
+        refreshIntervalDialog.show()
     }
 
     private fun setLocationClick() {
@@ -168,8 +180,10 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     }
 
 
-    override fun loadDefaultValue(feedLocation: FeedLocation) {
+    override fun loadDefaultValue(feedLocation: FeedLocation, refreshFeedInterval: Int) {
         mainView.settingsLabelLocation.text = feedLocation.location
+        refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval, this)
+        mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
     }
 
     override fun onLocationSuccess(feedLocation: FeedLocation) {
@@ -192,13 +206,16 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
         if (isWipeData) router.pushController(RouterTransaction.with(TourController()))
     }
 
+    override fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String) {
+        presenter.submitPutRefreshInterval(selectedPosition)
+        mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
+    }
+
     override fun onImportBackupFail() {
         context.toast(context.getString(R.string.import_dialog_fail_message))
     }
 
-    override fun onImportBackupSuccess() {
-        doRestartApplication(context)
-    }
+    override fun onImportBackupSuccess() = doRestartApplication(context)
 
     private fun exportDataOk() {
         presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)

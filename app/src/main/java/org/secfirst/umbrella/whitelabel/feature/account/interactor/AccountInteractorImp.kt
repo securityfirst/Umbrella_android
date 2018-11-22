@@ -25,4 +25,8 @@ class AccountInteractorImp @Inject constructor(preferenceHelper: AppPreferenceHe
     override suspend fun fetchFeedSources() = accountRepo.getAllFeedSources()
 
     override suspend fun fetchFeedLocation() = accountRepo.getFeedLocation()
+
+    override suspend fun fetchRefreshInterval() = preferenceHelper.getRefreshInterval()
+
+    override suspend fun putRefreshInterval(position: Int) = preferenceHelper.setRefreshInterval(position)
 }

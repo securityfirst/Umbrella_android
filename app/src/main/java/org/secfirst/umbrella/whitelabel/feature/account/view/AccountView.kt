@@ -16,5 +16,5 @@ interface AccountView : BaseView {
 
     fun onImportBackupFail() {}
 
-    fun loadDefaultValue(feedLocation: FeedLocation){}
+    fun loadDefaultValue(feedLocation: FeedLocation, refreshFeedInterval: Int) {}
 }

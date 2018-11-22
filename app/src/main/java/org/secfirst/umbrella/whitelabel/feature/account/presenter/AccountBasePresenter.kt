@@ -22,5 +22,8 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun submitFeedLocation(feedLocation: FeedLocation)
 
-    fun prepareFeedLocation()
+    fun prepareView()
+
+    fun submitPutRefreshInterval(position: Int)
+
 }

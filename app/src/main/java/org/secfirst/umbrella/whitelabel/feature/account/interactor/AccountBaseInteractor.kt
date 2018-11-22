@@ -19,4 +19,8 @@ interface AccountBaseInteractor : BaseInteractor {
     suspend fun fetchFeedLocation(): FeedLocation?
 
     fun setLoggedIn(): Boolean
+
+    suspend fun fetchRefreshInterval(): Int
+
+    suspend fun putRefreshInterval(position: Int): Boolean
 }
