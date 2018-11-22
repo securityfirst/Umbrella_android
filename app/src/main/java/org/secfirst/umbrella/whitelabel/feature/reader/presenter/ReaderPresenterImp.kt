@@ -56,12 +56,6 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         }
     }
 
-    override fun submitAutocompleteAddress(locationName: String) {
-        launchSilent(uiContext) {
-            interactor?.let { getView()?.newAddressAvailable(it.fetchGeolocation(locationName)) }
-        }
-    }
-
     override fun submitDeleteRss(rss: RSS) {
         launchSilent(uiContext) {
             interactor?.deleteRss(rss)

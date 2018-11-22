@@ -29,8 +29,6 @@ interface ReaderBasePresenter<V : ReaderView, I : ReaderBaseInteractor> : BasePr
 
     fun submitPutRefreshInterval(position: Int)
 
-    fun submitAutocompleteAddress(locationName: String)
-
     fun prepareView()
 
 }

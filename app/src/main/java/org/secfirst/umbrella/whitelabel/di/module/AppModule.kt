@@ -2,7 +2,6 @@ package org.secfirst.umbrella.whitelabel.di.module
 
 import android.app.Application
 import android.content.Context
-import android.location.Geocoder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
@@ -37,9 +36,6 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.data.disk.TentDao
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepository
-import org.secfirst.umbrella.whitelabel.data.geolocation.Geolocation
-import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationService
-import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationServiceImp
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
 import org.secfirst.umbrella.whitelabel.data.network.NetworkEndPoint.BASE_URL
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
@@ -114,15 +110,8 @@ class RepositoryModule {
     internal val checklistDao
         get() = object : ChecklistDao {}
 
-    internal val geolocation
-        get() = object : Geolocation {}
-
     internal val accountDao
         get() = object : AccountDao {}
-
-    @Provides
-    @Singleton
-    internal fun provideGeolocation(context: Context): GeolocationService = GeolocationServiceImp(Geocoder(context), geolocation)
 
     @Provides
     @Singleton
