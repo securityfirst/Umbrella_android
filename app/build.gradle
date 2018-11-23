@@ -74,7 +74,7 @@ dependencies {
     implementation "com.einmalfel:earl:$rss_library"
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.thoughtbot:expandablerecyclerview:$expandable_recyclerview"
-    implementation 'com.romandanylyk:pageindicatorview:1.0.1@aar'
+    implementation "com.romandanylyk:pageindicatorview:$pageindicatorview"
     implementation "org.jsoup:jsoup:$jsoup"
     implementation "com.github.tbouron.shakedetector:library:$shakedetector"
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
