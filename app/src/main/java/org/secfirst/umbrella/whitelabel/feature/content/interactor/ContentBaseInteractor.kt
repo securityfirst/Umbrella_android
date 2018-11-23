@@ -1,10 +1,10 @@
-package org.secfirst.umbrella.whitelabel.feature.tour.interactor
+package org.secfirst.umbrella.whitelabel.feature.content.interactor
 
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
-interface TourBaseInteractor : BaseInteractor {
+interface ContentBaseInteractor : BaseInteractor {
 
     suspend fun fetchData(): Boolean
 

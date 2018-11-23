@@ -1,8 +1,9 @@
-package org.secfirst.umbrella.whitelabel.feature.tour.view
+package org.secfirst.umbrella.whitelabel.feature.content
 
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
-interface TourView : BaseView {
+
+interface ContentView : BaseView {
 
     fun downloadContentCompleted(res: Boolean)
 

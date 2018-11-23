@@ -1,22 +1,22 @@
-package org.secfirst.umbrella.whitelabel.feature.tour.presenter
+package org.secfirst.umbrella.whitelabel.feature.content.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
-import org.secfirst.umbrella.whitelabel.feature.tour.interactor.TourBaseInteractor
-import org.secfirst.umbrella.whitelabel.feature.tour.view.TourView
-import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.feature.content.ContentView
+import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
 
-class TourPresenterImp<V : TourView, I : TourBaseInteractor>
+class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 @Inject internal constructor(
         interactor: I) : BasePresenterImp<V, I>(
-        interactor = interactor), TourBasePresenter<V, I> {
+        interactor = interactor), ContentBasePresenter<V, I> {
 
     override fun manageContent() {
         var isFetchData: Boolean
-        launchSilent(uiContext) {
+        launchSilent(AppExecutors.uiContext) {
             interactor?.let {
                 getView()?.downloadContentInProgress()
                 isFetchData = it.fetchData()
