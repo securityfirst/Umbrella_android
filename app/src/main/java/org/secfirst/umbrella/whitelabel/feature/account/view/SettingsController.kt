@@ -5,6 +5,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -36,16 +37,22 @@ import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.content.ContentView
+import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
+import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import requestExternalStoragePermission
 import java.io.File
 import javax.inject.Inject
 
-class SettingsController : BaseController(), AccountView, FeedLocationDialog.FeedLocationListener,
+class SettingsController : BaseController(), AccountView, ContentView, FeedLocationDialog.FeedLocationListener,
         RefreshIntervalDialog.RefreshIntervalListener, FeedSourceDialog.FeedSourceListener {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
+    @Inject
+    internal lateinit var presentContent: ContentBasePresenter<ContentView, ContentBaseInteractor>
+
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
     private lateinit var destinationPath: String
@@ -55,6 +62,7 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
     private lateinit var refreshIntervalView: View
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
+    private lateinit var refreshServerProgress: ProgressDialog
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -76,6 +84,7 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
 
         presenter.onAttach(this)
+        presentContent.onAttach(this)
 
         exportAlertDialog = AlertDialog
                 .Builder(activity)
@@ -91,6 +100,7 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
         mainView.settingsLocation.setOnClickListener { setLocationClick() }
         mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
         mainView.settingsSecurityFeed.setOnClickListener { feedSourceClick() }
+        mainView.settingsRefreshServer.setOnClickListener { refreshServerClick() }
 
         presenter.prepareView()
         initExportGroup()
@@ -99,17 +109,13 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
         return mainView
     }
 
-    private fun feedSourceClick() {
-        feedSourceDialog.show()
-    }
+    private fun refreshServerClick() = presentContent.cleanContent()
 
-    private fun refreshIntervalClick() {
-        refreshIntervalDialog.show()
-    }
+    private fun feedSourceClick() = feedSourceDialog.show()
 
-    private fun setLocationClick() {
-        feedLocationDialog.show()
-    }
+    private fun refreshIntervalClick() = refreshIntervalDialog.show()
+
+    private fun setLocationClick() = feedLocationDialog.show()
 
     private fun importDataClick() {
         val chooser = StorageChooser.Builder()
@@ -245,11 +251,31 @@ class SettingsController : BaseController(), AccountView, FeedLocationDialog.Fee
 
     override fun onImportBackupSuccess() = doRestartApplication(context)
 
+    override fun downloadContentCompleted(res: Boolean) {
+        if (res) context.toast("Updated with success.")
+        refreshServerProgress.dismiss()
+    }
+
+    override fun downloadContentInProgress() {
+        val dialog = DialogManager(this)
+        dialog.showDialog(DialogManager.PROGRESS_DIALOG_TAG, object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                refreshServerProgress = ProgressDialog(context)
+                refreshServerProgress.setCancelable(false)
+                refreshServerProgress.setMessage(context?.getString(R.string.loading_tour_message))
+                return refreshServerProgress
+            }
+        })
+    }
+
+    override fun onCleanDatabaseSuccess() = presentContent.manageContent()
+
     private fun exportDataOk() {
         presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
     }
 
     private fun exportDataClose() = exportAlertDialog.dismiss()
+
 
     private fun wipeDataClick() {
         isWipeData = true

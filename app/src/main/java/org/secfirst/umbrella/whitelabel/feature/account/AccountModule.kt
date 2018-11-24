@@ -7,7 +7,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.AndroidInjectionModule
 import org.secfirst.umbrella.whitelabel.di.module.AppModule
+import org.secfirst.umbrella.whitelabel.di.module.NetworkModule
 import org.secfirst.umbrella.whitelabel.di.module.RepositoryModule
+import org.secfirst.umbrella.whitelabel.di.module.TentContentModule
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
@@ -15,6 +17,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountPresent
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
 import org.secfirst.umbrella.whitelabel.feature.account.view.SettingsController
+import org.secfirst.umbrella.whitelabel.feature.content.ContentModule
 import javax.inject.Singleton
 
 @Module
@@ -32,6 +35,9 @@ class AccountModule {
 @Component(modules = [AccountModule::class,
     RepositoryModule::class,
     AppModule::class,
+    ContentModule::class,
+    TentContentModule::class,
+    NetworkModule::class,
     AndroidInjectionModule::class])
 interface AccountComponent {
     @Component.Builder

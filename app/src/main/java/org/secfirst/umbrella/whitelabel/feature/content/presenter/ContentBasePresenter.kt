@@ -6,5 +6,8 @@ import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseIn
 
 
 interface ContentBasePresenter<V : ContentView, I : ContentBaseInteractor> : BasePresenter<V, I> {
+
     fun manageContent()
+
+    fun cleanContent()
 }

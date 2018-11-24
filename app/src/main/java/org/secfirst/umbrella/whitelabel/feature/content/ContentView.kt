@@ -8,4 +8,6 @@ interface ContentView : BaseView {
     fun downloadContentCompleted(res: Boolean)
 
     fun downloadContentInProgress()
+
+    fun onCleanDatabaseSuccess(){}
 }

@@ -15,12 +15,12 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [(AndroidInjectionModule::class),
-    (AppModule::class),
-    (RepositoryModule::class),
-    (ContentModule::class),
-    (TentContentModule::class),
-    (NetworkModule::class),
-    (ActivityBuilder::class)])
+    AppModule::class,
+    RepositoryModule::class,
+    ContentModule::class,
+    TentContentModule::class,
+    NetworkModule::class,
+    ActivityBuilder::class])
 interface TourComponent {
     @Component.Builder
     interface Builder {

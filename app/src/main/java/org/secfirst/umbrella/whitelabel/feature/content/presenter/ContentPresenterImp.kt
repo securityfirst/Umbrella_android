@@ -1,5 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.content.presenter
 
+import com.raizlabs.android.dbflow.config.FlowManager
+import org.apache.commons.io.FileUtils
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
@@ -30,6 +34,14 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
             }
         }
     }
+
+    override fun cleanContent() {
+        val cacheDir = UmbrellaApplication.instance.cacheDir
+        FileUtils.deleteQuietly(cacheDir)
+        FlowManager.getDatabase(AppDatabase.NAME).reopen()
+        getView()?.onCleanDatabaseSuccess()
+    }
+
 
     private fun createFeedSources(): List<FeedSource> {
         val feedSources = mutableListOf<FeedSource>()

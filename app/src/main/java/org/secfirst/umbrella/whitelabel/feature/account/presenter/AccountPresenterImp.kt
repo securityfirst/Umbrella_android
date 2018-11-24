@@ -4,6 +4,8 @@ import com.raizlabs.android.dbflow.config.FlowManager
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase.EXTENSION
+import org.secfirst.umbrella.whitelabel.data.database.AppDatabase.NAME
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
@@ -34,8 +36,8 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
 
     override fun submitExportDatabase(destinationDir: String, fileName: String, isWipeData: Boolean) {
 
-        val dstDatabase = File("$destinationDir/$fileName.db")
-        val databaseFile = FlowManager.getContext().getDatabasePath("${AppDatabase.NAME}.db")
+        val dstDatabase = File("$destinationDir/$fileName.$EXTENSION")
+        val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")
         databaseFile.copyTo(dstDatabase, true)
         if (isWipeData)
             cleanDatabase()
@@ -51,24 +53,24 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
 
 
     override fun prepareShareContent(fileName: String) {
-        val databaseFile = FlowManager.getContext().getDatabasePath("${AppDatabase.NAME}.db")
-        val backupFile = File("${FlowManager.getContext().cacheDir}/$fileName.db")
+        val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")
+        val backupFile = File("${FlowManager.getContext().cacheDir}/$fileName.$EXTENSION")
         databaseFile.copyTo(backupFile, true)
         getView()?.onShareContent(backupFile)
     }
 
     override fun validateBackupPath(backupPath: String) {
         val backupDatabase = File(backupPath)
-        val databaseFile = FlowManager.getContext().getDatabasePath("${AppDatabase.NAME}.db")
+        val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")
         backupDatabase.copyTo(databaseFile, true)
-        if (backupDatabase.extension == AppDatabase.EXTENSION) {
+        if (backupDatabase.extension == EXTENSION) {
             getView()?.onImportBackupSuccess()
         } else
             getView()?.onImportBackupFail()
     }
 
     override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
-        launchSilent (uiContext){
+        launchSilent(uiContext) {
             interactor?.insertAllFeedSources(feedSources)
         }
     }
