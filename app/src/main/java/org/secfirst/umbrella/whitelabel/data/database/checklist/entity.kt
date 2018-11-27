@@ -18,13 +18,10 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.Checkl
 data class Checklist(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
-
         @Column
         var index: Int = 0,
-
         @Column
         var progress: Int = 0,
-
         @Column
         var favorite: Boolean = false,
 

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.bluelinelabs.conductor.RouterTransaction
 import com.raizlabs.android.dbflow.config.FlowManager
-import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.server_view.*
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.R
@@ -78,7 +77,7 @@ class ServerController : BaseController(), View.OnClickListener {
     }
 
     private fun shareDbFile(fileName: String) {
-        Extensions.copyFile(activity!!)
+        //Extensions.copyFile(activity!!)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

@@ -15,10 +15,16 @@ class TentConfig(private val repoPath: String, private val resourcesPath: String
     }
 
     fun isRepCreate() = File(repoPath).exists()
+
     fun isNotRepCreate() = !File(repoPath).exists()
+
     fun getPathRepository(): String = repoPath
+
     fun isResourceCreate() = File(resourcesPath).exists()
+
     fun isNotResourceCreate(fileName: String) = !File(resourcesPath + fileName).exists()
+
+    fun extensionFile(absolutePath: String) = absolutePath.substringAfterLast(".")
 
 }
 
@@ -35,4 +41,15 @@ enum class ExtensionFile(val value: String) {
     YML("yml"),
     MD("md"),
     PNG("png")
+}
+
+fun String.shortName(): String {
+    val fullName = this.substringAfterLast("/")
+    val fileName = fullName.substringBeforeLast(".")
+    return fileName.substringBeforeLast("_")
+}
+
+fun String.nameWithoutExtension(): String {
+    val fullName = this.substringAfterLast("/")
+    return fullName.substringBeforeLast(".")
 }

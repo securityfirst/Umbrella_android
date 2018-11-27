@@ -5,11 +5,13 @@ import java.io.File
 
 interface TentRepo {
 
-    suspend fun fetch(): Boolean
+    suspend fun fetchRepository(): Boolean
 
-    suspend fun loadElementsFile(): List<File>
+    suspend fun updateRepository(): Boolean
 
-    fun loadFile(): List<File>
+    suspend fun loadElementsFile(): List<Pair<String,File>>
+
+    fun loadFile(): List<Pair<String,File>>
 
     fun loadCategoryImage(imgName: String): String
 

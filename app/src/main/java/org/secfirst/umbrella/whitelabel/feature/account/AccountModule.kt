@@ -18,6 +18,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
 import org.secfirst.umbrella.whitelabel.feature.account.view.SettingsController
 import org.secfirst.umbrella.whitelabel.feature.content.ContentModule
+import org.secfirst.umbrella.whitelabel.feature.tent.TentModule
 import javax.inject.Singleton
 
 @Module
@@ -36,6 +37,7 @@ class AccountModule {
     RepositoryModule::class,
     AppModule::class,
     ContentModule::class,
+    TentModule::class,
     TentContentModule::class,
     NetworkModule::class,
     AndroidInjectionModule::class])

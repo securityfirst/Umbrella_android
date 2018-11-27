@@ -40,18 +40,23 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.tent.TentView
+import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
+import org.secfirst.umbrella.whitelabel.feature.tent.presenter.TentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import requestExternalStoragePermission
 import java.io.File
 import javax.inject.Inject
 
-class SettingsController : BaseController(), AccountView, ContentView, FeedLocationDialog.FeedLocationListener,
+class SettingsController : BaseController(), AccountView, ContentView, TentView, FeedLocationDialog.FeedLocationListener,
         RefreshIntervalDialog.RefreshIntervalListener, FeedSourceDialog.FeedSourceListener {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     @Inject
     internal lateinit var presentContent: ContentBasePresenter<ContentView, ContentBaseInteractor>
+    @Inject
+    internal lateinit var prensetTent: TentBasePresenter<TentView, TentBaseInteractor>
 
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
@@ -78,6 +83,7 @@ class SettingsController : BaseController(), AccountView, ContentView, FeedLocat
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
@@ -85,6 +91,7 @@ class SettingsController : BaseController(), AccountView, ContentView, FeedLocat
 
         presenter.onAttach(this)
         presentContent.onAttach(this)
+        prensetTent.onAttach(this)
 
         exportAlertDialog = AlertDialog
                 .Builder(activity)
@@ -109,7 +116,18 @@ class SettingsController : BaseController(), AccountView, ContentView, FeedLocat
         return mainView
     }
 
-    private fun refreshServerClick() = presentContent.cleanContent()
+    private fun refreshServerClick() {
+        val dialog = DialogManager(this)
+        dialog.showDialog(DialogManager.PROGRESS_DIALOG_TAG, object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                refreshServerProgress = ProgressDialog(context)
+                refreshServerProgress.setCancelable(false)
+                refreshServerProgress.setMessage(context?.getString(R.string.loading_tour_message))
+                return refreshServerProgress
+            }
+        })
+        prensetTent.submitUpdateRepository()
+    }
 
     private fun feedSourceClick() = feedSourceDialog.show()
 
@@ -284,5 +302,10 @@ class SettingsController : BaseController(), AccountView, ContentView, FeedLocat
     private fun getFilename(): String {
         val fileName = exportView.ExportDialogFileName.text.toString()
         return if (fileName.isBlank()) context.getString(R.string.export_dialog_default_message) else fileName
+    }
+
+    override fun isUpdateRepository(res: Boolean) {
+        if (res) context.toast("Updated with success.")
+        refreshServerProgress.dismiss()
     }
 }

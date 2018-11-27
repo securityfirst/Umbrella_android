@@ -21,7 +21,7 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun persistFeedSource(feedSources: List<FeedSource>) = contentRepo.insertFeedSource(feedSources)
 
-    override suspend fun fetchData() = tentRepo.fetch()
+    override suspend fun fetchData() = tentRepo.fetchRepository()
 
     override suspend fun initParser() = elementLoader.load(elementSerialize.process())
 

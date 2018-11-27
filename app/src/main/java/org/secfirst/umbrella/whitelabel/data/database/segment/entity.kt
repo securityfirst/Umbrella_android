@@ -21,22 +21,19 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 data class Markdown(
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
+        var text: String = "",
+        var title: String = "",
+        var index: String = "",
+        var favorite: Boolean = false,
+        var basePath: String = "",
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
         @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
         @ForeignKey(stubbedRelationship = true)
-        var difficulty: Difficulty? = null,
-        var text: String = "",
-        var title: String = "",
-        var index: String = "",
-        var favorite: Boolean = false,
-        var basePath: String = "") : Parcelable {
+        var difficulty: Difficulty? = null) : Parcelable {
 
-    constructor(text: String) : this(0,
-            null,
-            null,
-            null, text, recoveryTitle(text), recoveryIndex(text))
+    constructor(text: String) : this(0, text, recoveryTitle(text), recoveryIndex(text))
 
     companion object {
         const val FAVORITE_INDEX = 1L

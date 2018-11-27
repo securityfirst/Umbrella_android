@@ -5,13 +5,13 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
+import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.CHILD_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.SUB_ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimiter
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
-import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import java.io.File
@@ -24,17 +24,21 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
     suspend fun load(root: Root): Root {
         withContext(ioContext) {
             this.root = root
-            tentRepo.loadFile().filter { it.extension != ExtensionFile.PNG.value }.forEach { currentFile ->
-                val absolutePath = currentFile.path.substringAfterLast(PathUtils.basePath(), "")
+            val filesPair = tentRepo.loadFile()
+            filesPair.filter { it.second.extension != ExtensionFile.PNG.value }.forEach { pairFile ->
+                val file = pairFile.second
+                val absolutePath = file.path.substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
-                loadElement(pwd, currentFile)
-                loadForm(currentFile)
+                loadElement(pwd, pairFile)
+                loadForm(file)
             }
         }
         return this.root
     }
 
-    private fun loadElement(pwd: String, file: File) {
+    private fun loadElement(pwd: String, pairFile: Pair<String, File>) {
+        val file = pairFile.second
+        val fileID = pairFile.first
 
         when (getLevelOfPath(pwd)) {
             ELEMENT_LEVEL -> {

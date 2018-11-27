@@ -18,7 +18,8 @@ class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) : Ser
 
     suspend fun process(): Root {
         withContext(ioContext) {
-            tentRepo.loadElementsFile().forEach { currentFile ->
+            tentRepo.loadElementsFile().forEach { pairFile ->
+                val currentFile = pairFile.second
                 val absolutePath = currentFile.path
                         .substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
