@@ -79,8 +79,8 @@ dependencies {
     implementation "com.github.tbouron.shakedetector:library:$shakedetector"
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
-    implementation "com.jakewharton:process-phoenix:$process_phoenix"
-    implementation "com.evernote:android-job:$evernote_android_job"
+    implementation "com.jakewharton:process-phoenix:$process_phoenix" 
+    //implementation "com.evernote:android-job:$evernote_android_job"
 
     //Sectioned recyclerview
     implementation "io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:$sectionedrecyclerviewadapter"
