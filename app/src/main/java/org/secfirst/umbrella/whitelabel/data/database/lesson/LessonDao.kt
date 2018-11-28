@@ -25,10 +25,10 @@ interface LessonDao {
                 .querySingle()
     }
 
-    suspend fun getDifficultyBy(id: Long): Difficulty? = withContext(ioContext) {
+    suspend fun getDifficultyBy(sha1ID: String): Difficulty? = withContext(ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.id.`is`(id))
+                .where(Difficulty_Table.sha1ID.`is`(sha1ID))
                 .querySingle()
     }
 

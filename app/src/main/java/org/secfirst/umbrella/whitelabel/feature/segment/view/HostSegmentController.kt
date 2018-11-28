@@ -123,7 +123,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     private fun saveDifficultySelect(spinnerSelected: Difficulty) {
-        if (spinnerSelected.id != 0L)
+        if (spinnerSelected.sha1ID.isNotEmpty())
             spinnerSelected.subject?.let { subject ->
                 presenter.submitDifficultySelected(subject.sh1ID, spinnerSelected)
             }

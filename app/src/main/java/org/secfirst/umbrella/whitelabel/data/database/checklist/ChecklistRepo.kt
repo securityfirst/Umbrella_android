@@ -21,7 +21,7 @@ interface ChecklistRepo {
 
     suspend fun loadSubjectById(subjectSha1ID: String): Subject?
 
-    suspend fun loadDifficultyById(difficultyId: Long): Difficulty
+    suspend fun loadDifficultyById(sha1ID: String): Difficulty
 
     suspend fun getAllChecklistInProgress(): List<Checklist>
 }

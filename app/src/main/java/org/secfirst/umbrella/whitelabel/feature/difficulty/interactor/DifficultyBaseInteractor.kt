@@ -13,6 +13,6 @@ interface DifficultyBaseInteractor : BaseInteractor {
 
     suspend fun fetchSubjectByModule(moduleSha1ID: String): Subject?
 
-    suspend fun fetchDifficultyBy(id: Long): Difficulty?
+    suspend fun fetchDifficultyBy(sha1ID : String): Difficulty?
 
 }

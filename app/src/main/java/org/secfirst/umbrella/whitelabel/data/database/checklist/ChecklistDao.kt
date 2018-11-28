@@ -64,10 +64,10 @@ interface ChecklistDao {
                 .querySingle()
     }
 
-    suspend fun getDifficultyById(difficultyId: Long): Difficulty = withContext(ioContext) {
+    suspend fun getDifficultyById(sha1ID: String): Difficulty = withContext(ioContext) {
         val result = SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.id.`is`(difficultyId))
+                .where(Difficulty_Table.sha1ID.`is`(sha1ID))
                 .querySingle()
         return@withContext result!!
 

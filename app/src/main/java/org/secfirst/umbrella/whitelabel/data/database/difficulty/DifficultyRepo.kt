@@ -4,7 +4,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface DifficultyRepo {
 
-    suspend fun loadChildBy(id: Long): Difficulty?
+    suspend fun loadDifficultyBy(sha1ID : String): Difficulty?
 
     suspend fun loadSubjectBy(subjectSha1ID : String): Subject?
 

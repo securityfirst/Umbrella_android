@@ -15,7 +15,7 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchSubject(sha1ID: String): Subject?
 
-    suspend fun fetchDifficulty(id: Long): Difficulty?
+    suspend fun fetchDifficulty(sha1ID: String): Difficulty?
 
     suspend fun fetchMarkdownBySubject(subjectSha1ID: String): List<Markdown>
 

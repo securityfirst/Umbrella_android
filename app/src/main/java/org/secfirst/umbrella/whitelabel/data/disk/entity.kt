@@ -61,6 +61,7 @@ val Element.convertToDifficulty: Difficulty
     get() {
         val child = Difficulty()
         child.checklist = this.checklist
+        child.sha1ID = this.sh1ID
         child.index = this.index
         child.description = this.description
         child.markdowns = this.markdowns

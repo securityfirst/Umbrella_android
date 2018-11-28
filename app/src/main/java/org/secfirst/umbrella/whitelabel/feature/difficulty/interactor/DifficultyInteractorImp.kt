@@ -10,7 +10,7 @@ class DifficultyInteractorImp @Inject constructor(private val difficultyRepo: Di
 
     override suspend fun fetchSubjectByModule(moduleSha1ID : String) = difficultyRepo.loadSubjectByModule(moduleSha1ID)
 
-    override suspend fun fetchDifficultyBy(id: Long) = difficultyRepo.loadChildBy(id)
+    override suspend fun fetchDifficultyBy(sha1ID : String) = difficultyRepo.loadDifficultyBy(sha1ID )
 
     override suspend fun insertTopicPreferred(difficultyPreferred: DifficultyPreferred) = difficultyRepo.saveTopicPreferred(difficultyPreferred)
 

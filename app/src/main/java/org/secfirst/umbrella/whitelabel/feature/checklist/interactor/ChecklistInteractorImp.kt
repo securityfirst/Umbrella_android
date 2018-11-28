@@ -10,7 +10,7 @@ class ChecklistInteractorImp @Inject constructor(private val checklistRepo: Chec
 
     override suspend fun fetchAllChecklistInProgress() = checklistRepo.getAllChecklistInProgress()
 
-    override suspend fun fetchDifficultyById(difficultyId: Long) = checklistRepo.loadDifficultyById(difficultyId)
+    override suspend fun fetchDifficultyById(sha1ID: String) = checklistRepo.loadDifficultyById(sha1ID)
 
     override suspend fun fetchSubjectById(subjectSha1ID: String) = checklistRepo.loadSubjectById(subjectSha1ID)
 

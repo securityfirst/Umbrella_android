@@ -6,7 +6,7 @@ class ChecklistRepository @Inject constructor(private val checklistDao: Checklis
 
     override suspend fun getAllChecklistInProgress(): List<Checklist> = checklistDao.getAllChecklistInProgress()
 
-    override suspend fun loadDifficultyById(difficultyId: Long) = checklistDao.getDifficultyById(difficultyId)
+    override suspend fun loadDifficultyById(sha1ID: String) = checklistDao.getDifficultyById(sha1ID)
 
     override suspend fun loadSubjectById(subjectSha1ID: String) = checklistDao.getSubjectById(subjectSha1ID)
 
