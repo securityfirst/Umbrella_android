@@ -43,16 +43,12 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         launchSilent(uiContext) {
             interactor?.let {
                 val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.sh1ID)
-                val subjectMarkdown = it.fetchMarkdownBySubject(subject.sh1ID)
-
-                if (difficultyPreferred != null)
-                    difficultyPreferred.difficulty?.let { safePreferred ->
+                when {
+                    difficultyPreferred != null -> difficultyPreferred.difficulty?.let { safePreferred ->
                         getView()?.startDeferredSegment(safePreferred)
                     }
-                else if (subject.difficulties.isEmpty()) {
-                    getView()?.startSegmentController(subject)
-                } else {
-                    getView()?.startDifficultyController(subject)
+                    subject.difficulties.isEmpty() -> getView()?.startSegmentController(subject)
+                    else -> getView()?.startDifficultyController(subject)
                 }
             }
         }
