@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel.data.disk
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
-import org.secfirst.umbrella.whitelabel.data.database.content.*
+import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
@@ -13,7 +13,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 class Root(val elements: MutableList<Element> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())
 
 data class Element(
-        var id: Long = 0,
+        var sh1ID: String = "",
         var index: Int = 0,
         var title: String = "",
         var description: String = "",
@@ -30,6 +30,7 @@ data class Element(
 val Element.convertToModule: Module
     get() {
         val category = Module()
+        category.sh1ID = this.sh1ID
         category.checklist = this.checklist
         category.index = this.index
         category.description = this.description
@@ -37,6 +38,7 @@ val Element.convertToModule: Module
         category.path = this.path
         category.rootDir = this.rootDir
         category.moduleTitle = this.title
+
         category.resourcePath = this.resourcePath
         return category
     }
@@ -44,6 +46,7 @@ val Element.convertToModule: Module
 val Element.convertToSubCategory: Subject
     get() {
         val subcategory = Subject()
+        subcategory.sh1ID = this.sh1ID
         subcategory.checklist = this.checklist
         subcategory.index = this.index
         subcategory.description = this.description

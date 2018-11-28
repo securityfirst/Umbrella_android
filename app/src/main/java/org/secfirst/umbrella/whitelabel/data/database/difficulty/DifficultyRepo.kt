@@ -6,9 +6,9 @@ interface DifficultyRepo {
 
     suspend fun loadChildBy(id: Long): Difficulty?
 
-    suspend fun loadSubjectBy(subjectId: Long): Subject?
+    suspend fun loadSubjectBy(subjectSha1ID : String): Subject?
 
-    suspend fun loadSubjectByModule(moduleId: Long): Subject?
+    suspend fun loadSubjectByModule(moduleSha1ID : String): Subject?
 
     suspend fun saveTopicPreferred(difficultyPreferred: DifficultyPreferred)
 }

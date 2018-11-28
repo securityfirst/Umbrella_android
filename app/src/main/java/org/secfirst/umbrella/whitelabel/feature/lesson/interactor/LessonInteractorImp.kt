@@ -10,19 +10,19 @@ class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo
 
     override suspend fun fetchAllFavorites() = lessonRepo.loadAllFavoriteSubjects()
 
-    override suspend fun fetchMarkdownByModule(moduleId: Long) = lessonRepo.loadMarkdownByModule(moduleId)
+    override suspend fun fetchMarkdownByModule(moduleSha1ID: String) = lessonRepo.loadMarkdownByModule(moduleSha1ID)
 
     override suspend fun fetchMarkdownsBy(sha1ID: String) = lessonRepo.loadMarkdownsBy(sha1ID)
 
-    override suspend fun fetchMarkdownBySubject(id: Long) = lessonRepo.loadMarkdownBySubject(id)
+    override suspend fun fetchMarkdownBySubject(subjectSha1ID: String) = lessonRepo.loadMarkdownBySubject(subjectSha1ID)
 
     override suspend fun fetchDifficulty(id: Long) = lessonRepo.loadDifficultyBy(id)
 
-    override suspend fun fetchLesson(id: Long) = lessonRepo.loadLessonBy(id)
+    override suspend fun fetchLesson(sha1ID: String) = lessonRepo.loadLessonBy(sha1ID)
 
-    override suspend fun fetchDifficultyPreferredBy(subjectId: Long) = lessonRepo.loadDifficultyPreferredBy(subjectId)
+    override suspend fun fetchDifficultyPreferredBy(subjectSha1ID: String) = lessonRepo.loadDifficultyPreferredBy(subjectSha1ID)
 
-    override suspend fun fetchSubject(id: Long) = lessonRepo.loadSubject(id)
+    override suspend fun fetchSubject(sha1ID: String) = lessonRepo.loadSubject(sha1ID)
 
     override suspend fun fetchModules(): List<Module> = lessonRepo.loadAllModules()
 }

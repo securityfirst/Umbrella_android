@@ -27,32 +27,32 @@ interface SegmentDao {
         }
     }
 
-    suspend fun save(subjectId: Long, difficulty: Difficulty) {
+    suspend fun save(subjectSh1ID: String, difficulty: Difficulty) {
         withContext(ioContext) {
-            modelAdapter<DifficultyPreferred>().save(DifficultyPreferred(subjectId, difficulty))
+            modelAdapter<DifficultyPreferred>().save(DifficultyPreferred(subjectSh1ID, difficulty))
         }
     }
 
 
-    suspend fun getMarkdowns(subjectId: Long): List<Markdown> = withContext(ioContext) {
+    suspend fun getMarkdowns(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.subject_id.`is`(subjectId))
+                .where(Markdown_Table.subject_sh1ID.`is`(subjectSh1ID))
                 .queryList()
 
     }
 
-    suspend fun getSubject(id: Long): Subject? = withContext(ioContext) {
+    suspend fun getSubject(sh1ID: String): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(id))
+                .where(Subject_Table.sh1ID.`is`(sh1ID))
                 .querySingle()
     }
 
-    suspend fun getModule(id: Long): Module? = withContext(ioContext) {
+    suspend fun getModule(sh1ID: String): Module? = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
-                .where(Module_Table.id.`is`(id))
+                .where(Module_Table.sh1ID.`is`(sh1ID))
                 .querySingle()
     }
 }

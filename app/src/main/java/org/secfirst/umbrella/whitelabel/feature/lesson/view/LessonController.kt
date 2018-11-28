@@ -21,7 +21,6 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
 import javax.inject.Inject
 
 class LessonController : BaseController(), LessonView {
@@ -29,7 +28,7 @@ class LessonController : BaseController(), LessonView {
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val lessonClick: (Subject) -> Unit = this::onLessonClicked
-    private val groupClick: (Long) -> Unit = this::onGroupClicked
+    private val groupClick: (String) -> Unit = this::onGroupClicked
     private lateinit var lessonAdapter: LessonAdapter
 
     override fun onInject() {
@@ -43,8 +42,8 @@ class LessonController : BaseController(), LessonView {
         presenter.submitSelectLesson(subject)
     }
 
-    private fun onGroupClicked(moduleId: Long) {
-        presenter.submitSelectHead(moduleId)
+    private fun onGroupClicked(moduleSha1ID: String) {
+        presenter.submitSelectHead(moduleSha1ID)
     }
 
     override fun onAttach(view: View) {

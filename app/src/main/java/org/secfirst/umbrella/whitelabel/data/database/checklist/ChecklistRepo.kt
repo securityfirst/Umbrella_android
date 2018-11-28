@@ -19,7 +19,7 @@ interface ChecklistRepo {
 
     suspend fun loadAllChecklist(): List<Checklist>
 
-    suspend fun loadSubjectById(subjectId: Long): Subject?
+    suspend fun loadSubjectById(subjectSha1ID: String): Subject?
 
     suspend fun loadDifficultyById(difficultyId: Long): Difficulty
 

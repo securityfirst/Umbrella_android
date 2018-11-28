@@ -20,9 +20,9 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor = interactor), SegmentBasePresenter<V, I> {
 
 
-    override fun submitDifficultySelected(subjectId: Long, difficulty: Difficulty) {
+    override fun submitDifficultySelected(subjectSha1ID : String, difficulty: Difficulty) {
         launchSilent(uiContext) {
-            interactor?.insertDifficultySelect(subjectId, difficulty)
+            interactor?.insertDifficultySelect(subjectSha1ID, difficulty)
         }
     }
 
@@ -41,7 +41,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     override fun submitLoadSubject(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let { safeInteractor ->
-                val markdowns = safeInteractor.fetchMarkdowns(subject.id)
+                val markdowns = safeInteractor.fetchMarkdowns(subject.sh1ID)
                 if (markdowns.size > Markdown.SINGLE_CHOICE) {
                     val list = mutableListOf<Difficulty>()
                     list.add(defaultDifficulty(markdowns, subject.title))
@@ -62,11 +62,11 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     override fun submitLoadSegments(selectDifficulty: Difficulty) {
         launchSilent(uiContext) {
             interactor?.let { safeInteractor ->
-                val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.id)
+                val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.sh1ID)
                 val orderDifficulties = subject?.difficulties?.orderDifficulty(selectDifficulty)
                 orderDifficulties?.let {
                     it.forEach { difficulty ->
-                        difficulty.subject = safeInteractor.fetchSubject(subject.id)
+                        difficulty.subject = safeInteractor.fetchSubject(subject.sh1ID)
                     }
                     getView()?.showSegments(it)
                 }

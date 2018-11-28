@@ -11,19 +11,19 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchModules(): List<Module>
 
-    suspend fun fetchLesson(id: Long): Module?
+    suspend fun fetchLesson(sha1ID: String): Module?
 
-    suspend fun fetchSubject(id: Long): Subject?
+    suspend fun fetchSubject(sha1ID: String): Subject?
 
     suspend fun fetchDifficulty(id: Long): Difficulty?
 
-    suspend fun fetchMarkdownBySubject(subjectId: Long): List<Markdown>
+    suspend fun fetchMarkdownBySubject(subjectSha1ID: String): List<Markdown>
 
-    suspend fun fetchMarkdownByModule(moduleId: Long): Markdown?
+    suspend fun fetchMarkdownByModule(moduleSha1ID : String): Markdown?
 
     suspend fun fetchMarkdownsBy(sha1ID : String): List<Markdown>
 
-    suspend fun fetchDifficultyPreferredBy(subjectId : Long): DifficultyPreferred?
+    suspend fun fetchDifficultyPreferredBy(subjectSha1ID: String): DifficultyPreferred?
 
     suspend fun fetchAllFavorites(): List<Markdown>
 }

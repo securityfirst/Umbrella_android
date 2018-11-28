@@ -24,16 +24,18 @@ class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) : Ser
                         .substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
                 Log.d("test", "path - $absolutePath")
-                addElement(pwd, currentFile)
+                addElement(pwd, pairFile)
             }
         }
         return root
     }
 
-    private fun addElement(pwd: String, currentFile: File) {
+    private fun addElement(pwd: String, pairFile: Pair<String, File>) {
+        val currentFile = pairFile.second
 
         val element = parseYmlFile(currentFile, Element::class)
         element.path = pwd
+        element.sh1ID = pairFile.first
         element.resourcePath = if (element.icon.isNotEmpty()) tentRepo.loadCategoryImage(element.icon) else ""
         element.rootDir = PathUtils.getLastDirectory(pwd)
 

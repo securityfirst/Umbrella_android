@@ -19,7 +19,7 @@ import java.io.File
 
 class LessonAdapter(groups: List<ExpandableGroup<*>>,
                     private val onclickLesson: (Subject) -> Unit,
-                    private val onGroupClicked: (Long) -> Unit)
+                    private val onGroupClicked: (String) -> Unit)
     : ExpandableRecyclerViewAdapter<LessonAdapter.HeadHolder, LessonAdapter.LessonMenuHolder>(groups) {
 
 

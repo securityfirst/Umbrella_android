@@ -57,10 +57,10 @@ interface ChecklistDao {
                 .queryList()
     }
 
-    suspend fun getSubjectById(subjectId: Long) = withContext(ioContext) {
+    suspend fun getSubjectById(subjectSh1ID: String) = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(subjectId))
+                .where(Subject_Table.sh1ID.`is`(subjectSh1ID))
                 .querySingle()
     }
 

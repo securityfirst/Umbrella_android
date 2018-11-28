@@ -22,5 +22,5 @@ interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : Bas
 
     fun submitMarkdownFavorite(markdown: Markdown)
 
-    fun submitDifficultySelected(subjectId: Long, difficulty: Difficulty)
+    fun submitDifficultySelected(subjectSha1ID : String, difficulty: Difficulty)
 }

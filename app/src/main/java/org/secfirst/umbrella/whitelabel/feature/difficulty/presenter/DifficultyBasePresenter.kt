@@ -10,7 +10,7 @@ interface DifficultyBasePresenter<V : DifficultyView, I : DifficultyBaseInteract
 
     fun submitDifficulty(subject: Subject)
 
-    fun saveDifficultySelect(difficulty: Difficulty, subjectId: Long)
+    fun saveDifficultySelect(difficulty: Difficulty, subjectSha1ID: String)
 
     fun submitSelectedDifficulty(selectDifficulty: Difficulty)
 }

@@ -16,7 +16,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.associateMarkdown
 
-data class Lesson(var moduleId: Long,
+data class Lesson(var moduleId: String,
                   var moduleTitle: String = "",
                   var pathIcon: String = "",
                   var topics: List<Subject> = listOf()) : ExpandableGroup<Subject>(moduleTitle, topics)
@@ -24,8 +24,8 @@ data class Lesson(var moduleId: Long,
 @Table(database = AppDatabase::class)
 @Parcelize
 open class Module(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
+        @PrimaryKey
+        var sh1ID: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -49,7 +49,7 @@ open class Module(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_id.eq(id))
+                    .where(Markdown_Table.module_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return markdowns
@@ -60,7 +60,7 @@ open class Module(
         if (subjects.isEmpty()) {
             subjects = SQLite.select()
                     .from(Subject::class.java)
-                    .where(Subject_Table.module_id.eq(id))
+                    .where(Subject_Table.module_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return subjects
@@ -71,7 +71,7 @@ open class Module(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.module_id.eq(id))
+                    .where(Checklist_Table.module_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return checklist
@@ -82,11 +82,8 @@ open class Module(
 @Parcelize
 @Table(database = AppDatabase::class)
 data class Subject(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
-        var module: Module? = null,
+        @PrimaryKey
+        var sh1ID: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -99,16 +96,17 @@ data class Subject(
         @Column
         var rootDir: String = "",
         @Column
-        var path: String = "") : Parcelable {
-
-    constructor() : this(0, null, 0, "", "", arrayListOf(), arrayListOf(), arrayListOf(), "", "")
+        var path: String = "",
+        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
+                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
+        var module: Module? = null) : Parcelable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
     fun oneToManyMarkdowns(): MutableList<Markdown> {
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_id.eq(id))
+                    .where(Markdown_Table.module_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return markdowns
@@ -119,7 +117,7 @@ data class Subject(
         if (difficulties.isEmpty()) {
             difficulties = SQLite.select()
                     .from(Difficulty::class.java)
-                    .where(Difficulty_Table.subject_id.eq(id))
+                    .where(Difficulty_Table.subject_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return difficulties
@@ -131,7 +129,7 @@ data class Subject(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.module_id.eq(id))
+                    .where(Checklist_Table.module_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return checklist
@@ -144,7 +142,7 @@ fun List<Module>.toLesson(): List<Lesson> {
     moduleSorted.forEach { module ->
         val subjectSorted = module.subjects.sortedWith(compareBy { it.index })
         module.subjects = subjectSorted.toMutableList()
-        val lesson = Lesson(module.id, module.moduleTitle, module.resourcePath, module.subjects)
+        val lesson = Lesson(module.sh1ID, module.moduleTitle, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
     return lessons
@@ -152,7 +150,7 @@ fun List<Module>.toLesson(): List<Lesson> {
 
 fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
-    favoriteModule.id = 1
+    favoriteModule.sh1ID = "1"
     favoriteModule.moduleTitle = "Bookmarked"
     favoriteModule.index = 1
     return favoriteModule

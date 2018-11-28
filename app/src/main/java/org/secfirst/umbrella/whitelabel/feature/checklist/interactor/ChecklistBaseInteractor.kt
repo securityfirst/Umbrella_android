@@ -22,7 +22,7 @@ interface ChecklistBaseInteractor : BaseInteractor {
 
     suspend fun fetchAllChecklist(): List<Checklist>
 
-    suspend fun fetchSubjectById(subjectId: Long): Subject?
+    suspend fun fetchSubjectById(subjectSha1ID: String): Subject?
 
     suspend fun fetchDifficultyById(difficultyId: Long): Difficulty
 

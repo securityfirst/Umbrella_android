@@ -17,10 +17,10 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor = interactor), LessonBasePresenter<V, I> {
 
 
-    override fun submitSelectHead(moduleId: Long) {
+    override fun submitSelectHead(moduleSha1ID: String) {
         launchSilent(uiContext) {
             interactor?.let {
-                val module = it.fetchLesson(moduleId)
+                val module = it.fetchLesson(moduleSha1ID)
                 val markdownsFavorite = it.fetchAllFavorites()
                 module?.let { safeModule ->
                     if (safeModule.markdowns.size > SINGLE_CHOICE) {
@@ -30,7 +30,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                         val singleMarkdown = safeModule.markdowns.last()
                         getView()?.startSegmentDetail(singleMarkdown)
                     }
-                    if (moduleId == FAVORITE_INDEX && markdownsFavorite.isNotEmpty()) {
+                    if (moduleSha1ID == FAVORITE_INDEX && markdownsFavorite.isNotEmpty()) {
                         safeModule.markdowns = markdownsFavorite.toMutableList()
                         getView()?.startSegmentController(safeModule)
                     }
@@ -42,14 +42,14 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectLesson(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let {
-                val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
-                val subjectMarkdown = it.fetchMarkdownBySubject(subject.id)
+                val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.sh1ID)
+                val subjectMarkdown = it.fetchMarkdownBySubject(subject.sh1ID)
 
                 if (difficultyPreferred != null)
                     difficultyPreferred.difficulty?.let { safePreferred ->
                         getView()?.startDeferredSegment(safePreferred)
                     }
-                else if (subject.difficulties.isEmpty() && subjectMarkdown.isNotEmpty()) {
+                else if (subject.difficulties.isEmpty()) {
                     getView()?.startSegmentController(subject)
                 } else {
                     getView()?.startDifficultyController(subject)

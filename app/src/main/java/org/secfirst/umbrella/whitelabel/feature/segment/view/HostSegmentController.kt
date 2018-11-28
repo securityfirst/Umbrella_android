@@ -13,8 +13,8 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
-import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
+import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
@@ -125,7 +125,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     private fun saveDifficultySelect(spinnerSelected: Difficulty) {
         if (spinnerSelected.id != 0L)
             spinnerSelected.subject?.let { subject ->
-                presenter.submitDifficultySelected(subject.id, spinnerSelected)
+                presenter.submitDifficultySelected(subject.sh1ID, spinnerSelected)
             }
     }
 }

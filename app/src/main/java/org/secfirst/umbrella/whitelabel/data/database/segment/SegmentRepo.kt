@@ -6,15 +6,16 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface SegmentRepo {
-    suspend fun loadSubject(subjectId: Long): Subject?
 
-    suspend fun loadModule(moduleId: Long): Module?
+    suspend fun loadSubject(sha1ID: String): Subject?
 
-    suspend fun loadMarkdowns(subjectId: Long): List<Markdown>
+    suspend fun loadModule(sha1ID: String): Module?
+
+    suspend fun loadMarkdowns(subjectSha1ID: String): List<Markdown>
 
     suspend fun saveChecklist(checklist: Checklist)
 
     suspend fun saveMarkdown(markdown: Markdown)
 
-    suspend fun saveDifficultySelect(subjectId: Long, difficulty: Difficulty)
+    suspend fun saveDifficultySelect(subjectSha1ID: String, difficulty: Difficulty)
 }

@@ -19,9 +19,9 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
         getView()?.startSegment(selectDifficulty)
     }
 
-    override fun saveDifficultySelect(difficulty: Difficulty, subjectId: Long) {
+    override fun saveDifficultySelect(difficulty: Difficulty, subjectSha1ID: String) {
         launchSilent(uiContext) {
-            interactor?.insertTopicPreferred(DifficultyPreferred(subjectId, difficulty))
+            interactor?.insertTopicPreferred(DifficultyPreferred(subjectSha1ID, difficulty))
         }
     }
 

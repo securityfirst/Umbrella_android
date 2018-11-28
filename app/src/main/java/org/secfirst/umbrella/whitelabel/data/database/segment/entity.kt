@@ -36,7 +36,7 @@ data class Markdown(
     constructor(sha1ID: String, text: String) : this(sha1ID, text, recoveryTitle(text), recoveryIndex(text))
 
     companion object {
-        const val FAVORITE_INDEX = 1L
+        const val FAVORITE_INDEX = "1"
         private const val TAG_INDEX = "index: "
         private const val TAG_TITLE = "title: "
         const val SINGLE_CHOICE = 1

@@ -18,10 +18,10 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getSubject(subjectId: Long): Subject? = withContext(ioContext) {
+    suspend fun getSubject(subjectSh1ID: String): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(subjectId))
+                .where(Subject_Table.sh1ID.`is`(subjectSh1ID))
                 .querySingle()
     }
 
@@ -32,17 +32,17 @@ interface LessonDao {
                 .querySingle()
     }
 
-    suspend fun getMarkdownBySubject(subjectId: Long): List<Markdown> = withContext(ioContext) {
+    suspend fun getMarkdownBySubject(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.subject_id.`is`(subjectId))
+                .where(Markdown_Table.sha1ID.`is`(subjectSh1ID))
                 .queryList()
     }
 
-    suspend fun getMarkdownByModule(moduleId: Long): Markdown? = withContext(ioContext) {
+    suspend fun getMarkdownByModule(sha1ID: String): Markdown? = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.module_id.`is`(moduleId))
+                .where(Markdown_Table.module_sh1ID.`is`(sha1ID))
                 .querySingle()
     }
 
@@ -53,17 +53,17 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getDifficultyPreferred(subjectId: Long): DifficultyPreferred? = withContext(ioContext) {
+    suspend fun getDifficultyPreferred(subjectSh1ID: String): DifficultyPreferred? = withContext(ioContext) {
         SQLite.select()
                 .from(DifficultyPreferred::class.java)
-                .where(DifficultyPreferred_Table.subjectId.`is`(subjectId))
+                .where(DifficultyPreferred_Table.subjectSha1ID.`is`(subjectSh1ID))
                 .querySingle()
     }
 
-    suspend fun getLessonBy(id: Long): Module? = withContext(ioContext) {
+    suspend fun getLessonBy(sha1ID: String): Module? = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
-                .where(Module_Table.id.`is`(id))
+                .where(Module_Table.sh1ID.`is`(sha1ID))
                 .querySingle()
     }
 

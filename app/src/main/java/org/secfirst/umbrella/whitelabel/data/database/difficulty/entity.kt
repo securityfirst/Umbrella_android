@@ -120,7 +120,7 @@ inline fun MutableList<Module>.walkThroughDifficulty(action: (Difficulty) -> Uni
 
 @Table(database = AppDatabase::class)
 data class DifficultyPreferred(@PrimaryKey
-                               var subjectId: Long = 0,
+                               var subjectSha1ID: String = "",
                                @ForeignKey
                                var difficulty: Difficulty? = null) : BaseModel()
 
