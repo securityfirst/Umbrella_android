@@ -46,10 +46,10 @@ interface LessonDao {
                 .querySingle()
     }
 
-    suspend fun getMarkdowns(id: Long): List<Markdown> = withContext(ioContext) {
+    suspend fun getMarkdowns(sha1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.id.`is`(id))
+                .where(Markdown_Table.sha1ID.`is`(sha1ID))
                 .queryList()
     }
 

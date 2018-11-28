@@ -8,7 +8,7 @@ class LessonRepository @Inject constructor(private val lessonDao: LessonDao) : L
 
     override suspend fun loadMarkdownByModule(moduleId: Long) = lessonDao.getMarkdownByModule(moduleId)
 
-    override suspend fun loadMarkdownsBy(id: Long) = lessonDao.getMarkdowns(id)
+    override suspend fun loadMarkdownsBy(sha1ID : String) = lessonDao.getMarkdowns(sha1ID)
 
     override suspend fun loadMarkdownBySubject(id: Long) = lessonDao.getMarkdownBySubject(id)
 

@@ -38,7 +38,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
 
     private fun loadElement(pwd: String, pairFile: Pair<String, File>) {
         val file = pairFile.second
-        val fileID = pairFile.first
+        val sha1ID = pairFile.first
 
         when (getLevelOfPath(pwd)) {
             ELEMENT_LEVEL -> {
@@ -47,7 +47,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                         when (getDelimiter(file.nameWithoutExtension)) {
                             TypeFile.SEGMENT.value -> {
                                 val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                                it.markdowns.add(Markdown(markdownFormatted).removeHead())
+                                it.markdowns.add(Markdown(sha1ID, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> it.checklist.add(parseYmlFile(file, Checklist::class))
                         }
@@ -60,7 +60,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                         when (getDelimiter(file.nameWithoutExtension)) {
                             TypeFile.SEGMENT.value -> {
                                 val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                                subElement.markdowns.add(Markdown(markdownFormatted).removeHead())
+                                subElement.markdowns.add(Markdown(sha1ID, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> subElement.checklist.add(parseYmlFile(file, Checklist::class))
                         }
@@ -73,7 +73,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                         when (getDelimiter(file.nameWithoutExtension)) {
                             TypeFile.SEGMENT.value -> {
                                 val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                                child.markdowns.add(Markdown(markdownFormatted).removeHead())
+                                child.markdowns.add(Markdown(sha1ID, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> child.checklist.add(parseYmlFile(file, Checklist::class))
                         }

@@ -43,7 +43,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         launchSilent(uiContext) {
             interactor?.let {
                 val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
-                val subjectMarkdown = it.fetchMarkdownsBy(subject.id)
+                val subjectMarkdown = it.fetchMarkdownBySubject(subject.id)
 
                 if (difficultyPreferred != null)
                     difficultyPreferred.difficulty?.let { safePreferred ->

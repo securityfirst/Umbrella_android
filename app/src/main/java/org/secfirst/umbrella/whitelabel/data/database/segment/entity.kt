@@ -19,8 +19,8 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 @Table(database = AppDatabase::class,
         allFields = true, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
+        @PrimaryKey
+        var sha1ID: String = "",
         var text: String = "",
         var title: String = "",
         var index: String = "",
@@ -33,7 +33,7 @@ data class Markdown(
         @ForeignKey(stubbedRelationship = true)
         var difficulty: Difficulty? = null) : Parcelable {
 
-    constructor(text: String) : this(0, text, recoveryTitle(text), recoveryIndex(text))
+    constructor(sha1ID: String, text: String) : this(sha1ID, text, recoveryTitle(text), recoveryIndex(text))
 
     companion object {
         const val FAVORITE_INDEX = 1L

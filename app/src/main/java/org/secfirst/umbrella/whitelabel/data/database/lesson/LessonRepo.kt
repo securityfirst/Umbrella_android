@@ -16,7 +16,7 @@ interface LessonRepo {
 
     suspend fun loadMarkdownByModule(moduleId: Long): Markdown?
 
-    suspend fun loadMarkdownsBy(id: Long): List<Markdown>
+    suspend fun loadMarkdownsBy(sha1ID: String): List<Markdown>
 
     suspend fun loadDifficultyBy(id: Long): Difficulty?
 

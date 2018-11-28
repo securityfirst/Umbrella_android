@@ -12,7 +12,7 @@ class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo
 
     override suspend fun fetchMarkdownByModule(moduleId: Long) = lessonRepo.loadMarkdownByModule(moduleId)
 
-    override suspend fun fetchMarkdownsBy(id: Long) = lessonRepo.loadMarkdownsBy(id)
+    override suspend fun fetchMarkdownsBy(sha1ID: String) = lessonRepo.loadMarkdownsBy(sha1ID)
 
     override suspend fun fetchMarkdownBySubject(id: Long) = lessonRepo.loadMarkdownBySubject(id)
 
