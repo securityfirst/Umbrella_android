@@ -65,10 +65,13 @@ class TourController : BaseController(), TourView {
             val tourAdapter = TourAdapter(this)
             it.adapter = tourAdapter
             tourAdapter.setData(viewList)
+            pageIndicatorView.count = tourAdapter.count
             it.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {}
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
                 override fun onPageSelected(position: Int) {
+                    pageIndicatorView.selection = position;
+
                     if (position == viewList.lastIndex)
                         acceptButton?.let { btn -> btn.visibility = VISIBLE }
                     else
