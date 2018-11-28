@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
+import com.commonsware.cwac.anddown.AndDown
 import kotlinx.android.synthetic.main.segment_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -19,6 +20,7 @@ import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseIn
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
 import org.secfirst.umbrella.whitelabel.misc.initGridView
+import saveHtmlFile
 import javax.inject.Inject
 
 
@@ -120,8 +122,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun onSegmentShareClick(markdown: Markdown) {
+        val andDown = AndDown()
+        val result = andDown.markdownToHtml(markdown.text, AndDown.HOEDOWN_EXT_QUOTE, 0)
+        saveHtmlFile(result)
         val intent = Intent(Intent.ACTION_SENDTO,
                 Uri.parse("mailto:?subject=${markdown.title}&body=${Uri.encode(markdown.text)}"))
+
         startActivity(intent)
     }
 

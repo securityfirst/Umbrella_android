@@ -4,14 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
+import android.text.format.DateFormat
 import android.util.Log
 import com.jakewharton.processphoenix.ProcessPhoenix
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
-import java.io.FileInputStream
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 
 class Extensions {
     companion object {
@@ -50,6 +49,25 @@ class Extensions {
             }
         }
     }
+}
+
+fun saveHtmlFile(html : String?) {
+
+    val path = Environment.getExternalStorageDirectory().path
+    var fileName = DateFormat.format("dd_MM_yyyy_hh_mm_ss", System.currentTimeMillis()).toString()
+    fileName += ".html"
+    val file = File(path, fileName)
+    try {
+        val out = FileOutputStream(file)
+        val data = html?.toByteArray()
+        out.write(data)
+        out.close()
+    } catch (e: FileNotFoundException) {
+        e.printStackTrace()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
 }
 
 fun MainActivity.requestExternalStoragePermission() {
