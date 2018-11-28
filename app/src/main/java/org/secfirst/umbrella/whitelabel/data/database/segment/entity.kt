@@ -62,7 +62,8 @@ fun Difficulty.toSegmentController(host: Controller): SegmentController {
 
 fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
     val controllers = mutableListOf<SegmentDetailController>()
-    this.forEach { markdown ->
+    val sortedMarkdowns = this.sortedWith(compareBy { it.index })
+    sortedMarkdowns.forEach { markdown ->
         val markdowns = mutableListOf<Markdown>()
         markdowns.add(markdown)
         val controller = SegmentDetailController(markdown)

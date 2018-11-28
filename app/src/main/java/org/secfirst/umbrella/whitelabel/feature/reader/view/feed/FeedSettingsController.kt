@@ -1,48 +1,43 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
-import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
-import kotlinx.android.synthetic.main.alert_control.view.*
-import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_settings_view.*
-import org.jetbrains.anko.AnkoContext
+import kotlinx.android.synthetic.main.feed_settings_view.view.*
 import org.jetbrains.anko.textColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.component.DialogManager
+import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
+import org.secfirst.umbrella.whitelabel.component.FeedSourceDialog
+import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
-import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
-import org.secfirst.umbrella.whitelabel.misc.init
 import javax.inject.Inject
 
 
-class FeedSettingsController : BaseController(), ReaderView {
+class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.FeedLocationListener,
+        RefreshIntervalDialog.RefreshIntervalListener,
+        FeedSourceDialog.FeedSourceListener {
 
     @Inject
     internal lateinit var presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>
     private lateinit var refreshIntervalView: View
-    private lateinit var feedSourceDialog: FeedSourceDialog
-    private lateinit var refreshIntervalAlertDialog: AlertDialog
-    private lateinit var feedSourceAlertDialog: AlertDialog
-    private lateinit var feedLocationAutoText: FeedLocationAutoText
     private var feedsCheckbox = listOf<FeedSource>()
     private lateinit var feedLocationView: View
-    private lateinit var feedLocationAlertDialog: AlertDialog
     private var feedLocation: FeedLocation? = null
+    private lateinit var feedLocationDialog: FeedLocationDialog
+    private lateinit var feedRefreshIntervalDialog: RefreshIntervalDialog
+    private lateinit var feedSourceDialog: FeedSourceDialog
 
     override fun onInject() {
         DaggerReanderComponent.builder()
@@ -51,35 +46,20 @@ class FeedSettingsController : BaseController(), ReaderView {
                 .inject(this)
     }
 
-    override fun onAttach(view: View) {
-        super.onAttach(view)
-        setUndefinedFeed?.setOnClickListener { onClickUndefinedFeed() }
-        setRefreshInterval?.setOnClickListener { onClickRefreshInterval() }
-        setLocation?.setOnClickListener { onClickFeedLocation() }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         presenter.onAttach(this)
+        val mainView = inflater.inflate(R.layout.feed_settings_view, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
         feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
-
         presenter.prepareView()
 
-        feedLocationView.alertControlCancel.setOnClickListener { feedLocationCancel() }
-        feedLocationView.alertControlOk.setOnClickListener { feedLocationOk() }
-        refreshIntervalView.alertControlOk.setOnClickListener { refreshIntervalOk() }
-        refreshIntervalView.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
+        mainView.setUndefinedFeed.setOnClickListener { onClickUndefinedFeed() }
+        mainView.setRefreshInterval.setOnClickListener { onClickRefreshInterval() }
+        mainView.setLocation.setOnClickListener { onClickFeedLocation() }
+        mainView.setFeedSource.setOnClickListener { onClickFeedSource() }
 
-        refreshIntervalAlertDialog = AlertDialog
-                .Builder(activity)
-                .setView(refreshIntervalView)
-                .create()
-        feedLocationAlertDialog = AlertDialog
-                .Builder(activity)
-                .setView(feedLocationView)
-                .create()
-
-        return inflater.inflate(R.layout.feed_settings_view, container, false)
+        feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
+        return mainView
     }
 
     private fun onClickUndefinedFeed() {
@@ -96,72 +76,16 @@ class FeedSettingsController : BaseController(), ReaderView {
     }
 
     private fun onClickRefreshInterval() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return refreshIntervalAlertDialog
-            }
-        })
+        feedRefreshIntervalDialog.show()
     }
 
     private fun onClickFeedLocation() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return feedLocationAlertDialog
-            }
-        })
+        feedLocationDialog.show()
     }
 
     private fun onClickFeedSource() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return feedSourceAlertDialog
-            }
-        })
+        feedSourceDialog.show()
     }
-
-    private fun feedSourceOK() {
-        feedsCheckbox = feedSourceDialog.getFeedSourcesUpdated()
-        val feedChecked = feedsCheckbox.filter { it.lastChecked }
-        presenter.submitInsertFeedSource(feedsCheckbox)
-        populateFeedSource(feedsCheckbox)
-        var stringLocation = ""
-        feedLocation?.let { stringLocation = it.location }
-
-        if (stringLocation.isNotBlank() && feedChecked.isNotEmpty())
-            feedLocation?.let { dispatchFeedRequest(it, feedsCheckbox) }
-        else
-            onClickFeedLocation()
-
-        feedSourceAlertDialog.dismiss()
-    }
-
-    private fun refreshIntervalOk() {
-        val intervalSelected = refreshIntervalView.refreshInterval.selectedItem.toString()
-        feedRefreshInterval?.text = intervalSelected
-        refreshIntervalAlertDialog.dismiss()
-        val position = refreshIntervalView.refreshInterval.selectedItemPosition
-        presenter.submitPutRefreshInterval(position)
-    }
-
-    private fun feedLocationOk() {
-        val locationSelected = feedLocationView.autocompleteLocation.text.toString()
-        feedViewLocation?.text = locationSelected
-        feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
-        val newLocation = FeedLocation(1, locationSelected, feedLocationAutoText.getCountryCode())
-        feedLocation = newLocation
-        val feedsChecked = feedsCheckbox.filter { it.lastChecked }
-        if (feedsChecked.isNotEmpty())
-            dispatchFeedRequest(newLocation, feedsCheckbox)
-        else
-            onClickFeedSource()
-
-        presenter.submitInsertFeedLocation(newLocation)
-        feedLocationAlertDialog.dismiss()
-    }
-
 
     private fun populateFeedSource(feedsChecked: List<FeedSource>) {
         var feedCheckInString = ""
@@ -189,29 +113,16 @@ class FeedSettingsController : BaseController(), ReaderView {
     }
 
     private fun prepareFeedSource(feedSources: List<FeedSource>) {
+        feedSourceDialog = FeedSourceDialog(feedSources, context, this)
         populateFeedSource(feedSources)
-        feedSourceDialog = FeedSourceDialog(feedSources)
-        val feedSourceView = feedSourceDialog.createView(AnkoContext.create(context, this, false))
-        activity?.let {
-            feedSourceAlertDialog = AlertDialog
-                    .Builder(it)
-                    .setView(feedSourceView)
-                    .create()
-        }
-        feedSourceView.alertControlOk.setOnClickListener { feedSourceOK() }
-        feedSourceView.alertControlCancel.setOnClickListener { feedSourceCancel() }
-        setFeedSource?.setOnClickListener { onClickFeedSource() }
     }
 
     private fun prepareRefreshInterval(refreshPosition: Int) {
-        val spinner = refreshIntervalView.refreshInterval
-        spinner.init(R.array.refresh_interval_array)
-        refreshIntervalView.refreshInterval.setSelection(refreshPosition)
-        feedRefreshInterval?.text = spinner.selectedItem.toString()
+        feedRefreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshPosition, this)
+        feedRefreshInterval?.text = feedRefreshIntervalDialog.getCurrentChoice()
     }
 
     private fun prepareFeedLocation(feedLocation: FeedLocation) {
-        populateFeedAutoText(feedLocation)
         if (feedLocation.location.isNotBlank()) {
             this.feedLocation = feedLocation
             feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
@@ -221,18 +132,35 @@ class FeedSettingsController : BaseController(), ReaderView {
         }
     }
 
-    private fun populateFeedAutoText(feedLocation: FeedLocation) {
-        val selectedPlace = mutableListOf<String>()
-        selectedPlace.add(feedLocation.location)
-        val locationInfo = LocationInfo(selectedPlace, feedLocation.iso2)
-        feedLocationAutoText = FeedLocationAutoText(feedLocationView.autocompleteLocation,
-                context, presenter)
-        feedLocationAutoText.setLocationInfo(locationInfo)
+    override fun onLocationSuccess(feedLocation: FeedLocation) {
+        feedViewLocation?.text = feedLocation.location
+        feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
+        val feedsChecked = feedsCheckbox.filter { it.lastChecked }
+        if (feedsChecked.isNotEmpty())
+            dispatchFeedRequest(feedLocation, feedsCheckbox)
+        else
+            onClickFeedSource()
+
+        presenter.submitInsertFeedLocation(feedLocation)
     }
 
-    override fun newAddressAvailable(locationInfo: LocationInfo) {
-        if (locationInfo.locationNames.isNotEmpty())
-            feedLocationAutoText.updateAddress(locationInfo)
+    override fun onFeedSourceSuccess(feedSources: List<FeedSource>) {
+        feedsCheckbox = feedSources
+        val feedChecked = feedsCheckbox.filter { it.lastChecked }
+        presenter.submitInsertFeedSource(feedsCheckbox)
+        populateFeedSource(feedsCheckbox)
+        var stringLocation = ""
+        feedLocation?.let { stringLocation = it.location }
+
+        if (stringLocation.isNotBlank() && feedChecked.isNotEmpty())
+            feedLocation?.let { dispatchFeedRequest(it, feedsCheckbox) }
+        else
+            onClickFeedLocation()
+    }
+
+    override fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String) {
+        feedRefreshInterval?.text = selectedInterval
+        presenter.submitPutRefreshInterval(selectedPosition)
     }
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean) {
@@ -260,10 +188,4 @@ class FeedSettingsController : BaseController(), ReaderView {
     override fun feedError() {
         feedProgress?.visibility = View.INVISIBLE
     }
-
-    private fun refreshIntervalCancel() = refreshIntervalAlertDialog.dismiss()
-
-    private fun feedSourceCancel() = feedSourceAlertDialog.dismiss()
-
-    private fun feedLocationCancel() = feedLocationAlertDialog.dismiss()
 }

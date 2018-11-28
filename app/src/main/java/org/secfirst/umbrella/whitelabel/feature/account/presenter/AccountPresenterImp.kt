@@ -4,6 +4,8 @@ import com.raizlabs.android.dbflow.config.FlowManager
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
@@ -63,5 +65,34 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             getView()?.onImportBackupSuccess()
         } else
             getView()?.onImportBackupFail()
+    }
+
+    override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
+        launchSilent (uiContext){
+            interactor?.insertAllFeedSources(feedSources)
+        }
+    }
+
+    override fun submitFeedLocation(feedLocation: FeedLocation) {
+        launchSilent(uiContext) {
+            interactor?.insertFeedLocation(feedLocation)
+        }
+    }
+
+    override fun prepareView() {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val feedLocation = it.fetchFeedLocation()
+                val refreshFeedInterval = it.fetchRefreshInterval()
+                val feedSource = it.fetchFeedSources()
+                getView()?.loadDefaultValue(feedLocation, refreshFeedInterval, feedSource)
+            }
+        }
+    }
+
+    override fun submitPutRefreshInterval(position: Int) {
+        launchSilent(uiContext) {
+            interactor?.putRefreshInterval(position)
+        }
     }
 }

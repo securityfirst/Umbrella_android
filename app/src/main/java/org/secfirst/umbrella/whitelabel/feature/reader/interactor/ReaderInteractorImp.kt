@@ -6,7 +6,6 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepo
-import org.secfirst.umbrella.whitelabel.data.geolocation.GeolocationService
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
@@ -14,14 +13,11 @@ import javax.inject.Inject
 
 class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                               preferenceHelper: AppPreferenceHelper,
-                                              private val readerRepo: ReaderRepo,
-                                              private val geolocationService: GeolocationService)
+                                              private val readerRepo: ReaderRepo)
 
     : BaseInteractorImp(apiHelper, preferenceHelper), ReaderBaseInteractor {
 
-    override suspend fun deleteLocation()  = readerRepo.deleteLocation()
-
-    override suspend fun fetchGeolocation(nameLocation: String) = geolocationService.retrieveAddress(nameLocation)
+    override suspend fun deleteLocation() = readerRepo.deleteLocation()
 
     override suspend fun fetchRefreshInterval() = preferenceHelper.getRefreshInterval()
 
