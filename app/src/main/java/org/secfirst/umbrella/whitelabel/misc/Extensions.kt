@@ -2,7 +2,9 @@ import Extensions.Companion.PERMISSION_REQUEST_EXTERNAL_STORAGE
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.os.Environment
 import android.support.v4.app.ActivityCompat
+import android.text.format.DateFormat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -10,12 +12,34 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import kotlin.reflect.KClass
 
 class Extensions {
     companion object {
         const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
     }
+}
+
+fun saveHtmlFile(html : String?) {
+
+    val path = Environment.getExternalStorageDirectory().path
+    var fileName = DateFormat.format("dd_MM_yyyy_hh_mm_ss", System.currentTimeMillis()).toString()
+    fileName += ".html"
+    val file = File(path, fileName)
+    try {
+        val out = FileOutputStream(file)
+        val data = html?.toByteArray()
+        out.write(data)
+        out.close()
+    } catch (e: FileNotFoundException) {
+        e.printStackTrace()
+    } catch (e: IOException) {
+        e.printStackTrace()
+    }
+
 }
 
 fun MainActivity.requestExternalStoragePermission() {
