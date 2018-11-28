@@ -62,7 +62,7 @@ class HostFormController : BaseController(), FormView {
         activeForm.form = form
         activeForm.title = form.title
         activeForm.date = currentTime
-        activeForm.referenceId = form.id
+        activeForm.sha1Form= form.sh1ID
         router.pushController(RouterTransaction.with(FormController(activeForm)))
     }
 

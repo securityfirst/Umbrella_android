@@ -1,11 +1,11 @@
 package org.secfirst.umbrella.whitelabel.data.database.checklist
 
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface ChecklistRepo {
 
-    suspend fun loadChecklist(id: Long): Checklist?
+    suspend fun loadChecklist(sha1ID : String): Checklist?
 
     suspend fun insertChecklistContent(checklistContent: Content)
 

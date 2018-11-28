@@ -6,7 +6,7 @@ class FormRepository @Inject constructor(private val formDao: FormDao) : FormRep
 
     override suspend fun removeActiveForm(activeForm: ActiveForm) = formDao.delete(activeForm)
 
-    override suspend fun loadScreenBy(formId: Long): List<Screen> = formDao.getScreenBy(formId)
+    override suspend fun loadScreenBy(sh1ID : String): List<Screen> = formDao.getScreenBy(sh1ID)
 
     override suspend fun persistActiveForm(activeForm: ActiveForm) = formDao.saveActiveForm(activeForm)
 

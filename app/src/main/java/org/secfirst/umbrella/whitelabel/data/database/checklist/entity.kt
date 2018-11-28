@@ -16,8 +16,8 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.Checkl
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Checklist(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
+        @PrimaryKey
+        var sha1ID: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -52,7 +52,7 @@ data class Checklist(
         if (content.isEmpty()) {
             content = SQLite.select()
                     .from(Content::class.java)
-                    .where(Content_Table.checklist_id.eq(id))
+                    .where(Content_Table.checklist_sha1ID.eq(sha1ID))
                     .queryList()
         }
         return content

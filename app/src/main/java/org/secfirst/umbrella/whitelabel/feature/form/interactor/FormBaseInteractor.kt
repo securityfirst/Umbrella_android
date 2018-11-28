@@ -21,5 +21,5 @@ interface FormBaseInteractor : BaseInteractor {
 
     suspend fun fetchAnswerBy(formId: Long): List<Answer>
 
-    suspend fun fetchScreenBy(formId: Long): List<Screen>
+    suspend fun fetchScreenBy(sh1ID : String): List<Screen>
 }

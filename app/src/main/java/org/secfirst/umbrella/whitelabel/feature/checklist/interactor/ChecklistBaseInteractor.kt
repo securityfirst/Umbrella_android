@@ -2,13 +2,13 @@ package org.secfirst.umbrella.whitelabel.feature.checklist.interactor
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface ChecklistBaseInteractor : BaseInteractor {
 
-    suspend fun fetchChecklistBy(id: Long): Checklist?
+    suspend fun fetchChecklistBy(sha1ID : String): Checklist?
 
     suspend fun fetchChecklistProgressDone(): List<Checklist>
 

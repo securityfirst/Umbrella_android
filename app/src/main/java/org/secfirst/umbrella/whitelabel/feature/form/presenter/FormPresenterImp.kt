@@ -1,15 +1,15 @@
 package org.secfirst.umbrella.whitelabel.feature.form.presenter
 
 import kotlinx.coroutines.experimental.launch
+import org.secfirst.umbrella.whitelabel.data.VirtualStorage
 import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
 import org.secfirst.umbrella.whitelabel.data.database.form.Answer
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
-import org.secfirst.umbrella.whitelabel.data.VirtualStorage
+import org.secfirst.umbrella.whitelabel.data.database.form.asHTML
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.data.database.form.asHTML
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
@@ -59,7 +59,7 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     private fun populateReferenceId(activeForms: List<ActiveForm>, modelForms: List<Form>) {
         activeForms.forEach { activeForm ->
             modelForms.forEach { modelForm ->
-                if (activeForm.referenceId == modelForm.id)
+                if (activeForm.sha1Form == modelForm.sh1ID)
                     activeForm.form = modelForm
             }
         }

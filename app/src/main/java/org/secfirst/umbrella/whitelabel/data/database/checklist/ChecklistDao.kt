@@ -23,10 +23,10 @@ interface ChecklistDao {
         }
     }
 
-    suspend fun getChecklist(id: Long): Checklist? = withContext(ioContext) {
+    suspend fun getChecklist(sha1ID: String): Checklist? = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
-                .where(Checklist_Table.id.`is`(id))
+                .where(Checklist_Table.sha1ID.`is`(sha1ID))
                 .querySingle()
     }
 

@@ -14,5 +14,5 @@ interface FormRepo {
 
     suspend fun loadActiveForms(): List<ActiveForm>
 
-    suspend fun loadScreenBy(formId: Long): List<Screen>
+    suspend fun loadScreenBy(sh1ID : String): List<Screen>
 }

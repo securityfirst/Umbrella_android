@@ -13,7 +13,7 @@ class FormInteractorImp @Inject constructor(private val formRepo: FormRepo) : Ba
 
     override suspend fun fetchAnswerBy(formId: Long): List<Answer> = formRepo.loadAnswerBy(formId)
 
-    override suspend fun fetchScreenBy(formId: Long): List<Screen> = formRepo.loadScreenBy(formId)
+    override suspend fun fetchScreenBy(sh1ID : String): List<Screen> = formRepo.loadScreenBy(sh1ID)
 
     override suspend fun insertActiveForm(activeForm: ActiveForm) = formRepo.persistActiveForm(activeForm)
 

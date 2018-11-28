@@ -22,5 +22,5 @@ class ChecklistRepository @Inject constructor(private val checklistDao: Checklis
 
     override suspend fun insertChecklistContent(checklistContent: Content) = checklistDao.save(checklistContent)
 
-    override suspend fun loadChecklist(id: Long) = checklistDao.getChecklist(id)
+    override suspend fun loadChecklist(sha1ID: String) = checklistDao.getChecklist(sha1ID)
 }

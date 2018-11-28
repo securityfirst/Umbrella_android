@@ -26,5 +26,5 @@ class ChecklistInteractorImp @Inject constructor(private val checklistRepo: Chec
 
     override suspend fun persistChecklistContent(checklistContent: Content) = checklistRepo.insertChecklistContent(checklistContent)
 
-    override suspend fun fetchChecklistBy(id: Long) = checklistRepo.loadChecklist(id)
+    override suspend fun fetchChecklistBy(sha1ID: String) = checklistRepo.loadChecklist(sha1ID)
 }

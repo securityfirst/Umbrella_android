@@ -13,8 +13,8 @@ import java.io.Serializable
 
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 data class Form(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
+        @PrimaryKey
+        var sh1ID: String = "",
         @Column
         var title: String = "",
         var screens: MutableList<Screen> = arrayListOf()) : BaseModel(), Serializable {
@@ -24,7 +24,7 @@ data class Form(
         if (screens.isEmpty()) {
             screens = SQLite.select()
                     .from(Screen::class.java)
-                    .where(Screen_Table.form_id.eq(id))
+                    .where(Screen_Table.form_sh1ID.eq(sh1ID))
                     .queryList()
         }
         return screens
@@ -101,8 +101,8 @@ data class Option(
 data class ActiveForm(@PrimaryKey(autoincrement = true)
                       var id: Long = 0,
                       var form: Form = Form(),
-                      @Column(name = "form_model_id")
-                      var referenceId: Long = 0,
+                      @Column(name = "form_sha1")
+                      var sha1Form: String = "",
                       @Column
                       var date: String = "",
                       @Column

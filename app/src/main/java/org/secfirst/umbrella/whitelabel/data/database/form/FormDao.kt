@@ -4,7 +4,6 @@ import android.util.Log
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 
@@ -60,10 +59,10 @@ interface FormDao {
                 .queryList()
     }
 
-    suspend fun getScreenBy(formId: Long): List<Screen> = withContext(ioContext) {
+    suspend fun getScreenBy(sh1ID : String): List<Screen> = withContext(ioContext) {
         SQLite.select()
                 .from(Screen::class.java)
-                .where(Screen_Table.form_id.`is`(formId))
+                .where(Screen_Table.form_sh1ID.`is`(sh1ID))
                 .queryList()
     }
 }
