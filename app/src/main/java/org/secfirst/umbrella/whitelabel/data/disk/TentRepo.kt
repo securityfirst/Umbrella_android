@@ -7,7 +7,7 @@ interface TentRepo {
 
     suspend fun fetchRepository(): Boolean
 
-    suspend fun updateRepository(): Boolean
+    suspend fun updateRepository(): List<Pair<String,File>>
 
     suspend fun loadElementsFile(): List<Pair<String,File>>
 

@@ -32,7 +32,6 @@ class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) : Ser
 
     private fun addElement(pwd: String, pairFile: Pair<String, File>) {
         val currentFile = pairFile.second
-
         val element = parseYmlFile(currentFile, Element::class)
         element.path = pwd
         element.sh1ID = pairFile.first

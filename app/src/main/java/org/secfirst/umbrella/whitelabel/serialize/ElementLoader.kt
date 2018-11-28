@@ -22,6 +22,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
     private lateinit var root: Root
 
     suspend fun load(root: Root): Root {
+
         withContext(ioContext) {
             this.root = root
             val filesPair = tentRepo.loadFile()

@@ -1,10 +1,11 @@
 package org.secfirst.umbrella.whitelabel.data.disk
 
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import java.io.File
 
-class TentConfig(private val repoPath: String, private val resourcesPath: String) {
-
+class TentConfig {
     companion object {
+        private val repoPath = UmbrellaApplication.instance.cacheDir.path + "/repo/"
         const val BRANCH_NAME: String = "refs/heads/master"
         var uriRepository = "https://github.com/douglasalipio/umbrella-content"
         const val ELEMENT_LEVEL = 3
@@ -12,20 +13,15 @@ class TentConfig(private val repoPath: String, private val resourcesPath: String
         const val CHILD_LEVEL = 5
         fun getDelimiter(fileName: String) = if (fileName == TypeFile.CATEGORY.value) fileName
         else fileName.substringBeforeLast("_")
+
+        fun isRepCreate() = File(repoPath).exists()
+
+        fun isNotRepCreate() = !File(repoPath).exists()
+
+        fun getPathRepository(): String = repoPath
+
+        fun extensionFile(absolutePath: String) = absolutePath.substringAfterLast(".")
     }
-
-    fun isRepCreate() = File(repoPath).exists()
-
-    fun isNotRepCreate() = !File(repoPath).exists()
-
-    fun getPathRepository(): String = repoPath
-
-    fun isResourceCreate() = File(resourcesPath).exists()
-
-    fun isNotResourceCreate(fileName: String) = !File(resourcesPath + fileName).exists()
-
-    fun extensionFile(absolutePath: String) = absolutePath.substringAfterLast(".")
-
 }
 
 enum class TypeFile(val value: String) {

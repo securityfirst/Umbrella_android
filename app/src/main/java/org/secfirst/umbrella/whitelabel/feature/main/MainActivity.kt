@@ -13,7 +13,7 @@ import com.github.tbouron.shakedetector.library.ShakeDetector
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
+import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.isRepCreate
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
@@ -22,14 +22,11 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
-import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var router: Router
-    @Inject
-    internal lateinit var tentConfig: TentConfig
 
     private fun performDI() = AndroidInjection.inject(this)
 
@@ -59,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         navigation.removeShiftMode()
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
-        if (!router.hasRootController() && tentConfig.isRepCreate()) {
+        if (!router.hasRootController() && isRepCreate()) {
             router.setRoot(RouterTransaction.with(HostChecklistController()))
             navigation.menu.getItem(2).isChecked = true
         } else router.setRoot(RouterTransaction.with(TourController()))
@@ -106,10 +103,6 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (!router.handleBack())
             super.onBackPressed()
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     fun hideNavigation() = navigation?.let { it.visibility = INVISIBLE }

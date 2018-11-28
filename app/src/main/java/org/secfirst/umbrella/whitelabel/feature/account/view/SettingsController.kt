@@ -56,7 +56,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     @Inject
     internal lateinit var presentContent: ContentBasePresenter<ContentView, ContentBaseInteractor>
     @Inject
-    internal lateinit var prensetTent: TentBasePresenter<TentView, TentBaseInteractor>
+    internal lateinit var presentTent: TentBasePresenter<TentView, TentBaseInteractor>
 
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
@@ -91,7 +91,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
         presenter.onAttach(this)
         presentContent.onAttach(this)
-        prensetTent.onAttach(this)
+        presentTent.onAttach(this)
 
         exportAlertDialog = AlertDialog
                 .Builder(activity)
@@ -126,7 +126,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 return refreshServerProgress
             }
         })
-        prensetTent.submitUpdateRepository()
+        presentTent.submitUpdateRepository()
     }
 
     private fun feedSourceClick() = feedSourceDialog.show()
@@ -304,8 +304,9 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         return if (fileName.isBlank()) context.getString(R.string.export_dialog_default_message) else fileName
     }
 
-    override fun isUpdateRepository(res: Boolean) {
-        if (res) context.toast("Updated with success.")
+    override fun isUpdateRepository(pairFiles: List<Pair<String, File>>) {
+        context.toast("Updated with success.")
+        presentContent.updateContent(pairFiles)
         refreshServerProgress.dismiss()
     }
 }

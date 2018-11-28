@@ -5,7 +5,8 @@ import java.io.File
 
 interface TentView : BaseView {
 
-    fun isUpdateRepository(res: Boolean) {}
+    fun isUpdateRepository(pairFiles: List<Pair<String, File>>) {
+        println(pairFiles.forEach { it.second.absolutePath })}
 
     fun isFetchRepository(res: Boolean) {}
 

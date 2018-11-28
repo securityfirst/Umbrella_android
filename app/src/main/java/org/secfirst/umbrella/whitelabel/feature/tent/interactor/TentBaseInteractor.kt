@@ -5,7 +5,7 @@ import java.io.File
 
 interface TentBaseInteractor : BaseInteractor {
 
-    suspend fun updateRepository(): Boolean
+    suspend fun updateRepository(): List<Pair<String,File>>
 
     suspend fun fetchRepository(): Boolean
 

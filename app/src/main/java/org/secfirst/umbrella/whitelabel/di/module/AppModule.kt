@@ -32,7 +32,6 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepository
 import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentDao
 import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentRepo
 import org.secfirst.umbrella.whitelabel.data.database.segment.SegmentRepository
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.data.disk.TentDao
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepository
@@ -65,7 +64,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun providePreference(context: Context) = AppPreferenceHelper(context, "test")
+    internal fun providePreference(context: Context) = AppPreferenceHelper(context, "umbrella_preference")
 
 }
 
@@ -76,12 +75,7 @@ class TentContentModule {
 
     @Provides
     @Singleton
-    internal fun provideTentConfig(context: Context) = TentConfig(context.cacheDir.path + "/repo/",
-            context.cacheDir.path + "/resources/")
-
-    @Provides
-    @Singleton
-    internal fun provideTentRepo(tentConfig: TentConfig): TentRepo = TentRepository(tentDao, tentConfig)
+    internal fun provideTentRepo(): TentRepo = TentRepository(tentDao)
 }
 
 
