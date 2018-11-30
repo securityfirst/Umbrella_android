@@ -78,8 +78,9 @@ interface TentDao {
 
         for (entry in entries) {
             val absoluteFilePath = getPathRepository() + entry.newPath
-            val pairFile = Pair<String, File>(entry.newId.name(), File(absoluteFilePath))
-            println(entry.changeType)
+            val pairFile = Pair<String, File>(entry.newPath, File(absoluteFilePath))
+            println("file ID - ${entry.newId.toObjectId().name}")
+
             files.add(pairFile)
         }
         return files
@@ -92,12 +93,12 @@ interface TentDao {
         entry.forEach { diffEntry ->
             val fileName = diffEntry.newPath.nameWithoutExtension().shortName()
             val absoluteFilePath = getPathRepository() + diffEntry.newPath
-            println(diffEntry.newPath)
+            println("${diffEntry.newPath} ${diffEntry.newId.name()}")
             if (fileName == TypeFile.SEGMENT.value ||
                     fileName == TypeFile.CHECKLIST.value ||
                     fileName == TypeFile.FORM.value ||
                     fileName == TypeFile.IMG_CATEGORY.value)
-                files.add(Pair(diffEntry.newId.name(), File(absoluteFilePath)))
+                files.add(Pair(diffEntry.newPath, File(absoluteFilePath)))
         }
         return files.toList()
     }
@@ -110,7 +111,7 @@ interface TentDao {
                 val fileName = diffEntry.newPath.nameWithoutExtension()
                 val absoluteFilePath = getPathRepository() + diffEntry.newPath
                 if (fileName == TypeFile.CATEGORY.value)
-                    files.add(Pair(diffEntry.newId.name(), File(absoluteFilePath)))
+                    files.add(Pair(diffEntry.newPath, File(absoluteFilePath)))
             }
         }
         return files.toList()

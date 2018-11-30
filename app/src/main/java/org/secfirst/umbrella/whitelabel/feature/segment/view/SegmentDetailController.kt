@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.tiagohm.markdownview.css.styles.Github
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import kotlinx.android.synthetic.main.segment_detail.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -34,7 +33,6 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
         super.onAttach(view)
         markdownView.addStyleSheet(Github())
         markdownView.loadMarkdown(markdown.text)
-        markdownView.text.toString()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

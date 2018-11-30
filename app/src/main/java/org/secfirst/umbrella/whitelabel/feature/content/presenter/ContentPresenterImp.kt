@@ -5,20 +5,26 @@ import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
+import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.CHILD_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.ELEMENT_LEVEL
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.SUB_ELEMENT_LEVEL
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getPathRepository
+import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimiter
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import org.secfirst.umbrella.whitelabel.serialize.parseYmlFile
@@ -34,47 +40,75 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 
     override fun updateContent(pairFiles: List<Pair<String, File>>) {
         launchSilent(uiContext) {
+            val checklists = mutableListOf<Checklist>()
+            val markdowns = mutableListOf<Markdown>()
+            val forms = mutableListOf<Form>()
+            val modules = mutableListOf<Module>()
+            val subjects = mutableListOf<Subject>()
+            val difficulties = mutableListOf<Difficulty>()
+
             interactor?.let {
                 pairFiles.forEach { pair ->
-
                     val file = pair.second
                     val sha1ID = pair.first
-                    val absoluteFilePath = getPathRepository() + file.absolutePath
+                    val absoluteFilePath = file.path.substringAfterLast(PathUtils.basePath(), "")
                     val pwd = getWorkDirectory(absoluteFilePath)
 
-                    when (absoluteFilePath) {
+                    when (getDelimiter(file.nameWithoutExtension)) {
                         TypeFile.SEGMENT.value -> {
-                            val newSegment = parseYmlFile(file, Markdown::class)
-                            newSegment.sha1ID = sha1ID
+                            val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
+                            val newMarkdown = Markdown(sha1ID, markdownFormatted).removeHead()
+                            val oldMarkdown = it.getMarkdown(sha1ID)
+                            oldMarkdown?.let { oldMarkdownSafe ->
+                                markdowns.add(updateMarkdownForeignKey(newMarkdown, oldMarkdownSafe))
+                            }
                         }
                         TypeFile.CHECKLIST.value -> {
                             val newChecklist = parseYmlFile(file, Checklist::class)
                             newChecklist.sha1ID = sha1ID
+                            val oldChecklist = it.getChecklist(sha1ID)
+                            oldChecklist?.let { oldChecklistSafe ->
+                                checklists.add(updateChecklistForeignKey(newChecklist, oldChecklistSafe))
+                            }
+
                         }
                         TypeFile.FORM.value -> {
                             val newForm = parseYmlFile(file, Form::class)
                             newForm.sh1ID = sha1ID
+                            val oldForm = it.getForm(sha1ID)
+                            oldForm?.let { oldFormSafe -> updateFormForeignKey(newForm, oldFormSafe) }
+                            forms.add(newForm)
                         }
-                    }
-
-                    when (getLevelOfPath(pwd)) {
-                        ELEMENT_LEVEL -> {
-                            val newElement = parseYmlFile(file, Element::class)
-                            newElement.sh1ID = sha1ID
-                            newElement.convertToModule
-                        }
-                        SUB_ELEMENT_LEVEL -> {
-                            val newElement = parseYmlFile(file, Element::class)
-                            newElement.sh1ID = sha1ID
-                            newElement.convertToSubCategory
-                        }
-                        CHILD_LEVEL -> {
-                            val newElement = parseYmlFile(file, Element::class)
-                            newElement.sh1ID = sha1ID
-                            newElement.convertToDifficulty
+                        else -> {
+                            when (getLevelOfPath(pwd)) {
+                                ELEMENT_LEVEL -> {
+                                    val newElement = parseYmlFile(file, Element::class)
+                                    newElement.sh1ID = sha1ID
+                                    val module = newElement.convertToModule
+                                    modules.add(module)
+                                }
+                                SUB_ELEMENT_LEVEL -> {
+                                    val newElement = parseYmlFile(file, Element::class)
+                                    newElement.sh1ID = sha1ID
+                                    val subject = newElement.convertToSubCategory
+                                    subjects.add(subject)
+                                }
+                                CHILD_LEVEL -> {
+                                    val newElement = parseYmlFile(file, Element::class)
+                                    newElement.sh1ID = sha1ID
+                                    val difficulty = newElement.convertToDifficulty
+                                    difficulties.add(difficulty)
+                                }
+                            }
                         }
                     }
                 }
+                it.saveAllMarkdowns(markdowns)
+                it.saveAllChecklists(checklists)
+                it.saveAllForms(forms)
+                it.saveAllModule(modules)
+                it.saveAllDifficulties(difficulties)
+                it.saveAllSubjects(subjects)
                 getView()?.downloadContentCompleted(true)
             }
         }
@@ -97,13 +131,39 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         }
     }
 
-    override fun cleanContent() {
-        val cacheDir = UmbrellaApplication.instance.cacheDir
-        FileUtils.deleteQuietly(cacheDir)
-        FlowManager.getDatabase(AppDatabase.NAME).reopen()
-        getView()?.onCleanDatabaseSuccess()
+    private fun updateChecklistForeignKey(newChecklist: Checklist, oldChecklist: Checklist): Checklist {
+        newChecklist.module = oldChecklist.module
+        newChecklist.subject = oldChecklist.subject
+        newChecklist.difficulty = oldChecklist.difficulty
+        return newChecklist
     }
 
+    private fun updateMarkdownForeignKey(newMarkdown: Markdown, oldMarkdown: Markdown): Markdown {
+        newMarkdown.module = oldMarkdown.module
+        newMarkdown.subject = oldMarkdown.subject
+        newMarkdown.difficulty = oldMarkdown.difficulty
+        return newMarkdown
+    }
+
+    private fun updateFormForeignKey(newForm: Form, oldForm: Form): Form {
+        for (i in newForm.screens.indices) {
+            newForm.screens[i].form = oldForm.screens[i].form
+            newForm.screens[i].id = oldForm.screens[i].id
+            for (j in newForm.screens[i].items.indices) {
+                val newItem = newForm.screens[i].items[j]
+                val oldItem = oldForm.screens[i].items[j]
+                newItem.id = oldItem.id
+                newItem.screen = oldItem.screen
+                for (y in newForm.screens[i].items[j].options.indices) {
+                    val newOption = newForm.screens[i].items[j].options[y]
+                    val oldOption = oldForm.screens[i].items[j].options[y]
+                    newOption.id = oldOption.id
+                    newOption.item = oldOption.item
+                }
+            }
+        }
+        return newForm
+    }
 
     private fun createFeedSources(): List<FeedSource> {
         val feedSources = mutableListOf<FeedSource>()
@@ -121,4 +181,13 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         feedSources.add(feedSource6)
         return feedSources
     }
+
+    override fun cleanContent() {
+        val cacheDir = UmbrellaApplication.instance.cacheDir
+        FileUtils.deleteQuietly(cacheDir)
+        FlowManager.getDatabase(AppDatabase.NAME).reopen()
+        getView()?.onCleanDatabaseSuccess()
+    }
+
+
 }
