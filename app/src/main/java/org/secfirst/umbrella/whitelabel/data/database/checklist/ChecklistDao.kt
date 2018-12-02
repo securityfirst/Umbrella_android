@@ -23,10 +23,10 @@ interface ChecklistDao {
         }
     }
 
-    suspend fun getChecklist(sha1ID: String): Checklist? = withContext(ioContext) {
+    suspend fun getChecklist(pathID: String): Checklist? = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
-                .where(Checklist_Table.sha1ID.`is`(sha1ID))
+                .where(Checklist_Table.path.`is`(pathID))
                 .querySingle()
     }
 
@@ -57,17 +57,17 @@ interface ChecklistDao {
                 .queryList()
     }
 
-    suspend fun getSubjectById(subjectSh1ID: String) = withContext(ioContext) {
+    suspend fun getSubjectById(subjectPathID: String) = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.sh1ID.`is`(subjectSh1ID))
+                .where(Subject_Table.path.`is`(subjectPathID))
                 .querySingle()
     }
 
-    suspend fun getDifficultyById(sha1ID: String): Difficulty = withContext(ioContext) {
+    suspend fun getDifficultyById(pathID: String): Difficulty = withContext(ioContext) {
         val result = SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.sha1ID.`is`(sha1ID))
+                .where(Difficulty_Table.path.`is`(pathID))
                 .querySingle()
         return@withContext result!!
 

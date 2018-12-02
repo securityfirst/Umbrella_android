@@ -30,16 +30,16 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                 val file = pairFile.second
                 val absolutePath = file.path.substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
-                loadElement(pwd, pairFile)
+                loadElement(pwd, pairFile, absolutePath)
                 loadForm(pairFile)
             }
         }
         return this.root
     }
 
-    private fun loadElement(pwd: String, pairFile: Pair<String, File>) {
+    private fun loadElement(pwd: String, pairFile: Pair<String, File>, absolutePath: String) {
         val file = pairFile.second
-        val sha1ID = pairFile.first
+        val pathId = pairFile.first
 
         when (getLevelOfPath(pwd)) {
             ELEMENT_LEVEL -> {
@@ -47,12 +47,12 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                     if (it.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
                             TypeFile.SEGMENT.value -> {
-                                val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                                it.markdowns.add(Markdown(sha1ID, markdownFormatted).removeHead())
+                                val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
+                                it.markdowns.add(Markdown(pathId, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val newChecklist = parseYmlFile(file, Checklist::class)
-                                newChecklist.sha1ID = sha1ID
+                                newChecklist.path = pathId
                                 it.checklist.add(newChecklist)
                             }
                         }
@@ -64,12 +64,12 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                     if (subElement.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
                             TypeFile.SEGMENT.value -> {
-                                val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                                subElement.markdowns.add(Markdown(sha1ID, markdownFormatted).removeHead())
+                                val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
+                                subElement.markdowns.add(Markdown(pathId, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val checklist = parseYmlFile(file, Checklist::class)
-                                checklist.sha1ID = sha1ID
+                                checklist.path = pathId
                                 subElement.checklist.add(checklist)
                             }
                         }
@@ -81,12 +81,12 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
                     if (child.path == pwd) {
                         when (getDelimiter(file.nameWithoutExtension)) {
                             TypeFile.SEGMENT.value -> {
-                                val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                                child.markdowns.add(Markdown(sha1ID, markdownFormatted).removeHead())
+                                val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
+                                child.markdowns.add(Markdown(pathId, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val newChecklist = parseYmlFile(file, Checklist::class)
-                                newChecklist.sha1ID = sha1ID
+                                newChecklist.path = pathId
                                 child.checklist.add(newChecklist)
                             }
                         }
@@ -101,7 +101,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serial
         val sha1ID = pairFile.first
         if (getDelimiter(file.nameWithoutExtension) == TypeFile.FORM.value) {
             val form = parseYmlFile(file, Form::class)
-            form.sh1ID = sha1ID
+            form.path = sha1ID
             root.forms.add(form)
         }
     }

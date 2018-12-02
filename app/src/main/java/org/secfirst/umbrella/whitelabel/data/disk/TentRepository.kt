@@ -7,8 +7,6 @@ class TentRepository @Inject constructor(private val tentDao: TentDao) : TentRep
 
     override suspend fun updateRepository() = tentDao.rebaseBranch()
 
-    override fun loadCategoryImage(imgName: String) = tentDao.filterImageCategoryFile(imgName)
-
     override suspend fun loadElementsFile() = tentDao.filterCategoryFiles()
 
     override fun loadFile() = tentDao.filterByElement()

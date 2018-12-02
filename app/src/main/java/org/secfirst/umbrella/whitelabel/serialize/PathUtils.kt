@@ -17,6 +17,14 @@ abstract class PathUtils {
         fun getWorkDirectory(path: String): String {
             val splitPath = getSplitPath(path)
             var pwd = ""
+            for (i in 1 until splitPath.size - 1)
+                pwd += splitPath[i] + "/"
+            return pwd
+        }
+
+        fun getWorkDirectoryFromImage(path: String): String {
+            val splitPath = getSplitPath(path)
+            var pwd = ""
             for (i in 0 until splitPath.size - 1)
                 pwd += splitPath[i] + "/"
             return pwd

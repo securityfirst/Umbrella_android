@@ -48,7 +48,9 @@ interface BaseDao {
     fun isDatabaseOK() = FlowManager.getDatabase(AppDatabase.NAME).isDatabaseIntegrityOk
 
     suspend fun saveModules(modules: List<Module>) {
-        withContext(ioContext) { modelAdapter<Module>().saveAll(modules) }
+        withContext(ioContext) {
+            modelAdapter<Module>().updateAll(modules)
+        }
     }
 
     suspend fun saveSubjects(subjects: List<Subject>) {
@@ -82,51 +84,51 @@ interface BaseDao {
         }
     }
 
-    suspend fun getModule(sha1ID: String) =
+    suspend fun getModule(pathID: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Module::class.java)
-                        .where(Module_Table.sh1ID.`is`(sha1ID))
+                        .where(Module_Table.path.`is`(pathID))
                         .querySingle()
             }
 
-    suspend fun getSubject(sha1ID: String) =
+    suspend fun getSubject(pathID: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Subject::class.java)
-                        .where(Subject_Table.sh1ID.`is`(sha1ID))
+                        .where(Subject_Table.path.`is`(pathID))
                         .querySingle()
             }
 
-    suspend fun getDifficulty(sha1ID: String) =
+    suspend fun getDifficulty(pathID: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Difficulty::class.java)
-                        .where(Difficulty_Table.sha1ID.`is`(sha1ID))
+                        .where(Difficulty_Table.path.`is`(pathID))
                         .querySingle()
             }
 
-    suspend fun getChecklist(sha1ID: String) =
+    suspend fun getChecklist(pathID: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Checklist::class.java)
-                        .where(Checklist_Table.sha1ID.`is`(sha1ID))
+                        .where(Checklist_Table.path.`is`(pathID))
                         .querySingle()
             }
 
-    suspend fun getMarkdown(sha1ID: String) =
+    suspend fun getMarkdown(pathID: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Markdown::class.java)
-                        .where(Markdown_Table.sha1ID.`is`(sha1ID))
+                        .where(Markdown_Table.path.`is`(pathID))
                         .querySingle()
             }
 
-    suspend fun getForm(sha1ID: String) =
+    suspend fun getForm(pathID: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Form::class.java)
-                        .where(Form_Table.sh1ID.`is`(sha1ID))
+                        .where(Form_Table.path.`is`(pathID))
                         .querySingle()
             }
 

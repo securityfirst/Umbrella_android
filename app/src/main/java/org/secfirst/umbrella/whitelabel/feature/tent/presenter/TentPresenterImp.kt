@@ -12,7 +12,7 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), TentBasePresenter<V, I> {
 
-    override  fun submitUpdateRepository() {
+    override fun submitUpdateRepository() {
         launchSilent(uiContext) {
             interactor?.let {
                 getView()?.isUpdateRepository(it.updateRepository())
@@ -32,14 +32,6 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
         launchSilent(uiContext) {
             interactor?.let {
                 getView()?.onLoadElementSuccess(it.loadElementsFile())
-            }
-        }
-    }
-
-    override fun submitLoadCategoryImage(imgName: String) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                getView()?.getCategoryImage(it.loadCategoryImage(imgName))
             }
         }
     }

@@ -8,9 +8,9 @@ class TentConfig {
         private val repoPath = UmbrellaApplication.instance.cacheDir.path + "/repo/"
         const val BRANCH_NAME: String = "refs/heads/master"
         var uriRepository = "https://github.com/douglasalipio/umbrella-content"
-        const val ELEMENT_LEVEL = 3
-        const val SUB_ELEMENT_LEVEL = 4
-        const val CHILD_LEVEL = 5
+        const val ELEMENT_LEVEL = 2
+        const val SUB_ELEMENT_LEVEL = 3
+        const val CHILD_LEVEL = 4
         fun getDelimiter(fileName: String) = if (fileName == TypeFile.CATEGORY.value) fileName
         else fileName.substringBeforeLast("_")
 

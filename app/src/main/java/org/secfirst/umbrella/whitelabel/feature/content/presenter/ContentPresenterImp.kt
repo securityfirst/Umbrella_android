@@ -43,30 +43,27 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
             val checklists = mutableListOf<Checklist>()
             val markdowns = mutableListOf<Markdown>()
             val forms = mutableListOf<Form>()
-            val modules = mutableListOf<Module>()
-            val subjects = mutableListOf<Subject>()
-            val difficulties = mutableListOf<Difficulty>()
 
             interactor?.let {
                 pairFiles.forEach { pair ->
                     val file = pair.second
-                    val sha1ID = pair.first
+                    val pathId = pair.first
                     val absoluteFilePath = file.path.substringAfterLast(PathUtils.basePath(), "")
                     val pwd = getWorkDirectory(absoluteFilePath)
 
                     when (getDelimiter(file.nameWithoutExtension)) {
                         TypeFile.SEGMENT.value -> {
                             val markdownFormatted = file.readText().replaceMarkdownImage(pwd)
-                            val newMarkdown = Markdown(sha1ID, markdownFormatted).removeHead()
-                            val oldMarkdown = it.getMarkdown(sha1ID)
+                            val newMarkdown = Markdown(pathId, markdownFormatted).removeHead()
+                            val oldMarkdown = it.getMarkdown(pathId)
                             oldMarkdown?.let { oldMarkdownSafe ->
                                 markdowns.add(updateMarkdownForeignKey(newMarkdown, oldMarkdownSafe))
                             }
                         }
                         TypeFile.CHECKLIST.value -> {
                             val newChecklist = parseYmlFile(file, Checklist::class)
-                            newChecklist.sha1ID = sha1ID
-                            val oldChecklist = it.getChecklist(sha1ID)
+                            newChecklist.path= pathId
+                            val oldChecklist = it.getChecklist(pathId)
                             oldChecklist?.let { oldChecklistSafe ->
                                 checklists.add(updateChecklistForeignKey(newChecklist, oldChecklistSafe))
                             }
@@ -74,41 +71,19 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                         }
                         TypeFile.FORM.value -> {
                             val newForm = parseYmlFile(file, Form::class)
-                            newForm.sh1ID = sha1ID
-                            val oldForm = it.getForm(sha1ID)
+                            newForm.path = pathId
+                            val oldForm = it.getForm(pathId)
                             oldForm?.let { oldFormSafe -> updateFormForeignKey(newForm, oldFormSafe) }
                             forms.add(newForm)
                         }
                         else -> {
-                            when (getLevelOfPath(pwd)) {
-                                ELEMENT_LEVEL -> {
-                                    val newElement = parseYmlFile(file, Element::class)
-                                    newElement.sh1ID = sha1ID
-                                    val module = newElement.convertToModule
-                                    modules.add(module)
-                                }
-                                SUB_ELEMENT_LEVEL -> {
-                                    val newElement = parseYmlFile(file, Element::class)
-                                    newElement.sh1ID = sha1ID
-                                    val subject = newElement.convertToSubCategory
-                                    subjects.add(subject)
-                                }
-                                CHILD_LEVEL -> {
-                                    val newElement = parseYmlFile(file, Element::class)
-                                    newElement.sh1ID = sha1ID
-                                    val difficulty = newElement.convertToDifficulty
-                                    difficulties.add(difficulty)
-                                }
-                            }
+                            updateElementFiles(pwd, pathId, file)
                         }
                     }
                 }
                 it.saveAllMarkdowns(markdowns)
                 it.saveAllChecklists(checklists)
                 it.saveAllForms(forms)
-                it.saveAllModule(modules)
-                it.saveAllDifficulties(difficulties)
-                it.saveAllSubjects(subjects)
                 getView()?.downloadContentCompleted(true)
             }
         }
@@ -131,10 +106,76 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         }
     }
 
+    private suspend fun updateElementFiles(pwd: String, sha1ID: String, file: File) {
+        val modules = mutableListOf<Module>()
+        val subjects = mutableListOf<Subject>()
+        val difficulties = mutableListOf<Difficulty>()
+        interactor?.let {
+            when (getLevelOfPath(pwd)) {
+                ELEMENT_LEVEL -> {
+                    val newElement = parseYmlFile(file, Element::class)
+                    newElement.pathId = sha1ID
+                    val module = newElement.convertToModule
+                    val oldModule = it.getModule(sha1ID)
+                    oldModule?.let { oldModuleSafe ->
+                        modules.add(module.updateModuleContent(oldModuleSafe))
+                    }
+                }
+                SUB_ELEMENT_LEVEL -> {
+                    val newElement = parseYmlFile(file, Element::class)
+                    newElement.pathId = sha1ID
+                    val subject = newElement.convertToSubCategory
+                    val oldSubject = it.getSubject(sha1ID)
+                    oldSubject?.let { oldSubjectSafe ->
+                        subjects.add(subject.updateSubjectContent(oldSubjectSafe))
+                    }
+                }
+                CHILD_LEVEL -> {
+                    val newElement = parseYmlFile(file, Element::class)
+                    newElement.pathId = sha1ID
+                    val difficulty = newElement.convertToDifficulty
+                    val oldDifficulty = it.getDifficulty(sha1ID)
+                    oldDifficulty?.let { oldDiffSafe ->
+                        difficulties.add(difficulty.updateDifficultyContent(oldDiffSafe))
+                    }
+                }
+                else -> {
+                }
+            }
+            it.saveAllModule(modules)
+            it.saveAllDifficulties(difficulties)
+            it.saveAllSubjects(subjects)
+        }
+    }
+
+
+    private fun Difficulty.updateDifficultyContent(oldDifficulty: Difficulty): Difficulty {
+        markdowns.addAll(oldDifficulty.markdowns)
+        checklist.addAll(oldDifficulty.checklist)
+        return this
+    }
+
+    private fun Subject.updateSubjectContent(oldSubject: Subject): Subject {
+        markdowns = oldSubject.markdowns
+        difficulties = oldSubject.difficulties
+        checklist = oldSubject.checklist
+        return this
+    }
+
+    private fun Module.updateModuleContent(oldModule: Module): Module {
+        oldModule.icon = icon
+        oldModule.moduleTitle = moduleTitle
+        oldModule.index = index
+        return oldModule
+    }
+
     private fun updateChecklistForeignKey(newChecklist: Checklist, oldChecklist: Checklist): Checklist {
         newChecklist.module = oldChecklist.module
         newChecklist.subject = oldChecklist.subject
         newChecklist.difficulty = oldChecklist.difficulty
+        for (i in newChecklist.content.indices) {
+            newChecklist.content[i].id = oldChecklist.content[i].id
+        }
         return newChecklist
     }
 
@@ -188,6 +229,4 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         FlowManager.getDatabase(AppDatabase.NAME).reopen()
         getView()?.onCleanDatabaseSuccess()
     }
-
-
 }

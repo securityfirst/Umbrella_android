@@ -36,10 +36,10 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         dashboards.add(dashboardTitle)
         interactor?.let { interactor ->
             itemList.forEach { checklist ->
-                val difficultyId = checklist.difficulty?.sha1ID
+                val difficultyId = checklist.difficulty?.path
                 if (difficultyId != null) {
                     val loadDifficulty = interactor.fetchDifficultyById(difficultyId)
-                    val subject = interactor.fetchSubjectById(loadDifficulty.subject!!.sh1ID)
+                    val subject = interactor.fetchSubjectById(loadDifficulty.subject!!.path)
                     val dashboardItem = Dashboard.Item(checklist.progress, subject!!.title, checklist, loadDifficulty)
                     dashboards.add(dashboardItem)
                 }

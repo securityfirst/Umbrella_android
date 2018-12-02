@@ -59,7 +59,7 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     private fun populateReferenceId(activeForms: List<ActiveForm>, modelForms: List<Form>) {
         activeForms.forEach { activeForm ->
             modelForms.forEach { modelForm ->
-                if (activeForm.sha1Form == modelForm.sh1ID)
+                if (activeForm.sha1Form == modelForm.path)
                     activeForm.form = modelForm
             }
         }

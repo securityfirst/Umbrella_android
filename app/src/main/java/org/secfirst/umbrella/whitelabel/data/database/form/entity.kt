@@ -14,7 +14,7 @@ import java.io.Serializable
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 data class Form(
         @PrimaryKey
-        var sh1ID: String = "",
+        var path: String = "",
         @Column
         var title: String = "",
         var screens: MutableList<Screen> = arrayListOf()) : BaseModel(), Serializable {
@@ -24,7 +24,7 @@ data class Form(
         if (screens.isEmpty()) {
             screens = SQLite.select()
                     .from(Screen::class.java)
-                    .where(Screen_Table.form_sh1ID.eq(sh1ID))
+                    .where(Screen_Table.form_path.eq(path))
                     .queryList()
         }
         return screens
@@ -137,8 +137,7 @@ data class Answer(
         var optionId: Long = 0,
         @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
                 onDelete = ForeignKeyAction.CASCADE,
-                deleteForeignKeyModel = false,
-                stubbedRelationship = true)
+                deleteForeignKeyModel = false, stubbedRelationship = true)
         var activeForm: ActiveForm? = null) : Serializable
 
 fun ActiveForm.asHTML(): String {

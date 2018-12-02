@@ -18,38 +18,38 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getSubject(subjectSh1ID: String): Subject? = withContext(ioContext) {
+    suspend fun getSubject(subjectPathId: String): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.sh1ID.`is`(subjectSh1ID))
+                .where(Subject_Table.path.`is`(subjectPathId))
                 .querySingle()
     }
 
     suspend fun getDifficultyBy(sha1ID: String): Difficulty? = withContext(ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.sha1ID.`is`(sha1ID))
+                .where(Difficulty_Table.path.`is`(sha1ID))
                 .querySingle()
     }
 
     suspend fun getMarkdownBySubject(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.sha1ID.`is`(subjectSh1ID))
+                .where(Markdown_Table.path.`is`(subjectSh1ID))
                 .queryList()
     }
 
     suspend fun getMarkdownByModule(sha1ID: String): Markdown? = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.module_sh1ID.`is`(sha1ID))
+                .where(Markdown_Table.module_path.`is`(sha1ID))
                 .querySingle()
     }
 
     suspend fun getMarkdowns(sha1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.sha1ID.`is`(sha1ID))
+                .where(Markdown_Table.path.`is`(sha1ID))
                 .queryList()
     }
 
@@ -63,7 +63,7 @@ interface LessonDao {
     suspend fun getLessonBy(sha1ID: String): Module? = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
-                .where(Module_Table.sh1ID.`is`(sha1ID))
+                .where(Module_Table.path.`is`(sha1ID))
                 .querySingle()
     }
 

@@ -43,7 +43,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     }
 
     private fun onDifficultClick(difficulty: Difficulty) {
-        presenter.saveDifficultySelect(difficulty, selectSubject.sh1ID)
+        presenter.saveDifficultySelect(difficulty, selectSubject.path)
         presenter.submitSelectedDifficulty(difficulty)
     }
 

@@ -13,7 +13,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 class Root(val elements: MutableList<Element> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())
 
 data class Element(
-        var sh1ID: String = "",
+        var pathId: String = "",
         var index: Int = 0,
         var title: String = "",
         var description: String = "",
@@ -30,7 +30,7 @@ data class Element(
 val Element.convertToModule: Module
     get() {
         val category = Module()
-        category.sh1ID = this.sh1ID
+        category.path= this.pathId
         category.checklist = this.checklist
         category.index = this.index
         category.description = this.description
@@ -45,7 +45,7 @@ val Element.convertToModule: Module
 val Element.convertToSubCategory: Subject
     get() {
         val subcategory = Subject()
-        subcategory.sh1ID = this.sh1ID
+        subcategory.path = this.pathId
         subcategory.checklist = this.checklist
         subcategory.index = this.index
         subcategory.description = this.description
@@ -59,8 +59,8 @@ val Element.convertToSubCategory: Subject
 val Element.convertToDifficulty: Difficulty
     get() {
         val child = Difficulty()
+        child.path = this.pathId
         child.checklist = this.checklist
-        child.sha1ID = this.sh1ID
         child.index = this.index
         child.description = this.description
         child.markdowns = this.markdowns

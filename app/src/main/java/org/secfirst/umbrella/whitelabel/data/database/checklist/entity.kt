@@ -17,7 +17,7 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.Checkl
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Checklist(
         @PrimaryKey
-        var sha1ID: String = "",
+        var path: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -26,21 +26,15 @@ data class Checklist(
         var favorite: Boolean = false,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
 
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var difficulty: Difficulty? = null,
 
         @JsonProperty("list")
@@ -52,7 +46,7 @@ data class Checklist(
         if (content.isEmpty()) {
             content = SQLite.select()
                     .from(Content::class.java)
-                    .where(Content_Table.checklist_sha1ID.eq(sha1ID))
+                    .where(Content_Table.checklist_path.eq(path))
                     .queryList()
         }
         return content
@@ -77,9 +71,7 @@ class Content(
         var id: Long = 0,
         @Column
         var check: String = "",
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
         var checklist: Checklist? = null,
         @Column

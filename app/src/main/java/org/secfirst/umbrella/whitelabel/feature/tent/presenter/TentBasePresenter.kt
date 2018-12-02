@@ -12,7 +12,5 @@ interface TentBasePresenter<V : TentView, I : TentBaseInteractor> : BasePresente
 
     fun submitLoadElementsFile()
 
-    fun submitLoadCategoryImage(imgName: String)
-
     fun submitLoadFile()
 }

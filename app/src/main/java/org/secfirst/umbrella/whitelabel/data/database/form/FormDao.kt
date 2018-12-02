@@ -59,10 +59,10 @@ interface FormDao {
                 .queryList()
     }
 
-    suspend fun getScreenBy(sh1ID : String): List<Screen> = withContext(ioContext) {
+    suspend fun getScreenBy(pathID : String): List<Screen> = withContext(ioContext) {
         SQLite.select()
                 .from(Screen::class.java)
-                .where(Screen_Table.form_sh1ID.`is`(sh1ID))
+                .where(Screen_Table.form_path.`is`(pathID))
                 .queryList()
     }
 }

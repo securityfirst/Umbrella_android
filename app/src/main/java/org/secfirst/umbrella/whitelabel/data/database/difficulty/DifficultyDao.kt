@@ -15,24 +15,24 @@ interface DifficultyDao {
         }
     }
 
-    suspend fun getSubjectByModule(moduleSha1ID: String): Subject? = withContext(AppExecutors.ioContext) {
+    suspend fun getSubjectByModule(modulePathId: String): Subject? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.module_sh1ID.`is`(moduleSha1ID))
+                .where(Subject_Table.module_path.`is`(modulePathId))
                 .querySingle()
     }
 
-    suspend fun getSubjectBy(subjectSha1ID: String): Subject? = withContext(AppExecutors.ioContext) {
+    suspend fun getSubjectBy(subjectPathId: String): Subject? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.sh1ID.`is`(subjectSha1ID))
+                .where(Subject_Table.path.`is`(subjectPathId))
                 .querySingle()
     }
 
-    suspend fun getDifficultyBy(sha1ID : String): Difficulty? = withContext(AppExecutors.ioContext) {
+    suspend fun getDifficultyBy(pathId : String): Difficulty? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.sha1ID.`is`(sha1ID))
+                .where(Difficulty_Table.path.`is`(pathId))
                 .querySingle()
     }
 }

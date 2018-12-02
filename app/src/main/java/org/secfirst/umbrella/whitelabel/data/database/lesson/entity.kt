@@ -25,7 +25,7 @@ data class Lesson(var moduleId: String,
 @Parcelize
 open class Module(
         @PrimaryKey
-        var sh1ID: String = "",
+        var path: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -37,8 +37,6 @@ open class Module(
         var checklist: MutableList<Checklist> = arrayListOf(),
         @Column
         var rootDir: String = "",
-        @Column
-        var path: String = "",
         var icon: String = "",
         @Column
         @JsonIgnore
@@ -49,7 +47,7 @@ open class Module(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_sh1ID.eq(sh1ID))
+                    .where(Markdown_Table.module_path.eq(path))
                     .queryList()
         }
         return markdowns
@@ -60,7 +58,7 @@ open class Module(
         if (subjects.isEmpty()) {
             subjects = SQLite.select()
                     .from(Subject::class.java)
-                    .where(Subject_Table.module_sh1ID.eq(sh1ID))
+                    .where(Subject_Table.module_path.eq(path))
                     .queryList()
         }
         return subjects
@@ -71,19 +69,16 @@ open class Module(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.module_sh1ID.eq(sh1ID))
+                    .where(Checklist_Table.module_path.eq(path))
                     .queryList()
         }
         return checklist
     }
-
 }
 
 @Parcelize
 @Table(database = AppDatabase::class)
 data class Subject(
-        @PrimaryKey
-        var sh1ID: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -95,10 +90,9 @@ data class Subject(
         var checklist: MutableList<Checklist> = arrayListOf(),
         @Column
         var rootDir: String = "",
-        @Column
+        @PrimaryKey
         var path: String = "",
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true)
         var module: Module? = null) : Parcelable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
@@ -106,7 +100,7 @@ data class Subject(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_sh1ID.eq(sh1ID))
+                    .where(Markdown_Table.module_path.eq(path))
                     .queryList()
         }
         return markdowns
@@ -117,7 +111,7 @@ data class Subject(
         if (difficulties.isEmpty()) {
             difficulties = SQLite.select()
                     .from(Difficulty::class.java)
-                    .where(Difficulty_Table.subject_sh1ID.eq(sh1ID))
+                    .where(Difficulty_Table.subject_path.eq(path))
                     .queryList()
         }
         return difficulties
@@ -129,7 +123,7 @@ data class Subject(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.module_sh1ID.eq(sh1ID))
+                    .where(Checklist_Table.module_path.eq(path))
                     .queryList()
         }
         return checklist
@@ -142,7 +136,7 @@ fun List<Module>.toLesson(): List<Lesson> {
     moduleSorted.forEach { module ->
         val subjectSorted = module.subjects.sortedWith(compareBy { it.index })
         module.subjects = subjectSorted.toMutableList()
-        val lesson = Lesson(module.sh1ID, module.moduleTitle, module.resourcePath, module.subjects)
+        val lesson = Lesson(module.path, module.moduleTitle, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
     return lessons
@@ -150,7 +144,7 @@ fun List<Module>.toLesson(): List<Lesson> {
 
 fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
-    favoriteModule.sh1ID = "1"
+    favoriteModule.path = "1"
     favoriteModule.moduleTitle = "Bookmarked"
     favoriteModule.index = 1
     return favoriteModule

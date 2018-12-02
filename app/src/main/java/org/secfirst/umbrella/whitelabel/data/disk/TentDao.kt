@@ -117,14 +117,6 @@ interface TentDao {
         return files.toList()
     }
 
-    fun filterImageCategoryFile(imgName: String): String = File(getPathRepository())
-            .walk()
-            .filter { file -> !file.path.contains(".git") }
-            .filter { file -> file.name == imgName }
-            .filter { it.isFile }
-            .last()
-            .path
-
     private fun getDiffEntry(): List<DiffEntry> {
         val git = Git.open(File("${getPathRepository()}/.git"))
         val reader = git.repository.newObjectReader()
@@ -135,4 +127,14 @@ interface TentDao {
         diffFormatter.setRepository(git.repository)
         return diffFormatter.scan(null, newTree)
     }
+}
+
+fun String.filterImageCategoryFile(): String {
+    val imgFile = File(getPathRepository())
+            .walk()
+            .filter { file -> !file.path.contains(".git") }
+            .filter { file -> file.name == this }
+            .filter { it.isFile }
+            .toList()
+    return if (imgFile.isNotEmpty()) imgFile.last().path else ""
 }

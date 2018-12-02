@@ -19,10 +19,8 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 @Table(database = AppDatabase::class)
 data class Difficulty(
         @PrimaryKey
-        var sha1ID: String = "",
-
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE, stubbedRelationship = true)
+        var path: String = "",
+        @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
         @Column
         var index: Int = 0,
@@ -34,8 +32,6 @@ data class Difficulty(
         var checklist: MutableList<Checklist> = arrayListOf(),
         @Column
         var rootDir: String = "",
-        @Column
-        var path: String = "",
         @JsonIgnore
         var layoutColor: String = "") : Parcelable {
 
@@ -45,7 +41,7 @@ data class Difficulty(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.difficulty_sha1ID.eq(sha1ID))
+                    .where(Markdown_Table.difficulty_path.eq(path))
                     .queryList()
         }
         return markdowns
@@ -56,7 +52,7 @@ data class Difficulty(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.difficulty_sha1ID.eq(sha1ID))
+                    .where(Checklist_Table.difficulty_path.eq(path))
                     .queryList()
         }
         return checklist
@@ -77,7 +73,7 @@ fun MutableList<Difficulty>.orderDifficulty(selectDifficulty: Difficulty): Mutab
     val auxDifficulties = mutableListOf<Difficulty>()
     auxDifficulties.add(selectDifficulty)
     this.forEach {
-        if (selectDifficulty.sha1ID != it.sha1ID)
+        if (selectDifficulty.path != it.path)
             auxDifficulties.add(it)
     }
     return auxDifficulties

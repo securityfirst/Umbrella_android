@@ -2,10 +2,7 @@ package org.secfirst.umbrella.whitelabel.serialize
 
 import android.util.Log
 import kotlinx.coroutines.experimental.withContext
-import org.secfirst.umbrella.whitelabel.data.disk.Element
-import org.secfirst.umbrella.whitelabel.data.disk.Root
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
-import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
+import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import java.io.File
@@ -34,8 +31,8 @@ class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) : Ser
         val currentFile = pairFile.second
         val element = parseYmlFile(currentFile, Element::class)
         element.path = pwd
-        element.sh1ID = pairFile.first
-        element.resourcePath = if (element.icon.isNotEmpty()) tentRepo.loadCategoryImage(element.icon) else ""
+        element.pathId = pairFile.first
+        element.resourcePath = element.icon.filterImageCategoryFile()
         element.rootDir = PathUtils.getLastDirectory(pwd)
 
         when (PathUtils.getLevelOfPath(element.path)) {

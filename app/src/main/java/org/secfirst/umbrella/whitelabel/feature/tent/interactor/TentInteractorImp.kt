@@ -13,8 +13,6 @@ class TentInteractorImp @Inject constructor(private val tentRepo: TentRepo)
 
     override suspend fun loadElementsFile() = tentRepo.loadElementsFile()
 
-    override fun loadCategoryImage(imgName: String) = tentRepo.loadCategoryImage(imgName)
-
     override fun loadFile() = tentRepo.loadFile()
 
 

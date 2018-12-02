@@ -20,7 +20,7 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
         allFields = true, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
         @PrimaryKey
-        var sha1ID: String = "",
+        var path: String = "",
         var text: String = "",
         var title: String = "",
         var index: String = "",
@@ -74,8 +74,8 @@ fun Markdown.removeHead(): Markdown {
     return this
 }
 
-fun String.replaceMarkdownImage(pwd: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
-        "${Markdown.MARKDOWN_IMAGE_TAG}file://${PathUtils.basePath()}/$pwd")
+fun String.replaceMarkdownImage(absolutePath: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
+        "${Markdown.MARKDOWN_IMAGE_TAG}file://${PathUtils.basePath()}/${PathUtils.getWorkDirectoryFromImage(absolutePath)}")
 
 inline fun <reified T> MutableList<Markdown>.associateMarkdown(foreignKey: T) {
     this.forEach { mark ->
