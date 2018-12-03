@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="27dp"
+        android:text="@string/title_dialog"
+        android:textColor="@color/coachmark_background_dark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/checklistDialogDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:text="@string/checklist_dialog_delete"
+        android:textColor="@color/umbrella_green"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/checklistDialogCancel"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/checklistDialogCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="38dp"
+        android:layout_marginLeft="38dp"
+        android:text="@string/checklist_dialog_cancel"
+        android:textColor="@color/umbrella_green"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/checklistDialogDisable"
+        app:layout_constraintStart_toEndOf="@+id/checklistDialogDelete" />
+
+    <TextView
+        android:id="@+id/checklistDialogDisable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/checklist_dialog_disable"
+        android:textColor="@color/umbrella_green"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/checklistDialogCancel"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+</android.support.constraint.ConstraintLayout>

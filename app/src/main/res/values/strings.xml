@@ -110,5 +110,9 @@
 
     <string name="write_external_permission_granted">Write external storage permission was granted.</string>
     <string name="write_external_permission_denied">Write external storage permission request was denied.</string>
+    <string name="title_dialog">Select an action</string>
+    <string name="checklist_dialog_cancel">CANCEL</string>
+    <string name="checklist_dialog_delete">DELETE</string>
+    <string name="checklist_dialog_disable">DISABLE</string>
 
 </resources>
