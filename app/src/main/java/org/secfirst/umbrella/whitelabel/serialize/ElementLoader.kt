@@ -14,10 +14,11 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimi
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
+import parseYmlFile
 import java.io.File
 import javax.inject.Inject
 
-class ElementLoader @Inject constructor(private val tentRepo: TentRepo) : Serializer {
+class ElementLoader @Inject constructor(private val tentRepo: TentRepo)  {
 
     private lateinit var root: Root
 

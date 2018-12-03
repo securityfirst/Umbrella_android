@@ -3,9 +3,14 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.ActivityCompat
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.jakewharton.processphoenix.ProcessPhoenix
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
+import java.io.File
+import kotlin.reflect.KClass
 
 class Extensions {
     companion object {
@@ -36,3 +41,9 @@ fun doRestartApplication(context: Context) {
 
 fun getAssetFileBy(fileName: String) = UmbrellaApplication.instance.assets.open(fileName)
 
+
+fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {
+    val mapper = ObjectMapper(YAMLFactory())
+    mapper.registerModule(KotlinModule())
+    return file.bufferedReader().use { mapper.readValue(it.readText(), c.java) }
+}

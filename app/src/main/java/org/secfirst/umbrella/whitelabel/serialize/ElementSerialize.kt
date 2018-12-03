@@ -5,11 +5,12 @@ import kotlinx.coroutines.experimental.withContext
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
+import parseYmlFile
 import java.io.File
 import javax.inject.Inject
 
 
-class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) : Serializer {
+class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) {
 
     private val root: Root = Root()
 

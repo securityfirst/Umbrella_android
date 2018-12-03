@@ -27,7 +27,8 @@ import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
-import org.secfirst.umbrella.whitelabel.serialize.parseYmlFile
+
+import parseYmlFile
 import java.io.File
 import javax.inject.Inject
 
@@ -118,7 +119,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                     val module = newElement.convertToModule
                     val oldModule = it.getModule(sha1ID)
                     oldModule?.let { oldModuleSafe ->
-                        modules.add(module.updateModuleContent(oldModuleSafe))
+                       // modules.add(module.updateModuleContent(oldModuleSafe))
                     }
                 }
                 SUB_ELEMENT_LEVEL -> {
