@@ -77,6 +77,8 @@ class Content(
         @Column
         var label: String = "",
         @Column
+        var disable: Boolean = false,
+        @Column
         var value: Boolean = false) : BaseModel(), Parcelable
 
 class Dashboard(var items: List<Item> = listOf()) {

@@ -7,6 +7,10 @@ interface ChecklistRepo {
 
     suspend fun loadChecklist(sha1ID : String): Checklist?
 
+    suspend fun delteChecklistContent(checklistContent: Content)
+
+    suspend fun disableChecklistContent(checklistContent: Content)
+
     suspend fun insertChecklistContent(checklistContent: Content)
 
     suspend fun insertChecklist(checklist: Checklist)

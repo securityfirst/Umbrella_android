@@ -14,6 +14,18 @@ class ChecklistPresenterImp<V : ChecklistView, I :
 ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         BasePresenterImp<V, I>(interactor = interactor), ChecklistBasePresenter<V, I> {
 
+    override fun submitDeleteChecklistContent(checklistContent: Content) {
+        launchSilent(uiContext) {
+            interactor?.deleteChecklistContent(checklistContent)
+        }
+    }
+
+    override fun submitDisableChecklistContent(checklistContent: Content) {
+        launchSilent(uiContext) {
+            interactor?.disableChecklistContent(checklistContent)
+        }
+    }
+
     override fun submitLoadDashboard() {
         launchSilent(uiContext) {
             interactor?.let {

@@ -8,9 +8,13 @@ import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface ChecklistBaseInteractor : BaseInteractor {
 
-    suspend fun fetchChecklistBy(sha1ID : String): Checklist?
+    suspend fun fetchChecklistBy(sha1ID: String): Checklist?
 
     suspend fun fetchChecklistProgressDone(): List<Checklist>
+
+    suspend fun deleteChecklistContent(checklistContent: Content)
+
+    suspend fun disableChecklistContent(checklistContent: Content)
 
     suspend fun persistChecklistContent(checklistContent: Content)
 

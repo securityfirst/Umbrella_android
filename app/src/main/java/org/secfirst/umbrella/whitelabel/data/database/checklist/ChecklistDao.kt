@@ -23,6 +23,18 @@ interface ChecklistDao {
         }
     }
 
+    suspend fun deleteChecklistContent(checklistContent: Content) {
+        withContext(ioContext) {
+            modelAdapter<Content>().delete(checklistContent)
+        }
+    }
+
+    suspend fun disable(checklist: Content) {
+        withContext(ioContext) {
+            modelAdapter<Content>().save(checklist)
+        }
+    }
+
     suspend fun getChecklist(pathID: String): Checklist? = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
