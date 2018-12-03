@@ -27,6 +27,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private lateinit var checklistView: View
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
+    private val checklistItemLongClick: (Content) -> Unit = this::onChecklistItemLongClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
 
@@ -44,7 +45,8 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun onAttach(view: View) {
-        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+        val adapter = ChecklistAdapter(checklist.content,
+                checklistItemClick, checklistProgress, checklistItemLongClick)
         checklistRecyclerView?.initRecyclerView(adapter)
         presenter.onAttach(this)
         currentProgress()
@@ -57,6 +59,10 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun onChecklistItemClicked(checklistItem: Content) {
         presenter.submitInsertChecklistContent(checklistItem)
+    }
+
+    private fun onChecklistItemLongClicked(checklistItem: Content) {
+
     }
 
     private fun currentProgress() {

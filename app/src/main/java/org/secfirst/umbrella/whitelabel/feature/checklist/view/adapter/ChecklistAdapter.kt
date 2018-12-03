@@ -13,7 +13,8 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class ChecklistAdapter(private val checklistContent: List<Content>,
                        private val onItemChecked: (Content) -> Unit,
-                       private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onUpdateProgress: (Int) -> Unit,
+                       private val onLongPress: (Content) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemCount() = checklistContent.size
 
@@ -39,13 +40,13 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
         } else {
             holder as ChecklistHolder
             holder.bind(checklistContent[position], checklistContent,
+                    onLongPress = { onLongPress(checklistContent[position]) },
                     onItemChecked = { onItemChecked(checklistContent[position]) },
                     onUpdateChecked = { onUpdateProgress(percentage.toInt()) })
         }
     }
 
     private fun isHeader(position: Int) = checklistContent[position].label.isNotBlank()
-
 
     class ChecklistHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(title: String) {
@@ -57,6 +58,7 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
 
         fun bind(currentContent: Content,
                  list: List<Content>,
+                 onLongPress: (ChecklistHolder) -> Unit,
                  onItemChecked: (ChecklistHolder) -> Unit,
                  onUpdateChecked: (ChecklistHolder) -> Unit) {
 
@@ -70,8 +72,11 @@ class ChecklistAdapter(private val checklistContent: List<Content>,
                     onItemChecked(this@ChecklistHolder)
                     onUpdateChecked(this@ChecklistHolder)
                 }
+                itemView.checkItem.setOnLongClickListener {
+                    onLongPress(this@ChecklistHolder)
+                    return@setOnLongClickListener true
+                }
             }
-
         }
 
         private fun updateProgress(list: List<Content>) {
