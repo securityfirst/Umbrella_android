@@ -5,12 +5,16 @@ import android.content.Intent
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.text.format.DateFormat
+import android.util.Base64
 import android.util.Log
 import com.jakewharton.processphoenix.ProcessPhoenix
+import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import java.io.*
+import java.nio.file.Files
+
 
 class Extensions {
     companion object {
@@ -51,7 +55,7 @@ class Extensions {
     }
 }
 
-fun saveHtmlFile(html : String?) {
+fun saveHtmlFile(html: String?) {
 
     val path = Environment.getExternalStorageDirectory().path
     var fileName = DateFormat.format("dd_MM_yyyy_hh_mm_ss", System.currentTimeMillis()).toString()
@@ -93,3 +97,4 @@ fun doRestartApplication(context: Context) {
 
 fun getAssetFileBy(fileName: String) = UmbrellaApplication.instance.assets.open(fileName)
 
+fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)

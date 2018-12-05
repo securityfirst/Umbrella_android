@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.os.StrictMode
 import android.support.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -49,6 +50,8 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         initTentRepository()
         initFonts()
         initFabric()
+        val builder = StrictMode.VmPolicy.Builder()
+        StrictMode.setVmPolicy(builder.build())
     }
 
     private fun initDaggerComponent() {

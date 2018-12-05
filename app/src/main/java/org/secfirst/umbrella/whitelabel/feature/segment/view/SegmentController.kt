@@ -3,11 +3,18 @@ package org.secfirst.umbrella.whitelabel.feature.segment.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.ShareCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
+import encodeToBase64
+import info.guardianproject.iocipher.VirtualFileSystem
 import kotlinx.android.synthetic.main.segment_view.*
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
+import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
@@ -19,8 +26,12 @@ import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
+import org.secfirst.umbrella.whitelabel.misc.IOCipherContentProvider.Companion.SHARE_FILE
 import org.secfirst.umbrella.whitelabel.misc.initGridView
-import saveHtmlFile
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -124,11 +135,77 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun onSegmentShareClick(markdown: Markdown) {
         val andDown = AndDown()
         val result = andDown.markdownToHtml(markdown.text, AndDown.HOEDOWN_EXT_QUOTE, 0)
-        saveHtmlFile(result)
-        val intent = Intent(Intent.ACTION_SENDTO,
-                Uri.parse("mailto:?subject=${markdown.title}&body=${Uri.encode(markdown.text)}"))
+        val doc = Jsoup.parse(result)
 
-        startActivity(intent)
+        val img: Elements = doc.getElementsByTag("img")
+        lateinit var src: String
+        lateinit var base64img: String
+
+
+
+        for (el in img) {
+            src = el.absUrl("src").replace("file://", "")
+            base64img = encodeToBase64(File(src))
+            src = "data:image/png;base64," + base64img
+            el.attr("src", src)
+
+        }
+
+        val filename = markdown.title
+        val f = java.io.File(UmbrellaApplication.instance.cacheDir, SHARE_FILE)
+        if (!f.exists()) {
+            try {
+                f.createNewFile()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+        val path = f.path
+
+        val vfs = VirtualFileSystem.get()
+        vfs.containerPath = path
+        try {
+            if (!vfs.isMounted)
+                vfs.mount("Umbrella")
+            if (!vfs.isMounted)
+                vfs.createNewContainer(path)
+
+            val file = File(UmbrellaApplication.instance.cacheDir, filename + ".html")
+            try {
+                val writer = BufferedWriter(FileWriter(file))
+                writer.write(doc.toString())
+                writer.flush()
+                writer.close()
+                val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, file)
+                val shareIntent = ShareCompat.IntentBuilder.from(activity)
+                        .setType(activity!!.contentResolver.getType(uri))
+                        .setStream(uri)
+                        .intent
+
+                //Provide read access
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, markdown.title)
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                val pm = activity!!.packageManager
+
+                if (shareIntent.resolveActivity(pm) != null) {
+                    startActivity(Intent.createChooser(shareIntent, "Share lesson"))
+                }
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+
+            }
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+
+        }
+
+
     }
 
     private fun onFootClicked(position: Int) {
