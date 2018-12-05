@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.checklist_dashboard.*
+import kotlinx.android.synthetic.main.checklist_dashboard.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
@@ -38,8 +39,15 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     override fun onAttach(view: View) {
         presenter.onAttach(this)
-        if (isCustomBoard) presenter.submitLoadCustomDashboard()
-        else presenter.submitLoadDashboard()
+        checkWorkflow()
+    }
+
+    private fun checkWorkflow() {
+        if (isCustomBoard) {
+            addNewChecklist?.visibility = View.VISIBLE
+            presenter.submitLoadCustomDashboard()
+        } else
+            presenter.submitLoadDashboard()
     }
 
 
@@ -49,7 +57,13 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.checklist_dashboard, container, false)
+        val view = inflater.inflate(R.layout.checklist_dashboard, container, false)
+        view.addNewChecklist.setOnClickListener { addNewChecklist() }
+        return view
+    }
+
+    private fun addNewChecklist() {
+        parentController?.router?.pushController(RouterTransaction.with(ChecklistCustomController()))
     }
 
     override fun showDashboard(dashboards: List<Dashboard.Item>) {
