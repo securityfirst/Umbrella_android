@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.text.format.DateFormat
+import android.util.Base64
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.jakewharton.processphoenix.ProcessPhoenix
+import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import java.io.File
@@ -17,13 +19,14 @@ import java.io.FileOutputStream
 import java.io.IOException
 import kotlin.reflect.KClass
 
+
 class Extensions {
     companion object {
         const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
     }
 }
 
-fun saveHtmlFile(html : String?) {
+fun saveHtmlFile(html: String?) {
 
     val path = Environment.getExternalStorageDirectory().path
     var fileName = DateFormat.format("dd_MM_yyyy_hh_mm_ss", System.currentTimeMillis()).toString()
@@ -65,9 +68,11 @@ fun doRestartApplication(context: Context) {
 
 fun getAssetFileBy(fileName: String) = UmbrellaApplication.instance.assets.open(fileName)
 
-
 fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {
     val mapper = ObjectMapper(YAMLFactory())
     mapper.registerModule(KotlinModule())
     return file.bufferedReader().use { mapper.readValue(it.readText(), c.java) }
 }
+
+fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
+
