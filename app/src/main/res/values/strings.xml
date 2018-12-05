@@ -114,5 +114,6 @@
     <string name="checklist_dialog_cancel">CANCEL</string>
     <string name="checklist_dialog_delete">DELETE</string>
     <string name="checklist_dialog_disable">DISABLE</string>
+    <string name="custom_checklist_hint_component">Item</string>
 
 </resources>
