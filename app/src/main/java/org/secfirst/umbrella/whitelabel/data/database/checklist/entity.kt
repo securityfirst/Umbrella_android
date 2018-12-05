@@ -24,16 +24,15 @@ data class Checklist(
         var progress: Int = 0,
         @Column
         var favorite: Boolean = false,
+        @Column
+        var isCustom: Boolean = false,
 
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "category_id")
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "subcategory_id")
         @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
 
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "child_id")
         @ForeignKey(stubbedRelationship = true)
         var difficulty: Difficulty? = null,
 
