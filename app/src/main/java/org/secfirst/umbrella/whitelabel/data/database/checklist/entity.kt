@@ -16,17 +16,18 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.Checkl
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Checklist(
+        @JsonProperty("list")
+        var content: MutableList<Content> = arrayListOf(),
+        @Column
+        var custom: Boolean = false,
         @PrimaryKey
-        var path: String = "",
+        var id: String = "",
         @Column
         var index: Int = 0,
         @Column
-        var progress: Int = 0,
-        @Column
         var favorite: Boolean = false,
         @Column
-        var custom: Boolean = false,
-
+        var progress: Int = 0,
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
 
@@ -34,10 +35,7 @@ data class Checklist(
         var subject: Subject? = null,
 
         @ForeignKey(stubbedRelationship = true)
-        var difficulty: Difficulty? = null,
-
-        @JsonProperty("list")
-        var content: MutableList<Content> = arrayListOf()) : Parcelable {
+        var difficulty: Difficulty? = null) : Parcelable {
 
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "content")
@@ -45,7 +43,7 @@ data class Checklist(
         if (content.isEmpty()) {
             content = SQLite.select()
                     .from(Content::class.java)
-                    .where(Content_Table.checklist_path.eq(path))
+                    .where(Content_Table.checklist_path.eq(id))
                     .queryList()
         }
         return content
@@ -66,12 +64,11 @@ fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 class Content(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
         @Column
         var check: String = "",
+        @PrimaryKey(autoincrement = true)
+        var id: Long = 0,
         @ForeignKey(stubbedRelationship = true)
-        @ForeignKeyReference(foreignKeyColumnName = "idReference", columnName = "checklist_id")
         var checklist: Checklist? = null,
         @Column
         var label: String = "",

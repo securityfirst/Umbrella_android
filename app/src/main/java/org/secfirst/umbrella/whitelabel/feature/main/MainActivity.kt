@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.feature.main
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -41,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         ShakeDetector.start()
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -108,4 +108,14 @@ class MainActivity : AppCompatActivity() {
     fun hideNavigation() = navigation?.let { it.visibility = INVISIBLE }
 
     fun showNavigation() = navigation?.let { it.visibility = VISIBLE }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_ENTER -> {
+
+                true
+            }
+            else -> super.onKeyUp(keyCode, event)
+        }
+    }
 }

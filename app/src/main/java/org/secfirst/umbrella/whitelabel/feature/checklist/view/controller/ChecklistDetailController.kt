@@ -38,7 +38,6 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
         putParcelable(EXTRA_CHECKLIST, checklist)
     })
 
-
     override fun onInject() {
         DaggerChecklistComponent.builder()
                 .application(UmbrellaApplication.instance)

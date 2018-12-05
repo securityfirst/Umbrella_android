@@ -14,6 +14,19 @@ class ChecklistPresenterImp<V : ChecklistView, I :
 ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         BasePresenterImp<V, I>(interactor = interactor), ChecklistBasePresenter<V, I> {
 
+
+    override fun submitInsertCustomChecklist(checklistItemValue: String, idChecklist: String) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val content = Content(checklistItemValue)
+                val contents = mutableListOf<Content>()
+                contents.add(content)
+                val customChecklist = Checklist(contents, true, idChecklist)
+                it.persistChecklist(customChecklist)
+            }
+        }
+    }
+
     override fun submitDeleteChecklistContent(checklistContent: Content) {
         launchSilent(uiContext) {
             interactor?.deleteChecklistContent(checklistContent)

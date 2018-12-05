@@ -21,7 +21,7 @@ class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) {
                 val absolutePath = currentFile.path
                         .substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
-                Log.d("test", "path - $absolutePath")
+                Log.d("test", "id - $absolutePath")
                 addElement(pwd, pairFile)
             }
         }

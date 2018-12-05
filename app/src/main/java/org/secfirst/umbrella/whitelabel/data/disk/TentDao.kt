@@ -36,7 +36,7 @@ interface TentDao {
             File(getPathRepository()).deleteRecursively()
             Log.i(TentDao::class.java.name,
                     "Repository wasn't created - ${isNotRepCreate()} " +
-                            "path - ${getPathRepository()}")
+                            "id - ${getPathRepository()}")
         }
 
         return result

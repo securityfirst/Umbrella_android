@@ -86,9 +86,9 @@ class TentConfigTest {
 
     @Test
     fun `Should be able to return path of the repository`() {
-        `when`(tentConfig.getPathRepository()).thenReturn("/path/")
+        `when`(tentConfig.getPathRepository()).thenReturn("/id/")
         val value = tentConfig.getPathRepository()
-        assertEquals("/path/", value)
+        assertEquals("/id/", value)
     }
 
     @Test

@@ -11,6 +11,6 @@ sonarqube {
         property "sonar.java.binaries", "$buildDir/tmp/kotlin-classes"
         property "sonar.jacoco.reportPath", "$buildDir/jacoco/testDebugUnitTest.exec"
         property "sonar.junit.reportsPath", "$buildDir/test-results/testDebugUnitTest"
-        property "detekt.sonar.kotlin.config.path", "/config/detekt-config.yml"
+        property "detekt.sonar.kotlin.config.id", "/config/detekt-config.yml"
     }
 }

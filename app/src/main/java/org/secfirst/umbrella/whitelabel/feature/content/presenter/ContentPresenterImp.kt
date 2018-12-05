@@ -63,7 +63,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                         }
                         TypeFile.CHECKLIST.value -> {
                             val newChecklist = parseYmlFile(file, Checklist::class)
-                            newChecklist.path= pathId
+                            newChecklist.id= pathId
                             val oldChecklist = it.getChecklist(pathId)
                             oldChecklist?.let { oldChecklistSafe ->
                                 checklists.add(updateChecklistForeignKey(newChecklist, oldChecklistSafe))

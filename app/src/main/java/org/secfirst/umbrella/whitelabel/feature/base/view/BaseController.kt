@@ -37,4 +37,9 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
     fun disableNavigation() = mainActivity.hideNavigation()
 
     fun enableNavigation() = mainActivity.showNavigation()
+
+    interface onKeyListener {
+
+        fun onEnterPressed()
+    }
 }

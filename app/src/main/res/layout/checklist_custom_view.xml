@@ -43,6 +43,7 @@
             card_view:cardCornerRadius="2dp">
 
             <EditText
+                android:id="@+id/checklistContent"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
@@ -54,8 +55,19 @@
                 android:textStyle="normal"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 tools:ignore="MissingPrefix" />
-
         </android.support.v7.widget.CardView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addChecklistItem"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="70dp"
+            android:src="@drawable/ic_add_white"
+            app:backgroundTint="@color/umbrella_green" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

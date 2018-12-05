@@ -63,7 +63,8 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     private fun addNewChecklist() {
-        parentController?.router?.pushController(RouterTransaction.with(ChecklistCustomController()))
+        parentController?.router?.pushController(RouterTransaction
+                .with(ChecklistCustomController(System.currentTimeMillis().toString())))
     }
 
     override fun showDashboard(dashboards: List<Dashboard.Item>) {

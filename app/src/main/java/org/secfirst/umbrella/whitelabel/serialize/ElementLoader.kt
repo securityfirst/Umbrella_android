@@ -53,7 +53,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo)  {
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val newChecklist = parseYmlFile(file, Checklist::class)
-                                newChecklist.path = pathId
+                                newChecklist.id = pathId
                                 it.checklist.add(newChecklist)
                             }
                         }
@@ -70,7 +70,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo)  {
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val checklist = parseYmlFile(file, Checklist::class)
-                                checklist.path = pathId
+                                checklist.id = pathId
                                 subElement.checklist.add(checklist)
                             }
                         }
@@ -87,7 +87,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo)  {
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val newChecklist = parseYmlFile(file, Checklist::class)
-                                newChecklist.path = pathId
+                                newChecklist.id = pathId
                                 child.checklist.add(newChecklist)
                             }
                         }
