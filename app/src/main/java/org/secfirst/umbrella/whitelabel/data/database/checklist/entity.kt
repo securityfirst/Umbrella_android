@@ -25,7 +25,7 @@ data class Checklist(
         @Column
         var favorite: Boolean = false,
         @Column
-        var isCustom: Boolean = false,
+        var custom: Boolean = false,
 
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,

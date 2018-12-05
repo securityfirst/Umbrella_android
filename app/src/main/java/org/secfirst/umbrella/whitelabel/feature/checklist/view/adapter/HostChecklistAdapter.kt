@@ -4,7 +4,6 @@ import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.CustomChecklistController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.DashboardController
 
 class HostChecklistAdapter(host: Controller) : RouterPagerAdapter(host) {
@@ -12,8 +11,8 @@ class HostChecklistAdapter(host: Controller) : RouterPagerAdapter(host) {
     override fun configureRouter(router: Router, position: Int) {
         if (!router.hasRootController()) {
             when (position) {
-                0 -> router.setRoot(RouterTransaction.with(DashboardController()))
-                1 -> router.setRoot(RouterTransaction.with(CustomChecklistController()))
+                0 -> router.setRoot(RouterTransaction.with(DashboardController(false)))
+                1 -> router.setRoot(RouterTransaction.with(DashboardController(true)))
             }
         }
     }

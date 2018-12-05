@@ -34,7 +34,6 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
 
-
     constructor(checklist: Checklist) : this(Bundle().apply {
         putParcelable(EXTRA_CHECKLIST, checklist)
     })

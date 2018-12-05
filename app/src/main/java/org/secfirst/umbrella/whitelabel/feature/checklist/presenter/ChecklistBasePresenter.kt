@@ -17,4 +17,6 @@ interface ChecklistBasePresenter<V : ChecklistView, I : ChecklistBaseInteractor>
     fun submitDisableChecklistContent(checklistContent: Content)
 
     fun submitLoadDashboard()
+
+    fun submitLoadCustomDashboard()
 }

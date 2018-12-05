@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,15 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.Dashboard
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
-class DashboardController : BaseController(), ChecklistView {
+class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistView {
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private val dashboardItemClick: (Checklist?) -> Unit = this::onDashboardItemClicked
+    private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
+
+    constructor(isCustomBoard: Boolean) : this(Bundle().apply {
+        putBoolean(EXTRA_IS_CUSTOM_BOARD, isCustomBoard)
+    })
 
     override fun onInject() {
         DaggerChecklistComponent.builder()
@@ -32,7 +38,8 @@ class DashboardController : BaseController(), ChecklistView {
 
     override fun onAttach(view: View) {
         presenter.onAttach(this)
-        presenter.submitLoadDashboard()
+        if (isCustomBoard) presenter.submitLoadCustomDashboard()
+        else presenter.submitLoadDashboard()
     }
 
 
@@ -48,5 +55,9 @@ class DashboardController : BaseController(), ChecklistView {
     override fun showDashboard(dashboards: List<Dashboard.Item>) {
         val dashboardAdapter = DashboardAdapter(dashboards, dashboardItemClick)
         checklistDashboardRecyclerView?.initRecyclerView(dashboardAdapter)
+    }
+
+    companion object {
+        const val EXTRA_IS_CUSTOM_BOARD = "custom_board"
     }
 }

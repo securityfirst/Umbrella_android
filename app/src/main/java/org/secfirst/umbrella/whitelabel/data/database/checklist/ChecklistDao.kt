@@ -56,10 +56,17 @@ interface ChecklistDao {
                 .queryList()
     }
 
-
     suspend fun getChecklistCount(): Long = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
+                .where(Checklist_Table.custom.`is`(false))
+                .queryList().size.toLong()
+    }
+
+    suspend fun getCustomChecklistCount(): Long = withContext(ioContext) {
+        SQLite.select()
+                .from(Checklist::class.java)
+                .where(Checklist_Table.custom.`is`(true))
                 .queryList().size.toLong()
     }
 
@@ -90,6 +97,15 @@ interface ChecklistDao {
                 .from(Checklist::class.java)
                 .where(Checklist_Table.progress.greaterThanOrEq(1))
                 .and(Checklist_Table.favorite.`is`(false))
+                .and(Checklist_Table.custom.`is`(false))
+                .queryList()
+    }
+
+    suspend fun getAllCustomChecklistInProgress(): List<Checklist> = withContext(ioContext) {
+        SQLite.select()
+                .from(Checklist::class.java)
+                .where(Checklist_Table.progress.greaterThanOrEq(1))
+                .and(Checklist_Table.custom.`is`(true))
                 .queryList()
     }
 }

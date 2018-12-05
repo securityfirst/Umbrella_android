@@ -26,6 +26,20 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         }
     }
 
+    override fun submitLoadCustomDashboard() {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val rate = it.fetchAllCustomChecklistInProgress()
+                val totalDone = it.fetchCustomChecklistCount().toInt()
+                val allDashboard = mutableListOf<Dashboard.Item>()
+                allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
+                val inProgressList = dashBoardMount(it.fetchAllChecklistInProgress(), "My Checklists")
+                allDashboard.addAll(inProgressList)
+                getView()?.showDashboard(allDashboard)
+            }
+        }
+    }
+
     override fun submitLoadDashboard() {
         launchSilent(uiContext) {
             interactor?.let {

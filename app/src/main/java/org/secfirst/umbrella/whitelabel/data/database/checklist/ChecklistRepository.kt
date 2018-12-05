@@ -4,6 +4,10 @@ import javax.inject.Inject
 
 class ChecklistRepository @Inject constructor(private val checklistDao: ChecklistDao) : ChecklistRepo {
 
+    override suspend fun loadCustomChecklistCount() = checklistDao.getCustomChecklistCount()
+
+    override suspend fun getAllCustomChecklistInProgress() = checklistDao.getAllCustomChecklistInProgress()
+
     override suspend fun delteChecklistContent(checklistContent: Content) = checklistDao.deleteChecklistContent(checklistContent)
 
     override suspend fun disableChecklistContent(checklistContent: Content) = checklistDao.disable(checklistContent)

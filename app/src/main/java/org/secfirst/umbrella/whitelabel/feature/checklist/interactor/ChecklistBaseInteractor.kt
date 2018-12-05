@@ -24,6 +24,8 @@ interface ChecklistBaseInteractor : BaseInteractor {
 
     suspend fun fetchChecklistCount(): Long
 
+    suspend fun fetchCustomChecklistCount(): Long
+
     suspend fun fetchAllChecklist(): List<Checklist>
 
     suspend fun fetchSubjectById(subjectSha1ID: String): Subject?
@@ -31,4 +33,6 @@ interface ChecklistBaseInteractor : BaseInteractor {
     suspend fun fetchDifficultyById(sha1ID: String): Difficulty
 
     suspend fun fetchAllChecklistInProgress(): List<Checklist>
+
+    suspend fun fetchAllCustomChecklistInProgress(): List<Checklist>
 }

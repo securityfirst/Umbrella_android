@@ -5,7 +5,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface ChecklistRepo {
 
-    suspend fun loadChecklist(sha1ID : String): Checklist?
+    suspend fun loadChecklist(sha1ID: String): Checklist?
 
     suspend fun delteChecklistContent(checklistContent: Content)
 
@@ -21,6 +21,8 @@ interface ChecklistRepo {
 
     suspend fun loadChecklistCount(): Long
 
+    suspend fun loadCustomChecklistCount(): Long
+
     suspend fun loadAllChecklist(): List<Checklist>
 
     suspend fun loadSubjectById(subjectSha1ID: String): Subject?
@@ -28,4 +30,6 @@ interface ChecklistRepo {
     suspend fun loadDifficultyById(sha1ID: String): Difficulty
 
     suspend fun getAllChecklistInProgress(): List<Checklist>
+
+    suspend fun getAllCustomChecklistInProgress(): List<Checklist>
 }
