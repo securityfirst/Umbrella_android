@@ -1,7 +1,12 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +14,8 @@ import kotlinx.android.synthetic.main.checklist_view.*
 import kotlinx.android.synthetic.main.form_progress.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.component.DialogManager
+import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -26,11 +33,17 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private lateinit var checklistView: View
+    private lateinit var checklistItemSelected: Content
+    private lateinit var adapter: ChecklistAdapter
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
-    private val checklistItemLongClick: (Content) -> Unit = this::onChecklistItemLongClicked
+    private val checklistItemLongClick: () -> Unit = this::onChecklistItemLongClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
+    private val checklistDialogDeleteClick: (Content) -> Unit = this::onDeleteChecklist
+    private val checklistDialogDisableClick: (Content) -> Unit = this::onDisableChecklist
+    private val checklistDialogCancelClick: () -> Unit = this::onCancelChecklist
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
-
+    private lateinit var checklistAlertDialog: AlertDialog
+    private lateinit var checklistDialogView: View
 
     constructor(checklist: Checklist) : this(Bundle().apply {
         putParcelable(EXTRA_CHECKLIST, checklist)
@@ -45,24 +58,58 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun onAttach(view: View) {
-        val adapter = ChecklistAdapter(checklist.content,
-                checklistItemClick, checklistProgress, checklistItemLongClick)
+        adapter = ChecklistAdapter(checklist.content, checklistDialogView,
+                checklistItemClick, checklistProgress, checklistItemLongClick,
+                checklistDialogDeleteClick, checklistDialogDisableClick, checklistDialogCancelClick)
         checklistRecyclerView?.initRecyclerView(adapter)
-        presenter.onAttach(this)
+        val swipeHandler = object : SwipeToDeleteCallback(context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                adapter.removeAt(viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(checklistRecyclerView)
+
         currentProgress()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         checklistView = inflater.inflate(R.layout.checklist_view, container, false)
+        checklistDialogView = inflater.inflate(R.layout.checklist_action_dialog, container, false)
+
+        presenter.onAttach(this)
+        checklistAlertDialog = AlertDialog
+                .Builder(activity)
+                .setView(checklistDialogView)
+                .create()
+
         return checklistView
     }
+
+    private fun onDeleteChecklist(checklistItem: Content) {
+        presenter.submitDeleteChecklistContent(checklistItem)
+        adapter.remove(checklistItem)
+        checklistAlertDialog.dismiss()
+    }
+
+    private fun onDisableChecklist(checklistItem: Content) {
+        presenter.submitDisableChecklistContent(checklistItem)
+        checklistAlertDialog.dismiss()
+    }
+
+    private fun onCancelChecklist() = checklistAlertDialog.dismiss()
 
     private fun onChecklistItemClicked(checklistItem: Content) {
         presenter.submitInsertChecklistContent(checklistItem)
     }
 
-    private fun onChecklistItemLongClicked(checklistItem: Content) {
-
+    private fun onChecklistItemLongClicked() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return checklistAlertDialog
+            }
+        })
     }
 
     private fun currentProgress() {

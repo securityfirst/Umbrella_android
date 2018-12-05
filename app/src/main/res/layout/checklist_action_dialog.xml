@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:text="@string/title_dialog"
         android:textColor="@color/coachmark_background_dark"
         android:textSize="20sp"
@@ -23,11 +24,12 @@
         android:id="@+id/checklistDialogDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
         android:text="@string/checklist_dialog_delete"
         android:textColor="@color/umbrella_green"
         android:textStyle="bold"
+        android:paddingBottom="10dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/checklistDialogCancel"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -40,6 +42,7 @@
         android:text="@string/checklist_dialog_cancel"
         android:textColor="@color/umbrella_green"
         android:textStyle="bold"
+        android:paddingBottom="10dp"
         app:layout_constraintBaseline_toBaselineOf="@+id/checklistDialogDisable"
         app:layout_constraintStart_toEndOf="@+id/checklistDialogDelete" />
 
@@ -54,6 +57,7 @@
         android:textColor="@color/umbrella_green"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/checklistDialogCancel"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        android:paddingBottom="10dp"/>
 
 </android.support.constraint.ConstraintLayout>

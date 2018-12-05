@@ -16,8 +16,6 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistCompone
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.ChecklistAdapter
-import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
 
@@ -45,11 +43,11 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
     }
 
     override fun onAttach(view: View) {
-        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
-        setUpToolbar()
-        checklistDetailRecyclerView?.initRecyclerView(adapter)
-        presenter.onAttach(this)
-        currentProgress()
+//        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+//        setUpToolbar()
+//        checklistDetailRecyclerView?.initRecyclerView(adapter)
+//        presenter.onAttach(this)
+//        currentProgress()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
