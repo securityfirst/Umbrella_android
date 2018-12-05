@@ -53,8 +53,8 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
-                adapter.removeAt(position)
                 onDeleteChecklist(adapter.getChecklistItem(position))
+                adapter.removeAt(position)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)

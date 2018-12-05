@@ -19,6 +19,7 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
     fun removeAt(position: Int) {
         checklistContent.removeAt(position)
         notifyItemRemoved(position)
+        notifyDataSetChanged()
     }
 
     fun update(checklistItem: Content, position: Int) {
