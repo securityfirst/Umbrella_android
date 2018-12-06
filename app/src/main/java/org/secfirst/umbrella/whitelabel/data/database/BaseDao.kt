@@ -112,7 +112,7 @@ interface BaseDao {
             withContext(ioContext) {
                 SQLite.select()
                         .from(Checklist::class.java)
-                        .where(Checklist_Table.path.`is`(pathID))
+                        .where(Checklist_Table.id.`is`(pathID))
                         .querySingle()
             }
 

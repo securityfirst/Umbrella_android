@@ -43,7 +43,7 @@ data class Checklist(
         if (content.isEmpty()) {
             content = SQLite.select()
                     .from(Content::class.java)
-                    .where(Content_Table.checklist_path.eq(id))
+                    .where(Content_Table.checklist_id.eq(id))
                     .queryList()
         }
         return content
@@ -79,18 +79,16 @@ class Content(
 
 class Dashboard(var items: List<Item> = listOf()) {
 
-    data class Item(var id: Long = 0,
+    data class Item(var title: String = "",
+                    var id: Long = 0,
                     var progress: Int = 0,
-                    var title: String = "",
                     var label: String = "",
                     var checklist: Checklist? = null,
-                    var difficulty: Difficulty?) {
+                    var difficulty: Difficulty? = null) {
 
         constructor(progress: Int, label: String,
                     checklist: Checklist?,
-                    difficulty: Difficulty?) : this(0, progress, "", label, checklist, difficulty)
-
-        constructor(title: String) : this(0, 0, title, "", null, null)
+                    difficulty: Difficulty?) : this("", 0, progress, label, checklist, difficulty)
     }
 }
 

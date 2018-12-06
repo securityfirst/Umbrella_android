@@ -20,8 +20,9 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
             interactor?.let {
                 val content = Content(checklistItemValue)
                 val contents = mutableListOf<Content>()
-                contents.add(content)
                 val customChecklist = Checklist(contents, true, idChecklist)
+                content.checklist = customChecklist
+                contents.add(content)
                 it.persistChecklist(customChecklist)
             }
         }
@@ -42,11 +43,9 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
     override fun submitLoadCustomDashboard() {
         launchSilent(uiContext) {
             interactor?.let {
-                val rate = it.fetchAllCustomChecklistInProgress()
-                val totalDone = it.fetchCustomChecklistCount().toInt()
+                val customChecklist = it.fetchAllCustomChecklistInProgress()
                 val allDashboard = mutableListOf<Dashboard.Item>()
-                allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
-                val inProgressList = dashBoardMount(it.fetchAllChecklistInProgress(), "My Checklists")
+                val inProgressList = customDashboard(customChecklist, "My checklists")
                 allDashboard.addAll(inProgressList)
                 getView()?.showDashboard(allDashboard)
             }
@@ -60,16 +59,27 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val totalDone = it.fetchChecklistCount().toInt()
                 val allDashboard = mutableListOf<Dashboard.Item>()
                 allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
-                val favoriteList = dashBoardMount(it.fetchAllChecklistFavorite(), "Favorites")
+                val favoriteList = dashboardMount(it.fetchAllChecklistFavorite(), "Favorites")
                 allDashboard.addAll(favoriteList)
-                val inProgressList = dashBoardMount(it.fetchAllChecklistInProgress(), "My Checklists")
+                val inProgressList = dashboardMount(it.fetchAllChecklistInProgress(), "My Checklists")
                 allDashboard.addAll(inProgressList)
                 getView()?.showDashboard(allDashboard)
             }
         }
     }
 
-    private suspend fun dashBoardMount(itemList: List<Checklist>, title: String): List<Dashboard.Item> {
+    private fun customDashboard(customChecklist: List<Checklist>, title: String): List<Dashboard.Item> {
+        val dashboards = mutableListOf<Dashboard.Item>()
+        val dashboardTitle = Dashboard.Item(title)
+        dashboards.add(dashboardTitle)
+        customChecklist.forEach {
+            val dashboardItem = Dashboard.Item(it.progress, "opa", it, null)
+            dashboards.add(dashboardItem)
+        }
+        return dashboards
+    }
+
+    private suspend fun dashboardMount(itemList: List<Checklist>, title: String): List<Dashboard.Item> {
         val dashboards = mutableListOf<Dashboard.Item>()
         val dashboardTitle = Dashboard.Item(title)
         dashboards.add(dashboardTitle)

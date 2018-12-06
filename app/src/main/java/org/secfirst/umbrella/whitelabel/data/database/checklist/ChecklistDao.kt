@@ -9,6 +9,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
+
 interface ChecklistDao {
 
     suspend fun save(checklistContent: Content) {
@@ -38,7 +39,7 @@ interface ChecklistDao {
     suspend fun getChecklist(pathID: String): Checklist? = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
-                .where(Checklist_Table.path.`is`(pathID))
+                .where(Checklist_Table.id.`is`(pathID))
                 .querySingle()
     }
 
@@ -104,8 +105,7 @@ interface ChecklistDao {
     suspend fun getAllCustomChecklistInProgress(): List<Checklist> = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
-                .where(Checklist_Table.progress.greaterThanOrEq(1))
-                .and(Checklist_Table.custom.`is`(true))
+                .where(Checklist_Table.custom.`is`(true))
                 .queryList()
     }
 }

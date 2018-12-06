@@ -1,10 +1,12 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.checklist_custom_view.*
+import kotlinx.android.synthetic.main.checklist_custom_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -12,6 +14,8 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.DaggerChecklistCompone
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.ChecklistCustomAdapter
+import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
 class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), ChecklistView {
@@ -19,8 +23,8 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
-
     private val idChecklist by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
+    private lateinit var adapter: ChecklistCustomAdapter
 
     constructor(idChecklist: String) : this(Bundle().apply {
         putString(EXTRA_ID_CUSTOM_CHECKLIST, idChecklist)
@@ -44,19 +48,29 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.checklist_custom_view, container, false)
-        addChecklistItemByKeyboard()
         presenter.onAttach(this)
-        addChecklistItem?.setOnClickListener { addChecklistItem() }
+        adapter = ChecklistCustomAdapter()
+        view.checklistCustomRecyclerView.initRecyclerView(adapter)
+        view.addChecklistItem.setOnClickListener { addChecklistItem() }
+        enterAction(view)
         return view
+    }
+
+    private fun enterAction(view: View) {
+        view.checklistContent?.setOnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
+                addChecklistItem()
+                return@setOnKeyListener true
+            }
+            false
+        }
     }
 
     private fun addChecklistItem() {
         val checklistItem = checklistContent.text.toString()
+        checklistContent?.text?.clear()
         presenter.submitInsertCustomChecklist(checklistItem, idChecklist)
-    }
-
-    private fun addChecklistItemByKeyboard() {
-
+        adapter.add(checklistItem)
     }
 
     private fun setUpToolbar() {
