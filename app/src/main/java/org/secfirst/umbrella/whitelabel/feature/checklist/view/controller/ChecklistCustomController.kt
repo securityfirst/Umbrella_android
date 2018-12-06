@@ -49,9 +49,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun onDestroyView(view: View) {
         enableNavigation()
-        if (adapter.getChecklistItems().isNotEmpty())
-            presenter.submitInsertCustomChecklist(editChecklistTitle.text.toString(),
-                    idChecklist, adapter.getChecklistItems())
+        submitChecklist()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -87,6 +85,12 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
         }
     }
 
+    private fun submitChecklist() {
+        if (adapter.getChecklistItems().isNotEmpty())
+            presenter.submitInsertCustomChecklist(editChecklistTitle.text.toString(),
+                    idChecklist, adapter.getChecklistItems())
+    }
+
     private fun initDeleteChecklistItem(view: View) {
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -106,6 +110,11 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             mainActivity.supportActionBar?.title = context.getString(R.string.custom_checklist_title)
         }
+    }
+
+    override fun handleBack(): Boolean {
+        submitChecklist()
+        return super.handleBack()
     }
 
     companion object {
