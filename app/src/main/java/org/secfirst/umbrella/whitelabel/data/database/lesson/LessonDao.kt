@@ -21,35 +21,35 @@ interface LessonDao {
     suspend fun getSubject(subjectPathId: String): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.path.`is`(subjectPathId))
+                .where(Subject_Table.id.`is`(subjectPathId))
                 .querySingle()
     }
 
     suspend fun getDifficultyBy(sha1ID: String): Difficulty? = withContext(ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.path.`is`(sha1ID))
+                .where(Difficulty_Table.id.`is`(sha1ID))
                 .querySingle()
     }
 
     suspend fun getMarkdownBySubject(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.path.`is`(subjectSh1ID))
+                .where(Markdown_Table.id.`is`(subjectSh1ID))
                 .queryList()
     }
 
     suspend fun getMarkdownByModule(sha1ID: String): Markdown? = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.module_path.`is`(sha1ID))
+                .where(Markdown_Table.module_id.`is`(sha1ID))
                 .querySingle()
     }
 
     suspend fun getMarkdowns(sha1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.path.`is`(sha1ID))
+                .where(Markdown_Table.id.`is`(sha1ID))
                 .queryList()
     }
 
@@ -63,7 +63,7 @@ interface LessonDao {
     suspend fun getLessonBy(sha1ID: String): Module? = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
-                .where(Module_Table.path.`is`(sha1ID))
+                .where(Module_Table.id.`is`(sha1ID))
                 .querySingle()
     }
 

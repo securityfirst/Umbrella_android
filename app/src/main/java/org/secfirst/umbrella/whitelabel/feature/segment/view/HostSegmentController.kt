@@ -123,9 +123,9 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     private fun saveDifficultySelect(spinnerSelected: Difficulty) {
-        if (spinnerSelected.path.isNotEmpty())
+        if (spinnerSelected.id.isNotEmpty())
             spinnerSelected.subject?.let { subject ->
-                presenter.submitDifficultySelected(subject.path, spinnerSelected)
+                presenter.submitDifficultySelected(subject.id, spinnerSelected)
             }
     }
 }

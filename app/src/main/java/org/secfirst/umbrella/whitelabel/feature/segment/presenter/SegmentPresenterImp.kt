@@ -41,7 +41,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     override fun submitLoadSubject(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let { safeInteractor ->
-                val markdowns = safeInteractor.fetchMarkdowns(subject.path)
+                val markdowns = safeInteractor.fetchMarkdowns(subject.id)
                 if (markdowns.size > Markdown.SINGLE_CHOICE) {
                     val list = mutableListOf<Difficulty>()
                     list.add(defaultDifficulty(markdowns, subject.title))
@@ -62,11 +62,11 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     override fun submitLoadSegments(selectDifficulty: Difficulty) {
         launchSilent(uiContext) {
             interactor?.let { safeInteractor ->
-                val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.path)
+                val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.id)
                 val orderDifficulties = subject?.difficulties?.orderDifficulty(selectDifficulty)
                 orderDifficulties?.let {
                     it.forEach { difficulty ->
-                        difficulty.subject = safeInteractor.fetchSubject(subject.path)
+                        difficulty.subject = safeInteractor.fetchSubject(subject.id)
                     }
                     getView()?.showSegments(it)
                 }

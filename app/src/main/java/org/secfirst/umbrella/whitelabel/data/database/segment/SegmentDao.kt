@@ -37,7 +37,7 @@ interface SegmentDao {
     suspend fun getMarkdowns(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.subject_path.`is`(subjectSh1ID))
+                .where(Markdown_Table.subject_id.`is`(subjectSh1ID))
                 .queryList()
 
     }
@@ -45,14 +45,14 @@ interface SegmentDao {
     suspend fun getSubject(sh1ID: String): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.path.`is`(sh1ID))
+                .where(Subject_Table.id.`is`(sh1ID))
                 .querySingle()
     }
 
     suspend fun getModule(sh1ID: String): Module? = withContext(ioContext) {
         SQLite.select()
                 .from(Module::class.java)
-                .where(Module_Table.path.`is`(sh1ID))
+                .where(Module_Table.id.`is`(sh1ID))
                 .querySingle()
     }
 }

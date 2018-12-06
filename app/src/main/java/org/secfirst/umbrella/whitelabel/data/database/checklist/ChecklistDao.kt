@@ -79,14 +79,14 @@ interface ChecklistDao {
     suspend fun getSubjectById(subjectPathID: String) = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.path.`is`(subjectPathID))
+                .where(Subject_Table.id.`is`(subjectPathID))
                 .querySingle()
     }
 
     suspend fun getDifficultyById(pathID: String): Difficulty = withContext(ioContext) {
         val result = SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.path.`is`(pathID))
+                .where(Difficulty_Table.id.`is`(pathID))
                 .querySingle()
         return@withContext result!!
 

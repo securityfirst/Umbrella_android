@@ -30,12 +30,12 @@ data class Element(
 val Element.convertToModule: Module
     get() {
         val category = Module()
-        category.path= this.pathId
+        category.id= this.pathId
         category.checklist = this.checklist
         category.index = this.index
         category.description = this.description
         category.markdowns = this.markdowns
-        category.path = this.path
+        category.id = this.path
         category.rootDir = this.rootDir
         category.moduleTitle = this.title
         category.resourcePath = this.resourcePath
@@ -45,12 +45,12 @@ val Element.convertToModule: Module
 val Element.convertToSubCategory: Subject
     get() {
         val subcategory = Subject()
-        subcategory.path = this.pathId
+        subcategory.id = this.pathId
         subcategory.checklist = this.checklist
         subcategory.index = this.index
         subcategory.description = this.description
         subcategory.markdowns = this.markdowns
-        subcategory.path = this.path
+        subcategory.id = this.path
         subcategory.rootDir = this.rootDir
         subcategory.title = this.title
         return subcategory
@@ -59,12 +59,12 @@ val Element.convertToSubCategory: Subject
 val Element.convertToDifficulty: Difficulty
     get() {
         val child = Difficulty()
-        child.path = this.pathId
+        child.id = this.pathId
         child.checklist = this.checklist
         child.index = this.index
         child.description = this.description
         child.markdowns = this.markdowns
-        child.path = this.path
+        child.id = this.path
         child.rootDir = this.rootDir
         child.title = this.title
         return child

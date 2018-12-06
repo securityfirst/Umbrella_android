@@ -20,7 +20,7 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
         allFields = true, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
         @PrimaryKey
-        var path: String = "",
+        var id: String = "",
         var text: String = "",
         var title: String = "",
         var index: String = "",

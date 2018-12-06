@@ -25,7 +25,7 @@ data class Lesson(var moduleId: String,
 @Parcelize
 open class Module(
         @PrimaryKey
-        var path: String = "",
+        var id: String = "",
         @Column
         var index: Int = 0,
         @Column
@@ -47,7 +47,7 @@ open class Module(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_path.eq(path))
+                    .where(Markdown_Table.module_id.eq(id))
                     .queryList()
         }
         return markdowns
@@ -58,7 +58,7 @@ open class Module(
         if (subjects.isEmpty()) {
             subjects = SQLite.select()
                     .from(Subject::class.java)
-                    .where(Subject_Table.module_path.eq(path))
+                    .where(Subject_Table.module_id.eq(id))
                     .queryList()
         }
         return subjects
@@ -69,7 +69,7 @@ open class Module(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.module_path.eq(path))
+                    .where(Checklist_Table.module_id.eq(id))
                     .queryList()
         }
         return checklist
@@ -91,7 +91,7 @@ data class Subject(
         @Column
         var rootDir: String = "",
         @PrimaryKey
-        var path: String = "",
+        var id: String = "",
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null) : Parcelable {
 
@@ -100,7 +100,7 @@ data class Subject(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_path.eq(path))
+                    .where(Markdown_Table.module_id.eq(id))
                     .queryList()
         }
         return markdowns
@@ -111,7 +111,7 @@ data class Subject(
         if (difficulties.isEmpty()) {
             difficulties = SQLite.select()
                     .from(Difficulty::class.java)
-                    .where(Difficulty_Table.subject_path.eq(path))
+                    .where(Difficulty_Table.subject_id.eq(id))
                     .queryList()
         }
         return difficulties
@@ -123,7 +123,7 @@ data class Subject(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.module_path.eq(path))
+                    .where(Checklist_Table.module_id.eq(id))
                     .queryList()
         }
         return checklist
@@ -136,7 +136,7 @@ fun List<Module>.toLesson(): List<Lesson> {
     moduleSorted.forEach { module ->
         val subjectSorted = module.subjects.sortedWith(compareBy { it.index })
         module.subjects = subjectSorted.toMutableList()
-        val lesson = Lesson(module.path, module.moduleTitle, module.resourcePath, module.subjects)
+        val lesson = Lesson(module.id, module.moduleTitle, module.resourcePath, module.subjects)
         lessons.add(lesson)
     }
     return lessons
@@ -144,7 +144,7 @@ fun List<Module>.toLesson(): List<Lesson> {
 
 fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
-    favoriteModule.path = "1"
+    favoriteModule.id = "1"
     favoriteModule.moduleTitle = "Bookmarked"
     favoriteModule.index = 1
     return favoriteModule

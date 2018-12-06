@@ -19,7 +19,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 @Table(database = AppDatabase::class)
 data class Difficulty(
         @PrimaryKey
-        var path: String = "",
+        var id: String = "",
         @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
         @Column
@@ -41,7 +41,7 @@ data class Difficulty(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.difficulty_path.eq(path))
+                    .where(Markdown_Table.difficulty_id.eq(id))
                     .queryList()
         }
         return markdowns
@@ -52,7 +52,7 @@ data class Difficulty(
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
                     .from(Checklist::class.java)
-                    .where(Checklist_Table.difficulty_path.eq(path))
+                    .where(Checklist_Table.difficulty_id.eq(id))
                     .queryList()
         }
         return checklist
@@ -73,7 +73,7 @@ fun MutableList<Difficulty>.orderDifficulty(selectDifficulty: Difficulty): Mutab
     val auxDifficulties = mutableListOf<Difficulty>()
     auxDifficulties.add(selectDifficulty)
     this.forEach {
-        if (selectDifficulty.path != it.path)
+        if (selectDifficulty.id != it.id)
             auxDifficulties.add(it)
     }
     return auxDifficulties

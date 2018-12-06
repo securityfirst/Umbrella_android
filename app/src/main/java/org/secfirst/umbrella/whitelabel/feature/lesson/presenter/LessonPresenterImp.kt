@@ -42,7 +42,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     override fun submitSelectLesson(subject: Subject) {
         launchSilent(uiContext) {
             interactor?.let {
-                val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.path)
+                val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
                 when {
                     difficultyPreferred != null -> difficultyPreferred.difficulty?.let { safePreferred ->
                         getView()?.startDeferredSegment(safePreferred)

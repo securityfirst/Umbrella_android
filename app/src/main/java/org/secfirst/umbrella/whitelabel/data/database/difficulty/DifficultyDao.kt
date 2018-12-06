@@ -18,21 +18,21 @@ interface DifficultyDao {
     suspend fun getSubjectByModule(modulePathId: String): Subject? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.module_path.`is`(modulePathId))
+                .where(Subject_Table.module_id.`is`(modulePathId))
                 .querySingle()
     }
 
     suspend fun getSubjectBy(subjectPathId: String): Subject? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.path.`is`(subjectPathId))
+                .where(Subject_Table.id.`is`(subjectPathId))
                 .querySingle()
     }
 
     suspend fun getDifficultyBy(pathId : String): Difficulty? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.path.`is`(pathId))
+                .where(Difficulty_Table.id.`is`(pathId))
                 .querySingle()
     }
 }

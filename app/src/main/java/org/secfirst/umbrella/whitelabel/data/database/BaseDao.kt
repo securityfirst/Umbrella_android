@@ -88,7 +88,7 @@ interface BaseDao {
             withContext(ioContext) {
                 SQLite.select()
                         .from(Module::class.java)
-                        .where(Module_Table.path.`is`(pathID))
+                        .where(Module_Table.id.`is`(pathID))
                         .querySingle()
             }
 
@@ -96,7 +96,7 @@ interface BaseDao {
             withContext(ioContext) {
                 SQLite.select()
                         .from(Subject::class.java)
-                        .where(Subject_Table.path.`is`(pathID))
+                        .where(Subject_Table.id.`is`(pathID))
                         .querySingle()
             }
 
@@ -104,7 +104,7 @@ interface BaseDao {
             withContext(ioContext) {
                 SQLite.select()
                         .from(Difficulty::class.java)
-                        .where(Difficulty_Table.path.`is`(pathID))
+                        .where(Difficulty_Table.id.`is`(pathID))
                         .querySingle()
             }
 
@@ -120,7 +120,7 @@ interface BaseDao {
             withContext(ioContext) {
                 SQLite.select()
                         .from(Markdown::class.java)
-                        .where(Markdown_Table.path.`is`(pathID))
+                        .where(Markdown_Table.id.`is`(pathID))
                         .querySingle()
             }
 
