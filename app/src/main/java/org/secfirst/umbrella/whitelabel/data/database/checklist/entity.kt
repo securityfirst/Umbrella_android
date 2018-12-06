@@ -20,6 +20,8 @@ data class Checklist(
         var content: MutableList<Content> = arrayListOf(),
         @Column
         var custom: Boolean = false,
+        @Column
+        var title: String = "",
         @PrimaryKey
         var id: String = "",
         @Column

@@ -50,12 +50,12 @@
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="sans-serif"
-                android:hint="@string/custom_checklist_hint_component"
+                android:hint="@string/custom_checklist_hint_add_checklistTitle"
+                android:imeOptions="actionNext"
                 android:padding="5dp"
                 android:textColor="#9b9b9b"
                 android:textSize="18sp"
                 android:textStyle="normal"
-                android:imeOptions="actionNext"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
                 tools:ignore="MissingPrefix" />
         </android.support.v7.widget.CardView>

@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,8 @@ class ChecklistCustomAdapter : RecyclerView.Adapter<ChecklistCustomAdapter.Check
         notifyDataSetChanged()
     }
 
+    fun size() = checklistItems.size
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecklistHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.checklist_custom_item, parent, false)
@@ -37,6 +40,10 @@ class ChecklistCustomAdapter : RecyclerView.Adapter<ChecklistCustomAdapter.Check
     class ChecklistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(value: String) {
             itemView.checkCustomItem.text = value
+            if (adapterPosition == 0)
+                itemView.customChecklistCard.setCardBackgroundColor(
+                        ContextCompat.getColor(itemView.context, R.color.umbrella_green))
+
         }
     }
 }

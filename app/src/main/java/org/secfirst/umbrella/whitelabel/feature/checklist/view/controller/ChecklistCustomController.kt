@@ -25,6 +25,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private val idChecklist by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
     private lateinit var adapter: ChecklistCustomAdapter
+    private lateinit var checklistTitle: String
 
     constructor(idChecklist: String) : this(Bundle().apply {
         putString(EXTRA_ID_CUSTOM_CHECKLIST, idChecklist)
@@ -69,7 +70,11 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     private fun addChecklistItem() {
         val checklistItem = checklistContent.text.toString()
         checklistContent?.text?.clear()
-        presenter.submitInsertCustomChecklist(checklistItem, idChecklist)
+        if (adapter.size() == 0) checklistTitle = checklistItem
+        else {
+            checklistContent.hint = context.getText(R.string.custom_checklist_hint_add_checklistItem)
+            presenter.submitInsertCustomChecklist(checklistTitle, checklistItem, idChecklist)
+        }
         adapter.add(checklistItem)
     }
 
