@@ -35,6 +35,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .application(UmbrellaApplication.instance)
                 .build()
                 .inject(this)
+
     }
 
     override fun onAttach(view: View) {

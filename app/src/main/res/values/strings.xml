@@ -116,5 +116,6 @@
     <string name="checklist_dialog_disable">DISABLE</string>
     <string name="custom_checklist_hint_add_checklistItem">Add checklist item</string>
     <string name="custom_checklist_hint_add_checklistTitle">Add checklist title</string>
+    <string name="custom_checklist_title">Your checklists</string>
 
 </resources>

@@ -104,7 +104,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
         customChecklistToolbar?.let {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            mainActivity.supportActionBar?.title = "Your checklists"
+            mainActivity.supportActionBar?.title = context.getString(R.string.custom_checklist_title)
         }
     }
 
