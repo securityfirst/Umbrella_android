@@ -15,7 +15,6 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                        private val onItemChecked: (Content) -> Unit,
                        private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
     fun removeAt(position: Int) {
         checklistContent.removeAt(position)
         notifyItemRemoved(position)

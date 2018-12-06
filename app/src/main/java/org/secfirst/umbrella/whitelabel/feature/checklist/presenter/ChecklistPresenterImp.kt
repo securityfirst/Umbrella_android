@@ -15,15 +15,17 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         BasePresenterImp<V, I>(interactor = interactor), ChecklistBasePresenter<V, I> {
 
 
-    override fun submitInsertCustomChecklist(checklistTitle: String, checklistItemValue: String,
-                                             idChecklist: String) {
+    override fun submitInsertCustomChecklist(checklistTitle: String, idChecklist: String,
+                                             checklistValue: List<String>) {
         launchSilent(uiContext) {
             interactor?.let {
-                val content = Content(checklistItemValue)
                 val contents = mutableListOf<Content>()
                 val customChecklist = Checklist(contents, true, checklistTitle, idChecklist)
-                content.checklist = customChecklist
-                contents.add(content)
+                checklistValue.forEach { value ->
+                    val content = Content(value)
+                    content.checklist = customChecklist
+                    contents.add(content)
+                }
                 it.persistChecklist(customChecklist)
             }
         }

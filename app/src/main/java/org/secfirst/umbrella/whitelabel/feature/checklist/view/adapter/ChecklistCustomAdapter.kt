@@ -1,7 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,13 @@ class ChecklistCustomAdapter : RecyclerView.Adapter<ChecklistCustomAdapter.Check
 
     private var checklistItems = mutableListOf<String>()
 
+
+    fun removeAt(position: Int) {
+        checklistItems.removeAt(position)
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
+    }
+
     fun add(value: String) {
         val position = if (checklistItems.size > 0) checklistItems.size else 0
         checklistItems.add(position, value)
@@ -20,7 +28,10 @@ class ChecklistCustomAdapter : RecyclerView.Adapter<ChecklistCustomAdapter.Check
         notifyDataSetChanged()
     }
 
+    fun getChecklistItems() = checklistItems
+
     fun size() = checklistItems.size
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChecklistHolder {
         val view = LayoutInflater.from(parent.context)
@@ -32,18 +43,27 @@ class ChecklistCustomAdapter : RecyclerView.Adapter<ChecklistCustomAdapter.Check
 
     override fun onBindViewHolder(holder: ChecklistHolder, position: Int) {
         if (checklistItems.size < 0)
-            holder.bind("")
+            holder.bind("", checklistItems)
         else
-            holder.bind(checklistItems[position])
+            holder.bind(checklistItems[position], checklistItems)
     }
 
     class ChecklistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(value: String) {
-            itemView.checkCustomItem.text = value
-            if (adapterPosition == 0)
-                itemView.customChecklistCard.setCardBackgroundColor(
-                        ContextCompat.getColor(itemView.context, R.color.umbrella_green))
+        fun bind(value: String, checklistItems: MutableList<String>) {
+            itemView.checkCustomItem.setText(value)
+            updateChecklistItem(checklistItems)
+        }
 
+        private fun updateChecklistItem(checklistItems: MutableList<String>) {
+            itemView.checkCustomItem.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {}
+
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(newText: CharSequence?, start: Int, before: Int, count: Int) {
+                    checklistItems[adapterPosition] = newText.toString()
+                }
+            })
         }
     }
 }
