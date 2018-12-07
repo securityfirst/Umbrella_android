@@ -22,17 +22,19 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
                 try {
                     getView()?.isLoginOk(test())
                 } catch (ex: Exception) {
-                    FlowManager.close()
                     getView()?.isLoginOk(false)
                 }
             }
         }
+
     }
 
     fun test(): Boolean {
+        //val dbPath = FlowManager.getConfig().context.getDatabasePath(AppDatabase.NAME)
+        //val db = SQLiteDatabase.openOrCreateDatabase(dbPath, userToken, null)
+        //db.execSQL("PRAGMA rekey = '$userToken';")
         val a = FlowManager.getDatabase(AppDatabase.NAME).helper.isDatabaseIntegrityOk
         Log.i("test", "")
         return a
     }
-
 }

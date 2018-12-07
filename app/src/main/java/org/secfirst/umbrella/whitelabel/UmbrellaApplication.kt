@@ -47,7 +47,7 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         super.onCreate()
         val shared = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val isLogged = shared.getBoolean(EXTRA_LOGGED_IN, false)
-//        if (!isLogged) initDatabase()
+        if (!isLogged) initDatabase()
         instance = this
         initDatabase()
         initDaggerComponent()
