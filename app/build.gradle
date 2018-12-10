@@ -180,4 +180,8 @@ dependencies {
     implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
     implementation "net.zetetic:android-database-sqlcipher:${sqlcipher_version}@aar"
     implementation "info.guardianproject.iocipher:IOCipher:$io_cipher"
+
+    //file conversion
+    implementation 'com.itextpdf:itextpdf:5.5.10'
+    implementation 'com.itextpdf.tool:xmlworker:5.5.10'
 }

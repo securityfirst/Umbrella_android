@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/share_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dashboard_feed_normal_padding"
+        android:text="@string/export_lesson"
+        android:textSize="@dimen/text_size_xlarge"
+        android:textColor="@color/ms_black"/>
+
+    <View
+        android:id="@+id/lineabove"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/share_title"
+        android:background="@android:color/darker_gray" />
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lineabove"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical"
+        android:padding="@dimen/dashboard_feed_normal_padding" />
+
+    <View
+        android:id="@+id/linebelow"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/radio_group"
+        android:background="@android:color/darker_gray" />
+
+    <RelativeLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linebelow"
+        android:padding="@dimen/dashboard_feed_normal_padding">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/share_document_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/dashboard_feed_normal_padding"
+            android:text="@string/export_button"
+            android:textColor="@color/avocado" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/cancel_share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/share_document_button"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/dashboard_feed_normal_padding"
+            android:text="@string/export_dialog_cancel"
+            android:textColor="@color/avocado" />
+
+    </RelativeLayout>
+
+</android.widget.RelativeLayout>

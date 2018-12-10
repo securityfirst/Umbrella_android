@@ -50,8 +50,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         initTentRepository()
         initFonts()
         initFabric()
-        val builder = StrictMode.VmPolicy.Builder()
-        StrictMode.setVmPolicy(builder.build())
     }
 
     private fun initDaggerComponent() {

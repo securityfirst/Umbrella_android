@@ -1,19 +1,21 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.FileProvider
+import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
-import encodeToBase64
-import info.guardianproject.iocipher.VirtualFileSystem
 import kotlinx.android.synthetic.main.segment_view.*
+import org.apache.commons.io.FilenameUtils.removeExtension
 import org.jsoup.Jsoup
-import org.jsoup.select.Elements
 import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -26,12 +28,10 @@ import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
-import org.secfirst.umbrella.whitelabel.misc.IOCipherContentProvider.Companion.SHARE_FILE
+import org.secfirst.umbrella.whitelabel.misc.FileExtensions
+import org.secfirst.umbrella.whitelabel.misc.createDocument
 import org.secfirst.umbrella.whitelabel.misc.initGridView
-import java.io.BufferedWriter
 import java.io.File
-import java.io.FileWriter
-import java.io.IOException
 import javax.inject.Inject
 
 
@@ -136,76 +136,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         val andDown = AndDown()
         val result = andDown.markdownToHtml(markdown.text, AndDown.HOEDOWN_EXT_QUOTE, 0)
         val doc = Jsoup.parse(result)
-
-        val img: Elements = doc.getElementsByTag("img")
-        lateinit var src: String
-        lateinit var base64img: String
-
-
-
-        for (el in img) {
-            src = el.absUrl("src").replace("file://", "")
-            base64img = encodeToBase64(File(src))
-            src = "data:image/png;base64," + base64img
-            el.attr("src", src)
-
-        }
-
-        val filename = markdown.title
-        val f = java.io.File(UmbrellaApplication.instance.cacheDir, SHARE_FILE)
-        if (!f.exists()) {
-            try {
-                f.createNewFile()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
-        val path = f.path
-
-        val vfs = VirtualFileSystem.get()
-        vfs.containerPath = path
-        try {
-            if (!vfs.isMounted)
-                vfs.mount("Umbrella")
-            if (!vfs.isMounted)
-                vfs.createNewContainer(path)
-
-            val file = File(UmbrellaApplication.instance.cacheDir, filename + ".html")
-            try {
-                val writer = BufferedWriter(FileWriter(file))
-                writer.write(doc.toString())
-                writer.flush()
-                writer.close()
-                val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, file)
-                val shareIntent = ShareCompat.IntentBuilder.from(activity)
-                        .setType(activity!!.contentResolver.getType(uri))
-                        .setStream(uri)
-                        .intent
-
-                //Provide read access
-                shareIntent.action = Intent.ACTION_SEND
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, markdown.title)
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                val pm = activity!!.packageManager
-
-                if (shareIntent.resolveActivity(pm) != null) {
-                    startActivity(Intent.createChooser(shareIntent, "Share lesson"))
-                }
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-
-            }
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
-
-        }
-
-
+        doc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
+        showShareDialog(doc, markdown.title)
     }
 
     private fun onFootClicked(position: Int) {
@@ -226,5 +158,69 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     fun setIndexTab(position: Int) {
         this.indexTab = position
+    }
+
+
+    private fun shareDocument(fileToShare: File) {
+
+        val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, fileToShare)
+        val shareIntent = ShareCompat.IntentBuilder.from(activity)
+                .setType(activity!!.contentResolver.getType(uri))
+                .setStream(uri)
+                .intent
+
+        //Provide read access
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, removeExtension(fileToShare.name))
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        val pm = activity!!.packageManager
+
+        if (shareIntent.resolveActivity(pm) != null) {
+            startActivity(Intent.createChooser(shareIntent, R.string.export_lesson.toString()))
+        }
+
+    }
+
+
+    //Share Menu
+    private fun showShareDialog(doc: org.jsoup.nodes.Document, title: String) {
+
+        var type = FileExtensions.PDF
+        // custom dialog
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.share_dialog)
+
+        val shareWindow: RadioGroup = dialog.findViewById(R.id.radio_group)
+
+        for (i in 0 until FileExtensions.values().size) {
+            val radioButton = RadioButton(context)
+            radioButton.text = FileExtensions.values()[i].toString()
+            shareWindow.addView(radioButton)
+        }
+
+        shareWindow.check(shareWindow.getChildAt(0).id)
+
+        val shareButton: AppCompatButton = dialog.findViewById(R.id.share_document_button)
+        shareButton.setOnClickListener { _ ->
+            shareDocument(createDocument(doc, title, type, context))
+            dialog.dismiss()
+        }
+
+        val dismissButton: AppCompatButton = dialog.findViewById(R.id.cancel_share_button)
+        dismissButton.setOnClickListener { _ ->
+            dialog.dismiss()
+        }
+
+        dialog.show();
+
+        shareWindow.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            val childCount = group.childCount
+            for (x in 0 until childCount) {
+                val btn = group.getChildAt(x) as RadioButton
+                if (btn.id == checkedId) {
+                    type = FileExtensions.valueOf(btn.text.toString())
+                }
+            }
+        })
     }
 }
