@@ -1,7 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.login.presenter
 
-import android.util.Log
-import com.raizlabs.android.dbflow.config.FlowManager
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SQLiteException
+import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginBaseInteractor
@@ -18,10 +19,10 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
     override fun submitChangeDatabaseAccess(userToken: String) {
         interactor?.let {
             launchSilent(uiContext) {
-                it.dispatchLoginDatabaseAccess(userToken)
-                try {
-                    getView()?.isLoginOk(test())
-                } catch (ex: Exception) {
+                if (testLogin(userToken)) {
+                    it.dispatchLoginDatabaseAccess(userToken)
+                    getView()?.isLoginOk(true)
+                } else {
                     getView()?.isLoginOk(false)
                 }
             }
@@ -29,12 +30,14 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
 
     }
 
-    fun test(): Boolean {
-        //val dbPath = FlowManager.getConfig().context.getDatabasePath(AppDatabase.NAME)
-        //val db = SQLiteDatabase.openOrCreateDatabase(dbPath, userToken, null)
-        //db.execSQL("PRAGMA rekey = '$userToken';")
-        val a = FlowManager.getDatabase(AppDatabase.NAME).helper.isDatabaseIntegrityOk
-        Log.i("test", "")
-        return a
+    fun testLogin(userToken: String): Boolean {
+        SQLiteDatabase.loadLibs(UmbrellaApplication.instance)
+        try {
+            val db = SQLiteDatabase.openOrCreateDatabase(UmbrellaApplication.instance.getDatabasePath(AppDatabase.NAME+".db").getPath(), userToken, null)
+            return db.isOpen
+        } catch (e : SQLiteException) {
+            e.printStackTrace()
+            return false
+        }
     }
 }
