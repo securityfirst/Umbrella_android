@@ -13,6 +13,10 @@ interface ReaderView : BaseView {
 
     fun showNewestRss(rss: RSS) {}
 
+    fun isSkipPassword(res: Boolean) {}
+
+    fun isChangedToken(res: Boolean) {}
+
     fun newAddressAvailable(locationInfo: LocationInfo) {}
 
     fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean = false) {}

@@ -19,6 +19,22 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), ReaderBasePresenter<V, I> {
 
+    override fun setSkipPassword(value : Boolean) {
+        interactor?.setSkipPassword(value)
+    }
+
+    override fun submitChangeDatabaseAccess(userToken: String) {
+        launchSilent(uiContext) {
+            val res = interactor?.applyChangeDatabaseAccess(userToken) ?: false
+            getView()?.isChangedToken(res)
+        }
+    }
+
+    override fun isSkipPassword() {
+        val res = interactor?.isSkipPassword() ?: false
+        getView()?.isSkipPassword(res)
+    }
+
     private val tag: String = ReaderPresenterImp::class.java.name
 
     override fun prepareView() {

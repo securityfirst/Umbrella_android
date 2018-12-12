@@ -1,16 +1,23 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
+import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
+import kotlinx.android.synthetic.main.account_password_alert.view.*
+import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_settings_view.*
 import kotlinx.android.synthetic.main.feed_settings_view.view.*
 import org.jetbrains.anko.textColor
+import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
 import org.secfirst.umbrella.whitelabel.component.FeedSourceDialog
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
@@ -22,6 +29,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
+import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
 import javax.inject.Inject
 
 
@@ -38,6 +46,11 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     private lateinit var feedLocationDialog: FeedLocationDialog
     private lateinit var feedRefreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
+    private lateinit var passwordAlertDialog: AlertDialog
+    private lateinit var passwordView: View
+    private lateinit var skipPasswordDialog: AlertDialog
+    private lateinit var skipPasswordView: View
+
 
     override fun onInject() {
         DaggerReanderComponent.builder()
@@ -46,12 +59,35 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
                 .inject(this)
     }
 
+    override fun onAttach(view: View) {
+        presenter.isSkipPassword()
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         presenter.onAttach(this)
         val mainView = inflater.inflate(R.layout.feed_settings_view, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
         feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
+        passwordView = inflater.inflate(R.layout.account_password_alert, container, false)
+        skipPasswordView = inflater.inflate(R.layout.account_skip_alert, container, false)
+
         presenter.prepareView()
+
+        passwordAlertDialog = AlertDialog
+                .Builder(activity)
+                .setView(passwordView)
+                .create()
+
+        skipPasswordDialog = AlertDialog
+                .Builder(activity)
+                .setView(skipPasswordView)
+                .create()
+
+        passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
+        passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
+        passwordView.passwordCancel.setOnClickListener { passwordAlertCancel() }
+        skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
+        skipPasswordView.ok.setOnClickListener { skipAlertOk() }
 
         mainView.setUndefinedFeed.setOnClickListener { onClickUndefinedFeed() }
         mainView.setRefreshInterval.setOnClickListener { onClickRefreshInterval() }
@@ -61,6 +97,44 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
         return mainView
     }
+
+    private fun skipAlertCancel() = skipPasswordDialog.dismiss()
+
+    private fun skipAlertOk() {
+        presenter.setSkipPassword(true)
+        skipPasswordDialog.dismiss()
+    }
+
+    private fun passwordAlertCancel() = passwordAlertDialog.dismiss()
+
+    private fun passwordAlertOk() {
+        val token = passwordView.pwText.text.toString()
+        if (token.checkPasswordStrength(context))
+            presenter.submitChangeDatabaseAccess(token)
+
+        passwordAlertDialog.dismiss()
+    }
+
+    private fun clickOnSkipAlert() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return skipPasswordDialog
+            }
+        })
+        passwordAlertDialog.dismiss()
+    }
+
+
+    private fun showPasswordDialog() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return passwordAlertDialog
+            }
+        })
+    }
+
 
     private fun onClickUndefinedFeed() {
         val feedsChecked = feedsCheckbox.filter { it.lastChecked }
@@ -187,5 +261,14 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
 
     override fun feedError() {
         feedProgress?.visibility = View.INVISIBLE
+    }
+
+    override fun isChangedToken(res: Boolean) {
+        if (res) context.toast(context.getString(R.string.password_changed))
+        else context.toast(context.getString(R.string.error_password))
+    }
+
+    override fun isSkipPassword(res: Boolean) {
+        if (!res) showPasswordDialog()
     }
 }

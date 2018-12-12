@@ -31,4 +31,10 @@ interface ReaderBasePresenter<V : ReaderView, I : ReaderBaseInteractor> : BasePr
 
     fun prepareView()
 
+    fun isSkipPassword()
+
+    fun setSkipPassword(value : Boolean)
+
+    fun submitChangeDatabaseAccess(userToken: String)
+
 }

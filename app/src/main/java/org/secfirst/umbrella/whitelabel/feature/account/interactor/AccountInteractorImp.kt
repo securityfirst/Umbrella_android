@@ -13,13 +13,19 @@ class AccountInteractorImp @Inject constructor(preferenceHelper: AppPreferenceHe
     : BaseInteractorImp(preferenceHelper), AccountBaseInteractor {
 
 
-    override fun setSkipPassword() = preferenceHelper.setSkipPassword(true)
+    override fun setSkipPassword(value: Boolean) = preferenceHelper.setSkipPassword(value)
+
+    override fun isSkippPassword(): Boolean = preferenceHelper.getSkipPassword()
 
     override fun setLoggedIn() = preferenceHelper.setIsLoggedIn(true)
 
     override suspend fun accessDatabase(userToken: String) = accountRepo.loginDatabase(userToken)
 
-    override suspend fun changeDatabaseAccess(userToken: String) = accountRepo.changeToken(userToken)
+    override suspend fun changeDatabaseAccess(userToken: String): Boolean {
+        val res = accountRepo.changeToken(userToken)
+        if (res) preferenceHelper.setSkipPassword(true)
+        return res
+    }
 
     override suspend fun insertFeedLocation(feedLocation: FeedLocation) = accountRepo.saveFeedLocation(feedLocation)
 

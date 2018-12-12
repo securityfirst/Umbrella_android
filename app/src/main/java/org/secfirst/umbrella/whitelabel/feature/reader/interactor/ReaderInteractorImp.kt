@@ -17,6 +17,16 @@ class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     : BaseInteractorImp(apiHelper, preferenceHelper), ReaderBaseInteractor {
 
+    override suspend fun applyChangeDatabaseAccess(userToken: String): Boolean {
+        val res = readerRepo.changeToken(userToken)
+        if (res) preferenceHelper.setSkipPassword(true)
+        return res
+    }
+
+    override fun setSkipPassword(value: Boolean) = preferenceHelper.setSkipPassword(value)
+
+    override fun isSkipPassword() = preferenceHelper.getSkipPassword()
+
     override suspend fun deleteLocation() = readerRepo.deleteLocation()
 
     override suspend fun fetchRefreshInterval() = preferenceHelper.getRefreshInterval()

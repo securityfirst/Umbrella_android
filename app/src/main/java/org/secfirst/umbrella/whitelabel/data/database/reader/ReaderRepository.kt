@@ -4,6 +4,8 @@ import javax.inject.Inject
 
 class ReaderRepository @Inject constructor(private val readerDao: ReaderDao) : ReaderRepo {
 
+    override suspend fun changeToken(userToken: String) = readerDao.changeDatabaseAccess(userToken)
+
     override suspend fun deleteLocation() = readerDao.deleteLocation()
 
     override suspend fun saveFeedLocation(feedLocation: FeedLocation) = readerDao.saveFeedLocation(feedLocation)

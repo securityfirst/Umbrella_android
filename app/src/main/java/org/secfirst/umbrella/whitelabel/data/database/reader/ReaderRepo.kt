@@ -20,4 +20,6 @@ interface ReaderRepo {
 
     suspend fun getAllFeedSources(): List<FeedSource>
 
+    suspend fun changeToken(userToken: String): Boolean
+
 }

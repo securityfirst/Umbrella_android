@@ -108,7 +108,10 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
         mainView.settingsSecurityFeed.setOnClickListener { feedSourceClick() }
         mainView.settingsRefreshServer.setOnClickListener { refreshServerClick() }
-
+        mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
+            skipPasswordTip(isChecked)
+        }
+        presenter.submitSkippPassword()
         presenter.prepareView()
         initExportGroup()
         feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
@@ -127,6 +130,10 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
             }
         })
         presentTent.submitUpdateRepository()
+    }
+
+    private fun skipPasswordTip(isChecked: Boolean) {
+        if (isChecked) presenter.setSkipPassword(true) else presenter.setSkipPassword(false)
     }
 
     private fun feedSourceClick() = feedSourceDialog.show()
@@ -297,6 +304,10 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
     private fun wipeDataClick() {
         isWipeData = true
+    }
+
+    override fun getSkipPassword(res: Boolean) {
+        mainView.settingsSkipPassword.isChecked = res
     }
 
     private fun getFilename(): String {

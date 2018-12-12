@@ -20,10 +20,12 @@ interface AccountBaseInteractor : BaseInteractor {
 
     fun setLoggedIn(): Boolean
 
-    fun setSkipPassword(): Boolean
+    fun setSkipPassword(value: Boolean): Boolean
 
     suspend fun fetchRefreshInterval(): Int
 
     suspend fun putRefreshInterval(position: Int): Boolean
+
+    fun isSkippPassword(): Boolean
 
 }

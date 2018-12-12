@@ -18,4 +18,6 @@ interface AccountView : BaseView {
     fun onImportBackupFail() {}
 
     fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int, feedSource: List<FeedSource>) {}
+
+    fun getSkipPassword(res : Boolean) {}
 }

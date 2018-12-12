@@ -120,4 +120,6 @@
     <string name="password_one_small">Password must have at least one small letter</string>
     <string name="password_too_short">Password too short</string>
     <string name="skip_password_warning">Are you sure you want to continue using the app without setting the password?\n\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella</string>
+    <string name="error_password">Error when try to change your password.</string>
+    <string name="password_changed">Password changed.</string>
 </resources>

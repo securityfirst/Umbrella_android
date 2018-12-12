@@ -76,7 +76,7 @@ class AccountController : BaseController(), AccountView {
     private fun skipAlertCancel() = skipPasswordDialog.dismiss()
 
     private fun skipAlertOk() {
-        presenter.setSkipPassword()
+        presenter.setSkipPassword(true)
         skipPasswordDialog.dismiss()
     }
 

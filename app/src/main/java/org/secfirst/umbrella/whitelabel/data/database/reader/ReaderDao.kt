@@ -4,9 +4,10 @@ import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.Delete
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.experimental.withContext
+import org.secfirst.umbrella.whitelabel.data.database.BaseDao
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
-interface ReaderDao {
+interface ReaderDao : BaseDao{
 
     suspend fun saveRss(rss: RSS) {
         withContext(ioContext) {

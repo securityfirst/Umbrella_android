@@ -36,4 +36,10 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun doFeedCall(countryCode: String, source: String, since: String): Deferred<ResponseBody>
 
+    fun isSkipPassword() : Boolean
+
+    fun setSkipPassword(value : Boolean) : Boolean
+
+   suspend fun applyChangeDatabaseAccess(userToken: String): Boolean
+
 }
