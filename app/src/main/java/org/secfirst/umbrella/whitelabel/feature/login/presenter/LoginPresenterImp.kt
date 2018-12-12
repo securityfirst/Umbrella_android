@@ -19,7 +19,7 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
     override fun submitChangeDatabaseAccess(userToken: String) {
         interactor?.let {
             launchSilent(uiContext) {
-                if (testLogin(userToken)) {
+                if (checkPassword(userToken)) {
                     it.dispatchLoginDatabaseAccess(userToken)
                     getView()?.isLoginOk(true)
                 } else {
@@ -27,17 +27,18 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
                 }
             }
         }
-
     }
 
-    fun testLogin(userToken: String): Boolean {
-        SQLiteDatabase.loadLibs(UmbrellaApplication.instance)
-        try {
-            val db = SQLiteDatabase.openOrCreateDatabase(UmbrellaApplication.instance.getDatabasePath(AppDatabase.NAME+".db").getPath(), userToken, null)
-            return db.isOpen
-        } catch (e : SQLiteException) {
+    private fun checkPassword(userToken: String): Boolean {
+        val application = UmbrellaApplication.instance
+        SQLiteDatabase.loadLibs(application)
+        return try {
+            val db = SQLiteDatabase.openOrCreateDatabase(application
+                    .getDatabasePath(AppDatabase.NAME + ".db").path, userToken, null)
+            db.isOpen
+        } catch (e: SQLiteException) {
             e.printStackTrace()
-            return false
+            false
         }
     }
 }
