@@ -18,9 +18,9 @@ import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.DialogManager.Companion.PROGRESS_DIALOG_TAG
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
+import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.tour.DaggerTourComponent
 import javax.inject.Inject
 
@@ -87,6 +87,7 @@ class TourController : BaseController(), ContentView {
         progressDialog.dismiss()
         if (res) {
             router.pushController(RouterTransaction.with(HostChecklistController()))
+            mainActivity.navigationPositionToCenter()
             enableNavigation()
         } else
             view?.let {

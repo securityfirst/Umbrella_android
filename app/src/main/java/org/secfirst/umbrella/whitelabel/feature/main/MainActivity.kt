@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             navigation.menu.getItem(2).isChecked = true
         } else if (isLoggedUser()) {
             router.setRoot(RouterTransaction.with(LoginController()))
+            navigation.menu.getItem(2).isChecked = true
         } else {
             router.setRoot(RouterTransaction.with(TourController()))
         }
@@ -116,6 +117,10 @@ class MainActivity : AppCompatActivity() {
     fun hideNavigation() = navigation?.let { it.visibility = INVISIBLE }
 
     fun showNavigation() = navigation?.let { it.visibility = VISIBLE }
+
+    fun navigationPositionToCenter() {
+        navigation.menu.getItem(2).isChecked = true
+    }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
         return when (keyCode) {
