@@ -12,6 +12,9 @@ class AccountInteractorImp @Inject constructor(preferenceHelper: AppPreferenceHe
                                                private val accountRepo: AccountRepo)
     : BaseInteractorImp(preferenceHelper), AccountBaseInteractor {
 
+
+    override fun setSkipPassword() = preferenceHelper.setSkipPassword(true)
+
     override fun setLoggedIn() = preferenceHelper.setIsLoggedIn(true)
 
     override suspend fun accessDatabase(userToken: String) = accountRepo.loginDatabase(userToken)

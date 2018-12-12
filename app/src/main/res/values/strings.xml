@@ -63,12 +63,10 @@
     <string name="feed_list_via">Via\u0020</string>
     <string name="feed_change_header">CHANGE</string>
     <string name="feed_location_header">Location</string>
-
     <string name="dashboard_feed_empty_change_location">CHANGE LOCATION</string>
     <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour.</string>
     <string name="empty_dashboard_title">Security feed set to:</string>
     <string name="checklistDetail_title">Checklist</string>
-
     <string name="account_password_alert_title">Set your password</string>
     <string name="account_password_alert_description">Your password must be at least 8 characters long and must contain at least one digit and one capital letter</string>
     <string name="account_set_password">Set password</string>
@@ -79,7 +77,6 @@
     <string name="account_cancel">CANCEL</string>
     <string name="account_ok">OK</string>
     <string name="account_password_alert_confirm">Confirm</string>
-
     <string name="settings_title">Settings</string>
     <string name="settings_refresh_from_the_server">Refresh from the server</string>
     <string name="settings_your_location">Your location</string>
@@ -92,8 +89,6 @@
     <string name="settings_english">English</string>
     <string name="settings_select_language">Select language</string>
     <string name="export_database_success">Database exported with success.</string>
-
-
     <string name="login_message_button">Login</string>
     <string name="export_database_wipe_data">Delete and reset all current Umbrella content after export</string>
     <string name="backup_database_file_title">Backup database file</string>
@@ -107,19 +102,22 @@
     <string name="export_wipe_data">Wipe data</string>
     <string name="export_dialog_default_message">umbrella_backup</string>
     <string name="import_dialog_fail_message">Invalid import file.</string>
-
     <string name="write_external_permission_granted">Write external storage permission was granted.</string>
     <string name="write_external_permission_denied">Write external storage permission request was denied.</string>
-
     <string name="title_dialog">Select an action</string>
     <string name="checklist_dialog_cancel">CANCEL</string>
+    <string name="cancel">CANCEL</string>
+    <string name="ok">OK</string>
     <string name="checklist_dialog_delete">DELETE</string>
     <string name="checklist_dialog_disable">DISABLE</string>
     <string name="custom_checklist_hint_add_checklistItem">Add checklist item</string>
     <string name="custom_checklist_hint_add_checklistTitle">Add checklist title</string>
     <string name="custom_checklist_title">Your checklists</string>
-
     <string name="export_lesson">Export lesson</string>
     <string name="export_button">EXPORT</string>
-
+    <string name="password_one_digit">Password must have at least one digit</string>
+    <string name="password_one_capital">Password must have at least one capital letter</string>
+    <string name="password_one_small">Password must have at least one small letter</string>
+    <string name="password_too_short">Password too short</string>
+    <string name="skip_password_warning">Are you sure you want to continue using the app without setting the password?\n\nThis significantly diminishes your safety in regards with any identifiable data you input into Umbrella</string>
 </resources>

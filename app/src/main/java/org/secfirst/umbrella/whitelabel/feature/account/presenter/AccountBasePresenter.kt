@@ -14,6 +14,8 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun setUserLogIn()
 
+    fun setSkipPassword()
+
     fun prepareShareContent(fileName: String)
 
     fun validateBackupPath(backupPath: String)

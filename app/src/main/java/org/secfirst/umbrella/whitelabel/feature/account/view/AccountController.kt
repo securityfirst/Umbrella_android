@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.account_password_alert.view.*
+import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -18,6 +19,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
 import javax.inject.Inject
 
 class AccountController : BaseController(), AccountView {
@@ -26,6 +28,8 @@ class AccountController : BaseController(), AccountView {
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     private lateinit var passwordAlertDialog: AlertDialog
     private lateinit var passwordView: View
+    private lateinit var skipPasswordDialog: AlertDialog
+    private lateinit var skipPasswordView: View
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -44,29 +48,56 @@ class AccountController : BaseController(), AccountView {
 
         val accountView = inflater.inflate(R.layout.account_view, container, false)
         passwordView = inflater.inflate(R.layout.account_password_alert, container, false)
+        skipPasswordView = inflater.inflate(R.layout.account_skip_alert, container, false)
+        skipPasswordDialog = AlertDialog
+                .Builder(activity)
+                .setView(skipPasswordView)
+                .create()
         passwordAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(passwordView)
                 .create()
         presenter.onAttach(this)
-        accountView.accountSettings.setOnClickListener { onSettingsClick() }
-        accountView.accountPassword.setOnClickListener { onPasswordClick() }
-        passwordView.passwordSkip.setOnClickListener { onSkip() }
-        passwordView.passwordOk.setOnClickListener { onOk() }
-        passwordView.passwordCancel.setOnClickListener { onCancel() }
 
+        accountView.accountSettings.setOnClickListener { clickOnSettings() }
+        accountView.accountPassword.setOnClickListener { clickOnPasswordAlert() }
+
+        passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
+        passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
+        passwordView.passwordCancel.setOnClickListener { passwordAlertCancel() }
+
+        skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
+        skipPasswordView.ok.setOnClickListener { skipAlertOk() }
         return accountView
     }
 
-    private fun onOk() {
-        presenter.submitChangeDatabaseAccess(passwordView.pwText.text.toString())
+    private fun passwordAlertCancel() = passwordAlertDialog.dismiss()
+
+    private fun skipAlertCancel() = skipPasswordDialog.dismiss()
+
+    private fun skipAlertOk() {
+        presenter.setSkipPassword()
+        skipPasswordDialog.dismiss()
     }
 
-    private fun onCancel() = passwordAlertDialog.dismiss()
+    private fun passwordAlertOk() {
+        val token = passwordView.pwText.text.toString()
+        if (token.checkPasswordStrength(context))
+            presenter.submitChangeDatabaseAccess(token)
+    }
 
-    private fun onSkip() = passwordAlertDialog.dismiss()
+    private fun clickOnSkipAlert() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return skipPasswordDialog
+            }
+        })
+        passwordAlertDialog.dismiss()
+    }
 
-    private fun onPasswordClick() {
+
+    private fun clickOnPasswordAlert() {
         val dialogManager = DialogManager(this)
         dialogManager.showDialog(object : DialogManager.DialogFactory {
             override fun createDialog(context: Context?): Dialog {
@@ -82,7 +113,7 @@ class AccountController : BaseController(), AccountView {
         }
     }
 
-    private fun onSettingsClick() {
+    private fun clickOnSettings() {
         router.pushController(RouterTransaction.with(SettingsController()))
     }
 
