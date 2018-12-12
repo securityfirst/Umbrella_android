@@ -19,7 +19,7 @@ class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun applyChangeDatabaseAccess(userToken: String): Boolean {
         val res = readerRepo.changeToken(userToken)
-        if (res) preferenceHelper.setSkipPassword(true)
+        if (res) preferenceHelper.setIsLoggedIn(true)
         return res
     }
 
