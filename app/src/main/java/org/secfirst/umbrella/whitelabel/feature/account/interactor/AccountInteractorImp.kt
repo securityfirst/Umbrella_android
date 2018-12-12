@@ -23,7 +23,10 @@ class AccountInteractorImp @Inject constructor(preferenceHelper: AppPreferenceHe
 
     override suspend fun changeDatabaseAccess(userToken: String): Boolean {
         val res = accountRepo.changeToken(userToken)
-        if (res) preferenceHelper.setIsLoggedIn(true)
+        if (res) {
+            preferenceHelper.setIsLoggedIn(true)
+            preferenceHelper.setSkipPassword(true)
+        }
         return res
     }
 
