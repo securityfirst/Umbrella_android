@@ -26,6 +26,9 @@ import org.secfirst.umbrella.whitelabel.data.database.form.FormRepository
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonDao
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepo
 import org.secfirst.umbrella.whitelabel.data.database.lesson.LessonRepository
+import org.secfirst.umbrella.whitelabel.data.database.login.LoginDao
+import org.secfirst.umbrella.whitelabel.data.database.login.LoginRepo
+import org.secfirst.umbrella.whitelabel.data.database.login.LoginRepository
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderDao
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepo
 import org.secfirst.umbrella.whitelabel.data.database.reader.ReaderRepository
@@ -38,6 +41,7 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentRepository
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
 import org.secfirst.umbrella.whitelabel.data.network.NetworkEndPoint.BASE_URL
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
 import org.secfirst.umbrella.whitelabel.serialize.ElementSerialize
 import retrofit2.Retrofit
@@ -64,7 +68,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun providePreference(context: Context) = AppPreferenceHelper(context, "umbrella_preference")
+    internal fun providePreference(context: Context) = AppPreferenceHelper(context, PREF_NAME)
 
 }
 
@@ -107,6 +111,10 @@ class RepositoryModule {
     internal val accountDao
         get() = object : AccountDao {}
 
+
+    internal val loginDao
+        get() = object : LoginDao {}
+
     @Provides
     @Singleton
     internal fun provideLessonDao(): LessonRepo = LessonRepository(lessonDao)
@@ -142,6 +150,10 @@ class RepositoryModule {
     @Provides
     @Singleton
     internal fun provideAccountDao(): AccountRepo = AccountRepository(accountDao)
+
+    @Provides
+    @Singleton
+    internal fun provideLoginDao(): LoginRepo = LoginRepository(loginDao)
 
 }
 

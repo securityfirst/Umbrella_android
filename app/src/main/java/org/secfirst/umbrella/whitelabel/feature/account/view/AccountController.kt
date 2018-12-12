@@ -50,7 +50,7 @@ class AccountController : BaseController(), AccountView {
                 .create()
         presenter.onAttach(this)
         accountView.accountSettings.setOnClickListener { onSettingsClick() }
-        //accountView.accountPassword.setOnClickListener { onPasswordClick() }
+        accountView.accountPassword.setOnClickListener { onPasswordClick() }
         passwordView.passwordSkip.setOnClickListener { onSkip() }
         passwordView.passwordOk.setOnClickListener { onOk() }
         passwordView.passwordCancel.setOnClickListener { onCancel() }

@@ -3,7 +3,6 @@ package org.secfirst.umbrella.whitelabel
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.os.StrictMode
 import android.support.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -20,6 +19,7 @@ import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
 import javax.inject.Inject
 
@@ -45,8 +45,10 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        val shared = getSharedPreferences(AppPreferenceHelper.PREF_NAME, MODE_PRIVATE)
+        val isLogged = shared.getBoolean(AppPreferenceHelper.EXTRA_LOGGED_IN, false)
+        if (!isLogged) initDatabase()
         initDaggerComponent()
-        initDatabase()
         initTentRepository()
         initFonts()
         initFabric()
@@ -70,7 +72,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
                         }
                         .build())
                 .build()
-
         FlowManager.init(dbConfig)
         FlowLog.setMinimumLoggingLevel(FlowLog.Level.V)
     }

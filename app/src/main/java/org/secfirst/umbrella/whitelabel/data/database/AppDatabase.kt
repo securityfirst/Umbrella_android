@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.annotation.Database
 
 object AppDatabase {
 
+    const val DEFAULT = "umbrella"
     const val NAME = "umbrella_database"
     const val VERSION = 1
     const val EXTENSION = "db"
