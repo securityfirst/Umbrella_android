@@ -11,11 +11,13 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.host_form_view.*
+import org.jsoup.Jsoup
 import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.form.asHTML
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.form.DaggerFormComponent
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
@@ -24,6 +26,7 @@ import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.ActiveFormSection
 import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.AllFormSection
 import org.secfirst.umbrella.whitelabel.misc.currentTime
+import org.secfirst.umbrella.whitelabel.misc.showShareDialog
 import java.io.File
 import javax.inject.Inject
 
@@ -76,7 +79,10 @@ class HostFormController : BaseController(), FormView {
     }
 
     private fun onShareFormClicked(activeForm: ActiveForm) {
-        presenter.submitShareFormHtml(activeForm)
+        //presenter.submitShareFormHtml(activeForm)
+        val doc = Jsoup.parse(activeForm.asHTML())
+        doc.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml)
+        showShareDialog(doc, activeForm.title, context, activity!!)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

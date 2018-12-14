@@ -149,39 +149,40 @@ fun ActiveForm.asHTML(): String {
     head.append("<meta charset='UTF-8'>")
     val body = doc.body()
     body.attr("style", "display:block;width:100%;")
+    body.attr("style","font-family: DejaVu Sans;")
     doc.title(fileName)
     body.append("<h1>" + this.title + "</h1>")
 
     for (screen in this.form.screens) {
         body.append("<h3>" + screen.title + "</h3>")
-        body.append("<form>")
         for (item in screen.items) {
             val paragraph = body.append("<p></p>")
-            paragraph.append("<h5>" + item.name + "</h5>")
+            paragraph.append("<h5>" + item.label + "</h5>")
             when (item.type) {
                 FieldType.TEXT_INPUT.value -> {
                     val answer = item.hasAnswer(this.answers)
-                    paragraph.append("<input type='text' value='${answer.textInput}' readonly />")
+                    paragraph.append("<p>${answer.textInput}</p>")
                 }
                 FieldType.TEXT_AREA.value -> {
                     val answer = item.hasAnswer(this.answers)
-                    paragraph.append("<textarea rows='4' cols='50' readonly>${answer.textInput}</textarea>")
+                    paragraph.append("<p>${answer.textInput}</p>")
                 }
                 FieldType.MULTIPLE_CHOICE.value -> {
                     for (formOption in item.options) {
                         val answer = formOption.hasAnswer(this.answers)
-                        paragraph.append("<label><input type='checkbox' " + answer.choiceInput + " readonly>" + formOption.label + "</label><br>")
+                        if (answer.choiceInput)
+                        paragraph.append("<ul><li>" + formOption.label + "</li></ul>")
                     }
+
                 }
                 FieldType.SINGLE_CHOICE.value -> {
                     for (formOption in item.options) {
                         val answer = formOption.hasAnswer(this.answers)
-                        paragraph.append("<label><input type='radio' " + answer.choiceInput + " readonly>" + formOption.label + "</label><br>")
+                        paragraph.append("<ul><li>" + formOption.label + "</li></ul>")
                     }
                 }
             }
         }
-        body.append("</form>")
     }
     return doc.html()
 }

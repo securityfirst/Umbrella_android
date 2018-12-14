@@ -110,7 +110,7 @@
 
     <string name="write_external_permission_granted">Write external storage permission was granted.</string>
     <string name="write_external_permission_denied">Write external storage permission request was denied.</string>
-    <string name="export_lesson">Export lesson</string>
+    <string name="export_lesson">Export</string>
     <string name="export_button">EXPORT</string>
 
 </resources>
