@@ -6,6 +6,9 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,8 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 import org.secfirst.umbrella.R;
 import org.secfirst.umbrella.models.CheckItem;
 import org.secfirst.umbrella.util.Global;
@@ -56,8 +61,16 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
         holder.checkItemTitle.setVisibility(checkList.get(position).getNoCheck() ? View.GONE : View.VISIBLE);
         holder.checkItemSubtitle.setVisibility(checkList.get(position).getNoCheck() ? View.VISIBLE : View.GONE);
         holder.checkBox.setVisibility(checkList.get(position).getNoCheck() ? View.GONE : View.VISIBLE);
-        holder.checkItemSubtitle.setText(checkList.get(position).getTitle());
-        holder.checkItemTitle.setText(checkList.get(position).getTitle());
+        String text = Jsoup.clean(checkList.get(position).getTitle(),Whitelist.basic().removeTags("p"));
+
+        String test = String.format("<font color='#333333'>%s</font>", text);
+        Spanned htmlDescription = Html.fromHtml(test);
+        String descriptionWithOutExtraSpace = new String(htmlDescription.toString()).trim();
+
+        holder.checkItemSubtitle.setText(text);
+        holder.checkItemTitle.setText(htmlDescription.subSequence(0, descriptionWithOutExtraSpace.length()));
+        holder.checkItemTitle.setMovementMethod(LinkMovementMethod.getInstance());
+
         if (checkList.get(position).getNoCheck()) {
             holder.checkItemLayout.setPadding(0, 0, 0, 0);
         } else {
