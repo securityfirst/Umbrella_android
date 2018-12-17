@@ -29,11 +29,12 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/windowBackground"
         android:fitsSystemWindows="true"
+        app:itemIconTint="@drawable/nav_item_color_state"
+        app:itemTextColor="@drawable/nav_item_color_state"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_insetEdge="bottom"
         app:layout_scrollFlags="scroll|enterAlways"
         app:menu="@menu/navigation" />
-
 </android.support.constraint.ConstraintLayout>
