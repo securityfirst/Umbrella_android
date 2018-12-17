@@ -60,8 +60,8 @@ fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteA
 fun setMaskMode(activity: Activity, masked: Boolean) {
     val packageName = BuildConfig.APPLICATION_ID
     val disableNames = ArrayList<String>()
-    disableNames.add("org.secfirst.umbrella.whitelabel.main.MainActivity")
-    disableNames.add("org.secfirst.umbrella.whitelabel.maskapp.CalculatorView")
+    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityNormal")
+    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityCalculator")
     val activeName = disableNames.removeAt(if (masked) 1 else 0)
 
     activity.packageManager.setComponentEnabledSetting(
@@ -75,3 +75,14 @@ fun setMaskMode(activity: Activity, masked: Boolean) {
     }
 }
 
+fun isAppMasked(activity: Activity): Boolean {
+    val packageName = BuildConfig.APPLICATION_ID
+    val disableNames = ArrayList<String>()
+    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityNormal")
+    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityCalculator")
+    for (i in disableNames.indices) {
+        val flag = activity.packageManager.getComponentEnabledSetting(ComponentName(packageName, disableNames[i]))
+        return flag > 1 && i == 0
+    }
+    return false
+}

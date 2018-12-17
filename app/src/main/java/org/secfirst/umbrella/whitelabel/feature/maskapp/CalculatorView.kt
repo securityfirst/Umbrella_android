@@ -29,7 +29,9 @@ class CalculatorView : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun init() {
+
         ShakeDetector.create(this) { startShakeDetector() }
+
         buttonDot.setOnClickListener { editTextCalc.setText("${editTextCalc.text}.") }
         buttonZero.setOnClickListener { editTextCalc.setText("${editTextCalc.text}0") }
         buttonOne.setOnClickListener { editTextCalc.setText("${editTextCalc.text}1") }

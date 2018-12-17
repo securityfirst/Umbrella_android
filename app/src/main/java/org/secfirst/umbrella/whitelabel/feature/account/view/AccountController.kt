@@ -1,8 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.account.view
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +14,6 @@ import kotlinx.android.synthetic.main.account_view.view.*
 import kotlinx.android.synthetic.main.mask_app_info_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
@@ -32,9 +29,9 @@ class AccountController : BaseController(), AccountView {
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
     private lateinit var passwordAlertDialog: AlertDialog
     private lateinit var maskAppAlertDialog: AlertDialog
+    private lateinit var skipPasswordDialog: AlertDialog
     private lateinit var passwordView: View
     private lateinit var maskAppView: View
-    private lateinit var skipPasswordDialog: AlertDialog
     private lateinit var skipPasswordView: View
 
     override fun onInject() {
@@ -100,11 +97,16 @@ class AccountController : BaseController(), AccountView {
             i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(i)
             maskAppAlertDialog.dismiss()
+            presenter.setMaskApp(true)
             it.finish()
         }
     }
 
     private fun maskAppCancel() = maskAppAlertDialog.dismiss()
+
+    private fun clickOnMaskApp() = maskAppAlertDialog.show()
+
+    private fun clickOnPasswordAlert() = passwordAlertDialog.show()
 
     private fun skipAlertOk() {
         presenter.setSkipPassword(true)
@@ -118,31 +120,8 @@ class AccountController : BaseController(), AccountView {
     }
 
     private fun clickOnSkipAlert() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return skipPasswordDialog
-            }
-        })
+        skipPasswordDialog.show()
         passwordAlertDialog.dismiss()
-    }
-
-    private fun clickOnMaskApp() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return maskAppAlertDialog
-            }
-        })
-    }
-
-    private fun clickOnPasswordAlert() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return passwordAlertDialog
-            }
-        })
     }
 
     private fun setUpToolbar() {
