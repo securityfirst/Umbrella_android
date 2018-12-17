@@ -40,6 +40,10 @@
         app:ms_showErrorState="true"
         app:ms_showErrorStateOnBack="true"
         app:ms_stepperType="tabs"
+        app:ms_activeStepColor="@color/avocado"
+        app:ms_bottomNavigationBackground="@color/avocado"
+        app:ms_backButtonColor="@color/light_white"
+        app:ms_nextButtonColor="@color/light_white"
         tools:theme="@style/AppTheme" />
 
     <include
