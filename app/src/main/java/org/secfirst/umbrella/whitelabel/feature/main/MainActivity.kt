@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
-import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -120,16 +119,6 @@ class MainActivity : AppCompatActivity() {
 
     fun navigationPositionToCenter() {
         navigation.menu.getItem(2).isChecked = true
-    }
-
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
-        return when (keyCode) {
-            KeyEvent.KEYCODE_ENTER -> {
-
-                true
-            }
-            else -> super.onKeyUp(keyCode, event)
-        }
     }
 
     private fun isLoggedUser(): Boolean {

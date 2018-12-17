@@ -12,9 +12,14 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
     companion object {
         private const val EXTRA_REFRESH_INTERVAL = "refresh_interval"
         private const val EXTRA_SKIP_PASSWORD = "skip_password"
+        private const val EXTRA_MASK_APP = "mask_app"
         const val PREF_NAME = "umbrella.preference"
         const val EXTRA_LOGGED_IN = "is_logged_in"
     }
+
+    override fun isMaskApp() = prefs.edit().putBoolean(EXTRA_MASK_APP, false).commit()
+
+    override fun setMaskApp(isMaskapp: Boolean) = prefs.edit().putBoolean(EXTRA_MASK_APP, isMaskapp).commit()
 
     override fun isLoggedIn() = prefs.edit().putBoolean(EXTRA_LOGGED_IN, false).commit()
 
@@ -35,6 +40,10 @@ interface PreferenceHelper {
     fun isLoggedIn(): Boolean
 
     fun setIsLoggedIn(isLoggedIn: Boolean): Boolean
+
+    fun isMaskApp(): Boolean
+
+    fun setMaskApp(isMaskapp: Boolean): Boolean
 
     fun setSkipPassword(isSkip: Boolean): Boolean
 

@@ -28,4 +28,8 @@ interface AccountBaseInteractor : BaseInteractor {
 
     fun isSkippPassword(): Boolean
 
+    fun setMaskApp(value : Boolean) : Boolean
+
+    fun isMaskApp() : Boolean
+
 }

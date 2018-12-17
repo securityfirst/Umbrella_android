@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center|top"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:ignore="MissingPrefix">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/ic_shake" />
+
+        <TextView
+            fontPath="fonts/Roboto-Medium.ttf"
+            android:layout_width="260dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:text="@string/enable_masking_mode"
+            android:textColor="@color/coachmark_background_dark"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            fontPath="fonts/Roboto-Regular.ttf"
+            android:layout_width="235dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:gravity="start"
+            android:text="@string/hands_shake_info_description"
+            android:textColor="@color/coachmark_background_dark"
+            android:textSize="13sp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.ContentFrameLayout
+            android:id="@+id/handsShakeCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp">
+
+            <TextView
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:text="@string/cancel"
+                android:textColor="@color/hands_shake_info_text_color"
+                android:textSize="@dimen/text_size_smallest" />
+        </android.support.v7.widget.ContentFrameLayout>
+
+        <android.support.v7.widget.ContentFrameLayout
+            android:id="@+id/handsShakeOk"
+            android:layout_width="60dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp">
+
+            <TextView
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:layout_marginLeft="25dp"
+                android:text="@string/ok"
+                android:textColor="@color/umbrella_green"
+                android:textSize="@dimen/text_size_smallest" />
+        </android.support.v7.widget.ContentFrameLayout>
+
+    </LinearLayout>
+</LinearLayout>

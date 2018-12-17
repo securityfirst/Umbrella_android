@@ -12,6 +12,9 @@ class AccountInteractorImp @Inject constructor(preferenceHelper: AppPreferenceHe
                                                private val accountRepo: AccountRepo)
     : BaseInteractorImp(preferenceHelper), AccountBaseInteractor {
 
+    override fun setMaskApp(value: Boolean) = preferenceHelper.setMaskApp(value)
+
+    override fun isMaskApp() = preferenceHelper.isMaskApp()
 
     override fun setSkipPassword(value: Boolean) = preferenceHelper.setSkipPassword(value)
 

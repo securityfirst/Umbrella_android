@@ -1,22 +1,22 @@
 import Extensions.Companion.PERMISSION_REQUEST_EXTERNAL_STORAGE
 import android.Manifest
+import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Environment
+import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
-import android.text.format.DateFormat
 import android.util.Base64
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.jakewharton.processphoenix.ProcessPhoenix
 import org.apache.commons.io.FileUtils
+import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import java.util.*
 import kotlin.reflect.KClass
 
 
@@ -24,25 +24,6 @@ class Extensions {
     companion object {
         const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
     }
-}
-
-fun saveHtmlFile(html: String?) {
-
-    val path = Environment.getExternalStorageDirectory().path
-    var fileName = DateFormat.format("dd_MM_yyyy_hh_mm_ss", System.currentTimeMillis()).toString()
-    fileName += ".html"
-    val file = File(path, fileName)
-    try {
-        val out = FileOutputStream(file)
-        val data = html?.toByteArray()
-        out.write(data)
-        out.close()
-    } catch (e: FileNotFoundException) {
-        e.printStackTrace()
-    } catch (e: IOException) {
-        e.printStackTrace()
-    }
-
 }
 
 fun MainActivity.requestExternalStoragePermission() {
@@ -75,4 +56,22 @@ fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {
 }
 
 fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
+
+fun setMaskMode(activity: Activity, masked: Boolean) {
+    val packageName = BuildConfig.APPLICATION_ID
+    val disableNames = ArrayList<String>()
+    disableNames.add("org.secfirst.umbrella.whitelabel.main.MainActivity")
+    disableNames.add("org.secfirst.umbrella.whitelabel.maskapp.CalculatorView")
+    val activeName = disableNames.removeAt(if (masked) 1 else 0)
+
+    activity.packageManager.setComponentEnabledSetting(
+            ComponentName(packageName, activeName),
+            PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+
+    for (i in disableNames.indices) {
+        activity.packageManager.setComponentEnabledSetting(
+                ComponentName(packageName, disableNames[i]),
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+    }
+}
 

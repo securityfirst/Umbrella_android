@@ -21,7 +21,11 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor = interactor), AccountBasePresenter<V, I> {
 
 
-    override fun submitSkippPassword(){
+    override fun setMaskApp(value: Boolean) {
+        interactor?.setMaskApp(true)
+    }
+
+    override fun submitSkippPassword() {
         val res = interactor?.isSkippPassword() ?: false
         getView()?.getSkipPassword(res)
     }

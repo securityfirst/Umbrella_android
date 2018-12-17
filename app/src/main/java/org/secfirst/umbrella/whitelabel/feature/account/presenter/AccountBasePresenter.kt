@@ -30,4 +30,6 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun submitPutRefreshInterval(position: Int)
 
+    fun setMaskApp(value : Boolean)
+
 }
