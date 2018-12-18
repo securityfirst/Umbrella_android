@@ -58,6 +58,7 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
             with(dashboardItem) {
                 difficulty?.let { title = " - ${it.title}" }
                 itemView.itemLabel.text = "$label$title"
+                itemView.itemLabel.text = if(difficulty?.title !=null) {label + " - " + difficulty?.title} else label
                 itemView.itemPercentage.text = "$progress%"
                 itemView.setOnClickListener { clickListener(this@DashboardHolder) }
             }
