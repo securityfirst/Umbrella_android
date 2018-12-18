@@ -1,9 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.main
 
-import android.app.Activity
-import android.content.ComponentName
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v7.app.AppCompatActivity
@@ -16,7 +13,6 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
-import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
@@ -31,7 +27,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
-import java.util.ArrayList
+import setMaskMode
 
 
 class MainActivity : AppCompatActivity() {
@@ -137,6 +133,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun isMaskApp(): Boolean {
         val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return shared.getBoolean(AppPreferenceHelper.EXTRA_MASK_APP, false)
+        val res = shared.getBoolean(AppPreferenceHelper.EXTRA_MASK_APP, false)
+        if (!res)
+            setMaskMode(this, false)
+        return res
     }
 }
