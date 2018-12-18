@@ -126,4 +126,6 @@
     <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
     <string name="enable_masking_mode">Enable masking mode</string>
     <string name="empty"> </string>
+    <string name="password_success">Password created with success.</string>
+    <string name="update_repository_message_success">Updated with success.</string>
 </resources>

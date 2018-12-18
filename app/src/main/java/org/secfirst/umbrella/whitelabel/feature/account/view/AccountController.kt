@@ -90,11 +90,12 @@ class AccountController : BaseController(), AccountView {
 
     private fun maskAppOk() {
         presenter.setMaskApp(true)
-        //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        setMaskMode(activity!!, true)
-        maskAppAlertDialog.dismiss()
-        presenter.setMaskApp(true)
-        router.pushController(RouterTransaction.with(CalculatorController()))
+        activity?.let {
+            setMaskMode(it, true)
+            maskAppAlertDialog.dismiss()
+            presenter.setMaskApp(true)
+            router.pushController(RouterTransaction.with(CalculatorController()))
+        }
     }
 
     private fun maskAppCancel() = maskAppAlertDialog.dismiss()
@@ -134,7 +135,7 @@ class AccountController : BaseController(), AccountView {
         if (res) {
             passwordAlertDialog.dismiss()
             presenter.setUserLogIn()
-            Toast.makeText(context, "Password created with success.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.password_success), Toast.LENGTH_SHORT).show()
         }
     }
 }

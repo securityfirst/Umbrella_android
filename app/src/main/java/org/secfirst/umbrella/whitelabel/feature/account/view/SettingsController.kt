@@ -316,7 +316,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     }
 
     override fun isUpdateRepository(pairFiles: List<Pair<String, File>>) {
-        context.toast("Updated with success.")
+        context.toast(context.getString(R.string.update_repository_message_success))
         presentContent.updateContent(pairFiles)
         refreshServerProgress.dismiss()
     }
