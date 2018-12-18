@@ -16,7 +16,6 @@
         android:label="@string/empty"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:label">
 
         <activity
