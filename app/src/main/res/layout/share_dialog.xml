@@ -9,22 +9,22 @@
         android:id="@+id/share_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="@dimen/share_dialog_small_space"
+        android:layout_marginLeft="@dimen/share_dialog_small_space"
+        android:layout_marginTop="@dimen/share_dialog_little_space"
         android:fontFamily="sans-serif-medium"
         android:padding="@dimen/dashboard_feed_normal_padding"
         android:text="@string/export_lesson"
         android:textColor="#de000000"
-        android:textSize="20sp"
+        android:textSize="@dimen/font_large"
         android:textStyle="normal" />
 
     <View
-        android:id="@+id/lineabove"
+        android:id="@+id/lineAbove"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/share_title"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/share_dialog_little_space"
         android:background="#e0e0e0"
         android:padding="5dp" />
 
@@ -32,19 +32,19 @@
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lineabove"
+        android:layout_below="@id/lineAbove"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
+        android:layout_marginStart="@dimen/share_dialog_normal_space"
+        android:layout_marginLeft="@dimen/share_dialog_normal_space"
         android:orientation="vertical"
         android:padding="@dimen/dashboard_feed_normal_padding" />
 
     <View
-        android:id="@+id/linebelow"
+        android:id="@+id/lineBelow"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/radio_group"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/share_dialog_little_space"
         android:background="#e0e0e0"
         android:padding="5dp" />
 
@@ -52,7 +52,7 @@
         android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/linebelow"
+        android:layout_below="@id/lineBelow"
         android:padding="@dimen/dashboard_feed_normal_padding">
 
         <android.support.v7.widget.AppCompatButton
