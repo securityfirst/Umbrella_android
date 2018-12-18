@@ -1,19 +1,15 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
-import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.host_checklist.*
 import kotlinx.android.synthetic.main.shake_device.view.*
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -32,7 +28,6 @@ class HostChecklistController : BaseController() {
     override fun onAttach(view: View) {
         hostChecklistPager?.adapter = HostChecklistAdapter(this)
         hostChecklistTab?.setupWithViewPager(hostChecklistPager)
-        ShakeDetector.create(context) { initUrlServerDialog() }
         shakeDeviceView.urlServerCancel.setOnClickListener { alertDialog.dismiss() }
         shakeDeviceView.urlServerOk.setOnClickListener { changeUrlServer() }
     }
@@ -51,15 +46,6 @@ class HostChecklistController : BaseController() {
         hostChecklistPager?.adapter = null
         hostChecklistTab?.setupWithViewPager(null)
         super.onDestroyView(view)
-    }
-
-    private fun initUrlServerDialog() {
-        val dialogManager = DialogManager(this)
-        dialogManager.showDialog("urlServer", object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return alertDialog
-            }
-        })
     }
 
     private fun changeUrlServer() {

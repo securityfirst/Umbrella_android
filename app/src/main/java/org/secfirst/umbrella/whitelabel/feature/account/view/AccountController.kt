@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.account.view
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
-import org.secfirst.umbrella.whitelabel.feature.maskapp.CalculatorView
+import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
 import setMaskMode
 import javax.inject.Inject
@@ -91,15 +90,11 @@ class AccountController : BaseController(), AccountView {
 
     private fun maskAppOk() {
         presenter.setMaskApp(true)
-        activity?.let {
-            setMaskMode(it, true)
-            val i = Intent(activity, CalculatorView::class.java)
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(i)
-            maskAppAlertDialog.dismiss()
-            presenter.setMaskApp(true)
-            it.finish()
-        }
+        //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        setMaskMode(activity!!, true)
+        maskAppAlertDialog.dismiss()
+        presenter.setMaskApp(true)
+        router.pushController(RouterTransaction.with(CalculatorController()))
     }
 
     private fun maskAppCancel() = maskAppAlertDialog.dismiss()

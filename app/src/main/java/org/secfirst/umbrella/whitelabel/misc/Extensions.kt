@@ -55,13 +55,11 @@ fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {
     return file.bufferedReader().use { mapper.readValue(it.readText(), c.java) }
 }
 
-fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
-
 fun setMaskMode(activity: Activity, masked: Boolean) {
     val packageName = BuildConfig.APPLICATION_ID
     val disableNames = ArrayList<String>()
-    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityNormal")
-    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityCalculator")
+    disableNames.add("$packageName.MainActivityNormal")
+    disableNames.add("$packageName.MainActivityCalculator")
     val activeName = disableNames.removeAt(if (masked) 1 else 0)
 
     activity.packageManager.setComponentEnabledSetting(
@@ -75,14 +73,4 @@ fun setMaskMode(activity: Activity, masked: Boolean) {
     }
 }
 
-fun isAppMasked(activity: Activity): Boolean {
-    val packageName = BuildConfig.APPLICATION_ID
-    val disableNames = ArrayList<String>()
-    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityNormal")
-    disableNames.add("org.secfirst.umbrella.whitelabel.MainActivityCalculator")
-    for (i in disableNames.indices) {
-        val flag = activity.packageManager.getComponentEnabledSetting(ComponentName(packageName, disableNames[i]))
-        return flag > 1 && i == 0
-    }
-    return false
-}
+fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)

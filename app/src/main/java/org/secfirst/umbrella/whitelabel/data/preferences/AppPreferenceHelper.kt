@@ -12,7 +12,7 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
     companion object {
         private const val EXTRA_REFRESH_INTERVAL = "refresh_interval"
         private const val EXTRA_SKIP_PASSWORD = "skip_password"
-        private const val EXTRA_MASK_APP = "mask_app"
+        const val EXTRA_MASK_APP = "mask_app"
         const val PREF_NAME = "umbrella.preference"
         const val EXTRA_LOGGED_IN = "is_logged_in"
     }
