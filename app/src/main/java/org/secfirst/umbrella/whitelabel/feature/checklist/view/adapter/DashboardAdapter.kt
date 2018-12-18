@@ -54,8 +54,10 @@ class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
 
     class DashboardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit) {
+            var title = ""
             with(dashboardItem) {
-                itemView.itemLabel.text = label + " - " + difficulty?.title
+                difficulty?.let { title = " - ${it.title}" }
+                itemView.itemLabel.text = "$label$title"
                 itemView.itemPercentage.text = "$progress%"
                 itemView.setOnClickListener { clickListener(this@DashboardHolder) }
             }
