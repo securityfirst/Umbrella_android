@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.RadioButton
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.form_progress.*
@@ -21,7 +23,6 @@ import org.secfirst.umbrella.whitelabel.feature.form.presenter.FormBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormUI
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.feature.form.view.adapter.FormAdapter
-import org.secfirst.umbrella.whitelabel.misc.BundleExt.Companion.EXTRA_ACTIVE_FORM
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import javax.inject.Inject
 
@@ -187,4 +188,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         }
     }
 
+    companion object {
+        private const val EXTRA_ACTIVE_FORM = "active_form"
+    }
 }

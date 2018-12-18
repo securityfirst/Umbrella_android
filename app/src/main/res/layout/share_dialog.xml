@@ -29,7 +29,7 @@
         android:padding="5dp" />
 
     <RadioGroup
-        android:id="@+id/radio_group"
+            android:id="@+id/shareGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lineAbove"
@@ -37,13 +37,27 @@
         android:layout_marginStart="@dimen/share_dialog_normal_space"
         android:layout_marginLeft="@dimen/share_dialog_normal_space"
         android:orientation="vertical"
-        android:padding="@dimen/dashboard_feed_normal_padding" />
+        android:padding="@dimen/dashboard_feed_normal_padding">
+
+        <RadioButton
+            android:id="@+id/pdfRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
+
+        <RadioButton
+            android:id="@+id/htmlRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp" />
+    </RadioGroup>
 
     <View
         android:id="@+id/lineBelow"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/radio_group"
+        android:layout_below="@id/shareGroup"
         android:layout_marginTop="@dimen/share_dialog_little_space"
         android:background="#e0e0e0"
         android:padding="5dp" />
@@ -56,7 +70,7 @@
         android:padding="@dimen/dashboard_feed_normal_padding">
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/share_document_button"
+            android:id="@+id/shareDocumentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -67,11 +81,11 @@
             android:textColor="@color/avocado" />
 
         <android.support.v7.widget.AppCompatButton
-            android:id="@+id/cancel_share_button"
+            android:id="@+id/cancelShareButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/share_document_button"
-            android:layout_toLeftOf="@id/share_document_button"
+            android:layout_toStartOf="@id/shareDocumentButton"
+            android:layout_toLeftOf="@id/shareDocumentButton"
             android:background="@android:color/transparent"
             android:padding="@dimen/dashboard_feed_normal_padding"
             android:text="@string/export_dialog_cancel"

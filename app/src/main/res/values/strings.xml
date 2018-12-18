@@ -128,4 +128,6 @@
     <string name="empty"> </string>
     <string name="password_success">Password created with success.</string>
     <string name="update_repository_message_success">Updated with success.</string>
+    <string name="pdf_name">PDF</string>
+    <string name="html_name">HTML</string>
 </resources>

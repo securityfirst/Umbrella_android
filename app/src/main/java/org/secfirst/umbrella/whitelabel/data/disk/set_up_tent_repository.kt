@@ -36,7 +36,7 @@ enum class TypeFile(val value: String) {
 enum class ExtensionFile(val value: String) {
     YML("yml"),
     MD("md"),
-    PNG("png")
+    PNG("png"),
 }
 
 fun String.shortName(): String {

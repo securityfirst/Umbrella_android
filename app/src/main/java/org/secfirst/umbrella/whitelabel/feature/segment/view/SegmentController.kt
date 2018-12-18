@@ -1,19 +1,18 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
-import android.app.Dialog
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.FileProvider
-import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
+import createDocument
 import kotlinx.android.synthetic.main.segment_view.*
+import kotlinx.android.synthetic.main.share_dialog.view.*
 import org.apache.commons.io.FilenameUtils.removeExtension
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,8 +28,6 @@ import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
-import org.secfirst.umbrella.whitelabel.misc.FileExtensions
-import org.secfirst.umbrella.whitelabel.misc.createDocument
 import org.secfirst.umbrella.whitelabel.misc.initGridView
 import java.io.File
 import javax.inject.Inject
@@ -50,6 +47,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist? }
     private val titleTab by lazy { args.getString(EXTRA_SEGMENT_TAB_TITLE) }
+    private lateinit var shareDialog: AlertDialog
+    private lateinit var shareView: View
     private var indexTab = 0
     lateinit var hostSegmentTabControl: HostSegmentTabControl
 
@@ -74,6 +73,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
+        shareView = inflater.inflate(R.layout.share_dialog, container, false)
+        shareDialog = AlertDialog
+                .Builder(activity)
+                .setView(shareView)
+                .create()
+
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
@@ -163,7 +168,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
 
     private fun shareDocument(fileToShare: File) {
-
         val pm = context.packageManager
         val uri = FileProvider.getUriForFile(context, APPLICATION_ID, fileToShare)
         val shareIntent = ShareCompat.IntentBuilder.from(activity)
@@ -180,38 +184,21 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun showShareDialog(doc: Document, title: String) {
+        var type = ""
+        shareView.pdfRadio.text = context.getString(R.string.pdf_name)
+        shareView.htmlRadio.text = context.getString(R.string.html_name)
 
-        var type = FileExtensions.PDF
-        val dialog = Dialog(context)
-        dialog.setContentView(R.layout.share_dialog)
-        val shareWindow: RadioGroup = dialog.findViewById(R.id.radio_group)
-
-        for (i in 0 until FileExtensions.values().size) {
-            val radioButton = RadioButton(context)
-            radioButton.text = FileExtensions.values()[i].toString()
-            shareWindow.addView(radioButton)
-        }
-
-        shareWindow.check(shareWindow.getChildAt(0).id)
-
-        val shareButton: AppCompatButton = dialog.findViewById(R.id.share_document_button)
-        shareButton.setOnClickListener {
+        shareView.shareDocumentButton.setOnClickListener {
             shareDocument(createDocument(doc, title, type, context))
-            dialog.dismiss()
+            shareDialog.dismiss()
         }
-
-        val dismissButton: AppCompatButton = dialog.findViewById(R.id.cancel_share_button)
-        dismissButton.setOnClickListener { dialog.dismiss() }
-
-        dialog.show()
-        shareWindow.setOnCheckedChangeListener { group, checkedId ->
-            val childCount = group.childCount
-            for (x in 0 until childCount) {
-                val btn = group.getChildAt(x) as RadioButton
-                if (btn.id == checkedId) {
-                    type = FileExtensions.valueOf(btn.text.toString())
-                }
-            }
+        shareView.cancelShareButton.setOnClickListener { shareDialog.dismiss() }
+        shareView.shareGroup.setOnCheckedChangeListener { _, checkedId ->
+            type = if (shareView.pdfRadio.id == checkedId)
+                context.getString(R.string.pdf_name)
+            else
+                context.getString(R.string.html_name)
         }
+        shareDialog.show()
     }
 }

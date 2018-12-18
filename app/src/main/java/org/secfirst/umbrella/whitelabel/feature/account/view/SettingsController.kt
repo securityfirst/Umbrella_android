@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.account.view
 
-import Extensions.Companion.PERMISSION_REQUEST_EXTERNAL_STORAGE
+
+import PERMISSION_REQUEST_EXTERNAL_STORAGE
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
