@@ -9,6 +9,8 @@ interface ChecklistRepo {
 
     suspend fun delteChecklistContent(checklistContent: Content)
 
+    suspend fun deleteChecklist(checklist: Checklist)
+
     suspend fun disableChecklistContent(checklistContent: Content)
 
     suspend fun insertChecklistContent(checklistContent: Content)

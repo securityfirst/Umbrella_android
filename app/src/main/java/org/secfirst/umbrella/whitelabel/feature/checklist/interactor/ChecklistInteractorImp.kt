@@ -14,6 +14,8 @@ class ChecklistInteractorImp @Inject constructor(private val checklistRepo: Chec
 
     override suspend fun deleteChecklistContent(checklistContent: Content) = checklistRepo.delteChecklistContent(checklistContent)
 
+    override suspend fun deleteChecklist(checklist: Checklist) = checklistRepo.deleteChecklist(checklist)
+
     override suspend fun disableChecklistContent(checklistContent: Content) = checklistRepo.disableChecklistContent(checklistContent)
 
     override suspend fun fetchAllChecklistInProgress() = checklistRepo.getAllChecklistInProgress()

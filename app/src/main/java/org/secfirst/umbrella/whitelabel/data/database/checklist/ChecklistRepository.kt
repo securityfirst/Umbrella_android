@@ -10,6 +10,8 @@ class ChecklistRepository @Inject constructor(private val checklistDao: Checklis
 
     override suspend fun delteChecklistContent(checklistContent: Content) = checklistDao.deleteChecklistContent(checklistContent)
 
+    override suspend fun deleteChecklist(checklist: Checklist) = checklistDao.deleteChecklist(checklist)
+
     override suspend fun disableChecklistContent(checklistContent: Content) = checklistDao.disable(checklistContent)
 
     override suspend fun getAllChecklistInProgress(): List<Checklist> = checklistDao.getAllChecklistInProgress()

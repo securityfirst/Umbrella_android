@@ -30,6 +30,15 @@ interface ChecklistDao {
         }
     }
 
+    suspend fun deleteChecklist(checklist: Checklist) {
+        withContext(ioContext) {
+            SQLite.delete()
+                    .from(Checklist::class.java)
+                    .where(Checklist_Table.id.`is`(checklist.id))
+                    .execute()
+        }
+    }
+
     suspend fun disable(checklist: Content) {
         withContext(ioContext) {
             modelAdapter<Content>().save(checklist)

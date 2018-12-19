@@ -1,6 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +11,7 @@ import kotlinx.android.synthetic.main.checklist_dashboard.*
 import kotlinx.android.synthetic.main.checklist_dashboard.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -25,6 +28,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private val dashboardItemClick: (Checklist?) -> Unit = this::onDashboardItemClicked
     private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
+    private lateinit var adapter: DashboardAdapter
 
     constructor(isCustomBoard: Boolean) : this(Bundle().apply {
         putBoolean(EXTRA_IS_CUSTOM_BOARD, isCustomBoard)
@@ -41,12 +45,35 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     override fun onAttach(view: View) {
         presenter.onAttach(this)
         checkWorkflow()
+     }
+
+    private fun onDeleteChecklist(checklist: Checklist) {
+        presenter.submitDeleteChecklist(checklist)
     }
+
+
+    private fun initOnDeleteChecklist(){
+//        checklistDashboardRecyclerView?.initRecyclerView(adapter)
+        val swipeHandler = object : SwipeToDeleteCallback(context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val checklist = adapter.getChecklist(position)
+                if(checklist !=null) {
+                    onDeleteChecklist(checklist)
+                }
+                adapter.removeAt(position)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(checklistDashboardRecyclerView)
+    }
+
 
     private fun checkWorkflow() {
         if (isCustomBoard) {
             addNewChecklist?.visibility = View.VISIBLE
             presenter.submitLoadCustomDashboard()
+            initOnDeleteChecklist()
         } else
             presenter.submitLoadDashboard()
     }
@@ -68,9 +95,9 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .with(ChecklistCustomController(System.currentTimeMillis().toString())))
     }
 
-    override fun showDashboard(dashboards: List<Dashboard.Item>) {
-        val dashboardAdapter = DashboardAdapter(dashboards, dashboardItemClick)
-        checklistDashboardRecyclerView?.initRecyclerView(dashboardAdapter)
+    override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
+        adapter = DashboardAdapter(dashboards, dashboardItemClick)
+        checklistDashboardRecyclerView?.initRecyclerView(adapter)
     }
 
     companion object {

@@ -14,13 +14,21 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 @SuppressLint("SetTextI18n")
-class DashboardAdapter(private val dashboardItems: List<Dashboard.Item>,
+class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                        private val onDashboardItemClicked: (Checklist?) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
 
     override fun getItemCount() = dashboardItems.size
+
+    fun removeAt(position: Int) {
+        dashboardItems.removeAt(position)
+        notifyItemRemoved(position)
+        notifyDataSetChanged()
+    }
+
+    fun getChecklist(position: Int) = dashboardItems[position].checklist
 
     override fun getItemViewType(position: Int) = if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
 

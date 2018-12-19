@@ -14,6 +14,8 @@ interface ChecklistBaseInteractor : BaseInteractor {
 
     suspend fun deleteChecklistContent(checklistContent: Content)
 
+    suspend fun deleteChecklist(checklist: Checklist)
+
     suspend fun disableChecklistContent(checklistContent: Content)
 
     suspend fun persistChecklistContent(checklistContent: Content)
