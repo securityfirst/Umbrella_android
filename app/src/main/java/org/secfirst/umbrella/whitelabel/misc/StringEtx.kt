@@ -18,15 +18,11 @@ val currentTime: String
 
 
 fun convertDateToString(date: Date?): String {
-    val dateFormat: DateFormat
+    var dateFormat: DateFormat
     var dateConvert = ""
-    try {
-        if (date != null) {
-            dateFormat = SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH)
-            dateConvert = dateFormat.format(date)
-        }
-    } catch (e: Exception) {
-        return dateConvert
+    date?.let {
+        dateFormat = SimpleDateFormat("MM/dd/yyyy HH:mm:ss", Locale.ENGLISH)
+        dateConvert = dateFormat.format(date)
     }
     return dateConvert
 }
