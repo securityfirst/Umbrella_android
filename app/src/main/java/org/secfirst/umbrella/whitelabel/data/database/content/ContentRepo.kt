@@ -6,6 +6,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 
@@ -15,6 +16,8 @@ interface ContentRepo {
     suspend fun insertAllLessons(root: Root)
 
     suspend fun insertFeedSource(feedSources: List<FeedSource>)
+
+    suspend fun insertDefaultRSS(rssList: List<RSS>)
 
     suspend fun saveAllChecklists(checklists: List<Checklist>)
 

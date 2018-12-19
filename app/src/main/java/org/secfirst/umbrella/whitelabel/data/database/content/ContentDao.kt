@@ -12,6 +12,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Item
 import org.secfirst.umbrella.whitelabel.data.database.form.associateFormForeignKey
 import org.secfirst.umbrella.whitelabel.data.database.lesson.*
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.data.disk.convertTo
@@ -71,6 +72,12 @@ interface ContentDao : BaseDao {
     suspend fun insertFeedSource(feedSources: List<FeedSource>) {
         withContext(ioContext) {
             modelAdapter<FeedSource>().saveAll(feedSources)
+        }
+    }
+
+    suspend fun insertDefaultRSS(rssList: List<RSS>) {
+        withContext(ioContext) {
+            modelAdapter<RSS>().saveAll(rssList)
         }
     }
 }

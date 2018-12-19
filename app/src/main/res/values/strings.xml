@@ -130,4 +130,6 @@
     <string name="update_repository_message_success">Updated with success.</string>
     <string name="pdf_name">PDF</string>
     <string name="html_name">HTML</string>
+    <string name="feed_title_tab">FEED</string>
+    <string name="rss_title_tab">RSS</string>
 </resources>

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.einmalfel.earl.Enclosure
 import com.einmalfel.earl.Feed
 import com.einmalfel.earl.Item
+import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
@@ -17,11 +18,17 @@ data class RefRSS(var items: MutableList<RefRSSItem> = mutableListOf())
 data class RefRSSItem(val link: String)
 
 @Table(database = AppDatabase::class)
-data class RSS(@PrimaryKey
-               var url_: String = "", var title_: String = "",
-               var description_: String = "", var publicationDate_: Date = Date(),
-               var imageLink_: String = "", var copyRight_: String = "",
-               var author_: String = "", var items_: MutableList<Article> = mutableListOf()) : Feed, Serializable {
+data class RSS(@PrimaryKey(autoincrement = true)
+               var id: Long = 0,
+               @Column
+               var url_: String = "",
+               var title_: String = "",
+               var description_: String = "",
+               var publicationDate_: Date = Date(),
+               var imageLink_: String = "",
+               var copyRight_: String = "",
+               var author_: String = "",
+               var items_: MutableList<Article> = mutableListOf()) : Feed, Serializable {
 
     override fun getLink(): String = url_
 
@@ -39,7 +46,7 @@ data class RSS(@PrimaryKey
 
     override fun getPublicationDate(): Date = publicationDate_
 
-    constructor(link: String = "") : this(link, "", "", Date(), "", "", "")
+    constructor(link: String) : this(0, link, "", "", Date(), "", "", "")
 
 }
 
@@ -67,27 +74,26 @@ data class Article(var url_: String = "", var title_: String = "",
 
 }
 
-val Feed.convertToRSS: RSS
-    get() {
-        val rss = RSS()
-        rss.url_ = this.link ?: ""
-        rss.title_ = this.title
-        rss.description_ = this.description ?: ""
-        rss.publicationDate_ = this.publicationDate ?: Date()
-        rss.imageLink_ = this.imageLink ?: ""
-        rss.copyRight_ = this.copyright ?: ""
-        rss.author_ = this.author ?: ""
-        val articleList = mutableListOf<Article>()
-        items.forEach {
-            val article = Article(it.link
-                    ?: "", it.title ?: "", it.description
-                    ?: "", it.publicationDate!!, it.imageLink ?: "", "", it.author
-                    ?: "", it.enclosures)
-            articleList.add(article)
-        }
-        rss.items_ = articleList
-        return rss
+
+fun Feed.updateRSS(rss: RSS): RSS {
+    rss.url_ = this.link ?: rss.url_
+    rss.title_ = this.title
+    rss.description_ = this.description ?: ""
+    rss.publicationDate_ = this.publicationDate ?: Date()
+    rss.imageLink_ = this.imageLink ?: ""
+    rss.copyRight_ = this.copyright ?: ""
+    rss.author_ = this.author ?: ""
+    val articleList = mutableListOf<Article>()
+    items.forEach {
+        val article = Article(it.link
+                ?: "", it.title ?: "", it.description
+                ?: "", it.publicationDate!!, it.imageLink ?: "", "", it.author
+                ?: "", it.enclosures)
+        articleList.add(article)
     }
+    rss.items_ = articleList
+    return rss
+}
 
 const val RSS_FILE_NAME: String = "default_rss.json"
 

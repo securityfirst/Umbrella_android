@@ -6,11 +6,15 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import javax.inject.Inject
 
 class ContentRepository @Inject constructor(private val contentDao: ContentDao) : ContentRepo {
+
+
+    override suspend fun insertDefaultRSS(rssList: List<RSS>) = contentDao.insertDefaultRSS(rssList)
 
     override suspend fun getSubject(sha1ID: String) = contentDao.getSubject(sha1ID)
 

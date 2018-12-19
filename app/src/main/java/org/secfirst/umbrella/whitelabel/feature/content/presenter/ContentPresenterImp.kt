@@ -10,6 +10,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
@@ -63,7 +64,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                         }
                         TypeFile.CHECKLIST.value -> {
                             val newChecklist = parseYmlFile(file, Checklist::class)
-                            newChecklist.id= pathId
+                            newChecklist.id = pathId
                             val oldChecklist = it.getChecklist(pathId)
                             oldChecklist?.let { oldChecklistSafe ->
                                 checklists.add(updateChecklistForeignKey(newChecklist, oldChecklistSafe))
@@ -102,6 +103,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                     it.persist(root)
                 }
                 it.persistFeedSource(createFeedSources())
+                it.persistRSS(createDefaultRSS())
                 getView()?.downloadContentCompleted(isFetchData)
             }
         }
@@ -119,7 +121,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                     val module = newElement.convertToModule
                     val oldModule = it.getModule(sha1ID)
                     oldModule?.let { oldModuleSafe ->
-                       // modules.add(module.updateModuleContent(oldModuleSafe))
+                        // modules.add(module.updateModuleContent(oldModuleSafe))
                     }
                 }
                 SUB_ELEMENT_LEVEL -> {
@@ -222,6 +224,23 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         feedSources.add(feedSource5)
         feedSources.add(feedSource6)
         return feedSources
+    }
+
+    private fun createDefaultRSS(): List<RSS> {
+        val rssList = mutableListOf<RSS>()
+        val rss1 = RSS("https://threatpost.com/feed/")
+        val rss2 = RSS("https://krebsonsecurity.com/feed/")
+        val rss3 = RSS("http://feeds.bbci.co.uk/news/world/rss.xml?edition=uk")
+        val rss4 = RSS("http://rss.cnn.com/rss/edition.rss")
+        val rss5 = RSS("https://www.aljazeera.com/xml/rss/all.xml")
+        val rss6 = RSS("https://www.theguardian.com/world/rss")
+        rssList.add(rss1)
+        rssList.add(rss2)
+        rssList.add(rss3)
+        rssList.add(rss4)
+        rssList.add(rss5)
+        rssList.add(rss6)
+        return rssList
     }
 
     override fun cleanContent() {

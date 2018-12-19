@@ -6,6 +6,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
@@ -20,6 +21,8 @@ interface ContentBaseInteractor : BaseInteractor {
     suspend fun initParser(): Root
 
     suspend fun persistFeedSource(feedSources: List<FeedSource>)
+
+    suspend fun persistRSS(rssList: List<RSS>)
 
     suspend fun saveAllChecklists(checklists: List<Checklist>)
 

@@ -3,8 +3,10 @@ package org.secfirst.umbrella.whitelabel.feature.reader.presenter
 import android.util.Log
 import com.einmalfel.earl.EarlParser
 import com.google.gson.Gson
-import getAssetFileBy
-import org.secfirst.umbrella.whitelabel.data.database.reader.*
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
+import org.secfirst.umbrella.whitelabel.data.database.reader.updateRSS
 import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
@@ -19,7 +21,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), ReaderBasePresenter<V, I> {
 
-    override fun setSkipPassword(value : Boolean) {
+    override fun setSkipPassword(value: Boolean) {
         interactor?.setSkipPassword(value)
     }
 
@@ -53,10 +55,11 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
                                    isFirstRequest: Boolean) {
         interactor?.let {
             launchSilent(uiContext) {
-
                 try {
-                    val feedResponseBody = it.doFeedCall(feedLocation.iso2, getSelectedFeedSources(feedSources), "0").await()
-                    val feedItemResponse = Gson().fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
+                    val feedResponseBody = it.doFeedCall(feedLocation.iso2,
+                            getSelectedFeedSources(feedSources), "0").await()
+                    val feedItemResponse = Gson()
+                            .fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
                     getView()?.startFeedController(feedItemResponse, isFirstRequest)
                 } catch (exception: Exception) {
                     getView()?.feedError()
@@ -86,24 +89,9 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
 
     override fun submitFetchRss() {
         launchSilent(uiContext) {
-            var refRss: RefRSS
-            interactor?.let {
-                val databaseRss = it.fetchRss()
-                if (databaseRss.isEmpty()) {
-                    val assetsRss = mutableListOf<RSS>()
-                    refRss = getRssFromAssert()
-                    refRss.items.forEach { item -> assetsRss.add(RSS(item.link)) }
-                    submitRss(assetsRss)
-                    getView()?.showAllRss(processRss(assetsRss))
-                }
-                getView()?.showAllRss(processRss(databaseRss))
-            }
-        }
-    }
-
-    private fun submitRss(rssList: MutableList<RSS>) {
-        launchSilent(uiContext) {
-            interactor?.insertAllRss(rssList)
+            var rssList = listOf<RSS>()
+            interactor?.let { rssList = it.fetchRss() }
+            getView()?.showAllRss(processRss(rssList))
         }
     }
 
@@ -111,7 +99,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         launchSilent(uiContext) {
             interactor?.let {
                 it.insertRss(rss)
-                processRss(rss.link)?.let { rss -> getView()?.showNewestRss(rss) }
+                processRss(rss)?.let { rss -> getView()?.showNewestRss(rss) }
             }
         }
     }
@@ -141,7 +129,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
                 try {
                     val responseBody = it.doRSsCall(rssIt.url_).await()
                     val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
-                    rssResult.add(feed.convertToRSS)
+                    rssResult.add(feed.updateRSS(rssIt))
                 } catch (exception: Exception) {
                     Log.e(tag, "could't load the RSS:, ${rssIt.link}")
                 }
@@ -150,14 +138,14 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         return rssResult
     }
 
-    private suspend fun processRss(url: String): RSS? {
+    private suspend fun processRss(rss: RSS): RSS? {
         interactor?.let {
             try {
-                val responseBody = it.doRSsCall(url).await()
+                val responseBody = it.doRSsCall(rss.url_).await()
                 val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
-                return feed.convertToRSS
+                return feed.updateRSS(rss)
             } catch (exception: Exception) {
-                Log.e(tag, "could't load the RSS:, $url")
+                Log.e(tag, "could't load the RSS")
             }
         }
         return null
@@ -168,11 +156,5 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         val codeSources = mutableListOf<Int>()
         selectedSources.forEach { codeSources.add(it.code) }
         return codeSources.joinToString(",")
-    }
-
-    private fun getRssFromAssert(): RefRSS {
-        val input = getAssetFileBy(RSS_FILE_NAME)
-        val jsonInString = input.bufferedReader().use { it.readText() }
-        return Gson().fromJson(jsonInString, RefRSS::class.java)
     }
 }

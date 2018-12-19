@@ -7,6 +7,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
@@ -24,6 +25,8 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                                private val elementSerialize: ElementSerialize,
                                                private val elementLoader: ElementLoader)
     : BaseInteractorImp(apiHelper, preferenceHelper), ContentBaseInteractor {
+
+    override suspend fun persistRSS(rssList: List<RSS>) = contentRepo.insertDefaultRSS(rssList)
 
     override suspend fun getSubject(sha1ID: String) = contentRepo.getSubject(sha1ID)
 
