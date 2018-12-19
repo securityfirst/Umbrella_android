@@ -4,5 +4,5 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface ChecklistView : BaseView {
-    fun showDashboard(dashboards: List<Dashboard.Item>){}
+    fun showDashboard(dashboards: MutableList<Dashboard.Item>){}
 }

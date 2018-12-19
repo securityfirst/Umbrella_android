@@ -37,6 +37,16 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         }
     }
 
+    override fun submitDeleteChecklist(checklist: Checklist) {
+        launchSilent(uiContext) {
+            for (content in checklist.content) {
+                interactor?.deleteChecklistContent(content)
+            }
+            interactor?.deleteChecklist(checklist)
+
+        }
+    }
+
     override fun submitDisableChecklistContent(checklistContent: Content) {
         launchSilent(uiContext) {
             interactor?.disableChecklistContent(checklistContent)
