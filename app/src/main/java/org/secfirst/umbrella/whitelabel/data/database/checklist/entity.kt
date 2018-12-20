@@ -69,7 +69,7 @@ class Content(
         var check: String = "",
         @PrimaryKey(autoincrement = true)
         var id: Long = 0,
-        @ForeignKey(stubbedRelationship = true)
+        @ForeignKey(stubbedRelationship = true, onDelete = ForeignKeyAction.CASCADE)
         var checklist: Checklist? = null,
         @Column
         var label: String = "",
