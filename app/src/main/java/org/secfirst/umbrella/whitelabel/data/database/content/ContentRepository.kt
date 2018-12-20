@@ -13,6 +13,7 @@ import javax.inject.Inject
 
 class ContentRepository @Inject constructor(private val contentDao: ContentDao) : ContentRepo {
 
+    override suspend fun resetContent() = contentDao.resetContent()
 
     override suspend fun insertDefaultRSS(rssList: List<RSS>) = contentDao.insertDefaultRSS(rssList)
 

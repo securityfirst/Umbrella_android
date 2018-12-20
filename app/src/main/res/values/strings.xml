@@ -132,4 +132,8 @@
     <string name="html_name">HTML</string>
     <string name="feed_title_tab">FEED</string>
     <string name="rss_title_tab">RSS</string>
+    <string name="account_reset_password">Reset password</string>
+    <string name="reset_password_title">Confirm reset password</string>
+    <string name="reset_password_text">Are you sure you want to reset your password? This also means losing any data you might have entered so far\n</string>
+
 </resources>

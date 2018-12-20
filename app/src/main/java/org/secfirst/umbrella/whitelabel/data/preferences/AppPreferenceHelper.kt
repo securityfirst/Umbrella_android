@@ -12,18 +12,25 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
     companion object {
         private const val EXTRA_REFRESH_INTERVAL = "refresh_interval"
         private const val EXTRA_SKIP_PASSWORD = "skip_password"
+        private const val UPDATE_CONTENT = "update_content"
         const val EXTRA_MASK_APP = "mask_app"
         const val PREF_NAME = "umbrella.preference"
         const val EXTRA_LOGGED_IN = "is_logged_in"
     }
 
-    override fun isMaskApp() = prefs.edit().putBoolean(EXTRA_MASK_APP, false).commit()
+    override fun cleanPreferences() = prefs.edit().clear().commit()
+
+    override fun setShaId(shaID: String) = prefs.edit().putString(UPDATE_CONTENT, shaID).commit()
+
+    override fun getShaId() = prefs.getString(UPDATE_CONTENT, "") ?: ""
+
+    override fun isMaskApp() = prefs.getBoolean(EXTRA_MASK_APP, false)
 
     override fun setMaskApp(isMaskapp: Boolean) = prefs.edit().putBoolean(EXTRA_MASK_APP, isMaskapp).commit()
 
-    override fun isLoggedIn() = prefs.edit().putBoolean(EXTRA_LOGGED_IN, false).commit()
+    override fun isLoggedIn() = prefs.getBoolean(EXTRA_LOGGED_IN, false)
 
-    override fun setIsLoggedIn(isLoggedIn: Boolean) = prefs.edit().putBoolean(EXTRA_LOGGED_IN, isLoggedIn).commit()
+    override fun setLoggedIn(isLoggedIn: Boolean) = prefs.edit().putBoolean(EXTRA_LOGGED_IN, isLoggedIn).commit()
 
     override fun setSkipPassword(isSkip: Boolean) = prefs.edit().putBoolean(EXTRA_SKIP_PASSWORD, isSkip).commit()
 
@@ -39,7 +46,7 @@ interface PreferenceHelper {
 
     fun isLoggedIn(): Boolean
 
-    fun setIsLoggedIn(isLoggedIn: Boolean): Boolean
+    fun setLoggedIn(isLoggedIn: Boolean): Boolean
 
     fun isMaskApp(): Boolean
 
@@ -52,4 +59,10 @@ interface PreferenceHelper {
     fun setRefreshInterval(position: Int): Boolean
 
     fun getRefreshInterval(): Int
+
+    fun setShaId(shaID: String): Boolean
+
+    fun getShaId(): String
+
+    fun cleanPreferences(): Boolean
 }

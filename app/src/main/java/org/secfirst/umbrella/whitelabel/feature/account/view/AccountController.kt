@@ -3,10 +3,12 @@ package org.secfirst.umbrella.whitelabel.feature.account.view
 import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.account_password_alert.view.*
+import kotlinx.android.synthetic.main.account_reset_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
@@ -18,6 +20,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseIn
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
+import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
 import setMaskMode
 import javax.inject.Inject
@@ -29,9 +32,12 @@ class AccountController : BaseController(), AccountView {
     private lateinit var passwordAlertDialog: AlertDialog
     private lateinit var maskAppAlertDialog: AlertDialog
     private lateinit var skipPasswordDialog: AlertDialog
+    private lateinit var resetPasswordDialog: AlertDialog
     private lateinit var passwordView: View
+    private lateinit var resetPasswordView: View
     private lateinit var maskAppView: View
     private lateinit var skipPasswordView: View
+    private lateinit var accountView: View
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -48,10 +54,11 @@ class AccountController : BaseController(), AccountView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
 
-        val accountView = inflater.inflate(R.layout.account_view, container, false)
+        accountView = inflater.inflate(R.layout.account_view, container, false)
         passwordView = inflater.inflate(R.layout.account_password_alert, container, false)
         skipPasswordView = inflater.inflate(R.layout.account_skip_alert, container, false)
         maskAppView = inflater.inflate(R.layout.mask_app_info_view, container, false)
+        resetPasswordView = inflater.inflate(R.layout.account_reset_password_alert, container, false)
 
         maskAppAlertDialog = AlertDialog
                 .Builder(activity)
@@ -66,11 +73,17 @@ class AccountController : BaseController(), AccountView {
                 .Builder(activity)
                 .setView(passwordView)
                 .create()
+        resetPasswordDialog = AlertDialog
+                .Builder(activity)
+                .setView(resetPasswordView)
+                .create()
+
         presenter.onAttach(this)
 
         accountView.accountSettings.setOnClickListener { clickOnSettings() }
         accountView.accountPassword.setOnClickListener { clickOnPasswordAlert() }
         accountView.accountMask.setOnClickListener { clickOnMaskApp() }
+        accountView.resetPassword.setOnClickListener { clickResetPassword() }
 
         passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
         passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
@@ -81,8 +94,15 @@ class AccountController : BaseController(), AccountView {
 
         maskAppView.handsShakeCancel.setOnClickListener { maskAppCancel() }
         maskAppView.handsShakeOk.setOnClickListener { maskAppOk() }
+
+        resetPasswordView.resetCancel.setOnClickListener { resetAlertCancel() }
+        resetPasswordView.resetOk.setOnClickListener { resetAlertOk() }
+
+        presenter.submitIsLogged()
         return accountView
     }
+
+    private fun resetAlertCancel() = resetPasswordDialog.dismiss()
 
     private fun passwordAlertCancel() = passwordAlertDialog.dismiss()
 
@@ -103,6 +123,8 @@ class AccountController : BaseController(), AccountView {
     private fun clickOnMaskApp() = maskAppAlertDialog.show()
 
     private fun clickOnPasswordAlert() = passwordAlertDialog.show()
+
+    private fun clickResetPassword() = resetPasswordDialog.show()
 
     private fun skipAlertOk() {
         presenter.setSkipPassword(true)
@@ -127,11 +149,21 @@ class AccountController : BaseController(), AccountView {
         }
     }
 
+    private fun resetAlertOk() {
+        resetPasswordDialog.dismiss()
+        presenter.submitCleanDatabase()
+        router.pushController(RouterTransaction.with(TourController()))
+    }
+
     private fun clickOnSettings() {
         router.pushController(RouterTransaction.with(SettingsController()))
     }
 
-    override fun isLogged(res: Boolean) {
+    override fun isUserLogged(res: Boolean) {
+        if (res) accountView.resetPassword.visibility = VISIBLE
+    }
+
+    override fun isTokenChanged(res: Boolean) {
         if (res) {
             passwordAlertDialog.dismiss()
             presenter.setUserLogIn()

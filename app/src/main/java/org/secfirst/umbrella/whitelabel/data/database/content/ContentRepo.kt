@@ -31,15 +31,17 @@ interface ContentRepo {
 
     suspend fun saveAllSubjects(subjects: List<Subject>)
 
-    suspend fun getSubject(sha1ID : String) : Subject?
+    suspend fun getSubject(sha1ID: String): Subject?
 
-    suspend fun getDifficulty(sha1ID : String) : Difficulty?
+    suspend fun getDifficulty(sha1ID: String): Difficulty?
 
-    suspend fun getModule(sha1ID : String) : Module?
+    suspend fun getModule(sha1ID: String): Module?
 
-    suspend fun getMarkdown(sha1ID : String) : Markdown?
+    suspend fun getMarkdown(sha1ID: String): Markdown?
 
-    suspend fun getChecklist(sha1ID : String) : Checklist?
+    suspend fun getChecklist(sha1ID: String): Checklist?
 
-    suspend fun getForm(sha1ID : String) : Form?
+    suspend fun getForm(sha1ID: String): Form?
+
+    suspend fun resetContent()
 }

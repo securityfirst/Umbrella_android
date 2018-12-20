@@ -32,4 +32,8 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun setMaskApp(value : Boolean)
 
+    fun submitIsLogged()
+
+    fun submitCleanDatabase()
+
 }

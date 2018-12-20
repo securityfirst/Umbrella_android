@@ -20,11 +20,13 @@ import javax.inject.Inject
 
 class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                                preferenceHelper: AppPreferenceHelper,
+                                               contentRepo: ContentRepo,
                                                private val tentRepo: TentRepo,
-                                               private val contentRepo: ContentRepo,
                                                private val elementSerialize: ElementSerialize,
                                                private val elementLoader: ElementLoader)
-    : BaseInteractorImp(apiHelper, preferenceHelper), ContentBaseInteractor {
+    : BaseInteractorImp(apiHelper, preferenceHelper, contentRepo), ContentBaseInteractor {
+
+    override suspend fun resetDatabase() = contentRepo.resetContent()
 
     override suspend fun persistRSS(rssList: List<RSS>) = contentRepo.insertDefaultRSS(rssList)
 

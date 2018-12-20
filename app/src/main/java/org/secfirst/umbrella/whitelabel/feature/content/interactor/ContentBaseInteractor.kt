@@ -47,4 +47,6 @@ interface ContentBaseInteractor : BaseInteractor {
     suspend fun getChecklist(sha1ID : String) : Checklist?
 
     suspend fun getForm(sha1ID : String) : Form?
+
+    suspend fun resetDatabase()
 }

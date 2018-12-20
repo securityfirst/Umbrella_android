@@ -80,4 +80,12 @@ interface ContentDao : BaseDao {
             modelAdapter<RSS>().saveAll(rssList)
         }
     }
+
+    suspend fun resetContent() {
+        withContext(ioContext) {
+            val cacheDir = FlowManager.getContext().cacheDir
+            FileUtils.deleteQuietly(cacheDir)
+            FlowManager.getDatabase(AppDatabase.NAME).reset()
+        }
+    }
 }

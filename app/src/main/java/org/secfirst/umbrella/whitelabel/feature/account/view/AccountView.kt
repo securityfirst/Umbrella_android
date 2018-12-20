@@ -7,7 +7,9 @@ import java.io.File
 
 interface AccountView : BaseView {
 
-    fun isLogged(res: Boolean) {}
+    fun isUserLogged(res: Boolean){}
+
+    fun isTokenChanged(res: Boolean) {}
 
     fun exportDatabaseSuccessfully() {}
 

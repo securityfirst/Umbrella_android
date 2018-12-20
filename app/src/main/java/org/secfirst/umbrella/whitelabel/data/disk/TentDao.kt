@@ -56,7 +56,6 @@ interface TentDao {
 
             }
         }
-        // File(tentConfig.getPathRepository()).deleteRecursively()
         return files
     }
 

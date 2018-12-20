@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.disk
 
+import org.eclipse.jgit.api.Git
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import java.io.File
 
@@ -48,4 +49,10 @@ fun String.shortName(): String {
 fun String.nameWithoutExtension(): String {
     val fullName = this.substringAfterLast("/")
     return fullName.substringBeforeLast(".")
+}
+
+fun getLastCommitID() {
+    val git = Git.open(File("${TentConfig.getPathRepository()}/.git"))
+    val head = git.repository.getRef("HEAD")
+    println("Ref of HEAD: " + head + ": " + head.name + " - " + head.objectId.name)
 }

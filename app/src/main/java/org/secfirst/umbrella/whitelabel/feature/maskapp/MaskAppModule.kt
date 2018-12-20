@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.AndroidInjectionModule
 import org.secfirst.umbrella.whitelabel.di.module.AppModule
+import org.secfirst.umbrella.whitelabel.di.module.NetworkModule
 import org.secfirst.umbrella.whitelabel.di.module.RepositoryModule
 import org.secfirst.umbrella.whitelabel.feature.maskapp.interactor.MaskAppBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.maskapp.interactor.MaskAppInteractorImp
@@ -32,6 +33,7 @@ class MaskAppModule {
 @Component(modules = [MaskAppModule::class,
     RepositoryModule::class,
     AppModule::class,
+    NetworkModule::class,
     AndroidInjectionModule::class])
 
 interface MaskAppComponent {

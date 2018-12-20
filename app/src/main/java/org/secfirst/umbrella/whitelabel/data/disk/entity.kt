@@ -30,7 +30,7 @@ data class Element(
 val Element.convertToModule: Module
     get() {
         val category = Module()
-        category.id= this.pathId
+        category.id = this.pathId
         category.checklist = this.checklist
         category.index = this.index
         category.description = this.description

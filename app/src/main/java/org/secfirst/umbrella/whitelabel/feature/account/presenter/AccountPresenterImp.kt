@@ -1,9 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.account.presenter
 
 import com.raizlabs.android.dbflow.config.FlowManager
-import org.apache.commons.io.FileUtils
-import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase.EXTENSION
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase.NAME
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
@@ -20,6 +17,16 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
 
+    override fun submitCleanDatabase() {
+        launchSilent(uiContext) {
+            interactor?.resetContent()
+        }
+    }
+
+    override fun submitIsLogged() {
+        val res = interactor?.isUserLoggedIn() ?: false
+        getView()?.isUserLogged(res)
+    }
 
     override fun setMaskApp(value: Boolean) {
         interactor?.setMaskApp(true)
@@ -30,11 +37,9 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         getView()?.getSkipPassword(res)
     }
 
-
     override fun setSkipPassword(value: Boolean) {
         interactor?.setSkipPassword(value)
     }
-
 
     override fun setUserLogIn() {
         interactor?.setLoggedIn()
@@ -44,28 +49,20 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         launchSilent(uiContext) {
             interactor?.let {
                 val res = it.changeDatabaseAccess(userToken)
-                getView()?.isLogged(res)
+                getView()?.isTokenChanged(res)
             }
         }
     }
 
     override fun submitExportDatabase(destinationDir: String, fileName: String, isWipeData: Boolean) {
-
         val dstDatabase = File("$destinationDir/$fileName.$EXTENSION")
         val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")
         databaseFile.copyTo(dstDatabase, true)
         if (isWipeData)
-            cleanDatabase()
+            launchSilent(uiContext) { interactor?.resetContent() }
 
         getView()?.exportDatabaseSuccessfully()
     }
-
-    private fun cleanDatabase() {
-        val cacheDir = UmbrellaApplication.instance.cacheDir
-        FileUtils.deleteQuietly(cacheDir)
-        FlowManager.getDatabase(AppDatabase.NAME).reset()
-    }
-
 
     override fun prepareShareContent(fileName: String) {
         val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")

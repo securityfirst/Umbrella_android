@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.reader.interactor
 
 import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
+import org.secfirst.umbrella.whitelabel.data.database.content.ContentRepo
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
@@ -13,14 +14,15 @@ import javax.inject.Inject
 
 class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                               preferenceHelper: AppPreferenceHelper,
+                                              contentRepo: ContentRepo,
                                               private val readerRepo: ReaderRepo)
 
-    : BaseInteractorImp(apiHelper, preferenceHelper), ReaderBaseInteractor {
+    : BaseInteractorImp(apiHelper, preferenceHelper, contentRepo), ReaderBaseInteractor {
 
     override suspend fun applyChangeDatabaseAccess(userToken: String): Boolean {
         val res = readerRepo.changeToken(userToken)
         if (res) {
-            preferenceHelper.setIsLoggedIn(true)
+            preferenceHelper.setLoggedIn(true)
             preferenceHelper.setSkipPassword(true)
         }
         return res

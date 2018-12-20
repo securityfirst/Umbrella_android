@@ -111,6 +111,36 @@
             </FrameLayout>
 
         </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/resetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/feed_empty_big_margin_top"
+            android:background="#fafafa"
+            card_view:cardCornerRadius="@dimen/feed_empty_card_view">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/account_reset_password"
+                    android:textColor="#4a4a4a"
+                    android:textSize="18sp"
+                    android:textStyle="normal"
+                    tools:text="Reset password" />
+            </FrameLayout>
+
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
 </LinearLayout>

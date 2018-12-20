@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.account_password_alert.view.*
+import kotlinx.android.synthetic.main.account_reset_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_settings_view.*

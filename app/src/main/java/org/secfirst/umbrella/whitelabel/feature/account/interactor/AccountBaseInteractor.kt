@@ -18,18 +18,17 @@ interface AccountBaseInteractor : BaseInteractor {
 
     suspend fun fetchFeedLocation(): FeedLocation?
 
-    fun setLoggedIn(): Boolean
-
     fun setSkipPassword(value: Boolean): Boolean
 
     suspend fun fetchRefreshInterval(): Int
 
     suspend fun putRefreshInterval(position: Int): Boolean
 
+    fun setLoggedIn(): Boolean
+
     fun isSkippPassword(): Boolean
 
-    fun setMaskApp(value : Boolean) : Boolean
+    fun setMaskApp(value: Boolean): Boolean
 
-    fun isMaskApp() : Boolean
-
+    fun isMaskApp(): Boolean
 }
