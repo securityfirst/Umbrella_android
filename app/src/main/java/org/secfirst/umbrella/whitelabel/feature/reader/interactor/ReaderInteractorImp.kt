@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.interactor
 
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource

@@ -1,10 +1,8 @@
 package org.secfirst.umbrella.whitelabel.misc
 
-import kotlinx.coroutines.experimental.DefaultDispatcher
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.newFixedThreadPoolContext
-import org.jetbrains.anko.AnkoContext
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlin.coroutines.CoroutineContext
 
 const val THREAD_COUNT = 3
 
@@ -13,14 +11,14 @@ const val THREAD_COUNT = 3
  */
 open class AppExecutors {
     companion object {
-        val ioContext: CoroutineContext
-            get() = DefaultDispatcher
+        val ioContext: kotlin.coroutines.CoroutineContext
+            get() = Dispatchers.Default
 
         val networkContext: CoroutineContext
-            get() = newFixedThreadPoolContext(THREAD_COUNT, "networkIO")
+            get() = newFixedThreadPoolContext(THREAD_COUNT, "")
 
         val uiContext: CoroutineContext
-            get() = UI
+            get() = Dispatchers.Main
     }
 }
 

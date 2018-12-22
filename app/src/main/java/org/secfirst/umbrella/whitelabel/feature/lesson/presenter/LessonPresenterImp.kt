@@ -10,6 +10,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInte
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject constructor(
@@ -18,7 +19,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
 
 
     override fun submitSelectHead(moduleSha1ID: String) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 val module = it.fetchLesson(moduleSha1ID)
                 val markdownsFavorite = it.fetchAllFavorites()
@@ -40,7 +41,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     }
 
     override fun submitSelectLesson(subject: Subject) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
                 when {
@@ -55,7 +56,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
     }
 
     override fun submitLoadAllLesson() {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 val markdownsFavorite = it.fetchAllFavorites()
                 val modules = it.fetchModules()

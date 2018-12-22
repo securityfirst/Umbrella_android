@@ -12,6 +12,7 @@ import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseIn
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 
@@ -21,25 +22,25 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
 
 
     override fun submitDifficultySelected(subjectSha1ID : String, difficulty: Difficulty) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.insertDifficultySelect(subjectSha1ID, difficulty)
         }
     }
 
     override fun submitMarkdownFavorite(markdown: Markdown) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.insertMarkdown(markdown)
         }
     }
 
     override fun submitChecklistFavorite(checklist: Checklist) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.insertChecklist(checklist)
         }
     }
 
     override fun submitLoadSubject(subject: Subject) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let { safeInteractor ->
                 val markdowns = safeInteractor.fetchMarkdowns(subject.id)
                 if (markdowns.size > Markdown.SINGLE_CHOICE) {
@@ -60,7 +61,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     }
 
     override fun submitLoadSegments(selectDifficulty: Difficulty) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let { safeInteractor ->
                 val subject = safeInteractor.fetchSubject(selectDifficulty.subject!!.id)
                 val orderDifficulties = subject?.difficulties?.orderDifficulty(selectDifficulty)

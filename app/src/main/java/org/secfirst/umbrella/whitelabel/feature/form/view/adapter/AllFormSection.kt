@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.form.view.adapter
 
+
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters

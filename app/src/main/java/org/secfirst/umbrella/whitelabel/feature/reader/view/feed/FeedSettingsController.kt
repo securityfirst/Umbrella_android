@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_settings_view.*
 import kotlinx.android.synthetic.main.feed_settings_view.view.*
+
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R

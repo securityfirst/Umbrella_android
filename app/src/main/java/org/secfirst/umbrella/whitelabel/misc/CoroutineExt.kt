@@ -1,8 +1,7 @@
 package org.secfirst.umbrella.whitelabel.misc
 
-import kotlinx.coroutines.experimental.*
-import kotlin.coroutines.experimental.CoroutineContext
-import kotlin.coroutines.experimental.EmptyCoroutineContext
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 /**
  * Equivalent to [launch] but return [Unit] instead of [Job].
@@ -16,12 +15,10 @@ import kotlin.coroutines.experimental.EmptyCoroutineContext
  * ```
  */
 fun launchSilent(
-        context: CoroutineContext = DefaultDispatcher,
-        start: CoroutineStart = CoroutineStart.DEFAULT,
-        parent: Job? = null,
+        context: CoroutineContext = Dispatchers.Default,
         block: suspend CoroutineScope.() -> Unit
 ) {
-    launch(context, start, parent, block)
+    runBlocking(context, block)
 }
 
 /**
@@ -35,14 +32,14 @@ fun launchSilent(
  * }
  * ```
  */
-fun <T> runBlockingSilent(context: CoroutineContext = EmptyCoroutineContext, block: suspend CoroutineScope.() -> T) {
+fun <T> runBlockingSilent(context: CoroutineContext = Dispatchers.Default, block: suspend CoroutineScope.() -> T) {
     runBlocking(context, block)
 }
 
-suspend fun <T> async(block: suspend CoroutineScope.() -> T): Deferred<T> {
-    return async(CommonPool) { block() }
-}
-
-suspend fun <T> asyncAwait(block: suspend CoroutineScope.() -> T): T {
-    return async(block).await()
-}
+//suspend fun <T> async(block: suspend CoroutineScope.() -> T): Deferred<T> {
+//    return async(CommonPool) { block() }
+//}
+//
+//suspend fun <T> asyncAwait(block: suspend CoroutineScope.() -> T): T {
+//    return async(block).await()
+//}

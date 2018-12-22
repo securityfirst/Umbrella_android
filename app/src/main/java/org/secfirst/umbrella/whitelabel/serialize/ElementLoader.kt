@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.whitelabel.serialize
 
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -18,27 +18,24 @@ import parseYmlFile
 import java.io.File
 import javax.inject.Inject
 
-class ElementLoader @Inject constructor(private val tentRepo: TentRepo)  {
+class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
 
-    private lateinit var root: Root
 
     suspend fun load(root: Root): Root {
-
         withContext(ioContext) {
-            this.root = root
             val filesPair = tentRepo.loadFile()
             filesPair.filter { it.second.extension != ExtensionFile.PNG.value }.forEach { pairFile ->
                 val file = pairFile.second
                 val absolutePath = file.path.substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
-                loadElement(pwd, pairFile, absolutePath)
-                loadForm(pairFile)
+                loadElement(pwd, pairFile, absolutePath, root)
+                loadForm(pairFile, root)
             }
         }
-        return this.root
+        return root
     }
 
-    private fun loadElement(pwd: String, pairFile: Pair<String, File>, absolutePath: String) {
+    private fun loadElement(pwd: String, pairFile: Pair<String, File>, absolutePath: String, root: Root) {
         val file = pairFile.second
         val pathId = pairFile.first
 
@@ -97,7 +94,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo)  {
         }
     }
 
-    private fun loadForm(pairFile: Pair<String, File>) {
+    private fun loadForm(pairFile: Pair<String, File>, root: Root) {
         val file = pairFile.second
         val sha1ID = pairFile.first
         if (getDelimiter(file.nameWithoutExtension) == TypeFile.FORM.value) {

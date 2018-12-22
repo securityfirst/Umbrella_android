@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.interactor
 
 
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import okhttp3.ResponseBody
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
@@ -36,10 +36,10 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun doFeedCall(countryCode: String, source: String, since: String): Deferred<ResponseBody>
 
-    fun isSkipPassword() : Boolean
+    fun isSkipPassword(): Boolean
 
-    fun setSkipPassword(value : Boolean) : Boolean
+    fun setSkipPassword(value: Boolean): Boolean
 
-   suspend fun applyChangeDatabaseAccess(userToken: String): Boolean
+    suspend fun applyChangeDatabaseAccess(userToken: String): Boolean
 
 }

@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel.data.database.difficulty
 
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
@@ -29,7 +29,7 @@ interface DifficultyDao {
                 .querySingle()
     }
 
-    suspend fun getDifficultyBy(pathId : String): Difficulty? = withContext(AppExecutors.ioContext) {
+    suspend fun getDifficultyBy(pathId: String): Difficulty? = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
                 .where(Difficulty_Table.id.`is`(pathId))

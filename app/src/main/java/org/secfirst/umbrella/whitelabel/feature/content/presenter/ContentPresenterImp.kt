@@ -25,6 +25,7 @@ import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseIn
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
@@ -41,7 +42,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 
 
     override fun updateContent(pairFiles: List<Pair<String, File>>) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             val checklists = mutableListOf<Checklist>()
             val markdowns = mutableListOf<Markdown>()
             val forms = mutableListOf<Form>()
@@ -93,7 +94,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 
     override fun manageContent() {
         var isFetchData: Boolean
-        launchSilent(AppExecutors.uiContext) {
+        runBlockingSilent(AppExecutors.uiContext) {
             interactor?.let {
                 getView()?.downloadContentInProgress()
                 isFetchData = it.fetchData()

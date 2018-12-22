@@ -9,6 +9,7 @@ import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.Difficulty
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @Inject constructor(
@@ -20,13 +21,13 @@ class DifficultyPresenterImp<V : DifficultyView, I : DifficultyBaseInteractor> @
     }
 
     override fun saveDifficultySelect(difficulty: Difficulty, subjectSha1ID: String) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.insertTopicPreferred(DifficultyPreferred(subjectSha1ID, difficulty))
         }
     }
 
     override fun submitDifficulty(subject: Subject) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 val toolbarTitle = subject.title
                 getView()?.showDifficulties(subject.difficulties.withColors(), toolbarTitle)

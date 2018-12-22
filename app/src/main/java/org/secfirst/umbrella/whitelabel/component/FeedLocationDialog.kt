@@ -9,13 +9,13 @@ import android.view.View
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 
 class FeedLocationDialog(private val feedLocationView: View,
                          private val controller: BaseController,
@@ -77,7 +77,7 @@ class FeedLocationDialog(private val feedLocationView: View,
 
 
     private fun prepareAutocomplete(characters: String) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             locationInfo = getAddress(characters)
             if (locationInfo.locationNames.isNotEmpty())
                 updateAddress(locationInfo)

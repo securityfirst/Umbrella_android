@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.whitelabel.feature.form.presenter
 
-import kotlinx.coroutines.experimental.launch
 import org.secfirst.umbrella.whitelabel.data.VirtualStorage
 import org.secfirst.umbrella.whitelabel.data.database.form.ActiveForm
 import org.secfirst.umbrella.whitelabel.data.database.form.Answer
@@ -10,7 +9,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 
@@ -21,21 +20,21 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
         interactor = interactor), FormBasePresenter<V, I> {
 
     override fun submitShareFormHtml(activeForm: ActiveForm) {
-        launch(uiContext) {
+        runBlockingSilent(uiContext) {
             val shareFile = virtualStorage.mountFilesystem(activeForm.asHTML(), activeForm.title)
-            if (isActive)
-                getView()?.showShareForm(shareFile)
+
+            getView()?.showShareForm(shareFile)
         }
     }
 
     override fun submitDeleteActiveForm(activeForm: ActiveForm) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.deleteActiveForm(activeForm)
         }
     }
 
     override fun submitActiveForm(activeForm: ActiveForm) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             val res = interactor?.insertActiveForm(activeForm)
             res?.let {
                 getView()?.showActiveFormWLoad(it)
@@ -44,14 +43,14 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     }
 
     override fun submitLoadAllForms() {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 val activeForms = it.fetchActiveForms()
                 val modelForms = it.fetchModalForms()
                 populateReferenceId(activeForms, modelForms)
-                if (isActive)
-                    getView()?.showModelAndActiveForms(modelForms.toMutableList(),
-                            activeForms.toMutableList())
+
+                getView()?.showModelAndActiveForms(modelForms.toMutableList(),
+                        activeForms.toMutableList())
             }
         }
     }
@@ -66,7 +65,7 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     }
 
     override fun submitInsert(answer: Answer) {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.insertFormData(answer)
         }
     }

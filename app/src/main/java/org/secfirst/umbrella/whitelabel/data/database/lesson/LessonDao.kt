@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.lesson
 
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred_Table

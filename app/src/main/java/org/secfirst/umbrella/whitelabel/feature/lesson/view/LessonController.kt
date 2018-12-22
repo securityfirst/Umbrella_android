@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import kotlinx.android.synthetic.main.lesson_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -30,6 +31,7 @@ class LessonController : BaseController(), LessonView {
     private val lessonClick: (Subject) -> Unit = this::onLessonClicked
     private val groupClick: (String) -> Unit = this::onGroupClicked
     private lateinit var lessonAdapter: LessonAdapter
+    private val sectionAdapter = SectionedRecyclerViewAdapter()
 
     override fun onInject() {
         DaggerLessonComponent.builder()
@@ -57,11 +59,37 @@ class LessonController : BaseController(), LessonView {
         return inflater.inflate(R.layout.lesson_view, container, false)
     }
 
-
     override fun showAllLesson(lessons: List<Lesson>) {
-        lessonAdapter = LessonAdapter(lessons, lessonClick, groupClick)
-        lessonMenu?.adapter = lessonAdapter
+        //lessonAdapter = LessonAdapter(lessons, lessonClick, groupClick)
+        //lessonMenu?.adapter = lessonAdapter
+
+        lessons.forEach {
+            val section = LessonSection(it, lessonClick, groupClick)
+            section.isVisible = false
+            sectionAdapter.addSection(section)
+        }
+
+        lessonMenu?.layoutManager = LinearLayoutManager(context)
+        lessonMenu?.adapter = sectionAdapter
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        lessonAdapter.onSaveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        lessonAdapter.onSaveInstanceState(savedInstanceState)
+    }
+
+    private fun setUpToolbar() {
+        lessonToolbar?.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.title = context.getString(R.string.lesson_title)
+        }
+    }
+
 
     override fun startDifficultyController(subject: Subject) {
         router.pushController(RouterTransaction.with(DifficultyController(subject)))
@@ -84,20 +112,4 @@ class LessonController : BaseController(), LessonView {
         router.pushController(RouterTransaction.with(AboutController(markdown)))
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        lessonAdapter.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        lessonAdapter.onSaveInstanceState(savedInstanceState)
-    }
-
-    private fun setUpToolbar() {
-        lessonToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.lesson_title)
-        }
-    }
 }

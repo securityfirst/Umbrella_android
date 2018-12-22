@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R

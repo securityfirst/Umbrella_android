@@ -6,11 +6,6 @@ apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 apply plugin: 'io.fabric'
 
-kotlin {
-    experimental {
-        coroutines 'enable'
-    }
-}
 android {
     signingConfigs {
         umbrella_beta {
@@ -81,8 +76,6 @@ dependencies {
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
     implementation "com.jakewharton:process-phoenix:$process_phoenix"
     implementation 'com.commonsware.cwac:anddown:0.4.0'
-
-    //implementation "com.evernote:android-job:$evernote_android_job"
 
     //Sectioned recyclerview
     implementation "io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:$sectionedrecyclerviewadapter"
@@ -166,8 +159,9 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
     implementation "org.jetbrains.anko:anko-sdk25:$anko_version"
-    implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
     implementation "org.jetbrains.anko:anko-sdk25-coroutines:$anko_version"
+    implementation "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
+
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 

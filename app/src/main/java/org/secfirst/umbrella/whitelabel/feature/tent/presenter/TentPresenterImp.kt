@@ -5,6 +5,7 @@ import org.secfirst.umbrella.whitelabel.feature.tent.TentView
 import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 class TentPresenterImp<V : TentView, I : TentBaseInteractor>
@@ -13,7 +14,7 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
         interactor = interactor), TentBasePresenter<V, I> {
 
     override fun submitUpdateRepository() {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 getView()?.isUpdateRepository(it.updateRepository())
             }
@@ -21,7 +22,7 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
     }
 
     override fun submitFetchRepository() {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 getView()?.isFetchRepository(it.fetchRepository())
             }
@@ -29,7 +30,7 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
     }
 
     override fun submitLoadElementsFile() {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.let {
                 getView()?.onLoadElementSuccess(it.loadElementsFile())
             }
@@ -37,7 +38,7 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
     }
 
     override fun submitLoadFile() {
-        launchSilent(uiContext) {
+        runBlockingSilent(uiContext) {
             interactor?.loadFile()
         }
     }
