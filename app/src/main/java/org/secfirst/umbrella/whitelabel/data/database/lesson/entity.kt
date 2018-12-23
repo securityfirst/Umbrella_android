@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
@@ -19,7 +18,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.associateMarkdown
 data class Lesson(var moduleId: String,
                   var moduleTitle: String = "",
                   var pathIcon: String = "",
-                  var topics: List<Subject> = listOf()) : ExpandableGroup<Subject>(moduleTitle, topics)
+                  var topics: List<Subject> = listOf())
 
 @Table(database = AppDatabase::class)
 @Parcelize
@@ -76,8 +75,8 @@ open class Module(
     }
 }
 
-@Parcelize
 @Table(database = AppDatabase::class)
+@Parcelize
 data class Subject(
         @Column
         var index: Int = 0,

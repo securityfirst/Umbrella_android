@@ -1,4 +1,3 @@
-
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.os.Bundle

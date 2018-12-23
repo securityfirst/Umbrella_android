@@ -1,10 +1,9 @@
 package org.secfirst.umbrella.whitelabel.data.database.checklist
 
-import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import com.raizlabs.android.dbflow.structure.BaseModel
+import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
@@ -77,7 +76,7 @@ class Content(
         @Column
         var disable: Boolean = false,
         @Column
-        var value: Boolean = false) : BaseModel(), Parcelable
+        var value: Boolean = false) : Parcelable
 
 class Dashboard(var items: List<Item> = listOf()) {
 

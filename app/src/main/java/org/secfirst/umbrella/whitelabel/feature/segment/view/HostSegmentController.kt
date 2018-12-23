@@ -29,7 +29,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val selectDifficulty by lazy { args.getParcelable(EXTRA_SEGMENT_BY_DIFFICULTY) as Difficulty? }
     private val selectModule by lazy { args.getParcelable(EXTRA_SEGMENT_BY_MODULE) as Module? }
-    private val selectSubject by lazy { args.getParcelable(EXTRA_SEGMENT_BY_SUBJECT) as Subject? }
+    private val selectSubject by lazy {args.getParcelable(EXTRA_SEGMENT_BY_SUBJECT) as Subject? }
 
     private lateinit var hostAdapter: HostSegmentAdapter
 
