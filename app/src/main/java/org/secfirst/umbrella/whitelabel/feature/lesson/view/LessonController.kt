@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
-import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
+import com.xwray.groupie.ExpandableGroup
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.lesson_view.*
+import kotlinx.android.synthetic.main.lesson_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
@@ -24,14 +27,19 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePrese
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
 import javax.inject.Inject
 
+
 class LessonController : BaseController(), LessonView {
 
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val lessonClick: (Subject) -> Unit = this::onLessonClicked
     private val groupClick: (String) -> Unit = this::onGroupClicked
-    private lateinit var lessonAdapter: LessonAdapter
-    private val sectionAdapter = SectionedRecyclerViewAdapter()
+    private val groupAdapter = GroupAdapter<ViewHolder>()
+    private var isRecycledView = false
+
+    companion object {
+        private const val RECYCLER_STATE = "recycle_state"
+    }
 
     override fun onInject() {
         DaggerLessonComponent.builder()
@@ -40,76 +48,65 @@ class LessonController : BaseController(), LessonView {
                 .inject(this)
     }
 
-    private fun onLessonClicked(subject: Subject) {
-        presenter.submitSelectLesson(subject)
-    }
-
-    private fun onGroupClicked(moduleSha1ID: String) {
-        presenter.submitSelectHead(moduleSha1ID)
-    }
-
-    override fun onAttach(view: View) {
-        lessonMenu?.layoutManager = LinearLayoutManager(context)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        val view = inflater.inflate(R.layout.lesson_view, container, false)
         presenter.onAttach(this)
         presenter.submitLoadAllLesson()
-        setUpToolbar()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.lesson_view, container, false)
+        view.lessonMenu.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = groupAdapter
+        }
+        setUpToolbar(view)
+        return view
     }
 
     override fun showAllLesson(lessons: List<Lesson>) {
-        lessonAdapter = LessonAdapter(lessons, lessonClick, groupClick)
-        lessonMenu?.adapter = lessonAdapter
-
-//        lessons.forEach {
-//            val section = LessonSection(it, lessonClick, groupClick)
-//            section.isVisible = false
-//            sectionAdapter.addSection(section)
-//        }
-//
-//        lessonMenu?.layoutManager = LinearLayoutManager(context)
-//        lessonMenu?.adapter = sectionAdapter
+        if (!isRecycledView) {
+            lessons.forEach { it ->
+                val lessonGroup = LessonGroup(it.moduleId, it.pathIcon, it.moduleTitle, groupClick)
+                val groups = ExpandableGroup(lessonGroup)
+                it.topics.forEach { subject -> groups.add(LessonItem(subject, lessonClick)) }
+                groupAdapter.add(groups)
+            }
+            lessonMenu.apply { adapter = groupAdapter }
+        }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        lessonAdapter.onSaveInstanceState(outState)
+    override fun onSaveViewState(view: View, outState: Bundle) {
+        super.onSaveViewState(view, outState)
+        outState.putBoolean(RECYCLER_STATE, true)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        lessonAdapter.onSaveInstanceState(savedInstanceState)
+    override fun onRestoreViewState(view: View, savedViewState: Bundle) {
+        super.onRestoreViewState(view, savedViewState)
+        isRecycledView = savedViewState.getBoolean(RECYCLER_STATE)
     }
 
-    private fun setUpToolbar() {
-        lessonToolbar?.let {
+    private fun setUpToolbar(view: View) {
+        view.lessonToolbar.let {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.title = context.getString(R.string.lesson_title)
         }
     }
 
+    private fun onLessonClicked(subject: Subject) = presenter.submitSelectLesson(subject)
+
+    private fun onGroupClicked(moduleSha1ID: String) = presenter.submitSelectHead(moduleSha1ID)
+
+    override fun <T : Any> startTargetController(any: T) {
+        when (any) {
+            is Difficulty -> router.pushController(RouterTransaction.with(HostSegmentController(any)))
+            is Module -> router.pushController(RouterTransaction.with(HostSegmentController(any)))
+            is Markdown -> router.pushController(RouterTransaction.with(AboutController(any)))
+        }
+    }
 
     override fun startDifficultyController(subject: Subject) {
         router.pushController(RouterTransaction.with(DifficultyController(subject)))
-    }
-
-    override fun startDeferredSegment(selectDifficulty: Difficulty) {
-        router.pushController(RouterTransaction.with(HostSegmentController(selectDifficulty)))
-    }
-
-    override fun startSegmentController(module: Module) {
-        router.pushController(RouterTransaction.with(HostSegmentController(module)))
     }
 
     override fun startSegmentController(subject: Subject) {
         router.pushController(RouterTransaction.with(HostSegmentController(subject)))
 
     }
-
-    override fun startSegmentDetail(markdown: Markdown) {
-        router.pushController(RouterTransaction.with(AboutController(markdown)))
-    }
-
 }

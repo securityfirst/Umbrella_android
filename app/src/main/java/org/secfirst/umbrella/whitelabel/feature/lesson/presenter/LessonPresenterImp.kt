@@ -24,15 +24,15 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 val markdownsFavorite = it.fetchAllFavorites()
                 module?.let { safeModule ->
                     if (safeModule.markdowns.size > SINGLE_CHOICE) {
-                        getView()?.startSegmentController(safeModule)
+                        getView()?.startTargetController(safeModule)
                     }
                     if (safeModule.markdowns.size == SINGLE_CHOICE) {
                         val singleMarkdown = safeModule.markdowns.last()
-                        getView()?.startSegmentDetail(singleMarkdown)
+                        getView()?.startTargetController(singleMarkdown)
                     }
                     if (moduleSha1ID == FAVORITE_INDEX && markdownsFavorite.isNotEmpty()) {
                         safeModule.markdowns = markdownsFavorite.toMutableList()
-                        getView()?.startSegmentController(safeModule)
+                        getView()?.startTargetController(safeModule)
                     }
                 }
             }
@@ -45,7 +45,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
                 when {
                     difficultyPreferred != null -> difficultyPreferred.difficulty?.let { safePreferred ->
-                        getView()?.startDeferredSegment(safePreferred)
+                        getView()?.startTargetController(safePreferred)
                     }
                     subject.difficulties.isEmpty() -> getView()?.startSegmentController(subject)
                     else -> getView()?.startDifficultyController(subject)
