@@ -35,7 +35,7 @@ android {
         compileSdkVersion 28
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.4"
+        versionName "0.5.1"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -74,21 +74,12 @@ dependencies {
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
     implementation "com.jakewharton:process-phoenix:$process_phoenix"
-    implementation 'com.commonsware.cwac:anddown:0.4.0'
-    implementation 'com.xwray:groupie:2.1.0'
-    implementation 'com.xwray:groupie-kotlin-android-extensions:2.1.0'
-
-    //Sectioned recyclerview
+    implementation "com.commonsware.cwac:anddown:$anddown"
     implementation "io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:$sectionedrecyclerviewadapter"
-    // Stepper Viewer
     implementation "com.stepstone.stepper:material-stepper:$stepper_version"
-    //enable multi-dex
     implementation "com.android.support:multidex:$multidex_version"
-    //Font lib
     implementation "io.github.inflationx:calligraphy3:$calligraphy3"
-
     implementation "io.github.inflationx:viewpump:$viewpump"
-    //Deploy beta version
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
         transitive = true
     }
@@ -143,7 +134,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_adapter"
 
     // dependency injection
     implementation "com.google.dagger:dagger:$dagger2_version"
@@ -160,7 +151,7 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:$anko_version"
     implementation "org.jetbrains.anko:anko:$anko_version"
 
-
+    //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
@@ -175,6 +166,10 @@ dependencies {
     implementation "info.guardianproject.iocipher:IOCipher:$io_cipher"
 
     //file conversion
-    implementation 'com.itextpdf:itextpdf:5.5.10'
-    implementation 'com.itextpdf.tool:xmlworker:5.5.10'
+    implementation "com.itextpdf:itextpdf:$itextpdf"
+    implementation "com.itextpdf.tool:xmlworker:$itextpdf"
+
+    //Expandable recycler view
+    implementation "com.xwray:groupie:$groupie"
+    implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
 }
