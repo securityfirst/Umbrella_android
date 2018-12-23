@@ -13,7 +13,6 @@ import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInte
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 
@@ -27,7 +26,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     }
 
     override fun submitChangeDatabaseAccess(userToken: String) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             val res = interactor?.applyChangeDatabaseAccess(userToken) ?: false
             getView()?.isChangedToken(res)
         }
@@ -41,7 +40,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     private val tag: String = ReaderPresenterImp::class.java.name
 
     override fun prepareView() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val feedSources = it.fetchFeedSources()
                 val refreshIntervalPosition = it.fetchRefreshInterval()
@@ -55,7 +54,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
                                    feedSources: List<FeedSource>,
                                    isFirstRequest: Boolean) {
         interactor?.let {
-            runBlockingSilent(uiContext) {
+            launchSilent(uiContext) {
                 try {
                     val feedResponseBody = it.doFeedCall(feedLocation.iso2,
                             getSelectedFeedSources(feedSources), "0").await()
@@ -72,24 +71,24 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
 
     override fun submitFeedLocation(feedLocation: FeedLocation) {
         interactor?.let {
-            runBlockingSilent(uiContext) { it.insertFeedLocation(feedLocation) }
+            launchSilent(uiContext) { it.insertFeedLocation(feedLocation) }
         }
     }
 
     override fun submitDeleteRss(rss: RSS) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.deleteRss(rss)
         }
     }
 
     override fun submitDeleteFeedLocation() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.deleteLocation()
         }
     }
 
     override fun submitFetchRss() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             var rssList = listOf<RSS>()
             interactor?.let { rssList = it.fetchRss() }
             getView()?.showAllRss(processRss(rssList))
@@ -97,7 +96,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     }
 
     override fun submitInsertRss(rss: RSS) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 it.insertRss(rss)
                 processRss(rss)?.let { rss -> getView()?.showNewestRss(rss) }
@@ -106,19 +105,19 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     }
 
     override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.insertAllFeedSources(feedSources)
         }
     }
 
     override fun submitInsertFeedLocation(feedLocation: FeedLocation) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.insertFeedLocation(feedLocation)
         }
     }
 
     override fun submitPutRefreshInterval(position: Int) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.putRefreshInterval(position)
         }
     }

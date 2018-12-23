@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel.di.module
 
 import android.app.Application
 import android.content.Context
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable

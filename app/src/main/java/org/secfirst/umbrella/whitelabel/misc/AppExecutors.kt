@@ -12,10 +12,10 @@ const val THREAD_COUNT = 3
 open class AppExecutors {
     companion object {
         val ioContext: kotlin.coroutines.CoroutineContext
-            get() = Dispatchers.Default
+            get() = Dispatchers.IO
 
         val networkContext: CoroutineContext
-            get() = newFixedThreadPoolContext(THREAD_COUNT, "")
+            get() = newFixedThreadPoolContext(THREAD_COUNT, "networkIO")
 
         val uiContext: CoroutineContext
             get() = Dispatchers.Main

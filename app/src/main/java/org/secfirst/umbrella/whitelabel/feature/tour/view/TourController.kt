@@ -11,7 +11,7 @@ import android.view.View.*
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.tour_view.*
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
@@ -71,7 +71,7 @@ class TourController : BaseController(), ContentView {
                 override fun onPageScrollStateChanged(state: Int) {}
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
                 override fun onPageSelected(position: Int) {
-                    pageIndicatorView.selection = position;
+                    pageIndicatorView.selection = position
 
                     if (position == viewList.lastIndex)
                         acceptButton?.let { btn -> btn.visibility = VISIBLE }

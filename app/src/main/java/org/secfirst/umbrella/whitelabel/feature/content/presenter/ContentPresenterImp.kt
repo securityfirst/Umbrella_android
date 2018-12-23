@@ -22,14 +22,11 @@ import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimi
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
-import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
-
 import parseYmlFile
 import java.io.File
 import javax.inject.Inject
@@ -42,7 +39,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 
 
     override fun updateContent(pairFiles: List<Pair<String, File>>) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             val checklists = mutableListOf<Checklist>()
             val markdowns = mutableListOf<Markdown>()
             val forms = mutableListOf<Form>()
@@ -94,7 +91,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 
     override fun manageContent() {
         var isFetchData: Boolean
-        runBlockingSilent(AppExecutors.uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 getView()?.downloadContentInProgress()
                 isFetchData = it.fetchData()

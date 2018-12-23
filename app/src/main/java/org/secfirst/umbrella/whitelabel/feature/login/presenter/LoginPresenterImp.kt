@@ -9,7 +9,6 @@ import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginBaseIntera
 import org.secfirst.umbrella.whitelabel.feature.login.view.LoginView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 
@@ -19,7 +18,7 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
 
     override fun submitChangeDatabaseAccess(userToken: String) {
         interactor?.let {
-            runBlockingSilent(uiContext) {
+            launchSilent(uiContext) {
                 if (checkPassword(userToken)) {
                     it.dispatchLoginDatabaseAccess(userToken)
                     getView()?.isLoginOk(true)

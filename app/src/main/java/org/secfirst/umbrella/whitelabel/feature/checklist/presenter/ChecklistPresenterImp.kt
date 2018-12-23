@@ -8,7 +8,6 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBa
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import javax.inject.Inject
 
 class ChecklistPresenterImp<V : ChecklistView, I :
@@ -18,7 +17,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
 
     override fun submitInsertCustomChecklist(checklistTitle: String, idChecklist: String,
                                              checklistValue: List<String>) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val contents = mutableListOf<Content>()
                 val customChecklist = Checklist(contents, true, checklistTitle, idChecklist)
@@ -33,19 +32,19 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
     }
 
     override fun submitDeleteChecklistContent(checklistContent: Content) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.deleteChecklistContent(checklistContent)
         }
     }
 
     override fun submitDisableChecklistContent(checklistContent: Content) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.disableChecklistContent(checklistContent)
         }
     }
 
     override fun submitLoadCustomDashboard() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val customChecklist = it.fetchAllCustomChecklistInProgress()
                 val allDashboard = mutableListOf<Dashboard.Item>()
@@ -57,7 +56,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
     }
 
     override fun submitLoadDashboard() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val rate = it.fetchAllChecklistInProgress()
                 val totalDone = it.fetchChecklistCount().toInt()
@@ -112,13 +111,13 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
     }
 
     override fun submitInsertChecklistContent(checklistContent: Content) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.persistChecklistContent(checklistContent)
         }
     }
 
     override fun submitUpdateChecklist(checklist: Checklist) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.persistChecklist(checklist)
         }
     }

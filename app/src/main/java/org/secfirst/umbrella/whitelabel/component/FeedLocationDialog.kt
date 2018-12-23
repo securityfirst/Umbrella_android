@@ -15,7 +15,7 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
+import org.secfirst.umbrella.whitelabel.misc.launchSilent
 
 class FeedLocationDialog(private val feedLocationView: View,
                          private val controller: BaseController,
@@ -77,7 +77,7 @@ class FeedLocationDialog(private val feedLocationView: View,
 
 
     private fun prepareAutocomplete(characters: String) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             locationInfo = getAddress(characters)
             if (locationInfo.locationNames.isNotEmpty())
                 updateAddress(locationInfo)

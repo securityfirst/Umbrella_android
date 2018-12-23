@@ -9,7 +9,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
+import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
 
@@ -20,7 +20,7 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
         interactor = interactor), FormBasePresenter<V, I> {
 
     override fun submitShareFormHtml(activeForm: ActiveForm) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             val shareFile = virtualStorage.mountFilesystem(activeForm.asHTML(), activeForm.title)
 
             getView()?.showShareForm(shareFile)
@@ -28,13 +28,13 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     }
 
     override fun submitDeleteActiveForm(activeForm: ActiveForm) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.deleteActiveForm(activeForm)
         }
     }
 
     override fun submitActiveForm(activeForm: ActiveForm) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             val res = interactor?.insertActiveForm(activeForm)
             res?.let {
                 getView()?.showActiveFormWLoad(it)
@@ -43,7 +43,7 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     }
 
     override fun submitLoadAllForms() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val activeForms = it.fetchActiveForms()
                 val modelForms = it.fetchModalForms()
@@ -65,7 +65,7 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     }
 
     override fun submitInsert(answer: Answer) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.insertFormData(answer)
         }
     }

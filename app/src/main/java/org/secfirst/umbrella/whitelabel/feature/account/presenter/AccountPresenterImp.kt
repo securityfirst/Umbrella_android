@@ -13,7 +13,6 @@ import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.misc.runBlockingSilent
 import java.io.File
 import javax.inject.Inject
 
@@ -42,7 +41,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
     }
 
     override fun submitChangeDatabaseAccess(userToken: String) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val res = it.changeDatabaseAccess(userToken)
                 getView()?.isLogged(res)
@@ -86,19 +85,19 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
     }
 
     override fun submitInsertFeedSource(feedSources: List<FeedSource>) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.insertAllFeedSources(feedSources)
         }
     }
 
     override fun submitFeedLocation(feedLocation: FeedLocation) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.insertFeedLocation(feedLocation)
         }
     }
 
     override fun prepareView() {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.let {
                 val feedLocation = it.fetchFeedLocation()
                 val refreshFeedInterval = it.fetchRefreshInterval()
@@ -109,7 +108,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
     }
 
     override fun submitPutRefreshInterval(position: Int) {
-        runBlockingSilent(uiContext) {
+        launchSilent(uiContext) {
             interactor?.putRefreshInterval(position)
         }
     }

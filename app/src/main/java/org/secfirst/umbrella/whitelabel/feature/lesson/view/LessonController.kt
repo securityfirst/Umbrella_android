@@ -60,17 +60,17 @@ class LessonController : BaseController(), LessonView {
     }
 
     override fun showAllLesson(lessons: List<Lesson>) {
-        //lessonAdapter = LessonAdapter(lessons, lessonClick, groupClick)
-        //lessonMenu?.adapter = lessonAdapter
+        lessonAdapter = LessonAdapter(lessons, lessonClick, groupClick)
+        lessonMenu?.adapter = lessonAdapter
 
-        lessons.forEach {
-            val section = LessonSection(it, lessonClick, groupClick)
-            section.isVisible = false
-            sectionAdapter.addSection(section)
-        }
-
-        lessonMenu?.layoutManager = LinearLayoutManager(context)
-        lessonMenu?.adapter = sectionAdapter
+//        lessons.forEach {
+//            val section = LessonSection(it, lessonClick, groupClick)
+//            section.isVisible = false
+//            sectionAdapter.addSection(section)
+//        }
+//
+//        lessonMenu?.layoutManager = LinearLayoutManager(context)
+//        lessonMenu?.adapter = sectionAdapter
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
