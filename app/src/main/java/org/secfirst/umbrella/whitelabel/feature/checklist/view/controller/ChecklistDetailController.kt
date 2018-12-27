@@ -54,6 +54,7 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
                 val position = viewHolder.adapterPosition
                 onDeleteChecklist(adapter.getChecklistItem(position))
                 adapter.removeAt(position)
+                onUpdateChecklistProgress(Math.ceil(checklist.content.filter { it.value }.size * 100.0 / checklist.content.size).toInt())
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
