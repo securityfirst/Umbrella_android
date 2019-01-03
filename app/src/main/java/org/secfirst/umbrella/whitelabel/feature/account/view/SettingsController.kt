@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.account.view
 
 
-import PERMISSION_REQUEST_EXTERNAL_STORAGE
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
@@ -18,7 +17,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
-import doRestartApplication
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
@@ -45,7 +43,9 @@ import org.secfirst.umbrella.whitelabel.feature.tent.TentView
 import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.tent.presenter.TentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
-import requestExternalStoragePermission
+import org.secfirst.umbrella.whitelabel.misc.PERMISSION_REQUEST_EXTERNAL_STORAGE
+import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
+import org.secfirst.umbrella.whitelabel.misc.requestExternalStoragePermission
 import java.io.File
 import javax.inject.Inject
 

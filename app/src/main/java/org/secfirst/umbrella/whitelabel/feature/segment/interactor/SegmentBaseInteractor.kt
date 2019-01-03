@@ -9,11 +9,19 @@ import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface SegmentBaseInteractor : BaseInteractor {
 
+    suspend fun fetchMarkdownsFromDifficulty(difficultyId: String): List<Markdown>
+
+    suspend fun fetchChecklist(checklistId: String): Checklist?
+
     suspend fun fetchSubject(sha1ID: String): Subject?
 
-    suspend fun fetchModule(sha1ID : String): Module?
+    suspend fun fetchModule(sha1ID: String): Module?
 
-    suspend fun fetchMarkdowns(subjectSha1ID : String): List<Markdown>
+    suspend fun fetchDifficulty(difficultyId: String): Difficulty?
+
+    suspend fun fetchMarkdowns(subjectSha1ID: String): List<Markdown>
+
+    suspend fun fetchMarkdownsFromModule(moduleId: String): List<Markdown>
 
     suspend fun insertChecklist(checklist: Checklist)
 

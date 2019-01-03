@@ -1,3 +1,5 @@
+package org.secfirst.umbrella.whitelabel.misc
+
 import android.Manifest
 import android.app.Activity
 import android.content.ComponentName
@@ -25,6 +27,9 @@ import org.jsoup.select.Elements
 import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import java.io.*
 import java.util.*
@@ -138,3 +143,9 @@ fun createDocument(doc: org.jsoup.nodes.Document, filename: String, type: String
 
 fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
         ?: ""
+
+enum class TypeHelper(val value: String) {
+    MODULE(Module::class.java.name),
+    SUBJECT(Subject::class.java.name),
+    DIFFICULTY(Difficulty::class.java.name)
+}

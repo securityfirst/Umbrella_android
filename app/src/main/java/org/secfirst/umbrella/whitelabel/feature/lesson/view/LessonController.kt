@@ -25,6 +25,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
+import org.secfirst.umbrella.whitelabel.misc.TypeHelper
 import javax.inject.Inject
 
 
@@ -95,8 +96,8 @@ class LessonController : BaseController(), LessonView {
 
     override fun <T : Any> startTargetController(any: T) {
         when (any) {
-            is Difficulty -> router.pushController(RouterTransaction.with(HostSegmentController(any)))
-            is Module -> router.pushController(RouterTransaction.with(HostSegmentController(any)))
+            is Difficulty -> router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.DIFFICULTY, any.id))))
+            is Module -> router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.MODULE, any.id))))
             is Markdown -> router.pushController(RouterTransaction.with(AboutController(any)))
         }
     }
@@ -106,7 +107,7 @@ class LessonController : BaseController(), LessonView {
     }
 
     override fun startSegmentController(subject: Subject) {
-        router.pushController(RouterTransaction.with(HostSegmentController(subject)))
+        router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.SUBJECT, subject.id))))
 
     }
 }

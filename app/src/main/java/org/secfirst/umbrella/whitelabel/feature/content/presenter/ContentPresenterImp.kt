@@ -24,10 +24,10 @@ import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.parseYmlFile
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
-import parseYmlFile
 import java.io.File
 import javax.inject.Inject
 

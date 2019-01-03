@@ -22,7 +22,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
-import setMaskMode
+import org.secfirst.umbrella.whitelabel.misc.setMaskMode
 import javax.inject.Inject
 
 class AccountController : BaseController(), AccountView {

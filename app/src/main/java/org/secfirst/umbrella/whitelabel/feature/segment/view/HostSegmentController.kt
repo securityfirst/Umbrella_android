@@ -10,8 +10,6 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.toChecklistControllers
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
@@ -21,28 +19,21 @@ import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseIn
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.DifficultSpinnerAdapter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.HostSegmentAdapter
+import org.secfirst.umbrella.whitelabel.misc.TypeHelper
 import javax.inject.Inject
 
 class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentView, HostSegmentTabControl {
 
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
-    private val selectDifficulty by lazy { args.getParcelable(EXTRA_SEGMENT_BY_DIFFICULTY) as Difficulty? }
-    private val selectModule by lazy { args.getParcelable(EXTRA_SEGMENT_BY_MODULE) as Module? }
-    private val selectSubject by lazy {args.getParcelable(EXTRA_SEGMENT_BY_SUBJECT) as Subject? }
+    private val dataSelected by lazy { args.getSerializable(EXTRA_DATA_HOST_SEGMENT) }
+
 
     private lateinit var hostAdapter: HostSegmentAdapter
 
-    constructor(difficulty: Difficulty) : this(Bundle().apply {
-        putParcelable(EXTRA_SEGMENT_BY_DIFFICULTY, difficulty)
-    })
 
-    constructor(module: Module) : this(Bundle().apply {
-        putParcelable(EXTRA_SEGMENT_BY_MODULE, module)
-    })
-
-    constructor(subject: Subject) : this(Bundle().apply {
-        putParcelable(EXTRA_SEGMENT_BY_SUBJECT, subject)
+    constructor(dataSelected: Pair<TypeHelper, String>) : this(Bundle().apply {
+        putSerializable(EXTRA_DATA_HOST_SEGMENT, dataSelected)
     })
 
     override fun onInject() {
@@ -52,25 +43,32 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
                 .inject(this)
     }
 
-    override fun onAttach(view: View) {
-        super.onAttach(view)
-        presenter.onAttach(this)
-
-        when {
-            selectModule != null -> selectModule?.let { presenter.submitLoadModule(it) }
-            selectDifficulty != null -> selectDifficulty?.let { presenter.submitLoadSegments(it) }
-            else -> selectSubject?.let { presenter.submitLoadSubject(it) }
-        }
-        setUpToolbar()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.host_segment_view, container, false)
+        val view = inflater.inflate(R.layout.host_segment_view, container, false)
+        presenter.onAttach(this)
+        submitData()
+        setUpToolbar()
+        return view
     }
-
 
     override fun showSegments(difficulties: MutableList<Difficulty>) {
         pickUpDifficulty(difficulties)
+    }
+
+    private fun submitData() {
+        val pairSelected = dataSelected as Pair<TypeHelper, String>
+        when (pairSelected.first.value) {
+            TypeHelper.MODULE.value -> {
+                presenter.submitLoadModule(pairSelected.second)
+            }
+            TypeHelper.SUBJECT.value -> {
+                presenter.submitLoadSubject(pairSelected.second)
+            }
+            TypeHelper.DIFFICULTY.value -> {
+                presenter.submitLoadSegments(pairSelected.second)
+            }
+        }
     }
 
     private fun pickUpDifficulty(difficulties: MutableList<Difficulty>) {
@@ -108,9 +106,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     companion object {
-        const val EXTRA_SEGMENT_BY_MODULE = "selected_module"
-        const val EXTRA_SEGMENT_BY_DIFFICULTY = "selected_difficulty"
-        const val EXTRA_SEGMENT_BY_SUBJECT = "selected_subject"
+        private const val EXTRA_DATA_HOST_SEGMENT = "data_segment"
         private const val PAGE_LIMIT = 8
     }
 

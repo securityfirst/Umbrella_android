@@ -16,6 +16,7 @@ import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyCompo
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
+import org.secfirst.umbrella.whitelabel.misc.TypeHelper
 import javax.inject.Inject
 
 class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyView {
@@ -48,7 +49,8 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     }
 
     override fun startSegment(selectDifficulty: Difficulty) {
-        router.pushController(RouterTransaction.with(HostSegmentController(selectDifficulty)))
+        router.pushController(RouterTransaction.with(
+                HostSegmentController(Pair(TypeHelper.DIFFICULTY, selectDifficulty.id))))
     }
 
     override fun onDestroyView(view: View) {

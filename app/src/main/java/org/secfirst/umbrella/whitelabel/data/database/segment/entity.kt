@@ -52,7 +52,8 @@ data class Markdown(
 
 fun Difficulty.toSegmentController(host: Controller): SegmentController {
     val checklist = if (this.checklist.isEmpty()) null else this.checklist.last()
-    val controller = SegmentController(this.markdowns, host.applicationContext!!.getString(R.string.lesson_tab), checklist)
+    val controller = SegmentController(this.id,
+            host.applicationContext!!.getString(R.string.lesson_tab), checklist?.id ?: "")
     controller.hostSegmentTabControl = host as HostSegmentTabControl
     return controller
 }

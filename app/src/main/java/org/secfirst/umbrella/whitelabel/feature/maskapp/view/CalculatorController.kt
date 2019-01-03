@@ -15,7 +15,7 @@ import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import org.secfirst.umbrella.whitelabel.feature.maskapp.DaggerMaskAppComponent
 import org.secfirst.umbrella.whitelabel.feature.maskapp.interactor.MaskAppBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.maskapp.presenter.MaskAppBasePresenter
-import setMaskMode
+import org.secfirst.umbrella.whitelabel.misc.setMaskMode
 import java.text.DecimalFormat
 import javax.inject.Inject
 

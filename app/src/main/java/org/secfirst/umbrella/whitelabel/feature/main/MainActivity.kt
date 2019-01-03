@@ -27,7 +27,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
-import setMaskMode
+import org.secfirst.umbrella.whitelabel.misc.setMaskMode
 
 
 class MainActivity : AppCompatActivity() {

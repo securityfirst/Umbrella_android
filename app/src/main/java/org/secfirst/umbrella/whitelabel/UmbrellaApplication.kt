@@ -6,6 +6,7 @@ import android.content.Context
 import android.support.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.gu.toolargetool.TooLargeTool
 import com.raizlabs.android.dbflow.config.DatabaseConfig
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowLog
@@ -52,6 +53,7 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         initTentRepository()
         initFonts()
         initFabric()
+        TooLargeTool.startLogging(this)
     }
 
     private fun initDaggerComponent() {

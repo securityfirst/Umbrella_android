@@ -10,7 +10,6 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
-import createDocument
 import kotlinx.android.synthetic.main.segment_view.*
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import org.apache.commons.io.FilenameUtils.removeExtension
@@ -28,6 +27,7 @@ import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
+import org.secfirst.umbrella.whitelabel.misc.createDocument
 import org.secfirst.umbrella.whitelabel.misc.initGridView
 import java.io.File
 import javax.inject.Inject
@@ -44,17 +44,19 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val checklistShareClick: () -> Unit = this::onChecklistShareClick
     private val segmentShareClick: (Markdown) -> Unit = this::onSegmentShareClick
     private val footClick: (Int) -> Unit = this::onFootClicked
-    private val markdowns by lazy { args.getParcelableArray(EXTRA_SEGMENT) as Array<Markdown> }
-    private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist? }
+    private val difficultyId by lazy { args.getString(EXTRA_SEGMENT) }
+    private val checklistId by lazy { args.getString(EXTRA_CHECKLIST) }
     private val titleTab by lazy { args.getString(EXTRA_SEGMENT_TAB_TITLE) }
+    private var markdowns: List<Markdown> = mutableListOf()
+    private var checklist: Checklist? = null
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
     private var indexTab = 0
     lateinit var hostSegmentTabControl: HostSegmentTabControl
 
-    constructor(markdowns: List<Markdown>, titleTab: String, checklist: Checklist?) : this(Bundle().apply {
-        putParcelableArray(EXTRA_SEGMENT, markdowns.toTypedArray())
-        putParcelable(EXTRA_CHECKLIST, checklist)
+    constructor(difficultyId: String, titleTab: String, checklistId: String) : this(Bundle().apply {
+        putString(EXTRA_SEGMENT, difficultyId)
+        putString(EXTRA_CHECKLIST, checklistId)
         putString(EXTRA_SEGMENT_TAB_TITLE, titleTab)
     })
 
@@ -68,7 +70,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         presenter.onAttach(this)
-        showSegmentView(markdowns.toList())
+        presenter.submitDataSegments(difficultyId, checklistId)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -82,11 +84,13 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
-    private fun showSegmentView(markdowns: List<Markdown>) {
-        initSegmentView(markdowns)
+    override fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {
+        this.markdowns = markdowns
+        this.checklist = checklist
+        initSegmentView()
     }
 
-    private fun initSegmentView(markdowns: List<Markdown>) {
+    private fun initSegmentView() {
         val sortedMarkdowns = markdowns.sortedWith(compareBy { it.index })
         val segmentAdapter = SegmentAdapter(segmentClick, footClick,
                 checklistShareClick, segmentShareClick,
@@ -107,10 +111,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun setFooterList(segmentAdapter: SegmentAdapter) {
-        val manager = segmentRecyclerView?.layoutManager as GridLayoutManager
-        manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        val manager = if (segmentRecyclerView?.layoutManager != null)
+            segmentRecyclerView?.layoutManager as GridLayoutManager else null
+
+        manager?.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                return if (segmentAdapter.isChecklistFoot(position)) manager.spanCount else 1
+                return if (segmentAdapter.isChecklistFoot(position)) manager?.spanCount ?: 0 else 1
             }
         }
     }

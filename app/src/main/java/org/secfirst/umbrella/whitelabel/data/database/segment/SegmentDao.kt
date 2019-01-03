@@ -3,23 +3,20 @@ package org.secfirst.umbrella.whitelabel.data.database.segment
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.withContext
+import org.secfirst.umbrella.whitelabel.data.database.BaseDao
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.DifficultyPreferred
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module_Table
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject_Table
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
-interface SegmentDao {
+interface SegmentDao : BaseDao {
 
     suspend fun save(markdown: Markdown) {
         withContext(ioContext) {
             modelAdapter<Markdown>().save(markdown)
         }
     }
-
 
     suspend fun save(checklist: Checklist) {
         withContext(ioContext) {
@@ -33,7 +30,6 @@ interface SegmentDao {
         }
     }
 
-
     suspend fun getMarkdowns(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
@@ -42,17 +38,17 @@ interface SegmentDao {
 
     }
 
-    suspend fun getSubject(sh1ID: String): Subject? = withContext(ioContext) {
+    suspend fun getMarkdownBy(moduleId: String): List<Markdown> = withContext(AppExecutors.ioContext) {
         SQLite.select()
-                .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(sh1ID))
-                .querySingle()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.favorite.`is`(true))
+                .queryList()
     }
 
-    suspend fun getModule(sh1ID: String): Module? = withContext(ioContext) {
+    suspend fun getMarkdownFromDifficulty(difficultyId: String): List<Markdown> = withContext(AppExecutors.ioContext) {
         SQLite.select()
-                .from(Module::class.java)
-                .where(Module_Table.id.`is`(sh1ID))
-                .querySingle()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.difficulty_id.`is`(difficultyId))
+                .queryList()
     }
 }
