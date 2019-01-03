@@ -29,6 +29,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private val dashboardItemClick: (Checklist?) -> Unit = this::onDashboardItemClicked
     private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
     private lateinit var adapter: DashboardAdapter
+    private val dashboardItemUpdated: (Checklist)-> Unit = this::onChecklistItemUpdated
 
     constructor(isCustomBoard: Boolean) : this(Bundle().apply {
         putBoolean(EXTRA_IS_CUSTOM_BOARD, isCustomBoard)
@@ -45,20 +46,18 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     override fun onAttach(view: View) {
         presenter.onAttach(this)
         checkWorkflow()
-     }
+    }
 
     private fun onDeleteChecklist(checklist: Checklist) {
         presenter.submitDeleteChecklist(checklist)
     }
 
-
-    private fun initOnDeleteChecklist(){
-//        checklistDashboardRecyclerView?.initRecyclerView(adapter)
+    private fun initOnDeleteChecklist() {
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val checklist = adapter.getChecklist(position)
-                if(checklist !=null) {
+                if (checklist != null) {
                     onDeleteChecklist(checklist)
                 }
                 adapter.removeAt(position)
@@ -67,7 +66,6 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(checklistDashboardRecyclerView)
     }
-
 
     private fun checkWorkflow() {
         if (isCustomBoard) {
@@ -78,11 +76,12 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             presenter.submitLoadDashboard()
     }
 
-
     private fun onDashboardItemClicked(checklist: Checklist?) {
         if (checklist != null)
             parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist)))
     }
+
+    private fun onChecklistItemUpdated(checklist:Checklist) = presenter.submitUpdateChecklist(checklist)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.checklist_dashboard, container, false)
@@ -96,7 +95,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
-        adapter = DashboardAdapter(dashboards, dashboardItemClick)
+        adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemUpdated)
         checklistDashboardRecyclerView?.initRecyclerView(adapter)
     }
 

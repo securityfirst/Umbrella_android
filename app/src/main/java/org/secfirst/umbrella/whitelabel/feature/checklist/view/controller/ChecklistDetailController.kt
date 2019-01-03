@@ -1,13 +1,17 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import kotlinx.android.synthetic.main.checklist_detail_view.*
+import kotlinx.android.synthetic.main.checklist_item.view.*
 import kotlinx.android.synthetic.main.form_progress.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -60,6 +64,41 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(checklistDetailRecyclerView)
         currentProgress()
+
+        if(checklist.custom){
+            addNewItemChecklist.visibility = View.VISIBLE
+        }
+
+        //add new checklist item
+        addNewItemChecklist.setOnClickListener {
+
+            val li = LayoutInflater.from(context)
+            val promptsView = li.inflate(R.layout.editchecklistdialog, null)
+
+            val alertDialogBuilder = AlertDialog.Builder(context)
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(promptsView)
+
+            val userInput = promptsView
+                    .findViewById(R.id.editChecklistItem) as EditText
+
+            // set dialog message
+            alertDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.export_dialog_ok,
+                            DialogInterface.OnClickListener { _, _ ->
+                                checklist.content.add(Content(check = userInput.text.toString(), checklist = checklist))
+                                onChecklistUpdated(checklist)
+                            })
+                    .setNegativeButton(R.string.export_dialog_cancel,
+                            DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
+
+            // create alert dialog
+            val alertDialog = alertDialogBuilder.create()
+
+            // show it
+            alertDialog.show() }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -85,6 +124,8 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
             mainActivity.supportActionBar?.title = getTitle()
         }
     }
+
+    private fun onChecklistUpdated(checklist: Checklist)= presenter.submitUpdateChecklist(checklist)
 
     override fun onDestroy() {
         super.onDestroy()
