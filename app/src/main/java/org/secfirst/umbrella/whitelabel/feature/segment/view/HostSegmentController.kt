@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import kotlinx.android.synthetic.main.host_segment_view.*
+import kotlinx.android.synthetic.main.host_segment_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.toChecklistControllers
@@ -45,7 +46,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         val view = inflater.inflate(R.layout.host_segment_view, container, false)
         presenter.onAttach(this)
         submitData()
-        setUpToolbar()
+        setUpToolbar(view)
         return view
     }
 
@@ -102,8 +103,8 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         hostSegmentTab?.getTabAt(position)?.select()
     }
 
-    private fun setUpToolbar() {
-        hostSegmentToolbar?.let {
+    private fun setUpToolbar(view: View) {
+        view.hostSegmentToolbar.let {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             mainActivity.supportActionBar?.setDisplayShowTitleEnabled(false)

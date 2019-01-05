@@ -67,12 +67,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .inject(this)
     }
 
-    override fun onAttach(view: View) {
-        super.onAttach(view)
-        presenter.onAttach(this)
-        presenter.submitDataSegments(difficultyId, checklistId)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
@@ -80,7 +74,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .Builder(activity)
                 .setView(shareView)
                 .create()
-
+        presenter.onAttach(this)
+        presenter.submitDataSegments(difficultyId, checklistId)
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 

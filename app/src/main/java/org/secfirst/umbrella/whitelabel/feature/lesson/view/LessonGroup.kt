@@ -17,15 +17,14 @@ class LessonGroup(private val moduleId: String,
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         super.bind(viewHolder, position)
-
+        viewHolder.lessonHeaderLayout.setOnClickListener {
+            onclickGroup(moduleId)
+            expandableGroup.onToggleExpanded()
+            bindIcon(viewHolder)
+        }
         viewHolder.arrow.apply {
             visibility = View.VISIBLE
             setImageResource(if (expandableGroup.isExpanded) R.drawable.collapse else R.drawable.expand)
-            setOnClickListener {
-                onclickGroup(moduleId)
-                expandableGroup.onToggleExpanded()
-                bindIcon(viewHolder)
-            }
         }
     }
 
