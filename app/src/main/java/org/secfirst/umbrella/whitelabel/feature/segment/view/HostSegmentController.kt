@@ -27,10 +27,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val dataSelected by lazy { args.getSerializable(EXTRA_DATA_HOST_SEGMENT) }
-
-
     private lateinit var hostAdapter: HostSegmentAdapter
-
 
     constructor(dataSelected: Pair<TypeHelper, String>) : this(Bundle().apply {
         putSerializable(EXTRA_DATA_HOST_SEGMENT, dataSelected)
@@ -96,18 +93,13 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         controllers.addAll(difficulty.checklist.toChecklistControllers())
         hostSegmentPager?.let {
             it.adapter = hostAdapter
-            it.offscreenPageLimit = PAGE_LIMIT
+            it.offscreenPageLimit = segmentPageLimit
             hostSegmentTab?.setupWithViewPager(it)
         }
     }
 
     override fun onTabHostManager(position: Int) {
         hostSegmentTab?.getTabAt(position)?.select()
-    }
-
-    companion object {
-        private const val EXTRA_DATA_HOST_SEGMENT = "data_segment"
-        private const val PAGE_LIMIT = 8
     }
 
     private fun setUpToolbar() {
@@ -123,5 +115,9 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
             spinnerSelected.subject?.let { subject ->
                 presenter.submitDifficultySelected(subject.id, spinnerSelected)
             }
+    }
+
+    companion object {
+        private const val EXTRA_DATA_HOST_SEGMENT = "data_segment"
     }
 }

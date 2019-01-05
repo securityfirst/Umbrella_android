@@ -52,7 +52,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
     private var indexTab = 0
-    lateinit var hostSegmentTabControl: HostSegmentTabControl
+    private lateinit var hostSegmentTabControl: HostSegmentTabControl
 
     constructor(difficultyId: String, titleTab: String, checklistId: String) : this(Bundle().apply {
         putString(EXTRA_SEGMENT, difficultyId)
@@ -104,12 +104,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         return inflater.inflate(R.menu.search_menu, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-        }
-        return true
-    }
-
     private fun setFooterList(segmentAdapter: SegmentAdapter) {
         val manager = if (segmentRecyclerView?.layoutManager != null)
             segmentRecyclerView?.layoutManager as GridLayoutManager else null
@@ -132,10 +126,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
 
-    private fun onSegmentFavoriteClick(markdown: Markdown) {
-        presenter.submitMarkdownFavorite(markdown)
-    }
-
     private fun onChecklistShareClick() {
         val checklistHtml = checklist?.covertToHTML()
         val intent = Intent(Intent.ACTION_SENDTO,
@@ -150,14 +140,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         val doc = Jsoup.parse(result)
         doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml)
         showShareDialog(doc, markdown.title)
-    }
-
-    private fun onFootClicked(position: Int) {
-        hostSegmentTabControl.onTabHostManager(position + 1)
-    }
-
-    private fun onSegmentClicked(position: Int) {
-        hostSegmentTabControl.onTabHostManager(position + 1)
     }
 
     companion object {
@@ -206,5 +188,15 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 context.getString(R.string.html_name)
         }
         shareDialog.show()
+    }
+
+    private fun onSegmentFavoriteClick(markdown: Markdown) = presenter.submitMarkdownFavorite(markdown)
+
+    private fun onFootClicked(position: Int) = hostSegmentTabControl.onTabHostManager(position + 1)
+
+    private fun onSegmentClicked(position: Int) = hostSegmentTabControl.onTabHostManager(position + 1)
+
+    fun setSegmentTabControl(hostSegment: HostSegmentTabControl) {
+        hostSegmentTabControl = hostSegment
     }
 }
