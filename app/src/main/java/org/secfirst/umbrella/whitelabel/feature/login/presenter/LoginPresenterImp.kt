@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.login.presenter
 
 import net.sqlcipher.database.SQLiteDatabase
-import net.sqlcipher.database.SQLiteException
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
@@ -15,6 +14,15 @@ import javax.inject.Inject
 class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), LoginBasePresenter<V, I> {
+
+    override fun submitResetPassword() {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val res = it.resetContent()
+                getView()?.onResetContent(res)
+            }
+        }
+    }
 
     override fun submitChangeDatabaseAccess(userToken: String) {
         interactor?.let {
@@ -36,7 +44,7 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
             val db = SQLiteDatabase.openOrCreateDatabase(application
                     .getDatabasePath(AppDatabase.NAME + ".db").path, userToken, null)
             db.isOpen
-        } catch (e: SQLiteException) {
+        } catch (e: Exception) {
             e.printStackTrace()
             false
         }

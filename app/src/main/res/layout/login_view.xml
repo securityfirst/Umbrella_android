@@ -30,15 +30,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/login_umbrella"
-            android:layout_marginTop="50dp"/>
+            android:layout_marginTop="50dp"
+            android:background="@drawable/login_umbrella" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Log in with your password"
+            android:text="@string/login_your_password"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="normal" />

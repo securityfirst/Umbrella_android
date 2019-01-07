@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.AndroidInjectionModule
 import org.secfirst.umbrella.whitelabel.di.module.AppModule
+import org.secfirst.umbrella.whitelabel.di.module.NetworkModule
 import org.secfirst.umbrella.whitelabel.di.module.RepositoryModule
 import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.login.interactor.LoginInteractorImp
@@ -31,6 +32,7 @@ class LoginModule {
 @Component(modules = [LoginModule::class,
     RepositoryModule::class,
     AppModule::class,
+    NetworkModule::class,
     AndroidInjectionModule::class])
 interface LoginComponent {
     @Component.Builder
