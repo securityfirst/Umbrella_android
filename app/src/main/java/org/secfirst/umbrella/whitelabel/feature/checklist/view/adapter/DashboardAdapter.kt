@@ -100,7 +100,9 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
                         alertDialogBuilder
                                 .create()
-                                .show()
+                                .setView(promptsView)
+
+                        alertDialogBuilder.show()
                         true
                     }
                 }
