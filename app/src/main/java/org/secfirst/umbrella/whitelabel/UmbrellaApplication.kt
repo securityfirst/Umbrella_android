@@ -6,7 +6,6 @@ import android.content.Context
 import android.support.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
-import com.gu.toolargetool.TooLargeTool
 import com.raizlabs.android.dbflow.config.DatabaseConfig
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowLog
@@ -50,10 +49,8 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         val isLogged = shared.getBoolean(AppPreferenceHelper.EXTRA_LOGGED_IN, false)
         if (!isLogged) initDatabase()
         initDaggerComponent()
-        initTentRepository()
         initFonts()
         initFabric()
-        TooLargeTool.startLogging(this)
     }
 
     private fun initDaggerComponent() {
@@ -92,11 +89,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         Crashlytics.Builder()
                 .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
                 .build()
-        // Fabric.with(this, Crashlytics())
-    }
-
-    private fun initTentRepository() {
-
     }
 
     override fun onTerminate() {

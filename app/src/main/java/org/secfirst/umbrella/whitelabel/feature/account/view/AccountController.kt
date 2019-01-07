@@ -7,6 +7,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bluelinelabs.conductor.RouterTransaction
+import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.account_password_alert.view.*
 import kotlinx.android.synthetic.main.account_reset_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*
@@ -20,8 +21,8 @@ import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseIn
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
-import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
+import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
 import org.secfirst.umbrella.whitelabel.misc.setMaskMode
 import javax.inject.Inject
 
@@ -152,12 +153,9 @@ class AccountController : BaseController(), AccountView {
     private fun resetAlertOk() {
         resetPasswordDialog.dismiss()
         presenter.submitCleanDatabase()
-        router.pushController(RouterTransaction.with(TourController()))
     }
 
-    private fun clickOnSettings() {
-        router.pushController(RouterTransaction.with(SettingsController()))
-    }
+    private fun clickOnSettings() = router.pushController(RouterTransaction.with(SettingsController()))
 
     override fun isUserLogged(res: Boolean) {
         if (res) accountView.resetPassword.visibility = VISIBLE
@@ -169,5 +167,10 @@ class AccountController : BaseController(), AccountView {
             presenter.setUserLogIn()
             Toast.makeText(context, context.getString(R.string.password_success), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onResetContent(res: Boolean) {
+        if (res)
+            doRestartApplication(context)
     }
 }

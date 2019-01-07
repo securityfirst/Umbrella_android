@@ -131,7 +131,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         closeView()
     }
 
-    private fun onAppBarBackAction() {
+    private fun     onAppBarBackAction() {
         bindAllComponents()
         presenter.submitActiveForm(activeForm)
         enableNavigation()

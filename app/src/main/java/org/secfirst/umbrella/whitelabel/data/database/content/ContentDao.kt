@@ -84,11 +84,15 @@ interface ContentDao : BaseDao {
         }
     }
 
-    suspend fun resetContent() {
-        withContext(ioContext) {
-            val cacheDir = FlowManager.getContext().cacheDir
-            FileUtils.deleteQuietly(cacheDir)
-            FlowManager.getDatabase(AppDatabase.NAME).reset()
-        }
-    }
+    suspend fun resetContent(): Boolean =
+            withContext(ioContext) {
+                try {
+                    FileUtils.deleteDirectory(FlowManager.getContext().cacheDir)
+                    FlowManager.getDatabase(AppDatabase.NAME).close()
+                    FlowManager.getDatabase(AppDatabase.NAME).destroy()
+                    return@withContext true
+                } catch (e: Exception) {
+                    return@withContext false
+                }
+            }
 }

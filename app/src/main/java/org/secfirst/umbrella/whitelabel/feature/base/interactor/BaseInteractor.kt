@@ -4,5 +4,5 @@ interface BaseInteractor {
 
     fun isUserLoggedIn(): Boolean
 
-    suspend fun resetContent()
+    suspend fun resetContent() : Boolean
 }

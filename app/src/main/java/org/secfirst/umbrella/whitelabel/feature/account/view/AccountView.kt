@@ -22,4 +22,6 @@ interface AccountView : BaseView {
     fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int, feedSource: List<FeedSource>) {}
 
     fun getSkipPassword(res : Boolean) {}
+
+    fun onResetContent(res : Boolean){}
 }

@@ -37,6 +37,7 @@ class LoginController : BaseController(), LoginView {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         presenter.onAttach(this)
         val view = inflater.inflate(R.layout.login_view, container, false)
+        mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         view.loginButton.setOnClickListener { doLogin() }
         return view
     }

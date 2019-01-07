@@ -48,5 +48,5 @@ interface ContentBaseInteractor : BaseInteractor {
 
     suspend fun getForm(sha1ID : String) : Form?
 
-    suspend fun resetDatabase()
+    suspend fun resetDatabase() : Boolean
 }

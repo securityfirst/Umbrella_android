@@ -19,7 +19,10 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
 
     override fun submitCleanDatabase() {
         launchSilent(uiContext) {
-            interactor?.resetContent()
+            interactor?.let {
+                val res = it.resetContent()
+                getView()?.onResetContent(res)
+            }
         }
     }
 
