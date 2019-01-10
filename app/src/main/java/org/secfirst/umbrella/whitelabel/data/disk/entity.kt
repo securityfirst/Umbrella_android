@@ -16,6 +16,7 @@ data class Element(
         var pathId: String = "",
         var index: Int = 0,
         var title: String = "",
+        var template: String = "",
         var description: String = "",
         var markdowns: MutableList<Markdown> = arrayListOf(),
         var children: MutableList<Element> = arrayListOf(),
