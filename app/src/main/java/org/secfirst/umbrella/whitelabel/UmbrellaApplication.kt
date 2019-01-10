@@ -2,7 +2,6 @@ package org.secfirst.umbrella.whitelabel
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.support.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -12,10 +11,10 @@ import com.raizlabs.android.dbflow.config.FlowLog
 import com.raizlabs.android.dbflow.config.FlowManager
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.fabric.sdk.android.Fabric
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
-import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
@@ -36,14 +35,9 @@ class UmbrellaApplication : Application(), HasActivityInjector {
             private set
     }
 
-    override fun attachBaseContext(base: Context?) {
-        if (base != null)
-            super.attachBaseContext(ViewPumpContextWrapper.wrap(base))
-        MultiDex.install(this)
-    }
-
     override fun onCreate() {
         super.onCreate()
+        MultiDex.install(this)
         instance = this
         val shared = getSharedPreferences(AppPreferenceHelper.PREF_NAME, MODE_PRIVATE)
         val isLogged = shared.getBoolean(AppPreferenceHelper.EXTRA_LOGGED_IN, false)
@@ -86,9 +80,14 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     }
 
     private fun initFabric() {
-        Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+        val crashlyticsKit = Crashlytics.Builder()
+                .core(CrashlyticsCore.Builder().build())
                 .build()
+        val fabric = Fabric.Builder(this)
+                .kits(crashlyticsKit)
+                .debuggable(true)
+                .build()
+        Fabric.with(fabric)
     }
 
     override fun onTerminate() {

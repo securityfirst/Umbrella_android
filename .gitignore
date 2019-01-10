@@ -16,3 +16,4 @@ app/beta/
 app/fabric.properties
 keystore.properties
 *.jks
+app/google-services.json
