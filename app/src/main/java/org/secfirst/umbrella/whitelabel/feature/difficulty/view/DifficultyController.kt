@@ -16,16 +16,15 @@ import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyCompo
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
-import org.secfirst.umbrella.whitelabel.misc.TypeHelper
 import javax.inject.Inject
 
 class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyView {
 
     @Inject
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
-    private val difficultClick: (Difficulty) -> Unit = this::onDifficultClick
+    private val difficultClick: (Int) -> Unit = this::onDifficultClick
     private val selectSubject by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT) as Subject }
-    private val difficultyAdapter: DifficultyAdapter = DifficultyAdapter(difficultClick)
+    private lateinit var difficultyAdapter: DifficultyAdapter
 
     constructor(subject: Subject) : this(Bundle().apply {
         putParcelable(EXTRA_SELECTED_SEGMENT, subject)
@@ -43,14 +42,15 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
                 .inject(this)
     }
 
-    private fun onDifficultClick(difficulty: Difficulty) {
-        presenter.saveDifficultySelect(difficulty, selectSubject.id)
-        presenter.submitSelectedDifficulty(difficulty)
+    private fun onDifficultClick(position: Int) {
+        val itemSelected = difficultyAdapter.getItem(position)
+        presenter.saveDifficultySelect(itemSelected, selectSubject.id)
+        presenter.submitDifficultySelect(difficultyAdapter.getItems(position))
     }
 
-    override fun startSegment(selectDifficulty: Difficulty) {
+    override fun startSegment(difficultyIds: List<String>) {
         router.pushController(RouterTransaction.with(
-                HostSegmentController(Pair(TypeHelper.DIFFICULTY, selectDifficulty.id))))
+                HostSegmentController(ArrayList(difficultyIds), true)))
     }
 
     override fun onDestroyView(view: View) {
@@ -66,9 +66,9 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     override fun showDifficulties(difficulties: List<Difficulty>, toolbarTitle: String) {
         setUpToolbar(toolbarTitle)
+        difficultyAdapter = DifficultyAdapter(difficulties.toMutableList(), difficultClick)
         difficultyRecyclerView?.let {
             it.layoutManager = LinearLayoutManager(context)
-            difficultyAdapter.addAll(difficulties)
             it.adapter = difficultyAdapter
         }
     }

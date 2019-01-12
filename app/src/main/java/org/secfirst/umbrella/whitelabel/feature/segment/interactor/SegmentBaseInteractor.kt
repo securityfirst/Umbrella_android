@@ -11,6 +11,8 @@ interface SegmentBaseInteractor : BaseInteractor {
 
     suspend fun fetchMarkdownsFromDifficulty(difficultyId: String): List<Markdown>
 
+    suspend fun fetchMarkdown(markdownId: String): Markdown?
+
     suspend fun fetchChecklist(checklistId: String): Checklist?
 
     suspend fun fetchSubject(sha1ID: String): Subject?
@@ -19,7 +21,7 @@ interface SegmentBaseInteractor : BaseInteractor {
 
     suspend fun fetchDifficulty(difficultyId: String): Difficulty?
 
-    suspend fun fetchMarkdowns(subjectSha1ID: String): List<Markdown>
+    suspend fun fetchMarkdownsFromSubject(subjectSha1ID: String): List<Markdown>
 
     suspend fun fetchMarkdownsFromModule(moduleId: String): List<Markdown>
 

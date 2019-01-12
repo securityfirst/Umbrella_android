@@ -30,6 +30,8 @@ open class Module(
         @Column
         var moduleTitle: String = "",
         @Column
+        var template: String = "",
+        @Column
         var description: String = "",
         var markdowns: MutableList<Markdown> = arrayListOf(),
         var subjects: MutableList<Subject> = arrayListOf(),

@@ -13,19 +13,14 @@ import kotlinx.android.synthetic.main.lesson_view.*
 import kotlinx.android.synthetic.main.lesson_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.feature.about.AboutController
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
-import org.secfirst.umbrella.whitelabel.misc.TypeHelper
 import javax.inject.Inject
 
 
@@ -94,20 +89,15 @@ class LessonController : BaseController(), LessonView {
 
     private fun onGroupClicked(moduleSha1ID: String) = presenter.submitSelectHead(moduleSha1ID)
 
-    override fun <T : Any> startTargetController(any: T) {
-        when (any) {
-            is Difficulty -> router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.DIFFICULTY, any.id))))
-            is Module -> router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.MODULE, any.id))))
-            is Markdown -> router.pushController(RouterTransaction.with(AboutController(any)))
-        }
-    }
+    override fun startSegmentWithFilter(difficultyIds: ArrayList<String>) =
+            router.pushController(RouterTransaction.with(HostSegmentController(difficultyIds, true)))
 
-    override fun startDifficultyController(subject: Subject) {
-        router.pushController(RouterTransaction.with(DifficultyController(subject)))
-    }
+    override fun startSegment(markdownIds: ArrayList<String>) =
+            router.pushController(RouterTransaction.with(HostSegmentController(markdownIds)))
 
-    override fun startSegmentController(subject: Subject) {
-        router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.SUBJECT, subject.id))))
+    override fun startDifficultyController(subject: Subject) =
+            router.pushController(RouterTransaction.with(DifficultyController(subject)))
 
-    }
+//    override fun startSegmentController(subject: Subject) =
+//            router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.SUBJECT, subject.id))))
 }

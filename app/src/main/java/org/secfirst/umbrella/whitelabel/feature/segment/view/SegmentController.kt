@@ -44,20 +44,17 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val checklistShareClick: () -> Unit = this::onChecklistShareClick
     private val segmentShareClick: (Markdown) -> Unit = this::onSegmentShareClick
     private val footClick: (Int) -> Unit = this::onFootClicked
-    private val difficultyId by lazy { args.getString(EXTRA_SEGMENT) }
+    private val markdownIds by lazy { args.getStringArrayList(EXTRA_SEGMENT) }
     private val checklistId by lazy { args.getString(EXTRA_CHECKLIST) }
-    private val titleTab by lazy { args.getString(EXTRA_SEGMENT_TAB_TITLE) }
-    private var markdowns: List<Markdown> = mutableListOf()
     private var checklist: Checklist? = null
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
     private var indexTab = 0
     private lateinit var hostSegmentTabControl: HostSegmentTabControl
 
-    constructor(difficultyId: String, titleTab: String, checklistId: String) : this(Bundle().apply {
-        putString(EXTRA_SEGMENT, difficultyId)
+    constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
+        putStringArrayList(EXTRA_SEGMENT, markdownIds)
         putString(EXTRA_CHECKLIST, checklistId)
-        putString(EXTRA_SEGMENT_TAB_TITLE, titleTab)
     })
 
     override fun onInject() {
@@ -75,17 +72,16 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .setView(shareView)
                 .create()
         presenter.onAttach(this)
-        presenter.submitDataSegments(difficultyId, checklistId)
+        presenter.submitMarkdownsAndChecklist(markdownIds, checklistId)
         return inflater.inflate(R.layout.segment_view, container, false)
     }
 
     override fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {
-        this.markdowns = markdowns
         this.checklist = checklist
-        initSegmentView()
+        initSegmentView(markdowns)
     }
 
-    private fun initSegmentView() {
+    private fun initSegmentView(markdowns: List<Markdown>) {
         val sortedMarkdowns = markdowns.sortedWith(compareBy { it.index })
         val segmentAdapter = SegmentAdapter(segmentClick, footClick,
                 checklistShareClick, segmentShareClick,
@@ -143,7 +139,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         const val EXTRA_SEGMENT_TAB_TITLE = "selected_tab_title"
     }
 
-    fun getTitle(): String = titleTab
+    fun getTitle(): String = "Lesson"
 
     fun setIndexTab(position: Int) {
         this.indexTab = position

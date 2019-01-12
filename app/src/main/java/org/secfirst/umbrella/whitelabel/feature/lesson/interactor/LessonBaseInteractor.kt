@@ -23,6 +23,8 @@ interface LessonBaseInteractor : BaseInteractor {
 
     suspend fun fetchMarkdownsBy(sha1ID : String): List<Markdown>
 
+    suspend fun fetchDifficultyBySubject(subjectId: String): List<Difficulty>
+
     suspend fun fetchDifficultyPreferredBy(subjectSha1ID: String): DifficultyPreferred?
 
     suspend fun fetchAllFavorites(): List<Markdown>

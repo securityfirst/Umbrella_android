@@ -7,9 +7,12 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface SegmentView : BaseView {
 
-    fun showSegments(difficulties: MutableList<Difficulty>) {}
-
     fun showSegmentDetail(markdown: Markdown) {}
 
+    fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) {}
+
+    fun showSegments(markdown: List<Markdown>) {}
+
     fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {}
+
 }

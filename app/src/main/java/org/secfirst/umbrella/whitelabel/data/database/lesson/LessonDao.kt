@@ -18,20 +18,26 @@ interface LessonDao {
                 .queryList()
     }
 
-    suspend fun getSubject(subjectPathId: String): Subject? = withContext(ioContext) {
+    suspend fun getSubject(id: String): Subject? = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(subjectPathId))
+                .where(Subject_Table.id.`is`(id))
                 .querySingle()
     }
 
-    suspend fun getDifficultyBy(sha1ID: String): Difficulty? = withContext(ioContext) {
+    suspend fun getDifficultyBy(id: String): Difficulty? = withContext(ioContext) {
         SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.id.`is`(sha1ID))
+                .where(Difficulty_Table.id.`is`(id))
                 .querySingle()
     }
 
+    suspend fun getDifficultyBySubject(subjectId: String): List<Difficulty> = withContext(ioContext) {
+        SQLite.select()
+                .from(Difficulty::class.java)
+                .where(Difficulty_Table.subject_id.`is`(subjectId))
+                .queryList()
+    }
     suspend fun getMarkdownBySubject(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
@@ -56,7 +62,7 @@ interface LessonDao {
     suspend fun getDifficultyPreferred(subjectSh1ID: String): DifficultyPreferred? = withContext(ioContext) {
         SQLite.select()
                 .from(DifficultyPreferred::class.java)
-                .where(DifficultyPreferred_Table.subjectSha1ID.`is`(subjectSh1ID))
+                .where(DifficultyPreferred_Table.subjectId.`is`(subjectSh1ID))
                 .querySingle()
     }
 

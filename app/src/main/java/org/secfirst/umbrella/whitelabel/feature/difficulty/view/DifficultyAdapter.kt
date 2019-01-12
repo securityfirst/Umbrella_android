@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.difficulty.view
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,9 +11,8 @@ import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
-class DifficultyAdapter(private val onClickDiff: (Difficulty) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
-
-    private val difficulties = mutableListOf<Difficulty>()
+class DifficultyAdapter(private val difficulties: MutableList<Difficulty>,
+                        private val onClickDiff: (Int) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DifficultHolder {
         val view = LayoutInflater.from(parent.context)
@@ -20,21 +20,29 @@ class DifficultyAdapter(private val onClickDiff: (Difficulty) -> Unit) : Recycle
         return DifficultHolder(view)
     }
 
-
     override fun onBindViewHolder(holder: DifficultHolder, position: Int) {
-        holder.bind(difficulties[position], clickListener = { onClickDiff(difficulties[position]) })
+        holder.bind(difficulties[position], clickListener = { onClickDiff(position) })
     }
 
     override fun getItemCount() = difficulties.size
 
-    fun addAll(difficulties: List<Difficulty>) {
-        difficulties.forEach { this.difficulties.add(it) }
-        notifyDataSetChanged()
-    }
-
     fun clear() = difficulties.clear()
 
+    fun getItem(position: Int) = difficulties[position]
+
+    fun getItems(position: Int): List<Difficulty> {
+        val sortItems = mutableListOf<Difficulty>()
+        sortItems.add(difficulties[position])
+        difficulties.forEach {
+            if (difficulties[position].id != it.id)
+                sortItems.add(it)
+        }
+        return sortItems
+
+    }
+
     class DifficultHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("Range")
         fun bind(difficulty: Difficulty, clickListener: (DifficultHolder) -> Unit) {
             itemView.setOnClickListener { clickListener(this) }
             with(difficulty) {

@@ -40,6 +40,7 @@ val Element.convertToModule: Module
         category.rootDir = this.rootDir
         category.moduleTitle = this.title
         category.resourcePath = this.resourcePath
+        category.template = this.template
         return category
     }
 

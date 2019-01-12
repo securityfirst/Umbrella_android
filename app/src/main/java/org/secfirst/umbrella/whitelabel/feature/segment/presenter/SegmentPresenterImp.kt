@@ -2,8 +2,6 @@ package org.secfirst.umbrella.whitelabel.feature.segment.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.defaultDifficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.orderDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
@@ -18,12 +16,39 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor = interactor), SegmentBasePresenter<V, I> {
 
 
-    override fun submitDataSegments(difficultyId: String, checklistId: String) {
+    override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
         launchSilent(uiContext) {
+            val markdowns = mutableListOf<Markdown>()
             interactor?.let {
-                val markdowns = it.fetchMarkdownsFromDifficulty(difficultyId)
+                markdownIds.forEach { markdownId ->
+                    it.fetchMarkdown(markdownId)?.let { markdown -> markdowns.add(markdown) }
+                }
                 val checklist = it.fetchChecklist(checklistId)
                 getView()?.showSegments(markdowns, checklist)
+            }
+        }
+    }
+
+    override fun submitDifficulties(difficultyIds: ArrayList<String>) {
+        launchSilent(uiContext) {
+            val difficulties = mutableListOf<Difficulty>()
+            interactor?.let {
+                difficultyIds.forEach { id ->
+                    it.fetchDifficulty(id)?.let { diff -> difficulties.add(diff) }
+                }
+                getView()?.showSegmentsWithDifficulty(difficulties)
+            }
+        }
+    }
+
+    override fun submitMarkdowns(markdownIds: ArrayList<String>) {
+        launchSilent(uiContext) {
+            val markdowns = mutableListOf<Markdown>()
+            interactor?.let {
+                markdownIds.forEach { markdownId ->
+                    it.fetchMarkdown(markdownId)?.let { markdown -> markdowns.add(markdown) }
+                }
+                getView()?.showSegments(markdowns)
             }
         }
     }
@@ -46,48 +71,14 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         }
     }
 
-    override fun submitLoadSubject(subjectId: String) {
+    override fun submitLoadDifficulties(difficultyIds: ArrayList<String>) {
         launchSilent(uiContext) {
-            val subject = interactor?.fetchSubject(subjectId)
-            val markdowns = interactor?.fetchMarkdowns(subjectId)
-            subject?.let { safeSubject ->
-                markdowns?.let { safeMarkdown ->
-                    if (safeMarkdown.size > Markdown.SINGLE_CHOICE) {
-                        val list = mutableListOf<Difficulty>()
-                        list.add(defaultDifficulty(safeMarkdown, safeSubject.title))
-                        getView()?.showSegments(list)
-                    }
+            interactor?.let {
+                val difficulties = mutableListOf<Difficulty>()
+                difficultyIds.forEach { id ->
+                    it.fetchDifficulty(id)?.let { difficulty -> difficulties.add(difficulty) }
                 }
-            }
-        }
-    }
-
-    override fun submitLoadModule(moduleId: String) {
-        launchSilent(uiContext) {
-            val moduleSelected = interactor?.fetchModule(moduleId)
-            val markdown = interactor?.fetchMarkdownsFromModule(moduleId)
-            moduleSelected?.let {
-                markdown?.let { safeMarkdown ->
-                    val list = mutableListOf<Difficulty>()
-                    list.add(defaultDifficulty(safeMarkdown, it.moduleTitle))
-                    getView()?.showSegments(list)
-                }
-            }
-        }
-    }
-
-    override fun submitLoadSegments(difficultyId: String) {
-        launchSilent(uiContext) {
-            interactor?.let { safeInteractor ->
-                val difficulty = safeInteractor.fetchDifficulty(difficultyId)
-                val subject = safeInteractor.fetchSubject(difficulty?.subject?.id ?: "")
-                val orderDifficulties = subject?.difficulties?.orderDifficulty(difficulty!!)
-                orderDifficulties?.let {
-                    it.forEach { difficulty ->
-                        difficulty.subject = safeInteractor.fetchSubject(subject.id)
-                    }
-                    getView()?.showSegments(it)
-                }
+                getView()?.showSegmentsWithDifficulty(difficulties)
             }
         }
     }

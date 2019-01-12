@@ -11,9 +11,8 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
 @SuppressLint("SetTextI18n")
-class DifficultSpinnerAdapter(context: Context,
-                              private val displayNames: List<Difficulty>) :
-        ArrayAdapter<Difficulty>(context, android.R.layout.simple_dropdown_item_1line, displayNames) {
+class DifficultSpinnerAdapter(context: Context, private val difficulties: List<Difficulty>) :
+        ArrayAdapter<Difficulty>(context, android.R.layout.simple_dropdown_item_1line, difficulties) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         return createViewFromResource(position, convertView, parent)
@@ -27,14 +26,14 @@ class DifficultSpinnerAdapter(context: Context,
     private fun createViewFromResource(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: TextView = convertView as TextView?
                 ?: LayoutInflater.from(context).inflate(R.layout.difficulty_spinner_view, parent, false) as TextView
-        view.text = "${displayNames[0].subject?.title} ${displayNames[position].title}"
+        view.text = "${difficulties[0].subject?.title} ${difficulties[position].title}"
         return view
     }
 
     private fun createViewFromDropdown(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: TextView = convertView as TextView?
                 ?: LayoutInflater.from(context).inflate(android.R.layout.simple_dropdown_item_1line, parent, false) as TextView
-        view.text = "${displayNames[0].subject?.title} ${displayNames[position].title}"
+        view.text = "${difficulties[0].subject?.title} ${difficulties[position].title}"
         return view
     }
 }

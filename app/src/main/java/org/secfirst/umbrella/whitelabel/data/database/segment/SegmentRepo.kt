@@ -9,15 +9,17 @@ interface SegmentRepo {
 
     suspend fun loadMarkdownsFromDifficulty(difficultyId: String): List<Markdown>
 
-    suspend fun loadChecklist(checklistId : String): Checklist?
+    suspend fun loadChecklist(checklistId: String): Checklist?
 
-    suspend fun loadSubject(sha1ID: String): Subject?
+    suspend fun loadMarkdown(markdownId: String): Markdown?
 
-    suspend fun loadModule(sha1ID: String): Module?
+    suspend fun loadSubject(id: String): Subject?
 
-    suspend fun loadDifficulty(sha1ID: String): Difficulty?
+    suspend fun loadModule(id: String): Module?
 
-    suspend fun loadMarkdowns(subjectSha1ID: String): List<Markdown>
+    suspend fun loadDifficulty(id: String): Difficulty?
+
+    suspend fun loadMarkdownsFromSubject(subjectSha1ID: String): List<Markdown>
 
     suspend fun loadMarkdownsFromModule(moduleId: String): List<Markdown>
 

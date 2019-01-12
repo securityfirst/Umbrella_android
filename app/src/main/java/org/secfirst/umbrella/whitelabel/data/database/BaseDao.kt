@@ -50,27 +50,20 @@ interface BaseDao {
 
     fun isDatabaseOK() = FlowManager.getDatabase(AppDatabase.NAME).isDatabaseIntegrityOk
 
-    suspend fun saveModules(modules: List<Module>) {
-        withContext(ioContext) {
-            modelAdapter<Module>().updateAll(modules)
-        }
-    }
+    suspend fun saveModules(modules: List<Module>) =
+            withContext(ioContext) { modelAdapter<Module>().updateAll(modules) }
 
-    suspend fun saveSubjects(subjects: List<Subject>) {
-        withContext(ioContext) { modelAdapter<Subject>().saveAll(subjects) }
-    }
+    suspend fun saveSubjects(subjects: List<Subject>) =
+            withContext(ioContext) { modelAdapter<Subject>().saveAll(subjects) }
 
-    suspend fun saveDifficulties(difficulties: List<Difficulty>) {
-        withContext(ioContext) { modelAdapter<Difficulty>().saveAll(difficulties) }
-    }
+    suspend fun saveDifficulties(difficulties: List<Difficulty>) =
+            withContext(ioContext) { modelAdapter<Difficulty>().saveAll(difficulties) }
 
-    suspend fun saveMarkdowns(markdowns: List<Markdown>) {
-        withContext(ioContext) { modelAdapter<Markdown>().saveAll(markdowns) }
-    }
+    suspend fun saveMarkdowns(markdowns: List<Markdown>) =
+            withContext(ioContext) { modelAdapter<Markdown>().saveAll(markdowns) }
 
-    suspend fun saveChecklists(checklists: List<Checklist>) {
-        withContext(ioContext) { modelAdapter<Checklist>().saveAll(checklists) }
-    }
+    suspend fun saveChecklists(checklists: List<Checklist>) =
+            withContext(ioContext) { modelAdapter<Checklist>().saveAll(checklists) }
 
     suspend fun saveForms(forms: List<Form>) {
         withContext(ioContext) {
@@ -87,51 +80,51 @@ interface BaseDao {
         }
     }
 
-    suspend fun getModule(pathID: String) =
+    suspend fun getModule(id: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Module::class.java)
-                        .where(Module_Table.id.`is`(pathID))
+                        .where(Module_Table.id.`is`(id))
                         .querySingle()
             }
 
-    suspend fun getSubject(pathID: String) =
+    suspend fun getSubject(id: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Subject::class.java)
-                        .where(Subject_Table.id.`is`(pathID))
+                        .where(Subject_Table.id.`is`(id))
                         .querySingle()
             }
 
-    suspend fun getDifficulty(pathID: String) =
+    suspend fun getDifficulty(id: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Difficulty::class.java)
-                        .where(Difficulty_Table.id.`is`(pathID))
+                        .where(Difficulty_Table.id.`is`(id))
                         .querySingle()
             }
 
-    suspend fun getChecklist(pathID: String) =
+    suspend fun getChecklist(id: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Checklist::class.java)
-                        .where(Checklist_Table.id.`is`(pathID))
+                        .where(Checklist_Table.id.`is`(id))
                         .querySingle()
             }
 
-    suspend fun getMarkdown(pathID: String) =
+    suspend fun getMarkdown(id: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Markdown::class.java)
-                        .where(Markdown_Table.id.`is`(pathID))
+                        .where(Markdown_Table.id.`is`(id))
                         .querySingle()
             }
 
-    suspend fun getForm(pathID: String) =
+    suspend fun getForm(id: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Form::class.java)
-                        .where(Form_Table.path.`is`(pathID))
+                        .where(Form_Table.path.`is`(id))
                         .querySingle()
             }
 

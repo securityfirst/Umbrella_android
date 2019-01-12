@@ -6,23 +6,25 @@ import javax.inject.Inject
 
 class SegmentRepository @Inject constructor(private val segmentDao: SegmentDao) : SegmentRepo {
 
+    override suspend fun loadMarkdown(markdownId: String) = segmentDao.getMarkdown(markdownId)
+
     override suspend fun loadMarkdownsFromDifficulty(difficultyId: String) = segmentDao.getMarkdownFromDifficulty(difficultyId)
 
     override suspend fun loadChecklist(checklistId: String) = segmentDao.getChecklist(checklistId)
 
-    override suspend fun loadMarkdownsFromModule(moduleId: String) = segmentDao.getMarkdownBy(moduleId)
+    override suspend fun loadMarkdownsFromModule(moduleId: String) = segmentDao.getMarkdownFromModule(moduleId)
 
-    override suspend fun loadDifficulty(sha1ID: String) = segmentDao.getDifficulty(sha1ID)
+    override suspend fun loadDifficulty(id: String) = segmentDao.getDifficulty(id)
 
     override suspend fun saveDifficultySelect(subjectSha1ID: String, difficulty: Difficulty) = segmentDao.save(subjectSha1ID, difficulty)
 
-    override suspend fun loadMarkdowns(subjectSha1ID: String) = segmentDao.getMarkdowns(subjectSha1ID)
+    override suspend fun loadMarkdownsFromSubject(subjectSha1ID: String) = segmentDao.getMarkdownFromSubject(subjectSha1ID)
 
     override suspend fun saveMarkdown(markdown: Markdown) = segmentDao.save(markdown)
 
     override suspend fun saveChecklist(checklist: Checklist) = segmentDao.save(checklist)
 
-    override suspend fun loadModule(sha1ID: String) = segmentDao.getModule(sha1ID)
+    override suspend fun loadModule(id: String) = segmentDao.getModule(id)
 
-    override suspend fun loadSubject(sha1ID: String) = segmentDao.getSubject(sha1ID)
+    override suspend fun loadSubject(id: String) = segmentDao.getSubject(id)
 }

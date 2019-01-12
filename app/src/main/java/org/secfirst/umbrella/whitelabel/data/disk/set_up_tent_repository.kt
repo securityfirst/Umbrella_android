@@ -34,6 +34,10 @@ enum class TypeFile(val value: String) {
     NOUN("")
 }
 
+enum class Template(val value: String) {
+    GLOSSARY("glossary")
+}
+
 enum class ExtensionFile(val value: String) {
     YML("yml"),
     MD("md"),

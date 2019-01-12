@@ -9,10 +9,11 @@ interface LessonView : BaseView {
 
     fun showAllLesson(lessons: List<Lesson>)
 
-    fun startSegmentController(subject: Subject)
+    // fun startSegmentController(subject: Subject)
 
     fun startDifficultyController(subject: Subject)
 
-    fun <T : Any> startTargetController(any: T)
+    fun startSegmentWithFilter(difficultyIds: ArrayList<String>)
 
+    fun startSegment(markdownIds: ArrayList<String>)
 }

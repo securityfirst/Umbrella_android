@@ -30,7 +30,7 @@ interface SegmentDao : BaseDao {
         }
     }
 
-    suspend fun getMarkdowns(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
+    suspend fun getMarkdownFromSubject(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
                 .where(Markdown_Table.subject_id.`is`(subjectSh1ID))
@@ -38,7 +38,7 @@ interface SegmentDao : BaseDao {
 
     }
 
-    suspend fun getMarkdownBy(moduleId: String): List<Markdown> = withContext(AppExecutors.ioContext) {
+    suspend fun getMarkdownFromModule(moduleId: String): List<Markdown> = withContext(AppExecutors.ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
                 .where(Markdown_Table.favorite.`is`(true))
@@ -51,4 +51,5 @@ interface SegmentDao : BaseDao {
                 .where(Markdown_Table.difficulty_id.`is`(difficultyId))
                 .queryList()
     }
+
 }

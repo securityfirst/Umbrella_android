@@ -7,6 +7,7 @@ import javax.inject.Inject
 
 class LessonInteractorImp @Inject constructor(private val lessonRepo: LessonRepo) : BaseInteractorImp(), LessonBaseInteractor {
 
+    override suspend fun fetchDifficultyBySubject(subjectId: String) = lessonRepo.loadDifficultyBySubject(subjectId)
 
     override suspend fun fetchAllFavorites() = lessonRepo.loadAllFavoriteSubjects()
 

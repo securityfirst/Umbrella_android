@@ -46,6 +46,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            ext.nableCrashlytics = false
             testCoverageEnabled true
             buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")

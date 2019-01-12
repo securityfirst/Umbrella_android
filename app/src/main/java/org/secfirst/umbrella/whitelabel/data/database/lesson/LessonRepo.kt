@@ -18,10 +18,12 @@ interface LessonRepo {
 
     suspend fun loadMarkdownsBy(sha1ID: String): List<Markdown>
 
+    suspend fun loadDifficultyBySubject(subjectId: String): List<Difficulty>
+
     suspend fun loadDifficultyBy(sha1ID: String): Difficulty?
 
     suspend fun loadAllFavoriteSubjects(): List<Markdown>
 
-    suspend fun loadDifficultyPreferredBy(subjectSha1ID : String): DifficultyPreferred?
+    suspend fun loadDifficultyPreferredBy(subjectSha1ID: String): DifficultyPreferred?
 
 }

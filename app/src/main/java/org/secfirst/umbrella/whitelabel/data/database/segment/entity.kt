@@ -6,8 +6,8 @@ import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
-import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
@@ -50,10 +50,17 @@ data class Markdown(
     }
 }
 
-fun Difficulty.toSegmentController(host: Controller): SegmentController {
-    val checklist = if (this.checklist.isEmpty()) null else this.checklist.last()
-    val controller = SegmentController(this.id,
-            host.applicationContext!!.getString(R.string.lesson_tab), checklist?.id ?: "")
+fun List<Markdown>.ids(): ArrayList<String> {
+    val res = arrayListOf<String>()
+    this.forEach { res.add(it.id) }
+    return res
+}
+
+fun List<Markdown>.toSegmentController(host: Controller, pChecklist: List<Checklist>): SegmentController {
+    val checklist = if (pChecklist.isEmpty()) null else pChecklist.last()
+    val markdownIds = mutableListOf<String>()
+    this.forEach { markdown -> markdownIds.add(markdown.id) }
+    val controller = SegmentController(ArrayList(markdownIds), checklist?.id ?: "")
     controller.setSegmentTabControl(host as HostSegmentTabControl)
     return controller
 }

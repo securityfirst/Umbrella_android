@@ -9,17 +9,19 @@ import javax.inject.Inject
 
 class SegmentInteractorImp @Inject constructor(private val segmentRepo: SegmentRepo) : BaseInteractorImp(), SegmentBaseInteractor {
 
+    override suspend fun fetchMarkdown(markdownId: String) = segmentRepo.loadMarkdown(markdownId)
+
     override suspend fun fetchMarkdownsFromDifficulty(difficultyId: String) = segmentRepo.loadMarkdownsFromDifficulty(difficultyId)
 
     override suspend fun fetchChecklist(checklistId: String) = segmentRepo.loadChecklist(checklistId)
 
-    override suspend fun fetchMarkdownsFromModule(moduleId: String)= segmentRepo.loadMarkdownsFromModule(moduleId)
+    override suspend fun fetchMarkdownsFromModule(moduleId: String) = segmentRepo.loadMarkdownsFromModule(moduleId)
 
     override suspend fun fetchDifficulty(difficultyId: String) = segmentRepo.loadDifficulty(difficultyId)
 
     override suspend fun insertDifficultySelect(subjectSha1ID: String, difficulty: Difficulty) = segmentRepo.saveDifficultySelect(subjectSha1ID, difficulty)
 
-    override suspend fun fetchMarkdowns(subjectSha1ID: String) = segmentRepo.loadMarkdowns(subjectSha1ID)
+    override suspend fun fetchMarkdownsFromSubject(subjectSha1ID: String) = segmentRepo.loadMarkdownsFromSubject(subjectSha1ID)
 
     override suspend fun insertMarkdown(markdown: Markdown) = segmentRepo.saveMarkdown(markdown)
 

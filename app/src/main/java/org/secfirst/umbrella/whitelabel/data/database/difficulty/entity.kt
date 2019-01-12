@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import com.raizlabs.android.dbflow.structure.BaseModel
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
@@ -13,7 +12,6 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
-
 
 @Parcelize
 @Table(database = AppDatabase::class)
@@ -34,7 +32,6 @@ data class Difficulty(
         var rootDir: String = "",
         @JsonIgnore
         var layoutColor: String = "") : Parcelable {
-
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
     fun oneToManyMarkdowns(): MutableList<Markdown> {
@@ -68,7 +65,6 @@ data class Difficulty(
     }
 }
 
-
 fun MutableList<Difficulty>.orderDifficulty(selectDifficulty: Difficulty): MutableList<Difficulty> {
     val auxDifficulties = mutableListOf<Difficulty>()
     auxDifficulties.add(selectDifficulty)
@@ -79,11 +75,17 @@ fun MutableList<Difficulty>.orderDifficulty(selectDifficulty: Difficulty): Mutab
     return auxDifficulties
 }
 
-fun defaultDifficulty(markdowns: List<Markdown>, subjectTitle: String): Difficulty {
+
+fun List<Difficulty>.ids(): ArrayList<String> {
+    val res = arrayListOf<String>()
+    this.forEach { res.add(it.id) }
+    return res
+}
+
+fun List<Markdown>.defaultDifficulty(): Difficulty {
     val difficulty = Difficulty()
     val subject = Subject()
-    subject.title = subjectTitle
-    difficulty.markdowns.addAll(markdowns)
+    difficulty.markdowns.addAll(this)
     difficulty.subject = subject
     return difficulty
 }
@@ -113,10 +115,8 @@ inline fun MutableList<Module>.walkThroughDifficulty(action: (Difficulty) -> Uni
     }
 }
 
-
 @Table(database = AppDatabase::class)
 data class DifficultyPreferred(@PrimaryKey
-                               var subjectSha1ID: String = "",
+                               var subjectId: String = "",
                                @ForeignKey
-                               var difficulty: Difficulty? = null) : BaseModel()
-
+                               var difficulty: Difficulty? = null)
