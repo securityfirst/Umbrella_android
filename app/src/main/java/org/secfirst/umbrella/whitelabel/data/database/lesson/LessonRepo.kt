@@ -8,22 +8,14 @@ interface LessonRepo {
 
     suspend fun loadAllModules(): List<Module>
 
-    suspend fun loadSubject(sha1ID: String): Subject?
+    suspend fun loadLessonBy(moduleId: String): Module?
 
-    suspend fun loadLessonBy(sha1ID: String): Module?
-
-    suspend fun loadMarkdownBySubject(sha1ID: String): List<Markdown>
-
-    suspend fun loadMarkdownByModule(moduleSh1ID: String): Markdown?
-
-    suspend fun loadMarkdownsBy(sha1ID: String): List<Markdown>
+    suspend fun loadMarkdownBySubject(subjectId: String): List<Markdown>
 
     suspend fun loadDifficultyBySubject(subjectId: String): List<Difficulty>
 
-    suspend fun loadDifficultyBy(sha1ID: String): Difficulty?
-
     suspend fun loadAllFavoriteSubjects(): List<Markdown>
 
-    suspend fun loadDifficultyPreferredBy(subjectSha1ID: String): DifficultyPreferred?
+    suspend fun loadDifficultyPreferredBy(subjectId: String): DifficultyPreferred?
 
 }
