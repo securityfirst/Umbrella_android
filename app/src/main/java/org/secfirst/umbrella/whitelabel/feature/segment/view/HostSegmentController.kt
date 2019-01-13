@@ -31,18 +31,13 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val markdownIds by lazy { args.getStringArrayList(EXTRA_MARKDOWN_IDS_HOST_SEGMENT) }
-    private val difficultiesIds by lazy { args.getStringArrayList(EXTRA_DIFFICULTY_IDS_HOST_SEGMENT) }
     private val enableFilter by lazy { args.getBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT) }
 
     private lateinit var hostAdapter: HostSegmentAdapter
 
-    constructor(difficultyIds: ArrayList<String>, enableFilter: Boolean) : this(Bundle().apply {
-        putSerializable(EXTRA_DIFFICULTY_IDS_HOST_SEGMENT, difficultyIds)
-        putBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT, enableFilter)
-    })
-
-    constructor(markdownIds: ArrayList<String>) : this(Bundle().apply {
+    constructor(markdownIds: ArrayList<String>, enableFilter: Boolean) : this(Bundle().apply {
         putSerializable(EXTRA_MARKDOWN_IDS_HOST_SEGMENT, markdownIds)
+        putBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT, enableFilter)
     })
 
     override fun onInject() {
@@ -61,19 +56,21 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     private fun initView(view: View) {
         setUpToolbar(view)
-        markdownIds?.let {
+        if (enableFilter) {
+            view.hostSegmentSpinner.visibility = VISIBLE
+            presenter.submitDifficulties(markdownIds)
+        } else {
             presenter.submitMarkdowns(markdownIds)
-            view.hostSegmentToolbar.title = context.getText(R.string.app_name)
+            view.hostSegmentSpinner.visibility = INVISIBLE
         }
-        difficultiesIds?.let { presenter.submitDifficulties(difficultiesIds) }
-
-        if (enableFilter) view.hostSegmentSpinner.visibility = VISIBLE
-        else view.hostSegmentSpinner.visibility = INVISIBLE
     }
 
     override fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) = pickUpDifficulty(difficulties)
 
-    override fun showSegments(markdown: List<Markdown>) = loadSegmentPages(markdown, mutableListOf())
+    override fun showSegments(markdowns: List<Markdown>) {
+        hostSegmentToolbar?.title = markdowns.last().title
+        loadSegmentPages(markdowns, mutableListOf())
+    }
 
     private fun pickUpDifficulty(difficulties: List<Difficulty>) {
         val difficultAdapter = DifficultSpinnerAdapter(context, difficulties)
@@ -125,8 +122,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     companion object {
-        private const val EXTRA_MARKDOWN_IDS_HOST_SEGMENT = "markdown_ids"
-        private const val EXTRA_DIFFICULTY_IDS_HOST_SEGMENT = "difficulty_ids"
+        private const val EXTRA_MARKDOWN_IDS_HOST_SEGMENT = "ids"
         private const val EXTRA_ENABLE_FILTER_HOST_SEGMENT = "filter"
     }
 }

@@ -11,7 +11,7 @@ interface SegmentView : BaseView {
 
     fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) {}
 
-    fun showSegments(markdown: List<Markdown>) {}
+    fun showSegments(markdowns: List<Markdown>) {}
 
     fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {}
 

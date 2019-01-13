@@ -93,7 +93,7 @@ class LessonController : BaseController(), LessonView {
             router.pushController(RouterTransaction.with(HostSegmentController(difficultyIds, true)))
 
     override fun startSegment(markdownIds: ArrayList<String>) =
-            router.pushController(RouterTransaction.with(HostSegmentController(markdownIds)))
+            router.pushController(RouterTransaction.with(HostSegmentController(markdownIds, false)))
 
     override fun startDifficultyController(subject: Subject) =
             router.pushController(RouterTransaction.with(DifficultyController(subject)))
