@@ -22,7 +22,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.DifficultSpinnerAdapter
+import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.FilterAdapter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.HostSegmentAdapter
 import javax.inject.Inject
 
@@ -73,7 +73,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     private fun pickUpDifficulty(difficulties: List<Difficulty>) {
-        val difficultAdapter = DifficultSpinnerAdapter(context, difficulties)
+        val difficultAdapter = FilterAdapter(context, difficulties)
         hostSegmentSpinner?.let {
             it.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}

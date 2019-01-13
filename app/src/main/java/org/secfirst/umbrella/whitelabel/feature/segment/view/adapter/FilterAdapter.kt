@@ -11,7 +11,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
 @SuppressLint("SetTextI18n")
-class DifficultSpinnerAdapter(context: Context, private val difficulties: List<Difficulty>) :
+class FilterAdapter(context: Context, private val difficulties: List<Difficulty>) :
         ArrayAdapter<Difficulty>(context, android.R.layout.simple_dropdown_item_1line, difficulties) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

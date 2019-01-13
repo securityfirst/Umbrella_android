@@ -15,6 +15,7 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
     private val markdown by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT_DETAIL) as Markdown }
 
+    override fun onInject() {}
 
     constructor(markdown: Markdown) : this(Bundle().apply {
         putParcelable(EXTRA_SELECTED_SEGMENT_DETAIL, markdown)
@@ -22,10 +23,6 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
     companion object {
         const val EXTRA_SELECTED_SEGMENT_DETAIL = "selected_segment_detail"
-    }
-
-    override fun onInject() {
-
     }
 
     override fun onAttach(view: View) {

@@ -5,6 +5,7 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.ids
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.SINGLE_CHOICE
 import org.secfirst.umbrella.whitelabel.data.database.segment.ids
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
@@ -22,8 +23,9 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
             interactor?.let {
                 val module = it.fetchLesson(moduleSha1ID)
                 module?.let { safeModule ->
-                    if (safeModule.markdowns.isNotEmpty())
-                        getView()?.startSegment(safeModule.markdowns.ids())
+                    if (safeModule.markdowns.size == SINGLE_CHOICE)
+                        getView()?.startSegmentAlone(safeModule.markdowns.last())
+                    else getView()?.startSegment(safeModule.markdowns.ids(), false)
                 }
             }
         }
@@ -42,11 +44,11 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                         difficultyPreferred.difficulty?.let { safePreferred ->
                             sortDifficulties.add(safePreferred)
                             difficulties.forEach { diff -> if (diff.id != safePreferred.id) sortDifficulties.add(diff) }
-                            getView()?.startSegmentWithFilter(sortDifficulties.ids())
+                            getView()?.startSegment(sortDifficulties.ids(), true)
                         }
 
                     }
-                    markdowns.isNotEmpty() -> getView()?.startSegment(markdowns.ids())
+                    markdowns.isNotEmpty() -> getView()?.startSegment(markdowns.ids(), false)
 
                     else -> getView()?.startDifficultyController(subject)
                 }

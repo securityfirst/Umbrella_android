@@ -15,6 +15,8 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Lesson
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.feature.about.AboutController
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyController
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
@@ -89,12 +91,12 @@ class LessonController : BaseController(), LessonView {
 
     private fun onGroupClicked(moduleSha1ID: String) = presenter.submitSelectHead(moduleSha1ID)
 
-    override fun startSegmentWithFilter(difficultyIds: ArrayList<String>) =
-            router.pushController(RouterTransaction.with(HostSegmentController(difficultyIds, true)))
-
-    override fun startSegment(markdownIds: ArrayList<String>) =
-            router.pushController(RouterTransaction.with(HostSegmentController(markdownIds, false)))
+    override fun startSegment(markdownIds: ArrayList<String>, enableFilter: Boolean) =
+            router.pushController(RouterTransaction.with(HostSegmentController(markdownIds, enableFilter)))
 
     override fun startDifficultyController(subject: Subject) =
             router.pushController(RouterTransaction.with(DifficultyController(subject)))
+
+    override fun startSegmentAlone(markdown: Markdown) =
+            router.pushController(RouterTransaction.with(AboutController(markdown)))
 }
