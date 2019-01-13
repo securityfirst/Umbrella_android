@@ -38,10 +38,11 @@ interface LessonDao {
                 .where(Difficulty_Table.subject_id.`is`(subjectId))
                 .queryList()
     }
+
     suspend fun getMarkdownBySubject(subjectSh1ID: String): List<Markdown> = withContext(ioContext) {
         SQLite.select()
                 .from(Markdown::class.java)
-                .where(Markdown_Table.id.`is`(subjectSh1ID))
+                .where(Markdown_Table.subject_id.`is`(subjectSh1ID))
                 .queryList()
     }
 

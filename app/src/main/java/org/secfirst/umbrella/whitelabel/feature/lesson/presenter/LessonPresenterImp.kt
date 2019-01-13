@@ -34,15 +34,22 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
             interactor?.let {
                 val difficulties = it.fetchDifficultyBySubject(subject.id)
                 val difficultyPreferred = it.fetchDifficultyPreferredBy(subject.id)
+                val markdowns = it.fetchMarkdownBySubject(subject.id)
                 val sortDifficulties = mutableListOf<Difficulty>()
 
-                if (difficultyPreferred != null) {
-                    difficultyPreferred.difficulty?.let { safePreferred ->
-                        sortDifficulties.add(safePreferred)
-                        difficulties.forEach { diff -> if (diff.id != safePreferred.id) sortDifficulties.add(diff) }
-                        getView()?.startSegmentWithFilter(sortDifficulties.ids())
+                when {
+                    difficultyPreferred != null -> {
+                        difficultyPreferred.difficulty?.let { safePreferred ->
+                            sortDifficulties.add(safePreferred)
+                            difficulties.forEach { diff -> if (diff.id != safePreferred.id) sortDifficulties.add(diff) }
+                            getView()?.startSegmentWithFilter(sortDifficulties.ids())
+                        }
+
                     }
-                } else getView()?.startDifficultyController(subject)
+                    markdowns.isNotEmpty() -> getView()?.startSegment(markdowns.ids())
+
+                    else -> getView()?.startDifficultyController(subject)
+                }
             }
         }
     }

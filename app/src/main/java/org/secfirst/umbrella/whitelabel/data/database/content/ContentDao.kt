@@ -46,8 +46,6 @@ interface ContentDao : BaseDao {
             }
             insertFormsContent(root.forms)
         }
-
-
     }
 
     private fun insertChecklistContent(checklist: MutableList<Checklist>) {

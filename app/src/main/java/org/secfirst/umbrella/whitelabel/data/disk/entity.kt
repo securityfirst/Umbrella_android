@@ -30,46 +30,46 @@ data class Element(
 
 val Element.convertToModule: Module
     get() {
-        val category = Module()
-        category.id = this.pathId
-        category.checklist = this.checklist
-        category.index = this.index
-        category.description = this.description
-        category.markdowns = this.markdowns
-        category.id = this.path
-        category.rootDir = this.rootDir
-        category.moduleTitle = this.title
-        category.resourcePath = this.resourcePath
-        category.template = this.template
-        return category
+        val module = Module()
+        module.id = this.pathId
+        module.checklist = this.checklist
+        module.index = this.index
+        module.description = this.description
+        module.markdowns = this.markdowns
+        module.id = this.path
+        module.rootDir = this.rootDir
+        module.moduleTitle = this.title
+        module.resourcePath = this.resourcePath
+        module.template = this.template
+        return module
     }
 
-val Element.convertToSubCategory: Subject
+val Element.convertToSubject: Subject
     get() {
-        val subcategory = Subject()
-        subcategory.id = this.pathId
-        subcategory.checklist = this.checklist
-        subcategory.index = this.index
-        subcategory.description = this.description
-        subcategory.markdowns = this.markdowns
-        subcategory.id = this.path
-        subcategory.rootDir = this.rootDir
-        subcategory.title = this.title
-        return subcategory
+        val subject = Subject()
+        subject.id = pathId
+        subject.checklist = checklist
+        subject.index = index
+        subject.description = description
+        subject.markdowns = markdowns
+        subject.id = path
+        subject.rootDir = rootDir
+        subject.title = title
+        return subject
     }
 
 val Element.convertToDifficulty: Difficulty
     get() {
-        val child = Difficulty()
-        child.id = this.pathId
-        child.checklist = this.checklist
-        child.index = this.index
-        child.description = this.description
-        child.markdowns = this.markdowns
-        child.id = this.path
-        child.rootDir = this.rootDir
-        child.title = this.title
-        return child
+        val difficulty = Difficulty()
+        difficulty.id = this.pathId
+        difficulty.checklist = this.checklist
+        difficulty.index = this.index
+        difficulty.description = this.description
+        difficulty.markdowns = this.markdowns
+        difficulty.id = this.path
+        difficulty.rootDir = this.rootDir
+        difficulty.title = this.title
+        return difficulty
     }
 
 inline fun MutableList<Element>.walkSubElement(action: (Element) -> Unit) {
@@ -92,21 +92,21 @@ fun Root.convertTo(): ContentData {
     var difficulties: MutableList<Difficulty> = mutableListOf()
 
     this.elements.forEach { element ->
-        val category = element.convertToModule
-        modules.add(category)
+        val module = element.convertToModule
+        modules.add(module)
         element.children.forEach { subElement ->
 
-            val subCategory = subElement.convertToSubCategory
-            subCategories.add(subCategory)
+            val subject = subElement.convertToSubject
+            subCategories.add(subject)
             subElement.children.forEach { subElementChild ->
 
-                val child = subElementChild.convertToDifficulty
-                difficulties.add(child)
+                val difficulty = subElementChild.convertToDifficulty
+                difficulties.add(difficulty)
             }
-            subCategory.difficulties = difficulties
+            subject.difficulties = difficulties
             difficulties = mutableListOf()
         }
-        category.subjects = subCategories
+        module.subjects = subCategories
         subCategories = mutableListOf()
     }
     return ContentData(modules)

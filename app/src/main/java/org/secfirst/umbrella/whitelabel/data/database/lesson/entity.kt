@@ -160,7 +160,7 @@ inline fun MutableList<Module>.walkThroughSubject(action: (Subject) -> Unit) {
 fun Module.associateForeignKey() {
     markdowns.associateMarkdown(this)
     checklist.associateChecklist(this)
-    this.subjects.forEach { subject ->
+    subjects.forEach { subject ->
         subject.module = this
         subject.markdowns.associateMarkdown(subject)
         subject.checklist.associateChecklist(subject)

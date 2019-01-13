@@ -97,7 +97,4 @@ class LessonController : BaseController(), LessonView {
 
     override fun startDifficultyController(subject: Subject) =
             router.pushController(RouterTransaction.with(DifficultyController(subject)))
-
-//    override fun startSegmentController(subject: Subject) =
-//            router.pushController(RouterTransaction.with(HostSegmentController(Pair(TypeHelper.SUBJECT, subject.id))))
 }

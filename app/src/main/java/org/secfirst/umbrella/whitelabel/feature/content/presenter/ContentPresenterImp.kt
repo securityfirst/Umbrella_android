@@ -125,7 +125,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                 SUB_ELEMENT_LEVEL -> {
                     val newElement = parseYmlFile(file, Element::class)
                     newElement.pathId = sha1ID
-                    val subject = newElement.convertToSubCategory
+                    val subject = newElement.convertToSubject
                     val oldSubject = it.getSubject(sha1ID)
                     oldSubject?.let { oldSubjectSafe ->
                         subjects.add(subject.updateSubjectContent(oldSubjectSafe))
