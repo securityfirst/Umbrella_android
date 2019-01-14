@@ -10,7 +10,10 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
-import kotlinx.android.synthetic.main.segment_view.*
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.Section
+import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.segment_view.view.*
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import org.apache.commons.io.FilenameUtils.removeExtension
 import org.jsoup.Jsoup
@@ -18,6 +21,7 @@ import org.jsoup.nodes.Document
 import org.secfirst.umbrella.whitelabel.BuildConfig.APPLICATION_ID
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.component.ColumnGroup
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.covertToHTML
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
@@ -26,9 +30,9 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentAdapter
+import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentFoot
+import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentItem
 import org.secfirst.umbrella.whitelabel.misc.createDocument
-import org.secfirst.umbrella.whitelabel.misc.initGridView
 import java.io.File
 import javax.inject.Inject
 
@@ -51,6 +55,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var shareView: View
     private var indexTab = 0
     private lateinit var hostSegmentTabControl: HostSegmentTabControl
+    private val segmentAdapter = GroupAdapter<ViewHolder>()
 
     constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
@@ -66,6 +71,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
+        val view = inflater.inflate(R.layout.segment_view, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
         shareDialog = AlertDialog
                 .Builder(activity)
@@ -73,7 +79,20 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .create()
         presenter.onAttach(this)
         presenter.submitMarkdownsAndChecklist(markdownIds, checklistId)
-        return inflater.inflate(R.layout.segment_view, container, false)
+        initSegmentRecycler(view)
+
+        return view
+    }
+
+    private fun initSegmentRecycler(view: View) {
+        segmentAdapter.spanCount = 12
+        val gridLayoutManager = GridLayoutManager(context, segmentAdapter.spanCount).apply {
+            spanSizeLookup = segmentAdapter.spanSizeLookup
+        }
+        view.segmentRecyclerView.apply {
+            layoutManager = gridLayoutManager
+            adapter = segmentAdapter
+        }
     }
 
     override fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {
@@ -83,27 +102,22 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun initSegmentView(markdowns: List<Markdown>) {
         val sortedMarkdowns = markdowns.sortedWith(compareBy { it.index })
-        val segmentAdapter = SegmentAdapter(segmentClick, footClick,
-                checklistShareClick, segmentShareClick,
-                checklistFavoriteClick, segmentFavoriteClick, checklist, sortedMarkdowns.toMutableList())
+        val segmentItems = mutableListOf<SegmentItem>()
+        sortedMarkdowns.forEach { markdown ->
+            val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
+            segmentItems.add(segmentItem)
+        }
+        val section = Section()
+        section.add(ColumnGroup(segmentItems))
+        segmentAdapter.add(section)
 
-        segmentRecyclerView?.initGridView(segmentAdapter)
-        setFooterList(segmentAdapter)
+        checklist?.let {
+            segmentAdapter.add(Section(SegmentFoot(footClick, checklistShareClick, checklistFavoriteClick, it)))
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         return inflater.inflate(R.menu.search_menu, menu)
-    }
-
-    private fun setFooterList(segmentAdapter: SegmentAdapter) {
-        val manager = if (segmentRecyclerView?.layoutManager != null)
-            segmentRecyclerView?.layoutManager as GridLayoutManager else null
-
-        manager?.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-            override fun getSpanSize(position: Int): Int {
-                return if (segmentAdapter.isChecklistFoot(position)) manager?.spanCount ?: 0 else 1
-            }
-        }
     }
 
     override fun showSegmentDetail(markdown: Markdown) {
@@ -133,18 +147,11 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         showShareDialog(doc, markdown.title)
     }
 
-    companion object {
-        const val EXTRA_SEGMENT = "selected_segment"
-        const val EXTRA_CHECKLIST = "selected_checklist"
-        const val EXTRA_SEGMENT_TAB_TITLE = "selected_tab_title"
-    }
-
     fun getTitle(): String = "Lesson"
 
     fun setIndexTab(position: Int) {
         this.indexTab = position
     }
-
 
     private fun shareDocument(fileToShare: File) {
         val pm = context.packageManager
@@ -189,5 +196,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     fun setSegmentTabControl(hostSegment: HostSegmentTabControl) {
         hostSegmentTabControl = hostSegment
+    }
+
+    companion object {
+        const val EXTRA_SEGMENT = "selected_segment"
+        const val EXTRA_CHECKLIST = "selected_checklist"
     }
 }

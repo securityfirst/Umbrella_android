@@ -18,14 +18,16 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), LessonBasePresenter<V, I> {
 
-    override fun submitSelectHead(moduleSha1ID: String) {
+    override fun submitSelectHead(moduleId: String) {
         launchSilent(uiContext) {
             interactor?.let {
-                val module = it.fetchLesson(moduleSha1ID)
+                val module = it.fetchLesson(moduleId)
                 module?.let { safeModule ->
                     if (safeModule.markdowns.size == SINGLE_CHOICE)
                         getView()?.startSegmentAlone(safeModule.markdowns.last())
-                    else getView()?.startSegment(safeModule.markdowns.ids(), false)
+
+                    if (safeModule.markdowns.size > SINGLE_CHOICE)
+                        getView()?.startSegment(safeModule.markdowns.ids(), false)
                 }
             }
         }

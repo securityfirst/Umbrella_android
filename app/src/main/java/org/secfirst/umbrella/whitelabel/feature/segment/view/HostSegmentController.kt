@@ -66,7 +66,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     override fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) = pickUpDifficulty(difficulties)
-
     override fun showSegments(markdowns: List<Markdown>) {
         hostSegmentToolbar?.title = markdowns.last().title
         loadSegmentPages(markdowns, mutableListOf())
