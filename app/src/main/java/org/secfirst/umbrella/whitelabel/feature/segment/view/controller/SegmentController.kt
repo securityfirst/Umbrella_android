@@ -56,7 +56,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
     private var indexTab = 0
-    private lateinit var hostSegmentTabControl: HostSegmentTabControl
+    private var hostSegmentTabControl = this as HostSegmentTabControl
     private val segmentAdapter = GroupAdapter()
     private lateinit var markdownPagination: MarkdownPagination
 

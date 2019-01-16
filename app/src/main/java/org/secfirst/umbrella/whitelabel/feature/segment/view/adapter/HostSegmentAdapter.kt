@@ -17,7 +17,6 @@ class HostSegmentAdapter(host: Controller,
 
     override fun configureRouter(router: Router, position: Int) {
         if (!router.hasRootController()) {
-
             when (position) {
                 0 -> {
                     val segmentController = controllers[position] as SegmentController
@@ -41,7 +40,6 @@ class HostSegmentAdapter(host: Controller,
             0 -> {
                 val currentController = controllers[position] as SegmentController
                 currentController.getTitle()
-
             }
             in 1..segmentPageLimit -> {
                 val currentController = controllers[position] as SegmentDetailController

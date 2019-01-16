@@ -14,7 +14,6 @@ import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.toChecklistControllers
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
@@ -29,7 +28,7 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
-class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentView, HostSegmentTabControl {
+class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
@@ -101,7 +100,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
             hostSegmentPager?.let {
                 it.adapter = hostAdapter
-                it.offscreenPageLimit = segmentPageLimit
                 hostSegmentTab?.setupWithViewPager(it)
             }
         }

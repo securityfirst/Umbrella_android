@@ -69,8 +69,6 @@ fun List<Markdown>.toSegmentController(host: Controller, pChecklist: List<Checkl
 fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
     val controllers = mutableListOf<SegmentDetailController>()
     this.forEach { markdown ->
-        val markdowns = mutableListOf<Markdown>()
-        markdowns.add(markdown)
         val controller = SegmentDetailController(markdown)
         controllers.add(controller)
     }

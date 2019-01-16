@@ -6,9 +6,10 @@ import android.view.View
 import com.bluelinelabs.conductor.Controller
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.*
+import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 
-abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), LayoutContainer {
+abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), LayoutContainer, HostSegmentTabControl {
 
     init {
         inject()
@@ -32,6 +33,10 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
     override fun onDestroyView(view: View) {
         super.onDestroyView(view)
         clearFindViewByIdCache()
+    }
+
+    override fun onTabHostManager(position: Int) {
+        
     }
 
     fun disableNavigation() = mainActivity.hideNavigation()
