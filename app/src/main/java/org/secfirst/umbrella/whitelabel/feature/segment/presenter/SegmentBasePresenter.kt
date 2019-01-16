@@ -10,12 +10,6 @@ import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 
 interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : BasePresenter<V, I> {
 
-//    fun submitLoadSegments(difficultyId: String)
-//
-//    fun submitLoadModule(moduleId: String)
-//
-//    fun submitLoadSubject(subjectId: String)
-
     fun submitLoadDifficulties(difficultyIds: ArrayList<String>)
 
     fun submitChecklistFavorite(checklist: Checklist)

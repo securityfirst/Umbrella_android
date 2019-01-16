@@ -11,8 +11,8 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 @Parcelize
@@ -60,7 +60,8 @@ fun List<Markdown>.toSegmentController(host: Controller, pChecklist: List<Checkl
     val checklist = if (pChecklist.isEmpty()) null else pChecklist.last()
     val markdownIds = mutableListOf<String>()
     this.forEach { markdown -> markdownIds.add(markdown.id) }
-    val controller = SegmentController(ArrayList(markdownIds), checklist?.id ?: "")
+    val controller = SegmentController(ArrayList(markdownIds), checklist?.id
+            ?: "")
     controller.setSegmentTabControl(host as HostSegmentTabControl)
     return controller
 }

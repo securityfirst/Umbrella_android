@@ -1,10 +1,13 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
+import android.support.v4.content.ContextCompat
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.segment_item.*
+import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.misc.appContext
 
 
 open class SegmentCard(private val onClickSegment: (Int) -> Unit,
@@ -29,7 +32,7 @@ open class SegmentCard(private val onClickSegment: (Int) -> Unit,
             val index = position + 1
             viewHolder.segmentIndex.text = index.toString()
             viewHolder.segmentDescription.text = title
-            //viewHolder.segmentLayout.backgroundColor = ContextCompat.getColor(appContext(), colours[position % 3])
+            viewHolder.segmentLayout.backgroundColor = ContextCompat.getColor(appContext(), colours[position % 3])
         }
     }
 

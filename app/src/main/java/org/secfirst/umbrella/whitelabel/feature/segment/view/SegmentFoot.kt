@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import android.support.v4.content.ContextCompat
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -14,7 +14,6 @@ class SegmentFoot(private val onFootClicked: (Int) -> Unit,
                   private val onChecklistShareClick: () -> Unit,
                   private val onChecklistFavoriteClick: (Boolean) -> Unit,
                   private val checklist: Checklist) : Item() {
-
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         val colours = intArrayOf(R.color.umbrella_purple,

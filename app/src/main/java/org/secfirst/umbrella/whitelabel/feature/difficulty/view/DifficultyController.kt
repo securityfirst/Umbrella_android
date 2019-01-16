@@ -15,7 +15,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import javax.inject.Inject
 
 class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyView {

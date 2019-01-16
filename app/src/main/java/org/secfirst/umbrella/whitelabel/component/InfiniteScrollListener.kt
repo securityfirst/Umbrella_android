@@ -10,7 +10,7 @@ abstract class InfiniteScrollListener(private var linearLayoutManager: LinearLay
     // True if we are still waiting for the last set of data to load.
     private var loading = true
     // The minimum amount of items to have below your current scroll position before loading more.
-    private val visibleThreshold = 10
+    private val visibleThreshold = 8
     private var firstVisibleItem: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0

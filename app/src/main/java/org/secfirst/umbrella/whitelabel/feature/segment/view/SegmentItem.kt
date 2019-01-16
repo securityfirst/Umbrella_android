@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view.adapter
+package org.secfirst.umbrella.whitelabel.feature.segment.view
 
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 

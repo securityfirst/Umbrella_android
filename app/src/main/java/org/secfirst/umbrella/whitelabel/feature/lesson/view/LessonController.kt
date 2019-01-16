@@ -22,7 +22,7 @@ import org.secfirst.umbrella.whitelabel.feature.difficulty.view.DifficultyContro
 import org.secfirst.umbrella.whitelabel.feature.lesson.DaggerLessonComponent
 import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.segment.view.HostSegmentController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import javax.inject.Inject
 
 

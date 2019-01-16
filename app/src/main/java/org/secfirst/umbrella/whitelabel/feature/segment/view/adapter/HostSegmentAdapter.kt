@@ -5,8 +5,10 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.bluelinelabs.conductor.support.RouterPagerAdapter
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentDetailController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.launchSilent
 
 class HostSegmentAdapter(host: Controller,
                          private val controllers: List<Controller>,
@@ -20,15 +22,15 @@ class HostSegmentAdapter(host: Controller,
                 0 -> {
                     val segmentController = controllers[position] as SegmentController
                     segmentController.setIndexTab(position)
-                    router.setRoot(RouterTransaction.with(segmentController))
+                    launchSilent(uiContext) { router.setRoot(RouterTransaction.with(segmentController)) }
                 }
                 in 1..segmentPageLimit -> {
                     val detailController = controllers[position] as SegmentDetailController
-                    router.setRoot(RouterTransaction.with(detailController))
+                    launchSilent(uiContext) { router.setRoot(RouterTransaction.with(detailController)) }
                 }
                 else -> {
                     val checklistController = controllers[position] as ChecklistController
-                    router.setRoot(RouterTransaction.with(checklistController))
+                    launchSilent(uiContext) { router.setRoot(RouterTransaction.with(checklistController)) }
                 }
             }
         }

@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view
+package org.secfirst.umbrella.whitelabel.feature.segment.view.controller
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +22,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.FilterAdapter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.HostSegmentAdapter
 import javax.inject.Inject
@@ -32,7 +33,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val markdownIds by lazy { args.getStringArrayList(EXTRA_MARKDOWN_IDS_HOST_SEGMENT) }
     private val enableFilter by lazy { args.getBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT) }
-
     private lateinit var hostAdapter: HostSegmentAdapter
 
     constructor(markdownIds: ArrayList<String>, enableFilter: Boolean) : this(Bundle().apply {
@@ -66,6 +66,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     override fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) = pickUpDifficulty(difficulties)
+
     override fun showSegments(markdowns: List<Markdown>) {
         hostSegmentToolbar?.title = markdowns.last().title
         loadSegmentPages(markdowns, mutableListOf())
@@ -88,15 +89,16 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     private fun loadSegmentPages(markdowns: List<Markdown>, checklist: List<Checklist>) {
         val pageContainer = mutableListOf<BaseController>()
-        val mainPage = markdowns.toSegmentController(this, checklist)
+        val mainPage = markdowns.toSegmentController(this@HostSegmentController, checklist)
         val segmentPageLimit = markdowns.size
         pageContainer.add(mainPage)
         pageContainer.addAll(markdowns.toSegmentDetailControllers())
         pageContainer.addAll(checklist.toChecklistControllers())
-        hostAdapter = HostSegmentAdapter(this, pageContainer, segmentPageLimit)
+        hostAdapter = HostSegmentAdapter(this@HostSegmentController, pageContainer, segmentPageLimit)
+
         hostSegmentPager?.let {
             it.adapter = hostAdapter
-            it.offscreenPageLimit = segmentPageLimit
+            it.offscreenPageLimit = 7
             hostSegmentTab?.setupWithViewPager(it)
         }
     }

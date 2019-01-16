@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.segment.view
+package org.secfirst.umbrella.whitelabel.feature.segment.view.controller
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -10,9 +10,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
-import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Section
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.segment_view.view.*
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import org.apache.commons.io.FilenameUtils.removeExtension
@@ -21,24 +19,26 @@ import org.jsoup.nodes.Document
 import org.secfirst.umbrella.whitelabel.BuildConfig.APPLICATION_ID
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.component.ColumnGroup
+import org.secfirst.umbrella.whitelabel.component.InfiniteScrollListener
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.covertToHTML
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
+import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.GroupAdapter
+import org.secfirst.umbrella.whitelabel.feature.segment.MarkdownPagination
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentFoot
-import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.SegmentItem
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentFoot
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentItem
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import org.secfirst.umbrella.whitelabel.misc.createDocument
 import java.io.File
 import javax.inject.Inject
 
 
 class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
-
 
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
@@ -55,7 +55,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var shareView: View
     private var indexTab = 0
     private lateinit var hostSegmentTabControl: HostSegmentTabControl
-    private val segmentAdapter = GroupAdapter<ViewHolder>()
+    private val segmentAdapter = GroupAdapter()
+    private lateinit var markdownPagination: MarkdownPagination
 
     constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
@@ -92,6 +93,11 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         view.segmentRecyclerView.apply {
             layoutManager = gridLayoutManager
             adapter = segmentAdapter
+            addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
+                override fun onLoadMore(currentPage: Int) {
+                    createSegmentCards(markdownPagination.nextPage())
+                }
+            })
         }
     }
 
@@ -101,18 +107,27 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun initSegmentView(markdowns: List<Markdown>) {
-        val sortedMarkdowns = markdowns.sortedWith(compareBy { it.index })
-        val segmentItems = mutableListOf<SegmentItem>()
-        sortedMarkdowns.forEach { markdown ->
-            val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
-            segmentItems.add(segmentItem)
-        }
-        val section = Section()
-        section.add(ColumnGroup(segmentItems))
-        segmentAdapter.add(section)
+        markdownPagination = MarkdownPagination(markdowns.toMutableList())
+        createSegmentCards(markdownPagination.nextPage())
+        createChecklistCard()
+    }
 
+    private fun createSegmentCards(markdowns: List<Markdown>) {
+        val section = Section()
+        markdowns.forEach { markdown ->
+            val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
+            section.add(segmentItem)
+        }
+        if (segmentAdapter.getGroupSize() > 0)
+            segmentAdapter.add(segmentAdapter.lastGroupPosition(), section)
+        else
+            segmentAdapter.add(section)
+    }
+
+    private fun createChecklistCard() {
         checklist?.let {
-            segmentAdapter.add(Section(SegmentFoot(footClick, checklistShareClick, checklistFavoriteClick, it)))
+            segmentAdapter.add(Section(SegmentFoot(footClick,
+                    checklistShareClick, checklistFavoriteClick, it)))
         }
     }
 
