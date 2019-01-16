@@ -12,9 +12,9 @@ import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseIn
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentInteractorImp
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentPresenterImp
+import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import javax.inject.Singleton
 
 

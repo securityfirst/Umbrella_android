@@ -26,14 +26,16 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabCont
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
-import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.GroupAdapter
 import org.secfirst.umbrella.whitelabel.feature.segment.MarkdownPagination
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentFoot
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentItem
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
+import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.GroupAdapter
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.createDocument
+import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import java.io.File
 import javax.inject.Inject
 
@@ -114,14 +116,16 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun createSegmentCards(markdowns: List<Markdown>) {
         val section = Section()
-        markdowns.forEach { markdown ->
-            val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
-            section.add(segmentItem)
+        launchSilent(uiContext) {
+            markdowns.forEach { markdown ->
+                val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
+                section.add(segmentItem)
+            }
+            if (segmentAdapter.getGroupSize() > 0 && checklist != null)
+                segmentAdapter.add(segmentAdapter.lastGroupPosition(), section)
+            else
+                segmentAdapter.add(section)
         }
-        if (segmentAdapter.getGroupSize() > 0)
-            segmentAdapter.add(segmentAdapter.lastGroupPosition(), section)
-        else
-            segmentAdapter.add(section)
     }
 
     private fun createChecklistCard() {

@@ -8,6 +8,7 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.sortByIndex
 
 
 class Root(val elements: MutableList<Element> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())
@@ -92,14 +93,15 @@ fun Root.convertTo(): ContentData {
     var difficulties: MutableList<Difficulty> = mutableListOf()
 
     this.elements.forEach { element ->
+        element.markdowns = element.markdowns.sortByIndex().toMutableList()
         val module = element.convertToModule
         modules.add(module)
         element.children.forEach { subElement ->
-
+            subElement.markdowns = subElement.markdowns.sortByIndex().toMutableList()
             val subject = subElement.convertToSubject
             subCategories.add(subject)
             subElement.children.forEach { subElementChild ->
-
+                subElementChild.markdowns = subElementChild.markdowns.sortByIndex().toMutableList()
                 val difficulty = subElementChild.convertToDifficulty
                 difficulties.add(difficulty)
             }

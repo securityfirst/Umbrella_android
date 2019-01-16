@@ -68,8 +68,7 @@ fun List<Markdown>.toSegmentController(host: Controller, pChecklist: List<Checkl
 
 fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
     val controllers = mutableListOf<SegmentDetailController>()
-    val sortedMarkdowns = this.sortedWith(compareBy { it.index })
-    sortedMarkdowns.forEach { markdown ->
+    this.forEach { markdown ->
         val markdowns = mutableListOf<Markdown>()
         markdowns.add(markdown)
         val controller = SegmentDetailController(markdown)
@@ -77,6 +76,8 @@ fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
     }
     return controllers
 }
+
+fun MutableList<Markdown>.sortByIndex() = sortedWith(compareBy { it.index.toInt() })
 
 fun Markdown.removeHead(): Markdown {
     text = text.substringAfterLast(text.lines()[3])

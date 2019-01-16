@@ -25,6 +25,8 @@ import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePre
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.FilterAdapter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.adapter.HostSegmentAdapter
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
 class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentView, HostSegmentTabControl {
@@ -88,18 +90,20 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     private fun loadSegmentPages(markdowns: List<Markdown>, checklist: List<Checklist>) {
-        val pageContainer = mutableListOf<BaseController>()
-        val mainPage = markdowns.toSegmentController(this@HostSegmentController, checklist)
-        val segmentPageLimit = markdowns.size
-        pageContainer.add(mainPage)
-        pageContainer.addAll(markdowns.toSegmentDetailControllers())
-        pageContainer.addAll(checklist.toChecklistControllers())
-        hostAdapter = HostSegmentAdapter(this@HostSegmentController, pageContainer, segmentPageLimit)
+        launchSilent(uiContext) {
+            val pageContainer = mutableListOf<BaseController>()
+            val mainPage = markdowns.toSegmentController(this@HostSegmentController, checklist)
+            val segmentPageLimit = markdowns.size
+            pageContainer.add(mainPage)
+            pageContainer.addAll(markdowns.toSegmentDetailControllers())
+            pageContainer.addAll(checklist.toChecklistControllers())
+            hostAdapter = HostSegmentAdapter(this@HostSegmentController, pageContainer, segmentPageLimit)
 
-        hostSegmentPager?.let {
-            it.adapter = hostAdapter
-            it.offscreenPageLimit = 7
-            hostSegmentTab?.setupWithViewPager(it)
+            hostSegmentPager?.let {
+                it.adapter = hostAdapter
+                it.offscreenPageLimit = segmentPageLimit
+                hostSegmentTab?.setupWithViewPager(it)
+            }
         }
     }
 
