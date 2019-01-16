@@ -55,8 +55,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private var checklist: Checklist? = null
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
-    private var indexTab = 0
-    private var hostSegmentTabControl = this as HostSegmentTabControl
     private val segmentAdapter = GroupAdapter()
     private lateinit var markdownPagination: MarkdownPagination
 
@@ -141,6 +139,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun showSegmentDetail(markdown: Markdown) {
         parentController?.router?.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
+
     }
 
     private fun onChecklistFavoriteClick(isFavorite: Boolean) {
@@ -167,10 +166,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     fun getTitle(): String = "Lesson"
-
-    fun setIndexTab(position: Int) {
-        this.indexTab = position
-    }
 
     private fun shareDocument(fileToShare: File) {
         val pm = context.packageManager
@@ -209,12 +204,14 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun onSegmentFavoriteClick(markdown: Markdown) = presenter.submitMarkdownFavorite(markdown)
 
-    private fun onFootClicked(position: Int) = hostSegmentTabControl.onTabHostManager(position + 1)
+    private fun onFootClicked(position: Int) {
+        val tabControl = parentController as HostSegmentTabControl
+        tabControl.moveTabAt(position + 1)
+    }
 
-    private fun onSegmentClicked(position: Int) = hostSegmentTabControl.onTabHostManager(position + 1)
-
-    fun setSegmentTabControl(hostSegment: HostSegmentTabControl) {
-        hostSegmentTabControl = hostSegment
+    private fun onSegmentClicked(position: Int) {
+        val test = parentController as HostSegmentTabControl
+        test.moveTabAt(position + 1)
     }
 
     companion object {

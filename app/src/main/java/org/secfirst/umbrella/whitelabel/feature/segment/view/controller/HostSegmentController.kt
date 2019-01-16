@@ -14,6 +14,7 @@ import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.toChecklistControllers
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
@@ -28,13 +29,14 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
-class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
+class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentView, HostSegmentTabControl {
 
     @Inject
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val markdownIds by lazy { args.getStringArrayList(EXTRA_MARKDOWN_IDS_HOST_SEGMENT) }
     private val enableFilter by lazy { args.getBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT) }
     private lateinit var hostAdapter: HostSegmentAdapter
+
 
     constructor(markdownIds: ArrayList<String>, enableFilter: Boolean) : this(Bundle().apply {
         putSerializable(EXTRA_MARKDOWN_IDS_HOST_SEGMENT, markdownIds)
@@ -69,7 +71,9 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     override fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) = pickUpDifficulty(difficulties)
 
     override fun showSegments(markdowns: List<Markdown>) {
-        hostSegmentToolbar?.title = markdowns.last().title
+        if (markdowns.isNotEmpty())
+            presenter.submitTitleToolbar(markdowns.last().subject?.id
+                    ?: "", markdowns.last().module?.id ?: "")
         loadSegmentPages(markdowns, mutableListOf())
     }
 
@@ -91,7 +95,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     private fun loadSegmentPages(markdowns: List<Markdown>, checklist: List<Checklist>) {
         launchSilent(uiContext) {
             val pageContainer = mutableListOf<BaseController>()
-            val mainPage = markdowns.toSegmentController(this@HostSegmentController, checklist)
+            val mainPage = markdowns.toSegmentController(checklist)
             val segmentPageLimit = markdowns.size
             pageContainer.add(mainPage)
             pageContainer.addAll(markdowns.toSegmentDetailControllers())
@@ -103,10 +107,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
                 hostSegmentTab?.setupWithViewPager(it)
             }
         }
-    }
-
-    override fun onTabHostManager(position: Int) {
-        hostSegmentTab?.getTabAt(position)?.select()
     }
 
     private fun setUpToolbar(view: View) {
@@ -122,6 +122,14 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
             spinnerSelected.subject?.let { subject ->
                 presenter.submitDifficultySelected(subject.id, spinnerSelected)
             }
+    }
+
+    override fun getTitleToolbar(title: String) {
+        hostSegmentToolbar?.title = title
+    }
+
+    override fun moveTabAt(position: Int) {
+        hostSegmentTab?.getTabAt(position)?.select()
     }
 
     companion object {

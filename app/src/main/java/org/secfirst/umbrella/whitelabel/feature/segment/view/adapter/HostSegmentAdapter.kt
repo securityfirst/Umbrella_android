@@ -20,7 +20,6 @@ class HostSegmentAdapter(host: Controller,
             when (position) {
                 0 -> {
                     val segmentController = controllers[position] as SegmentController
-                    segmentController.setIndexTab(position)
                     launchSilent(uiContext) { router.setRoot(RouterTransaction.with(segmentController)) }
                 }
                 in 1..segmentPageLimit -> {

@@ -15,4 +15,5 @@ interface SegmentView : BaseView {
 
     fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {}
 
+    fun getTitleToolbar(title: String) {}
 }

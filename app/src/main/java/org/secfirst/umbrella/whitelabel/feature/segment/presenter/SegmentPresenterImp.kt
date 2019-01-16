@@ -15,7 +15,6 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), SegmentBasePresenter<V, I> {
 
-
     override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
         launchSilent(uiContext) {
             val markdowns = mutableListOf<Markdown>()
@@ -46,16 +45,18 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             val markdowns = mutableListOf<Markdown>()
             interactor?.let {
                 markdownIds.forEach { markdownId ->
-                    it.fetchMarkdown(markdownId)?.let { markdown -> markdowns.add(markdown) }
+                    it.fetchMarkdown(markdownId)?.let { markdown ->
+                        markdowns.add(markdown)
+                    }
                 }
                 getView()?.showSegments(markdowns)
             }
         }
     }
 
-    override fun submitDifficultySelected(subjectSha1ID: String, difficulty: Difficulty) {
+    override fun submitDifficultySelected(subjectId: String, difficulty: Difficulty) {
         launchSilent(uiContext) {
-            interactor?.insertDifficultySelect(subjectSha1ID, difficulty)
+            interactor?.insertDifficultySelect(subjectId, difficulty)
         }
     }
 
@@ -70,6 +71,23 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             interactor?.insertChecklist(checklist)
         }
     }
+
+    override fun submitTitleToolbar(subjectId: String, moduleId: String) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val title: String
+                title = if (subjectId.isNotEmpty()) {
+                    val subject = it.fetchSubject(subjectId)
+                    subject?.title ?: ""
+                } else {
+                    val module = it.fetchModule(moduleId)
+                    module?.moduleTitle ?: ""
+                }
+                getView()?.getTitleToolbar(title)
+            }
+        }
+    }
+
 
     override fun submitLoadDifficulties(difficultyIds: ArrayList<String>) {
         launchSilent(uiContext) {

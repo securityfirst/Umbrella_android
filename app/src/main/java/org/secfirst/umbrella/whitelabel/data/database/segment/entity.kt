@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
 import android.os.Parcelable
-import com.bluelinelabs.conductor.Controller
 import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
@@ -56,14 +55,9 @@ fun List<Markdown>.ids(): ArrayList<String> {
     return res
 }
 
-fun List<Markdown>.toSegmentController(host: Controller, pChecklist: List<Checklist>): SegmentController {
+fun List<Markdown>.toSegmentController(pChecklist: List<Checklist>): SegmentController {
     val checklist = if (pChecklist.isEmpty()) null else pChecklist.last()
-    val markdownIds = mutableListOf<String>()
-    this.forEach { markdown -> markdownIds.add(markdown.id) }
-    val controller = SegmentController(ArrayList(markdownIds), checklist?.id
-            ?: "")
-    controller.setSegmentTabControl(host as HostSegmentTabControl)
-    return controller
+    return SegmentController(ArrayList(this.ids()), checklist?.id ?: "")
 }
 
 fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
@@ -96,6 +90,6 @@ inline fun <reified T> MutableList<Markdown>.associateMarkdown(foreignKey: T) {
 }
 
 interface HostSegmentTabControl {
-    fun onTabHostManager(position: Int)
+    fun moveTabAt(position: Int)
 }
 

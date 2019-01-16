@@ -16,11 +16,13 @@ interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : Bas
 
     fun submitMarkdownFavorite(markdown: Markdown)
 
-    fun submitDifficultySelected(subjectSha1ID: String, difficulty: Difficulty)
+    fun submitDifficultySelected(subjectId: String, difficulty: Difficulty)
 
     fun submitMarkdowns(markdownIds: ArrayList<String>)
 
     fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String)
 
     fun submitDifficulties(difficultyIds: ArrayList<String>)
+
+    fun submitTitleToolbar(subjectId: String = "", moduleId: String = "")
 }
