@@ -11,23 +11,17 @@ class SegmentInteractorImp @Inject constructor(private val segmentRepo: SegmentR
 
     override suspend fun fetchMarkdown(markdownId: String) = segmentRepo.loadMarkdown(markdownId)
 
-    override suspend fun fetchMarkdownsFromDifficulty(difficultyId: String) = segmentRepo.loadMarkdownsFromDifficulty(difficultyId)
-
     override suspend fun fetchChecklist(checklistId: String) = segmentRepo.loadChecklist(checklistId)
-
-    override suspend fun fetchMarkdownsFromModule(moduleId: String) = segmentRepo.loadMarkdownsFromModule(moduleId)
 
     override suspend fun fetchDifficulty(difficultyId: String) = segmentRepo.loadDifficulty(difficultyId)
 
-    override suspend fun insertDifficultySelect(subjectSha1ID: String, difficulty: Difficulty) = segmentRepo.saveDifficultySelect(subjectSha1ID, difficulty)
-
-    override suspend fun fetchMarkdownsFromSubject(subjectSha1ID: String) = segmentRepo.loadMarkdownsFromSubject(subjectSha1ID)
+    override suspend fun insertDifficultySelect(subjectId: String, difficulty: Difficulty) = segmentRepo.saveDifficultySelect(subjectId, difficulty)
 
     override suspend fun insertMarkdown(markdown: Markdown) = segmentRepo.saveMarkdown(markdown)
 
     override suspend fun insertChecklist(checklist: Checklist) = segmentRepo.saveChecklist(checklist)
 
-    override suspend fun fetchModule(sha1ID: String) = segmentRepo.loadModule(sha1ID)
+    override suspend fun fetchModule(moduleId: String) = segmentRepo.loadModule(moduleId)
 
-    override suspend fun fetchSubject(sha1ID: String) = segmentRepo.loadSubject(sha1ID)
+    override suspend fun fetchSubject(subjectId: String) = segmentRepo.loadSubject(subjectId)
 }
