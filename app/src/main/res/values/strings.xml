@@ -141,5 +141,6 @@
     <string name="form_menu_share">Share</string>
     <string name="login_your_password">Log in with your password</string>
     <string name="login_error_reset_password">Fail to reset password.</string>
+    <string name="bookemarks_title">Bookmarked</string>
 
 </resources>

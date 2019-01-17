@@ -125,7 +125,8 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     }
 
     override fun getTitleToolbar(title: String) {
-        hostSegmentToolbar?.title = title
+        hostSegmentToolbar?.title = if (title.isEmpty()) context
+                .getString(R.string.bookemarks_title) else title
     }
 
     override fun moveTabAt(position: Int) {

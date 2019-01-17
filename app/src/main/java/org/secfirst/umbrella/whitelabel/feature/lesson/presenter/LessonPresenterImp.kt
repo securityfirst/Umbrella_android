@@ -22,12 +22,13 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
         launchSilent(uiContext) {
             interactor?.let {
                 val module = it.fetchLesson(moduleId)
+                val favorites = it.fetchAllFavorites()
                 module?.let { safeModule ->
-                    if (safeModule.markdowns.size == SINGLE_CHOICE)
-                        getView()?.startSegmentAlone(safeModule.markdowns.last())
-
-                    if (safeModule.markdowns.size > SINGLE_CHOICE)
-                        getView()?.startSegment(safeModule.markdowns.ids(), false)
+                    when {
+                        safeModule.markdowns.size == SINGLE_CHOICE -> getView()?.startSegmentAlone(safeModule.markdowns.last())
+                        safeModule.markdowns.size > SINGLE_CHOICE -> getView()?.startSegment(safeModule.markdowns.ids(), false)
+                        else -> getView()?.startSegment(favorites.ids(), false)
+                    }
                 }
             }
         }
