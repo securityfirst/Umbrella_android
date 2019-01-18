@@ -19,6 +19,7 @@ import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
+import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
 import javax.inject.Inject
 
 
