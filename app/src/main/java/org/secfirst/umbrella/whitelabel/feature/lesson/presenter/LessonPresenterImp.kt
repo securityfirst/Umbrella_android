@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.feature.lesson.presenter
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.ids
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.toLesson
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown.Companion.SINGLE_CHOICE
@@ -27,7 +28,8 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                     when {
                         safeModule.markdowns.size == SINGLE_CHOICE -> getView()?.startSegmentAlone(safeModule.markdowns.last())
                         safeModule.markdowns.size > SINGLE_CHOICE -> getView()?.startSegment(safeModule.markdowns.ids(), false)
-                        else -> getView()?.startSegment(favorites.ids(), false)
+                        moduleId == Module.FAVORITE_ID -> getView()?.startSegment(favorites.ids(), false)
+                        else -> ""
                     }
                 }
             }

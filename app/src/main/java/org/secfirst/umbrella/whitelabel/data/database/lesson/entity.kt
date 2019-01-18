@@ -75,6 +75,10 @@ open class Module(
         }
         return checklist
     }
+
+    companion object {
+        const val FAVORITE_ID = "1"
+    }
 }
 
 @Table(database = AppDatabase::class)
@@ -145,7 +149,7 @@ fun List<Module>.toLesson(): List<Lesson> {
 
 fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
-    favoriteModule.id = "1"
+    favoriteModule.id = Module.FAVORITE_ID
     favoriteModule.moduleTitle = "Bookmarked"
     favoriteModule.index = 1
     return favoriteModule
