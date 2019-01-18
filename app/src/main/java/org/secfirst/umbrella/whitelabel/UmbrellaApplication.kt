@@ -19,7 +19,6 @@ import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
-import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
 import javax.inject.Inject
 
 
@@ -80,8 +79,9 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     }
 
     private fun initFabric() {
+
         val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(true).build())
+                .core(CrashlyticsCore.Builder().build())
                 .build()
         val fabric = Fabric.Builder(this)
                 .kits(crashlyticsKit)
