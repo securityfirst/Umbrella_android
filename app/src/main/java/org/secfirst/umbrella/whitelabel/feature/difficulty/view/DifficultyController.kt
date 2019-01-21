@@ -9,6 +9,7 @@ import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.difficulty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.component.ItemDecoration
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -68,6 +69,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         setUpToolbar(toolbarTitle)
         difficultyAdapter = DifficultyAdapter(difficulties.toMutableList(), difficultClick)
         difficultyRecyclerView?.let {
+            it.addItemDecoration(ItemDecoration(resources!!.getDimensionPixelSize(R.dimen.decorator_card_padding), ItemDecoration.VERTICAL))
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = difficultyAdapter
         }

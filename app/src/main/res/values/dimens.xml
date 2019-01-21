@@ -65,6 +65,7 @@
     <dimen name="share_dialog_normal_space">25dp</dimen>
     <dimen name="share_dialog_small_space">20dp</dimen>
     <dimen name="share_dialog_little_space">10dp</dimen>
+    <dimen name="decorator_card_padding">8dp</dimen>
 
-
+    <dimen name="recycler_view_margin_bottom">56dp</dimen>
 </resources>
