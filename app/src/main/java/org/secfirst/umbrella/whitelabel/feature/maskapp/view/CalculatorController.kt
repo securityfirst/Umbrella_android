@@ -133,6 +133,11 @@ class CalculatorController : BaseController(), MaskAppView {
         }
     }
 
+    override fun handleBack(): Boolean {
+        mainActivity.finish()
+        return super.handleBack()
+    }
+
     override fun isMaskApp(res: Boolean) {
         activity?.let { safeActivity ->
             val intent = Intent(safeActivity, MainActivity::class.java)
@@ -143,7 +148,6 @@ class CalculatorController : BaseController(), MaskAppView {
             }
         }
     }
-
 
     private fun computeCalculation() {
         if (!java.lang.Double.isNaN(valueOne)) {
