@@ -26,7 +26,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabCont
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
-import org.secfirst.umbrella.whitelabel.feature.segment.MarkdownPagination
+import org.secfirst.umbrella.whitelabel.feature.segment.SegmentPagination
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentFoot
@@ -56,7 +56,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
     private val segmentAdapter = GroupAdapter()
-    private lateinit var markdownPagination: MarkdownPagination
+    private lateinit var markdownPagination: SegmentPagination
 
     constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
@@ -107,7 +107,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun initSegmentView(markdowns: List<Markdown>) {
-        markdownPagination = MarkdownPagination(markdowns.toMutableList())
+        markdownPagination = SegmentPagination(markdowns.toMutableList())
         createSegmentCards(markdownPagination.nextPage())
         createChecklistCard()
     }

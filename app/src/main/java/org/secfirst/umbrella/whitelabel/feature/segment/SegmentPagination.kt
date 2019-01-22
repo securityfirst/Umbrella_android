@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel.feature.segment
 
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 
-class MarkdownPagination(private val markdowns: MutableList<Markdown>) {
+class SegmentPagination(private val markdowns: MutableList<Markdown>) {
 
     private val limitPage = 6
 
