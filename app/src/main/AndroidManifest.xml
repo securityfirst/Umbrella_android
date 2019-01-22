@@ -19,7 +19,13 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label">
 
-        <activity android:name=".feature.main.MainActivity" />
+        <activity
+            android:name=".feature.main.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
 
         <activity-alias
             android:name=".MainActivityNormal"

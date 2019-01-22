@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.ShareCompat
 import android.support.v4.content.FileProvider
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.GridLayoutManager
 import android.view.*
 import com.bluelinelabs.conductor.RouterTransaction
@@ -90,8 +91,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         val gridLayoutManager = GridLayoutManager(context, segmentAdapter.spanCount).apply {
             spanSizeLookup = segmentAdapter.spanSizeLookup
         }
+        val itemDecor = DividerItemDecoration(activity, gridLayoutManager.orientation)
         view.segmentRecyclerView.apply {
             layoutManager = gridLayoutManager
+            removeItemDecoration(itemDecor)
             adapter = segmentAdapter
             addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
                 override fun onLoadMore(currentPage: Int) {
