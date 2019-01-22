@@ -9,12 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.account_password_alert.view.*
-import kotlinx.android.synthetic.main.account_reset_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.android.synthetic.main.feed_settings_view.*
 import kotlinx.android.synthetic.main.feed_settings_view.view.*
-
 import org.jetbrains.anko.textColor
 import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R
@@ -248,9 +246,10 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     }
 
     private fun openFeedController(feedItemResponse: Array<FeedItemResponse>) {
-        feedLocation?.let {
-            router?.pushController(RouterTransaction
-                    .with(FeedController(feedItemResponse, it.location)))
+        with(feedLocation) {
+            if (this != null)
+                router?.pushController(RouterTransaction
+                        .with(FeedController(feedItemResponse, this.location)))
         }
     }
 
