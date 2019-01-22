@@ -93,7 +93,7 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
 
                 //Edit checklist item
 
-                itemView.cardView.setOnLongClickListener {
+                itemView.segmentCardView.setOnLongClickListener {
 
                     val li = LayoutInflater.from(itemView.context)
                     val promptsView = li.inflate(R.layout.editchecklistdialog, null)

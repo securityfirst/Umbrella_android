@@ -140,7 +140,7 @@ fun createDocument(doc: org.jsoup.nodes.Document, filename: String, type: String
     return fileToShare
 }
 
-fun appContext() = UmbrellaApplication.instance
+fun appContext() = UmbrellaApplication.instance.applicationContext
 
 fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
         ?: ""

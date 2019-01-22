@@ -68,4 +68,18 @@
     <dimen name="decorator_card_padding">8dp</dimen>
 
     <dimen name="recycler_view_margin_bottom">56dp</dimen>
+    <dimen name="segment_item_width">168dp</dimen>
+    <dimen name="segment_item_small_width">150dp</dimen>
+    <dimen name="segment_item_height">170dp</dimen>
+    <dimen name="segment_item_corner_radius">2dp</dimen>
+    <dimen name="segment_item_small_padding">2dp</dimen>
+    <dimen name="segment_item_card_height">121dp</dimen>
+    <dimen name="segment_item_index_margin_start">15dp</dimen>
+    <dimen name="segment_item_index_margin_top">10dp</dimen>
+    <dimen name="segment_item_title_width">132dp</dimen>
+    <dimen name="segment_item_title_margin_start">15dp</dimen>
+    <dimen name="segment_item_title_margin_top">35dp</dimen>
+    <dimen name="segment_item_layout_share_margin_bottom">10dp</dimen>
+    <dimen name="segment_item_fav_margin_start">80dp</dimen>
+    <dimen name="segment_item_share_margin_start">20dp</dimen>
 </resources>
