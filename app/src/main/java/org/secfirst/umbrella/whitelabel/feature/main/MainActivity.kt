@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         } else if (isLoggedUser()) {
             router.setRoot(RouterTransaction.with(LoginController()))
             navigation.menu.getItem(2).isChecked = true
-        } else if (!router.hasRootController() && TentConfig.isRepCreate()) {
+        } else if (TentConfig.isRepCreate()) {
             router.setRoot(RouterTransaction.with(HostChecklistController()))
             navigation.menu.getItem(2).isChecked = true
         } else {

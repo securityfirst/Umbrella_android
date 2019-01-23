@@ -35,7 +35,7 @@ android {
         compileSdkVersion 28
         targetSdkVersion 28
         versionCode 1
-        versionName "0.5.2"
+        versionName "0.5.5"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -78,8 +78,8 @@ dependencies {
     implementation "com.android.support:multidex:$multidex_version"
     implementation "io.github.inflationx:calligraphy3:$calligraphy3"
     implementation "io.github.inflationx:viewpump:$viewpump"
-    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.8'
-    implementation 'com.google.firebase:firebase-core:16.0.6'
+    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_sdk"
+    implementation "com.google.firebase:firebase-core:$firebase"
 
     //Framework for replacing fragments
     implementation "com.bluelinelabs:conductor:$conductor_version"

@@ -66,7 +66,7 @@ class LessonController : BaseController(), LessonView {
                 it.topics.forEach { subject -> groups.add(LessonItem(subject, lessonClick)) }
                 groupAdapter.add(groups)
             }
-            lessonMenu.apply { adapter = groupAdapter }
+            lessonMenu?.apply { adapter = groupAdapter }
         }
     }
 

@@ -115,4 +115,6 @@ ext {
     retrofit_adapter = '0.9.2'
     groupie = '2.1.0'
     anddown = '0.4.0'
+    crashlytics_sdk = '2.9.8'
+    firebase = '16.0.6'
 }
