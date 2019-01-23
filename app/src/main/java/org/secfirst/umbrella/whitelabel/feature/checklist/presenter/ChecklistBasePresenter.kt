@@ -18,9 +18,11 @@ interface ChecklistBasePresenter<V : ChecklistView, I : ChecklistBaseInteractor>
 
     fun submitLoadDashboard()
 
-    fun submitInsertCustomChecklist(checklistTitle: String, idChecklist: String, checklistValue: List<String>)
+    fun submitInsertCustomChecklist(checklistTitle: String, checklistId: String, checklistValue: List<String>)
 
     fun submitLoadCustomDashboard()
 
     fun submitDeleteChecklist(checklist: Checklist)
+
+    fun submitChecklist(checklistId: String)
 }

@@ -78,7 +78,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun onDashboardItemClicked(checklist: Checklist?) {
         if (checklist != null)
-            parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist)))
+            parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist.id)))
     }
 
     private fun onChecklistItemUpdated(checklist:Checklist) = presenter.submitUpdateChecklist(checklist)

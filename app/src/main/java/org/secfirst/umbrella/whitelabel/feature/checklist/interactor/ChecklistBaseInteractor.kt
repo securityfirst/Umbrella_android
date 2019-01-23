@@ -8,10 +8,6 @@ import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface ChecklistBaseInteractor : BaseInteractor {
 
-    suspend fun fetchChecklistBy(sha1ID: String): Checklist?
-
-    suspend fun fetchChecklistProgressDone(): List<Checklist>
-
     suspend fun deleteChecklistContent(checklistContent: Content)
 
     suspend fun deleteChecklist(checklist: Checklist)
@@ -26,15 +22,15 @@ interface ChecklistBaseInteractor : BaseInteractor {
 
     suspend fun fetchChecklistCount(): Long
 
-    suspend fun fetchCustomChecklistCount(): Long
-
     suspend fun fetchAllChecklist(): List<Checklist>
 
-    suspend fun fetchSubjectById(subjectSha1ID: String): Subject?
+    suspend fun fetchSubjectById(subjectId: String): Subject?
 
-    suspend fun fetchDifficultyById(sha1ID: String): Difficulty
+    suspend fun fetchDifficultyById(difficultyId: String): Difficulty?
 
     suspend fun fetchAllChecklistInProgress(): List<Checklist>
 
     suspend fun fetchAllCustomChecklistInProgress(): List<Checklist>
+
+    suspend fun fetchChecklist(checklistId: String): Checklist?
 }

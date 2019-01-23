@@ -8,21 +8,21 @@ import javax.inject.Inject
 
 class ChecklistInteractorImp @Inject constructor(private val checklistRepo: ChecklistRepo) : BaseInteractorImp(), ChecklistBaseInteractor {
 
-    override suspend fun fetchCustomChecklistCount() = checklistRepo.loadCustomChecklistCount()
+    override suspend fun fetchChecklist(checklistId: String) = checklistRepo.loadChecklist(checklistId)
+    
+    override suspend fun fetchAllCustomChecklistInProgress() = checklistRepo.loadAllCustomChecklistInProgress()
 
-    override suspend fun fetchAllCustomChecklistInProgress() = checklistRepo.getAllCustomChecklistInProgress()
-
-    override suspend fun deleteChecklistContent(checklistContent: Content) = checklistRepo.delteChecklistContent(checklistContent)
+    override suspend fun deleteChecklistContent(checklistContent: Content) = checklistRepo.deleteChecklistContent(checklistContent)
 
     override suspend fun deleteChecklist(checklist: Checklist) = checklistRepo.deleteChecklist(checklist)
 
     override suspend fun disableChecklistContent(checklistContent: Content) = checklistRepo.disableChecklistContent(checklistContent)
 
-    override suspend fun fetchAllChecklistInProgress() = checklistRepo.getAllChecklistInProgress()
+    override suspend fun fetchAllChecklistInProgress() = checklistRepo.loadAllChecklistInProgress()
 
-    override suspend fun fetchDifficultyById(sha1ID: String) = checklistRepo.loadDifficultyById(sha1ID)
+    override suspend fun fetchDifficultyById(difficultyId: String) = checklistRepo.loadDifficultyById(difficultyId)
 
-    override suspend fun fetchSubjectById(subjectSha1ID: String) = checklistRepo.loadSubjectById(subjectSha1ID)
+    override suspend fun fetchSubjectById(subjectId: String) = checklistRepo.loadSubjectById(subjectId)
 
     override suspend fun fetchAllChecklistFavorite() = checklistRepo.loadAllChecklistFavorite()
 
@@ -30,11 +30,7 @@ class ChecklistInteractorImp @Inject constructor(private val checklistRepo: Chec
 
     override suspend fun fetchAllChecklist() = checklistRepo.loadAllChecklist()
 
-    override suspend fun fetchChecklistProgressDone() = checklistRepo.loadChecklistProgressDone()
-
     override suspend fun persistChecklist(checklist: Checklist) = checklistRepo.insertChecklist(checklist)
 
     override suspend fun persistChecklistContent(checklistContent: Content) = checklistRepo.insertChecklistContent(checklistContent)
-
-    override suspend fun fetchChecklistBy(sha1ID: String) = checklistRepo.loadChecklist(sha1ID)
 }

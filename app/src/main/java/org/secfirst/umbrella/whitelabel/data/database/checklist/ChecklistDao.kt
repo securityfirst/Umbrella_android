@@ -45,18 +45,11 @@ interface ChecklistDao {
         }
     }
 
-    suspend fun getChecklist(pathID: String): Checklist? = withContext(ioContext) {
+    suspend fun getChecklist(checklistId: String): Checklist? = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
-                .where(Checklist_Table.id.`is`(pathID))
+                .where(Checklist_Table.id.`is`(checklistId))
                 .querySingle()
-    }
-
-    suspend fun getChecklistProgressDone(): List<Checklist> = withContext(ioContext) {
-        SQLite.select()
-                .from(Checklist::class.java)
-                .where(Checklist_Table.progress.`is`(100))
-                .queryList()
     }
 
     suspend fun getAllChecklistFavorite(): List<Checklist> = withContext(ioContext) {
@@ -72,33 +65,24 @@ interface ChecklistDao {
                 .queryList().size.toLong()
     }
 
-    suspend fun getCustomChecklistCount(): Long = withContext(ioContext) {
-        SQLite.select()
-                .from(Checklist::class.java)
-                .where(Checklist_Table.custom.`is`(true))
-                .queryList().size.toLong()
-    }
-
     suspend fun getAllChecklist(): List<Checklist> = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
                 .queryList()
     }
 
-    suspend fun getSubjectById(subjectPathID: String) = withContext(ioContext) {
+    suspend fun getSubjectById(subjectId: String) = withContext(ioContext) {
         SQLite.select()
                 .from(Subject::class.java)
-                .where(Subject_Table.id.`is`(subjectPathID))
+                .where(Subject_Table.id.`is`(subjectId))
                 .querySingle()
     }
 
-    suspend fun getDifficultyById(pathID: String): Difficulty = withContext(ioContext) {
-        val result = SQLite.select()
+    suspend fun getDifficultyById(difficultyId: String): Difficulty? = withContext(ioContext) {
+        SQLite.select()
                 .from(Difficulty::class.java)
-                .where(Difficulty_Table.id.`is`(pathID))
+                .where(Difficulty_Table.id.`is`(difficultyId))
                 .querySingle()
-        return@withContext result!!
-
     }
 
     suspend fun getAllChecklistInProgress(): List<Checklist> = withContext(ioContext) {

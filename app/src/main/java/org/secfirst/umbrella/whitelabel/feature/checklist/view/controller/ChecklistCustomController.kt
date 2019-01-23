@@ -28,11 +28,11 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
-    private val idChecklist by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
+    private val checklistId by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
     private lateinit var adapter: ChecklistCustomAdapter
 
-    constructor(idChecklist: String) : this(Bundle().apply {
-        putString(EXTRA_ID_CUSTOM_CHECKLIST, idChecklist)
+    constructor(checklistId: String) : this(Bundle().apply {
+        putString(EXTRA_ID_CUSTOM_CHECKLIST, checklistId)
     })
 
     override fun onInject() {
@@ -88,7 +88,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     private fun submitChecklist() {
         if (adapter.getChecklistItems().isNotEmpty())
             presenter.submitInsertCustomChecklist(editChecklistTitle.text.toString(),
-                    idChecklist, adapter.getChecklistItems())
+                    checklistId, adapter.getChecklistItems())
     }
 
     private fun initDeleteChecklistItem(view: View) {

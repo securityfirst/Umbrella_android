@@ -34,11 +34,9 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
     private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
 
-
     constructor(checklist: Checklist) : this(Bundle().apply {
         putParcelable(EXTRA_CHECKLIST, checklist)
     })
-
 
     override fun onInject() {
         DaggerChecklistComponent.builder()
@@ -69,7 +67,6 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     private fun onDeleteChecklist(checklistItem: Content) = presenter.submitDeleteChecklistContent(checklistItem)
-
 
     private fun onChecklistItemClicked(checklistItem: Content) = presenter.submitInsertChecklistContent(checklistItem)
 

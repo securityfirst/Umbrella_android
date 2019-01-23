@@ -15,12 +15,19 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         BasePresenterImp<V, I>(interactor = interactor), ChecklistBasePresenter<V, I> {
 
 
-    override fun submitInsertCustomChecklist(checklistTitle: String, idChecklist: String,
+    override fun submitChecklist(checklistId: String) {
+        launchSilent(uiContext) {
+            val checklist = interactor?.fetchChecklist(checklistId)
+            checklist?.let { getView()?.getChecklist(it) }
+        }
+    }
+
+    override fun submitInsertCustomChecklist(checklistTitle: String, checklistId: String,
                                              checklistValue: List<String>) {
         launchSilent(uiContext) {
             interactor?.let {
                 val contents = mutableListOf<Content>()
-                val customChecklist = Checklist(contents, true, checklistTitle, idChecklist)
+                val customChecklist = Checklist(contents, true, checklistTitle, checklistId)
                 checklistValue.forEach { value ->
                     val content = Content(value)
                     content.checklist = customChecklist
@@ -39,11 +46,8 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
 
     override fun submitDeleteChecklist(checklist: Checklist) {
         launchSilent(uiContext) {
-            for (content in checklist.content) {
-                interactor?.deleteChecklistContent(content)
-            }
+            checklist.content.forEach { interactor?.deleteChecklistContent(it) }
             interactor?.deleteChecklist(checklist)
-
         }
     }
 
@@ -101,7 +105,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val difficultyId = checklist.difficulty?.id
                 if (difficultyId != null) {
                     val loadDifficulty = interactor.fetchDifficultyById(difficultyId)
-                    val subject = interactor.fetchSubjectById(loadDifficulty.subject!!.id)
+                    val subject = interactor.fetchSubjectById(loadDifficulty?.subject!!.id)
                     val dashboardItem = Dashboard.Item(checklist.progress, subject!!.title, checklist, loadDifficulty)
                     dashboards.add(dashboardItem)
                 }
