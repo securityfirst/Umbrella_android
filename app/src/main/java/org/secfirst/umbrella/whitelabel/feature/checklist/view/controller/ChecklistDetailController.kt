@@ -96,7 +96,8 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun getChecklist(checklist: Checklist) {
         this.checklist = checklist
-        val adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+        val adapter = ChecklistAdapter(checklistItemClick, checklistProgress)
+        adapter.addAll(checklist.content)
         setUpToolbar()
         checklistDetailRecyclerView?.initRecyclerView(adapter)
         val swipeHandler = object : SwipeToDeleteCallback(context) {

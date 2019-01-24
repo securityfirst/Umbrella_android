@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.data.database.checklist
 
+import android.os.Parcelable
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
-import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
@@ -56,7 +56,7 @@ fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
     this.forEach { checklist ->
         val checklists = mutableListOf<Checklist>()
         checklists.add(checklist)
-        val controller = ChecklistController(checklist)
+        val controller = ChecklistController(checklist.id)
         controllers.add(controller)
     }
     return controllers

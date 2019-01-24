@@ -15,9 +15,15 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 
-class ChecklistAdapter(private val checklistContent: MutableList<Content>,
-                       private val onItemChecked: (Content) -> Unit,
+class ChecklistAdapter(private val onItemChecked: (Content) -> Unit,
                        private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val checklistContent = mutableListOf<Content>()
+
+    fun addAll(contents: List<Content>) {
+        checklistContent.addAll(contents)
+        notifyDataSetChanged()
+    }
 
     fun removeAt(position: Int) {
         checklistContent.removeAt(position)
@@ -124,7 +130,7 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                     // show it
                     alertDialog.show()
                     true
-                    
+
                 }
             }
         }

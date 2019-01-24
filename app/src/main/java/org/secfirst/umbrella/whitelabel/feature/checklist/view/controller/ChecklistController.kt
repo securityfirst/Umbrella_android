@@ -32,10 +32,11 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private lateinit var adapter: ChecklistAdapter
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
-    private val checklist by lazy { args.getParcelable(EXTRA_CHECKLIST) as Checklist }
+    private lateinit var checklist: Checklist
+    private val checklistId by lazy { args.getString(ChecklistCustomController.EXTRA_ID_CUSTOM_CHECKLIST) }
 
-    constructor(checklist: Checklist) : this(Bundle().apply {
-        putParcelable(EXTRA_CHECKLIST, checklist)
+    constructor(checklistId: String) : this(Bundle().apply {
+        putString(ChecklistCustomController.EXTRA_ID_CUSTOM_CHECKLIST, checklistId)
     })
 
     override fun onInject() {
@@ -45,8 +46,16 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .inject(this)
     }
 
-    override fun onAttach(view: View) {
-        adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        checklistView = inflater.inflate(R.layout.checklist_view, container, false)
+        presenter.onAttach(this)
+        presenter.submitChecklist(checklistId)
+        adapter = ChecklistAdapter(checklistItemClick, checklistProgress)
+        initList()
+        return checklistView
+    }
+
+    private fun initList() {
         checklistRecyclerView?.initRecyclerView(adapter)
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -57,13 +66,6 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(checklistRecyclerView)
-
-        currentProgress()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        checklistView = inflater.inflate(R.layout.checklist_view, container, false)
-        return checklistView
     }
 
     private fun onDeleteChecklist(checklistItem: Content) = presenter.submitDeleteChecklistContent(checklistItem)
@@ -87,8 +89,10 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         presenter.submitUpdateChecklist(checklist)
     }
 
-    companion object {
-        const val EXTRA_CHECKLIST = "extra_checklist"
+    override fun getChecklist(checklist: Checklist) {
+        this.checklist = checklist
+        adapter.addAll(checklist.content)
+        currentProgress()
     }
 
     fun getTitle() = "Checklist"
