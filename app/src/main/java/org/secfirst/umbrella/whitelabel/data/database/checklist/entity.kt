@@ -11,7 +11,6 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
 
-
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Checklist(

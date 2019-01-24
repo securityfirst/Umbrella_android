@@ -142,5 +142,7 @@
     <string name="login_your_password">Log in with your password</string>
     <string name="login_error_reset_password">Fail to reset password.</string>
     <string name="bookemarks_title">Bookmarked</string>
+    <string name="checklist_edit_item">Edit checklist item</string>
+    <string name="checklist_add_item">Add checklist item</string>
 
 </resources>

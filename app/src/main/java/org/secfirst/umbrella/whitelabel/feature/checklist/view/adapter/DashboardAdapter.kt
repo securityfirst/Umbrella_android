@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_header.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
-import kotlinx.android.synthetic.main.editchecklistdialog.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
@@ -83,7 +83,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
             with(dashboardItem) {
                 checklist?.custom?.let {
                     itemView.setOnLongClickListener {
-                        val promptsView = LayoutInflater.from(itemView.context).inflate(R.layout.editchecklistdialog, null)
+                        val promptsView = LayoutInflater.from(itemView.context).inflate(R.layout.checklist_add_item_dialog, null)
                         val alertDialogBuilder = AlertDialog.Builder(itemView.context)
                         val userInput = promptsView.editChecklistItem
                         alertDialogBuilder

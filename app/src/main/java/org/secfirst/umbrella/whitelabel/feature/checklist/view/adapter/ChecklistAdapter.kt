@@ -1,12 +1,12 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.app.Dialog
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_item.view.*
 import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -15,13 +15,12 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 
-class ChecklistAdapter(private val onItemChecked: (Content) -> Unit,
+class ChecklistAdapter(private val checklistContent: MutableList<Content>,
+                       private val onItemChecked: (Content) -> Unit,
                        private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val checklistContent = mutableListOf<Content>()
-
-    fun addAll(contents: List<Content>) {
-        checklistContent.addAll(contents)
+    fun add(newContent: Content) {
+        checklistContent.add(newContent)
         notifyDataSetChanged()
     }
 
@@ -41,7 +40,8 @@ class ChecklistAdapter(private val onItemChecked: (Content) -> Unit,
 
     override fun getItemCount() = checklistContent.size
 
-    override fun getItemViewType(position: Int) = if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
+    override fun getItemViewType(position: Int) =
+            if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -78,7 +78,13 @@ class ChecklistAdapter(private val onItemChecked: (Content) -> Unit,
 
     class ChecklistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private lateinit var popupView: View
+        private var editView: View
+        private lateinit var editDialog: Dialog
+
+        init {
+            val inflater = LayoutInflater.from(itemView.context)
+            editView = inflater.inflate(R.layout.checklist_add_item_dialog, null)
+        }
 
         fun bind(currentContent: Content,
                  list: List<Content>,
@@ -88,51 +94,33 @@ class ChecklistAdapter(private val onItemChecked: (Content) -> Unit,
             itemView.checkItem.isChecked = currentContent.value
             itemView.checkItem.text = currentContent.check
 
-
-            with(currentContent) {
-                itemView.checkItem.setOnClickListener {
-                    value = itemView.checkItem.isChecked
-                    updateProgress(list.filter { item -> item.label.isEmpty() })
-                    onItemChecked(this@ChecklistHolder)
-                    onUpdateChecked(this@ChecklistHolder)
-                }
-
-                //Edit checklist item
-
-                itemView.segmentCardView.setOnLongClickListener {
-
-                    val li = LayoutInflater.from(itemView.context)
-                    val promptsView = li.inflate(R.layout.editchecklistdialog, null)
-
-                    val alertDialogBuilder = AlertDialog.Builder(itemView.context)
-
-                    // set prompts.xml to alertdialog builder
-                    alertDialogBuilder.setView(promptsView)
-
-                    val userInput = promptsView
-                            .findViewById(R.id.editChecklistItem) as EditText
-
-                    // set dialog message
-                    alertDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton(R.string.export_dialog_ok,
-                                    DialogInterface.OnClickListener { _, _ ->
-                                        itemView.checkItem.text = userInput.text.toString()
-                                        currentContent.check = userInput.text.toString()
-                                        onItemChecked(this@ChecklistHolder)
-                                    })
-                            .setNegativeButton(R.string.export_dialog_cancel,
-                                    DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
-
-                    // create alert dialog
-                    val alertDialog = alertDialogBuilder.create()
-
-                    // show it
-                    alertDialog.show()
-                    true
-
-                }
+            itemView.checkItem.setOnClickListener {
+                currentContent.value = itemView.checkItem.isChecked
+                updateProgress(list.filter { item -> item.label.isEmpty() })
+                onItemChecked(this@ChecklistHolder)
+                onUpdateChecked(this@ChecklistHolder)
             }
+            createEditItemAlert(currentContent, onItemChecked)
+            itemView.checklistCardItemView.setOnLongClickListener {
+                editDialog.show()
+                true
+            }
+        }
+
+        private fun createEditItemAlert(currentContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
+            val context = itemView.context
+            editDialog = AlertDialog.Builder(context)
+                    .setTitle(context.getString(R.string.checklist_edit_item))
+                    .setView(editView)
+                    .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                    .setPositiveButton(context.getString(R.string.ok)) { _, _ -> editContent(currentContent, onItemChecked) }
+                    .create()
+        }
+
+        private fun editContent(currentContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
+            itemView.checkItem.text = editView.editChecklistItem.text.toString()
+            currentContent.check = editView.editChecklistItem.text.toString()
+            onItemChecked(this@ChecklistHolder)
         }
 
         private fun updateProgress(list: List<Content>) {
@@ -140,7 +128,6 @@ class ChecklistAdapter(private val onItemChecked: (Content) -> Unit,
             percentage = Math.ceil(ratio * 100.0 / list.size)
         }
     }
-
 
     companion object {
         private var percentage = 0.0

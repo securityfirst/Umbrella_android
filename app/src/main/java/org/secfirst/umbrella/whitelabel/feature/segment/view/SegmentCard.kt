@@ -46,7 +46,7 @@ open class SegmentCard(private val onClickSegment: (Int) -> Unit,
         val height = displayMetrics.heightPixels
         val width = displayMetrics.widthPixels
         if (height <= SMALL_DEVICE_HEIGHT && width <= SMALL_DEVICE_WIDTH)
-            viewHolder.segmentCardView.layoutParams.width =
+            viewHolder.checklistCardItemView.layoutParams.width =
                     appContext().resources.getDimension(org.secfirst.umbrella.whitelabel.R.dimen.segment_item_small_width).toInt()
 
     }

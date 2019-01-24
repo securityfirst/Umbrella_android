@@ -50,13 +50,11 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         checklistView = inflater.inflate(R.layout.checklist_view, container, false)
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
-        adapter = ChecklistAdapter(checklistItemClick, checklistProgress)
-        initList()
+        initSwipeDelete()
         return checklistView
     }
 
-    private fun initList() {
-        checklistRecyclerView?.initRecyclerView(adapter)
+    private fun initSwipeDelete() {
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
@@ -91,7 +89,8 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     override fun getChecklist(checklist: Checklist) {
         this.checklist = checklist
-        adapter.addAll(checklist.content)
+        checklistRecyclerView?.initRecyclerView(adapter)
+        adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
         currentProgress()
     }
 

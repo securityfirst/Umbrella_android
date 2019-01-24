@@ -1,16 +1,17 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.DialogInterface
+import android.app.Dialog
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_detail_view.*
+import kotlinx.android.synthetic.main.checklist_detail_view.view.*
 import kotlinx.android.synthetic.main.form_progress.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -27,17 +28,20 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.Checkl
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
-
 @SuppressLint("SetTextI18n")
 class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private lateinit var checklistView: View
+    private lateinit var addView: View
+    private lateinit var addItemDialog: Dialog
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
     private lateinit var checklist: Checklist
     private val checklistId by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
+    private lateinit var adapter: ChecklistAdapter
+
 
     constructor(checklistId: String) : this(Bundle().apply {
         putString(EXTRA_ID_CUSTOM_CHECKLIST, checklistId)
@@ -54,32 +58,28 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
         disableNavigation()
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
-        checklistView = inflater.inflate(R.layout.checklist_detail_view, container, false)
+        addView = inflater.inflate(R.layout.checklist_add_item_dialog,
+                container, false)
+        checklistView = inflater.inflate(R.layout.checklist_detail_view,
+                container, false)
+        createInsertItemDialog()
+        checklistView.addNewItemChecklist.setOnClickListener { addItemDialog.show() }
+        setUpToolbar(checklistView)
         return checklistView
     }
 
-    private fun onDeleteChecklist(checklistItem: Content) = presenter.submitDeleteChecklistContent(checklistItem)
-
-    private fun onChecklistItemClicked(checklistItem: Content) = presenter.submitInsertChecklistContent(checklistItem)
-
-    private fun currentProgress() {
-        progressAnswer.progress = checklist.progress
-        titleProgressAnswer.text = "${checklist.progress}%"
-    }
-
-    private fun setUpToolbar() {
-        checklistDetailToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            mainActivity.supportActionBar?.title = getTitle()
+    private fun initSwipeDelete() {
+        val swipeHandler = object : SwipeToDeleteCallback(context) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                onDeleteChecklist(adapter.getChecklistItem(position))
+                adapter.removeAt(position)
+                onUpdateChecklistProgress(Math.ceil(checklist.content.filter
+                { it.value }.size * 100.0 / checklist.content.size).toInt())
+            }
         }
-    }
-
-    private fun onChecklistUpdated(checklist: Checklist) = presenter.submitUpdateChecklist(checklist)
-
-    override fun onDestroy() {
-        super.onDestroy()
-        enableNavigation()
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(checklistDetailRecyclerView)
     }
 
     private fun onUpdateChecklistProgress(percentage: Int) {
@@ -96,57 +96,54 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun getChecklist(checklist: Checklist) {
         this.checklist = checklist
-        val adapter = ChecklistAdapter(checklistItemClick, checklistProgress)
-        adapter.addAll(checklist.content)
-        setUpToolbar()
+        adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
         checklistDetailRecyclerView?.initRecyclerView(adapter)
-        val swipeHandler = object : SwipeToDeleteCallback(context) {
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-                onDeleteChecklist(adapter.getChecklistItem(position))
-                adapter.removeAt(position)
-                onUpdateChecklistProgress(Math.ceil(checklist.content.filter { it.value }.size * 100.0 / checklist.content.size).toInt())
-            }
-        }
-        val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(checklistDetailRecyclerView)
+        initSwipeDelete()
         currentProgress()
+        if (checklist.custom) addNewItemChecklist.visibility = View.VISIBLE
+    }
 
-        if (checklist.custom) {
-            addNewItemChecklist.visibility = View.VISIBLE
+    private fun createInsertItemDialog() {
+        addItemDialog = AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.checklist_add_item))
+                .setView(addView)
+                .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(context.getString(R.string.ok)) { _, _ -> addNewContent() }
+                .create()
+    }
+
+
+    private fun addNewContent() {
+        val newItem = addView.editChecklistItem.text.toString()
+        adapter.add(Content(check = newItem, checklist = checklist))
+        onChecklistUpdated(checklist)
+    }
+
+    private fun setUpToolbar(view: View) {
+        view.checklistDetailToolbar.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mainActivity.supportActionBar?.title = getTitle()
         }
+    }
 
-        //add new checklist item
-        addNewItemChecklist.setOnClickListener {
+    private fun onChecklistUpdated(checklist: Checklist) =
+            presenter.submitUpdateChecklist(checklist)
 
-            val li = LayoutInflater.from(context)
-            val promptsView = li.inflate(R.layout.editchecklistdialog, null)
+    private fun onDeleteChecklist(checklistItem: Content) =
+            presenter.submitDeleteChecklistContent(checklistItem)
 
-            val alertDialogBuilder = AlertDialog.Builder(context)
+    private fun onChecklistItemClicked(checklistItem: Content) =
+            presenter.submitInsertChecklistContent(checklistItem)
 
-            // set prompts.xml to alertdialog builder
-            alertDialogBuilder.setView(promptsView)
+    private fun currentProgress() {
+        progressAnswer.progress = checklist.progress
+        titleProgressAnswer.text = "${checklist.progress}%"
+    }
 
-            val userInput = promptsView
-                    .findViewById(R.id.editChecklistItem) as EditText
-
-            // set dialog message
-            alertDialogBuilder
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.export_dialog_ok,
-                            DialogInterface.OnClickListener { _, _ ->
-                                checklist.content.add(Content(check = userInput.text.toString(), checklist = checklist))
-                                onChecklistUpdated(checklist)
-                            })
-                    .setNegativeButton(R.string.export_dialog_cancel,
-                            DialogInterface.OnClickListener { dialog, _ -> dialog.cancel() })
-
-            // create alert dialog
-            val alertDialog = alertDialogBuilder.create()
-
-            // show it
-            alertDialog.show()
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        enableNavigation()
     }
 
     private fun getTitle() = context.getString(R.string.checklistDetail_title)

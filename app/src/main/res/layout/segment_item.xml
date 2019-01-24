@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/segmentCardView"
+    android:id="@+id/checklistCardItemView"
     android:layout_width="@dimen/segment_item_width"
     android:layout_height="@dimen/segment_item_height"
     android:layout_gravity="center"

@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -90,6 +91,27 @@ fun Spinner.init(array: Int) {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.adapter = adapter
     }
+}
+
+fun View.canTextInput(): Boolean {
+    var view = this
+
+    if (view.onCheckIsTextEditor())
+        return true
+
+    if (view !is ViewGroup)
+        return false
+
+    val vg = view
+    var i = vg.childCount
+    while (i > 0) {
+        i--
+        view = vg.getChildAt(i)
+        if (view.canTextInput()) {
+            return true
+        }
+    }
+    return false
 }
 
 
