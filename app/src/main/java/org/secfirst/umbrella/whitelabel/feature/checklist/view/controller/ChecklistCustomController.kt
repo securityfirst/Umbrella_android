@@ -25,7 +25,6 @@ import javax.inject.Inject
 
 class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
-
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private val checklistId by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
@@ -47,17 +46,12 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
         disableNavigation()
     }
 
-    override fun onDestroyView(view: View) {
-        enableNavigation()
-        submitChecklist()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.checklist_custom_view, container, false)
         presenter.onAttach(this)
         adapter = ChecklistCustomAdapter()
         view.checklistCustomRecyclerView.initRecyclerView(adapter)
-        view.addChecklistItem.setOnClickListener { addChecklistItem() }
+        view.addChecklistItem.setOnClickListener { validateChecklistItemIsEmpty() }
         enterAction(view)
         initDeleteChecklistItem(view)
         return view
@@ -66,7 +60,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     private fun enterAction(view: View) {
         view.checklistContent?.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
-                addChecklistItem()
+                validateChecklistItemIsEmpty()
                 return@setOnKeyListener true
             }
             false
@@ -110,6 +104,21 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
             mainActivity.supportActionBar?.title = context.getString(R.string.custom_checklist_title)
         }
+    }
+
+    private fun validateChecklistItemIsEmpty(): Boolean {
+        return if (checklistContent?.text.toString().isNotBlank()) {
+            addChecklistItem()
+            true
+        } else {
+            checklistContent?.error = context.getString(R.string.checklist_custom_empty_item_error_message)
+            false
+        }
+    }
+
+    override fun onDestroyView(view: View) {
+        enableNavigation()
+        submitChecklist()
     }
 
     override fun handleBack(): Boolean {

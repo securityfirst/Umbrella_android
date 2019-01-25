@@ -112,7 +112,7 @@
     <string name="checklist_dialog_disable">DISABLE</string>
     <string name="custom_checklist_hint_add_checklistItem">Add checklist item</string>
     <string name="custom_checklist_hint_add_checklistTitle">Add checklist title</string>
-    <string name="custom_checklist_title">Your checklists</string>
+    <string name="custom_checklist_title">Your checklist</string>
     <string name="export_lesson">Export lesson</string>
     <string name="export_button">EXPORT</string>
     <string name="password_one_digit">Password must have at least one digit</string>
@@ -148,5 +148,6 @@
     <string name="settings_label_skip_pw">Don’t ask for password again</string>
     <string name="settings_title_skip_pw">Skip password</string>
     <string name="settings_general_title">General</string>
+    <string name="checklist_custom_empty_item_error_message">The item shouldn\'t be blank</string>
 
 </resources>
