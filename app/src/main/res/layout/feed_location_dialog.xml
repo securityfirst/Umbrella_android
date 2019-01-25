@@ -37,7 +37,7 @@
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
             <android.support.v7.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/autocompleteLocation"
+                android:id="@+id/location"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

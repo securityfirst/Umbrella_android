@@ -114,7 +114,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         presenter.submitSkippPassword()
         presenter.prepareView()
         initExportGroup()
-        feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
+        feedLocationDialog = FeedLocationDialog(feedLocationView, this)
 
         return mainView
     }

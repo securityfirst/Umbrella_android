@@ -12,13 +12,11 @@ import kotlinx.android.synthetic.main.feed_location_dialog.view.*
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
-import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 
 class FeedLocationDialog(private val feedLocationView: View,
-                         private val controller: BaseController,
                          private val feedLocationListener: FeedLocationListener) {
 
     private lateinit var locationInfo: LocationInfo
@@ -40,9 +38,9 @@ class FeedLocationDialog(private val feedLocationView: View,
 
     private fun startAutocompleteLocation() {
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, listOf())
-        feedLocationView.autocompleteLocation.autocompleteLocation.threshold = 2
-        feedLocationView.autocompleteLocation.autocompleteLocation.setAdapter(adapter)
-        feedLocationView.autocompleteLocation.addTextChangedListener(object : TextWatcher {
+        feedLocationView.location.`@+id/location`.threshold = 2
+        feedLocationView.location.`@+id/location`.setAdapter(adapter)
+        feedLocationView.location.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -61,7 +59,7 @@ class FeedLocationDialog(private val feedLocationView: View,
     }
 
     private fun feedLocationOk() {
-        val newLocation = feedLocationView.autocompleteLocation.text.toString()
+        val newLocation = feedLocationView.location.text.toString()
         if (newLocation.isNotBlank()) {
             val feedLocation = FeedLocation(1, newLocation, locationInfo.countryCode)
             feedLocationListener.onLocationSuccess(feedLocation)
@@ -72,7 +70,7 @@ class FeedLocationDialog(private val feedLocationView: View,
     private fun updateAddress(locationInfo: LocationInfo) {
         this.locationInfo = locationInfo
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, locationInfo.locationNames)
-        feedLocationView.autocompleteLocation.setAdapter(adapter)
+        feedLocationView.location.setAdapter(adapter)
     }
 
 

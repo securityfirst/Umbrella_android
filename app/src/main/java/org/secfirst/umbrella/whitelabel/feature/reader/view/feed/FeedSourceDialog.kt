@@ -7,8 +7,8 @@ import kotlinx.android.synthetic.main.alert_control.view.*
 import org.jetbrains.anko.AnkoContext
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 
-class FeedSourceDialog(private val feedSources: List<FeedSource>,
-                       private val context: Context,
+class FeedSourceDialog(feedSources: List<FeedSource>,
+                       context: Context,
                        private val listener: FeedSourceListener) {
 
     private var feedSourceAlertDialog: AlertDialog

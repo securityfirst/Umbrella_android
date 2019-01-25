@@ -92,7 +92,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         mainView.setLocation.setOnClickListener { onClickFeedLocation() }
         mainView.setFeedSource.setOnClickListener { onClickFeedSource() }
 
-        feedLocationDialog = FeedLocationDialog(feedLocationView, this, this)
+        feedLocationDialog = FeedLocationDialog(feedLocationView, this)
         return mainView
     }
 
@@ -198,9 +198,9 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         if (feedLocation.location.isNotBlank()) {
             this.feedLocation = feedLocation
             feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
-            feedLocationView.autocompleteLocation.setText(feedLocation.location)
+            feedLocationView.location.setText(feedLocation.location)
             feedViewLocation?.text = feedLocation.location
-            feedLocationView.autocompleteLocation.setSelection(feedLocation.location.length)
+            feedLocationView.location.setSelection(feedLocation.location.length)
         }
     }
 
