@@ -2,7 +2,6 @@ package org.secfirst.umbrella.whitelabel.feature.account.view
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
@@ -236,14 +235,15 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         presenter.submitFeedLocation(feedLocation)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun prepareFeedSource(feedSources: List<FeedSource>) {
-        if (feedSources.any { it.lastChecked }) mainView.settingsLabelFeedSource.text = ""
-        feedSources
-                .filter { it.lastChecked }
-                .forEach {
-                    mainView.settingsLabelFeedSource.text = "${mainView.settingsLabelFeedSource.text} " + it.name
-                }
+        if (!feedSources.any { it.lastChecked })
+            mainView.settingsLabelFeedSource.text = context.getText(R.string.settings_security_feed_sources)
+
+        val checkedSources = mutableListOf<String>()
+        feedSources.filter { it.lastChecked }.forEach { checkedSources.add(it.name) }
+
+        if (checkedSources.joinToString(" , ").isNotBlank())
+            mainView.settingsLabelFeedSource.text = checkedSources.joinToString(" , ")
     }
 
     private fun setUpToolbar() {

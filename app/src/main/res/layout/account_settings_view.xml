@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="General"
+                android:text="@string/settings_general_title"
                 android:textColor="#009789"
                 android:textSize="14sp"
                 android:textStyle="normal" />
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
-                    android:text="Skip password"
+                    android:text="@string/settings_title_skip_pw"
                     android:textColor="#de000000"
                     android:textSize="16sp"
                     android:textStyle="normal" />
@@ -75,7 +75,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="6sp"
-                android:text="Don’t ask for password again"
+                android:text="@string/settings_label_skip_pw"
                 android:textColor="#8b000000"
                 android:textSize="14sp"
                 android:textStyle="normal" />
@@ -298,7 +298,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:fontFamily="sans-serif-medium"
-                android:text="Notification"
+                android:text="@string/settings_title_notification"
                 android:textColor="#009789"
                 android:textSize="14sp"
                 android:textStyle="normal" />
