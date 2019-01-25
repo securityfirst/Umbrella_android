@@ -18,8 +18,6 @@ import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
-import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
-import org.secfirst.umbrella.whitelabel.component.FeedSourceDialog
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource

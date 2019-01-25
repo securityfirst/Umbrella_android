@@ -26,8 +26,6 @@ import org.secfirst.umbrella.whitelabel.BuildConfig
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
-import org.secfirst.umbrella.whitelabel.component.FeedLocationDialog
-import org.secfirst.umbrella.whitelabel.component.FeedSourceDialog
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
@@ -38,6 +36,8 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.reader.view.feed.FeedLocationDialog
+import org.secfirst.umbrella.whitelabel.feature.reader.view.feed.FeedSourceDialog
 import org.secfirst.umbrella.whitelabel.feature.tent.TentView
 import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.tent.presenter.TentBasePresenter

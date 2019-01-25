@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.component
+package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
 import android.support.v4.content.ContextCompat
 import android.view.View
