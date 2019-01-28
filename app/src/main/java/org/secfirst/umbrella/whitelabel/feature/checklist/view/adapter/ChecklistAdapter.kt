@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_item.view.*
 import kotlinx.android.synthetic.main.head_section.view.*
@@ -84,6 +85,7 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
         init {
             val inflater = LayoutInflater.from(itemView.context)
             editView = inflater.inflate(R.layout.checklist_add_item_dialog, null)
+            editView.title.text = itemView.context.getString(R.string.checklist_edit_item_title)
         }
 
         fun bind(currentContent: Content,
@@ -110,17 +112,17 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
         private fun createEditItemAlert(currentContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
             val context = itemView.context
             editDialog = AlertDialog.Builder(context)
-                    .setTitle(context.getString(R.string.checklist_edit_item))
                     .setView(editView)
-                    .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-                    .setPositiveButton(context.getString(R.string.ok)) { _, _ -> editContent(currentContent, onItemChecked) }
                     .create()
+            editView.alertControlOk.setOnClickListener { editContent(currentContent, onItemChecked) }
+            editView.alertControlCancel.setOnClickListener { editDialog.dismiss() }
         }
 
         private fun editContent(currentContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
             itemView.checkItem.text = editView.editChecklistItem.text.toString()
             currentContent.check = editView.editChecklistItem.text.toString()
             onItemChecked(this@ChecklistHolder)
+            editDialog.dismiss()
         }
 
         private fun updateProgress(list: List<Content>) {

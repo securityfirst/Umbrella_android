@@ -29,7 +29,6 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private val dashboardItemClick: (Checklist?) -> Unit = this::onDashboardItemClicked
     private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
     private lateinit var adapter: DashboardAdapter
-    private val dashboardItemUpdated: (Checklist)-> Unit = this::onChecklistItemUpdated
 
     constructor(isCustomBoard: Boolean) : this(Bundle().apply {
         putBoolean(EXTRA_IS_CUSTOM_BOARD, isCustomBoard)
@@ -81,7 +80,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist.id)))
     }
 
-    private fun onChecklistItemUpdated(checklist:Checklist) = presenter.submitUpdateChecklist(checklist)
+    private fun onChecklistItemUpdated(checklist: Checklist) = presenter.submitUpdateChecklist(checklist)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.checklist_dashboard, container, false)
@@ -95,7 +94,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
-        adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemUpdated)
+        adapter = DashboardAdapter(dashboards, dashboardItemClick)
         checklistDashboardRecyclerView?.initRecyclerView(adapter)
     }
 

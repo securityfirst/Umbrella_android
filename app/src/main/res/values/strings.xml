@@ -143,11 +143,13 @@
     <string name="login_error_reset_password">Fail to reset password.</string>
     <string name="bookemarks_title">Bookmarked</string>
     <string name="checklist_edit_item">Edit checklist item</string>
-    <string name="checklist_add_item">Add checklist item</string>
     <string name="settings_title_notification">Notification</string>
     <string name="settings_label_skip_pw">Don’t ask for password again</string>
     <string name="settings_title_skip_pw">Skip password</string>
     <string name="settings_general_title">General</string>
     <string name="checklist_custom_empty_item_error_message">The item shouldn\'t be blank</string>
+    <string name="checklist_add_item_message">Item added successfully.</string>
+    <string name="checklist_edit_item_title">Edit checklist item</string>
+    <string name="checklist_add_item_title">Add checklist item</string>
 
 </resources>

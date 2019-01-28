@@ -9,10 +9,12 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_detail_view.*
 import kotlinx.android.synthetic.main.checklist_detail_view.view.*
 import kotlinx.android.synthetic.main.form_progress.*
+import org.jetbrains.anko.design.snackbar
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
@@ -34,14 +36,13 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private lateinit var checklistView: View
-    private lateinit var addView: View
+    private lateinit var checklistDialogView: View
     private lateinit var addItemDialog: Dialog
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
     private lateinit var checklist: Checklist
     private val checklistId by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
     private lateinit var adapter: ChecklistAdapter
-
 
     constructor(checklistId: String) : this(Bundle().apply {
         putString(EXTRA_ID_CUSTOM_CHECKLIST, checklistId)
@@ -58,12 +59,16 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
         disableNavigation()
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
-        addView = inflater.inflate(R.layout.checklist_add_item_dialog,
+        checklistDialogView = inflater.inflate(R.layout.checklist_add_item_dialog,
                 container, false)
         checklistView = inflater.inflate(R.layout.checklist_detail_view,
                 container, false)
         createInsertItemDialog()
+
+        checklistDialogView.alertControlOk.setOnClickListener { addNewContent() }
+        checklistDialogView.alertControlCancel.setOnClickListener { addItemDialog.dismiss() }
         checklistView.addNewItemChecklist.setOnClickListener { addItemDialog.show() }
+
         setUpToolbar(checklistView)
         return checklistView
     }
@@ -105,18 +110,21 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
 
     private fun createInsertItemDialog() {
         addItemDialog = AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.checklist_add_item))
-                .setView(addView)
-                .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton(context.getString(R.string.ok)) { _, _ -> addNewContent() }
+                .setView(checklistDialogView)
                 .create()
     }
 
-
     private fun addNewContent() {
-        val newItem = addView.editChecklistItem.text.toString()
-        adapter.add(Content(check = newItem, checklist = checklist))
-        onChecklistUpdated(checklist)
+        val newItem = checklistDialogView.editChecklistItem.text.toString()
+        if (newItem.isNotBlank()) {
+            adapter.add(Content(check = newItem, checklist = checklist))
+            onChecklistUpdated(checklist)
+            checklistDialogView.editChecklistItem.setText("")
+            checklistView.snackbar(context.getString(R.string.checklist_add_item_message))
+        } else {
+            checklistDialogView.editChecklistItem.error =
+                    context.getString(R.string.checklist_custom_empty_item_error_message)
+        }
     }
 
     private fun setUpToolbar(view: View) {
