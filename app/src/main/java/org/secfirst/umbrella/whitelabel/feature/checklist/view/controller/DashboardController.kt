@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
@@ -26,9 +27,10 @@ import javax.inject.Inject
 class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistView {
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
-    private val dashboardItemClick: (Checklist?) -> Unit = this::onDashboardItemClicked
+    private val dashboardItemClick: (Checklist) -> Unit = this::onDashboardItemClicked
     private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
     private lateinit var adapter: DashboardAdapter
+    private val dashboardItemOnLongClick: (Checklist, Int) -> Unit = this::onDashboardItemLongClicked
 
     constructor(isCustomBoard: Boolean) : this(Bundle().apply {
         putBoolean(EXTRA_IS_CUSTOM_BOARD, isCustomBoard)
@@ -42,8 +44,14 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     }
 
-    override fun onAttach(view: View) {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        val view = inflater.inflate(R.layout.checklist_dashboard, container, false)
+        view.addNewChecklist.setOnClickListener { addNewChecklist() }
         presenter.onAttach(this)
+        return view
+    }
+
+    override fun onAttach(view: View) {
         checkWorkflow()
     }
 
@@ -75,17 +83,20 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             presenter.submitLoadDashboard()
     }
 
-    private fun onDashboardItemClicked(checklist: Checklist?) {
-        if (checklist != null)
-            parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist.id)))
+    private fun onDashboardItemClicked(checklist: Checklist) {
+        parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist.id)))
     }
 
-    private fun onChecklistItemUpdated(checklist: Checklist) = presenter.submitUpdateChecklist(checklist)
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val view = inflater.inflate(R.layout.checklist_dashboard, container, false)
-        view.addNewChecklist.setOnClickListener { addNewChecklist() }
-        return view
+    private fun onDashboardItemLongClicked(checklist: Checklist, position: Int) {
+        AlertDialog.Builder(context)
+                .setTitle(context.getString(R.string.checklist_delete_item))
+                .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton(context.getString(R.string.ok)) { _, _ ->
+                    presenter.submitDeleteChecklist(checklist)
+                    adapter.removeAt(position)
+                }
+                .create()
+                .show()
     }
 
     private fun addNewChecklist() {
@@ -94,7 +105,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
-        adapter = DashboardAdapter(dashboards, dashboardItemClick)
+        adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemOnLongClick)
         checklistDashboardRecyclerView?.initRecyclerView(adapter)
     }
 

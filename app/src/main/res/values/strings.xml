@@ -143,6 +143,7 @@
     <string name="login_error_reset_password">Fail to reset password.</string>
     <string name="bookemarks_title">Bookmarked</string>
     <string name="checklist_edit_item">Edit checklist item</string>
+    <string name="checklist_delete_item">Delete checklist</string>
     <string name="settings_title_notification">Notification</string>
     <string name="settings_label_skip_pw">Don’t ask for password again</string>
     <string name="settings_title_skip_pw">Skip password</string>

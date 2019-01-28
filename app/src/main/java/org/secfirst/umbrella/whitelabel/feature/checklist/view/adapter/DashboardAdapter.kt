@@ -15,7 +15,8 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 @SuppressLint("SetTextI18n")
 class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
-                       private val onDashboardItemClicked: (Checklist?) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onDashboardItemClicked: (Checklist) -> Unit,
+                       private val onDashboardItemLongClicked: (Checklist, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
@@ -50,7 +51,8 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
             holder.bind(dashboardItems[position].title)
         } else {
             holder as DashboardHolder
-            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist) })
+            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },
+                    longClickListener = { onDashboardItemLongClicked(dashboardItems[position].checklist!!, position) })
         }
     }
 
@@ -62,13 +64,19 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
     class DashboardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit) {
+        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit,
+                 longClickListener: (DashboardHolder) -> Unit) {
+
             with(dashboardItem) {
                 itemView.itemLabel.text = if (difficulty?.title != null) {
                     label + " - " + difficulty?.title
                 } else label
                 itemView.itemPercentage.text = "$progress%"
                 itemView.setOnClickListener { clickListener(this@DashboardHolder) }
+                itemView.setOnLongClickListener {
+                    longClickListener(this@DashboardHolder)
+                    true
+                }
             }
         }
     }
