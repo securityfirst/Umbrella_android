@@ -89,8 +89,8 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     override fun getChecklist(checklist: Checklist) {
         this.checklist = checklist
-        checklistRecyclerView?.initRecyclerView(adapter)
         adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+        checklistRecyclerView?.initRecyclerView(adapter)
         currentProgress()
     }
 
