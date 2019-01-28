@@ -28,17 +28,13 @@ interface ReaderBaseInteractor : BaseInteractor {
 
     suspend fun deleteLocation()
 
-    suspend fun doRSsCall(url: String): Deferred<ResponseBody>
+    suspend fun doRSsCallAsync(url: String): Deferred<ResponseBody>
 
     suspend fun fetchRefreshInterval(): Int
 
     suspend fun putRefreshInterval(position: Int): Boolean
 
-    suspend fun doFeedCall(countryCode: String, source: String, since: String): Deferred<ResponseBody>
-
-    fun isSkipPassword(): Boolean
-
-    fun setSkipPassword(value: Boolean): Boolean
+    suspend fun doFeedCallAsync(countryCode: String, source: String, since: String): Deferred<ResponseBody>
 
     suspend fun applyChangeDatabaseAccess(userToken: String): Boolean
 

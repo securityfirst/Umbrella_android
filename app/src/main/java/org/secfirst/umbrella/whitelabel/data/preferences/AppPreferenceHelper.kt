@@ -13,10 +13,15 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
         private const val EXTRA_REFRESH_INTERVAL = "refresh_interval"
         private const val EXTRA_SKIP_PASSWORD = "skip_password"
         private const val UPDATE_CONTENT = "update_content"
+        private const val STATE_PW_BANNER = "pw_banner"
         const val EXTRA_MASK_APP = "mask_app"
         const val PREF_NAME = "umbrella.preference"
         const val EXTRA_LOGGED_IN = "is_logged_in"
     }
+
+    override fun enablePasswordBanner(enableBanner: Boolean) = prefs.edit().putBoolean(STATE_PW_BANNER, enableBanner).commit()
+
+    override fun isPasswordBanner() = prefs.getBoolean(STATE_PW_BANNER, false)
 
     override fun cleanPreferences() = prefs.edit().clear().commit()
 
@@ -65,4 +70,8 @@ interface PreferenceHelper {
     fun getShaId(): String
 
     fun cleanPreferences(): Boolean
+
+    fun isPasswordBanner(): Boolean
+
+    fun enablePasswordBanner(enableBanner: Boolean): Boolean
 }

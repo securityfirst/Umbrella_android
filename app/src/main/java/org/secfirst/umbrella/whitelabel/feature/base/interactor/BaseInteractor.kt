@@ -4,5 +4,13 @@ interface BaseInteractor {
 
     fun isUserLoggedIn(): Boolean
 
-    suspend fun resetContent() : Boolean
+    fun setLoggedIn(isLogged: Boolean): Boolean
+
+    fun enablePasswordBanner(enableBanner: Boolean): Boolean
+
+    fun setSkipPassword(isSkip: Boolean): Boolean
+
+    fun isSkippPassword(): Boolean
+
+    suspend fun resetContent(): Boolean
 }

@@ -33,7 +33,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     }
 
     override fun isSkipPassword() {
-        val res = interactor?.isSkipPassword() ?: false
+        val res = interactor?.isSkippPassword() ?: false
         getView()?.isSkipPassword(res)
     }
 
@@ -56,7 +56,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         interactor?.let {
             launchSilent(uiContext) {
                 try {
-                    val feedResponseBody = it.doFeedCall(feedLocation.iso2,
+                    val feedResponseBody = it.doFeedCallAsync(feedLocation.iso2,
                             getSelectedFeedSources(feedSources), "0").await()
                     val feedItemResponse = Gson()
                             .fromJson(feedResponseBody.string(), Array<FeedItemResponse>::class.java)
@@ -127,7 +127,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         interactor?.let {
             rssList.forEach { rssIt ->
                 try {
-                    val responseBody = it.doRSsCall(rssIt.url_).await()
+                    val responseBody = it.doRSsCallAsync(rssIt.url_).await()
                     val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
                     rssResult.add(feed.updateRSS(rssIt))
                 } catch (exception: Exception) {
@@ -141,7 +141,7 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
     private suspend fun processRss(rss: RSS): RSS? {
         interactor?.let {
             try {
-                val responseBody = it.doRSsCall(rss.url_).await()
+                val responseBody = it.doRSsCallAsync(rss.url_).await()
                 val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
                 return feed.updateRSS(rss)
             } catch (exception: Exception) {

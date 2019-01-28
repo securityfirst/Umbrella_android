@@ -38,8 +38,8 @@ class FeedLocationDialog(private val feedLocationView: View,
 
     private fun startAutocompleteLocation() {
         val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, listOf())
-        feedLocationView.location.`@+id/location`.threshold = 2
-        feedLocationView.location.`@+id/location`.setAdapter(adapter)
+        feedLocationView.location.threshold = 2
+        feedLocationView.location.setAdapter(adapter)
         feedLocationView.location.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}

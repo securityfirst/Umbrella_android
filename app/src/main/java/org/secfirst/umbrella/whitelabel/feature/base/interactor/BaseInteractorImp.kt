@@ -25,5 +25,13 @@ open class BaseInteractorImp() : BaseInteractor {
         return res
     }
 
+    override fun setSkipPassword(isSkip: Boolean) = preferenceHelper.setSkipPassword(isSkip)
+
+    override fun isSkippPassword(): Boolean = preferenceHelper.getSkipPassword()
+
+    override fun enablePasswordBanner(enableBanner: Boolean) = preferenceHelper.enablePasswordBanner(enableBanner)
+
     override fun isUserLoggedIn() = preferenceHelper.isLoggedIn()
+
+    override fun setLoggedIn(isLogged: Boolean) = preferenceHelper.setLoggedIn(isLogged)
 }

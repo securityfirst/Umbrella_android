@@ -28,10 +28,6 @@ class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
         return res
     }
 
-    override fun setSkipPassword(value: Boolean) = preferenceHelper.setSkipPassword(value)
-
-    override fun isSkipPassword() = preferenceHelper.getSkipPassword()
-
     override suspend fun deleteLocation() = readerRepo.deleteLocation()
 
     override suspend fun fetchRefreshInterval() = preferenceHelper.getRefreshInterval()
@@ -48,11 +44,11 @@ class ReaderInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun insertAllRss(rssList: List<RSS>) = readerRepo.saveAllRss(rssList)
 
-    override suspend fun doRSsCall(url: String): Deferred<ResponseBody> = apiHelper.getRss(url)
+    override suspend fun doRSsCallAsync(url: String): Deferred<ResponseBody> = apiHelper.getRss(url)
 
-    override suspend fun doFeedCall(countryCode: String,
-                                    source: String,
-                                    since: String) = apiHelper.getFeedList(countryCode, source, since)
+    override suspend fun doFeedCallAsync(countryCode: String,
+                                         source: String,
+                                         since: String) = apiHelper.getFeedList(countryCode, source, since)
 
     override suspend fun deleteRss(rss: RSS) = readerRepo.delete(rss)
 
