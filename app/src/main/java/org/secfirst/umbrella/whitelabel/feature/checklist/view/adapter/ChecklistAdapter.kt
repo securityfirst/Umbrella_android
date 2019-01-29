@@ -96,7 +96,6 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
             itemView.checkItem.isChecked = currentContent.value
             itemView.itemTitle.text = currentContent.check
 
-            itemView.itemTitle.setOnClickListener {}
             itemView.checkItem.setOnClickListener {
                 currentContent.value = itemView.checkItem.isChecked
                 updateProgress(list.filter { item -> item.label.isEmpty() })
@@ -104,6 +103,10 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                 onUpdateChecked(this@ChecklistHolder)
             }
             createEditItemAlert(currentContent, onItemChecked)
+            itemView.itemTitle.setOnLongClickListener {
+                editDialog.show()
+                true
+            }
             itemView.checklistCardItemView.setOnLongClickListener {
                 editDialog.show()
                 true
