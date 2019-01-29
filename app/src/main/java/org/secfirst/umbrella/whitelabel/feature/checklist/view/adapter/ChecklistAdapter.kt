@@ -94,8 +94,9 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                  onUpdateChecked: (ChecklistHolder) -> Unit) {
 
             itemView.checkItem.isChecked = currentContent.value
-            itemView.checkItem.text = currentContent.check
+            itemView.itemTitle.text = currentContent.check
 
+            itemView.itemTitle.setOnClickListener {}
             itemView.checkItem.setOnClickListener {
                 currentContent.value = itemView.checkItem.isChecked
                 updateProgress(list.filter { item -> item.label.isEmpty() })
