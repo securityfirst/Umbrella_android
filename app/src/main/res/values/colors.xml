@@ -30,5 +30,6 @@
     <color name="feed_list_site_name">#828282</color>
     <color name="coachmark_background_dark">#BB000000</color>
     <color name="hands_shake_info_text_color">#9b9b9b</color>
+    <color name="black_38">#4a4a4a</color>
 
 </resources>

@@ -13,8 +13,8 @@
         android:layout_marginBottom="2dp"
         android:background="@color/light_white"
         android:padding="2dp"
-        card_view:contentPadding="5dp"
-        card_view:cardCornerRadius="2dp">
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="5dp">
 
         <CheckBox
             android:id="@+id/checkItem"
@@ -34,7 +34,11 @@
             android:layout_marginStart="45dp"
             android:layout_marginLeft="45dp"
             android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
             android:padding="2dp"
+            android:textColor="@color/black_38"
+            android:textSize="16sp"
+            android:textStyle="normal"
             tools:text="Understand local kidnapping threat" />
 
     </android.support.v7.widget.CardView>
