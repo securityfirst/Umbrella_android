@@ -8,8 +8,7 @@
     android:layout_gravity="center"
     android:background="@color/light_white"
     card_view:cardCornerRadius="@dimen/segment_item_corner_radius"
-    card_view:cardUseCompatPadding="true"
-    card_view:contentPadding="@dimen/segment_item_small_padding">
+    card_view:cardUseCompatPadding="true">
 
     <FrameLayout
         android:id="@+id/segmentLayout"
@@ -43,9 +42,9 @@
             android:lineSpacingExtra="0sp"
             android:maxLines="3"
             android:textColor="@color/ms_white"
-            android:textSize="@dimen/text_size_larger"
+            android:textSize="@dimen/text_size_smaller"
             android:textStyle="normal"
-            tools:text="Tips on using encryption safely" />
+            tools:text="Eavesdropping" />
     </FrameLayout>
 
     <LinearLayout

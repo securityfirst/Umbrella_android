@@ -7,6 +7,7 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.segment_item.*
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.windowManager
+import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.misc.SMALL_DEVICE_HEIGHT
 import org.secfirst.umbrella.whitelabel.misc.SMALL_DEVICE_WIDTH
@@ -19,9 +20,9 @@ open class SegmentCard(private val onClickSegment: (Int) -> Unit,
                        private val markdown: Markdown) : Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        val colours = intArrayOf(org.secfirst.umbrella.whitelabel.R.color.umbrella_purple,
-                org.secfirst.umbrella.whitelabel.R.color.umbrella_green,
-                org.secfirst.umbrella.whitelabel.R.color.umbrella_yellow)
+        val colours = intArrayOf(R.color.umbrella_purple,
+                R.color.umbrella_green,
+                R.color.umbrella_yellow)
 
         viewHolder.segmentFavorite.isChecked = markdown.favorite
         viewHolder.segmentFavorite.setOnClickListener {
@@ -51,5 +52,5 @@ open class SegmentCard(private val onClickSegment: (Int) -> Unit,
 
     }
 
-    override fun getLayout() = org.secfirst.umbrella.whitelabel.R.layout.segment_item
+    override fun getLayout() = R.layout.segment_item
 }

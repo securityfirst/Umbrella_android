@@ -78,7 +78,7 @@
     <dimen name="segment_item_index_margin_top">10dp</dimen>
     <dimen name="segment_item_title_width">132dp</dimen>
     <dimen name="segment_item_title_margin_start">15dp</dimen>
-    <dimen name="segment_item_title_margin_top">35dp</dimen>
+    <dimen name="segment_item_title_margin_top">38dp</dimen>
     <dimen name="segment_item_layout_share_margin_bottom">10dp</dimen>
     <dimen name="segment_item_fav_margin_start">80dp</dimen>
     <dimen name="segment_item_share_margin_start">20dp</dimen>
