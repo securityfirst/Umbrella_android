@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Umbrella</string>
+    <string name="secondary_app_name">Calculator</string>
     <string name="feed_title">Feed</string>
     <string name="form_title">Forms</string>
     <string name="checklist_title">Checklists</string>
@@ -33,14 +34,14 @@
     <string name="lesson_tab">Lesson</string>
     <string name="url_server">URL server</string>
     <string name="feed_interval">Interval</string>
-    <string name="set_your_feed">Set your feed</string>
+    <string name="set_your_feed">Enter your feed</string>
     <string name="set_your_feed_label">You haven’t set the country and the sources for the feed yet. You have to do it in order for the feed to start displaying, and you can change it any time later in the settings.</string>
     <string name="feed_interval_label">Set how often shall we check for news</string>
     <string name="set">SET</string>
     <string name="location">Location</string>
     <string name="feed_location_label">Enter location</string>
     <string name="feed_sources">Feed sources</string>
-    <string name="feed_source_label">Set Sources</string>
+    <string name="feed_source_label">Enter Sources</string>
     <string name="set_now">SET NOW</string>
     <string name="feed_source_department">US State Department Country \nWarnings</string>
     <string name="feed_source_global">Global Disaster Alert \nCoordination System</string>
@@ -69,7 +70,7 @@
     <string name="checklistDetail_title">Checklist</string>
     <string name="account_password_alert_title">Set your password</string>
     <string name="account_password_alert_description">Your password must be at least 8 characters long and must contain at least one digit and one capital letter</string>
-    <string name="account_set_password">Set password</string>
+    <string name="account_set_password">Enter password</string>
     <string name="account_settings">Settings</string>
     <string name="account_mask">Mask</string>
     <string name="account_password_alert_password">Password</string>
