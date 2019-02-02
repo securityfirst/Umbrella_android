@@ -37,11 +37,11 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
         super.onAttach(view)
         setUpWebView()
         setUpToolbar()
-        disableNavigation()
+        enableNavigation(false)
     }
 
     override fun onDestroyView(view: View) {
-        enableNavigation()
+        enableNavigation(true)
         super.onDestroyView(view)
     }
 

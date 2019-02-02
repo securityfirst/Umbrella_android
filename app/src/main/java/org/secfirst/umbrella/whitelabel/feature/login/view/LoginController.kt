@@ -35,7 +35,7 @@ class LoginController : BaseController(), LoginView {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        disableNavigation()
+        enableNavigation(false)
         setUpToolbar()
     }
 
@@ -69,7 +69,7 @@ class LoginController : BaseController(), LoginView {
     override fun isLoginOk(isLogged: Boolean) {
         if (isLogged) {
             hideKeyboard()
-            enableNavigation()
+            enableNavigation(true)
             router.pushController(RouterTransaction.with(HostChecklistController()))
             router.popController(this)
         } else

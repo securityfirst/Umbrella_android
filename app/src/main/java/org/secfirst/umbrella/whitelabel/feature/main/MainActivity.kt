@@ -61,16 +61,17 @@ class MainActivity : AppCompatActivity() {
         navigation.removeShiftMode()
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
-        if (isMaskApp()) {
-            router.setRoot(RouterTransaction.with(CalculatorController()))
-        } else if (isLoggedUser()) {
-            router.setRoot(RouterTransaction.with(LoginController()))
-            navigation.menu.getItem(2).isChecked = true
-        } else if (TentConfig.isRepCreate()) {
-            router.setRoot(RouterTransaction.with(HostChecklistController()))
-            navigation.menu.getItem(2).isChecked = true
-        } else {
-            router.setRoot(RouterTransaction.with(TourController()))
+        when {
+            isMaskApp() -> router.setRoot(RouterTransaction.with(CalculatorController()))
+            isLoggedUser() -> {
+                router.setRoot(RouterTransaction.with(LoginController()))
+                navigation.menu.getItem(2).isChecked = true
+            }
+            TentConfig.isRepCreate() -> {
+                router.setRoot(RouterTransaction.with(HostChecklistController()))
+                navigation.menu.getItem(2).isChecked = true
+            }
+            else -> router.setRoot(RouterTransaction.with(TourController()))
         }
     }
 

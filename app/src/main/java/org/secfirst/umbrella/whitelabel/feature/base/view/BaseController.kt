@@ -33,7 +33,6 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
         clearFindViewByIdCache()
     }
 
-    fun disableNavigation() = mainActivity.hideNavigation()
-
-    fun enableNavigation() = mainActivity.showNavigation()
+    fun enableNavigation(isNavigation: Boolean) =
+            if (isNavigation) mainActivity.showNavigation() else mainActivity.hideNavigation()
 }

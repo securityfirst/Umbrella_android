@@ -47,7 +47,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        disableNavigation()
+        enableNavigation(false)
         stepperLayout.adapter = FormAdapter(activeForm.form, this, listOfViews)
         stepperLayout.setListener(this)
         presenter.onAttach(this)
@@ -134,14 +134,14 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     private fun     onAppBarBackAction() {
         bindAllComponents()
         presenter.submitActiveForm(activeForm)
-        enableNavigation()
+        enableNavigation(true)
         closeView()
     }
 
     override fun handleBack(): Boolean {
         bindAllComponents()
         presenter.submitActiveForm(activeForm)
-        enableNavigation()
+        enableNavigation(true)
         return super.handleBack()
     }
 

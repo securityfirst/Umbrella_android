@@ -32,14 +32,14 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
 
     override fun onAttach(view: View) {
         iniRecycle()
-        disableNavigation()
+        enableNavigation(false)
         setUpToolbar()
         openCardListAdapter()
         super.onAttach(view)
     }
 
     override fun onDestroyView(view: View) {
-        enableNavigation()
+        enableNavigation(true)
         super.onDestroyView(view)
     }
 

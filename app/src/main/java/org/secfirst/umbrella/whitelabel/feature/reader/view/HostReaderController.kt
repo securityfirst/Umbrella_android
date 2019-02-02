@@ -14,7 +14,7 @@ class HostReaderController : BaseController() {
     }
 
     override fun onAttach(view: View) {
-        enableNavigation()
+        enableNavigation(true)
         feedPager?.adapter = ReaderAdapter(this)
         feedTab?.setupWithViewPager(feedPager)
     }

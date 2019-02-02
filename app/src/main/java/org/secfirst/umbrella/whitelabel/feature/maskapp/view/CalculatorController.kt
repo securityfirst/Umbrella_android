@@ -46,7 +46,7 @@ class CalculatorController : BaseController(), MaskAppView {
         val view = inflater.inflate(R.layout.calculator_view, container, false)
         init(view)
         presenter.onAttach(this)
-        disableNavigation()
+        enableNavigation(false)
         return view
     }
 

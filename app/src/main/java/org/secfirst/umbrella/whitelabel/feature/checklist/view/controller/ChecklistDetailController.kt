@@ -56,7 +56,7 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        disableNavigation()
+        enableNavigation(false)
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
         checklistDialogView = inflater.inflate(R.layout.checklist_add_item_dialog,
@@ -151,7 +151,7 @@ class ChecklistDetailController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun onDestroy() {
         super.onDestroy()
-        enableNavigation()
+        enableNavigation(true)
     }
 
     private fun getTitle() = context.getString(R.string.checklistDetail_title)

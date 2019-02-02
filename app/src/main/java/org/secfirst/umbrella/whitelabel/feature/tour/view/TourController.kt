@@ -54,7 +54,7 @@ class TourController : BaseController(), ContentView {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        disableNavigation()
+        enableNavigation(false)
         initViewPager()
         onAcceptButton()
         presenter.onAttach(this)
@@ -88,7 +88,7 @@ class TourController : BaseController(), ContentView {
         if (res) {
             router.pushController(RouterTransaction.with(HostChecklistController()))
             mainActivity.navigationPositionToCenter()
-            enableNavigation()
+            enableNavigation(true)
         } else
             view?.let {
                 Snackbar.make(it,

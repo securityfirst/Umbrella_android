@@ -7,7 +7,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import com.bluelinelabs.conductor.RouterTransaction
-import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.account_password_alert.view.*
 import kotlinx.android.synthetic.main.account_reset_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*
@@ -50,7 +49,7 @@ class AccountController : BaseController(), AccountView {
     override fun onAttach(view: View) {
         super.onAttach(view)
         setUpToolbar()
-        enableNavigation()
+        enableNavigation(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {

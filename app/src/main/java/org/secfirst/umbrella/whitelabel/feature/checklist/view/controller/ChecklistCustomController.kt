@@ -43,7 +43,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun onAttach(view: View) {
         setUpToolbar()
-        disableNavigation()
+        enableNavigation(false)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
@@ -117,7 +117,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     }
 
     override fun onDestroyView(view: View) {
-        enableNavigation()
+        enableNavigation(true)
         submitChecklist()
     }
 

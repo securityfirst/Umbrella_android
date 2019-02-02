@@ -79,7 +79,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     override fun onAttach(view: View) {
         super.onAttach(view)
         setUpToolbar()
-        disableNavigation()
+        enableNavigation(false)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
