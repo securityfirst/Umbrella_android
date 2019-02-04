@@ -12,13 +12,13 @@ import kotlinx.android.synthetic.main.host_segment_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
-import org.secfirst.umbrella.whitelabel.data.database.checklist.toChecklistControllers
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.segment.HostSegmentTabControl
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentController
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSegmentDetailControllers
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.segment.DaggerSegmentComponent
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.presenter.SegmentBasePresenter
@@ -107,6 +107,17 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
                 hostSegmentTab?.setupWithViewPager(it)
             }
         }
+    }
+
+    private fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
+        val controllers = mutableListOf<ChecklistController>()
+        this.forEach { checklist ->
+            val checklists = mutableListOf<Checklist>()
+            checklists.add(checklist)
+            val controller = ChecklistController(checklist.id, true)
+            controllers.add(controller)
+        }
+        return controllers
     }
 
     private fun setUpToolbar(view: View) {

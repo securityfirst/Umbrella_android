@@ -1,13 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
-import android.app.Dialog
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.alert_control.view.*
-import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_item.view.*
 import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -18,7 +14,8 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 
 class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                        private val onItemChecked: (Content) -> Unit,
-                       private val onUpdateProgress: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onUpdateProgress: (Int) -> Unit,
+                       private val onLongClick: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun add(newContent: Content) {
         checklistContent.add(newContent)
@@ -31,10 +28,9 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
         notifyDataSetChanged()
     }
 
-    fun update(checklistItem: Content, position: Int) {
-        checklistContent[position] = checklistItem
+    fun updateItem(item: String, position: Int) {
+        checklistContent[position].check = item
         notifyItemChanged(position)
-        notifyDataSetChanged()
     }
 
     fun getChecklistItem(position: Int) = checklistContent[position]
@@ -50,7 +46,7 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
 
         if (viewType == ITEM_VIEW_TYPE_HEADER) {
             val headerView = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.head_checklist, parent, false)
+                    .inflate(R.layout.checklist_header, parent, false)
             return ChecklistHeaderViewHolder(headerView)
         }
 
@@ -65,7 +61,8 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
             holder as ChecklistHolder
             holder.bind(checklistContent[position], checklistContent,
                     onItemChecked = { onItemChecked(checklistContent[position]) },
-                    onUpdateChecked = { onUpdateProgress(percentage.toInt()) })
+                    onUpdateChecked = { onUpdateProgress(percentage.toInt()) },
+                    onLongClick = { onLongClick(position) })
         }
     }
 
@@ -79,19 +76,11 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
 
     class ChecklistHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private var editView: View
-        private lateinit var editDialog: Dialog
-
-        init {
-            val inflater = LayoutInflater.from(itemView.context)
-            editView = inflater.inflate(R.layout.checklist_add_item_dialog, null)
-            editView.title.text = itemView.context.getString(R.string.checklist_edit_item_title)
-        }
-
         fun bind(currentContent: Content,
                  list: List<Content>,
                  onItemChecked: (ChecklistHolder) -> Unit,
-                 onUpdateChecked: (ChecklistHolder) -> Unit) {
+                 onUpdateChecked: (ChecklistHolder) -> Unit,
+                 onLongClick: (ChecklistHolder) -> Unit) {
 
             itemView.checkItem.isChecked = currentContent.value
             itemView.itemTitle.text = currentContent.check
@@ -102,31 +91,14 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                 onItemChecked(this@ChecklistHolder)
                 onUpdateChecked(this@ChecklistHolder)
             }
-            createEditItemAlert(currentContent, onItemChecked)
             itemView.itemTitle.setOnLongClickListener {
-                editDialog.show()
+                onLongClick(this@ChecklistHolder)
                 true
             }
             itemView.checklistCardItemView.setOnLongClickListener {
-                editDialog.show()
+                onLongClick(this@ChecklistHolder)
                 true
             }
-        }
-
-        private fun createEditItemAlert(currentContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
-            val context = itemView.context
-            editDialog = AlertDialog.Builder(context)
-                    .setView(editView)
-                    .create()
-            editView.alertControlOk.setOnClickListener { editContent(currentContent, onItemChecked) }
-            editView.alertControlCancel.setOnClickListener { editDialog.dismiss() }
-        }
-
-        private fun editContent(currentContent: Content, onItemChecked: (ChecklistHolder) -> Unit) {
-            itemView.checkItem.text = editView.editChecklistItem.text.toString()
-            currentContent.check = editView.editChecklistItem.text.toString()
-            onItemChecked(this@ChecklistHolder)
-            editDialog.dismiss()
         }
 
         private fun updateProgress(list: List<Content>) {

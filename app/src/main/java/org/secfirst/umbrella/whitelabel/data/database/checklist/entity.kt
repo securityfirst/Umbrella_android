@@ -9,7 +9,6 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
 
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
@@ -50,16 +49,16 @@ data class Checklist(
     }
 }
 
-fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
-    val controllers = mutableListOf<ChecklistController>()
-    this.forEach { checklist ->
-        val checklists = mutableListOf<Checklist>()
-        checklists.add(checklist)
-        val controller = ChecklistController(checklist.id)
-        controllers.add(controller)
-    }
-    return controllers
-}
+//fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
+//    val controllers = mutableListOf<ChecklistController>()
+//    this.forEach { checklist ->
+//        val checklists = mutableListOf<Checklist>()
+//        checklists.add(checklist)
+//        val controller = ChecklistController(checklist.id)
+//        controllers.add(controller)
+//    }
+//    return controllers
+//}
 
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)

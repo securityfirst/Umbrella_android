@@ -84,7 +84,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     private fun onDashboardItemClicked(checklist: Checklist) {
-        parentController?.router?.pushController(RouterTransaction.with(ChecklistDetailController(checklist.id)))
+        parentController?.router?.pushController(RouterTransaction.with(ChecklistController(checklist.id)))
     }
 
     private fun onDashboardItemLongClicked(checklist: Checklist, position: Int) {

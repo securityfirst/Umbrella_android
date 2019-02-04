@@ -1,13 +1,18 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.alert_control.view.*
+import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_view.*
+import kotlinx.android.synthetic.main.checklist_view.view.*
 import kotlinx.android.synthetic.main.form_progress.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -29,14 +34,19 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private lateinit var checklistView: View
+    private lateinit var checklistViewDialog: View
+    private lateinit var checklistDialog: Dialog
     private lateinit var adapter: ChecklistAdapter
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
+    private val checklistItemLongClick: (Int) -> Unit = this::onLongClick
     private lateinit var checklist: Checklist
-    private val checklistId by lazy { args.getString(ChecklistCustomController.EXTRA_ID_CUSTOM_CHECKLIST) }
+    private val checklistId by lazy { args.getString(EXTRA_ID_CHECKLIST) }
+    private val enableNavigation by lazy { args.getBoolean(ENABLE_NAVIGATION) }
 
-    constructor(checklistId: String) : this(Bundle().apply {
-        putString(ChecklistCustomController.EXTRA_ID_CUSTOM_CHECKLIST, checklistId)
+    constructor(checklistId: String, enableNavigation: Boolean = false) : this(Bundle().apply {
+        putString(EXTRA_ID_CHECKLIST, checklistId)
+        putBoolean(ENABLE_NAVIGATION, enableNavigation)
     })
 
     override fun onInject() {
@@ -48,9 +58,14 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         checklistView = inflater.inflate(R.layout.checklist_view, container, false)
+        checklistViewDialog = inflater.inflate(R.layout.checklist_add_item_dialog, container, false)
+        checklistDialog = AlertDialog.Builder(context)
+                .setView(checklistViewDialog)
+                .create()
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
         initSwipeDelete()
+        checkIsNavigation()
         return checklistView
     }
 
@@ -87,12 +102,50 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         presenter.submitUpdateChecklist(checklist)
     }
 
+    private fun onLongClick(position: Int) {
+        checklistViewDialog.alertControlOk.setOnClickListener { editChecklistItem(position) }
+        checklistViewDialog.alertControlCancel.setOnClickListener { checklistDialog.dismiss() }
+        checklistDialog.show()
+    }
+
+    private fun editChecklistItem(position: Int) {
+        val newChecklistItem = checklistViewDialog.editChecklistItem.text.toString()
+        adapter.updateItem(newChecklistItem, position)
+        checklistDialog.dismiss()
+    }
+
     override fun getChecklist(checklist: Checklist) {
         this.checklist = checklist
-        adapter = ChecklistAdapter(checklist.content, checklistItemClick, checklistProgress)
+        adapter = ChecklistAdapter(checklist.content, checklistItemClick,
+                checklistProgress, checklistItemLongClick)
         checklistRecyclerView?.initRecyclerView(adapter)
         currentProgress()
     }
 
     fun getTitle() = "Checklist"
+
+    private fun checkIsNavigation() {
+        enableNavigation(enableNavigation)
+        if (!enableNavigation) {
+            checklistView.checklistBarLayout.visibility = View.VISIBLE
+            setUpToolbar()
+        }
+    }
+
+    override fun onDestroyView(view: View) {
+        enableNavigation(true)
+    }
+
+    companion object {
+        private const val EXTRA_ID_CHECKLIST = "id_custom_check_list"
+        private const val ENABLE_NAVIGATION = "enable_navigation"
+    }
+
+    private fun setUpToolbar() {
+        checklistView.checklistToolbar.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mainActivity.supportActionBar?.title = getTitle()
+        }
+    }
 }

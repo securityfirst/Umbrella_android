@@ -127,7 +127,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     }
 
     companion object {
-        const val EXTRA_ID_CUSTOM_CHECKLIST = "id_custom_check_list"
+        private const val EXTRA_ID_CUSTOM_CHECKLIST = "id_custom_check_list"
         private const val INITIAL_INDEX = 0
     }
 }
