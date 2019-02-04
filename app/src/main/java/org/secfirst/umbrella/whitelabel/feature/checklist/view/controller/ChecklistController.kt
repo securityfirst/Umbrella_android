@@ -39,7 +39,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private lateinit var adapter: ChecklistAdapter
     private val checklistItemClick: (Content) -> Unit = this::onChecklistItemClicked
     private val checklistProgress: (Int) -> Unit = this::onUpdateChecklistProgress
-    private val checklistItemLongClick: (Int) -> Unit = this::onLongClick
+    private val checklistItemLongClick: (Int, String) -> Unit = this::onLongClick
     private lateinit var checklist: Checklist
     private val checklistId by lazy { args.getString(EXTRA_ID_CHECKLIST) }
     private val enableNavigation by lazy { args.getBoolean(ENABLE_NAVIGATION) }
@@ -59,17 +59,19 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         checklistView = inflater.inflate(R.layout.checklist_view, container, false)
         checklistViewDialog = inflater.inflate(R.layout.checklist_add_item_dialog, container, false)
+
         checklistDialog = AlertDialog.Builder(context)
                 .setView(checklistViewDialog)
                 .create()
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
-        initSwipeDelete()
+
+        swipeToDeleteCallback()
         checkIsNavigation()
         return checklistView
     }
 
-    private fun initSwipeDelete() {
+    private fun swipeToDeleteCallback() {
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
@@ -78,7 +80,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
-        itemTouchHelper.attachToRecyclerView(checklistRecyclerView)
+        itemTouchHelper.attachToRecyclerView(checklistView.checklistRecyclerView)
     }
 
     private fun onDeleteChecklist(checklistItem: Content) = presenter.submitDeleteChecklistContent(checklistItem)
@@ -102,7 +104,9 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         presenter.submitUpdateChecklist(checklist)
     }
 
-    private fun onLongClick(position: Int) {
+    private fun onLongClick(position: Int, oldChecklistItem: String) {
+        checklistViewDialog.editChecklistItem.setText(oldChecklistItem)
+        checklistViewDialog.checklistDialogTitle.text = context.getText(R.string.checklist_edit_item_title)
         checklistViewDialog.alertControlOk.setOnClickListener { editChecklistItem(position) }
         checklistViewDialog.alertControlCancel.setOnClickListener { checklistDialog.dismiss() }
         checklistDialog.show()

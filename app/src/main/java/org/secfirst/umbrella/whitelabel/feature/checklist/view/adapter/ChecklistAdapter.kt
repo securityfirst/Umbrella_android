@@ -15,7 +15,7 @@ import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
 class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                        private val onItemChecked: (Content) -> Unit,
                        private val onUpdateProgress: (Int) -> Unit,
-                       private val onLongClick: (Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onLongClick: (Int, String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun add(newContent: Content) {
         checklistContent.add(newContent)
@@ -62,7 +62,7 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
             holder.bind(checklistContent[position], checklistContent,
                     onItemChecked = { onItemChecked(checklistContent[position]) },
                     onUpdateChecked = { onUpdateProgress(percentage.toInt()) },
-                    onLongClick = { onLongClick(position) })
+                    onLongClick = { onLongClick(position, checklistContent[position].check) })
         }
     }
 

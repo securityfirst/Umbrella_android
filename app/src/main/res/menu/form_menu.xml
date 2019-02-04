@@ -14,7 +14,7 @@
     <item
         android:id="@+id/editForm"
         android:icon="@drawable/ic_mode_edit"
-        android:title="@string/form_menu_edite" />
+        android:title="@string/form_menu_edit" />
 
 
 </menu>
