@@ -82,12 +82,14 @@ class Dashboard(var items: List<Item> = listOf()) {
                     var id: Long = 0,
                     var progress: Int = 0,
                     var label: String = "",
+                    var levelLabel: Int = 0,
                     var checklist: Checklist? = null,
                     var difficulty: Difficulty? = null) {
 
         constructor(progress: Int, label: String,
                     checklist: Checklist?,
-                    difficulty: Difficulty?) : this("", 0, progress, label, checklist, difficulty)
+                    difficulty: Difficulty?,
+                    levelLabel: Int = 0) : this("", 0, progress, label, levelLabel, checklist, difficulty)
     }
 }
 

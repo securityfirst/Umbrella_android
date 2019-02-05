@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
 import android.annotation.SuppressLint
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,10 @@ import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.whitelabel.misc.ITEM_VIEW_TYPE_ITEM
+import org.secfirst.umbrella.whitelabel.misc.appContext
 
 @SuppressLint("SetTextI18n")
 class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
@@ -68,15 +71,27 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                  longClickListener: (DashboardHolder) -> Unit) {
 
             with(dashboardItem) {
-                itemView.itemLabel.text = if (difficulty?.title != null) {
-                    label + " - " + difficulty?.title
-                } else label
+                itemView.itemLabel.text = label
                 itemView.itemPercentage.text = "$progress%"
-                itemView.setOnClickListener { clickListener(this@DashboardHolder) }
+                setDifficultyColor(dashboardItem.levelLabel)
+                if (adapterPosition != 1)
+                    itemView.setOnClickListener { clickListener(this@DashboardHolder) }
+
                 itemView.setOnLongClickListener {
                     longClickListener(this@DashboardHolder)
                     true
                 }
+            }
+        }
+
+        private fun setDifficultyColor(level: Int) {
+            when (level) {
+                Difficulty.BEGINNER -> itemView.levelColor
+                        .setBackgroundColor(ContextCompat.getColor(appContext(), R.color.umbrella_green))
+                Difficulty.ADVANCED -> itemView.levelColor
+                        .setBackgroundColor(ContextCompat.getColor(appContext(), R.color.umbrella_yellow))
+                Difficulty.EXPERT -> itemView.levelColor
+                        .setBackgroundColor(ContextCompat.getColor(appContext(), R.color.umbrella_purple))
             }
         }
     }

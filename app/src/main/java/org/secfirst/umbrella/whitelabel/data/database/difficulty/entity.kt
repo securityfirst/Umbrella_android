@@ -65,17 +65,6 @@ data class Difficulty(
     }
 }
 
-fun MutableList<Difficulty>.orderDifficulty(selectDifficulty: Difficulty): MutableList<Difficulty> {
-    val auxDifficulties = mutableListOf<Difficulty>()
-    auxDifficulties.add(selectDifficulty)
-    this.forEach {
-        if (selectDifficulty.id != it.id)
-            auxDifficulties.add(it)
-    }
-    return auxDifficulties
-}
-
-
 fun List<Difficulty>.ids(): ArrayList<String> {
     val res = arrayListOf<String>()
     this.forEach { res.add(it.id) }
@@ -89,7 +78,6 @@ fun List<Markdown>.defaultDifficulty(): Difficulty {
     difficulty.subject = subject
     return difficulty
 }
-
 
 fun MutableList<Difficulty>.withColors(): List<Difficulty> {
     val sortedList = this.sortedWith(compareBy { it.index })
