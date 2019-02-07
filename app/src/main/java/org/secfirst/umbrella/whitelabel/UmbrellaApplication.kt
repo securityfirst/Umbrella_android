@@ -16,10 +16,13 @@ import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
 import net.sqlcipher.database.SQLiteDatabase
+import org.secfirst.advancedsearch.util.mvp.BgUiThreadSpec
+import org.secfirst.advancedsearch.util.mvp.ThreadSpec
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 
@@ -34,6 +37,8 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         lateinit var instance: UmbrellaApplication
             private set
     }
+
+    val threadSpec: ThreadSpec = BgUiThreadSpec(Executors.newFixedThreadPool(10))
 
     override fun onCreate() {
         super.onCreate()

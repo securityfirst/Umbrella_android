@@ -69,6 +69,7 @@ dependencies {
     implementation "com.romandanylyk:pageindicatorview:$pageindicatorview"
     implementation "org.jsoup:jsoup:$jsoup"
     implementation "com.github.tbouron.shakedetector:library:$shakedetector"
+    implementation 'com.github.securityfirst:AdvancedSearch:2420c04'
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
     implementation "com.jakewharton:process-phoenix:$process_phoenix"
@@ -80,7 +81,7 @@ dependencies {
     implementation "io.github.inflationx:viewpump:$viewpump"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_sdk"
     implementation "com.google.firebase:firebase-core:$firebase"
-    
+
 
     //Framework for replacing fragments
     implementation "com.bluelinelabs:conductor:$conductor_version"
@@ -109,6 +110,7 @@ dependencies {
     implementation "com.android.support:cardview-v7:$support_library_version"
 
     //Dependencies for local unit tests
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.hamcrest:hamcrest-core:$hamcrest_core_version"
