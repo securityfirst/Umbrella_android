@@ -3,10 +3,10 @@ package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.account_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*

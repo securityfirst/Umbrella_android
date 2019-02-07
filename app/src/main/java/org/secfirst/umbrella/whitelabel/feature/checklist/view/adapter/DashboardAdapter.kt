@@ -1,11 +1,11 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
 import android.annotation.SuppressLint
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.checklist_dashboard_header.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
 import org.secfirst.umbrella.whitelabel.R

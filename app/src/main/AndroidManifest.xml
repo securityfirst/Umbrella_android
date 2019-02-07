@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label,android:allowBackup">
-        <activity android:name=".feature.main.SearchActivity"></activity>
+        <activity android:name=".feature.main.SearchActivity" />
         <activity
             android:name=".feature.main.MainActivity"
             android:screenOrientation="portrait">
@@ -59,7 +59,7 @@
         </activity-alias>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}"
             android:exported="false"
             android:grantUriPermissions="true">

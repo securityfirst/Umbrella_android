@@ -1,10 +1,10 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Patterns
 import android.view.*
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bluelinelabs.conductor.RouterTransaction
 import com.einmalfel.earl.Item
 import kotlinx.android.synthetic.main.article_view.*

@@ -1,11 +1,11 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import android.app.AlertDialog
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.add_rss_dialog.view.*
 import kotlinx.android.synthetic.main.rss_view.view.*

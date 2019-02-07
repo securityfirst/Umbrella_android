@@ -4,19 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
-import android.support.design.bottomnavigation.LabelVisibilityMode
-import android.support.design.internal.BottomNavigationItemView
-import android.support.design.internal.BottomNavigationMenuView
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
@@ -24,7 +22,6 @@ import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 
 val TextView.regular: Typeface get() = Typeface.createFromAsset(context.assets, "fonts/Roboto-Regular.ttf")
 val TextView.medium: Typeface get() = Typeface.createFromAsset(context.assets, "fonts/Roboto-Medium.ttf")
-
 
 fun Context.shareLink(link: String) {
     val sendIntent = Intent()
@@ -41,15 +38,6 @@ fun RecyclerView.initRecyclerView(adapter: RecyclerView.Adapter<out RecyclerView
     this.adapter = adapter
     setHasFixedSize(hasFixedSize)
 }
-
-fun RecyclerView.initGridView(adapter_: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
-                              layoutManager_: RecyclerView.LayoutManager = GridLayoutManager(context, 2),
-                              hasFixedSize: Boolean = true) {
-    layoutManager = layoutManager_
-    adapter = adapter_
-    setHasFixedSize(hasFixedSize)
-}
-
 
 fun BaseController.hideKeyboard() {
     val inputMethodManager = this.activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -90,26 +78,3 @@ fun Spinner.init(array: Int) {
         this.adapter = adapter
     }
 }
-
-fun View.canTextInput(): Boolean {
-    var view = this
-
-    if (view.onCheckIsTextEditor())
-        return true
-
-    if (view !is ViewGroup)
-        return false
-
-    val vg = view
-    var i = vg.childCount
-    while (i > 0) {
-        i--
-        view = vg.getChildAt(i)
-        if (view.canTextInput()) {
-            return true
-        }
-    }
-    return false
-}
-
-

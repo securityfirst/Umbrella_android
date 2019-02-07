@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.checklist_item.view.*
 import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.whitelabel.R

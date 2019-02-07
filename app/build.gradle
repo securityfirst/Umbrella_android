@@ -69,7 +69,7 @@ dependencies {
     implementation "com.romandanylyk:pageindicatorview:$pageindicatorview"
     implementation "org.jsoup:jsoup:$jsoup"
     implementation "com.github.tbouron.shakedetector:library:$shakedetector"
-    implementation 'com.github.securityfirst:AdvancedSearch:2420c04'
+    implementation 'com.github.securityfirst:AdvancedSearch:0.0.2'
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
     implementation "com.jakewharton:process-phoenix:$process_phoenix"

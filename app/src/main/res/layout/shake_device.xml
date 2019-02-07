@@ -14,7 +14,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/place_search_dialog_location_TIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:layout_marginRight="15dp"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-            <android.support.v7.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/urlServer"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:textSize="16sp"
                 android:text="https://github.com/douglasalipio/umbrella-content"
                 android:theme="@style/Autocomplete" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,7 +44,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/urlServerCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                 android:text="@android:string/cancel"
                 android:textColor="@color/grey_location" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/urlServerOk"
                 fontPath="fonts/Roboto-Medium.ttf"
                 android:layout_width="wrap_content"

@@ -3,13 +3,13 @@ package org.secfirst.umbrella.whitelabel.feature.tour.view
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.support.design.widget.Snackbar
-import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.viewpager.widget.ViewPager
 import com.bluelinelabs.conductor.RouterTransaction
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.tour_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.secfirst.umbrella.whitelabel.R

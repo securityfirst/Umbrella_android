@@ -2,7 +2,7 @@ package org.secfirst.umbrella.whitelabel
 
 import android.app.Activity
 import android.app.Application
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.raizlabs.android.dbflow.config.DatabaseConfig

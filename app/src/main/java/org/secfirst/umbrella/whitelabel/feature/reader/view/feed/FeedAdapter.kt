@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.feed_header.view.*
 import kotlinx.android.synthetic.main.feed_item_view.view.*
 import org.jsoup.Jsoup

@@ -4,11 +4,11 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.ShareCompat
-import android.support.v4.content.FileProvider
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.GridLayoutManager
 import android.view.*
+import androidx.core.app.ShareCompat
+import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
 import com.xwray.groupie.Section

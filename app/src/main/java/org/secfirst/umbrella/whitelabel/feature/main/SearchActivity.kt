@@ -3,8 +3,8 @@ package org.secfirst.umbrella.whitelabel.feature.main
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.Flowable
 import org.secfirst.advancedsearch.interfaces.AdvancedSearchPresenter
 import org.secfirst.advancedsearch.interfaces.DataProvider

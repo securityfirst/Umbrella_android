@@ -1,6 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.segment.view
 
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.segment_foot.*

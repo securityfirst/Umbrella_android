@@ -1,8 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.feed
 
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import org.jetbrains.anko.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource

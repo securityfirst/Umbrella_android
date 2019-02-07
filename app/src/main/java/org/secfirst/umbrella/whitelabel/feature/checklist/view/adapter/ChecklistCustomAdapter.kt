@@ -1,11 +1,11 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.checklist_custom_item.view.*
 import org.secfirst.umbrella.whitelabel.R
 

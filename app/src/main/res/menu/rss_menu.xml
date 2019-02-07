@@ -7,7 +7,7 @@
         android:id="@+id/action_rss_share"
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/send_to"
-        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"
+        app:actionProviderClass="android.widget.ShareActionProvider"
         app:showAsAction="ifRoom" />
 
     <item

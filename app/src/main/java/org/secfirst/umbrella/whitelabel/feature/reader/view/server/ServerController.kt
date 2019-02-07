@@ -2,12 +2,12 @@ package org.secfirst.umbrella.whitelabel.feature.reader.view.server
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.bluelinelabs.conductor.RouterTransaction
 import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.server_view.*
