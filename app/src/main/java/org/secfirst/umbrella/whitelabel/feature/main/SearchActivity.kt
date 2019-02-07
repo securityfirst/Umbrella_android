@@ -42,6 +42,13 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                             listOf("Beginner", "Advanced", "Expert"),
                             null
                     ),
+                    SearchCriteria(
+                            "type",
+                            FieldTypes.PILLBOX,
+                            // TODO: List of actual itesm types
+                            listOf("Segment", "Checklist", "Form", "Feed item"),
+                            null
+                    ),
                     // We leave this one alone cause it renders the main search view
                     SearchCriteria(
                             "text",
