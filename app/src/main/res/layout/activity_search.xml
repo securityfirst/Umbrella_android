@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/searchToolbar"
         android:background="@color/colorPrimary"
         app:titleTextColor="@color/white"
         android:layout_width="match_parent"
