@@ -19,9 +19,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file moduleTitle.
 #-renamesourcefileattribute SourceFile
+
 # DbFlow
 -keep class * extends com.raizlabs.android.dbflow.config.DatabaseHolder { *; }
 -keep class * {
     public private *;
 }
 -ignorewarnings
+
+#DeepLink API
+-keep class com.airbnb.deeplinkdispatch.** { *; }
+-keepclasseswithmembers class * {
+     @com.airbnb.deeplinkdispatch.DeepLink <methods>;
+}

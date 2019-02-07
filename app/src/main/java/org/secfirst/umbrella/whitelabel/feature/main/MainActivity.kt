@@ -41,7 +41,6 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var router: Router
@@ -53,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_view)
         performDI()
         initRoute(savedInstanceState)
+
         // TODO: Simple deep link implementation
         intent.data?.let {
             when(it.authority) {

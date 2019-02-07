@@ -27,7 +27,6 @@ import org.secfirst.umbrella.whitelabel.misc.currentTime
 import java.io.File
 import javax.inject.Inject
 
-
 class HostFormController : BaseController(), FormView {
 
     @Inject
