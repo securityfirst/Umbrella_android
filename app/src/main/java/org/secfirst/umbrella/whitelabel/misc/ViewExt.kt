@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
+import android.support.design.bottomnavigation.LabelVisibilityMode
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.internal.BottomNavigationMenuView
 import android.support.design.widget.BottomNavigationView
@@ -67,13 +68,10 @@ class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
 @SuppressLint("RestrictedApi")
 fun BottomNavigationView.removeShiftMode() {
     val menuView = this.getChildAt(0) as BottomNavigationMenuView
-    val shiftingMode = menuView.javaClass.getDeclaredField("mShiftingMode")
-    shiftingMode.isAccessible = true
-    shiftingMode.setBoolean(menuView, false)
-    shiftingMode.isAccessible = false
+    menuView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
     for (i in 0 until menuView.childCount) {
         val item = menuView.getChildAt(i) as BottomNavigationItemView
-        item.setShiftingMode(false)
+        item.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED)
         item.setChecked(item.itemData.isChecked)
     }
 }

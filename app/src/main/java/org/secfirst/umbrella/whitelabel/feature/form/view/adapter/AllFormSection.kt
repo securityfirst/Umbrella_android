@@ -27,7 +27,7 @@ class AllFormSection(private val onItemClick: (Form) -> Unit,
         formHolder.bind(forms[position].title, clickListener = { onItemClick(forms[position]) })
     }
 
-    override fun getItemViewHolder(view: View?) = ItemAllFormHolder(view)
+    override fun getItemViewHolder(view: View) = ItemAllFormHolder(view)
 
     override fun onBindHeaderViewHolder(holder: RecyclerView.ViewHolder?) {
         val headerHolder = holder as HeaderViewHolder?
@@ -36,8 +36,8 @@ class AllFormSection(private val onItemClick: (Form) -> Unit,
 
 }
 
-class ItemAllFormHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    private val titleForm = itemView?.titleAllForm
+class ItemAllFormHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val titleForm = itemView.titleAllForm
     fun bind(title: String, clickListener: (ItemAllFormHolder) -> Unit) {
         titleForm?.let { it.text = title }
         itemView.setOnClickListener { clickListener(this) }

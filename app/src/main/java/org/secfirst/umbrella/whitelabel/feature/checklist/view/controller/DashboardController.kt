@@ -76,7 +76,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun checkWorkflow() {
         if (isCustomBoard) {
-            addNewChecklist?.visibility = View.VISIBLE
+            addNewChecklist?.show()
             presenter.submitLoadCustomDashboard()
             initOnDeleteChecklist()
         } else
