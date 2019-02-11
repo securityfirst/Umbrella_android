@@ -1,12 +1,12 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.checklist_dashboard.*
 import kotlinx.android.synthetic.main.checklist_dashboard.view.*
@@ -76,7 +76,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun checkWorkflow() {
         if (isCustomBoard) {
-            addNewChecklist?.visibility = View.VISIBLE
+            addNewChecklist?.show()
             presenter.submitLoadCustomDashboard()
             initOnDeleteChecklist()
         } else

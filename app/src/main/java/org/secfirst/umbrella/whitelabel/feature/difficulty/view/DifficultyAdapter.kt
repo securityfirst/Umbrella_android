@@ -2,10 +2,10 @@ package org.secfirst.umbrella.whitelabel.feature.difficulty.view
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.difficulty_item_view.view.*
 import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R

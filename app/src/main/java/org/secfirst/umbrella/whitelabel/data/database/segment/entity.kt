@@ -1,10 +1,14 @@
 package org.secfirst.umbrella.whitelabel.data.database.segment
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Parcelable
 import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
 import kotlinx.android.parcel.Parcelize
+import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
@@ -13,6 +17,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
+
 
 @Parcelize
 @Table(database = AppDatabase::class,
@@ -74,6 +79,14 @@ fun MutableList<Markdown>.sortByIndex() = sortedWith(compareBy { it.index.toInt(
 fun Markdown.removeHead(): Markdown {
     text = text.substringAfterLast(text.lines()[3])
     return this
+}
+
+fun Markdown.toSearchResult(): SearchResult {
+    return SearchResult(
+            title,
+            text.substring(0, Math.min(text.length, 300))
+    ) { c: Context -> c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://lessons/$id")))
+    }
 }
 
 fun String.replaceMarkdownImage(absolutePath: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,

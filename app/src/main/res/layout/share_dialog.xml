@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
 
-    <android.support.v7.widget.AppCompatTextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/share_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,7 +70,7 @@
         android:layout_below="@id/lineBelow"
         android:padding="@dimen/dashboard_feed_normal_padding">
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/shareDocumentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
             android:text="@string/export_button"
             android:textColor="@color/avocado" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancelShareButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -93,4 +94,4 @@
 
     </RelativeLayout>
 
-</android.widget.RelativeLayout>
+</RelativeLayout>

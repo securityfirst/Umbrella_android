@@ -1,7 +1,8 @@
 package org.secfirst.umbrella.whitelabel.component
 
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 
 abstract class InfiniteScrollListener(private var linearLayoutManager: LinearLayoutManager?) :
         RecyclerView.OnScrollListener() {

@@ -17,8 +17,18 @@
         android:roundIcon="@mipmap/ic_umbrella"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:label">
-
+        tools:replace="android:label,android:allowBackup">
+        <activity
+            android:name=".feature.main.SearchActivity"
+            android:parentActivityName=".feature.main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="umbrella"/>
+                <data android:host="search" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".feature.main.MainActivity"
             android:screenOrientation="portrait">
@@ -26,23 +36,6 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-
-        <activity-alias
-            android:name=".MainActivityNormal"
-            android:enabled="true"
-            android:icon="@mipmap/ic_umbrella"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_umbrella"
-            android:screenOrientation="portrait"
-            android:targetActivity=".feature.main.MainActivity">
-
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-        </activity-alias>
 
         <activity-alias
             android:name=".MainActivityCalculator"
@@ -59,9 +52,38 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity-alias>
+        <activity-alias
+            android:name=".MainActivityNormal"
+            android:enabled="true"
+            android:icon="@mipmap/ic_umbrella"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_umbrella"
+            android:screenOrientation="portrait"
+            android:targetActivity=".feature.main.MainActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="umbrella"/>
+                <data android:host="forms" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="umbrella"/>
+                <data android:host="checklists" />
+            </intent-filter>
+        </activity-alias>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -69,6 +91,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f25eccbeaeeb109eecb8bcd8bd9bdb5ae8275cee" />

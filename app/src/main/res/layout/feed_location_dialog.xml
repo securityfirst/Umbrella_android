@@ -27,7 +27,7 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/place_search_dialog_location_TIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:layout_marginRight="15dp"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-            <android.support.v7.widget.AppCompatAutoCompleteTextView
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/location"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
                 android:textSize="16sp" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <include
             android:id="@+id/alertControlLayout"

@@ -6,8 +6,8 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.support.v4.app.ActivityCompat
 import android.util.Base64
+import androidx.core.app.ActivityCompat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -58,8 +58,6 @@ fun doRestartApplication(context: Context) {
     tourIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     ProcessPhoenix.triggerRebirth(context, tourIntent)
 }
-
-fun getAssetFileBy(fileName: String): InputStream = UmbrellaApplication.instance.assets.open(fileName)
 
 fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {
     val mapper = ObjectMapper(YAMLFactory())
@@ -140,7 +138,7 @@ fun createDocument(doc: org.jsoup.nodes.Document, filename: String, type: String
     return fileToShare
 }
 
-fun appContext() = UmbrellaApplication.instance.applicationContext
+fun appContext(): Context = UmbrellaApplication.instance.applicationContext
 
 fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
         ?: ""

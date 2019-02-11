@@ -1,14 +1,14 @@
 package org.secfirst.umbrella.whitelabel.feature.checklist.view.controller
 
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.checklist_custom_view.*
 import kotlinx.android.synthetic.main.checklist_custom_view.view.*
 import org.secfirst.umbrella.whitelabel.R

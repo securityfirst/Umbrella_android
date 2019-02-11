@@ -1,16 +1,20 @@
 package org.secfirst.umbrella.whitelabel.feature.main
 
+import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -28,6 +32,14 @@ import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
 import org.secfirst.umbrella.whitelabel.misc.setMaskMode
+import java.util.logging.Logger
+import android.view.View
+import android.widget.EditText
+import com.raizlabs.android.dbflow.sql.language.SQLite
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 
 
 class MainActivity : AppCompatActivity() {
@@ -41,11 +53,74 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_view)
         performDI()
         initRoute(savedInstanceState)
+        // TODO: Simple deep link implementation
+        intent.data?.let {
+            when(it.authority) {
+                "forms" -> router.pushController(RouterTransaction.with(HostFormController()))
+                "checklists" -> it.path?.let {path ->
+                    router.pushController(RouterTransaction.with(ChecklistController(path, true)))
+                } ?: kotlin.run {
+                    router.pushController(RouterTransaction.with(HostChecklistController()))
+                }
+                "lessons" -> it.path?.let {path ->
+                    val markdownIds = SQLite.select().from(Markdown::class.java).where(Markdown_Table.id.`is`(path)).queryList().map { it.id }
+                    router.pushController(RouterTransaction.with(SegmentController(ArrayList(markdownIds), "")))
+                } ?: kotlin.run {
+                    router.pushController(RouterTransaction.with(LessonController()))
+                }
+                "feed_items" -> it.path?.let {
+
+                } ?: kotlin.run {
+                    router.pushController(RouterTransaction.with(HostReaderController()))
+                }
+                else -> {}
+            }
+            Logger.getLogger("aaa").info("$it")
+            Logger.getLogger("aaa").info(it.scheme)
+            Logger.getLogger("aaa").info(it.authority)
+            Logger.getLogger("aaa").info(it.path)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         ShakeDetector.start()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the options menu from XML
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+
+        // Get the SearchView and set the searchable configuration
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
+            searchEditText.setTextColor(resources.getColor(R.color.white))
+            searchEditText.setHintTextColor(resources.getColor(R.color.white))
+            // Assumes current activity is the searchable activity
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
+            isSubmitButtonEnabled = true
+            setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    p0?.let {
+                        val i = Intent(this@MainActivity, SearchActivity::class.java)
+                        i.action = Intent.ACTION_SEARCH
+                        i.putExtra(SearchManager.QUERY, it)
+                        startActivity(i)
+                        return true
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    return false
+                }
+
+            })
+        }
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

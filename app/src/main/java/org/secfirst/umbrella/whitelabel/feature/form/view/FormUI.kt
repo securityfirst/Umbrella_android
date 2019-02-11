@@ -4,11 +4,11 @@ package org.secfirst.umbrella.whitelabel.feature.form.view
 import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import org.jetbrains.anko.*

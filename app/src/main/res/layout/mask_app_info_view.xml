@@ -54,7 +54,7 @@
         android:gravity="right"
         android:orientation="horizontal">
 
-        <android.support.v7.widget.ContentFrameLayout
+        <androidx.appcompat.widget.ContentFrameLayout
             android:id="@+id/handsShakeCancel"
             android:layout_width="wrap_content"
             android:layout_height="36dp">
@@ -68,9 +68,9 @@
                 android:text="@string/cancel"
                 android:textColor="@color/hands_shake_info_text_color"
                 android:textSize="@dimen/text_size_smallest" />
-        </android.support.v7.widget.ContentFrameLayout>
+        </androidx.appcompat.widget.ContentFrameLayout>
 
-        <android.support.v7.widget.ContentFrameLayout
+        <androidx.appcompat.widget.ContentFrameLayout
             android:id="@+id/handsShakeOk"
             android:layout_width="60dp"
             android:layout_height="36dp"
@@ -86,7 +86,7 @@
                 android:text="@string/ok"
                 android:textColor="@color/umbrella_green"
                 android:textSize="@dimen/text_size_smallest" />
-        </android.support.v7.widget.ContentFrameLayout>
+        </androidx.appcompat.widget.ContentFrameLayout>
 
     </LinearLayout>
 </LinearLayout>

@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.form.view.adapter
 
-import android.support.annotation.IntRange
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IntRange
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel

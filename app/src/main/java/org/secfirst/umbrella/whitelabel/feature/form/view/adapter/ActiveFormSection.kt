@@ -1,7 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.form.view.adapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
 import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
@@ -41,9 +41,9 @@ class ActiveFormSection(private val onEditItemClick: (ActiveForm) -> Unit,
 
     override fun getHeaderViewHolder(view: View) = HeaderViewHolder(view)
 
-    override fun getFooterViewHolder(view: View?) = FootViewHolder(view)
+    override fun getFooterViewHolder(view: View) = FootViewHolder(view)
 
-    override fun getItemViewHolder(view: View?) = ItemActiveFormHolder(view)
+    override fun getItemViewHolder(view: View) = ItemActiveFormHolder(view)
 
     fun remove(position: Int, sectionAdapter: SectionedRecyclerViewAdapter) {
         sectionAdapter.notifyItemRemoved(position)
@@ -53,15 +53,15 @@ class ActiveFormSection(private val onEditItemClick: (ActiveForm) -> Unit,
 }
 
 
-class FootViewHolder(footView: View?) : RecyclerView.ViewHolder(footView)
+class FootViewHolder(footView: View) : RecyclerView.ViewHolder(footView)
 
-class ItemActiveFormHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+class ItemActiveFormHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val titleForm = itemView?.titleActiveForm
-    private val currentTime = itemView?.currentTime
-    private val edit = itemView?.editForm
-    private val share = itemView?.shareForm
-    private val delete = itemView?.deleteForm
+    private val titleForm = itemView.titleActiveForm
+    private val currentTime = itemView.currentTime
+    private val edit = itemView.editForm
+    private val share = itemView.shareForm
+    private val delete = itemView.deleteForm
 
     fun bind(title: String, timeNow: String,
              editClickListener: (ItemActiveFormHolder) -> Unit,
@@ -70,9 +70,9 @@ class ItemActiveFormHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) 
 
         titleForm?.let { it.text = title }
         currentTime?.let { it.text = timeNow }
-        edit?.let { it -> it.setOnClickListener { editClickListener(this) } }
-        share?.let { it -> it.setOnClickListener { shareClickListener(this) } }
-        delete?.let { it -> it.setOnClickListener { deleteClickListener(this) } }
+        edit?.let { it.setOnClickListener { editClickListener(this) } }
+        share?.let { it.setOnClickListener { shareClickListener(this) } }
+        delete?.let { it.setOnClickListener { deleteClickListener(this) } }
     }
 }
 

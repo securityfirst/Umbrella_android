@@ -3,10 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        app:titleTextColor="@color/white"
+        android:layout_width="match_parent"
+        android:theme="@style/ToolBarTheme"
+        android:layout_height="wrap_content" />
 
-    <android.support.design.widget.TabLayout
+    <com.google.android.material.tabs.TabLayout
         android:id="@+id/hostChecklistTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +24,7 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         tools:targetApi="lollipop" />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/hostChecklistPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

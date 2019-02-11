@@ -42,7 +42,7 @@
                 android:text="@string/export_wipe_data"
                 android:textSize="14sp" />
 
-            <android.support.v7.widget.AppCompatCheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/exportDialogWipeData"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"

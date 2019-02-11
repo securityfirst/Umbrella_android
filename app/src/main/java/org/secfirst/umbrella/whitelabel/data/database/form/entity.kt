@@ -1,10 +1,14 @@
 package org.secfirst.umbrella.whitelabel.data.database.form
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import com.raizlabs.android.dbflow.structure.BaseModel
 import org.jsoup.Jsoup
+import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
@@ -194,5 +198,11 @@ fun MutableList<Form>.associateFormForeignKey() {
                 item.options.forEach { option -> option.item = item }
             }
         }
+    }
+}
+
+fun Form.toSearchResult(): SearchResult {
+    return SearchResult(this.title, "Summary of ${this.title}"
+    ) { c: Context -> c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://forms/${this.path}")))
     }
 }
