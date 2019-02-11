@@ -33,6 +33,8 @@ import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
 import org.secfirst.umbrella.whitelabel.misc.setMaskMode
+import android.view.View
+import android.widget.EditText
 
 
 class MainActivity : AppCompatActivity() {
@@ -62,6 +64,9 @@ class MainActivity : AppCompatActivity() {
         // Get the SearchView and set the searchable configuration
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
+            searchEditText.setTextColor(resources.getColor(R.color.white))
+            searchEditText.setHintTextColor(resources.getColor(R.color.white))
             // Assumes current activity is the searchable activity
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default

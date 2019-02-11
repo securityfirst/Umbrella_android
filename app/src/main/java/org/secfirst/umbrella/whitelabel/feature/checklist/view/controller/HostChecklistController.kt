@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.host_checklist.*
+import kotlinx.android.synthetic.main.host_checklist.view.*
+import kotlinx.android.synthetic.main.lesson_view.view.*
 import kotlinx.android.synthetic.main.shake_device.view.*
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.R
@@ -39,7 +41,12 @@ class HostChecklistController : BaseController() {
                 .setView(shakeDeviceView)
                 .create()
 
-        return inflater.inflate(R.layout.host_checklist, container, false)
+        val view = inflater.inflate(R.layout.host_checklist, container, false)
+        view.toolbar.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
+        }
+        return view
     }
 
     override fun onDestroyView(view: View) {
