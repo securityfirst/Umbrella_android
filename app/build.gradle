@@ -87,6 +87,7 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_sdk"
     implementation "com.google.firebase:firebase-core:$firebase"
     implementation "org.apache.commons:commons-text:1.6"
+    implementation "org.apache.commons:commons-lang3:3.4"
 
 
     //Framework for replacing fragments
