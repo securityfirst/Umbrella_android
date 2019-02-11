@@ -18,7 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:label,android:allowBackup">
-        <activity android:name=".feature.main.SearchActivity" />
+        <activity
+            android:name=".feature.main.SearchActivity"
+            android:parentActivityName=".feature.main.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="umbrella"/>
+                <data android:host="search" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".feature.main.MainActivity"
             android:screenOrientation="portrait">
@@ -55,6 +65,20 @@
 
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="umbrella"/>
+                <data android:host="forms" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="umbrella"/>
+                <data android:host="checklists" />
             </intent-filter>
         </activity-alias>
 

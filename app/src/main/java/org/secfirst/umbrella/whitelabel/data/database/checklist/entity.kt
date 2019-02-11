@@ -49,17 +49,6 @@ data class Checklist(
     }
 }
 
-//fun List<Checklist>.toChecklistControllers(): List<ChecklistController> {
-//    val controllers = mutableListOf<ChecklistController>()
-//    this.forEach { checklist ->
-//        val checklists = mutableListOf<Checklist>()
-//        checklists.add(checklist)
-//        val controller = ChecklistController(checklist.id)
-//        controllers.add(controller)
-//    }
-//    return controllers
-//}
-
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 class Content(
@@ -113,5 +102,3 @@ inline fun <reified T> MutableList<Checklist>.associateChecklist(foreignKey: T) 
         }
     }
 }
-
-

@@ -25,6 +25,11 @@ android {
             exclude module: 'httpclient'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE*'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE*'
+    }
 
     androidExtensions {
         experimental = true
@@ -81,7 +86,7 @@ dependencies {
     implementation "io.github.inflationx:viewpump:$viewpump"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_sdk"
     implementation "com.google.firebase:firebase-core:$firebase"
-    implementation "org.apache.commons:commons-lang3:3.4"
+    implementation "org.apache.commons:commons-text:1.6"
 
 
     //Framework for replacing fragments

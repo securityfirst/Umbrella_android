@@ -15,7 +15,6 @@ import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -33,8 +32,14 @@ import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
 import org.secfirst.umbrella.whitelabel.misc.setMaskMode
+import java.util.logging.Logger
 import android.view.View
 import android.widget.EditText
+import com.raizlabs.android.dbflow.sql.language.SQLite
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 
 
 class MainActivity : AppCompatActivity() {
@@ -46,9 +51,35 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_view)
-        setSupportActionBar(toolbar)
         performDI()
         initRoute(savedInstanceState)
+        // TODO: Simple deep link implementation
+        intent.data?.let {
+            when(it.authority) {
+                "forms" -> router.pushController(RouterTransaction.with(HostFormController()))
+                "checklists" -> it.path?.let {path ->
+                    router.pushController(RouterTransaction.with(ChecklistController(path, true)))
+                } ?: kotlin.run {
+                    router.pushController(RouterTransaction.with(HostChecklistController()))
+                }
+                "lessons" -> it.path?.let {path ->
+                    val markdownIds = SQLite.select().from(Markdown::class.java).where(Markdown_Table.id.`is`(path)).queryList().map { it.id }
+                    router.pushController(RouterTransaction.with(SegmentController(ArrayList(markdownIds), "")))
+                } ?: kotlin.run {
+                    router.pushController(RouterTransaction.with(LessonController()))
+                }
+                "feed_items" -> it.path?.let {
+
+                } ?: kotlin.run {
+                    router.pushController(RouterTransaction.with(HostReaderController()))
+                }
+                else -> {}
+            }
+            Logger.getLogger("aaa").info("$it")
+            Logger.getLogger("aaa").info(it.scheme)
+            Logger.getLogger("aaa").info(it.authority)
+            Logger.getLogger("aaa").info(it.path)
+        }
     }
 
     override fun onResume() {
