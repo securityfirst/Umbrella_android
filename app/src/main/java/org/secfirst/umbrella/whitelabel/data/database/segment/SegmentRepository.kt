@@ -6,6 +6,12 @@ import javax.inject.Inject
 
 class SegmentRepository @Inject constructor(private val segmentDao: SegmentDao) : SegmentRepo {
 
+    override suspend fun loadSubjectByRootDir(rootDir: String) = segmentDao.getSubjectByRootDir(rootDir)
+
+    override suspend fun loadDifficultyBySubjectId(subjectId: String) = segmentDao.getDifficultyBySubjectId(subjectId)
+
+    override suspend fun loadModuleByName(moduleName: String) = segmentDao.getModuleByName(moduleName)
+
     override suspend fun loadMarkdown(markdownId: String) = segmentDao.getMarkdown(markdownId)
 
     override suspend fun loadChecklist(checklistId: String) = segmentDao.getChecklist(checklistId)

@@ -36,11 +36,16 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     private val markdownIds by lazy { args.getStringArrayList(EXTRA_MARKDOWN_IDS_HOST_SEGMENT) }
     private val enableFilter by lazy { args.getBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT) }
     private lateinit var hostAdapter: HostSegmentAdapter
+    private val uriString by lazy { args.getString(EXTRA_ENABLE_DEEP_LINK_SEGMENT) }
 
 
     constructor(markdownIds: ArrayList<String>, enableFilter: Boolean) : this(Bundle().apply {
         putSerializable(EXTRA_MARKDOWN_IDS_HOST_SEGMENT, markdownIds)
         putBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT, enableFilter)
+    })
+
+    constructor(uri: String) : this(Bundle().apply {
+        putString(EXTRA_ENABLE_DEEP_LINK_SEGMENT, uri)
     })
 
     override fun onInject() {
@@ -59,12 +64,18 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     private fun initView(view: View) {
         setUpToolbar(view)
-        if (enableFilter) {
-            view.hostSegmentSpinner.visibility = VISIBLE
-            presenter.submitDifficulties(markdownIds)
-        } else {
-            presenter.submitMarkdowns(markdownIds)
-            view.hostSegmentSpinner.visibility = INVISIBLE
+        when {
+            uriString != null -> presenter.submitMarkdownsByURI(uriString)
+
+            enableFilter -> {
+                view.hostSegmentSpinner.visibility = VISIBLE
+                presenter.submitDifficulties(markdownIds)
+            }
+
+            else -> {
+                presenter.submitMarkdowns(markdownIds)
+                view.hostSegmentSpinner.visibility = INVISIBLE
+            }
         }
     }
 
@@ -100,7 +111,8 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
             pageContainer.add(mainPage)
             pageContainer.addAll(markdowns.toSegmentDetailControllers())
             pageContainer.addAll(checklist.toChecklistControllers())
-            hostAdapter = HostSegmentAdapter(this@HostSegmentController, pageContainer, segmentPageLimit)
+            hostAdapter = HostSegmentAdapter(this@HostSegmentController,
+                    pageContainer, segmentPageLimit)
 
             hostSegmentPager?.let {
                 it.adapter = hostAdapter
@@ -147,5 +159,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     companion object {
         private const val EXTRA_MARKDOWN_IDS_HOST_SEGMENT = "ids"
         private const val EXTRA_ENABLE_FILTER_HOST_SEGMENT = "filter"
+        private const val EXTRA_ENABLE_DEEP_LINK_SEGMENT = "deeplink"
     }
 }

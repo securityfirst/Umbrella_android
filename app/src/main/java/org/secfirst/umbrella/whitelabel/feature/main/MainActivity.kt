@@ -28,6 +28,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.login.view.LoginController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
 import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
@@ -40,6 +41,8 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
+import org.secfirst.umbrella.whitelabel.misc.*
+
 
 class MainActivity : AppCompatActivity() {
 

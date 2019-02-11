@@ -70,6 +70,9 @@
 
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
+                <data android:scheme="umbrella" />
+
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -100,19 +103,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f25eccbeaeeb109eecb8bcd8bd9bdb5ae8275cee" />
-
-        <!--<activity-->
-        <!--android:name=".deeplink.DeepLinkActivity"-->
-        <!--android:theme="@android:style/Theme.NoDisplay">-->
-        <!--<intent-filter>-->
-        <!--<action android:name="android.intent.action.VIEW" />-->
-
-        <!--<category android:name="android.intent.category.DEFAULT" />-->
-        <!--<category android:name="android.intent.category.BROWSABLE" />-->
-
-        <!--<data android:scheme="umbrella" />-->
-        <!--</intent-filter>-->
-        <!--</activity>-->
     </application>
 
 </manifest>

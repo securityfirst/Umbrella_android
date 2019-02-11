@@ -17,7 +17,13 @@ interface SegmentBaseInteractor : BaseInteractor {
 
     suspend fun fetchModule(moduleId: String): Module?
 
+    suspend fun fetchModuleByName(moduleName: String): Module?
+
     suspend fun fetchDifficulty(difficultyId: String): Difficulty?
+
+    suspend fun fetchSubjectByRootDir(rootDir: String): Subject?
+
+    suspend fun fetchDifficultyBySubjectId(subjectId: String): List<Difficulty>
 
     suspend fun insertChecklist(checklist: Checklist)
 

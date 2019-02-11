@@ -7,6 +7,8 @@ import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.HOST_LESSON
+import org.secfirst.umbrella.whitelabel.misc.OPEN_SUBJECT
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
@@ -14,6 +16,44 @@ import javax.inject.Inject
 class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), SegmentBasePresenter<V, I> {
+
+    override fun submitMarkdownsByURI(uri: String) {
+
+        val uriWithoutHost = uri.substringAfterLast("$HOST_LESSON/")
+        val uriSplitted = uriWithoutHost.split("/")
+        when (uriSplitted.size) {
+            OPEN_SUBJECT -> deepLinkForSubject(uriSplitted)
+        }
+    }
+
+    private fun deepLinkForSubject(uriSplitted: List<String>) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val subjectTitle = uriSplitted.last()
+                val subject = it.fetchSubjectByRootDir(subjectTitle)
+                val difficultySelected = uriSplitted[1].toInt()
+
+                subject?.let { safeSubject ->
+                    val difficulties = it.fetchDifficultyBySubjectId(safeSubject.id).toMutableList()
+                    getView()?.showSegmentsWithDifficulty(sortDifficulty(difficulties, difficultySelected))
+                }
+            }
+        }
+    }
+
+    private fun sortDifficulty(difficulties: List<Difficulty>, difficultySelected: Int): List<Difficulty> {
+        val sortDifficulties = mutableListOf<Difficulty>()
+        difficulties.forEach { diff ->
+            if (diff.index == difficultySelected)
+                sortDifficulties.add(diff)
+        }
+        difficulties.forEach { diff ->
+            if (diff.index != difficultySelected)
+                sortDifficulties.add(diff)
+        }
+
+        return sortDifficulties
+    }
 
     override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
         launchSilent(uiContext) {

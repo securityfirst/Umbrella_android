@@ -22,4 +22,12 @@ interface SegmentRepo {
     suspend fun saveMarkdown(markdown: Markdown)
 
     suspend fun saveDifficultySelect(subjectId: String, difficulty: Difficulty)
+
+    suspend fun loadDifficultyBySubjectId(subjectId: String): List<Difficulty>
+
+    suspend fun loadSubjectByRootDir(rootDir: String): Subject?
+
+    suspend fun loadModuleByName(moduleName: String): Module?
+
+
 }

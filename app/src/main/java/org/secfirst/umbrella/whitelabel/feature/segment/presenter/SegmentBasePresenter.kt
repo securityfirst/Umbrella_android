@@ -25,4 +25,6 @@ interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : Bas
     fun submitDifficulties(difficultyIds: ArrayList<String>)
 
     fun submitTitleToolbar(subjectId: String = "", moduleId: String = "")
+
+    fun submitMarkdownsByURI(uri: String)
 }
