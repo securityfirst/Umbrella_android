@@ -9,9 +9,9 @@ interface SegmentView : BaseView {
 
     fun showSegmentDetail(markdown: Markdown) {}
 
-    fun showSegmentsWithDifficulty(difficulties: List<Difficulty>) {}
+    fun showSegmentsWithDifficulty(difficulties: List<Difficulty>, markdownIndexSelected: Int = -1) {}
 
-    fun showSegments(markdowns: List<Markdown>) {}
+    fun showSegments(markdowns: List<Markdown>, markdownIndexSelected: Int = -1) {}
 
     fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {}
 

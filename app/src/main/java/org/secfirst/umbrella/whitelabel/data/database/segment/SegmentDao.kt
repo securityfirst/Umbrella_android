@@ -48,11 +48,11 @@ interface SegmentDao : BaseDao {
                 .querySingle()
     }
 
-    suspend fun getModuleByName(moduleName: String) =
+    suspend fun getModuleByRootDir(rootDir: String) =
             withContext(ioContext) {
                 SQLite.select()
                         .from(Module::class.java)
-                        .where(Module_Table.rootDir.`is`(moduleName))
+                        .where(Module_Table.rootDir.`is`(rootDir))
                         .querySingle()
             }
 

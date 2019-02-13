@@ -6,10 +6,8 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
+import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.HOST_LESSON
-import org.secfirst.umbrella.whitelabel.misc.OPEN_SUBJECT
-import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
 
@@ -18,11 +16,79 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor = interactor), SegmentBasePresenter<V, I> {
 
     override fun submitMarkdownsByURI(uri: String) {
-
-        val uriWithoutHost = uri.substringAfterLast("$HOST_LESSON/")
+        val uriWithoutHost = uri.substringAfterLast("$LESSON_HOST/")
         val uriSplitted = uriWithoutHost.split("/")
+
         when (uriSplitted.size) {
-            OPEN_SUBJECT -> deepLinkForSubject(uriSplitted)
+            LESSON_SUBJECT_LEVEL -> deepLinkForSubject(uriSplitted)
+            LESSON_MODULE_LEVEL -> deepLinkForModule(uriSplitted)
+            LESSON_SEGMENT_IN_MODULE -> deepLinkForSegmentInModule(uriSplitted)
+            LESSON_SEGMENT_IN_SUBJECT -> deepLinkForSegmentInSubject(uriSplitted)
+        }
+    }
+
+    private fun deepLinkForSegmentInModule(uriSplitted: List<String>) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                var indexSelected = 0
+                val moduleSelected = uriSplitted[0]
+                var segmentSelected = uriSplitted[1]
+                segmentSelected = segmentSelected.replace("_", " ")
+                val module = it.fetchModuleByRootDir(moduleSelected)
+
+                if (module?.subjects != null) {
+                    module.subjects.forEach { subject ->
+                        if (subject.rootDir.capitalize() == segmentSelected.capitalize()) {
+                            getView()?.showSegments(subject.markdowns)
+                        }
+                    }
+                } else {
+                    module?.markdowns?.let { markdowns ->
+                        markdowns.forEach { markdown ->
+                            if (markdown.title.capitalize() == segmentSelected.capitalize())
+                                indexSelected = markdown.index.toInt()
+                        }
+                        getView()?.showSegments(markdowns, indexSelected)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deepLinkForModule(uriSplitted: List<String>) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val moduleSelected = uriSplitted[0]
+                val module = it.fetchModuleByRootDir(moduleSelected)
+                module?.markdowns?.let { markdowns -> getView()?.showSegments(markdowns) }
+            }
+        }
+    }
+
+    private fun deepLinkForSegmentInSubject(uriSplitted: List<String>) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val subjectTitle = uriSplitted[2]
+                val subject = it.fetchSubjectByRootDir(subjectTitle)
+                val difficultySelected = uriSplitted[1]
+                var segmentSelected = uriSplitted.last()
+                segmentSelected = segmentSelected.replace("_", " ")
+                var indexSelected = 0
+
+                subject?.let { safeSubject ->
+                    val difficulties = it.fetchDifficultyBySubject(safeSubject.id).toMutableList()
+                    difficulties.forEach { difficulty ->
+                        if (difficulty.rootDir == difficultySelected)
+                            difficulty.markdowns.forEach { markdown ->
+                                var markdownTitle = markdown.title.capitalize()
+                                markdownTitle = markdownTitle.replace("?", "")
+                                if (markdownTitle == segmentSelected.capitalize())
+                                    indexSelected = markdown.index.toInt()
+                            }
+                    }
+                    getView()?.showSegmentsWithDifficulty(sortDifficulty(difficulties, difficultySelected), indexSelected)
+                }
+            }
         }
     }
 
@@ -31,24 +97,24 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             interactor?.let {
                 val subjectTitle = uriSplitted.last()
                 val subject = it.fetchSubjectByRootDir(subjectTitle)
-                val difficultySelected = uriSplitted[1].toInt()
+                val difficultySelected = uriSplitted[1]
 
                 subject?.let { safeSubject ->
-                    val difficulties = it.fetchDifficultyBySubjectId(safeSubject.id).toMutableList()
+                    val difficulties = it.fetchDifficultyBySubject(safeSubject.id).toMutableList()
                     getView()?.showSegmentsWithDifficulty(sortDifficulty(difficulties, difficultySelected))
                 }
             }
         }
     }
 
-    private fun sortDifficulty(difficulties: List<Difficulty>, difficultySelected: Int): List<Difficulty> {
+    private fun sortDifficulty(difficulties: List<Difficulty>, difficultySelected: String): List<Difficulty> {
         val sortDifficulties = mutableListOf<Difficulty>()
         difficulties.forEach { diff ->
-            if (diff.index == difficultySelected)
+            if (diff.rootDir == difficultySelected)
                 sortDifficulties.add(diff)
         }
         difficulties.forEach { diff ->
-            if (diff.index != difficultySelected)
+            if (diff.rootDir != difficultySelected)
                 sortDifficulties.add(diff)
         }
 

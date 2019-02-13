@@ -11,10 +11,10 @@ class SegmentInteractorImp @Inject constructor(private val segmentRepo: SegmentR
 
     override suspend fun fetchSubjectByRootDir(rootDir: String) = segmentRepo.loadSubjectByRootDir(rootDir)
 
-    override suspend fun fetchDifficultyBySubjectId(subjectId: String) =
+    override suspend fun fetchDifficultyBySubject(subjectId: String) =
             segmentRepo.loadDifficultyBySubjectId(subjectId)
 
-    override suspend fun fetchModuleByName(moduleName: String) = segmentRepo.loadModuleByName(moduleName)
+    override suspend fun fetchModuleByRootDir(rootDir: String) = segmentRepo.loadModuleByRootdir(rootDir)
 
     override suspend fun fetchMarkdown(markdownId: String) = segmentRepo.loadMarkdown(markdownId)
 

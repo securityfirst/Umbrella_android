@@ -27,7 +27,7 @@ interface SegmentRepo {
 
     suspend fun loadSubjectByRootDir(rootDir: String): Subject?
 
-    suspend fun loadModuleByName(moduleName: String): Module?
+    suspend fun loadModuleByRootdir(moduleName: String): Module?
 
 
 }

@@ -105,7 +105,7 @@ data class Subject(
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
                     .from(Markdown::class.java)
-                    .where(Markdown_Table.module_id.eq(id))
+                    .where(Markdown_Table.subject_id.eq(id))
                     .queryList()
         }
         return markdowns

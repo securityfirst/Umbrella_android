@@ -10,7 +10,7 @@ class SegmentRepository @Inject constructor(private val segmentDao: SegmentDao) 
 
     override suspend fun loadDifficultyBySubjectId(subjectId: String) = segmentDao.getDifficultyBySubjectId(subjectId)
 
-    override suspend fun loadModuleByName(moduleName: String) = segmentDao.getModuleByName(moduleName)
+    override suspend fun loadModuleByRootdir(moduleName: String) = segmentDao.getModuleByRootDir(moduleName)
 
     override suspend fun loadMarkdown(markdownId: String) = segmentDao.getMarkdown(markdownId)
 
