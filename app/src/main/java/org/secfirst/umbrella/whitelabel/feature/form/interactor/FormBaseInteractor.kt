@@ -11,7 +11,7 @@ interface FormBaseInteractor : BaseInteractor {
 
     suspend fun insertFormData(answer: Answer)
 
-    suspend fun insertActiveForm(activeForm: ActiveForm) : Boolean
+    suspend fun insertActiveForm(activeForm: ActiveForm): Boolean
 
     suspend fun deleteActiveForm(activeForm: ActiveForm)
 
@@ -21,5 +21,7 @@ interface FormBaseInteractor : BaseInteractor {
 
     suspend fun fetchAnswerBy(formId: Long): List<Answer>
 
-    suspend fun fetchScreenBy(sh1ID : String): List<Screen>
+    suspend fun fetchScreenBy(sh1ID: String): List<Screen>
+
+    suspend fun fetchForm(formTitle: String): Form?
 }

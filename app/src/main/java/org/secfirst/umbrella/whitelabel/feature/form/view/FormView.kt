@@ -12,4 +12,6 @@ interface FormView : BaseView {
     fun showShareForm(shareFile: File) {}
 
     fun showActiveFormWLoad(result: Boolean){}
+
+    fun openSpecificForm(form: Form) {}
 }

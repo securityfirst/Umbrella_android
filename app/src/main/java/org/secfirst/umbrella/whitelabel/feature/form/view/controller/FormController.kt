@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import com.bluelinelabs.conductor.RouterTransaction
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
 import kotlinx.android.synthetic.main.form_progress.*
@@ -85,7 +86,10 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
 
 
     private fun closeView() {
-        router.popCurrentController()
+        bindAllComponents()
+        presenter.submitActiveForm(activeForm)
+        router.pushController(RouterTransaction.with(HostFormController()))
+        enableNavigation(true)
     }
 
     override fun onStepSelected(newStepPosition: Int) {
@@ -125,24 +129,13 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     }
 
 
-    override fun onCompleted(completeButton: View?) {
-        bindAllComponents()
-        presenter.submitActiveForm(activeForm)
-        closeView()
-    }
+    override fun onCompleted(completeButton: View?) = closeView()
 
-    private fun     onAppBarBackAction() {
-        bindAllComponents()
-        presenter.submitActiveForm(activeForm)
-        enableNavigation(true)
-        closeView()
-    }
+    private fun onAppBarBackAction() = closeView()
 
     override fun handleBack(): Boolean {
-        bindAllComponents()
-        presenter.submitActiveForm(activeForm)
-        enableNavigation(true)
-        return super.handleBack()
+        closeView()
+        return true
     }
 
 
@@ -187,6 +180,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
             }
         }
     }
+
 
     companion object {
         private const val EXTRA_ACTIVE_FORM = "active_form"

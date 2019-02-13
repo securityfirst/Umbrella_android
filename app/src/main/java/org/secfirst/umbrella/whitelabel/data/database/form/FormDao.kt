@@ -53,6 +53,13 @@ interface FormDao {
                 .queryList()
     }
 
+    suspend fun getForm(formTitle: String): Form? = withContext(ioContext) {
+        SQLite.select()
+                .from(Form::class.java)
+                .where(Form_Table.deeplinkTitle.`is`(formTitle))
+                .querySingle()
+    }
+
     suspend fun getAllActiveForms(): List<ActiveForm> = withContext(ioContext) {
         SQLite.select()
                 .from(ActiveForm::class.java)

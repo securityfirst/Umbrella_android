@@ -60,9 +60,15 @@ class HostFormController(bundle: Bundle) : BaseController(bundle), FormView {
         setUpToolbar()
         hostFormRecycleView.layoutManager = LinearLayoutManager(view.context)
         presenter.onAttach(this)
-        presenter.submitLoadAllForms()
+        checkFormURI()
     }
 
+    private fun checkFormURI() {
+        if (uriString.isBlank())
+            presenter.submitLoadAllForms()
+        else
+            presenter.submitFormByURI(uriString)
+    }
 
     private fun onEditFormClicked(form: Form) {
         val activeForm = ActiveForm()
@@ -123,6 +129,8 @@ class HostFormController(bundle: Bundle) : BaseController(bundle), FormView {
                 ContextCompat.startActivity(it, Intent.createChooser(shareIntent, ""), null)
         }
     }
+
+    override fun openSpecificForm(form: Form) = onEditFormClicked(form)
 
     private fun setUpToolbar() {
         hostFormToolbar?.let {

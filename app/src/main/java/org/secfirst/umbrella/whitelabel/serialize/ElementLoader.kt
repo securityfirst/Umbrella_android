@@ -100,6 +100,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
         if (getDelimiter(file.nameWithoutExtension) == TypeFile.FORM.value) {
             val form = parseYmlFile(file, Form::class)
             form.path = sha1ID
+            form.deeplinkTitle = form.title.toLowerCase()
             root.forms.add(form)
         }
     }

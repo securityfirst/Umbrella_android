@@ -21,6 +21,8 @@ data class Form(
         var path: String = "",
         @Column
         var title: String = "",
+        @Column
+        var deeplinkTitle: String = "",
         var screens: MutableList<Screen> = arrayListOf()) : BaseModel(), Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "screens")
