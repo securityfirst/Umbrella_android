@@ -1,9 +1,5 @@
 package org.secfirst.umbrella.whitelabel.misc
 
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-
 const val LESSON_HOST = "lesson"
 const val FORM_HOST = "forms"
 const val FEED_HOST = "feed"

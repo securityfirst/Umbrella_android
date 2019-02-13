@@ -27,7 +27,8 @@ import org.secfirst.umbrella.whitelabel.misc.currentTime
 import java.io.File
 import javax.inject.Inject
 
-class HostFormController : BaseController(), FormView {
+
+class HostFormController(bundle: Bundle) : BaseController(bundle), FormView {
 
     @Inject
     internal lateinit var presenter: FormBasePresenter<FormView, FormBaseInteractor>
@@ -40,6 +41,12 @@ class HostFormController : BaseController(), FormView {
     private var activeFormTag = ""
     private lateinit var allFormSection: AllFormSection
     private lateinit var activeFormSection: ActiveFormSection
+    private val uriString by lazy { args.getString(EXTRA_ENABLE_DEEP_LINK_FORM) }
+
+
+    constructor(uri: String = "") : this(Bundle().apply {
+        putString(EXTRA_ENABLE_DEEP_LINK_FORM, uri)
+    })
 
     override fun onInject() {
         DaggerFormComponent.builder()
@@ -55,6 +62,7 @@ class HostFormController : BaseController(), FormView {
         presenter.onAttach(this)
         presenter.submitLoadAllForms()
     }
+
 
     private fun onEditFormClicked(form: Form) {
         val activeForm = ActiveForm()
@@ -121,5 +129,9 @@ class HostFormController : BaseController(), FormView {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.title = context.getString(R.string.form_title)
         }
+    }
+
+    companion object {
+        private const val EXTRA_ENABLE_DEEP_LINK_FORM = "deeplink"
     }
 }

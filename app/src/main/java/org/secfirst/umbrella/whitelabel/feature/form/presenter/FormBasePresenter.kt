@@ -17,5 +17,4 @@ interface FormBasePresenter<V : FormView, I : FormBaseInteractor> : BasePresente
     fun submitDeleteActiveForm(activeForm: ActiveForm)
 
     fun submitShareFormHtml(activeForm: ActiveForm)
-
 }
