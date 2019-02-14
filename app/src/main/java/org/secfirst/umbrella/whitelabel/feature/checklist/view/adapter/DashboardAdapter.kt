@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.checklist_dashboard_header.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
+import org.jetbrains.anko.backgroundDrawable
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Dashboard
@@ -86,12 +87,12 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
         private fun setDifficultyColor(level: Int) {
             when (level) {
-                Difficulty.BEGINNER -> itemView.levelColor
-                        .setBackgroundColor(ContextCompat.getColor(appContext(), R.color.umbrella_green))
+                Difficulty.BEGINNER -> itemView.levelColor.backgroundDrawable =
+                        ContextCompat.getDrawable(appContext(), R.drawable.ic_beginner)
                 Difficulty.ADVANCED -> itemView.levelColor
-                        .setBackgroundColor(ContextCompat.getColor(appContext(), R.color.umbrella_yellow))
+                        .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_intermediate)
                 Difficulty.EXPERT -> itemView.levelColor
-                        .setBackgroundColor(ContextCompat.getColor(appContext(), R.color.umbrella_purple))
+                        .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_expert)
             }
         }
     }

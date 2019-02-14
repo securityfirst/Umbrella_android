@@ -1,18 +1,13 @@
 package org.secfirst.umbrella.whitelabel.feature.main
 
-import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
@@ -62,34 +57,34 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.option_menu, menu)
 
-        // Get the SearchView and set the searchable configuration
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
-            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
-            searchEditText.setTextColor(resources.getColor(R.color.white))
-            searchEditText.setHintTextColor(resources.getColor(R.color.white))
-            // Assumes current activity is the searchable activity
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
-            isSubmitButtonEnabled = true
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    p0?.let {
-                        val i = Intent(this@MainActivity, SearchActivity::class.java)
-                        i.action = Intent.ACTION_SEARCH
-                        i.putExtra(SearchManager.QUERY, it)
-                        startActivity(i)
-                        return true
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    return false
-                }
-
-            })
-        }
+//        // Get the SearchView and set the searchable configuration
+//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+//            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
+//            searchEditText.setTextColor(resources.getColor(R.color.white))
+//            searchEditText.setHintTextColor(resources.getColor(R.color.white))
+//            // Assumes current activity is the searchable activity
+//            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+//            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
+//            isSubmitButtonEnabled = true
+//            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//                override fun onQueryTextSubmit(p0: String?): Boolean {
+//                    p0?.let {
+//                        val i = Intent(this@MainActivity, SearchActivity::class.java)
+//                        i.action = Intent.ACTION_SEARCH
+//                        i.putExtra(SearchManager.QUERY, it)
+//                        startActivity(i)
+//                        return true
+//                    }
+//                    return false
+//                }
+//
+//                override fun onQueryTextChange(p0: String?): Boolean {
+//                    return false
+//                }
+//
+//            })
+//        }
         return true
     }
 
