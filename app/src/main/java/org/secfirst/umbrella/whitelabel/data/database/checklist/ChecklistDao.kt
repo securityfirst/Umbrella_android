@@ -5,6 +5,8 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module_Table
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject_Table
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
@@ -98,6 +100,13 @@ interface ChecklistDao {
                 .from(Checklist::class.java)
                 .where(Checklist_Table.custom.`is`(true))
                 .queryList()
+    }
+
+    suspend fun getModuleByName(moduleName: String): Module? = withContext(ioContext) {
+        SQLite.select()
+                .from(Module::class.java)
+                .where(Module_Table.rootDir.`is`(moduleName))
+                .querySingle()
     }
 }
 

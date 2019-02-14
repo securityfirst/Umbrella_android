@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.data.database.checklist
 
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 
 interface ChecklistRepo {
@@ -30,4 +31,6 @@ interface ChecklistRepo {
     suspend fun loadAllCustomChecklistInProgress(): List<Checklist>
 
     suspend fun loadChecklist(checklistId: String): Checklist?
+
+    suspend fun loadModule(moduleName: String): Module?
 }

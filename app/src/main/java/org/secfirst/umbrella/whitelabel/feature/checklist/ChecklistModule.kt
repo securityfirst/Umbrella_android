@@ -16,6 +16,7 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistCustomController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.DashboardController
+import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import javax.inject.Singleton
 
 
@@ -49,7 +50,7 @@ interface ChecklistComponent {
 
     fun inject(dashboardController: DashboardController)
 
-    //fun inject(checklistDetailController: ChecklistDetailController)
+    fun inject(hostChecklist: HostChecklistController)
 
     fun inject(checklistCustom: ChecklistCustomController)
 }

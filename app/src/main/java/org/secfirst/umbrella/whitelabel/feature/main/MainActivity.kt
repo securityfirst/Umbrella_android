@@ -3,11 +3,14 @@ package org.secfirst.umbrella.whitelabel.feature.main
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Conductor
@@ -30,17 +33,6 @@ import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorControlle
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
-import org.secfirst.umbrella.whitelabel.misc.hideKeyboard
-import org.secfirst.umbrella.whitelabel.misc.removeShiftMode
-import org.secfirst.umbrella.whitelabel.misc.setMaskMode
-import java.util.logging.Logger
-import android.view.View
-import android.widget.EditText
-import com.raizlabs.android.dbflow.sql.language.SQLite
-import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
-import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.ChecklistController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.whitelabel.misc.*
 
 
@@ -55,34 +47,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_view)
         performDI()
         initRoute(savedInstanceState)
-
-        // TODO: Simple deep link implementation
-        intent.data?.let {
-            when(it.authority) {
-                "forms" -> router.pushController(RouterTransaction.with(HostFormController()))
-                "checklists" -> it.path?.let {path ->
-                    router.pushController(RouterTransaction.with(ChecklistController(path, true)))
-                } ?: kotlin.run {
-                    router.pushController(RouterTransaction.with(HostChecklistController()))
-                }
-                "lessons" -> it.path?.let {path ->
-                    val markdownIds = SQLite.select().from(Markdown::class.java).where(Markdown_Table.id.`is`(path)).queryList().map { it.id }
-                    router.pushController(RouterTransaction.with(SegmentController(ArrayList(markdownIds), "")))
-                } ?: kotlin.run {
-                    router.pushController(RouterTransaction.with(LessonController()))
-                }
-                "feed_items" -> it.path?.let {
-
-                } ?: kotlin.run {
-                    router.pushController(RouterTransaction.with(HostReaderController()))
-                }
-                else -> {}
-            }
-            Logger.getLogger("aaa").info("$it")
-            Logger.getLogger("aaa").info(it.scheme)
-            Logger.getLogger("aaa").info(it.authority)
-            Logger.getLogger("aaa").info(it.path)
-        }
+        isDeepLink()
     }
 
     override fun onResume() {
@@ -105,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
             isSubmitButtonEnabled = true
-            setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
                     p0?.let {
                         val i = Intent(this@MainActivity, SearchActivity::class.java)
@@ -215,5 +180,29 @@ class MainActivity : AppCompatActivity() {
         if (!res)
             setMaskMode(this, false)
         return res
+    }
+
+    private fun isDeepLink() {
+        if (ACTION_VIEW == intent.action) {
+            val uri = intent.data
+            when (uri?.host) {
+                FEED_HOST -> {
+                    router.pushController(RouterTransaction.with(HostReaderController()))
+                    navigation.menu.getItem(0).isChecked = true
+                }
+                FORM_HOST -> {
+                    router.pushController(RouterTransaction.with(HostFormController(uri.toString())))
+                    navigation.menu.getItem(1).isChecked = true
+                }
+                LESSON_HOST -> {
+                    router.pushController(RouterTransaction.with(HostSegmentController(uri.toString())))
+                    navigation.menu.getItem(3).isChecked = true
+                }
+                CHECKLIST_HOST -> {
+                    router.pushController(RouterTransaction.with(HostChecklistController(uri.toString())))
+                    navigation.menu.getItem(2).isChecked = true
+                }
+            }
+        }
     }
 }

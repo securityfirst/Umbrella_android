@@ -8,6 +8,8 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 
 interface ChecklistBasePresenter<V : ChecklistView, I : ChecklistBaseInteractor> : BasePresenter<V, I> {
 
+    fun submitChecklistById(uriString: String)
+
     fun submitInsertChecklistContent(checklistContent: Content)
 
     fun submitUpdateChecklist(checklist: Checklist)

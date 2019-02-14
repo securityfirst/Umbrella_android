@@ -7,6 +7,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.CHECKLIST_HOST
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
@@ -14,6 +15,26 @@ class ChecklistPresenterImp<V : ChecklistView, I :
 ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         BasePresenterImp<V, I>(interactor = interactor), ChecklistBasePresenter<V, I> {
 
+
+    override fun submitChecklistById(uriString: String) {
+
+        val uriWithoutHost = uriString.substringAfterLast("$CHECKLIST_HOST/")
+        val uriSplitted = uriWithoutHost.split("/")
+
+        launchSilent(uiContext) {
+            interactor?.let {
+                val module = it.fetchModule(uriSplitted[0])
+                module?.subjects?.forEach { subject ->
+                    if (subject.title.capitalize() == uriSplitted.last().capitalize())
+                        subject.difficulties.forEach { difficulty ->
+                            if (difficulty.rootDir.toLowerCase() == uriSplitted[1].toLowerCase())
+                                getView()?.getChecklist(difficulty.checklist.last())
+                        }
+                }
+                println()
+            }
+        }
+    }
 
     override fun submitChecklist(checklistId: String) {
         launchSilent(uiContext) {

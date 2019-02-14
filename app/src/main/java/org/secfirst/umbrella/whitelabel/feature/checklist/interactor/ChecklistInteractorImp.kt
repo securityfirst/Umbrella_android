@@ -7,9 +7,10 @@ import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorIm
 import javax.inject.Inject
 
 class ChecklistInteractorImp @Inject constructor(private val checklistRepo: ChecklistRepo) : BaseInteractorImp(), ChecklistBaseInteractor {
+    override suspend fun fetchModule(moduleName: String) = checklistRepo.loadModule(moduleName)
 
     override suspend fun fetchChecklist(checklistId: String) = checklistRepo.loadChecklist(checklistId)
-    
+
     override suspend fun fetchAllCustomChecklistInProgress() = checklistRepo.loadAllCustomChecklistInProgress()
 
     override suspend fun deleteChecklistContent(checklistContent: Content) = checklistRepo.deleteChecklistContent(checklistContent)

@@ -4,6 +4,8 @@ import javax.inject.Inject
 
 class ChecklistRepository @Inject constructor(private val checklistDao: ChecklistDao) : ChecklistRepo {
 
+    override suspend fun loadModule(moduleName: String) = checklistDao.getModuleByName(moduleName)
+
     override suspend fun loadChecklist(checklistId: String) = checklistDao.getChecklist(checklistId)
 
     override suspend fun loadAllCustomChecklistInProgress() = checklistDao.getAllCustomChecklistInProgress()

@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.feature.checklist.interactor
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
@@ -33,4 +34,6 @@ interface ChecklistBaseInteractor : BaseInteractor {
     suspend fun fetchAllCustomChecklistInProgress(): List<Checklist>
 
     suspend fun fetchChecklist(checklistId: String): Checklist?
+
+    suspend fun fetchModule(moduleName: String): Module?
 }

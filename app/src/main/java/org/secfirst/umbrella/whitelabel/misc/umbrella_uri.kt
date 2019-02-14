@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.misc
 const val LESSON_HOST = "lesson"
 const val FORM_HOST = "forms"
 const val FEED_HOST = "feed"
+const val CHECKLIST_HOST = "checklist"
 /*
  Scheme to define how many levels a URI should have.
  Eg: umbrella://lesson/glossary{1}
