@@ -18,7 +18,8 @@ import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.advancedsearch.util.mvp.ThreadSpec
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.database.checklist.*
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
+import org.secfirst.umbrella.whitelabel.data.database.checklist.Content_Table
 import org.secfirst.umbrella.whitelabel.data.database.content.toSearchResult
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Form_Table
@@ -62,7 +63,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 intent.putExtra(SearchManager.QUERY, it)
             }
         }
-        setSupportActionBar(toolbar)
+        setSupportActionBar(searchToolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
             title = getString(R.string.search_results)
