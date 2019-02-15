@@ -139,7 +139,13 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
             val difficulties = mutableListOf<Difficulty>()
             interactor?.let {
                 difficultyIds.forEach { id ->
-                    it.fetchDifficulty(id)?.let { diff -> difficulties.add(diff) }
+                    it.fetchDifficulty(id)?.let { diff ->
+                        diff.subject?.let { safeSubject ->
+                            val fullSubject = it.fetchSubject(safeSubject.id)
+                            diff.subject = fullSubject
+                        }
+                        difficulties.add(diff)
+                    }
                 }
                 getView()?.showSegmentsWithDifficulty(difficulties)
             }
