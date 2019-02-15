@@ -93,6 +93,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                         .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_intermediate)
                 Difficulty.EXPERT -> itemView.levelColor
                         .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_expert)
+                else -> itemView.levelColor.visibility = View.GONE
             }
         }
     }

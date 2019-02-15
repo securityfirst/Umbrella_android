@@ -58,7 +58,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                     it.persistChecklist(customChecklist)
 
                 } catch (e: Exception) {
-                    println("Erro when tried to save a custom checklist.")
+                    println("Error when tried to save a custom checklist.")
                 }
             }
         }
