@@ -3,7 +3,7 @@
     <string name="secondary_app_name">Calculator</string>
     <string name="feed_title">Feed</string>
     <string name="form_title">Forms</string>
-    <string name="checklist_title">Checklists</string>
+    <string name="checklist_title">Checklist</string>
     <string name="lesson_title">Lessons</string>
     <string name="account_title">Account</string>
     <string name="message_title_active_forms">Filled out forms</string>

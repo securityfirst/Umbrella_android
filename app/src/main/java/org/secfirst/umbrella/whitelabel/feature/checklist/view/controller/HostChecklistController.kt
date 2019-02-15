@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import com.raizlabs.android.dbflow.config.FlowManager
 import kotlinx.android.synthetic.main.host_checklist.*
-import kotlinx.android.synthetic.main.host_checklist.view.*
-import kotlinx.android.synthetic.main.lesson_view.view.*
 import kotlinx.android.synthetic.main.shake_device.view.*
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.R
@@ -64,10 +62,10 @@ class HostChecklistController(bundle: Bundle) : BaseController(bundle), Checklis
 
         if (uriString.isNotBlank()) presenter.submitChecklistById(uriString)
 
-        view.toolbar.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
-        }
+//        view.toolbar.let {
+//            mainActivity.setSupportActionBar(it)
+//            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
+//        }
         return view
     }
 

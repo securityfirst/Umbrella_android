@@ -3,7 +3,6 @@ package org.secfirst.umbrella.whitelabel.feature.main
 import android.content.Context
 import android.content.Intent.ACTION_VIEW
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -14,7 +13,6 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
@@ -41,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_view)
-        setSupportActionBar(searchToolbar)
+        //  setSupportActionBar(searchToolbar)
         performDI()
         initRoute(savedInstanceState)
         isDeepLink()
@@ -52,11 +50,11 @@ class MainActivity : AppCompatActivity() {
         ShakeDetector.start()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the options menu from XML
-        val inflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
-
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the options menu from XML
+//        val inflater = menuInflater
+//        inflater.inflate(R.menu.option_menu, menu)
+//
 //        // Get the SearchView and set the searchable configuration
 //        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
 //        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
@@ -85,8 +83,8 @@ class MainActivity : AppCompatActivity() {
 //
 //            })
 //        }
-        return true
-    }
+//        return true
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRoute(savedInstanceState: Bundle?) {
-        navigation.removeShiftMode()
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
         when {

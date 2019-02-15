@@ -21,7 +21,7 @@
         android:enabled="true"
         android:icon="@drawable/ic_checklist"
         android:title="@string/checklist_title"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="withText" />
 
     <item
         android:id="@+id/navigation_lessons"
