@@ -47,14 +47,19 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                                              checklistValue: List<String>) {
         launchSilent(uiContext) {
             interactor?.let {
-                val contents = mutableListOf<Content>()
-                val customChecklist = Checklist(contents, true, checklistTitle, checklistId)
-                checklistValue.forEach { value ->
-                    val content = Content(value)
-                    content.checklist = customChecklist
-                    contents.add(content)
+                try {
+                    val contents = mutableListOf<Content>()
+                    val customChecklist = Checklist(contents, true, checklistTitle, checklistId)
+                    checklistValue.forEach { value ->
+                        val content = Content(value)
+                        content.checklist = customChecklist
+                        contents.add(content)
+                    }
+                    it.persistChecklist(customChecklist)
+
+                } catch (e: Exception) {
+                    println("Erro when tried to save a custom checklist.")
                 }
-                it.persistChecklist(customChecklist)
             }
         }
     }
