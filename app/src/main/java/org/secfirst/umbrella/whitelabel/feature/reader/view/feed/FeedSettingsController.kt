@@ -236,7 +236,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     }
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean) {
-        feedProgress?.visibility = View.INVISIBLE
+
         if (!isFirstRequest)
             openFeedController(feedItemResponse)
         else if (feedItemResponse.isNotEmpty())
@@ -254,12 +254,12 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     private fun dispatchFeedRequest(feedLocation: FeedLocation,
                                     feedsChecked: List<FeedSource>,
                                     isFirstRequest: Boolean = false) {
-        feedProgress?.visibility = View.VISIBLE
+
         presenter.submitFeedRequest(feedLocation, feedsChecked, isFirstRequest)
     }
 
     override fun feedError() {
-        feedProgress?.visibility = View.INVISIBLE
+
     }
 
     override fun isChangedToken(res: Boolean) {

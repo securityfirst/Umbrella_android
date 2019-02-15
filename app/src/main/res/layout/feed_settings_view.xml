@@ -6,24 +6,12 @@
     android:layout_height="match_parent"
     android:background="#e5e5e5"
     android:padding="10dp">
-
-    <ProgressBar
-        android:id="@+id/feedProgress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        card_view:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="10dp" />
-
+    
     <ScrollView
         android:id="@+id/no_feed_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        card_view:layout_constraintTop_toTopOf="parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
         tools:layout_editor_absoluteX="10dp">
 
         <LinearLayout
@@ -144,10 +132,9 @@
                         android:layout_gravity="end|bottom"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="5dp"
-                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:text="@string/set"
-                        android:textColor="@color/avocado"
+                        android:textColor="@color/umbrella_green"
                         android:textSize="14sp"
                         android:textStyle="normal" />
                 </LinearLayout>
@@ -203,11 +190,10 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
-                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:padding="5dp"
                         android:text="@string/set"
-                        android:textColor="@color/avocado"
+                        android:textColor="@color/umbrella_green"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
@@ -264,20 +250,16 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="5dp"
                         android:layout_marginRight="5dp"
-                        android:fontFamily="sans-serif-medium"
                         android:gravity="center_horizontal"
                         android:padding="5dp"
                         android:text="@string/set"
-                        android:textColor="@color/avocado"
+                        android:textColor="@color/umbrella_green"
                         android:textSize="14sp"
                         android:textStyle="normal" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="55dp" />
         </LinearLayout>
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
