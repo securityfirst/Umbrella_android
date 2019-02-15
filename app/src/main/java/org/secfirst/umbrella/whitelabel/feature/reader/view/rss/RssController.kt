@@ -57,7 +57,7 @@ class RssController : BaseController(), ReaderView {
         initDeleteChecklistItem(view)
         presenter.submitFetchRss()
         rssDialogView.rssOk.setOnClickListener { addRss() }
-        rssDialogView.setOnClickListener { alertDialog.dismiss() }
+        rssDialogView.rssCancel.setOnClickListener { alertDialog.dismiss() }
         view.addRss.setOnClickListener { alertDialog.show() }
         return view
     }
