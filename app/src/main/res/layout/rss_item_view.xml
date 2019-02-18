@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="#ffffff"
     android:orientation="vertical"
-    android:padding="10dp"
+    android:padding="5dp"
     tools:ignore="MissingPrefix">
 
     <TextView
@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="14sp" />
+        android:textSize="@dimen/font_list_item" />
 
     <TextView
         android:id="@+id/rssDescription"
@@ -22,5 +22,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 </LinearLayout>

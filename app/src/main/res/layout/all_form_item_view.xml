@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/checklistCardItemView"
     style="@style/CardView.Light"
@@ -23,7 +22,7 @@
             android:layout_height="@dimen/form_title_height"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="@dimen/form_title_text_size"
+            android:textSize="@dimen/font_list_item"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

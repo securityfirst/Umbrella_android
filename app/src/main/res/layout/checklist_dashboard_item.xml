@@ -28,9 +28,9 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
-                android:scaleType="fitXY"
                 android:adjustViewBounds="true"
                 android:padding="5dp"
+                android:scaleType="fitXY"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +43,7 @@
                 android:layout_marginTop="12dp"
                 android:fontFamily="sans-serif"
                 android:textColor="#4a4a4a"
-                android:textSize="18sp"
+                android:textSize="@dimen/font_list_item"
                 android:textStyle="normal"
                 card_view:layout_constraintStart_toEndOf="@+id/levelColor"
                 card_view:layout_constraintTop_toTopOf="parent"

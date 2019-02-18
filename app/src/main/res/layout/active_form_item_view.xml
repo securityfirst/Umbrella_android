@@ -26,7 +26,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginBottom="7dp"
-            android:textSize="24sp"
+            android:textSize="@dimen/font_list_item"
             app:layout_constraintBottom_toTopOf="@+id/currentTime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
