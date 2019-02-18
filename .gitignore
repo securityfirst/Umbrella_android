@@ -12,6 +12,7 @@
 .idea/gradle.xml
 .idea/misc.xml
 app/debug/
+app/config/beta_keystore.keystore
 app/beta/
 app/fabric.properties
 keystore.properties

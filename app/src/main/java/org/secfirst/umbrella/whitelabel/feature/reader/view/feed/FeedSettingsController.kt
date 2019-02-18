@@ -81,9 +81,9 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
                 .setView(skipPasswordView)
                 .create()
 
-        passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
-        passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
-        passwordView.passwordCancel.setOnClickListener { passwordAlertCancel() }
+        passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
+        passwordView.alertPasswordOk.setOnClickListener { passwordAlertOk() }
+        passwordView.alertPasswordCancel.setOnClickListener { passwordAlertCancel() }
         skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
         skipPasswordView.ok.setOnClickListener { skipAlertOk() }
 
@@ -106,7 +106,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     private fun passwordAlertCancel() = passwordAlertDialog.dismiss()
 
     private fun passwordAlertOk() {
-        val token = passwordView.pwText.text.toString()
+        val token = passwordView.alertPwText.text.toString()
         if (token.checkPasswordStrength(context))
             presenter.submitChangeDatabaseAccess(token)
 

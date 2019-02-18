@@ -85,9 +85,9 @@ class AccountController : BaseController(), AccountView {
         accountView.accountMask.setOnClickListener { clickOnMaskApp() }
         accountView.resetPassword.setOnClickListener { clickResetPassword() }
 
-        passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
-        passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
-        passwordView.passwordCancel.setOnClickListener { passwordAlertCancel() }
+        passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
+        passwordView.alertPasswordOk.setOnClickListener { passwordAlertOk() }
+        passwordView.alertPasswordCancel.setOnClickListener { passwordAlertCancel() }
 
         skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
         skipPasswordView.ok.setOnClickListener { skipAlertOk() }
@@ -132,7 +132,7 @@ class AccountController : BaseController(), AccountView {
     }
 
     private fun passwordAlertOk() {
-        val token = passwordView.pwText.text.toString()
+        val token = passwordView.alertPwText.text.toString()
         if (token.checkPasswordStrength(context))
             presenter.submitChangeDatabaseAccess(token)
     }
