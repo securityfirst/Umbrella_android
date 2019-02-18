@@ -23,6 +23,8 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.Checklist
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
+
+
 class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
     @Inject
