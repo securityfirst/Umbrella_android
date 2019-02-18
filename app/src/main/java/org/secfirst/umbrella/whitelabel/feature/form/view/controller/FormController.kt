@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 import com.bluelinelabs.conductor.RouterTransaction
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -49,8 +50,9 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     override fun onAttach(view: View) {
         super.onAttach(view)
         enableNavigation(false)
-        stepperLayout.adapter = FormAdapter(activeForm.form, this, listOfViews)
-        stepperLayout.setListener(this)
+        stepperLayout?.adapter = FormAdapter(activeForm.form, this, listOfViews)
+        stepperLayout?.setListener(this)
+        stepperLayout?.setNextButtonColor(ContextCompat.getColor(context, R.color.umbrella_green))
         presenter.onAttach(this)
         setUpToolbar()
     }
