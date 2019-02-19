@@ -85,7 +85,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     }
 
     private fun initFabric() {
-
         val crashlyticsKit = Crashlytics.Builder()
                 .core(CrashlyticsCore.Builder().build())
                 .build()
