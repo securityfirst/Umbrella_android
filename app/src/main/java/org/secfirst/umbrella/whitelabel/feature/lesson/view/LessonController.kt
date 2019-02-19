@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bluelinelabs.conductor.RouterTransaction
 import com.xwray.groupie.ExpandableGroup
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+
 import kotlinx.android.synthetic.main.lesson_view.*
 import kotlinx.android.synthetic.main.lesson_view.view.*
 import org.secfirst.umbrella.whitelabel.R
@@ -23,6 +25,7 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.interactor.LessonBaseInte
 import org.secfirst.umbrella.whitelabel.feature.lesson.presenter.LessonBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.misc.AboutController
+
 import javax.inject.Inject
 
 
@@ -47,10 +50,10 @@ class LessonController : BaseController(), LessonView {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val view = inflater.inflate(R.layout.lesson_view, container, false)
+        val view = inflater.inflate(org.secfirst.umbrella.whitelabel.R.layout.lesson_view, container, false)
         presenter.onAttach(this)
         presenter.submitLoadAllLesson()
-        view.lessonMenu.apply {
+        view.lessonRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = groupAdapter
         }
@@ -60,13 +63,13 @@ class LessonController : BaseController(), LessonView {
 
     override fun showAllLesson(lessons: List<Lesson>) {
         if (!isRecycledView) {
-            lessons.forEach { it ->
+            lessons.forEach {
                 val lessonGroup = LessonGroup(it.moduleId, it.pathIcon, it.moduleTitle, groupClick)
                 val groups = ExpandableGroup(lessonGroup)
                 it.topics.forEach { subject -> groups.add(LessonItem(subject, lessonClick)) }
                 groupAdapter.add(groups)
             }
-            lessonMenu?.apply { adapter = groupAdapter }
+            lessonRecyclerView?.apply { adapter = groupAdapter }
         }
     }
 
@@ -89,7 +92,7 @@ class LessonController : BaseController(), LessonView {
 
     private fun onLessonClicked(subject: Subject) = presenter.submitSelectLesson(subject)
 
-    private fun onGroupClicked(moduleSha1ID: String) = presenter.submitSelectHead(moduleSha1ID)
+    private fun onGroupClicked(moduleId: String) = presenter.submitSelectHead(moduleId)
 
     override fun startSegment(markdownIds: ArrayList<String>, enableFilter: Boolean) =
             router.pushController(RouterTransaction.with(HostSegmentController(markdownIds, enableFilter)))

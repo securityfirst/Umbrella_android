@@ -6,7 +6,7 @@
 
     <!-- font sizes -->
     <dimen name="font_larger">22sp</dimen>
-    <dimen name="font_list_item">22sp</dimen>
+    <dimen name="font_list_item">20sp</dimen>
     <dimen name="font_large">20sp</dimen>
     <dimen name="font_normal">15sp</dimen>
     <dimen name="font_small">12sp</dimen>
@@ -89,4 +89,7 @@
 
     <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
+
+    <dimen name="width_icon" >22dp</dimen>
+    <dimen name="height_icon" >22dp</dimen>
 </resources>
