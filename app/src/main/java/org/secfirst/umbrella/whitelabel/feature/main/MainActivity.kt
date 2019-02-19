@@ -204,6 +204,14 @@ class MainActivity : AppCompatActivity() {
                     router.pushController(RouterTransaction.with(HostChecklistController(uri.toString())))
                     navigation.menu.getItem(2).isChecked = true
                 }
+                SEARCH_HOST -> {
+                    val i = Intent(this@MainActivity, SearchActivity::class.java)
+                    i.action = Intent.ACTION_SEARCH
+                    intent?.data?.lastPathSegment?.let{
+                        i.putExtra(SearchManager.QUERY, it)
+                    }
+                    startActivity(i)
+                }
             }
         }
     }
