@@ -116,14 +116,14 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
             )}
 
     override fun getDataProvider(): DataProvider = object : DataProvider {
-        override fun findByCriteria(text: String, vararg additional: String): Flowable<List<SearchResult>> {
+        override fun findByCriteria(text: String, vararg additional: Pair<String, List<String>>): Flowable<List<SearchResult>> {
             val trimmedText = text.toLowerCase().trim()
-            val type = additional.getOrElse(0) {""}
-            val category = additional.getOrElse(1) {""}
+            val type = additional.find { it.first == ItemCriteria.TYPE.type.toLowerCase() }?.second?.getOrNull(0) ?: ""
+            val category = additional.find { it.first == ItemCriteria.CATEGORY.type.toLowerCase() }?.second?.getOrNull(0) ?: ""
             val categoryId = SQLite.select()
                     .from(Module::class.java)
-                    .where(Module_Table.moduleTitle.eq(category)).and(Module_Table.moduleTitle.notEq("")).querySingle()?.id
-            val difficulty = additional.getOrElse(2) {""}.toLowerCase()
+                    .where(Module_Table.moduleTitle.`in`(category)).and(Module_Table.moduleTitle.notEq("")).querySingle()?.id
+            val difficulty: String = additional.find { it.first == ItemCriteria.DIFFICULTY.type.toLowerCase() }?.second?.getOrNull(0) ?: ""
 
             Logger.getLogger("aaa").info("text $text diff: $difficulty, cat: $category, type: $type")
 
