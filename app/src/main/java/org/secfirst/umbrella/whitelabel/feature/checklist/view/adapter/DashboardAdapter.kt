@@ -76,7 +76,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                 itemView.itemPercentage.text = "$progress%"
                 val isCustomChecklist = dashboardItem.checklist?.custom ?: false
                 setDifficultyColor(dashboardItem.levelLabel, isCustomChecklist)
-                if (adapterPosition > 1)
+                if (adapterPosition > 1 || isCustomChecklist)
                     itemView.setOnClickListener { clickListener(this@DashboardHolder) }
                 else
                     itemView.levelColor
