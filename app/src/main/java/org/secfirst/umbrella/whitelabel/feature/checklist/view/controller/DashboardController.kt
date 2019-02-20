@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.checklist_dashboard.*
 import kotlinx.android.synthetic.main.checklist_dashboard.view.*
+import kotlinx.android.synthetic.main.empty_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
@@ -105,6 +106,19 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
+        var isChecklistEmpty = false
+        dashboards.forEach { if (it.checklist != null) isChecklistEmpty = true }
+        when {
+            isCustomBoard -> startDashboard(dashboards)
+            isChecklistEmpty -> startDashboard(dashboards)
+            else -> emptyTitleView?.text = context.getText(R.string.empty_checklist_message)
+        }
+    }
+
+
+    private fun startDashboard(dashboards: MutableList<Dashboard.Item>) {
+        customChecklistContainer?.visibility = View.VISIBLE
+        emptyDashboardView?.visibility = View.GONE
         adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemOnLongClick)
         checklistDashboardRecyclerView?.initRecyclerView(adapter)
     }

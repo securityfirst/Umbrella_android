@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_error_view"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:showIn="@layout/checklist_dashboard">
+
+    <TextView
+        android:id="@+id/emptyTitleView"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:gravity="center_horizontal"
+        android:textColor="#757575"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        tools:text="Go to lessons and discover recommenced checklists or create your own custom checklists. " />
+
+
+</LinearLayout>

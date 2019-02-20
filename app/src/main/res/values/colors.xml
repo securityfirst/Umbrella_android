@@ -32,5 +32,6 @@
     <color name="black_38">#4a4a4a</color>
     <color name="menu_item_color">#757575</color>
     <color name="custom_check_list_item_color">#9b9b9b</color>
+    <color name="bg_error_view">#e5e5e5</color>
 
 </resources>

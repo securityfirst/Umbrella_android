@@ -125,7 +125,8 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun handleBack(): Boolean {
         submitChecklist()
-        return super.handleBack()
+        router.popCurrentController()
+        return true
     }
 
     companion object {
