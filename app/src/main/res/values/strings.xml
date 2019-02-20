@@ -68,7 +68,7 @@
     <string name="dashboard_empty_text">There are no events to display for you location. We\'ll display them when they will occour.</string>
     <string name="empty_dashboard_title">Security feed set to:</string>
     <string name="checklistDetail_title">Checklist</string>
-    <string name="account_password_alert_title">Set your password</string>
+    <string name="account_password_alert_title">Enter your password</string>
     <string name="account_password_alert_description">Your password must be at least 8 characters long and must contain at least one digit and one capital letter</string>
     <string name="account_set_password">Set password</string>
     <string name="account_settings">Settings</string>
