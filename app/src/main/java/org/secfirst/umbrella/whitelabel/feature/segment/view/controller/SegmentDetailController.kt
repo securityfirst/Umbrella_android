@@ -11,6 +11,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import br.tiagohm.markdownview.css.InternalStyleSheet
 
 
 class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
@@ -30,9 +31,15 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.segment_detail, container, false)
-        view.markdownView.addStyleSheet(Github())
-        launchSilent(uiContext) { view.markdownView.loadMarkdown(markdown.text) }
+        loadMarkdown(view)
         return view
+    }
+
+    private fun loadMarkdown(view: View) {
+        val css = Github()
+        css.addRule("body", "line-height: 1.6", "padding: 0px")
+        view.markdownView.addStyleSheet(css)
+        launchSilent(uiContext) { view.markdownView.loadMarkdown(markdown.text) }
     }
 
     fun getTitle() = markdown.title
