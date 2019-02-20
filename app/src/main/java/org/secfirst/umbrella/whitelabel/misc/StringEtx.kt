@@ -40,6 +40,7 @@ fun Long?.timestampToStringFormat(): String {
 }
 
 fun String.checkPasswordStrength(context: Context): Boolean {
+
     if (this.length < 8) {
         context.toast(context.getString(R.string.password_too_short))
         return false

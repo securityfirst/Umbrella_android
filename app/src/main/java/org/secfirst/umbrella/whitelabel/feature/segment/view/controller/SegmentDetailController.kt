@@ -11,7 +11,6 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import br.tiagohm.markdownview.css.InternalStyleSheet
 
 
 class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
@@ -23,11 +22,6 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
     constructor(markdown: Markdown) : this(Bundle().apply {
         putParcelable(EXTRA_SELECTED_SEGMENT_DETAIL, markdown)
     })
-
-    companion object {
-        const val EXTRA_SELECTED_SEGMENT_DETAIL = "selected_segment_detail"
-    }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.segment_detail, container, false)
@@ -43,4 +37,10 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
     }
 
     fun getTitle() = markdown.title
+
+    companion object {
+        const val EXTRA_SELECTED_SEGMENT_DETAIL = "selected_segment_detail"
+    }
+
+
 }
