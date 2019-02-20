@@ -90,6 +90,6 @@
     <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
     <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
 
-    <dimen name="width_icon" >22dp</dimen>
-    <dimen name="height_icon" >22dp</dimen>
+    <dimen name="width_icon" >20dp</dimen>
+    <dimen name="height_icon" >20dp</dimen>
 </resources>
