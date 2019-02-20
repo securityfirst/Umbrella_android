@@ -60,7 +60,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var exportView: View
-    private lateinit var destinationPath: String
+    private var destinationPath = ""
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
@@ -223,7 +223,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     override fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int
                                   , feedSource: List<FeedSource>) {
 
-        mainView.settingsLabelLocation.text = feedLocation?.location ?: context.getText(R.string.settings_your_location)
+        mainView.settingsLabelLocation.text = feedLocation?.location
+                ?: context.getText(R.string.settings_your_location)
         refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval, this)
         mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
         feedSourceDialog = FeedSourceDialog(feedSource, context, this)
@@ -296,9 +297,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
     override fun onCleanDatabaseSuccess() = presentContent.manageContent()
 
-    private fun exportDataOk() {
-        presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
-    }
+    private fun exportDataOk() = presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
 
     private fun exportDataClose() = exportAlertDialog.dismiss()
 

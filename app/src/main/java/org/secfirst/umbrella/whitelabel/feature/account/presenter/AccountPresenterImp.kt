@@ -49,13 +49,15 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
     }
 
     override fun submitExportDatabase(destinationDir: String, fileName: String, isWipeData: Boolean) {
-        val dstDatabase = File("$destinationDir/$fileName.$EXTENSION")
-        val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")
-        databaseFile.copyTo(dstDatabase, true)
-        if (isWipeData)
-            launchSilent(uiContext) { interactor?.resetContent() }
+        if (destinationDir.isNotBlank()) {
+            val dstDatabase = File("$destinationDir/$fileName.$EXTENSION")
+            val databaseFile = FlowManager.getContext().getDatabasePath("$NAME.$EXTENSION")
+            databaseFile.copyTo(dstDatabase, true)
+            if (isWipeData)
+                launchSilent(uiContext) { interactor?.resetContent() }
 
-        getView()?.exportDatabaseSuccessfully()
+            getView()?.exportDatabaseSuccessfully()
+        }
     }
 
     override fun prepareShareContent(fileName: String) {
@@ -85,7 +87,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             }
         }
     }
-    
+
     override fun submitCleanDatabase() {
         launchSilent(uiContext) {
             interactor?.let { getView()?.onResetContent(it.resetContent()) }
