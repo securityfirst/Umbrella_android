@@ -26,12 +26,12 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
 
     override fun createView(ui: AnkoContext<FormController>) = ui.apply {
         val size = 16f
-        val formTextColor = ContextCompat.getColor(ui.ctx, R.color.ms_black)
+        val formTextColor = ContextCompat.getColor(ui.ctx, R.color.form_title_color)
 
         scrollView {
             background = ColorDrawable(ContextCompat.getColor(context, R.color.form_background))
             verticalLayout {
-                padding = dip(20)
+                padding = dip(10)
                 screen.items.forEach { item ->
                     when (item.type) {
 
@@ -54,9 +54,6 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                 textColor = formTextColor
 
                             }.lparams(width = matchParent)
-                            if (Build.VERSION.SDK_INT > 21) {
-                                editText.backgroundTintList = ColorStateList.valueOf(formTextColor)
-                            }
                             answer.itemId = item.id
                             bindEditText(answer, editText, ui)
                         }
@@ -64,17 +61,15 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             val answer = item.hasAnswer(answers)
                             textView(item.label) {
                                 textSize = size
+                                textSize = size
                                 textColor = ContextCompat.getColor(context, R.color.ms_black)
                             }.lparams { topMargin = dip(10) }
-                            val editText = editText {
+                            val editText = themedEditText(theme = R.style.EditTextStyle) {
                                 hint = item.hint
                                 setText(answer.textInput)
                                 hintTextColor = R.color.immersive_background
                                 textColor = formTextColor
                             }.lparams(width = matchParent)
-                            if (Build.VERSION.SDK_INT > 21) {
-                                editText.backgroundTintList = ColorStateList.valueOf(formTextColor)
-                            }
                             answer.itemId = item.id
                             answer.run { bindEditText(answer, editText, ui) }
                         }
@@ -91,9 +86,6 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                     isChecked = answer.choiceInput
                                 }
                                 answer.optionId = formOption.id
-                                if (Build.VERSION.SDK_INT > 21) {
-                                    checkBox.buttonTintList = ColorStateList.valueOf(formTextColor)
-                                }
                                 bindCheckBox(answer, checkBox, ui)
                             }
                         }
@@ -111,9 +103,6 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                     textColor = formTextColor
                                 }
                                 answer.optionId = formOption.id
-                                if (Build.VERSION.SDK_INT > 21) {
-                                    radioButton.buttonTintList = ColorStateList.valueOf(formTextColor)
-                                }
                                 bindRadioButton(answer, radioButton, ui)
                             }
                         }
@@ -124,7 +113,6 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
         }
 
     }.view
-
 
     private fun bindRadioButton(answer: Answer, radioButton: RadioButton, ui: AnkoContext<FormController>) {
         val radioButtonMap = hashMapOf<RadioButton, Answer>()
@@ -149,5 +137,4 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
     override fun verifyStep(): Nothing? = null
 
     override fun onError(error: VerificationError) {}
-
 }

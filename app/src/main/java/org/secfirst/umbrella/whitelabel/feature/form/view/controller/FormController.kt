@@ -52,7 +52,9 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         enableNavigation(false)
         stepperLayout?.adapter = FormAdapter(activeForm.form, this, listOfViews)
         stepperLayout?.setListener(this)
-        stepperLayout?.setNextButtonColor(ContextCompat.getColor(context, R.color.umbrella_green))
+        stepperLayout?.setNextButtonColor(ContextCompat.getColor(context, R.color.white))
+        stepperLayout?.setBackButtonColor(ContextCompat.getColor(context, R.color.white))
+        stepperLayout?.setCompleteButtonColor(ContextCompat.getColor(context, R.color.white))
         presenter.onAttach(this)
         setUpToolbar()
     }
