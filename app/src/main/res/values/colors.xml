@@ -35,4 +35,5 @@
     <color name="bg_error_view">#e5e5e5</color>
     <color name="blue_light">#43a0ca</color>
     <color name="form_title_color">#030303</color>
+    <color name="default_umbrella_black">#de000000</color>
 </resources>
