@@ -7,6 +7,9 @@ apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 
 android {
+    lintOptions {
+        abortOnError false
+    }
     signingConfigs {
         umbrella_beta {
             keyAlias 'umbrella'
