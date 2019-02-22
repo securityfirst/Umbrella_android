@@ -26,7 +26,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
 
     override fun createView(ui: AnkoContext<FormController>) = ui.apply {
         val size = 16f
-        val formTextColor = ContextCompat.getColor(ui.ctx, R.color.form_title_color)
+        //val formTextColor = ContextCompat.getColor(ui.ctx, R.color.form_title_color)
 
         scrollView {
             background = ColorDrawable(ContextCompat.getColor(context, R.color.form_background))
@@ -38,7 +38,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                         FieldType.LABEL.value ->
                             textView(item.label) {
                                 textSize = 18f
-                                textColor = formTextColor
+                              //  textColor = formTextColor
                                 padding = dip(10)
                             }.lparams { gravity = Gravity.CENTER }
 
@@ -46,12 +46,12 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             val answer = item.hasAnswer(answers)
                             textView(item.label) {
                                 textSize = size
-                                textColor = formTextColor
+                               // textColor = formTextColor
                             }.lparams { topMargin = dip(10) }
                             val editText = editText {
                                 hint = item.hint
                                 setText(answer.textInput)
-                                textColor = formTextColor
+                               // textColor = formTextColor
 
                             }.lparams(width = matchParent)
                             answer.itemId = item.id
@@ -67,8 +67,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             val editText = themedEditText(theme = R.style.EditTextStyle) {
                                 hint = item.hint
                                 setText(answer.textInput)
-                                hintTextColor = R.color.immersive_background
-                                textColor = formTextColor
+                                //textColor = formTextColor
                             }.lparams(width = matchParent)
                             answer.itemId = item.id
                             answer.run { bindEditText(answer, editText, ui) }
@@ -82,9 +81,9 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                 val answer = formOption.hasAnswer(answers)
                                 val checkBox = tintedCheckBox {
                                     text = formOption.label
-                                    textColor = formTextColor
+                                    //textColor = formTextColor
                                     isChecked = answer.choiceInput
-                                }
+                                }.lparams { topMargin = dip(5) }
                                 answer.optionId = formOption.id
                                 bindCheckBox(answer, checkBox, ui)
                             }
@@ -92,7 +91,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                         FieldType.SINGLE_CHOICE.value -> {
                             textView(item.label) {
                                 textSize = size
-                                textColor = formTextColor
+                                //textColor = formTextColor
                             }
                             item.options.forEach { formOption ->
                                 val answer = formOption.hasAnswer(answers)
@@ -100,7 +99,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                     text = formOption.label
                                     isChecked = answer.choiceInput
                                     textSize = size
-                                    textColor = formTextColor
+                                    //textColor = formTextColor
                                 }
                                 answer.optionId = formOption.id
                                 bindRadioButton(answer, radioButton, ui)
@@ -109,7 +108,9 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                     }
                 }
 
-            }.lparams(width = matchParent, height = matchParent)
+            }.lparams(width = matchParent, height = matchParent) {
+                topMargin = dip(10)
+            }
         }
 
     }.view
