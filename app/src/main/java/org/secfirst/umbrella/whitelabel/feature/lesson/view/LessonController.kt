@@ -98,7 +98,7 @@ class LessonController : BaseController(), LessonView {
             router.pushController(RouterTransaction.with(HostSegmentController(markdownIds, enableFilter)))
 
     override fun startDifficultyController(subject: Subject) =
-            router.pushController(RouterTransaction.with(DifficultyController(subject)))
+            router.pushController(RouterTransaction.with(DifficultyController(subject.id)))
 
     override fun startSegmentAlone(markdown: Markdown) =
             router.pushController(RouterTransaction.with(AboutController(markdown)))

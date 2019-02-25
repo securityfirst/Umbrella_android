@@ -24,11 +24,11 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     @Inject
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
     private val difficultClick: (Int) -> Unit = this::onDifficultClick
-    private val selectSubject by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT) as Subject }
+    private val subjectId by lazy { args.getString(EXTRA_SELECTED_SEGMENT) }
     private lateinit var difficultyAdapter: DifficultyAdapter
 
-    constructor(subject: Subject) : this(Bundle().apply {
-        putParcelable(EXTRA_SELECTED_SEGMENT, subject)
+    constructor(subjectId : String) : this(Bundle().apply {
+        putString(EXTRA_SELECTED_SEGMENT, subjectId)
     })
 
     companion object {
@@ -45,7 +45,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     private fun onDifficultClick(position: Int) {
         val itemSelected = difficultyAdapter.getItem(position)
-        presenter.saveDifficultySelect(itemSelected, selectSubject.id)
+        presenter.saveDifficultySelect(itemSelected, subjectId)
         presenter.submitDifficultySelect(difficultyAdapter.getItems(position))
     }
 
@@ -61,7 +61,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         presenter.onAttach(this)
-        presenter.submitDifficulty(selectSubject)
+        presenter.submitDifficulty(subjectId)
         return inflater.inflate(R.layout.difficulty_view, container, false)
     }
 
