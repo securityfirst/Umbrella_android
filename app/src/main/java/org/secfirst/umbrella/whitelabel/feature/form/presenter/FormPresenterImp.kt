@@ -10,6 +10,7 @@ import org.secfirst.umbrella.whitelabel.feature.form.interactor.FormBaseInteract
 import org.secfirst.umbrella.whitelabel.feature.form.view.FormView
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.FORM_HOST
+import org.secfirst.umbrella.whitelabel.misc.deepLinkIdentifier
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import javax.inject.Inject
 
@@ -24,10 +25,9 @@ class FormPresenterImp<V : FormView, I : FormBaseInteractor>
     override fun submitFormByURI(uriString: String) {
         launchSilent(uiContext) {
             interactor?.let {
-
                 val uriWithoutHost = uriString.substringAfterLast("$FORM_HOST/")
                 val uriSplitted = uriWithoutHost.split("/")
-                val formName = uriSplitted.last().replace("_", " ")
+                val formName = uriSplitted.last().deepLinkIdentifier()
                 val form = it.fetchForm(formName)
                 form?.let { safeForm -> getView()?.openSpecificForm(safeForm) }
             }

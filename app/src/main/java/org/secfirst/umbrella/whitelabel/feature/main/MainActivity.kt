@@ -25,9 +25,9 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.login.view.LoginController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -179,22 +179,20 @@ class MainActivity : AppCompatActivity() {
     private fun isDeepLink() {
         if (ACTION_VIEW == intent.action) {
             val uri = intent.data
+            val uriString = uri?.toString() ?: ""
+            val path = uriString.substringAfterLast(SCHEMA)
+            val uriSplitted = path.split("/")
             when (uri?.host) {
-                FEED_HOST -> {
-                    router.pushController(RouterTransaction.with(HostReaderController()))
-                    navigation.menu.getItem(0).isChecked = true
-                }
-                FORM_HOST -> {
-                    router.pushController(RouterTransaction.with(HostFormController(uri.toString())))
-                    navigation.menu.getItem(1).isChecked = true
-                }
-                LESSON_HOST -> {
-                    router.pushController(RouterTransaction.with(HostSegmentController(uri.toString())))
-                    navigation.menu.getItem(3).isChecked = true
-                }
-                CHECKLIST_HOST -> {
-                    router.pushController(RouterTransaction.with(HostChecklistController(uri.toString())))
-                    navigation.menu.getItem(2).isChecked = true
+                FEED_HOST -> openFeedByUrl(router, navigation)
+                FORM_HOST -> openFormByUrl(router, navigation, uriString)
+                CHECKLIST_HOST -> openChecklistByUrl(router, navigation, uriString)
+                else -> {
+                    launchSilent(uiContext) {
+                        if (isLessonDeepLink(uriSplitted))
+                            openSpecificLessonByUrl(router, navigation, uriString)
+                        else
+                            openDifficultyByUrl(router, navigation, path)
+                    }
                 }
             }
         }

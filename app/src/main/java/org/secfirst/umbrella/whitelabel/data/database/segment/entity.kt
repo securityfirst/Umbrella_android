@@ -16,6 +16,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
+import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 
@@ -29,7 +30,7 @@ data class Markdown(
         var title: String = "",
         var index: String = "",
         var favorite: Boolean = false,
-        var basePath: String = "",
+        var identifier: String = "",
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
         @ForeignKey(stubbedRelationship = true)
@@ -37,7 +38,10 @@ data class Markdown(
         @ForeignKey(stubbedRelationship = true)
         var difficulty: Difficulty? = null) : Parcelable {
 
-    constructor(sha1ID: String, text: String) : this(sha1ID, text, recoveryTitle(text), recoveryIndex(text))
+    constructor(id: String, text: String) : this(id, text, recoveryTitle(text),
+            recoveryIndex(text),
+            false,
+            recoveryTitle(text).removeSpecialCharacter())
 
     companion object {
         const val FAVORITE_INDEX = "1"
@@ -85,7 +89,8 @@ fun Markdown.toSearchResult(): SearchResult {
     return SearchResult(
             title,
             text.substring(0, Math.min(text.length, 300))
-    ) { c: Context -> c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://lessons/$id")))
+    ) { c: Context ->
+        c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://lessons/$id")))
     }
 }
 

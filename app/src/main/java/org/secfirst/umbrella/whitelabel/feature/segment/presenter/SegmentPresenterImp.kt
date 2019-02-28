@@ -6,8 +6,11 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
-import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.SCHEMA
+import org.secfirst.umbrella.whitelabel.misc.deepLinkIdentifier
+import org.secfirst.umbrella.whitelabel.misc.launchSilent
+import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
 import javax.inject.Inject
 
 
@@ -16,63 +19,57 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         interactor = interactor), SegmentBasePresenter<V, I> {
 
     override fun submitMarkdownsByURI(uri: String) {
-        val uriWithoutHost = uri.substringAfterLast("$LESSON_HOST/")
+        val uriWithoutHost = uri.substringAfterLast(SCHEMA)
         val uriSplitted = uriWithoutHost.split("/")
-
-        when (uriSplitted.size) {
-            LESSON_SUBJECT_LEVEL -> deepLinkForSubject(uriSplitted)
-            LESSON_MODULE_LEVEL -> deepLinkForModule(uriSplitted)
-            LESSON_SEGMENT_IN_MODULE -> deepLinkForSegmentInModule(uriSplitted)
-            LESSON_SEGMENT_IN_SUBJECT -> deepLinkForSegmentInSubject(uriSplitted)
+        val fileExtension = uriSplitted.last()
+        if (fileExtension.contains("s_", true)) {
+            when (uriSplitted.size) {
+                4 -> findSegmentInSubject(uriSplitted)
+                3 -> findSegmentInModule(uriSplitted)
+                2 -> findSegmentInModule(uriSplitted)
+            }
+        } else {
+            findSegmentInSubject(uriSplitted)
         }
     }
 
-    private fun deepLinkForSegmentInModule(uriSplitted: List<String>) {
+    private fun findSegmentInModule(uriSplitted: List<String>) {
         launchSilent(uiContext) {
             interactor?.let {
                 var indexSelected = 0
                 val moduleSelected = uriSplitted[0]
-                var segmentSelected = uriSplitted[1]
-                segmentSelected = segmentSelected.replace("_", " ")
-                val module = it.fetchModuleByRootDir(moduleSelected)
+                val segmentSelected = uriSplitted[1]
+                val module = it.fetchModuleByRootDir(moduleSelected.trim())
 
-                if (module?.subjects != null) {
-                    module.subjects.forEach { subject ->
-                        if (subject.rootDir.capitalize() == segmentSelected.capitalize()) {
-                            getView()?.showSegments(subject.markdowns)
+                module?.let { safeModule ->
+                    if (safeModule.subjects.isNotEmpty()) {
+                        safeModule.subjects.forEach { subject ->
+                            if (subject.rootDir.removeSpecialCharacter().toLowerCase() == segmentSelected.deepLinkIdentifier()) {
+                                getView()?.showSegments(subject.markdowns)
+                            }
+                        }
+                    } else {
+                        safeModule.markdowns.let { markdowns ->
+                            markdowns.forEach { markdown ->
+                                if (markdown.identifier.toLowerCase() == segmentSelected.deepLinkIdentifier())
+                                    indexSelected = markdown.index.toInt()
+                            }
+                            getView()?.showSegments(markdowns, indexSelected)
                         }
                     }
-                } else {
-                    module?.markdowns?.let { markdowns ->
-                        markdowns.forEach { markdown ->
-                            if (markdown.title.capitalize() == segmentSelected.capitalize())
-                                indexSelected = markdown.index.toInt()
-                        }
-                        getView()?.showSegments(markdowns, indexSelected)
-                    }
+
                 }
             }
         }
     }
 
-    private fun deepLinkForModule(uriSplitted: List<String>) {
+    private fun findSegmentInSubject(uriSplitted: List<String>) {
         launchSilent(uiContext) {
             interactor?.let {
-                val moduleSelected = uriSplitted[0]
-                val module = it.fetchModuleByRootDir(moduleSelected)
-                module?.markdowns?.let { markdowns -> getView()?.showSegments(markdowns) }
-            }
-        }
-    }
-
-    private fun deepLinkForSegmentInSubject(uriSplitted: List<String>) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                val subjectTitle = uriSplitted[2]
+                val subjectTitle = uriSplitted[1]
                 val subject = it.fetchSubjectByRootDir(subjectTitle)
-                val difficultySelected = uriSplitted[1]
-                var segmentSelected = uriSplitted.last()
-                segmentSelected = segmentSelected.replace("_", " ")
+                val difficultySelected = uriSplitted[2]
+                val segmentSelected = uriSplitted.last()
                 var indexSelected = 0
 
                 subject?.let { safeSubject ->
@@ -80,9 +77,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                     difficulties.forEach { difficulty ->
                         if (difficulty.rootDir == difficultySelected)
                             difficulty.markdowns.forEach { markdown ->
-                                var markdownTitle = markdown.title.capitalize()
-                                markdownTitle = markdownTitle.replace("?", "")
-                                if (markdownTitle == segmentSelected.capitalize())
+                                if (markdown.identifier.toLowerCase() == segmentSelected.deepLinkIdentifier())
                                     indexSelected = markdown.index.toInt()
                             }
                     }
@@ -90,35 +85,6 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 }
             }
         }
-    }
-
-    private fun deepLinkForSubject(uriSplitted: List<String>) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                val subjectTitle = uriSplitted.last()
-                val subject = it.fetchSubjectByRootDir(subjectTitle)
-                val difficultySelected = uriSplitted[1]
-
-                subject?.let { safeSubject ->
-                    val difficulties = it.fetchDifficultyBySubject(safeSubject.id).toMutableList()
-                    getView()?.showSegmentsWithDifficulty(sortDifficulty(difficulties, difficultySelected))
-                }
-            }
-        }
-    }
-
-    private fun sortDifficulty(difficulties: List<Difficulty>, difficultySelected: String): List<Difficulty> {
-        val sortDifficulties = mutableListOf<Difficulty>()
-        difficulties.forEach { diff ->
-            if (diff.rootDir == difficultySelected)
-                sortDifficulties.add(diff)
-        }
-        difficulties.forEach { diff ->
-            if (diff.rootDir != difficultySelected)
-                sortDifficulties.add(diff)
-        }
-
-        return sortDifficulties
     }
 
     override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
@@ -200,7 +166,6 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         }
     }
 
-
     override fun submitLoadDifficulties(difficultyIds: ArrayList<String>) {
         launchSilent(uiContext) {
             interactor?.let {
@@ -211,5 +176,18 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 getView()?.showSegmentsWithDifficulty(difficulties)
             }
         }
+    }
+
+    private fun sortDifficulty(difficulties: List<Difficulty>, difficultySelected: String): List<Difficulty> {
+        val sortDifficulties = mutableListOf<Difficulty>()
+        difficulties.forEach { diff ->
+            if (diff.rootDir == difficultySelected)
+                sortDifficulties.add(diff)
+        }
+        difficulties.forEach { diff ->
+            if (diff.rootDir != difficultySelected)
+                sortDifficulties.add(diff)
+        }
+        return sortDifficulties
     }
 }
