@@ -18,8 +18,11 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
+import kotlinx.android.synthetic.main.account_switch_server_view.view.*
+import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.BuildConfig
@@ -29,6 +32,7 @@ import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
@@ -59,7 +63,9 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     internal lateinit var presentTent: TentBasePresenter<TentView, TentBaseInteractor>
 
     private lateinit var exportAlertDialog: AlertDialog
+    private lateinit var switchServerDialog: AlertDialog
     private lateinit var exportView: View
+    private lateinit var switchServerView: View
     private var destinationPath = ""
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
@@ -86,6 +92,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
+        switchServerView = inflater.inflate(R.layout.account_switch_server_view, container, false)
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
 
@@ -98,9 +105,17 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 .setView(exportView)
                 .create()
 
+        switchServerDialog = AlertDialog
+                .Builder(activity)
+                .setView(switchServerView)
+                .setTitle(context.getString(R.string.switch_server_title_message))
+                .create()
+
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
         exportView.exportDialogOk.onClick { exportDataOk() }
         exportView.exportDialogCancel.onClick { exportDataClose() }
+        switchServerView.alertControlOk.onClick { switchServerOk() }
+        switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
 
         mainView.settingsImportData.onClick { importDataClick() }
         mainView.settingsExportData.setOnClickListener { exportDataClick() }
@@ -108,6 +123,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
         mainView.settingsSecurityFeed.setOnClickListener { feedSourceClick() }
         mainView.settingsRefreshServer.setOnClickListener { refreshServerClick() }
+        mainView.settingsSwitchServer.setOnClickListener { switchServerClick() }
         mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
             skipPasswordTip(isChecked)
         }
@@ -117,6 +133,17 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         feedLocationDialog = FeedLocationDialog(feedLocationView, this)
 
         return mainView
+    }
+
+    private fun switchServerClick() {
+        val dialogManager = DialogManager(this)
+        val length = switchServerView.editServer.text.toString().length
+        switchServerView.editServer.setSelection(length)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return switchServerDialog
+            }
+        })
     }
 
     private fun refreshServerClick() {
@@ -152,6 +179,11 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 .build()
         chooser.show()
         chooser.setOnSelectListener { path -> presenter.validateBackupPath(path) }
+    }
+
+    private fun switchServerOk() {
+        val repoUrl = switchServerView.editServer.text.toString()
+        presenter.switchServerProcess(repoUrl)
     }
 
     private fun exportDataClick() {
@@ -295,7 +327,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         })
     }
 
-    override fun onCleanDatabaseSuccess() = presentContent.manageContent()
+    override fun onCleanDatabaseSuccess() = presentContent.manageContent(baseUrlRepository)
 
     private fun exportDataOk() = presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
 
@@ -319,5 +351,18 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         context.toast(context.getString(R.string.update_repository_message_success))
         presentContent.updateContent(pairFiles)
         refreshServerProgress.dismiss()
+    }
+
+    override fun onSwitchServer(isSwitch: Boolean) {
+        val newContentUrl = switchServerView.editServer.text.toString()
+        if (isSwitch) {
+            switchServerDialog.dismiss()
+            presentContent.manageContent(newContentUrl)
+        } else
+            context.longToast(context.getString(R.string.switch_server_error_message))
+    }
+
+    override fun onResetContent(res: Boolean) {
+        if (res) doRestartApplication(context)
     }
 }

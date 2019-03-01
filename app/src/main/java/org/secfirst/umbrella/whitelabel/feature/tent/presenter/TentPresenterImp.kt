@@ -20,10 +20,10 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
         }
     }
 
-    override fun submitFetchRepository() {
+    override fun submitFetchRepository(url : String) {
         launchSilent(uiContext) {
             interactor?.let {
-                getView()?.isFetchRepository(it.fetchRepository())
+                getView()?.isFetchRepository(it.fetchRepository(url))
             }
         }
     }

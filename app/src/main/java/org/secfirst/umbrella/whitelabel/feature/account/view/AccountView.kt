@@ -7,7 +7,7 @@ import java.io.File
 
 interface AccountView : BaseView {
 
-    fun isUserLogged(res: Boolean){}
+    fun isUserLogged(res: Boolean) {}
 
     fun isTokenChanged(res: Boolean) {}
 
@@ -21,7 +21,9 @@ interface AccountView : BaseView {
 
     fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int, feedSource: List<FeedSource>) {}
 
-    fun getSkipPassword(res : Boolean) {}
+    fun onSwitchServer(isSwitch: Boolean) {}
 
-    fun onResetContent(res : Boolean){}
+    fun getSkipPassword(res: Boolean) {}
+
+    fun onResetContent(res: Boolean) {}
 }

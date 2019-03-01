@@ -49,7 +49,7 @@ interface ContentDao : BaseDao {
     }
 
     private fun insertChecklistContent(checklist: MutableList<Checklist>) {
-        checklist.forEach { it ->
+        checklist.forEach {
             it.content.forEach { content ->
                 modelAdapter<Content>().save(content)
             }
@@ -82,15 +82,18 @@ interface ContentDao : BaseDao {
         }
     }
 
-    suspend fun resetContent(): Boolean =
-            withContext(ioContext) {
-                try {
-                    FileUtils.deleteDirectory(FlowManager.getContext().cacheDir)
-                    FlowManager.getDatabase(AppDatabase.NAME).close()
-                    FlowManager.getDatabase(AppDatabase.NAME).destroy()
-                    return@withContext true
-                } catch (e: Exception) {
-                    return@withContext false
-                }
+    suspend fun resetContent(): Boolean {
+        var res = false
+        withContext(ioContext) {
+            res = try {
+                FileUtils.deleteDirectory(FlowManager.getContext().cacheDir)
+                FlowManager.getDatabase(AppDatabase.NAME).close()
+                FlowManager.getDatabase(AppDatabase.NAME).destroy()
+                true
+            } catch (e: Exception) {
+                false
             }
+        }
+        return res
+    }
 }

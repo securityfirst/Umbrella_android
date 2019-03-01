@@ -8,9 +8,6 @@ import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.util.io.DisabledOutputStream
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.BRANCH_NAME
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getPathRepository
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.isNotRepCreate
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import java.io.File
 import java.util.*
@@ -18,16 +15,17 @@ import java.util.*
 
 interface TentDao {
 
-    suspend fun cloneRepository(): Boolean {
+    suspend fun cloneRepository(url: String): Boolean {
+        println("url - $url")
         var result = true
         try {
             withContext(ioContext) {
-                if (isNotRepCreate()) {
+                if (isNotRepository()) {
                     Git.cloneRepository()
-                            .setURI(TentConfig.uriRepository)
+                            .setURI(url)
                             .setDirectory(File(getPathRepository()))
-                            .setBranchesToClone(Arrays.asList(TentConfig.BRANCH_NAME))
-                            .setBranch(TentConfig.BRANCH_NAME)
+                            .setBranchesToClone(Arrays.asList(BRANCH_NAME))
+                            .setBranch(BRANCH_NAME)
                             .call()
                 }
             }
@@ -35,10 +33,9 @@ interface TentDao {
             result = false
             File(getPathRepository()).deleteRecursively()
             Log.i(TentDao::class.java.name,
-                    "Repository wasn't created - ${isNotRepCreate()} " +
+                    "Repository wasn't created - ${isNotRepository()} " +
                             "id - ${getPathRepository()}")
         }
-
         return result
     }
 

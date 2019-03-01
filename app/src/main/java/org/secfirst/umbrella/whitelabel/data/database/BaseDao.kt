@@ -65,20 +65,6 @@ interface BaseDao {
     suspend fun saveChecklists(checklists: List<Checklist>) =
             withContext(ioContext) { modelAdapter<Checklist>().saveAll(checklists) }
 
-    suspend fun saveForms(forms: List<Form>) {
-        withContext(ioContext) {
-            forms.forEach { form ->
-                modelAdapter<Form>().save(form)
-            }
-            forms.forEach { form ->
-                form.screens.forEach { screen ->
-                    screen.items.forEach { item ->
-                        modelAdapter<Item>().save(item)
-                    }
-                }
-            }
-        }
-    }
 
     suspend fun getModule(id: String) =
             withContext(ioContext) {
@@ -127,5 +113,20 @@ interface BaseDao {
                         .where(Form_Table.path.`is`(id))
                         .querySingle()
             }
+
+    suspend fun saveForms(forms: List<Form>) {
+        withContext(ioContext) {
+            forms.forEach { form ->
+                modelAdapter<Form>().save(form)
+            }
+            forms.forEach { form ->
+                form.screens.forEach { screen ->
+                    screen.items.forEach { item ->
+                        modelAdapter<Item>().save(item)
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -16,7 +16,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
+import org.secfirst.umbrella.whitelabel.data.disk.isRepository
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 router.setRoot(RouterTransaction.with(LoginController()))
                 navigation.menu.getItem(2).isChecked = true
             }
-            TentConfig.isRepCreate() -> {
+            isRepository() -> {
                 router.setRoot(RouterTransaction.with(HostChecklistController()))
                 navigation.menu.getItem(2).isChecked = true
             }

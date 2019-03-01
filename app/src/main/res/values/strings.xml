@@ -80,6 +80,7 @@
     <string name="account_password_alert_confirm">Confirm</string>
     <string name="settings_title">Settings</string>
     <string name="settings_refresh_from_the_server">Refresh from the server</string>
+    <string name="settings_switch_server">Switch from the server</string>
     <string name="settings_your_location">Your location</string>
     <string name="settings_show_updates_as_notification">Show updates as notification</string>
     <string name="settings_security_feed_sources">Security feed sources</string>
@@ -129,6 +130,7 @@
     <string name="empty"> </string>
     <string name="password_success">Password created with success.</string>
     <string name="update_repository_message_success">Updated with success.</string>
+    <string name="switch_server_error_message">An error occurred. URL seems not be a Git server.</string>
     <string name="pdf_name">PDF</string>
     <string name="html_name">HTML</string>
     <string name="feed_title_tab">FEED</string>
@@ -155,5 +157,7 @@
     <string name="checklist_add_item_title">Add checklist item</string>
     <string name="empty_checklist_message">Go to lessons and discover recommenced checklists or create your own custom checklists.</string>
     <string name="confirm_password_error_message">Password doesn\'t match</string>
+    <string name="default_github_url">https://github.com/</string>
+    <string name="switch_server_title_message">Switch server</string>
 
 </resources>

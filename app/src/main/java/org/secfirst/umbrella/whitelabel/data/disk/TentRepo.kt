@@ -5,7 +5,7 @@ import java.io.File
 
 interface TentRepo {
 
-    suspend fun fetchRepository(): Boolean
+    suspend fun fetchRepository(url : String): Boolean
 
     suspend fun updateRepository(): List<Pair<String, File>>
 

@@ -37,8 +37,8 @@ class ElementSerialize @Inject constructor(private val tentRepo: TentRepo) {
         element.rootDir = PathUtils.getLastDirectory(pwd)
 
         when (PathUtils.getLevelOfPath(element.path)) {
-            TentConfig.ELEMENT_LEVEL -> root.elements.add(element)
-            TentConfig.SUB_ELEMENT_LEVEL -> root.elements.last().children.add(element)
+            ELEMENT_LEVEL -> root.elements.add(element)
+            SUB_ELEMENT_LEVEL -> root.elements.last().children.add(element)
             else -> root.elements.last().children.last().children.add(element)
         }
     }

@@ -6,6 +6,7 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase.EXTENSION
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase.NAME
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.disk.validateRepository
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountView
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
@@ -18,33 +19,13 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
 
-    override fun setSkipPassword(value: Boolean) {
+    override fun switchServerProcess(repoUrl: String) {
         launchSilent(uiContext) {
-            interactor?.let {
-                it.setSkipPassword(value)
-                if (value) {
-                    it.setLoggedIn(false)
-                    it.changeDatabaseAccess(AppDatabase.DEFAULT)
-                    it.enablePasswordBanner(false)
-                } else {
-                    it.enablePasswordBanner(true)
-                }
-            }
-            getView()?.getSkipPassword(value)
-        }
-    }
+            var isReset = false
+            if (validateRepository(repoUrl))
+                isReset = interactor?.resetContent() ?: false
 
-    override fun submitChangeDatabaseAccess(userToken: String) {
-        launchSilent(uiContext) {
-            interactor?.let {
-                val res = it.changeDatabaseAccess(userToken)
-                if (res) {
-                    it.setLoggedIn(true)
-                    it.setSkipPassword(false)
-                    it.enablePasswordBanner(false)
-                }
-                getView()?.isTokenChanged(res)
-            }
+            getView()?.onSwitchServer(isReset)
         }
     }
 
@@ -90,7 +71,9 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
 
     override fun submitCleanDatabase() {
         launchSilent(uiContext) {
-            interactor?.let { getView()?.onResetContent(it.resetContent()) }
+            interactor?.let {
+                getView()?.onResetContent(it.resetContent())
+            }
         }
     }
 
@@ -122,5 +105,36 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
 
     override fun submitPutRefreshInterval(position: Int) {
         launchSilent(uiContext) { interactor?.putRefreshInterval(position) }
+    }
+
+
+    override fun setSkipPassword(value: Boolean) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                it.setSkipPassword(value)
+                if (value) {
+                    it.setLoggedIn(false)
+                    it.changeDatabaseAccess(AppDatabase.DEFAULT)
+                    it.enablePasswordBanner(false)
+                } else {
+                    it.enablePasswordBanner(true)
+                }
+            }
+            getView()?.getSkipPassword(value)
+        }
+    }
+
+    override fun submitChangeDatabaseAccess(userToken: String) {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val res = it.changeDatabaseAccess(userToken)
+                if (res) {
+                    it.setLoggedIn(true)
+                    it.setSkipPassword(false)
+                    it.enablePasswordBanner(false)
+                }
+                getView()?.isTokenChanged(res)
+            }
+        }
     }
 }

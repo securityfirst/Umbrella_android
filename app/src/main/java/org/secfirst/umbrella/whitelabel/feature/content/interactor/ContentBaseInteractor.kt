@@ -10,11 +10,10 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
-import org.yaml.snakeyaml.error.Mark
 
 interface ContentBaseInteractor : BaseInteractor {
 
-    suspend fun fetchData(): Boolean
+    suspend fun fetchData(url: String): Boolean
 
     suspend fun persist(root: Root)
 
@@ -36,17 +35,17 @@ interface ContentBaseInteractor : BaseInteractor {
 
     suspend fun saveAllSubjects(subjects: List<Subject>)
 
-    suspend fun getSubject(sha1ID : String) : Subject?
+    suspend fun getSubject(subjectId: String): Subject?
 
-    suspend fun getDifficulty(sha1ID : String) : Difficulty?
+    suspend fun getDifficulty(difficultyId: String): Difficulty?
 
-    suspend fun getModule(sha1ID : String) : Module?
+    suspend fun getModule(moduleId: String): Module?
 
-    suspend fun getMarkdown(sha1ID : String) : Markdown?
+    suspend fun getMarkdown(markdownId: String): Markdown?
 
-    suspend fun getChecklist(sha1ID : String) : Checklist?
+    suspend fun getChecklist(checklistId: String): Checklist?
 
-    suspend fun getForm(sha1ID : String) : Form?
+    suspend fun getForm(formId: String): Form?
 
-    suspend fun resetDatabase() : Boolean
+    suspend fun resetDatabase(): Boolean
 }

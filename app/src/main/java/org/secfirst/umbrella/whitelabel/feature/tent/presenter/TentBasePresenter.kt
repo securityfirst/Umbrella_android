@@ -8,7 +8,7 @@ interface TentBasePresenter<V : TentView, I : TentBaseInteractor> : BasePresente
 
     fun submitUpdateRepository()
 
-    fun submitFetchRepository()
+    fun submitFetchRepository(url : String)
 
     fun submitLoadElementsFile()
 

@@ -30,10 +30,11 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun submitPutRefreshInterval(position: Int)
 
-    fun setMaskApp(value : Boolean)
+    fun setMaskApp(value: Boolean)
 
     fun submitIsLogged()
 
     fun submitCleanDatabase()
 
+    fun switchServerProcess(repoUrl: String)
 }

@@ -16,6 +16,7 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.DialogManager.Companion.PROGRESS_DIALOG_TAG
+import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
@@ -105,7 +106,7 @@ class TourController : BaseController(), ContentView {
     private fun onAcceptButton() {
         acceptButton?.let { btn ->
             btn.onClick {
-                presenter.manageContent()
+                presenter.manageContent(baseUrlRepository)
             }
         }
     }

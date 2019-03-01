@@ -30,17 +30,17 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun persistRSS(rssList: List<RSS>) = contentRepo.insertDefaultRSS(rssList)
 
-    override suspend fun getSubject(sha1ID: String) = contentRepo.getSubject(sha1ID)
+    override suspend fun getSubject(subjectId: String) = contentRepo.getSubject(subjectId)
 
-    override suspend fun getDifficulty(sha1ID: String) = contentRepo.getDifficulty(sha1ID)
+    override suspend fun getDifficulty(difficultyId: String) = contentRepo.getDifficulty(difficultyId)
 
-    override suspend fun getModule(sha1ID: String) = contentRepo.getModule(sha1ID)
+    override suspend fun getModule(moduleId: String) = contentRepo.getModule(moduleId)
 
-    override suspend fun getMarkdown(sha1ID: String) = contentRepo.getMarkdown(sha1ID)
+    override suspend fun getMarkdown(markdownId: String) = contentRepo.getMarkdown(markdownId)
 
-    override suspend fun getChecklist(sha1ID: String) = contentRepo.getChecklist(sha1ID)
+    override suspend fun getChecklist(checklistId: String) = contentRepo.    getChecklist(checklistId)
 
-    override suspend fun getForm(sha1ID: String) = contentRepo.getForm(sha1ID)
+    override suspend fun getForm(formId: String) = contentRepo.getForm(formId)
 
     override suspend fun saveAllChecklists(checklists: List<Checklist>) = contentRepo.saveAllChecklists(checklists)
 
@@ -56,7 +56,7 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun persistFeedSource(feedSources: List<FeedSource>) = contentRepo.insertFeedSource(feedSources)
 
-    override suspend fun fetchData() = tentRepo.fetchRepository()
+    override suspend fun fetchData(url : String) = tentRepo.fetchRepository(url)
 
     override suspend fun initParser() = elementLoader.load(elementSerialize.process())
 
