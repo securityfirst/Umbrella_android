@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.feature.reader.view.server
+package org.secfirst.umbrella.whitelabel.feature.account.view.server
 
 import android.Manifest
 import android.content.pm.PackageManager

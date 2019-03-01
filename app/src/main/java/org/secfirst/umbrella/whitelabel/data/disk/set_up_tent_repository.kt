@@ -8,7 +8,7 @@ class TentConfig {
     companion object {
         private val repoPath = UmbrellaApplication.instance.cacheDir.path + "/repo/"
         const val BRANCH_NAME: String = "refs/heads/master"
-        var uriRepository = "https://github.com/douglasalipio/umbrella-content"
+        var uriRepository = "https://github.com/securityfirst/umbrella-content"
         const val ELEMENT_LEVEL = 2
         const val SUB_ELEMENT_LEVEL = 3
         const val CHILD_LEVEL = 4

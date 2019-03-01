@@ -15,7 +15,6 @@ class LessonGroup(private val moduleId: String,
 
     private lateinit var expandableGroup: ExpandableGroup
 
-
     override fun bind(viewHolder: ViewHolder, position: Int) {
         super.bind(viewHolder, position)
         viewHolder.lessonHeaderLayout.setOnClickListener {

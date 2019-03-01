@@ -76,6 +76,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     override fun handleBack(): Boolean {
         if (isDeepLink)
             router.pushController(RouterTransaction.with(LessonController()))
+        router.popCurrentController()
         return true
     }
 
