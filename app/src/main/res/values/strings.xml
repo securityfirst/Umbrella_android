@@ -73,6 +73,7 @@
     <string name="account_set_password">Set password</string>
     <string name="account_settings">Settings</string>
     <string name="account_mask">Mask</string>
+    <string name="account_language_dialog_title">Select Language</string>
     <string name="account_password_alert_password">Password</string>
     <string name="account_password_skip">SKIP</string>
     <string name="account_cancel">CANCEL</string>
@@ -159,5 +160,8 @@
     <string name="confirm_password_error_message">Password doesn\'t match</string>
     <string name="default_github_url">https://github.com/</string>
     <string name="switch_server_title_message">Switch server</string>
+    <string name="english_langugage_title">English</string>
+    <string name="spanish_language_title">Spanish</string>
+    <string name="chinese_language_title">Chinese</string>
 
 </resources>

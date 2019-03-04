@@ -71,6 +71,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
     private lateinit var refreshIntervalView: View
+    private lateinit var languageDialog: AlertDialog
+    private lateinit var languageView: View
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
     private lateinit var refreshServerProgress: ProgressDialog
@@ -93,6 +95,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
         switchServerView = inflater.inflate(R.layout.account_switch_server_view, container, false)
+        languageView = inflater.inflate(R.layout.account_language_dialog, container, false)
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
 
@@ -103,6 +106,11 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         exportAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(exportView)
+                .create()
+
+        languageDialog = AlertDialog
+                .Builder(activity)
+                .setView(languageView)
                 .create()
 
         switchServerDialog = AlertDialog
@@ -116,14 +124,17 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         exportView.exportDialogCancel.onClick { exportDataClose() }
         switchServerView.alertControlOk.onClick { switchServerOk() }
         switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
+        languageView.alertControlOk.onClick {  }
+        languageView.alertControlCancel.onClick { languageDialog.dismiss() }
 
+        mainView.settingsLanguage.onClick { languageClick() }
         mainView.settingsImportData.onClick { importDataClick() }
-        mainView.settingsExportData.setOnClickListener { exportDataClick() }
-        mainView.settingsLocation.setOnClickListener { setLocationClick() }
-        mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
-        mainView.settingsSecurityFeed.setOnClickListener { feedSourceClick() }
-        mainView.settingsRefreshServer.setOnClickListener { refreshServerClick() }
-        mainView.settingsSwitchServer.setOnClickListener { switchServerClick() }
+        mainView.settingsExportData.onClick { exportDataClick() }
+        mainView.settingsLocation.onClick { setLocationClick() }
+        mainView.settingsRefreshFeeds.onClick { refreshIntervalClick() }
+        mainView.settingsSecurityFeed.onClick { feedSourceClick() }
+        mainView.settingsRefreshServer.onClick { refreshServerClick() }
+        mainView.settingsSwitchServer.onClick { switchServerClick() }
         mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
             skipPasswordTip(isChecked)
         }
@@ -133,6 +144,15 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         feedLocationDialog = FeedLocationDialog(feedLocationView, this)
 
         return mainView
+    }
+
+    private fun languageClick() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return languageDialog
+            }
+        })
     }
 
     private fun switchServerClick() {
