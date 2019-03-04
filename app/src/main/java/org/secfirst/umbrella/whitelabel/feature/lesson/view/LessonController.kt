@@ -63,10 +63,14 @@ class LessonController : BaseController(), LessonView {
 
     override fun showAllLesson(lessons: List<Lesson>) {
         if (!isRecycledView) {
-            lessons.forEach {
-                val lessonGroup = LessonGroup(it.moduleId, it.pathIcon, it.moduleTitle, groupClick)
+            lessons.forEach { lesson ->
+                val hasChild = lesson.topics.isNotEmpty()
+                val lessonGroup = LessonGroup(lesson.moduleId,
+                        lesson.pathIcon,
+                        lesson.moduleTitle,
+                        hasChild, groupClick)
                 val groups = ExpandableGroup(lessonGroup)
-                it.topics.forEach { subject -> groups.add(LessonItem(subject, lessonClick)) }
+                lesson.topics.forEach { subject -> groups.add(LessonItem(subject, lessonClick)) }
                 groupAdapter.add(groups)
             }
             lessonRecyclerView?.apply { adapter = groupAdapter }

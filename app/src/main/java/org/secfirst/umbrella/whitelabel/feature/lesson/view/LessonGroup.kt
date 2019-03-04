@@ -11,6 +11,7 @@ import org.secfirst.umbrella.whitelabel.misc.appContext
 class LessonGroup(private val moduleId: String,
                   iconPath: String,
                   titleHeader: String,
+                  private val hasChild: Boolean,
                   private val onclickGroup: (String) -> Unit) : LessonHeader(moduleId, iconPath, titleHeader), ExpandableItem {
 
     private lateinit var expandableGroup: ExpandableGroup
@@ -31,10 +32,12 @@ class LessonGroup(private val moduleId: String,
         viewHolder.arrow.apply {
             if (expandableGroup.isExpanded) {
                 setImageResource(R.drawable.ic_keyboard_arrow_down_black)
-                viewHolder.iconHeader
-                        .setColorFilter(ContextCompat.getColor(appContext(), R.color.umbrella_purple))
-                viewHolder.subHeaderText
-                        .setTextColor(ContextCompat.getColor(appContext(), R.color.umbrella_purple))
+                if (hasChild) {
+                    viewHolder.iconHeader
+                            .setColorFilter(ContextCompat.getColor(appContext(), R.color.umbrella_purple))
+                    viewHolder.subHeaderText
+                            .setTextColor(ContextCompat.getColor(appContext(), R.color.umbrella_purple))
+                }
             } else {
                 setImageResource(R.drawable.ic_keyboard_arrow_up_black)
                 viewHolder.iconHeader.clearColorFilter()
