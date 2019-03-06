@@ -18,7 +18,7 @@
 
     <string name="tour_view_accept_button">ACCEPT</string>
     <string name="fab_dialog_transition_name">transition.fab</string>
-    <string name="loading_tour_message">Fetching data…</string>
+    <string name="loading_tour_message">Fetching data 1/3</string>
     <string name="error_connection_tour_message">Looks like the server is taking to long to respond, try again later.</string>
 
     <string name="send_to">Share</string>
@@ -129,7 +129,7 @@
     <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
     <string name="enable_masking_mode">Enable masking mode</string>
     <string name="empty"> </string>
-    <string name="password_success">Password created with success.</string>
+    <string name="password_success">Password was successfully created</string>
     <string name="update_repository_message_success">Updated with success.</string>
     <string name="switch_server_error_message">An error occurred. URL seems not be a Git server.</string>
     <string name="pdf_name">PDF</string>
@@ -163,5 +163,6 @@
     <string name="english_langugage_title">English</string>
     <string name="spanish_language_title">Spanish</string>
     <string name="chinese_language_title">Chinese</string>
+    <string name="login_enter_pw">Enter password</string>
 
 </resources>
