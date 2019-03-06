@@ -85,7 +85,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         }
     }
 
-    override fun manageContent(url : String) {
+    override fun manageContent(url: String) {
         var isFetchData: Boolean
         launchSilent(uiContext) {
             interactor?.let {
@@ -93,7 +93,9 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                 isFetchData = it.fetchData(url)
 
                 if (isFetchData) {
+                    getView()?.onProcessProgress()
                     val root = it.initParser()
+                    getView()?.onStoredProgress()
                     it.persist(root)
                 }
                 it.persistFeedSource(createFeedSources())

@@ -113,12 +113,25 @@ class TourController : BaseController(), ContentView {
         }
     }
 
+    override fun onDownloadSuccess() {
+        progressDialog.setMessage(context.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_download_message))
+    }
+
+    override fun onProcessProgress() {
+        progressDialog.setMessage(context.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_parse_message))
+
+    }
+
+    override fun onStoredProgress() {
+        progressDialog.setMessage(context.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_store_message))
+    }
+
     private fun doLongOperation() {
         dialogManager.showDialog(PROGRESS_DIALOG_TAG, object : DialogManager.DialogFactory {
             override fun createDialog(context: Context?): Dialog {
                 progressDialog = ProgressDialog(context)
                 progressDialog.setCancelable(false)
-                progressDialog.setMessage(context?.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_message))
+                progressDialog.setMessage(context?.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_download_message))
                 return progressDialog
             }
         })

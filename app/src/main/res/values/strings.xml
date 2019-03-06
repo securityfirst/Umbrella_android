@@ -10,6 +10,7 @@
     <string name="message_title_all_forms">Available forms</string>
     <string name="message_body_form_new">NEW</string>
     <string name="form_input_controller_name">Digital Security Incident</string>
+    <string name="loading_tour_message">Fetching data…</string>
     <string name="terms_conditions">Terms and Conditions</string>
     <string name="tour_slide_1_text">Umbrella makes your security simple</string>
     <string name="tour_slide_2_text">Get advice on everything from sending a secure email to safe travel</string>
@@ -18,7 +19,9 @@
 
     <string name="tour_view_accept_button">ACCEPT</string>
     <string name="fab_dialog_transition_name">transition.fab</string>
-    <string name="loading_tour_message">Fetching data 1/3</string>
+    <string name="loading_tour_download_message">Downloading data 1/3</string>
+    <string name="loading_tour_parse_message">Processing data 2/3</string>
+    <string name="loading_tour_store_message">Storing data 3/3</string>
     <string name="error_connection_tour_message">Looks like the server is taking to long to respond, try again later.</string>
 
     <string name="send_to">Share</string>
