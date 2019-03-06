@@ -53,13 +53,14 @@
                 tools:ignore="MissingPrefix" />
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/addChecklistItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginStart="22dp"
             android:layout_marginLeft="50dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/round_button"
             android:scaleType="center"
             android:src="@drawable/ic_add_white" />
 
