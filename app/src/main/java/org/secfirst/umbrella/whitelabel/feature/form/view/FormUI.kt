@@ -74,7 +74,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             textView(item.label) {
                                 textSize = size
                                 textColor = formTextColor
-                            }.lparams { topMargin = dip(15) }
+                            }.lparams { topMargin = dip(5) }
                             item.options.forEach { formOption ->
                                 val answer = formOption.hasAnswer(answers)
                                 val checkBox = tintedCheckBox {
@@ -108,7 +108,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                 }
 
             }.lparams(width = matchParent, height = matchParent) {
-                topMargin = dip(10)
+                topMargin = dip(15)
             }
         }
 

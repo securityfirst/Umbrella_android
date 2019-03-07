@@ -103,6 +103,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     @SuppressLint("SetTextI18n")
     private fun setProgress(newStepPosition: Int) {
         val size = totalScreens
+        titleProgressAnswer.text = "0%"
         var percentage = newStepPosition * 100 / totalScreens
         if (newStepPosition > 0) {
             progressAnswer.progress = percentage
