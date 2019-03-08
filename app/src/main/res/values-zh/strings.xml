@@ -162,7 +162,7 @@
     <string name="confirm_password_error_message">密码不匹配</string>
     <string name="default_github_url">https://github.com/</string>
     <string name="switch_server_title_message">切换服务器</string>
-    <string name="english_langugage_title">英语</string>
+    <string name="english_language_title">英语</string>
     <string name="spanish_language_title">西班牙语</string>
     <string name="chinese_language_title">中文</string>
     <string name="login_enter_pw">输入密码</string>

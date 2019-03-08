@@ -2,15 +2,12 @@ package org.secfirst.umbrella.whitelabel.misc
 
 import android.Manifest
 import android.app.Activity
-import android.app.Notification
-import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Base64
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -152,13 +149,10 @@ enum class TypeHelper(val value: String) {
     DIFFICULTY(Difficulty::class.java.name)
 }
 
-fun Context.createNotification(title: String, body: String, channelId: String) {
-    val notificationBuilder = NotificationCompat.Builder(this, channelId)
-    notificationBuilder.setAutoCancel(true)
-            .setDefaults(Notification.DEFAULT_ALL)
-            .setWhen(System.currentTimeMillis())
-            .setContentTitle(title)
-            .setContentText(body)
-    val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    notificationManager.notify(1, notificationBuilder.build())
+fun Context.setLocale(lang: String) {
+    val res = resources
+    val dm = res.displayMetrics
+    val conf = res.configuration
+    conf.locale = Locale(lang)
+    res.updateConfiguration(conf, dm)
 }

@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
+import kotlinx.android.synthetic.main.account_language_dialog.view.*
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
 import kotlinx.android.synthetic.main.account_switch_server_view.view.*
@@ -32,6 +33,7 @@ import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.disk.IsoCountry
 import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
@@ -49,6 +51,7 @@ import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.PERMISSION_REQUEST_EXTERNAL_STORAGE
 import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
 import org.secfirst.umbrella.whitelabel.misc.requestExternalStoragePermission
+import org.secfirst.umbrella.whitelabel.misc.setLocale
 import java.io.File
 import javax.inject.Inject
 
@@ -124,7 +127,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         exportView.exportDialogCancel.onClick { exportDataClose() }
         switchServerView.alertControlOk.onClick { switchServerOk() }
         switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
-        languageView.alertControlOk.onClick {  }
+        languageView.alertControlOk.onClick { changeLanguageOk() }
         languageView.alertControlCancel.onClick { languageDialog.dismiss() }
 
         mainView.settingsLanguage.onClick { languageClick() }
@@ -138,6 +141,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
             skipPasswordTip(isChecked)
         }
+        presenter.submitDefaultLanguage()
         presenter.submitSkippPassword()
         presenter.prepareView()
         initExportGroup()
@@ -153,6 +157,43 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 return languageDialog
             }
         })
+    }
+
+    private fun changeLanguageOk() {
+        when {
+            languageView.spanishCheck.isChecked -> {
+                context.setLocale(IsoCountry.SPANISH.value)
+                presenter.setDefaultLanguage(IsoCountry.SPANISH.value)
+            }
+            languageView.chineseCheck.isChecked -> {
+                context.setLocale(IsoCountry.CHINESE.value)
+                presenter.setDefaultLanguage(IsoCountry.CHINESE.value)
+            }
+            else -> {
+                context.setLocale(IsoCountry.ENGLISH.value)
+                presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
+            }
+        }
+        mainActivity.recreate()
+        mainActivity.navigationPositionToCenter()
+        languageDialog.dismiss()
+    }
+
+    override fun getDefaultLanguage(isoCountry: String) {
+        when (isoCountry) {
+            IsoCountry.ENGLISH.value -> {
+                languageView.englishCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.english_language_title)
+            }
+            IsoCountry.CHINESE.value -> {
+                languageView.chineseCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.chinese_language_title)
+            }
+            IsoCountry.SPANISH.value -> {
+                languageView.spanishCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.spanish_language_title)
+            }
+        }
     }
 
     private fun switchServerClick() {

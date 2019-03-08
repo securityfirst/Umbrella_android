@@ -38,7 +38,7 @@
             android:checked="true"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="8sp"
-            android:text="@string/english_langugage_title"
+            android:text="@string/english_language_title"
             android:textColor="@color/feedSources_color"
             android:textSize="@dimen/text_size_smaller"
             android:textStyle="normal" />

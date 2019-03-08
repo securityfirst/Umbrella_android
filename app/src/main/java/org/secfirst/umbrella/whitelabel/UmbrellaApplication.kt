@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import androidx.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -20,8 +21,12 @@ import org.secfirst.advancedsearch.util.mvp.BgUiThreadSpec
 import org.secfirst.advancedsearch.util.mvp.ThreadSpec
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.SQLCipherHelperImpl
+import org.secfirst.umbrella.whitelabel.data.disk.IsoCountry
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_LANGUAGE
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.di.component.DaggerAppComponent
+import org.secfirst.umbrella.whitelabel.misc.setLocale
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -50,6 +55,7 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         initDaggerComponent()
         initFonts()
         initFabric()
+        initDefaultLocation()
     }
 
     private fun initDaggerComponent() {
@@ -98,5 +104,12 @@ class UmbrellaApplication : Application(), HasActivityInjector {
     override fun onTerminate() {
         super.onTerminate()
         FlowManager.destroy()
+    }
+
+    private fun initDefaultLocation() {
+        val preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val isoCountry = preference.getString(EXTRA_LANGUAGE, IsoCountry.ENGLISH.value)
+                ?: IsoCountry.ENGLISH.value
+        setLocale(isoCountry)
     }
 }

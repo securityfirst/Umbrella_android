@@ -198,7 +198,7 @@ Vaya a las lecciones y descubra listas de verificación recomenzadas o cree sus 
     <string name="confirm_password_error_message">La contraseña no coincide</string>
     <string name="default_github_url">https://github.com/</string>
     <string name="switch_server_title_message">Cambiar servidor</string>
-    <string name="english_langugage_title">Inglés</string>
+    <string name="english_language_title">Inglés</string>
     <string name="spanish_language_title">Español</string>
     <string name="chinese_language_title">chino</string>
     <string name="login_enter_pw">Introducir la contraseña</string>

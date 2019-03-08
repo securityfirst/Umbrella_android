@@ -2,6 +2,7 @@ package org.secfirst.umbrella.whitelabel.data.preferences
 
 import android.content.Context
 import android.content.SharedPreferences
+import org.secfirst.umbrella.whitelabel.data.disk.IsoCountry
 import org.secfirst.umbrella.whitelabel.di.PreferenceInfo
 import javax.inject.Inject
 
@@ -17,7 +18,12 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
         const val EXTRA_MASK_APP = "mask_app"
         const val PREF_NAME = "umbrella.preference"
         const val EXTRA_LOGGED_IN = "is_logged_in"
+        const val EXTRA_LANGUAGE = "language"
     }
+
+    override fun setLanguage(isoCountry: String) = prefs.edit().putString(EXTRA_LANGUAGE, isoCountry).commit()
+
+    override fun getLanguage() = prefs.getString(EXTRA_LANGUAGE, "") ?: IsoCountry.ENGLISH.value
 
     override fun enablePasswordBanner(enableBanner: Boolean) = prefs.edit().putBoolean(STATE_PW_BANNER, enableBanner).commit()
 
@@ -31,7 +37,7 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
 
     override fun isMaskApp() = prefs.getBoolean(EXTRA_MASK_APP, false)
 
-    override fun setMaskApp(isMaskapp: Boolean) = prefs.edit().putBoolean(EXTRA_MASK_APP, isMaskapp).commit()
+    override fun setMaskApp(isMaskApp: Boolean) = prefs.edit().putBoolean(EXTRA_MASK_APP, isMaskApp).commit()
 
     override fun isLoggedIn() = prefs.getBoolean(EXTRA_LOGGED_IN, false)
 
@@ -55,7 +61,7 @@ interface PreferenceHelper {
 
     fun isMaskApp(): Boolean
 
-    fun setMaskApp(isMaskapp: Boolean): Boolean
+    fun setMaskApp(isMaskApp: Boolean): Boolean
 
     fun setSkipPassword(isSkip: Boolean): Boolean
 
@@ -68,6 +74,10 @@ interface PreferenceHelper {
     fun setShaId(shaID: String): Boolean
 
     fun getShaId(): String
+
+    fun setLanguage(isoCountry: String): Boolean
+
+    fun getLanguage(): String
 
     fun cleanPreferences(): Boolean
 

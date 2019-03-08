@@ -33,6 +33,12 @@ enum class TypeFile(val value: String) {
     NOUN("")
 }
 
+enum class IsoCountry(val value: String) {
+    ENGLISH("gb"),
+    CHINESE("zh"),
+    SPANISH("es"),
+}
+
 enum class Template(val value: String) {
     GLOSSARY("glossary")
 }

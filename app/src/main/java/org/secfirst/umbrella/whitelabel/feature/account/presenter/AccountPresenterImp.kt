@@ -19,6 +19,16 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
 
+    override fun setDefaultLanguage(isoCountry: String) {
+        interactor?.setDefaultLanguage(isoCountry)
+    }
+
+    override fun submitDefaultLanguage() {
+        interactor?.let {
+            getView()?.getDefaultLanguage(it.getDefaultLanguage())
+        }
+    }
+
     override fun switchServerProcess(repoUrl: String) {
         launchSilent(uiContext) {
             var isReset = false

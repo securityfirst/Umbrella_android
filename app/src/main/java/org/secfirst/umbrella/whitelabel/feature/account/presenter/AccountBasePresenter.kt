@@ -37,4 +37,8 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
     fun submitCleanDatabase()
 
     fun switchServerProcess(repoUrl: String)
+
+    fun submitDefaultLanguage()
+
+    fun setDefaultLanguage(isoCountry : String)
 }

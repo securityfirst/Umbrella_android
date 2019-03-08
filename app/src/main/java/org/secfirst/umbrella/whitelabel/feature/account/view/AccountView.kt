@@ -26,4 +26,7 @@ interface AccountView : BaseView {
     fun getSkipPassword(res: Boolean) {}
 
     fun onResetContent(res: Boolean) {}
+
+    fun getDefaultLanguage(isoCountry: String){}
+
 }

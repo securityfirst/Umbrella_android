@@ -15,7 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
-import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.isRepository
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
@@ -29,17 +28,19 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var router: Router
+    private lateinit var currentLocation: Locale
 
     private fun performDI() = AndroidInjection.inject(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_view)
+        setContentView(org.secfirst.umbrella.whitelabel.R.layout.main_view)
         setSupportActionBar(searchToolbar)
         performDI()
         initRoute(savedInstanceState)
@@ -117,23 +118,23 @@ class MainActivity : AppCompatActivity() {
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
                 when (item.itemId) {
-                    R.id.navigation_feeds -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_feeds -> {
                         router.pushController(RouterTransaction.with(HostReaderController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_forms -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_forms -> {
                         router.pushController(RouterTransaction.with(HostFormController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_checklists -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_checklists -> {
                         router.pushController(RouterTransaction.with(HostChecklistController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_lessons -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_lessons -> {
                         router.pushController(RouterTransaction.with(LessonController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_account -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_account -> {
                         router.pushController(RouterTransaction.with(AccountController()))
                         return@OnNavigationItemSelectedListener true
                     }
