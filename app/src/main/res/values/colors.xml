@@ -24,7 +24,7 @@
     <color name="form_background">#f6f6f6</color>
     <color name="chilist_view_background">#e5e5e5</color>
     <color name="feedSources_color">#000000</color>
-    <string name="chilist_view_background">#e5e5e5</string>
+    <color name="color_line_settings">#1e000000</color>
     <color name="dark_grey">#FF333333</color>
     <color name="feed_list_site_name">#828282</color>
     <color name="coachmark_background_dark">#BB000000</color>
