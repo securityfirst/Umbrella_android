@@ -10,10 +10,10 @@
         android:id="@+id/categoryName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginLeft="56dp"
         android:fontFamily="sans-serif"
-        android:lineSpacingExtra="8sp"
+        android:gravity="center"
         android:padding="5dp"
         android:textColor="#de000000"
         android:textSize="16sp"
@@ -21,7 +21,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         tools:text="Preparation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

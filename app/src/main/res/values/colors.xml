@@ -38,4 +38,5 @@
     <color name="form_title_color">#030303</color>
     <color name="default_umbrella_black">#de000000</color>
     <color name="subtitle_settings_color">#8b000000</color>
+    <color name="very_light_pink">#e3e3e3</color>
 </resources>

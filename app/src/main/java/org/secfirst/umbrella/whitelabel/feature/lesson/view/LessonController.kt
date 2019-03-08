@@ -70,7 +70,11 @@ class LessonController : BaseController(), LessonView {
                         lesson.moduleTitle,
                         hasChild, groupClick)
                 val groups = ExpandableGroup(lessonGroup)
-                lesson.topics.forEach { subject -> groups.add(LessonItem(subject, lessonClick)) }
+                if (hasChild) groups.add(LessonDecorator())
+                lesson.topics.forEach { subject ->
+                    groups.add(LessonItem(subject, lessonClick))
+                }
+                if (hasChild) groups.add(LessonDecorator())
                 groupAdapter.add(groups)
             }
             lessonRecyclerView?.apply { adapter = groupAdapter }
