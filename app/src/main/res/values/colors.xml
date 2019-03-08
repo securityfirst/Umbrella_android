@@ -25,6 +25,7 @@
     <color name="chilist_view_background">#e5e5e5</color>
     <color name="feedSources_color">#000000</color>
     <color name="color_line_settings">#1e000000</color>
+    <color name="teal_settings">#009789</color>
     <color name="dark_grey">#FF333333</color>
     <color name="feed_list_site_name">#828282</color>
     <color name="coachmark_background_dark">#BB000000</color>
@@ -36,4 +37,5 @@
     <color name="blue_light">#43a0ca</color>
     <color name="form_title_color">#030303</color>
     <color name="default_umbrella_black">#de000000</color>
+    <color name="subtitle_settings_color">#8b000000</color>
 </resources>

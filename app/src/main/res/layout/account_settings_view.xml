@@ -32,7 +32,7 @@
                 android:id="@+id/SkipContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -42,8 +42,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/settings_general_title"
-                    android:textColor="#009789"
-                    android:textSize="14sp"
+                    android:textColor="@color/teal_settings"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -52,12 +52,11 @@
                     android:id="@+id/labelSkipPw"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/settings_normal_padding"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_title_skip_pw"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/general" />
@@ -69,8 +68,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_label_skip_pw"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/labelSkipPw" />
@@ -79,11 +78,11 @@
                     android:id="@+id/settingsSkipPassword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/settings_bigger_padding"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -93,8 +92,8 @@
                 android:id="@+id/settingsRefreshServer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/SkipContainer">
 
@@ -106,7 +105,7 @@
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_refresh_from_the_server"
                     android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -117,8 +116,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_refresh_from_the_server"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/refreshServerLabel" />
@@ -128,8 +127,8 @@
                 android:id="@+id/settingsSwitchServer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsRefreshServer">
 
@@ -142,7 +141,7 @@
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_switch_server"
                     android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -153,8 +152,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_switch_server"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/switchSeverLabel" />
@@ -164,8 +163,8 @@
                 android:id="@+id/settingsLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsSwitchServer">
 
@@ -176,8 +175,7 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_select_language"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -189,8 +187,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_english"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/languageLabel" />
@@ -202,7 +200,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsLanguage">
 
@@ -213,8 +211,7 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_import_your_data"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -225,8 +222,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_import_your_data"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/importDataLabel" />
@@ -236,8 +233,8 @@
                 android:id="@+id/settingsExportData"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsImportData">
 
@@ -248,8 +245,7 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_export_your_data"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -260,8 +256,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_export_your_data"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/exportDataLabel" />
@@ -271,7 +267,7 @@
                 android:id="@+id/feedLine"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/settings_bigger_padding"
                 android:background="@color/color_line_settings"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsExportData" />
@@ -281,8 +277,8 @@
                 android:id="@+id/settingsRefreshFeeds"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/feedLine">
 
@@ -292,8 +288,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/settings_feed"
-                    android:textColor="#009789"
-                    android:textSize="14sp"
+                    android:textColor="@color/teal_settings"
+                    android:textSize="@dimen/text_size_smallest"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -301,12 +297,11 @@
                     android:id="@+id/refreshFeedLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/settings_normal_padding"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_refresh_interval_for_custom_feeds"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/feedLabel" />
@@ -318,8 +313,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/default_refresh_feed"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/refreshFeedLabel" />
@@ -330,8 +325,8 @@
                 android:id="@+id/settingsLocation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsRefreshFeeds">
 
@@ -342,8 +337,7 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_your_location"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -355,8 +349,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_your_location"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/locationTitle" />
@@ -366,8 +360,8 @@
                 android:id="@+id/settingsSecurityFeed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsLocation">
 
@@ -378,8 +372,7 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_security_feed_sources"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -391,8 +384,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_security_feed_sources"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/feedSourceTitle" />
@@ -402,7 +395,7 @@
                 android:id="@+id/notificationLine"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/settings_bigger_padding"
                 android:background="@color/color_line_settings"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsSecurityFeed" />
@@ -411,7 +404,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
+                android:layout_marginTop="@dimen/settings_normal_padding"
+                android:padding="@dimen/settings_vertical_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/notificationLine">
 
@@ -421,8 +415,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/settings_title_notification"
-                    android:textColor="#009789"
-                    android:textSize="14sp"
+                    android:textColor="@color/teal_settings"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -431,15 +425,14 @@
                     android:id="@+id/updateNotificationTitle"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/settings_vertical_margin"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif"
                     android:text="@string/settings_show_updates_as_notification"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notificationLabel"/>
+                    app:layout_constraintTop_toBottomOf="@+id/notificationLabel" />
 
                 <TextView
                     android:id="@+id/updateNotificationLabel"
@@ -448,8 +441,8 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_show_updates_as_notification"
-                    android:textColor="#8b000000"
-                    android:textSize="14sp"
+                    android:textColor="@color/subtitle_settings_color"
+                    android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/updateNotificationTitle" />
@@ -458,11 +451,10 @@
                     android:id="@+id/settingsUpdateNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="@dimen/settings_normal_padding"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
-                    android:textColor="#de000000"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
