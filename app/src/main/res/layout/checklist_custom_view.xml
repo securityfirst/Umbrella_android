@@ -64,34 +64,6 @@
             android:scaleType="center"
             android:src="@drawable/ic_add_white" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewTitle"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="30dp"
-            android:visibility="invisible"
-            app:cardBackgroundColor="@color/umbrella_purple"
-            card_view:cardCornerRadius="2dp">
-
-            <EditText
-                android:id="@+id/editChecklistTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:fontFamily="sans-serif"
-                android:hint="@string/custom_checklist_hint_add_checklistTitle"
-                android:imeOptions="actionNext"
-                android:padding="5dp"
-                android:textColor="@color/custom_check_list_item_color"
-                android:textSize="18sp"
-                android:textStyle="normal"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                tools:ignore="MissingPrefix" />
-        </androidx.cardview.widget.CardView>
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/checklistCustomRecyclerView"
             android:layout_width="match_parent"

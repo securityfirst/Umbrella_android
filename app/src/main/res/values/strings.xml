@@ -168,5 +168,9 @@
     <string name="chinese_language_title">Chinese</string>
     <string name="login_enter_pw">Enter password</string>
     <string name="default_refresh_feed">30 min</string>
+    <string name="custom_checklist_add_item_title">Custom Checklist</string>
+    <string name="name_your_checklist">Name your checklist</string>
+    <string name="name">Name</string>
+    <string name="invalid_name_custom_checklist_messenge">Custom checklist name shouldn\'t be empty.</string>
 
 </resources>

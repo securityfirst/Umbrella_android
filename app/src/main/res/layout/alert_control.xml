@@ -1,45 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:orientation="horizontal"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/alertControlCancel"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:layout_toStartOf="@+id/alertControlOk"
+        android:layout_toLeftOf="@+id/alertControlOk"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@android:string/cancel"
+        android:textAllCaps="true"
+        android:textColor="@color/green_dashboard"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/alertControlCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/alertControlOk"
-            android:layout_toLeftOf="@+id/alertControlOk"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="10dp"
-            android:text="@android:string/cancel"
-            android:textColor="@color/grey_location" />
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/alertControlOk"
+        android:layout_width="74dp"
+        android:layout_height="36dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@android:string/ok"
+        android:textAllCaps="true"
+        android:textColor="@color/green_dashboard"
+        app:layout_constraintStart_toEndOf="@+id/alertControlCancel"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/alertControlOk"
-            fontPath="fonts/Roboto-Medium.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="10dp"
-            android:text="@android:string/ok"
-            android:textColor="@color/green_dashboard" />
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
