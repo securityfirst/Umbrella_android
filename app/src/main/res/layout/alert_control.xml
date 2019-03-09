@@ -14,11 +14,12 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:gravity="center"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
         android:padding="10dp"
         android:text="@android:string/cancel"
         android:textAllCaps="true"
-        android:textColor="@color/green_dashboard"
+        android:textColor="#9b9b9b"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,6 +30,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:padding="10dp"
         android:text="@android:string/ok"

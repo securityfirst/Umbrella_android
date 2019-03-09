@@ -123,8 +123,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 .create()
 
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
-        exportView.exportDialogOk.onClick { exportDataOk() }
-        exportView.exportDialogCancel.onClick { exportDataClose() }
+        exportView.alertControlOk.onClick { exportDataOk() }
+        exportView.alertControlCancel.onClick { exportDataClose() }
         switchServerView.alertControlOk.onClick { switchServerOk() }
         switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
         languageView.alertControlOk.onClick { changeLanguageOk() }

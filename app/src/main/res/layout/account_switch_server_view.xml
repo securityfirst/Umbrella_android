@@ -19,6 +19,9 @@
         layout="@layout/alert_control"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/editServer"
-        tools:layout_editor_absoluteX="0dp" />
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/editServer"
+        app:layout_constraintTop_toBottomOf="@+id/editServer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -155,7 +155,7 @@
     <string name="settings_label_skip_pw">Don’t ask for password again</string>
     <string name="settings_title_skip_pw">Skip password</string>
     <string name="settings_general_title">General</string>
-    <string name="checklist_custom_empty_item_error_message">The item shouldn\'t be blank</string>
+    <string name="checklist_custom_empty_item_error_message">The item shouldn\'t be blank.</string>
     <string name="checklist_add_item_message">Item added successfully.</string>
     <string name="checklist_edit_item_title">Edit checklist item</string>
     <string name="checklist_add_item_title">Add checklist item</string>
@@ -171,6 +171,6 @@
     <string name="custom_checklist_add_item_title">Custom Checklist</string>
     <string name="name_your_checklist">Name your checklist</string>
     <string name="name">Name</string>
-    <string name="invalid_name_custom_checklist_messenge">Custom checklist name shouldn\'t be empty.</string>
+    <string name="invalid_name_custom_checklist_messenge">The checklist name shouldn\'t be blank.</string>
 
 </resources>

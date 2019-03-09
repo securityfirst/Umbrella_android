@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="2"
@@ -19,7 +20,7 @@
             android:background="@drawable/ic_person_pin_circle" />
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -31,10 +32,12 @@
             android:id="@+id/place_search_dialog_location_TIL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                 android:id="@+id/location"
@@ -51,6 +54,11 @@
             android:id="@+id/alertControlLayout"
             layout="@layout/alert_control"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            app:layout_constraintEnd_toEndOf="@+id/place_search_dialog_location_TIL"
+            app:layout_constraintTop_toBottomOf="@+id/place_search_dialog_location_TIL" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
