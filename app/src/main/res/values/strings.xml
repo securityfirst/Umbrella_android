@@ -172,5 +172,6 @@
     <string name="name_your_checklist">Name your checklist</string>
     <string name="name">Name</string>
     <string name="invalid_name_custom_checklist_messenge">The checklist name shouldn\'t be blank.</string>
+    <string name="empty_custom_checklist_message">Create your own custom checklist.</string>
 
 </resources>

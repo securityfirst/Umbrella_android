@@ -63,7 +63,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
         customChecklistView.alertControlOk.onClick { startCustomChecklist() }
         customChecklistView.alertControlCancel.onClick { customChecklistDialog.dismiss() }
-        view.addNewChecklist.setOnClickListener { showCustomChecklistDialog() }
+        view.addNewChecklistBtn.setOnClickListener { showCustomChecklistDialog() }
         presenter.onAttach(this)
         return view
     }
@@ -103,7 +103,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun checkWorkflow() {
         if (isCustomBoard) {
-            addNewChecklist?.show()
+            addNewChecklistBtn?.show()
             presenter.submitLoadCustomDashboard()
             initOnDeleteChecklist()
         } else
@@ -136,21 +136,18 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
-        var isChecklistEmpty = false
-        dashboards.forEach { if (it.checklist != null) isChecklistEmpty = true }
-        when {
-            isCustomBoard -> startDashboard(dashboards)
-            isChecklistEmpty -> startDashboard(dashboards)
-            else -> emptyTitleView?.text = context.getText(R.string.empty_checklist_message)
+
+        if (dashboards.isEmpty() && isCustomBoard) {
+            emptyTitleView?.text = context.getText(R.string.empty_custom_checklist_message)
+            addNewChecklistBtn?.show()
+        } else if (dashboards.isEmpty() && !isCustomBoard) {
+            emptyTitleView?.text = context.getText(R.string.empty_checklist_message)
+        } else {
+            customChecklistContainer?.visibility = View.VISIBLE
+            emptyDashboardView?.visibility = View.GONE
+            adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemOnLongClick)
+            checklistDashboardRecyclerView?.initRecyclerView(adapter)
         }
-    }
-
-
-    private fun startDashboard(dashboards: MutableList<Dashboard.Item>) {
-        customChecklistContainer?.visibility = View.VISIBLE
-        emptyDashboardView?.visibility = View.GONE
-        adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemOnLongClick)
-        checklistDashboardRecyclerView?.initRecyclerView(adapter)
     }
 
     companion object {
