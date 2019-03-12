@@ -32,6 +32,8 @@ import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
 class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistView {
+
+
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private val dashboardItemClick: (Checklist) -> Unit = this::onDashboardItemClicked
@@ -136,7 +138,6 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     override fun showDashboard(dashboards: MutableList<Dashboard.Item>) {
-
         if (dashboards.isEmpty() && isCustomBoard) {
             emptyTitleView?.text = context.getText(R.string.empty_custom_checklist_message)
             addNewChecklistBtn?.show()

@@ -174,5 +174,7 @@
     <string name="invalid_name_custom_checklist_messenge">The checklist name shouldn\'t be blank.</string>
     <string name="empty_custom_checklist_message">Create your own custom checklist.</string>
     <string name="checklist_card_title">Checklists</string>
+    <string name="checklist_title_tab">OVERVIEW</string>
+    <string name="custom_checklist_title_tab">CUSTOM</string>
 
 </resources>
