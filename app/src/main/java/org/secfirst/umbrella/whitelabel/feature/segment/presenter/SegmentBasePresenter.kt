@@ -20,7 +20,7 @@ interface SegmentBasePresenter<V : SegmentView, I : SegmentBaseInteractor> : Bas
 
     fun submitMarkdowns(markdownIds: ArrayList<String>)
 
-    fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String)
+    fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String, removeLastItem : Boolean)
 
     fun submitDifficulties(difficultyIds: ArrayList<String>)
 

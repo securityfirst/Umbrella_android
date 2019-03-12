@@ -68,11 +68,12 @@
     <dimen name="share_dialog_small_space">20dp</dimen>
     <dimen name="share_dialog_little_space">10dp</dimen>
     <dimen name="decorator_card_padding">8dp</dimen>
+    <dimen name="test">5dp</dimen>
 
     <dimen name="recycler_view_margin_bottom">56dp</dimen>
-    <dimen name="segment_item_width">168dp</dimen>
-    <dimen name="segment_item_small_width">150dp</dimen>
-    <dimen name="segment_item_height">170dp</dimen>
+    <dimen name="segment_item_width">180dp</dimen>
+    <dimen name="segment_item_small_width">153dp</dimen>
+    <dimen name="segment_item_height">175dp</dimen>
     <dimen name="segment_item_corner_radius">2dp</dimen>
     <dimen name="segment_item_small_padding">2dp</dimen>
     <dimen name="segment_item_card_height">121dp</dimen>

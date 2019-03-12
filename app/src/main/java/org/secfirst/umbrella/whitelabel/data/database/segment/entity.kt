@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
+import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
@@ -21,22 +22,27 @@ import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 
 @Parcelize
-@Table(database = AppDatabase::class,
-        allFields = true, useBooleanGetterSetters = false, cachingEnabled = true)
+@Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
         @PrimaryKey
         var id: String = "",
+        @Column
         var text: String = "",
+        @Column
         var title: String = "",
+        @Column
         var index: String = "",
+        @Column
         var favorite: Boolean = false,
+        @Column
         var identifier: String = "",
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
         @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
         @ForeignKey(stubbedRelationship = true)
-        var difficulty: Difficulty? = null) : Parcelable {
+        var difficulty: Difficulty? = null,
+        var isRemove: Boolean = false) : Parcelable {
 
     constructor(id: String, text: String) : this(id, text, recoveryTitle(text),
             recoveryIndex(text),

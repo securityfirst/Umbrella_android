@@ -1,43 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/checklistCardItemView"
-    android:layout_width="@dimen/segment_item_width"
-    android:layout_height="@dimen/segment_item_height"
+    android:id="@+id/segmentCardItemView"
+    android:layout_width="145dp"
+    android:layout_height="160dp"
     android:layout_gravity="center"
-    android:background="@color/light_white"
-    card_view:cardCornerRadius="@dimen/segment_item_corner_radius"
-    card_view:cardUseCompatPadding="true">
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="@dimen/segment_item_corner_radius">
 
-    <FrameLayout
-        android:id="@+id/segmentLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/segment_item_card_height"
-        android:background="#b83657">
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/segment_item_layout_share_margin_bottom"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/segmentLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/segment_item_card_height"
+            android:background="@color/umbrella_purple"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/segmentIndex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/segment_item_index_margin_start"
-            android:layout_marginLeft="@dimen/segment_item_index_margin_start"
-            android:layout_marginTop="@dimen/segment_item_index_margin_top"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="0sp"
             android:textColor="@color/ms_white"
             android:textSize="@dimen/text_size_larger"
             android:textStyle="normal"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
             tools:text="1" />
 
         <TextView
             android:id="@+id/segmentDescription"
             android:layout_width="@dimen/segment_item_title_width"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/segment_item_title_margin_start"
-            android:layout_marginLeft="@dimen/segment_item_title_margin_start"
-            android:layout_marginTop="@dimen/segment_item_title_margin_top"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="0sp"
@@ -45,32 +50,31 @@
             android:textColor="@color/ms_white"
             android:textSize="@dimen/text_size_smaller"
             android:textStyle="normal"
+            card_view:layout_constraintStart_toStartOf="@+id/segmentIndex"
+            card_view:layout_constraintTop_toBottomOf="@+id/segmentIndex"
             tools:text="Eavesdropping" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="@dimen/segment_item_layout_share_margin_bottom"
-        android:orientation="horizontal">
 
         <CheckBox
             android:id="@+id/segmentFavorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/segment_item_fav_margin_start"
-            android:layout_marginLeft="@dimen/segment_item_fav_margin_start"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/favorite_bg"
-            android:button="@android:color/transparent" />
+            android:button="@android:color/transparent"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@+id/segmentShare" />
 
         <ImageView
             android:id="@+id/segmentShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginStart="@dimen/segment_item_share_margin_start"
-            android:layout_marginLeft="@dimen/segment_item_share_margin_start"
-            android:src="@drawable/ic_share_segment" />
-    </LinearLayout>
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/ic_share_segment"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
+

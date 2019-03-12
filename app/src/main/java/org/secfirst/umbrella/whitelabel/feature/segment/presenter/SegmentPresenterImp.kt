@@ -87,13 +87,20 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         }
     }
 
-    override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
+    override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String, removeLastItem: Boolean) {
         launchSilent(uiContext) {
             val markdowns = mutableListOf<Markdown>()
             interactor?.let {
                 markdownIds.forEach { markdownId ->
                     it.fetchMarkdown(markdownId)?.let { markdown -> markdowns.add(markdown) }
                 }
+                if (removeLastItem) {
+                    val removeLastMark = Markdown()
+                    removeLastMark.isRemove = true
+                    removeLastMark.index = System.currentTimeMillis().toString()
+                    markdowns.add(removeLastMark)
+                }
+
                 val checklist = it.fetchChecklist(checklistId)
                 getView()?.showSegments(markdowns, checklist)
             }
