@@ -16,6 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
+import com.nabinbhandari.android.permissions.PermissionHandler
+import com.nabinbhandari.android.permissions.Permissions
 import kotlinx.android.synthetic.main.account_language_dialog.view.*
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
@@ -48,12 +50,13 @@ import org.secfirst.umbrella.whitelabel.feature.tent.TentView
 import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.tent.presenter.TentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
-import org.secfirst.umbrella.whitelabel.misc.PERMISSION_REQUEST_EXTERNAL_STORAGE
+import org.secfirst.umbrella.whitelabel.misc.appContext
 import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
 import org.secfirst.umbrella.whitelabel.misc.requestExternalStoragePermission
 import org.secfirst.umbrella.whitelabel.misc.setLocale
 import java.io.File
 import javax.inject.Inject
+
 
 class SettingsController : BaseController(), AccountView, ContentView, TentView, FeedLocationDialog.FeedLocationListener,
         RefreshIntervalDialog.RefreshIntervalListener, FeedSourceDialog.FeedSourceListener {
@@ -259,7 +262,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private fun initExportGroup() {
         exportView.exportDialogGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.exportDialogTypeExport -> showFileChooserPreview()
+                R.id.exportDialogTypeExport -> checkPermission()
                 R.id.ExportDialogShareType -> presenter.prepareShareContent(getFilename())
             }
         }
@@ -288,6 +291,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         }
     }
 
+
     private fun chooseFolderDialog() {
         val chooser = StorageChooser.Builder()
                 .withActivity(mainActivity)
@@ -302,16 +306,13 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == PERMISSION_REQUEST_EXTERNAL_STORAGE) {
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    private fun checkPermission() {
+        Permissions.check(appContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE, null, object : PermissionHandler() {
+            override fun onGranted() {
                 showFileChooserPreview()
-            } else {
-                // Permission request was denied.
             }
-        }
+        })
     }
-
 
     override fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int
                                   , feedSource: List<FeedSource>) {
