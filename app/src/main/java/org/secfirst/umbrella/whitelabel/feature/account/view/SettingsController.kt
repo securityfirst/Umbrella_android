@@ -167,14 +167,17 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
             languageView.spanishCheck.isChecked -> {
                 context.setLocale(IsoCountry.SPANISH.value)
                 presenter.setDefaultLanguage(IsoCountry.SPANISH.value)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
             }
             languageView.chineseCheck.isChecked -> {
                 context.setLocale(IsoCountry.CHINESE.value)
                 presenter.setDefaultLanguage(IsoCountry.CHINESE.value)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.cn)
             }
             else -> {
                 context.setLocale(IsoCountry.ENGLISH.value)
                 presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
             }
         }
         mainActivity.recreate()
@@ -187,14 +190,22 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
             IsoCountry.ENGLISH.value -> {
                 languageView.englishCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.english_language_title)
+                // mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
             }
             IsoCountry.CHINESE.value -> {
                 languageView.chineseCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.chinese_language_title)
+                // mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.cn)
             }
             IsoCountry.SPANISH.value -> {
                 languageView.spanishCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.spanish_language_title)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
+            }
+            else -> {
+                languageView.englishCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.english_language_title)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
             }
         }
     }

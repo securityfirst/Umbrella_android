@@ -49,6 +49,7 @@ class HostChecklistController(bundle: Bundle) : BaseController(bundle), Checklis
 //            mainActivity.setSupportActionBar(it)
 //            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
 //        }
+        mainActivity.navigationPositionToCenter()
         return view
     }
 
