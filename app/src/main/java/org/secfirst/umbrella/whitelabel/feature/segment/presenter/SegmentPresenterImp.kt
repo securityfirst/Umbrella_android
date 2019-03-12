@@ -97,7 +97,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 if (removeLastItem) {
                     val removeLastMark = Markdown()
                     removeLastMark.isRemove = true
-                    removeLastMark.index = System.currentTimeMillis().toString()
+                    removeLastMark.index = "500"
                     markdowns.add(removeLastMark)
                 }
 
