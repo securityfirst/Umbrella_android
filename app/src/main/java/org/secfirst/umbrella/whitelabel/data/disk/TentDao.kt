@@ -6,10 +6,12 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.diff.DiffEntry
 import org.eclipse.jgit.diff.DiffFormatter
+import org.eclipse.jgit.lib.TextProgressMonitor
 import org.eclipse.jgit.treewalk.CanonicalTreeParser
 import org.eclipse.jgit.util.io.DisabledOutputStream
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import java.io.File
+import java.io.PrintWriter
 import java.util.*
 
 
@@ -25,6 +27,7 @@ interface TentDao {
                             .setURI(url)
                             .setDirectory(File(getPathRepository()))
                             .setBranchesToClone(Arrays.asList(BRANCH_NAME))
+                            .setProgressMonitor(TextProgressMonitor(PrintWriter(System.out)))
                             .setBranch(BRANCH_NAME)
                             .call()
                 }
