@@ -9,6 +9,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="ms_stepperStyle">@style/DotStepperStyle</item>
         <item name="android:textColor">#de000000</item>
+        <item name="android:itemBackground">@color/white</item>
     </style>
 
     <style name="DotStepperStyle">
