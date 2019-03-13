@@ -7,8 +7,8 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alertControlCancel"
-        android:layout_width="74dp"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/alertControlOk"
         android:layout_toLeftOf="@+id/alertControlOk"
         android:background="?android:attr/selectableItemBackground"
@@ -21,12 +21,13 @@
         android:textAllCaps="true"
         android:textColor="#9b9b9b"
         app:layout_constraintStart_toStartOf="parent"
+        tools:text="ACEITAR"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alertControlOk"
-        android:layout_width="74dp"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -37,6 +38,7 @@
         android:textAllCaps="true"
         android:textColor="@color/green_dashboard"
         app:layout_constraintStart_toEndOf="@+id/alertControlCancel"
+        tools:text="ACEITAR"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
