@@ -21,13 +21,15 @@
         android:textAllCaps="true"
         android:textColor="#9b9b9b"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="ACEITAR"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ACEITAR" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/alertControlOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
@@ -38,7 +40,7 @@
         android:textAllCaps="true"
         android:textColor="@color/green_dashboard"
         app:layout_constraintStart_toEndOf="@+id/alertControlCancel"
-        tools:text="ACEITAR"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="ACEITAR" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
