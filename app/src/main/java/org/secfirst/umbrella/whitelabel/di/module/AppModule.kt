@@ -51,6 +51,7 @@ import javax.inject.Singleton
 
 @Module
 class AppModule {
+
     @Provides
     @Singleton
     internal fun provideContext(application: Application): Context = application
@@ -69,7 +70,6 @@ class AppModule {
     @Provides
     @Singleton
     internal fun providePreference(context: Context) = AppPreferenceHelper(context, PREF_NAME)
-
 }
 
 @Module

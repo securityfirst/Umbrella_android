@@ -8,12 +8,15 @@ import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.BaseDao
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
+import org.secfirst.umbrella.whitelabel.data.database.checklist.ContentMonitor
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.difficulty.walkThroughDifficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Item
 import org.secfirst.umbrella.whitelabel.data.database.form.associateFormForeignKey
-import org.secfirst.umbrella.whitelabel.data.database.lesson.*
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.database.lesson.associateForeignKey
+import org.secfirst.umbrella.whitelabel.data.database.lesson.createDefaultFavoriteModule
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -21,30 +24,34 @@ import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.data.disk.convertTo
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
-interface ContentDao : BaseDao {
+interface ContentDao : BaseDao, ContentMonitor {
 
     suspend fun insertAllLessons(root: Root) {
         withContext(ioContext) {
-            val dataLesson = root.convertTo()
+            insertLesson(root.convertTo())
+            insertFormsContent(root.forms)
+        }
+    }
 
+    private suspend fun insertLesson(dataLesson: ContentData) {
+        var fileCount = 0
+        val fileSize = dataLesson.modules.size
+        withContext(ioContext) {
             modelAdapter<Module>().save(createDefaultFavoriteModule())
-
             dataLesson.modules.forEach { module ->
                 module.associateForeignKey()
                 modelAdapter<Module>().save(module)
+                module.subjects.forEach { subject ->
+                    modelAdapter<Subject>().save(subject)
+                    modelAdapter<Markdown>().saveAll(subject.markdowns)
+                    modelAdapter<Checklist>().saveAll(subject.checklist)
+                    subject.difficulties.forEach { difficulty ->
+                        modelAdapter<Difficulty>().save(difficulty)
+                        insertChecklistContent(difficulty.checklist)
+                    }
+                }
+                calculatePercentage(++fileCount, fileSize)
             }
-
-            dataLesson.modules.walkThroughSubject { subject ->
-                modelAdapter<Subject>().save(subject)
-                modelAdapter<Markdown>().saveAll(subject.markdowns)
-                modelAdapter<Checklist>().saveAll(subject.checklist)
-            }
-
-            dataLesson.modules.walkThroughDifficulty { child ->
-                modelAdapter<Difficulty>().save(child)
-                insertChecklistContent(child.checklist)
-            }
-            insertFormsContent(root.forms)
         }
     }
 
@@ -95,5 +102,10 @@ interface ContentDao : BaseDao {
             }
         }
         return res
+    }
+
+    private fun calculatePercentage(fileCount: Int, listSize: Int) {
+        val percentage = fileCount * 50 / listSize
+        onContentProgress(percentage)
     }
 }

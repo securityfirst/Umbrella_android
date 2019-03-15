@@ -73,7 +73,6 @@ class FeedLocationDialog(private val feedLocationView: View,
         feedLocationView.location.setAdapter(adapter)
     }
 
-
     private fun prepareAutocomplete(characters: String) {
         launchSilent(uiContext) {
             locationInfo = getAddress(characters)

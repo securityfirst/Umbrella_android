@@ -22,12 +22,20 @@ interface TentDao {
         var result = true
         try {
             withContext(ioContext) {
+                val progressMonitor = object : TentMonitor(PrintWriter(System.out)) {
+                    override fun onUpdate(taskName: String?, workCurr: Int, workTotal: Int, percentDone: Int) {
+                        println("tentMonitor - $percentDone")
+                    }
+
+                }
+
+                TextProgressMonitor(PrintWriter(System.out))
                 if (isNotRepository()) {
                     Git.cloneRepository()
                             .setURI(url)
                             .setDirectory(File(getPathRepository()))
                             .setBranchesToClone(Arrays.asList(BRANCH_NAME))
-                            .setProgressMonitor(TextProgressMonitor(PrintWriter(System.out)))
+                            .setProgressMonitor(progressMonitor)
                             .setBranch(BRANCH_NAME)
                             .call()
                 }

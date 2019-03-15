@@ -16,11 +16,10 @@ import javax.inject.Inject
 
 class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
 
-
     suspend fun load(root: Root): Root {
         withContext(ioContext) {
-            val filesPair = tentRepo.loadFile()
-            filesPair.filter { it.second.extension != ExtensionFile.PNG.value }.forEach { pairFile ->
+            val filesPair = tentRepo.loadFile().filter { it.second.extension != ExtensionFile.PNG.value }
+            filesPair.forEach { pairFile ->
                 val file = pairFile.second
                 val absolutePath = file.path.substringAfterLast(PathUtils.basePath(), "")
                 val pwd = getWorkDirectory(absolutePath)
@@ -89,6 +88,7 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
             }
         }
     }
+
 
     private fun loadForm(pairFile: Pair<String, File>, root: Root) {
         val file = pairFile.second

@@ -1,28 +1,36 @@
 package org.secfirst.umbrella.whitelabel.feature.tour.view
 
 import android.app.Dialog
-import android.app.NotificationManager
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.ViewPager
+import br.com.goncalves.pugnotification.notification.PugNotification
 import com.bluelinelabs.conductor.RouterTransaction
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.tour_view.*
-import org.jetbrains.anko.sdk27.coroutines.onClick
+import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.DialogManager.Companion.PROGRESS_DIALOG_TAG
 import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.checklist.ContentService
+import org.secfirst.umbrella.whitelabel.feature.checklist.ContentService.Companion.EXTRA_CONTENT_SERVICE_ID
+import org.secfirst.umbrella.whitelabel.feature.checklist.ContentService.Companion.EXTRA_CONTENT_SERVICE_PROGRESS
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.DaggerTourComponent
+import org.secfirst.umbrella.whitelabel.misc.appContext
 import javax.inject.Inject
 
 
@@ -33,7 +41,7 @@ class TourController : BaseController(), ContentView {
     private var viewList: MutableList<TourUI> = mutableListOf()
     private lateinit var dialogManager: DialogManager
     private lateinit var progressDialog: ProgressDialog
-    private var notificationManager: NotificationManager? = null
+    private val intentService = Intent(appContext(), ContentService::class.java)
 
 
     override fun onInject() {
@@ -44,15 +52,23 @@ class TourController : BaseController(), ContentView {
     }
 
     init {
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_purple_dark, org.secfirst.umbrella.whitelabel.R.drawable.umbrella190, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_green, org.secfirst.umbrella.whitelabel.R.drawable.walktrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_yellow, org.secfirst.umbrella.whitelabel.R.drawable.walktrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_purple, org.secfirst.umbrella.whitelabel.R.drawable.walktrough4, org.secfirst.umbrella.whitelabel.R.string.terms_conditions, GONE, VISIBLE))
+        viewList.add(TourUI(R.color.umbrella_purple_dark, R.drawable.umbrella190, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_green, R.drawable.walktrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_yellow, R.drawable.walktrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_purple, R.drawable.walktrough4, org.secfirst.umbrella.whitelabel.R.string.terms_conditions, GONE, VISIBLE))
+    }
+
+    private val mMessageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val yourInteger = intent.getIntExtra(EXTRA_CONTENT_SERVICE_PROGRESS, -1)
+            println("olha aqui $yourInteger")
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        val view = inflater.inflate(R.layout.tour_view, container, false)
         dialogManager = DialogManager(this)
-        return inflater.inflate(org.secfirst.umbrella.whitelabel.R.layout.tour_view, container, false)
+        return view
     }
 
     override fun onAttach(view: View) {
@@ -61,6 +77,8 @@ class TourController : BaseController(), ContentView {
         initViewPager()
         onAcceptButton()
         presenter.onAttach(this)
+        LocalBroadcastManager.getInstance(context)
+                .registerReceiver(mMessageReceiver, IntentFilter(EXTRA_CONTENT_SERVICE_ID))
     }
 
 
@@ -106,11 +124,7 @@ class TourController : BaseController(), ContentView {
     }
 
     private fun onAcceptButton() {
-        acceptButton?.let { btn ->
-            btn.onClick {
-                presenter.manageContent(baseUrlRepository)
-            }
-        }
+        acceptButton?.setOnClickListener { presenter.manageContent(baseUrlRepository) }
     }
 
     override fun onDownloadSuccess() {
@@ -135,5 +149,28 @@ class TourController : BaseController(), ContentView {
                 return progressDialog
             }
         })
+    }
+
+    private fun createNotification() {
+        PugNotification.with(context)
+                .load()
+                .identifier(1)
+                .smallIcon(R.drawable.pugnotification_ic_launcher)
+                .progress()
+                .value(0, 100, true)
+                .build()
+    }
+
+    override fun onDestroy() {
+        LocalBroadcastManager.getInstance(context)
+                .unregisterReceiver(mMessageReceiver)
+        mainActivity.stopService(intentService)
+        println("fui destruido - onDestroy")
+    }
+
+    override fun onDestroyView(view: View) {
+        println("fui destruido - onDestroyView")
+        mainActivity.stopService(intentService)
+        super.onDestroyView(view)
     }
 }

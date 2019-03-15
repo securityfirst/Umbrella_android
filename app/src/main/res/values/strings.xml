@@ -42,7 +42,7 @@
     <string name="feed_interval_label">Set how often shall we check for news</string>
     <string name="set">SET</string>
     <string name="location">Location</string>
-    <string name="feed_location_label">Enter location</string>
+    <string name="feed_location_label">Enter the country you want to see the feed for</string>
     <string name="feed_sources">Feed sources</string>
     <string name="feed_source_label">Enter Sources</string>
     <string name="set_now">SET NOW</string>
@@ -117,7 +117,6 @@
     <string name="checklist_dialog_delete">DELETE</string>
     <string name="checklist_dialog_disable">DISABLE</string>
     <string name="custom_checklist_hint_add_checklistItem">Add checklist item</string>
-    <string name="custom_checklist_hint_add_checklistTitle">Add checklist title</string>
     <string name="custom_checklist_title">Your checklist</string>
     <string name="export_lesson">Export lesson</string>
     <string name="export_button">EXPORT</string>
@@ -176,5 +175,7 @@
     <string name="checklist_card_title">Checklists</string>
     <string name="checklist_title_tab">OVERVIEW</string>
     <string name="custom_checklist_title_tab">CUSTOM</string>
+    <string name="notification_service_title">Fetching data</string>
+    <string name="notification_service_message">Fetching data</string>
 
 </resources>

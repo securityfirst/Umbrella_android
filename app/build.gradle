@@ -7,6 +7,7 @@ apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 
 android {
+
     lintOptions {
         abortOnError false
     }
@@ -186,6 +187,8 @@ dependencies {
     implementation 'com.google.android:flexbox:1.1.0'
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
     implementation 'com.nabinbhandari.android:permissions:3.8'
+    implementation 'com.github.halysongoncalves:pugnotification:1.8.1'
+    implementation'com.google.firebase:firebase-messaging:17.4.0'
 
 }
 

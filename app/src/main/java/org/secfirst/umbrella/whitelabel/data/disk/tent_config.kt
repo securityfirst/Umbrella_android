@@ -14,6 +14,7 @@ const val baseUrlRepository = "https://github.com/securityfirst/umbrella-content
 const val ELEMENT_LEVEL = 2
 const val SUB_ELEMENT_LEVEL = 3
 const val CHILD_LEVEL = 4
+const val EXTRA_URL_REPOSITORY = "url_repository"
 
 fun getDelimiter(fileName: String) = if (fileName == TypeFile.CATEGORY.value) fileName
 else fileName.substringBeforeLast("_")
