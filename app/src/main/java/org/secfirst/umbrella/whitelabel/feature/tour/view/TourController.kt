@@ -1,9 +1,9 @@
 package org.secfirst.umbrella.whitelabel.feature.tour.view
 
-import android.app.Dialog
-import android.app.NotificationManager
+
 import android.app.ProgressDialog
 import android.content.Context
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -14,14 +14,17 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.tour_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.component.DialogManager
-import org.secfirst.umbrella.whitelabel.component.DialogManager.Companion.PROGRESS_DIALOG_TAG
 import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.ACTION_COMPLETED_FOREGROUND_SERVICE
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_ID
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_PROGRESS
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_TITLE_PROGRESS
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import org.secfirst.umbrella.whitelabel.feature.tour.DaggerTourComponent
 import javax.inject.Inject
 
@@ -31,10 +34,7 @@ class TourController : BaseController(), ContentView {
     @Inject
     internal lateinit var presenter: ContentBasePresenter<ContentView, ContentBaseInteractor>
     private var viewList: MutableList<TourUI> = mutableListOf()
-    private lateinit var dialogManager: DialogManager
     private lateinit var progressDialog: ProgressDialog
-    private var notificationManager: NotificationManager? = null
-
 
     override fun onInject() {
         DaggerTourComponent.builder()
@@ -44,15 +44,47 @@ class TourController : BaseController(), ContentView {
     }
 
     init {
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_purple_dark, org.secfirst.umbrella.whitelabel.R.drawable.umbrella190, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_green, org.secfirst.umbrella.whitelabel.R.drawable.walktrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_yellow, org.secfirst.umbrella.whitelabel.R.drawable.walktrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
-        viewList.add(TourUI(org.secfirst.umbrella.whitelabel.R.color.umbrella_purple, org.secfirst.umbrella.whitelabel.R.drawable.walktrough4, org.secfirst.umbrella.whitelabel.R.string.terms_conditions, GONE, VISIBLE))
+        viewList.add(TourUI(R.color.umbrella_purple_dark, R.drawable.umbrella190, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_green, R.drawable.walktrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_yellow, R.drawable.walktrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_purple, R.drawable.walktrough4, org.secfirst.umbrella.whitelabel.R.string.terms_conditions, GONE, VISIBLE))
+    }
+
+    private val mMessageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val percentage = intent.getIntExtra(EXTRA_CONTENT_SERVICE_PROGRESS, -1)
+            val title = intent.getStringExtra(EXTRA_CONTENT_SERVICE_TITLE_PROGRESS) ?: ""
+            val isCompleted = intent.getBooleanExtra(ACTION_COMPLETED_FOREGROUND_SERVICE, false)
+
+            if (title.isNotEmpty()) {
+                progressDialog.setTitle(title)
+            }
+            Handler().post {
+                progressDialog.progress = 0
+                progressDialog.incrementProgressBy(percentage)
+            }
+
+            if (isCompleted) {
+                progressDialog.dismiss()
+                router.popCurrentController()
+                startActivity(Intent(context, MainActivity::class.java))
+                startActivity(Intent())
+                mainActivity.navigationPositionToCenter()
+                enableNavigation(true)
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        dialogManager = DialogManager(this)
-        return inflater.inflate(org.secfirst.umbrella.whitelabel.R.layout.tour_view, container, false)
+        val view = inflater.inflate(R.layout.tour_view, container, false)
+        progressDialog = ProgressDialog(context)
+        progressDialog.setCancelable(false)
+        progressDialog.max = 100
+        progressDialog.setProgressStyle(R.style.ProgressDialogStyle)
+        progressDialog.progress = 0
+        progressDialog.setTitle(context.getString(R.string.notification_fetching_data))
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        return view
     }
 
     override fun onAttach(view: View) {
@@ -61,6 +93,8 @@ class TourController : BaseController(), ContentView {
         initViewPager()
         onAcceptButton()
         presenter.onAttach(this)
+        LocalBroadcastManager.getInstance(context)
+                .registerReceiver(mMessageReceiver, IntentFilter(EXTRA_CONTENT_SERVICE_ID))
     }
 
 
@@ -74,17 +108,19 @@ class TourController : BaseController(), ContentView {
                 override fun onPageScrollStateChanged(state: Int) {}
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
                 override fun onPageSelected(position: Int) {
-                    pageIndicatorView.selection = position
-
-                    if (position == viewList.lastIndex)
-                        acceptButton?.let { btn -> btn.visibility = VISIBLE }
-                    else
-                        acceptButton?.let { btn -> btn.visibility = INVISIBLE }
+                    pageSelected(position)
                 }
             })
         }
     }
 
+    private fun pageSelected(position: Int) {
+        pageIndicatorView.selection = position
+        if (position == viewList.lastIndex)
+            acceptButton?.let { btn -> btn.visibility = VISIBLE }
+        else
+            acceptButton?.let { btn -> btn.visibility = INVISIBLE }
+    }
 
     override fun downloadContentCompleted(res: Boolean) {
         progressDialog.dismiss()
@@ -99,11 +135,7 @@ class TourController : BaseController(), ContentView {
             }
     }
 
-    override fun downloadContentInProgress() {
-        view?.let {
-            doLongOperation()
-        }
-    }
+    override fun downloadContentInProgress() = progressDialog.show()
 
     private fun onAcceptButton() {
         acceptButton?.let { btn ->
@@ -113,27 +145,8 @@ class TourController : BaseController(), ContentView {
         }
     }
 
-    override fun onDownloadSuccess() {
-        progressDialog.setMessage(context.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_download_message))
-    }
-
-    override fun onProcessProgress() {
-        progressDialog.setMessage(context.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_parse_message))
-
-    }
-
-    override fun onStoredProgress() {
-        progressDialog.setMessage(context.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_store_message))
-    }
-
-    private fun doLongOperation() {
-        dialogManager.showDialog(PROGRESS_DIALOG_TAG, object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                progressDialog = ProgressDialog(context)
-                progressDialog.setCancelable(false)
-                progressDialog.setMessage(context?.getString(org.secfirst.umbrella.whitelabel.R.string.loading_tour_download_message))
-                return progressDialog
-            }
-        })
+    override fun onDestroy() {
+        LocalBroadcastManager.getInstance(context)
+                .unregisterReceiver(mMessageReceiver)
     }
 }
