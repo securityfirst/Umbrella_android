@@ -176,5 +176,6 @@
     <string name="checklist_card_title">Checklists</string>
     <string name="checklist_title_tab">OVERVIEW</string>
     <string name="custom_checklist_title_tab">CUSTOM</string>
+    <string name="add_custom_checklist_item_title">Add checklist item</string>
 
 </resources>

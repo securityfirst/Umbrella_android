@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.checklist_add_item_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_view.*
 import kotlinx.android.synthetic.main.checklist_view.view.*
 import kotlinx.android.synthetic.main.form_progress.*
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
@@ -59,13 +60,12 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         checklistView = inflater.inflate(R.layout.checklist_view, container, false)
         checklistViewDialog = inflater.inflate(R.layout.checklist_add_item_dialog, container, false)
-
         checklistDialog = AlertDialog.Builder(context)
                 .setView(checklistViewDialog)
                 .create()
         presenter.onAttach(this)
         presenter.submitChecklist(checklistId)
-
+        checklistView.addNewItemChecklist.setOnClickListener { onAddItemClicked() }
         swipeToDeleteCallback()
         checkIsNavigation()
         return checklistView
@@ -120,11 +120,27 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         checklistDialog.dismiss()
     }
 
+    private fun onAddItemClicked() {
+        checklistViewDialog.checklistDialogTitle.text = context.getString(R.string.add_custom_checklist_item_title)
+        checklistViewDialog.alertControlOk.onClick {
+            checklist.content.add(Content(check = checklistViewDialog.editChecklistItem.text.toString(), checklist = checklist))
+            onChecklistItemAdded(checklist.content.last())
+            checklistDialog.dismiss()
+        }
+        checklistViewDialog.alertControlCancel.onClick { checklistDialog.dismiss() }
+        checklistDialog.show()
+    }
+
+    private fun onChecklistItemAdded(checklistItem: Content) = presenter.submitInsertChecklistContent(checklistItem)
+
     override fun getChecklist(checklist: Checklist) {
         this.checklist = checklist
         adapter = ChecklistAdapter(checklist.content, checklistItemClick,
                 checklistProgress, checklistItemLongClick)
         checklistRecyclerView?.initRecyclerView(adapter)
+        if (this.checklist.custom) {
+            checklistView.addNewItemChecklist.show()
+        }
         currentProgress()
     }
 
