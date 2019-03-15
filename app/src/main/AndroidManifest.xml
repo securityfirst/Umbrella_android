@@ -79,7 +79,7 @@
             android:name="io.fabric.ApiKey"
             android:value="f25eccbeaeeb109eecb8bcd8bd9bdb5ae8275cee" />
         <service
-            android:name=".feature.checklist.ContentService"
+            android:name=".feature.content.ContentService"
             android:permission="android.permission.BIND_JOB_SERVICE"
             android:exported="true"
             android:enabled="true" />

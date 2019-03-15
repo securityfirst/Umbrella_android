@@ -9,8 +9,6 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.disk.Root
-import org.secfirst.umbrella.whitelabel.feature.checklist.ContentService
-import org.secfirst.umbrella.whitelabel.misc.appContext
 import javax.inject.Inject
 
 class ContentRepository @Inject constructor(private val contentDao: ContentDao) : ContentRepo {

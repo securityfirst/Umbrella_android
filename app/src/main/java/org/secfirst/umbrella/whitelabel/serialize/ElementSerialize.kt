@@ -3,7 +3,7 @@ package org.secfirst.umbrella.whitelabel.serialize
 import android.util.Log
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.disk.*
-import org.secfirst.umbrella.whitelabel.feature.checklist.ContentService
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.parseYmlFile
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory

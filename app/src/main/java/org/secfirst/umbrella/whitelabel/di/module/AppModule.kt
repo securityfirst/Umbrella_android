@@ -90,7 +90,10 @@ class RepositoryModule {
         get() = object : ReaderDao {}
 
     internal val contentDao
-        get() = object : ContentDao {}
+        get() = object : ContentDao {
+            override fun onContentProgress(percentage: Int) {
+            }
+        }
 
     internal val formDao
         get() = object : FormDao {}

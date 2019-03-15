@@ -15,7 +15,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
-import org.secfirst.umbrella.whitelabel.feature.checklist.ContentService
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
@@ -86,27 +86,14 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
     }
 
     override fun manageContent(url: String) {
-        var isFetchData: Boolean
         launchSilent(uiContext) {
             interactor?.let {
-                //                getView()?.downloadContentInProgress()
-//                isFetchData = it.fetchData(url)
-//
-//                if (isFetchData) {
-//                    getView()?.onProcessProgress()
-//                    val root = it.initParser()
-//                    getView()?.onStoredProgress()
-//                    it.persist(root)
-//                }
-//
-//                it.persistFeedSource(createFeedSources())
-//                it.persistRSS(createDefaultRSS())
-//                getView()?.downloadContentCompleted(isFetchData)
+                getView()?.downloadContentInProgress()
 
-                val intent = Intent(appContext(), ContentService::class.java)
-                //appContext().startService(intent)
-                //ContextCompat.startForegroundService(appContext(),intent)
-                intent.action = ContentService.ACTION_START_FOREGROUND_SERVICE
+                val intent = Intent(appContext(), ContentService::class.java).apply {
+                    putExtra(EXTRA_URL_REPOSITORY, baseUrlRepository)
+                    action = ContentService.ACTION_START_FOREGROUND_SERVICE
+                }
                 appContext().startService(intent)
             }
         }

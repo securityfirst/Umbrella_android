@@ -28,14 +28,14 @@ interface ContentDao : BaseDao, ContentMonitor {
 
     suspend fun insertAllLessons(root: Root) {
         withContext(ioContext) {
-            insertLesson(root.convertTo())
-            insertFormsContent(root.forms)
+            val lessonCount = insertLesson(root.convertTo())
+            insertFormsContent(root.forms, lessonCount.first, lessonCount.second)
         }
     }
 
-    private suspend fun insertLesson(dataLesson: ContentData) {
-        var fileCount = 0
-        val fileSize = dataLesson.modules.size
+    private suspend fun insertLesson(dataLesson: ContentData): Pair<Int, Int> {
+        var lessonCount = 0
+        val lessonSize = dataLesson.modules.size
         withContext(ioContext) {
             modelAdapter<Module>().save(createDefaultFavoriteModule())
             dataLesson.modules.forEach { module ->
@@ -50,9 +50,10 @@ interface ContentDao : BaseDao, ContentMonitor {
                         insertChecklistContent(difficulty.checklist)
                     }
                 }
-                calculatePercentage(++fileCount, fileSize)
+                calculatePercentage(++lessonCount, lessonSize)
             }
         }
+        return Pair(lessonCount, lessonSize)
     }
 
     private fun insertChecklistContent(checklist: MutableList<Checklist>) {
@@ -63,10 +64,12 @@ interface ContentDao : BaseDao, ContentMonitor {
         }
     }
 
-    private fun insertFormsContent(forms: MutableList<Form>) {
+    private fun insertFormsContent(forms: MutableList<Form>, fileCount: Int, fileSize: Int) {
+        var formCount = fileCount
         forms.associateFormForeignKey()
         forms.forEach { form ->
             modelAdapter<Form>().save(form)
+            ++formCount
         }
         forms.forEach { form ->
             form.screens.forEach { screen ->
@@ -75,6 +78,7 @@ interface ContentDao : BaseDao, ContentMonitor {
                 }
             }
         }
+        calculatePercentage(formCount, fileSize)
     }
 
     suspend fun insertFeedSource(feedSources: List<FeedSource>) {
@@ -105,7 +109,7 @@ interface ContentDao : BaseDao, ContentMonitor {
     }
 
     private fun calculatePercentage(fileCount: Int, listSize: Int) {
-        val percentage = fileCount * 50 / listSize
+        val percentage = fileCount * 100 / listSize
         onContentProgress(percentage)
     }
 }

@@ -10,10 +10,4 @@ interface ContentView : BaseView {
     fun downloadContentInProgress()
 
     fun onCleanDatabaseSuccess() {}
-
-    fun onDownloadSuccess() {}
-
-    fun onProcessProgress() {}
-
-    fun onStoredProgress() {}
 }
