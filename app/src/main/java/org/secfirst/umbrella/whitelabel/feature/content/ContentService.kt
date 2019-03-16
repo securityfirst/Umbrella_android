@@ -16,6 +16,7 @@ import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.isInternetConnected
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
 import org.secfirst.umbrella.whitelabel.serialize.ElementSerialize
@@ -52,12 +53,14 @@ class ContentService : Service(), ElementSerializeMonitor {
 
     private fun startForegroundService(url: String) {
         launchSilent(uiContext) {
-            val isCloned = cloneRepository(url)
+            val isCloned = if (isInternetConnected()) cloneRepository(url) else false
             if (isCloned) {
                 val element = elementLoader.load(elementSerialize.process())
                 contentDao.insertAllLessons(element)
                 contentDao.insertFeedSource(createFeedSources())
                 contentDao.insertDefaultRSS(createDefaultRSS())
+            } else {
+                sendNoConnectionMessage()
             }
         }
     }
@@ -91,6 +94,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         } catch (e: Exception) {
             result = false
             releaseService()
+            sendLostConnectionMessage()
         }
         return result
     }
@@ -119,10 +123,22 @@ class ContentService : Service(), ElementSerializeMonitor {
         stopForegroundService()
     }
 
+    private fun sendNoConnectionMessage() {
+        val messageInt = Intent(EXTRA_CONTENT_SERVICE_ID)
+        messageInt.putExtra(ACTION_UNKNOWN_ERROR, true)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(messageInt)
+    }
+
     private fun sendMessage(percentage: Int, title: String) {
         val messageInt = Intent(EXTRA_CONTENT_SERVICE_ID)
         messageInt.putExtra(EXTRA_CONTENT_SERVICE_PROGRESS, percentage)
         messageInt.putExtra(EXTRA_CONTENT_SERVICE_TITLE_PROGRESS, title)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(messageInt)
+    }
+
+    private fun sendLostConnectionMessage() {
+        val messageInt = Intent(EXTRA_CONTENT_SERVICE_ID)
+        messageInt.putExtra(ACTION_LOST_CONNECTION, true)
         LocalBroadcastManager.getInstance(this).sendBroadcast(messageInt)
     }
 
@@ -154,7 +170,6 @@ class ContentService : Service(), ElementSerializeMonitor {
     private fun releaseService() {
         val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val isFinishProcess = preferences.getBoolean(EXTRA_STATE_PROCESS, false)
-        print("isFinishProcess $isFinishProcess")
         if (!isFinishProcess)
             File(getPathRepository()).deleteRecursively()
         stopForegroundService()
@@ -171,5 +186,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         const val ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE"
         const val ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE"
         const val ACTION_COMPLETED_FOREGROUND_SERVICE = "ACTION_COMPLETED_FOREGROUND_SERVICE"
+        const val ACTION_UNKNOWN_ERROR = "ACTION_UNKNOWN_ERROR"
+        const val ACTION_LOST_CONNECTION = "ACTION_LOST_CONNECTION"
     }
 }

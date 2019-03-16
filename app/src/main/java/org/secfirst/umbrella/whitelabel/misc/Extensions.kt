@@ -6,6 +6,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.util.Base64
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -59,6 +60,12 @@ fun doRestartApplication(context: Context) {
     val tourIntent = Intent(context, MainActivity::class.java)
     tourIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     ProcessPhoenix.triggerRebirth(context, tourIntent)
+}
+
+fun Context.isInternetConnected(): Boolean {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork = connectivityManager.activeNetworkInfo
+    return (activeNetwork != null && activeNetwork.isConnected)
 }
 
 fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {

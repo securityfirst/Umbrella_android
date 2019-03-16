@@ -8,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.ViewPager
 import com.bluelinelabs.conductor.RouterTransaction
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.tour_view.*
 import kotlinx.android.synthetic.main.tour_view.view.*
+import org.jetbrains.anko.design.longSnackbar
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.disk.EXTRA_URL_REPOSITORY
@@ -28,6 +30,7 @@ import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.DaggerTourComponent
+import org.secfirst.umbrella.whitelabel.misc.isInternetConnected
 import javax.inject.Inject
 
 
@@ -38,6 +41,7 @@ class TourController : BaseController(), ContentView {
     private var viewList: MutableList<TourUI> = mutableListOf()
     private lateinit var progressDialog: ProgressDialog
     private lateinit var intentService: Intent
+
 
     override fun onInject() {
         DaggerTourComponent.builder()
@@ -58,6 +62,7 @@ class TourController : BaseController(), ContentView {
             val percentage = intent.getIntExtra(EXTRA_CONTENT_SERVICE_PROGRESS, -1)
             val title = intent.getStringExtra(EXTRA_CONTENT_SERVICE_TITLE_PROGRESS) ?: ""
             val isCompleted = intent.getBooleanExtra(ACTION_COMPLETED_FOREGROUND_SERVICE, false)
+            val lostConnection = intent.getBooleanExtra(ContentService.ACTION_LOST_CONNECTION, false)
 
             if (title.isNotEmpty())
                 progressDialog.setTitle(title)
@@ -67,54 +72,37 @@ class TourController : BaseController(), ContentView {
                 progressDialog.incrementProgressBy(percentage)
             }
 
-            if (isCompleted) {
-                progressDialog.dismiss()
-                router.popController(this@TourController)
-                router.setRoot(RouterTransaction.with(HostChecklistController()))
-                mainActivity.navigationPositionToCenter()
-                enableNavigation(true)
-            }
-        }
-    }
+            if (isCompleted)
+                downloadCompleted()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val view = inflater.inflate(R.layout.tour_view, container, false)
-        intentService = Intent(context, ContentService::class.java)
-        progressDialog = ProgressDialog(context)
-        progressDialog.setCancelable(false)
-        progressDialog.max = 100
-        progressDialog.setProgressStyle(R.style.ProgressDialogStyle)
-        progressDialog.progress = 0
-        progressDialog.setTitle(context.getString(R.string.notification_fetching_data))
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
-        view.acceptButton.setOnClickListener { startContentService() }
-        return view
+            if (lostConnection)
+                errorLostConnectionMessage()
+        }
     }
 
     override fun onAttach(view: View) {
         super.onAttach(view)
-        enableNavigation(false)
-        initViewPager()
-        presenter.onAttach(this)
         LocalBroadcastManager.getInstance(context)
                 .registerReceiver(mMessageReceiver, IntentFilter(EXTRA_CONTENT_SERVICE_ID))
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        val view = inflater.inflate(R.layout.tour_view, container, false)
+        presenter.onAttach(this)
+        intentService = Intent(context, ContentService::class.java)
+        view.acceptButton.setOnClickListener { startContentService() }
+        initProgress()
+        enableNavigation(false)
+        initViewPager(view)
+        return view
+    }
 
-    private fun initViewPager() {
-        tourViewPager?.let {
-            val tourAdapter = TourAdapter(this)
-            it.adapter = tourAdapter
-            tourAdapter.setData(viewList)
-            pageIndicatorView.count = tourAdapter.count
-            it.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrollStateChanged(state: Int) {}
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-                override fun onPageSelected(position: Int) {
-                    pageSelected(position)
-                }
-            })
-        }
+    private fun downloadCompleted() {
+        progressDialog.dismiss()
+        router.popController(this@TourController)
+        router.setRoot(RouterTransaction.with(HostChecklistController()))
+        mainActivity.navigationPositionToCenter()
+        enableNavigation(true)
     }
 
     private fun pageSelected(position: Int) {
@@ -125,26 +113,57 @@ class TourController : BaseController(), ContentView {
             acceptButton?.let { btn -> btn.visibility = INVISIBLE }
     }
 
-    override fun downloadContentCompleted(res: Boolean) {
-        progressDialog.dismiss()
-        if (res) {
-            router.pushController(RouterTransaction.with(HostChecklistController()))
-            mainActivity.navigationPositionToCenter()
-            enableNavigation(true)
-        } else
-            view?.let {
-                Snackbar.make(it,
-                        it.resources.getString(org.secfirst.umbrella.whitelabel.R.string.error_connection_tour_message), Snackbar.LENGTH_LONG).show()
-            }
-    }
-
     private fun startContentService() {
         intentService.apply {
             putExtra(EXTRA_URL_REPOSITORY, baseUrlRepository)
             action = ContentService.ACTION_START_FOREGROUND_SERVICE
         }
-        context.startService(intentService)
-        progressDialog.show()
+        if (context.isInternetConnected()) {
+            context.startService(intentService)
+            progressDialog.show()
+        } else
+            tourView?.apply { errorNoConnectionMessage(this) }
+    }
+
+    private fun errorNoConnectionMessage(view: View) {
+        val snackBar = view.longSnackbar(context.resources.getString(R.string.error_connection_tour_message))
+        val snackView = snackBar.view
+        snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+    }
+
+    private fun errorLostConnectionMessage() {
+        tourView?.let {
+            val snackBar = it.longSnackbar(context.resources.getString(R.string.notification_lost_connection))
+            val snackView = snackBar.view
+            snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+        }
+        progressDialog.dismiss()
+    }
+
+    private fun initProgress() {
+        progressDialog = ProgressDialog(context)
+        progressDialog.setCancelable(false)
+        progressDialog.max = 100
+        progressDialog.setProgressStyle(R.style.ProgressDialogStyle)
+        progressDialog.progress = 0
+        progressDialog.setTitle(context.getString(R.string.notification_fetching_data))
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+    }
+
+    private fun initViewPager(view: View) {
+        view.tourViewPager.apply {
+            val tourAdapter = TourAdapter(this@TourController)
+            adapter = tourAdapter
+            tourAdapter.setData(viewList)
+            view.pageIndicatorView.count = tourAdapter.count
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrollStateChanged(state: Int) {}
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+                override fun onPageSelected(position: Int) {
+                    pageSelected(position)
+                }
+            })
+        }
     }
 
     override fun onDestroy() {
