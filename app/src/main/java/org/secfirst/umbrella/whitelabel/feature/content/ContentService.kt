@@ -3,7 +3,6 @@ package org.secfirst.umbrella.whitelabel.feature.content
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import br.com.goncalves.pugnotification.notification.PugNotification
 import kotlinx.coroutines.withContext
@@ -34,11 +33,9 @@ class ContentService : Service(), ElementSerializeMonitor {
                 val calPercentage = percentage / 3
                 val base = 66
                 sendMessage(base + calPercentage, getString(R.string.notification_update_database))
-                if (percentage >= 100) {
+                if (percentage >= 100)
                     processCompleted()
-                }
             }
-
         }
     private val tentDao
         get() = object : TentDao {}
@@ -54,7 +51,6 @@ class ContentService : Service(), ElementSerializeMonitor {
     }
 
     private fun startForegroundService(url: String) {
-        val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         launchSilent(uiContext) {
             val isCloned = cloneRepository(url)
             if (isCloned) {
@@ -62,7 +58,6 @@ class ContentService : Service(), ElementSerializeMonitor {
                 contentDao.insertAllLessons(element)
                 contentDao.insertFeedSource(createFeedSources())
                 contentDao.insertDefaultRSS(createDefaultRSS())
-                preferences.edit().putBoolean(EXTRA_STATE_PROCESS, true).apply()
             }
         }
     }
@@ -76,7 +71,7 @@ class ContentService : Service(), ElementSerializeMonitor {
                 ACTION_STOP_FOREGROUND_SERVICE -> stopForegroundService()
             }
         }
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
     }
 
     private suspend fun cloneRepository(url: String): Boolean {
@@ -104,7 +99,6 @@ class ContentService : Service(), ElementSerializeMonitor {
         val calPercentage = percentage / 3
         val base = 33
         sendMessage(base + calPercentage, getString(R.string.notification_update_database))
-        Log.d("vai", "serialize progress - $calPercentage")
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -113,7 +107,6 @@ class ContentService : Service(), ElementSerializeMonitor {
 
     override fun onDestroy() {
         releaseService()
-        println("onDestroy foiiiiiiii")
         super.onDestroy()
     }
 
@@ -121,6 +114,8 @@ class ContentService : Service(), ElementSerializeMonitor {
         val messageInt = Intent(EXTRA_CONTENT_SERVICE_ID)
         messageInt.putExtra(ACTION_COMPLETED_FOREGROUND_SERVICE, true)
         LocalBroadcastManager.getInstance(this).sendBroadcast(messageInt)
+        val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        preferences.edit().putBoolean(EXTRA_STATE_PROCESS, true).apply()
         stopForegroundService()
     }
 
@@ -159,6 +154,7 @@ class ContentService : Service(), ElementSerializeMonitor {
     private fun releaseService() {
         val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val isFinishProcess = preferences.getBoolean(EXTRA_STATE_PROCESS, false)
+        print("isFinishProcess $isFinishProcess")
         if (!isFinishProcess)
             File(getPathRepository()).deleteRecursively()
         stopForegroundService()
@@ -167,7 +163,6 @@ class ContentService : Service(), ElementSerializeMonitor {
 
     companion object {
         private const val NOTIFICATION_IDENTIFY = 1
-
         const val EXTRA_STATE_PROCESS = "extra_process"
         const val EXTRA_CONTENT_SERVICE_ID = "content_id"
         const val EXTRA_CONTENT_SERVICE_PROGRESS = "content_progress"

@@ -15,11 +15,14 @@ import androidx.viewpager.widget.ViewPager
 import com.bluelinelabs.conductor.RouterTransaction
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.tour_view.*
+import kotlinx.android.synthetic.main.tour_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.disk.EXTRA_URL_REPOSITORY
 import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.ACTION_COMPLETED_FOREGROUND_SERVICE
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_ID
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_PROGRESS
@@ -37,6 +40,7 @@ class TourController : BaseController(), ContentView {
     internal lateinit var presenter: ContentBasePresenter<ContentView, ContentBaseInteractor>
     private var viewList: MutableList<TourUI> = mutableListOf()
     private lateinit var progressDialog: ProgressDialog
+    private lateinit var intentService: Intent
 
     override fun onInject() {
         DaggerTourComponent.builder()
@@ -69,8 +73,7 @@ class TourController : BaseController(), ContentView {
             if (isCompleted) {
                 progressDialog.dismiss()
                 router.popController(this@TourController)
-                router.setPopsLastView(true)
-                router.pushController(RouterTransaction.with(HostChecklistController()))
+                router.setRoot(RouterTransaction.with(HostChecklistController()))
                 mainActivity.navigationPositionToCenter()
                 enableNavigation(true)
             }
@@ -79,6 +82,7 @@ class TourController : BaseController(), ContentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.tour_view, container, false)
+        intentService = Intent(context, ContentService::class.java)
         progressDialog = ProgressDialog(context)
         progressDialog.setCancelable(false)
         progressDialog.max = 100
@@ -86,6 +90,7 @@ class TourController : BaseController(), ContentView {
         progressDialog.progress = 0
         progressDialog.setTitle(context.getString(R.string.notification_fetching_data))
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
+        view.acceptButton.setOnClickListener { startContentService() }
         return view
     }
 
@@ -93,7 +98,6 @@ class TourController : BaseController(), ContentView {
         super.onAttach(view)
         enableNavigation(false)
         initViewPager()
-        onAcceptButton()
         presenter.onAttach(this)
         LocalBroadcastManager.getInstance(context)
                 .registerReceiver(mMessageReceiver, IntentFilter(EXTRA_CONTENT_SERVICE_ID))
@@ -137,14 +141,24 @@ class TourController : BaseController(), ContentView {
             }
     }
 
-    override fun downloadContentInProgress() = progressDialog.show()
-
-    private fun onAcceptButton() {
-        acceptButton?.setOnClickListener { presenter.manageContent(baseUrlRepository) }
+    private fun startContentService() {
+        intentService.apply {
+            putExtra(EXTRA_URL_REPOSITORY, baseUrlRepository)
+            action = ContentService.ACTION_START_FOREGROUND_SERVICE
+        }
+        context.startService(intentService)
+        progressDialog.show()
     }
 
     override fun onDestroy() {
         LocalBroadcastManager.getInstance(context)
                 .unregisterReceiver(mMessageReceiver)
+        mainActivity.stopService(intentService)
+        progressDialog.dismiss()
+    }
+
+    override fun onDestroyView(view: View) {
+        mainActivity.stopService(intentService)
+        super.onDestroyView(view)
     }
 }
