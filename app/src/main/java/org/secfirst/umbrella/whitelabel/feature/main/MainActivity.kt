@@ -213,14 +213,6 @@ class MainActivity : AppCompatActivity() {
                             openDifficultyByUrl(router, navigation, path)
                     }
                 }
-                SEARCH_HOST -> {
-                    val i = Intent(this@MainActivity, SearchActivity::class.java)
-                    i.action = Intent.ACTION_SEARCH
-                    intent?.data?.lastPathSegment?.let{
-                        i.putExtra(SearchManager.QUERY, it)
-                    }
-                    startActivity(i)
-                }
             }
         }
     }
