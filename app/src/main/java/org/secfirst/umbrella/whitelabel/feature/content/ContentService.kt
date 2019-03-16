@@ -14,6 +14,7 @@ import org.secfirst.umbrella.whitelabel.data.database.content.ContentDao
 import org.secfirst.umbrella.whitelabel.data.database.content.createDefaultRSS
 import org.secfirst.umbrella.whitelabel.data.database.content.createFeedSources
 import org.secfirst.umbrella.whitelabel.data.disk.*
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
@@ -45,7 +46,6 @@ class ContentService : Service(), ElementSerializeMonitor {
     private val tentRepo = TentRepository(tentDao)
     private val elementSerialize = ElementSerialize(tentRepo, this)
     private val elementLoader = ElementLoader(tentRepo)
-    private var isFinishProcess = false
 
     private val tentProgressMonitor = object : TextProgressMonitor(PrintWriter(System.out)) {
         override fun onUpdate(taskName: String, cmp: Int, totalWork: Int, pcnt: Int) {
@@ -54,7 +54,7 @@ class ContentService : Service(), ElementSerializeMonitor {
     }
 
     private fun startForegroundService(url: String) {
-
+        val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         launchSilent(uiContext) {
             val isCloned = cloneRepository(url)
             if (isCloned) {
@@ -62,7 +62,7 @@ class ContentService : Service(), ElementSerializeMonitor {
                 contentDao.insertAllLessons(element)
                 contentDao.insertFeedSource(createFeedSources())
                 contentDao.insertDefaultRSS(createDefaultRSS())
-                isFinishProcess = true
+                preferences.edit().putBoolean(EXTRA_STATE_PROCESS, true).apply()
             }
         }
     }
@@ -113,6 +113,7 @@ class ContentService : Service(), ElementSerializeMonitor {
 
     override fun onDestroy() {
         releaseService()
+        println("onDestroy foiiiiiiii")
         super.onDestroy()
     }
 
@@ -156,17 +157,22 @@ class ContentService : Service(), ElementSerializeMonitor {
     }
 
     private fun releaseService() {
+        val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        val isFinishProcess = preferences.getBoolean(EXTRA_STATE_PROCESS, false)
         if (!isFinishProcess)
             File(getPathRepository()).deleteRecursively()
         stopForegroundService()
     }
 
+
     companion object {
         private const val NOTIFICATION_IDENTIFY = 1
+
+        const val EXTRA_STATE_PROCESS = "extra_process"
         const val EXTRA_CONTENT_SERVICE_ID = "content_id"
         const val EXTRA_CONTENT_SERVICE_PROGRESS = "content_progress"
         const val EXTRA_CONTENT_SERVICE_TITLE_PROGRESS = "content_title_progress"
-        const val EXTRA_CONTENT_SERVICE_SUBTITLE_PROGRESS = "content_subtitle_progress"
+
         const val ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE"
         const val ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE"
         const val ACTION_COMPLETED_FOREGROUND_SERVICE = "ACTION_COMPLETED_FOREGROUND_SERVICE"
