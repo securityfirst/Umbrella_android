@@ -177,5 +177,6 @@
     <string name="custom_checklist_title_tab">CUSTOM</string>
     <string name="notification_fetching_data">Fetching data</string>
     <string name="notification_update_database">Updating database</string>
+    <string name="notification_lost_connection">Lost connection to download content, please try again.</string>
 
 </resources>
