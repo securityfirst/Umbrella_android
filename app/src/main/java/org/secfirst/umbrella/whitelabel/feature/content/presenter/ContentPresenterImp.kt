@@ -15,10 +15,6 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.data.disk.*
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.CHILD_LEVEL
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.ELEMENT_LEVEL
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.SUB_ELEMENT_LEVEL
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig.Companion.getDelimiter
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
@@ -89,15 +85,17 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         }
     }
 
-    override fun manageContent() {
+    override fun manageContent(url: String) {
         var isFetchData: Boolean
         launchSilent(uiContext) {
             interactor?.let {
                 getView()?.downloadContentInProgress()
-                isFetchData = it.fetchData()
+                isFetchData = it.fetchData(url)
 
                 if (isFetchData) {
+                    getView()?.onProcessProgress()
                     val root = it.initParser()
+                    getView()?.onStoredProgress()
                     it.persist(root)
                 }
                 it.persistFeedSource(createFeedSources())

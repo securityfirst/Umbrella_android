@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/teste"
+    android:padding="10dp"
     android:background="#ffffff">
 
     <ProgressBar

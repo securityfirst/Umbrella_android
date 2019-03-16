@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:hint="@string/account_set_password"
+            android:hint="@string/login_enter_pw"
             android:inputType="textWebPassword" />
 
         <androidx.cardview.widget.CardView

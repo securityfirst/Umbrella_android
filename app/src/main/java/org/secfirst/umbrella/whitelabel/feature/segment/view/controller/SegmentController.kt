@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bluelinelabs.conductor.RouterTransaction
 import com.commonsware.cwac.anddown.AndDown
+import com.google.android.flexbox.AlignItems
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.google.android.flexbox.JustifyContent
 import com.xwray.groupie.Section
 import kotlinx.android.synthetic.main.segment_view.view.*
 import kotlinx.android.synthetic.main.share_dialog.view.*
@@ -58,6 +61,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var shareView: View
     private val segmentAdapter = GroupAdapter()
     private lateinit var markdownPagination: SegmentPagination
+    private lateinit var viewSegment: View
 
     constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
@@ -73,30 +77,34 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
-        val view = inflater.inflate(R.layout.segment_view, container, false)
+        viewSegment = inflater.inflate(R.layout.segment_view, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
         shareDialog = AlertDialog
                 .Builder(activity)
                 .setView(shareView)
                 .create()
         presenter.onAttach(this)
-        presenter.submitMarkdownsAndChecklist(markdownIds, checklistId)
-        initSegmentRecycler(view)
+        var removeLast = false
+        markdownIds?.let {if (it.size % 2 != 0) removeLast = true }
+        presenter.submitMarkdownsAndChecklist(markdownIds, checklistId, removeLast)
 
-        return view
+
+
+        return viewSegment
     }
 
     private fun initSegmentRecycler(view: View) {
-        segmentAdapter.spanCount = 12
-        val gridLayoutManager = GridLayoutManager(context, segmentAdapter.spanCount).apply {
-            spanSizeLookup = segmentAdapter.spanSizeLookup
+
+        val flexboxLayoutManager = FlexboxLayoutManager(applicationContext).apply {
+            flexDirection = FlexDirection.ROW
+            justifyContent = JustifyContent.FLEX_START
+            alignItems = AlignItems.FLEX_START
         }
-        val itemDecor = DividerItemDecoration(activity, gridLayoutManager.orientation)
+
         view.segmentRecyclerView.apply {
-            layoutManager = gridLayoutManager
-            removeItemDecoration(itemDecor)
+            layoutManager = flexboxLayoutManager
             adapter = segmentAdapter
-            addOnScrollListener(object : InfiniteScrollListener(gridLayoutManager) {
+            addOnScrollListener(object : InfiniteScrollListener(LinearLayoutManager(context)) {
                 override fun onLoadMore(currentPage: Int) {
                     createSegmentCards(markdownPagination.nextPage())
                 }
@@ -106,6 +114,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun showSegments(markdowns: List<Markdown>, checklist: Checklist?) {
         this.checklist = checklist
+        initSegmentRecycler(viewSegment)
         initSegmentView(markdowns)
     }
 
@@ -119,9 +128,15 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         val section = Section()
         launchSilent(uiContext) {
             markdowns.forEach { markdown ->
-                val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
-                section.add(segmentItem)
+                if (markdown.isRemove) {
+                    val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, null)
+                    section.add(segmentItem)
+                } else {
+                    val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
+                    section.add(segmentItem)
+                }
             }
+
             if (segmentAdapter.getGroupSize() > 0 && checklist != null)
                 segmentAdapter.add(segmentAdapter.lastGroupPosition(), section)
             else

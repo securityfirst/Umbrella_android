@@ -3,13 +3,14 @@
     <string name="secondary_app_name">Calculator</string>
     <string name="feed_title">Feed</string>
     <string name="form_title">Forms</string>
-    <string name="checklist_title">Checklists</string>
+    <string name="checklist_title">Checklist</string>
     <string name="lesson_title">Lessons</string>
     <string name="account_title">Account</string>
     <string name="message_title_active_forms">Filled out forms</string>
     <string name="message_title_all_forms">Available forms</string>
     <string name="message_body_form_new">NEW</string>
     <string name="form_input_controller_name">Digital Security Incident</string>
+    <string name="loading_tour_message">Fetching data…</string>
     <string name="terms_conditions">Terms and Conditions</string>
     <string name="tour_slide_1_text">Umbrella makes your security simple</string>
     <string name="tour_slide_2_text">Get advice on everything from sending a secure email to safe travel</string>
@@ -18,7 +19,9 @@
 
     <string name="tour_view_accept_button">ACCEPT</string>
     <string name="fab_dialog_transition_name">transition.fab</string>
-    <string name="loading_tour_message">Fetching data…</string>
+    <string name="loading_tour_download_message">Downloading data 1/3</string>
+    <string name="loading_tour_parse_message">Processing data 2/3</string>
+    <string name="loading_tour_store_message">Storing data 3/3</string>
     <string name="error_connection_tour_message">Looks like the server is taking to long to respond, try again later.</string>
 
     <string name="send_to">Share</string>
@@ -70,9 +73,10 @@
     <string name="checklistDetail_title">Checklist</string>
     <string name="account_password_alert_title">Set your password</string>
     <string name="account_password_alert_description">Your password must be at least 8 characters long and must contain at least one digit and one capital letter</string>
-    <string name="account_set_password">Enter password</string>
+    <string name="account_set_password">Set password</string>
     <string name="account_settings">Settings</string>
     <string name="account_mask">Mask</string>
+    <string name="account_language_dialog_title">Select Language</string>
     <string name="account_password_alert_password">Password</string>
     <string name="account_password_skip">SKIP</string>
     <string name="account_cancel">CANCEL</string>
@@ -80,6 +84,7 @@
     <string name="account_password_alert_confirm">Confirm</string>
     <string name="settings_title">Settings</string>
     <string name="settings_refresh_from_the_server">Refresh from the server</string>
+    <string name="settings_switch_server">Switch from the server</string>
     <string name="settings_your_location">Your location</string>
     <string name="settings_show_updates_as_notification">Show updates as notification</string>
     <string name="settings_security_feed_sources">Security feed sources</string>
@@ -127,8 +132,9 @@
     <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
     <string name="enable_masking_mode">Enable masking mode</string>
     <string name="empty"> </string>
-    <string name="password_success">Password created with success.</string>
+    <string name="password_success">Password was successfully created</string>
     <string name="update_repository_message_success">Updated with success.</string>
+    <string name="switch_server_error_message">An error occurred. URL seems not be a Git server.</string>
     <string name="pdf_name">PDF</string>
     <string name="html_name">HTML</string>
     <string name="feed_title_tab">FEED</string>
@@ -149,9 +155,26 @@
     <string name="settings_label_skip_pw">Don’t ask for password again</string>
     <string name="settings_title_skip_pw">Skip password</string>
     <string name="settings_general_title">General</string>
-    <string name="checklist_custom_empty_item_error_message">The item shouldn\'t be blank</string>
+    <string name="checklist_custom_empty_item_error_message">The item shouldn\'t be blank.</string>
     <string name="checklist_add_item_message">Item added successfully.</string>
     <string name="checklist_edit_item_title">Edit checklist item</string>
     <string name="checklist_add_item_title">Add checklist item</string>
+    <string name="empty_checklist_message">Go to lessons and discover recommenced checklists or create your own custom checklists.</string>
+    <string name="confirm_password_error_message">Password doesn\'t match</string>
+    <string name="default_github_url">https://github.com/</string>
+    <string name="switch_server_title_message">Switch server</string>
+    <string name="english_language_title">English</string>
+    <string name="spanish_language_title">Spanish</string>
+    <string name="chinese_language_title">Chinese</string>
+    <string name="login_enter_pw">Enter password</string>
+    <string name="default_refresh_feed">30 min</string>
+    <string name="custom_checklist_add_item_title">Custom Checklist</string>
+    <string name="name_your_checklist">Name your checklist</string>
+    <string name="name">Name</string>
+    <string name="invalid_name_custom_checklist_messenge">The checklist name shouldn\'t be blank.</string>
+    <string name="empty_custom_checklist_message">Create your own custom checklist.</string>
+    <string name="checklist_card_title">Checklists</string>
+    <string name="checklist_title_tab">OVERVIEW</string>
+    <string name="custom_checklist_title_tab">CUSTOM</string>
 
 </resources>

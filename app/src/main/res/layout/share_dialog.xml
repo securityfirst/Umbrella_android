@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -30,7 +29,7 @@
         android:padding="5dp" />
 
     <RadioGroup
-            android:id="@+id/shareGroup"
+        android:id="@+id/shareGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/lineAbove"
@@ -79,7 +78,7 @@
             android:background="@android:color/transparent"
             android:padding="@dimen/dashboard_feed_normal_padding"
             android:text="@string/export_button"
-            android:textColor="@color/avocado" />
+            android:textColor="@color/umbrella_green" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancelShareButton"
@@ -90,7 +89,7 @@
             android:background="@android:color/transparent"
             android:padding="@dimen/dashboard_feed_normal_padding"
             android:text="@string/export_dialog_cancel"
-            android:textColor="@color/avocado" />
+            android:textColor="@color/umbrella_green" />
 
     </RelativeLayout>
 

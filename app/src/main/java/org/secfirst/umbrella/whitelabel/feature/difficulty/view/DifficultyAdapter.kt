@@ -11,8 +11,20 @@ import org.jetbrains.anko.backgroundColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 
-class DifficultyAdapter(private val difficulties: MutableList<Difficulty>,
-                        private val onClickDiff: (Int) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
+class DifficultyAdapter(private val onClickDiff: (Int) -> Unit) : RecyclerView.Adapter<DifficultyAdapter.DifficultHolder>() {
+
+    private val difficulties = mutableListOf<Difficulty>()
+
+    fun clear() = difficulties.clear()
+
+    fun getItem(position: Int) = difficulties[position]
+
+    fun addAll(difficulties: List<Difficulty>) {
+        this.difficulties.addAll(difficulties)
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = difficulties.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DifficultHolder {
         val view = LayoutInflater.from(parent.context)
@@ -23,12 +35,6 @@ class DifficultyAdapter(private val difficulties: MutableList<Difficulty>,
     override fun onBindViewHolder(holder: DifficultHolder, position: Int) {
         holder.bind(difficulties[position], clickListener = { onClickDiff(position) })
     }
-
-    override fun getItemCount() = difficulties.size
-
-    fun clear() = difficulties.clear()
-
-    fun getItem(position: Int) = difficulties[position]
 
     fun getItems(position: Int): List<Difficulty> {
         val sortItems = mutableListOf<Difficulty>()

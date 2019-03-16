@@ -7,6 +7,9 @@ apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 
 android {
+    lintOptions {
+        abortOnError false
+    }
     signingConfigs {
         umbrella_beta {
             keyAlias 'umbrella'
@@ -40,7 +43,7 @@ android {
         compileSdkVersion 28
         targetSdkVersion 28
         versionCode 1
-        versionName "0.7.0"
+        versionName "1.0.3"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -180,6 +183,10 @@ dependencies {
     //Expandable recycler view
     implementation "com.xwray:groupie:$groupie"
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
+    implementation 'com.google.android:flexbox:1.1.0'
+    implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    implementation 'com.nabinbhandari.android:permissions:3.8'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

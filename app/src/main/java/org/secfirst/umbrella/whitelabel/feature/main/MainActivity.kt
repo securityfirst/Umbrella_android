@@ -1,18 +1,13 @@
 package org.secfirst.umbrella.whitelabel.feature.main
 
-import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.EditText
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
@@ -21,8 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
-import org.secfirst.umbrella.whitelabel.R
-import org.secfirst.umbrella.whitelabel.data.disk.TentConfig
+import org.secfirst.umbrella.whitelabel.data.disk.isRepository
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
@@ -32,20 +26,19 @@ import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.login.view.LoginController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
-import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
+import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var router: Router
-
     private fun performDI() = AndroidInjection.inject(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_view)
+        setContentView(org.secfirst.umbrella.whitelabel.R.layout.main_view)
         setSupportActionBar(searchToolbar)
         performDI()
         initRoute(savedInstanceState)
@@ -54,44 +47,45 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         ShakeDetector.start()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the options menu from XML
-        val inflater = menuInflater
-        inflater.inflate(R.menu.option_menu, menu)
-
-        // Get the SearchView and set the searchable configuration
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
-            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
-            searchEditText.setTextColor(resources.getColor(R.color.white))
-            searchEditText.setHintTextColor(resources.getColor(R.color.white))
-            // Assumes current activity is the searchable activity
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
-            isSubmitButtonEnabled = true
-            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    p0?.let {
-                        val i = Intent(this@MainActivity, SearchActivity::class.java)
-                        i.action = Intent.ACTION_SEARCH
-                        i.putExtra(SearchManager.QUERY, it)
-                        startActivity(i)
-                        return true
-                    }
-                    return false
-                }
-
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    return false
-                }
-
-            })
-        }
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        // Inflate the options menu from XML
+//        val inflater = menuInflater
+//        inflater.inflate(R.menu.option_menu, menu)
+//
+//        // Get the SearchView and set the searchable configuration
+//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+//        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+//            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
+//            searchEditText.setTextColor(resources.getColor(R.color.white))
+//            searchEditText.setHintTextColor(resources.getColor(R.color.white))
+//            // Assumes current activity is the searchable activity
+//            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+//            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
+//            isSubmitButtonEnabled = true
+//            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//                override fun onQueryTextSubmit(p0: String?): Boolean {
+//                    p0?.let {
+//                        val i = Intent(this@MainActivity, SearchActivity::class.java)
+//                        i.action = Intent.ACTION_SEARCH
+//                        i.putExtra(SearchManager.QUERY, it)
+//                        startActivity(i)
+//                        return true
+//                    }
+//                    return false
+//                }
+//
+//                override fun onQueryTextChange(p0: String?): Boolean {
+//                    return false
+//                }
+//
+//            })
+//        }
+//        return true
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -103,7 +97,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRoute(savedInstanceState: Bundle?) {
-        navigation.removeShiftMode()
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
         when {
@@ -112,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                 router.setRoot(RouterTransaction.with(LoginController()))
                 navigation.menu.getItem(2).isChecked = true
             }
-            TentConfig.isRepCreate() -> {
+            isRepository() -> {
                 router.setRoot(RouterTransaction.with(HostChecklistController()))
                 navigation.menu.getItem(2).isChecked = true
             }
@@ -124,23 +117,23 @@ class MainActivity : AppCompatActivity() {
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
                 when (item.itemId) {
-                    R.id.navigation_feeds -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_feeds -> {
                         router.pushController(RouterTransaction.with(HostReaderController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_forms -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_forms -> {
                         router.pushController(RouterTransaction.with(HostFormController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_checklists -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_checklists -> {
                         router.pushController(RouterTransaction.with(HostChecklistController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_lessons -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_lessons -> {
                         router.pushController(RouterTransaction.with(LessonController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    R.id.navigation_account -> {
+                    org.secfirst.umbrella.whitelabel.R.id.navigation_account -> {
                         router.pushController(RouterTransaction.with(AccountController()))
                         return@OnNavigationItemSelectedListener true
                     }
@@ -187,22 +180,20 @@ class MainActivity : AppCompatActivity() {
     private fun isDeepLink() {
         if (ACTION_VIEW == intent.action) {
             val uri = intent.data
+            val uriString = uri?.toString() ?: ""
+            val path = uriString.substringAfterLast(SCHEMA)
+            val uriSplitted = path.split("/")
             when (uri?.host) {
-                FEED_HOST -> {
-                    router.pushController(RouterTransaction.with(HostReaderController()))
-                    navigation.menu.getItem(0).isChecked = true
-                }
-                FORM_HOST -> {
-                    router.pushController(RouterTransaction.with(HostFormController(uri.toString())))
-                    navigation.menu.getItem(1).isChecked = true
-                }
-                LESSON_HOST -> {
-                    router.pushController(RouterTransaction.with(HostSegmentController(uri.toString())))
-                    navigation.menu.getItem(3).isChecked = true
-                }
-                CHECKLIST_HOST -> {
-                    router.pushController(RouterTransaction.with(HostChecklistController(uri.toString())))
-                    navigation.menu.getItem(2).isChecked = true
+                FEED_HOST -> openFeedByUrl(router, navigation)
+                FORM_HOST -> openFormByUrl(router, navigation, uriString)
+                CHECKLIST_HOST -> openChecklistByUrl(router, navigation, uriString)
+                else -> {
+                    launchSilent(uiContext) {
+                        if (isLessonDeepLink(uriSplitted))
+                            openSpecificLessonByUrl(router, navigation, uriString)
+                        else
+                            openDifficultyByUrl(router, navigation, path)
+                    }
                 }
                 SEARCH_HOST -> {
                     val i = Intent(this@MainActivity, SearchActivity::class.java)
@@ -214,5 +205,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

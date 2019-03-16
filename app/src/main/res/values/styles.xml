@@ -1,12 +1,27 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Base application theme.-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="ms_stepperStyle">@style/DotStepperStyle</item>
+        <item name="android:textColor">#de000000</item>
+        <item name="android:itemBackground">@color/white</item>
+    </style>
+
+    <style name="DotStepperStyle">
+        <item name="ms_stepperType">dots</item>
+        <item name="ms_activeStepColor">@color/umbrella_green</item>
+        <item name="ms_inactiveStepColor">#cecece</item>
+        <item name="ms_bottomNavigationBackground">?attr/colorAccent</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#030303</item>
+        <item name="colorControlActivated">#43a0ca</item>
     </style>
 
     <style name="ContentText">
@@ -16,7 +31,7 @@
 
     <style name="LinearProgress" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/umbrella_purple_dark</item>
-        <item name="android:progressBackgroundTint">@color/umbrella_purple_dark</item>
+        <!--<item name="android:progressBackgroundTint">@color/umbrella_purple_dark</item>-->
     </style>
 
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
@@ -34,7 +49,8 @@
         <item name="android:background">?colorPrimary</item>
         <item name="colorControlNormal">@color/white</item>
     </style>
-    <style name="ToolBarTheme"  parent="ThemeOverlay.AppCompat.ActionBar">
+
+    <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/white</item>
     </style>
 </resources>

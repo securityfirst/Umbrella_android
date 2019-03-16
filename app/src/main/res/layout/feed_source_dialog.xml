@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <CheckBox
-                android:id="@+id/feedCheck1"
+                android:id="@+id/englishCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -49,7 +49,7 @@
                 android:textStyle="normal" />
 
             <CheckBox
-                android:id="@+id/feedCheck2"
+                android:id="@+id/chineseCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -59,7 +59,7 @@
                 android:textSize="16sp" />
 
             <CheckBox
-                android:id="@+id/feedCheck3"
+                android:id="@+id/spanishCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

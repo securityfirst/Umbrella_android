@@ -12,5 +12,9 @@ interface BaseInteractor {
 
     fun isSkippPassword(): Boolean
 
+    fun setDefaultLanguage(isoCountry: String) : Boolean
+
+    fun getDefaultLanguage(): String
+
     suspend fun resetContent(): Boolean
 }

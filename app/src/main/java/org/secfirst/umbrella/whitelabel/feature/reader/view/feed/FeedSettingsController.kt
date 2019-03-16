@@ -81,9 +81,9 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
                 .setView(skipPasswordView)
                 .create()
 
-        passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
-        passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
-        passwordView.passwordCancel.setOnClickListener { passwordAlertCancel() }
+        passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
+        passwordView.alertPasswordOk.setOnClickListener { passwordAlertOk() }
+        passwordView.alertPasswordCancel.setOnClickListener { passwordAlertCancel() }
         skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
         skipPasswordView.ok.setOnClickListener { skipAlertOk() }
 
@@ -106,7 +106,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     private fun passwordAlertCancel() = passwordAlertDialog.dismiss()
 
     private fun passwordAlertOk() {
-        val token = passwordView.pwText.text.toString()
+        val token = passwordView.alertPwText.text.toString()
         if (token.checkPasswordStrength(context))
             presenter.submitChangeDatabaseAccess(token)
 
@@ -236,7 +236,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     }
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean) {
-        feedProgress?.visibility = View.INVISIBLE
+
         if (!isFirstRequest)
             openFeedController(feedItemResponse)
         else if (feedItemResponse.isNotEmpty())
@@ -254,12 +254,12 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     private fun dispatchFeedRequest(feedLocation: FeedLocation,
                                     feedsChecked: List<FeedSource>,
                                     isFirstRequest: Boolean = false) {
-        feedProgress?.visibility = View.VISIBLE
+
         presenter.submitFeedRequest(feedLocation, feedsChecked, isFirstRequest)
     }
 
     override fun feedError() {
-        feedProgress?.visibility = View.INVISIBLE
+
     }
 
     override fun isChangedToken(res: Boolean) {

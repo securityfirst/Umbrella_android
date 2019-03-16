@@ -11,11 +11,11 @@ import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.ItemDecoration
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
+import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import javax.inject.Inject
 
@@ -24,17 +24,14 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     @Inject
     internal lateinit var presenter: DifficultyBasePresenter<DifficultyView, DifficultyBaseInteractor>
     private val difficultClick: (Int) -> Unit = this::onDifficultClick
-    private val selectSubject by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT) as Subject }
-    private lateinit var difficultyAdapter: DifficultyAdapter
+    private val subjectId by lazy { args.getString(EXTRA_SELECTED_DIFFICULTY) }
+    private val isDeepLink by lazy { args.getBoolean(EXTRA_IS_DEEP_LINK) }
+    private val difficultyAdapter = DifficultyAdapter(difficultClick)
 
-    constructor(subject: Subject) : this(Bundle().apply {
-        putParcelable(EXTRA_SELECTED_SEGMENT, subject)
+    constructor(subjectId: String, isDeepLink: Boolean = false) : this(Bundle().apply {
+        putString(EXTRA_SELECTED_DIFFICULTY, subjectId)
+        putBoolean(EXTRA_IS_DEEP_LINK, isDeepLink)
     })
-
-    companion object {
-        const val EXTRA_SELECTED_SEGMENT = "selected_difficulty"
-
-    }
 
     override fun onInject() {
         DaggerDifficultyComponent.builder()
@@ -43,9 +40,16 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
                 .inject(this)
     }
 
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        presenter.onAttach(this)
+        presenter.submitDifficulty(subjectId)
+        return inflater.inflate(R.layout.difficulty_view, container, false)
+    }
+
     private fun onDifficultClick(position: Int) {
         val itemSelected = difficultyAdapter.getItem(position)
-        presenter.saveDifficultySelect(itemSelected, selectSubject.id)
+        presenter.saveDifficultySelect(itemSelected, subjectId)
         presenter.submitDifficultySelect(difficultyAdapter.getItems(position))
     }
 
@@ -59,20 +63,21 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
         difficultyAdapter.clear()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        presenter.onAttach(this)
-        presenter.submitDifficulty(selectSubject)
-        return inflater.inflate(R.layout.difficulty_view, container, false)
-    }
-
     override fun showDifficulties(difficulties: List<Difficulty>, toolbarTitle: String) {
         setUpToolbar(toolbarTitle)
-        difficultyAdapter = DifficultyAdapter(difficulties.toMutableList(), difficultClick)
+        difficultyAdapter.addAll(difficulties.toMutableList())
         difficultyRecyclerView?.let {
             it.addItemDecoration(ItemDecoration(resources!!.getDimensionPixelSize(R.dimen.decorator_card_padding), ItemDecoration.VERTICAL))
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = difficultyAdapter
         }
+    }
+
+    override fun handleBack(): Boolean {
+        if (isDeepLink)
+            router.pushController(RouterTransaction.with(LessonController()))
+        router.popCurrentController()
+        return true
     }
 
     private fun setUpToolbar(toolbarTitle: String) {
@@ -82,4 +87,10 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
+
+    companion object {
+        const val EXTRA_SELECTED_DIFFICULTY = "selected_difficulty"
+        const val EXTRA_IS_DEEP_LINK = "deeplink"
+    }
+
 }

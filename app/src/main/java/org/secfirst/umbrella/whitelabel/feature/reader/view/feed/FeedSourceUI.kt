@@ -22,7 +22,7 @@ class FeedSourceUI(private val feedSources: List<FeedSource>) : AnkoComponent<Fe
 
             }.lparams(width = wrapContent, height = wrapContent) {
                 leftMargin = dip(28)
-                topMargin = dip(24)
+                topMargin = dip(20)
             }
             linearLayout {
                 orientation = LinearLayout.VERTICAL
@@ -39,7 +39,8 @@ class FeedSourceUI(private val feedSources: List<FeedSource>) : AnkoComponent<Fe
                 }
                 include<View>(R.layout.alert_control) {
                 }.lparams(width = wrapContent, height = wrapContent) {
-                    rightMargin = dip(10)
+                    topMargin = dip(40)
+                    leftMargin = dip(140)
                 }
             }.lparams(width = wrapContent, height = wrapContent) {
 

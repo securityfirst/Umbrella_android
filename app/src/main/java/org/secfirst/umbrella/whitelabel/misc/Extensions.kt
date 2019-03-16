@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Base64
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -147,4 +149,22 @@ enum class TypeHelper(val value: String) {
     MODULE(Module::class.java.name),
     SUBJECT(Subject::class.java.name),
     DIFFICULTY(Difficulty::class.java.name)
+}
+
+fun Context.setLocale(lang: String) {
+    val res = resources
+    val dm = res.displayMetrics
+    val conf = res.configuration
+    conf.locale = Locale(lang)
+    res.updateConfiguration(conf, dm)
+}
+
+fun Context.createNotification(title: String, body: String, channelId: String, id: Int) {
+    val notification = NotificationCompat.Builder(this, channelId)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setSmallIcon(R.drawable.umbrella190)
+            .build()
+    val notificationManagerCompat = NotificationManagerCompat.from(this)
+    notificationManagerCompat.notify(id, notification)
 }

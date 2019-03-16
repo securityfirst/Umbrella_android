@@ -7,7 +7,7 @@ interface TentBaseInteractor : BaseInteractor {
 
     suspend fun updateRepository(): List<Pair<String, File>>
 
-    suspend fun fetchRepository(): Boolean
+    suspend fun fetchRepository(url : String): Boolean
 
     suspend fun loadElementsFile(): List<Pair<String, File>>
 

@@ -17,17 +17,17 @@ class ContentRepository @Inject constructor(private val contentDao: ContentDao) 
 
     override suspend fun insertDefaultRSS(rssList: List<RSS>) = contentDao.insertDefaultRSS(rssList)
 
-    override suspend fun getSubject(sha1ID: String) = contentDao.getSubject(sha1ID)
+    override suspend fun getSubject(subjectId: String) = contentDao.getSubject(subjectId)
 
-    override suspend fun getDifficulty(sha1ID: String) = contentDao.getDifficulty(sha1ID)
+    override suspend fun getDifficulty(difficultyId: String) = contentDao.getDifficulty(difficultyId)
 
-    override suspend fun getModule(sha1ID: String) = contentDao.getModule(sha1ID)
+    override suspend fun getModule(moduleId: String) = contentDao.getModule(moduleId)
 
-    override suspend fun getMarkdown(sha1ID: String) = contentDao.getMarkdown(sha1ID)
+    override suspend fun getMarkdown(markdownId: String) = contentDao.getMarkdown(markdownId)
 
-    override suspend fun getChecklist(sha1ID: String) = contentDao.getChecklist(sha1ID)
+    override suspend fun getChecklist(checklistId: String) = contentDao.getChecklist(checklistId)
 
-    override suspend fun getForm(sha1ID: String) = contentDao.getForm(sha1ID)
+    override suspend fun getForm(formId: String) = contentDao.getForm(formId)
 
     override suspend fun saveAllChecklists(checklists: List<Checklist>) = contentDao.saveChecklists(checklists)
 

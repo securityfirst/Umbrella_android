@@ -23,17 +23,24 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
         putParcelable(EXTRA_SELECTED_SEGMENT_DETAIL, markdown)
     })
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        val view = inflater.inflate(R.layout.segment_detail, container, false)
+        loadMarkdown(view)
+        return view
+    }
+
+    private fun loadMarkdown(view: View) {
+        val css = Github()
+        css.addRule("body", "line-height: 1.6", "padding: 0px")
+        view.markdownView.addStyleSheet(css)
+        launchSilent(uiContext) { view.markdownView.loadMarkdown(markdown.text) }
+    }
+
+    fun getTitle() = markdown.title
+
     companion object {
         const val EXTRA_SELECTED_SEGMENT_DETAIL = "selected_segment_detail"
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        val view = inflater.inflate(R.layout.segment_detail, container, false)
-        view.markdownView.addStyleSheet(Github())
-        launchSilent(uiContext) { view.markdownView.loadMarkdown(markdown.text) }
-        return view
-    }
-
-    fun getTitle() = markdown.title
 }

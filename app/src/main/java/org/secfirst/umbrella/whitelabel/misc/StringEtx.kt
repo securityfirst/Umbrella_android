@@ -2,13 +2,15 @@ package org.secfirst.umbrella.whitelabel.misc
 
 import android.content.Context
 import org.jetbrains.anko.toast
-import org.secfirst.umbrella.whitelabel.R
 import java.net.URL
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
+
+const val DOWNLOAD_CHANNEL_ID = "dl_channel"
+const val DOWNLOAD_CHANNEL_NAME = "default"
 
 val currentTime: String
     get() {
@@ -40,18 +42,24 @@ fun Long?.timestampToStringFormat(): String {
 }
 
 fun String.checkPasswordStrength(context: Context): Boolean {
+
     if (this.length < 8) {
-        context.toast(context.getString(R.string.password_too_short))
+        context.toast(context.getString(org.secfirst.umbrella.whitelabel.R.string.password_too_short))
         return false
     } else if (!Pattern.compile("\\d").matcher(this).find()) {
-        context.toast(context.getString(R.string.password_one_digit))
+        context.toast(context.getString(org.secfirst.umbrella.whitelabel.R.string.password_one_digit))
         return false
     } else if (!Pattern.compile("[A-Z]").matcher(this).find()) {
-        context.toast(context.getString(R.string.password_one_capital))
+        context.toast(context.getString(org.secfirst.umbrella.whitelabel.R.string.password_one_capital))
         return false
     } else if (!Pattern.compile("[A-Z]").matcher(this).find()) {
-        context.toast(context.getString(R.string.password_one_small))
+        context.toast(context.getString(org.secfirst.umbrella.whitelabel.R.string.password_one_small))
         return false
     }
     return true
+}
+
+fun String.removeSpecialCharacter(): String {
+    val regex = Regex("[^A-Za-z0-9 ]")
+    return regex.replace(this, " ")
 }

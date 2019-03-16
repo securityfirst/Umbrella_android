@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
+import androidx.core.content.ContextCompat
 import com.bluelinelabs.conductor.RouterTransaction
 import com.stepstone.stepper.StepperLayout
 import com.stepstone.stepper.VerificationError
@@ -49,8 +50,11 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     override fun onAttach(view: View) {
         super.onAttach(view)
         enableNavigation(false)
-        stepperLayout.adapter = FormAdapter(activeForm.form, this, listOfViews)
-        stepperLayout.setListener(this)
+        stepperLayout?.adapter = FormAdapter(activeForm.form, this, listOfViews)
+        stepperLayout?.setListener(this)
+        stepperLayout?.setNextButtonColor(ContextCompat.getColor(context, R.color.white))
+        stepperLayout?.setBackButtonColor(ContextCompat.getColor(context, R.color.white))
+        stepperLayout?.setCompleteButtonColor(ContextCompat.getColor(context, R.color.white))
         presenter.onAttach(this)
         setUpToolbar()
     }
@@ -99,6 +103,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
     @SuppressLint("SetTextI18n")
     private fun setProgress(newStepPosition: Int) {
         val size = totalScreens
+        titleProgressAnswer.text = "0%"
         var percentage = newStepPosition * 100 / totalScreens
         if (newStepPosition > 0) {
             progressAnswer.progress = percentage

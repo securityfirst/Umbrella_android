@@ -47,14 +47,19 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                                              checklistValue: List<String>) {
         launchSilent(uiContext) {
             interactor?.let {
-                val contents = mutableListOf<Content>()
-                val customChecklist = Checklist(contents, true, checklistTitle, checklistId)
-                checklistValue.forEach { value ->
-                    val content = Content(value)
-                    content.checklist = customChecklist
-                    contents.add(content)
+                try {
+                    val contents = mutableListOf<Content>()
+                    val customChecklist = Checklist(contents, true, checklistTitle, checklistId)
+                    checklistValue.forEach { value ->
+                        val content = Content(value)
+                        content.checklist = customChecklist
+                        contents.add(content)
+                    }
+                    it.persistChecklist(customChecklist)
+
+                } catch (e: Exception) {
+                    println("Error when tried to save a custom checklist.")
                 }
-                it.persistChecklist(customChecklist)
             }
         }
     }
@@ -84,7 +89,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val customChecklist = it.fetchAllCustomChecklistInProgress()
                 val allDashboard = mutableListOf<Dashboard.Item>()
                 val inProgressList = customDashboard(customChecklist, "My checklists")
-                allDashboard.addAll(inProgressList)
+                if (customChecklist.isNotEmpty()) allDashboard.addAll(inProgressList)
                 getView()?.showDashboard(allDashboard)
             }
         }
@@ -96,11 +101,17 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val rate = it.fetchAllChecklistInProgress()
                 val totalDone = it.fetchChecklistCount().toInt()
                 val allDashboard = mutableListOf<Dashboard.Item>()
-                allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
-                val favoriteList = dashboardMount(it.fetchAllChecklistFavorite(), "Favorites")
-                allDashboard.addAll(favoriteList)
-                val inProgressList = dashboardMount(it.fetchAllChecklistInProgress(), "My Checklists")
-                allDashboard.addAll(inProgressList)
+                val checklistInProgress = it.fetchAllChecklistInProgress()
+                val favoriteChecklist = it.fetchAllChecklistFavorite()
+                val favoriteList = dashboardMount(favoriteChecklist, "Favorites")
+                val inProgressList = dashboardMount(checklistInProgress, "My Checklists")
+
+                if (checklistInProgress.isNotEmpty() || favoriteChecklist.isNotEmpty()) {
+                    allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
+                    allDashboard.addAll(favoriteList)
+                    allDashboard.addAll(inProgressList)
+                }
+
                 getView()?.showDashboard(allDashboard)
             }
         }

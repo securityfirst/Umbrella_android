@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -23,15 +21,18 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.Checklist
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
+
 class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), ChecklistView {
 
     @Inject
     internal lateinit var presenter: ChecklistBasePresenter<ChecklistView, ChecklistBaseInteractor>
     private val checklistId by lazy { args.getString(EXTRA_ID_CUSTOM_CHECKLIST) }
+    private val checklistName by lazy { args.getString(EXTRA_CUSTOM_CHECKLIST_NAME) }
     private lateinit var adapter: ChecklistCustomAdapter
 
-    constructor(checklistId: String) : this(Bundle().apply {
+    constructor(checklistId: String, checklistName: String) : this(Bundle().apply {
         putString(EXTRA_ID_CUSTOM_CHECKLIST, checklistId)
+        putString(EXTRA_CUSTOM_CHECKLIST_NAME, checklistName)
     })
 
     override fun onInject() {
@@ -70,18 +71,12 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
     private fun addChecklistItem() {
         val checklistItem = checklistContent.text.toString()
         checklistContent?.text?.clear()
-        if (cardViewTitle?.visibility == INVISIBLE) {
-            editChecklistTitle?.setText(checklistItem)
-            cardViewTitle?.visibility = VISIBLE
-            checklistContent.hint = context.getText(R.string.custom_checklist_hint_add_checklistItem)
-        } else {
-            adapter.add(checklistItem)
-        }
+        adapter.add(checklistItem)
     }
 
     private fun submitChecklist() {
         if (adapter.getChecklistItems().isNotEmpty())
-            presenter.submitInsertCustomChecklist(editChecklistTitle.text.toString(),
+            presenter.submitInsertCustomChecklist(checklistName,
                     checklistId, adapter.getChecklistItems())
     }
 
@@ -102,7 +97,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
         customChecklistToolbar?.let {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            mainActivity.supportActionBar?.title = context.getString(R.string.custom_checklist_title)
+            mainActivity.supportActionBar?.title = checklistName
         }
     }
 
@@ -123,11 +118,13 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun handleBack(): Boolean {
         submitChecklist()
-        return super.handleBack()
+        router.popCurrentController()
+        return true
     }
 
     companion object {
         private const val EXTRA_ID_CUSTOM_CHECKLIST = "id_custom_check_list"
+        private const val EXTRA_CUSTOM_CHECKLIST_NAME = "name_custom_check_list"
         private const val INITIAL_INDEX = 0
     }
 }

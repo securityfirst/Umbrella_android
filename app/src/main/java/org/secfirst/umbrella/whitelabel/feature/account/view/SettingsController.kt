@@ -16,10 +16,16 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
+import com.nabinbhandari.android.permissions.PermissionHandler
+import com.nabinbhandari.android.permissions.Permissions
+import kotlinx.android.synthetic.main.account_language_dialog.view.*
 import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
+import kotlinx.android.synthetic.main.account_switch_server_view.view.*
+import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.BuildConfig
@@ -29,6 +35,8 @@ import org.secfirst.umbrella.whitelabel.component.DialogManager
 import org.secfirst.umbrella.whitelabel.component.RefreshIntervalDialog
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
+import org.secfirst.umbrella.whitelabel.data.disk.IsoCountry
+import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
@@ -42,11 +50,13 @@ import org.secfirst.umbrella.whitelabel.feature.tent.TentView
 import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.tent.presenter.TentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
-import org.secfirst.umbrella.whitelabel.misc.PERMISSION_REQUEST_EXTERNAL_STORAGE
+import org.secfirst.umbrella.whitelabel.misc.appContext
 import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
 import org.secfirst.umbrella.whitelabel.misc.requestExternalStoragePermission
+import org.secfirst.umbrella.whitelabel.misc.setLocale
 import java.io.File
 import javax.inject.Inject
+
 
 class SettingsController : BaseController(), AccountView, ContentView, TentView, FeedLocationDialog.FeedLocationListener,
         RefreshIntervalDialog.RefreshIntervalListener, FeedSourceDialog.FeedSourceListener {
@@ -59,12 +69,16 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     internal lateinit var presentTent: TentBasePresenter<TentView, TentBaseInteractor>
 
     private lateinit var exportAlertDialog: AlertDialog
+    private lateinit var switchServerDialog: AlertDialog
     private lateinit var exportView: View
-    private lateinit var destinationPath: String
+    private lateinit var switchServerView: View
+    private var destinationPath = ""
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
     private lateinit var refreshIntervalView: View
+    private lateinit var languageDialog: AlertDialog
+    private lateinit var languageView: View
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
     private lateinit var refreshServerProgress: ProgressDialog
@@ -86,6 +100,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
+        switchServerView = inflater.inflate(R.layout.account_switch_server_view, container, false)
+        languageView = inflater.inflate(R.layout.account_language_dialog, container, false)
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
 
@@ -98,25 +114,111 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 .setView(exportView)
                 .create()
 
-        exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
-        exportView.exportDialogOk.onClick { exportDataOk() }
-        exportView.exportDialogCancel.onClick { exportDataClose() }
+        languageDialog = AlertDialog
+                .Builder(activity)
+                .setView(languageView)
+                .create()
 
+        switchServerDialog = AlertDialog
+                .Builder(activity)
+                .setView(switchServerView)
+                .setTitle(context.getString(R.string.switch_server_title_message))
+                .create()
+
+        exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
+        exportView.alertControlOk.onClick { exportDataOk() }
+        exportView.alertControlCancel.onClick { exportDataClose() }
+        switchServerView.alertControlOk.onClick { switchServerOk() }
+        switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
+        languageView.alertControlOk.onClick { changeLanguageOk() }
+        languageView.alertControlCancel.onClick { languageDialog.dismiss() }
+
+        mainView.settingsLanguage.onClick { languageClick() }
         mainView.settingsImportData.onClick { importDataClick() }
-        mainView.settingsExportData.setOnClickListener { exportDataClick() }
-        mainView.settingsLocation.setOnClickListener { setLocationClick() }
-        mainView.settingsRefreshFeeds.setOnClickListener { refreshIntervalClick() }
-        mainView.settingsSecurityFeed.setOnClickListener { feedSourceClick() }
-        mainView.settingsRefreshServer.setOnClickListener { refreshServerClick() }
+        mainView.settingsExportData.onClick { exportDataClick() }
+        mainView.settingsLocation.onClick { setLocationClick() }
+        mainView.settingsRefreshFeeds.onClick { refreshIntervalClick() }
+        mainView.settingsSecurityFeed.onClick { feedSourceClick() }
+        mainView.settingsRefreshServer.onClick { refreshServerClick() }
+        mainView.settingsSwitchServer.onClick { switchServerClick() }
         mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
             skipPasswordTip(isChecked)
         }
+        presenter.submitDefaultLanguage()
         presenter.submitSkippPassword()
         presenter.prepareView()
         initExportGroup()
         feedLocationDialog = FeedLocationDialog(feedLocationView, this)
 
         return mainView
+    }
+
+    private fun languageClick() {
+        val dialogManager = DialogManager(this)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return languageDialog
+            }
+        })
+    }
+
+    private fun changeLanguageOk() {
+        when {
+            languageView.spanishCheck.isChecked -> {
+                context.setLocale(IsoCountry.SPANISH.value)
+                presenter.setDefaultLanguage(IsoCountry.SPANISH.value)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
+            }
+            languageView.chineseCheck.isChecked -> {
+                context.setLocale(IsoCountry.CHINESE.value)
+                presenter.setDefaultLanguage(IsoCountry.CHINESE.value)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.cn)
+            }
+            else -> {
+                context.setLocale(IsoCountry.ENGLISH.value)
+                presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
+            }
+        }
+        mainActivity.recreate()
+        mainActivity.navigationPositionToCenter()
+        languageDialog.dismiss()
+    }
+
+    override fun getDefaultLanguage(isoCountry: String) {
+        when (isoCountry) {
+            IsoCountry.ENGLISH.value -> {
+                languageView.englishCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.english_language_title)
+                // mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
+            }
+            IsoCountry.CHINESE.value -> {
+                languageView.chineseCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.chinese_language_title)
+                // mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.cn)
+            }
+            IsoCountry.SPANISH.value -> {
+                languageView.spanishCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.spanish_language_title)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
+            }
+            else -> {
+                languageView.englishCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.english_language_title)
+                //mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
+            }
+        }
+    }
+
+    private fun switchServerClick() {
+        val dialogManager = DialogManager(this)
+        val length = switchServerView.editServer.text.toString().length
+        switchServerView.editServer.setSelection(length)
+        dialogManager.showDialog(object : DialogManager.DialogFactory {
+            override fun createDialog(context: Context?): Dialog {
+                return switchServerDialog
+            }
+        })
     }
 
     private fun refreshServerClick() {
@@ -154,6 +256,11 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         chooser.setOnSelectListener { path -> presenter.validateBackupPath(path) }
     }
 
+    private fun switchServerOk() {
+        val repoUrl = switchServerView.editServer.text.toString()
+        presenter.switchServerProcess(repoUrl)
+    }
+
     private fun exportDataClick() {
         val dialogManager = DialogManager(this)
         dialogManager.showDialog(object : DialogManager.DialogFactory {
@@ -166,7 +273,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private fun initExportGroup() {
         exportView.exportDialogGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.exportDialogTypeExport -> showFileChooserPreview()
+                R.id.exportDialogTypeExport -> checkPermission()
                 R.id.ExportDialogShareType -> presenter.prepareShareContent(getFilename())
             }
         }
@@ -195,6 +302,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         }
     }
 
+
     private fun chooseFolderDialog() {
         val chooser = StorageChooser.Builder()
                 .withActivity(mainActivity)
@@ -209,21 +317,19 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == PERMISSION_REQUEST_EXTERNAL_STORAGE) {
-            if (grantResults.size == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    private fun checkPermission() {
+        Permissions.check(appContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE, null, object : PermissionHandler() {
+            override fun onGranted() {
                 showFileChooserPreview()
-            } else {
-                // Permission request was denied.
             }
-        }
+        })
     }
-
 
     override fun loadDefaultValue(feedLocation: FeedLocation?, refreshFeedInterval: Int
                                   , feedSource: List<FeedSource>) {
 
-        mainView.settingsLabelLocation.text = feedLocation?.location ?: context.getText(R.string.settings_your_location)
+        mainView.settingsLabelLocation.text = feedLocation?.location
+                ?: context.getText(R.string.settings_your_location)
         refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval, this)
         mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
         feedSourceDialog = FeedSourceDialog(feedSource, context, this)
@@ -294,11 +400,9 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         })
     }
 
-    override fun onCleanDatabaseSuccess() = presentContent.manageContent()
+    override fun onCleanDatabaseSuccess() = presentContent.manageContent(baseUrlRepository)
 
-    private fun exportDataOk() {
-        presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
-    }
+    private fun exportDataOk() = presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
 
     private fun exportDataClose() = exportAlertDialog.dismiss()
 
@@ -320,5 +424,18 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         context.toast(context.getString(R.string.update_repository_message_success))
         presentContent.updateContent(pairFiles)
         refreshServerProgress.dismiss()
+    }
+
+    override fun onSwitchServer(isSwitch: Boolean) {
+        val newContentUrl = switchServerView.editServer.text.toString()
+        if (isSwitch) {
+            switchServerDialog.dismiss()
+            presentContent.manageContent(newContentUrl)
+        } else
+            context.longToast(context.getString(R.string.switch_server_error_message))
+    }
+
+    override fun onResetContent(res: Boolean) {
+        if (res) doRestartApplication(context)
     }
 }

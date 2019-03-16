@@ -12,7 +12,7 @@
         android:id="@+id/difficultLayout"
         android:layout_width="0dp"
         android:layout_height="76dp"
-        android:background="@color/avocado"
+        android:background="@color/umbrella_green"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

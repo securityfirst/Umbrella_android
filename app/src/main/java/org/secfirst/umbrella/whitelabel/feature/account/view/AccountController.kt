@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
 import kotlinx.android.synthetic.main.mask_app_info_view.view.*
+import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
@@ -85,9 +86,9 @@ class AccountController : BaseController(), AccountView {
         accountView.accountMask.setOnClickListener { clickOnMaskApp() }
         accountView.resetPassword.setOnClickListener { clickResetPassword() }
 
-        passwordView.passwordSkip.setOnClickListener { clickOnSkipAlert() }
-        passwordView.passwordOk.setOnClickListener { passwordAlertOk() }
-        passwordView.passwordCancel.setOnClickListener { passwordAlertCancel() }
+        passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
+        passwordView.alertPasswordOk.setOnClickListener { passwordAlertOk() }
+        passwordView.alertPasswordCancel.setOnClickListener { passwordAlertCancel() }
 
         skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
         skipPasswordView.ok.setOnClickListener { skipAlertOk() }
@@ -132,9 +133,13 @@ class AccountController : BaseController(), AccountView {
     }
 
     private fun passwordAlertOk() {
-        val token = passwordView.pwText.text.toString()
-        if (token.checkPasswordStrength(context))
-            presenter.submitChangeDatabaseAccess(token)
+        val token = passwordView.alertPwText.text.toString()
+        val confirmToken = passwordView.alertPwConfirm.text.toString()
+        if (token == confirmToken) {
+            if (token.checkPasswordStrength(context))
+                presenter.submitChangeDatabaseAccess(token)
+        } else
+            context.toast(context.getString(R.string.confirm_password_error_message))
     }
 
     private fun clickOnSkipAlert() {

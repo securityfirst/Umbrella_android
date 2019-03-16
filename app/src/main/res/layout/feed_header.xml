@@ -55,7 +55,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_horizontal"
                 android:text="@string/feed_change_header"
-                android:textColor="@color/avocado"
+                android:textColor="@color/umbrella_green"
                 android:textSize="14sp"
                 android:textStyle="normal" />
         </LinearLayout>

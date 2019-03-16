@@ -8,7 +8,7 @@ import java.io.File
 
 interface ContentBasePresenter<V : ContentView, I : ContentBaseInteractor> : BasePresenter<V, I> {
 
-    fun manageContent()
+    fun manageContent(url:String)
 
     fun updateContent(pairFiles: List<Pair<String, File>>)
 

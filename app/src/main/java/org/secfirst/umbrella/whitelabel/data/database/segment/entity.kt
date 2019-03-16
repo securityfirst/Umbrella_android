@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
+import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
@@ -16,28 +17,37 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
+import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 
 @Parcelize
-@Table(database = AppDatabase::class,
-        allFields = true, useBooleanGetterSetters = false, cachingEnabled = true)
+@Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
         @PrimaryKey
         var id: String = "",
+        @Column
         var text: String = "",
+        @Column
         var title: String = "",
+        @Column
         var index: String = "",
+        @Column
         var favorite: Boolean = false,
-        var basePath: String = "",
+        @Column
+        var identifier: String = "",
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
         @ForeignKey(stubbedRelationship = true)
         var subject: Subject? = null,
         @ForeignKey(stubbedRelationship = true)
-        var difficulty: Difficulty? = null) : Parcelable {
+        var difficulty: Difficulty? = null,
+        var isRemove: Boolean = false) : Parcelable {
 
-    constructor(sha1ID: String, text: String) : this(sha1ID, text, recoveryTitle(text), recoveryIndex(text))
+    constructor(id: String, text: String) : this(id, text, recoveryTitle(text),
+            recoveryIndex(text),
+            false,
+            recoveryTitle(text).removeSpecialCharacter())
 
     companion object {
         const val FAVORITE_INDEX = "1"
@@ -85,7 +95,8 @@ fun Markdown.toSearchResult(): SearchResult {
     return SearchResult(
             title,
             text.substring(0, Math.min(text.length, 300))
-    ) { c: Context -> c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://lessons/$id")))
+    ) { c: Context ->
+        c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://lessons/$id")))
     }
 }
 

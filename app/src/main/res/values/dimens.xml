@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
@@ -6,6 +6,7 @@
 
     <!-- font sizes -->
     <dimen name="font_larger">22sp</dimen>
+    <dimen name="font_list_item">20sp</dimen>
     <dimen name="font_large">20sp</dimen>
     <dimen name="font_normal">15sp</dimen>
     <dimen name="font_small">12sp</dimen>
@@ -21,6 +22,7 @@
     <dimen name="text_size_like_really_small">12sp</dimen>
     <dimen name="text_size_like_small">13sp</dimen>
 
+
     <dimen name="md_dialog_frame_margin">24dp</dimen>
     <dimen name="md_content_padding_top">8dp</dimen>
     <dimen name="md_content_textsize">16sp</dimen>
@@ -32,8 +34,8 @@
     <dimen name="dashboard_feed_padding">10dp</dimen>
     <dimen name="dashboard_feed_small_padding">5dp</dimen>
     <dimen name="dashboard_feed_smallest_padding">3dp</dimen>
-    <dimen name="dashboard_feed_normal_padding">10dp</dimen>
-    <dimen name="dashboard_feed_margin_top">15dp</dimen>
+    <dimen name="dashboard_feed_normal_padding">5dp</dimen>
+    <dimen name="dashboard_feed_margin_top">10dp</dimen>
     <dimen name="dashboard_feed_medium_margin_top">10dp</dimen>
     <dimen name="dashboard_feed_smallest_margin_top">3dp</dimen>
     <dimen name="dashboard_feed_small_margin_top">5dp</dimen>
@@ -66,11 +68,12 @@
     <dimen name="share_dialog_small_space">20dp</dimen>
     <dimen name="share_dialog_little_space">10dp</dimen>
     <dimen name="decorator_card_padding">8dp</dimen>
+    <dimen name="test">5dp</dimen>
 
     <dimen name="recycler_view_margin_bottom">56dp</dimen>
-    <dimen name="segment_item_width">168dp</dimen>
-    <dimen name="segment_item_small_width">150dp</dimen>
-    <dimen name="segment_item_height">170dp</dimen>
+    <dimen name="segment_item_width">180dp</dimen>
+    <dimen name="segment_item_small_width">153dp</dimen>
+    <dimen name="segment_item_height">175dp</dimen>
     <dimen name="segment_item_corner_radius">2dp</dimen>
     <dimen name="segment_item_small_padding">2dp</dimen>
     <dimen name="segment_item_card_height">121dp</dimen>
@@ -85,4 +88,15 @@
     <dimen name="form_title_text_size">23sp</dimen>
     <dimen name="form_title_height">40dp</dimen>
     <dimen name="form_layout_small_margin">8dp</dimen>
+
+    <dimen name="design_bottom_navigation_text_size" tools:override="true">12sp</dimen>
+    <dimen name="design_bottom_navigation_active_text_size" tools:override="true">12sp</dimen>
+
+    <dimen name="width_icon">20dp</dimen>
+    <dimen name="height_icon">20dp</dimen>
+
+    <!-- Settings -->
+    <dimen name="settings_normal_padding">5dp</dimen>
+    <dimen name="settings_bigger_padding">20dp</dimen>
+    <dimen name="settings_vertical_margin">10dp</dimen>
 </resources>

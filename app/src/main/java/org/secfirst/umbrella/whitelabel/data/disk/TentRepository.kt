@@ -11,5 +11,5 @@ class TentRepository @Inject constructor(private val tentDao: TentDao) : TentRep
 
     override fun loadFile() = tentDao.filterByElement()
 
-    override suspend fun fetchRepository() = tentDao.cloneRepository()
+    override suspend fun fetchRepository(url: String) = tentDao.cloneRepository(url)
 }

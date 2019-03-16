@@ -25,6 +25,10 @@ open class BaseInteractorImp() : BaseInteractor {
         return res
     }
 
+    override fun setDefaultLanguage(isoCountry: String) = preferenceHelper.setLanguage(isoCountry)
+
+    override fun getDefaultLanguage() = preferenceHelper.getLanguage()
+
     override fun setSkipPassword(isSkip: Boolean) = preferenceHelper.setSkipPassword(isSkip)
 
     override fun isSkippPassword(): Boolean = preferenceHelper.getSkipPassword()

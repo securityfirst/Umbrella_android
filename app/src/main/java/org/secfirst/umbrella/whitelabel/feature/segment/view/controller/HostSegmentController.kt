@@ -135,6 +135,11 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         return controllers
     }
 
+    override fun handleBack(): Boolean {
+        router.popCurrentController()
+        return true
+    }
+
     private fun setUpToolbar(view: View) {
         view.hostSegmentToolbar.let {
             mainActivity.setSupportActionBar(it)

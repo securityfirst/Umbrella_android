@@ -42,7 +42,7 @@ class HostFormController(bundle: Bundle) : BaseController(bundle), FormView {
     private var activeFormTag = ""
     private lateinit var allFormSection: AllFormSection
     private lateinit var activeFormSection: ActiveFormSection
-    private val uriString by lazy { args.getString(EXTRA_ENABLE_DEEP_LINK_FORM) }
+    private val uriString by lazy { args.getString(EXTRA_ENABLE_DEEP_LINK_FORM)?:"" }
 
 
     constructor(uri: String = "") : this(Bundle().apply {

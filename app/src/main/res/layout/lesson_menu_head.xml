@@ -4,47 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/lessonHeaderLayout"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:layout_marginTop="20dp"
+    android:layout_height="50dp"
     android:background="?attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
+    android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/iconHeader"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_centerVertical="true"
-        android:textColor="@android:color/black"
-        android:textSize="14sp" />
-
-    <TextView
-        android:id="@+id/subHeaderText"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:fontFamily="sans-serif"
-        android:lineSpacingExtra="8sp"
-        android:textColor="#de000000"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        tools:text="TEXT" />
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_fav_selected" />
+
+        <TextView
+            android:id="@+id/subHeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:fontFamily="sans-serif"
+            android:lineSpacingExtra="8sp"
+            android:textColor="#de000000"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintStart_toEndOf="@+id/iconHeader"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TEXT" />
 
 
-    <ImageView
-        android:id="@+id/arrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_keyboard_arrow_down_black" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/arrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
