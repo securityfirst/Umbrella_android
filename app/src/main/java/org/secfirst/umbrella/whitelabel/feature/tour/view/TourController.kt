@@ -24,7 +24,6 @@ import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import org.secfirst.umbrella.whitelabel.feature.tour.DaggerTourComponent
 import javax.inject.Inject
 
@@ -56,9 +55,9 @@ class TourController : BaseController(), ContentView {
             val title = intent.getStringExtra(EXTRA_CONTENT_SERVICE_TITLE_PROGRESS) ?: ""
             val isCompleted = intent.getBooleanExtra(ACTION_COMPLETED_FOREGROUND_SERVICE, false)
 
-            if (title.isNotEmpty()) {
+            if (title.isNotEmpty())
                 progressDialog.setTitle(title)
-            }
+
             Handler().post {
                 progressDialog.progress = 0
                 progressDialog.incrementProgressBy(percentage)
@@ -66,9 +65,9 @@ class TourController : BaseController(), ContentView {
 
             if (isCompleted) {
                 progressDialog.dismiss()
-                router.popCurrentController()
-                startActivity(Intent(context, MainActivity::class.java))
-                startActivity(Intent())
+                router.popController(this@TourController)
+                router.setPopsLastView(true)
+                router.pushController(RouterTransaction.with(HostChecklistController()))
                 mainActivity.navigationPositionToCenter()
                 enableNavigation(true)
             }
