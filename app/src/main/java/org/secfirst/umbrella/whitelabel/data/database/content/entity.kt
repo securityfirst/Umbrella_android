@@ -14,6 +14,8 @@ class ContentData(val modules: MutableList<Module> = mutableListOf())
 fun Content.toSearchResult(): SearchResult {
     val segments = this.checklist?.id.orEmpty().split("/")
     return SearchResult("${WordUtils.capitalizeFully(segments[1])} - ${WordUtils.capitalizeFully(segments[3])}", this.check
-    ) { c: Context -> c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://checklists/${this.checklist?.id}")))
+    ) { c: Context ->
+        val withoutLanguage = this.checklist?.id?.split("/")?.drop(1)?.joinToString("/")
+        c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://checklists/$withoutLanguage")))
     }
 }

@@ -19,6 +19,7 @@ import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentC
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
+import java.util.logging.Logger
 
 
 @Parcelize
@@ -96,7 +97,8 @@ fun Markdown.toSearchResult(): SearchResult {
             title,
             text.substring(0, Math.min(text.length, 300))
     ) { c: Context ->
-        c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://lessons/$id")))
+        val withoutLanguage = id.split("/").drop(1).joinToString("/")
+        c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://$withoutLanguage")))
     }
 }
 

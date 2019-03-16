@@ -10,6 +10,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel
 import org.jsoup.Jsoup
 import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
+import org.secfirst.umbrella.whitelabel.data.database.content.toSearchResult
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
 import java.io.Serializable
@@ -205,6 +206,8 @@ fun MutableList<Form>.associateFormForeignKey() {
 
 fun Form.toSearchResult(): SearchResult {
     return SearchResult(this.title, "Summary of ${this.title}"
-    ) { c: Context -> c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://forms/${this.path}")))
+    ) { c: Context ->
+        val withoutLanguage = this.path.split("/").drop(1).joinToString("/")
+        c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://forms/$withoutLanguage")))
     }
 }

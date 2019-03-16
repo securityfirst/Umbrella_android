@@ -1,13 +1,19 @@
 package org.secfirst.umbrella.whitelabel.feature.main
 
+import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.WindowManager
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
@@ -16,6 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
+import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.isRepository
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
@@ -29,6 +36,7 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import java.util.logging.Logger
 
 
 class MainActivity : AppCompatActivity() {
@@ -51,43 +59,45 @@ class MainActivity : AppCompatActivity() {
         ShakeDetector.start()
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        // Inflate the options menu from XML
-//        val inflater = menuInflater
-//        inflater.inflate(R.menu.option_menu, menu)
-//
-//        // Get the SearchView and set the searchable configuration
-//        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-//        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
-//            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
-//            searchEditText.setTextColor(resources.getColor(R.color.white))
-//            searchEditText.setHintTextColor(resources.getColor(R.color.white))
-//            // Assumes current activity is the searchable activity
-//            setSearchableInfo(searchManager.getSearchableInfo(componentName))
-//            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
-//            isSubmitButtonEnabled = true
-//            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//                override fun onQueryTextSubmit(p0: String?): Boolean {
-//                    p0?.let {
-//                        val i = Intent(this@MainActivity, SearchActivity::class.java)
-//                        i.action = Intent.ACTION_SEARCH
-//                        i.putExtra(SearchManager.QUERY, it)
-//                        startActivity(i)
-//                        return true
-//                    }
-//                    return false
-//                }
-//
-//                override fun onQueryTextChange(p0: String?): Boolean {
-//                    return false
-//                }
-//
-//            })
-//        }
-//        return true
-//    }
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the options menu from XML
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+
+        // Get the SearchView and set the searchable configuration
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+            val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
+            searchEditText.setTextColor(resources.getColor(R.color.white))
+            searchEditText.setHintTextColor(resources.getColor(R.color.white))
+            // Assumes current activity is the searchable activity
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
+            isSubmitButtonEnabled = true
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+                    p0?.let {
+                        val i = Intent(this@MainActivity, SearchActivity::class.java)
+                        i.action = Intent.ACTION_SEARCH
+                        i.putExtra(SearchManager.QUERY, it)
+                        startActivity(i)
+                        return true
+                    }
+                    return false
+                }
+
+                override fun onQueryTextChange(p0: String?): Boolean {
+                    return false
+                }
+
+            })
+        }
+        return true
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val name = this@MainActivity.resources.getResourceEntryName(item.itemId)
+        Logger.getLogger("bbb").info("id $name")
         if (item.itemId == android.R.id.home) {
             onBackPressed()
             hideKeyboard()
@@ -187,14 +197,6 @@ class MainActivity : AppCompatActivity() {
                 FEED_HOST -> openFeedByUrl(router, navigation)
                 FORM_HOST -> openFormByUrl(router, navigation, uriString)
                 CHECKLIST_HOST -> openChecklistByUrl(router, navigation, uriString)
-                else -> {
-                    launchSilent(uiContext) {
-                        if (isLessonDeepLink(uriSplitted))
-                            openSpecificLessonByUrl(router, navigation, uriString)
-                        else
-                            openDifficultyByUrl(router, navigation, path)
-                    }
-                }
                 SEARCH_HOST -> {
                     val i = Intent(this@MainActivity, SearchActivity::class.java)
                     i.action = Intent.ACTION_SEARCH
@@ -203,11 +205,16 @@ class MainActivity : AppCompatActivity() {
                     }
                     startActivity(i)
                 }
+                else -> {
+                    launchSilent(uiContext) {
+                        if (isLessonDeepLink(uriSplitted))
+                            openSpecificLessonByUrl(router, navigation, uriString)
+                        else
+                            openDifficultyByUrl(router, navigation, path)
+                    }
+                }
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
 }

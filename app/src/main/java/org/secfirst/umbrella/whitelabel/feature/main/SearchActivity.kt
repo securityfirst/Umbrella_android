@@ -16,7 +16,6 @@ import org.secfirst.advancedsearch.models.FieldTypes
 import org.secfirst.advancedsearch.models.SearchCriteria
 import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.advancedsearch.util.mvp.ThreadSpec
-import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content_Table
@@ -30,6 +29,7 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSearchResult
 import java.util.logging.Logger
+import android.view.MenuItem
 
 
 class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
@@ -52,7 +52,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(org.secfirst.umbrella.whitelabel.R.layout.activity_search)
         if (intent.action == Intent.ACTION_SEARCH) {
             intent?.data?.lastPathSegment?.isNotEmpty()?.let {
                 AdvancedSearch.getSearchTermFromIntent(intent)
@@ -66,9 +66,17 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
         setSupportActionBar(searchToolbar)
         supportActionBar?.apply {
             setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.search_results)
+            title = getString(org.secfirst.umbrella.whitelabel.R.string.search_results)
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
 
     override fun getCriteria(): List<SearchCriteria> {
         val uniqueDifficultyList = SQLite.select()

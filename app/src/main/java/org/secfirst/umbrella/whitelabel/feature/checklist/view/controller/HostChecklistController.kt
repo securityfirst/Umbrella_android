@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.host_checklist.*
+import kotlinx.android.synthetic.main.host_reader_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
@@ -45,10 +46,10 @@ class HostChecklistController(bundle: Bundle) : BaseController(bundle), Checklis
         val view = inflater.inflate(R.layout.host_checklist, container, false)
         presenter.onAttach(this)
         if (uriString.isNotBlank()) presenter.submitChecklistById(uriString)
-//        view.toolbar.let {
-//            mainActivity.setSupportActionBar(it)
-//            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
-//        }
+        view.toolbar.let {
+            mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
+        }
         mainActivity.navigationPositionToCenter()
         return view
     }
@@ -58,7 +59,6 @@ class HostChecklistController(bundle: Bundle) : BaseController(bundle), Checklis
         hostChecklistTab?.setupWithViewPager(null)
         super.onDestroyView(view)
     }
-
 
     companion object {
         private const val EXTRA_ENABLE_DEEP_LINK_CHECKLIST = "deeplink"

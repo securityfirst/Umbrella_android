@@ -151,10 +151,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        return inflater.inflate(R.menu.search_menu, menu)
-    }
-
     override fun showSegmentDetail(markdown: Markdown) {
         parentController?.router?.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
 
