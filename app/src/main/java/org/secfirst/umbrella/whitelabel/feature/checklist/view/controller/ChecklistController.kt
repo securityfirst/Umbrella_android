@@ -127,6 +127,8 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             checklist.content.add(Content(check = checklistViewDialog.editChecklistItem.text.toString(), checklist = checklist))
             onChecklistItemAdded(checklist.content.last())
             checklistDialog.dismiss()
+            onUpdateChecklistProgress(Math.ceil(checklist.content.filter { it.value }.size * 100.0 / checklist.content.size).toInt())
+            currentProgress()
         }
         checklistViewDialog.alertControlCancel.onClick { checklistDialog.dismiss() }
         checklistDialog.show()
