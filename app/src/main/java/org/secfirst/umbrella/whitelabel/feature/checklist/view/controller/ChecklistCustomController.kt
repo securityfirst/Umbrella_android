@@ -113,7 +113,6 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     override fun onDestroyView(view: View) {
         enableNavigation(true)
-        submitChecklist()
     }
 
     override fun handleBack(): Boolean {
