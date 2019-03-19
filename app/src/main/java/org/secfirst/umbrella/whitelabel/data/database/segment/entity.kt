@@ -70,9 +70,9 @@ fun List<Markdown>.ids(): ArrayList<String> {
     return res
 }
 
-fun List<Markdown>.toSegmentController(pChecklist: List<Checklist>): SegmentController {
+fun List<Markdown>.toSegmentController(pChecklist: List<Checklist>, isFromDashboard: Boolean = false): SegmentController {
     val checklist = if (pChecklist.isEmpty()) null else pChecklist.last()
-    return SegmentController(ArrayList(this.ids()), checklist?.id ?: "")
+    return SegmentController(ArrayList(this.ids()), checklist?.id ?: "", isFromDashboard)
 }
 
 fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {

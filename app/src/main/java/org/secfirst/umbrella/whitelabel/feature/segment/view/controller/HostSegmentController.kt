@@ -33,14 +33,16 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val objectIds by lazy { args.getStringArrayList(EXTRA_OBJECT_IDS_HOST_SEGMENT) }
     private val enableFilter by lazy { args.getBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT) }
+    private val isFromDashboard by lazy {args.getBoolean(EXTRA_DASHBOARD)}
     private lateinit var hostAdapter: HostSegmentAdapter
     private lateinit var hostView: View
     private val uriString by lazy { args.getString(EXTRA_ENABLE_DEEP_LINK_SEGMENT) }
 
 
-    constructor(objectIds: ArrayList<String>, enableFilter: Boolean) : this(Bundle().apply {
+    constructor(objectIds: ArrayList<String>, enableFilter: Boolean, isFromDashboard: Boolean = false) : this(Bundle().apply {
         putSerializable(EXTRA_OBJECT_IDS_HOST_SEGMENT, objectIds)
         putBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT, enableFilter)
+        putBoolean(EXTRA_DASHBOARD,isFromDashboard)
     })
 
     constructor(uri: String) : this(Bundle().apply {
@@ -115,7 +117,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     private fun loadSegmentPages(markdowns: List<Markdown>, checklist: List<Checklist>) {
         val pageContainer = mutableListOf<BaseController>()
-        val mainPage = markdowns.toSegmentController(checklist)
+        val mainPage = markdowns.toSegmentController(checklist, isFromDashboard)
         val segmentPageLimit = markdowns.size
         pageContainer.add(mainPage)
         pageContainer.addAll(markdowns.toSegmentDetailControllers())
@@ -168,5 +170,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
         private const val EXTRA_OBJECT_IDS_HOST_SEGMENT = "ids"
         private const val EXTRA_ENABLE_FILTER_HOST_SEGMENT = "filter"
         private const val EXTRA_ENABLE_DEEP_LINK_SEGMENT = "deeplink"
+        const val EXTRA_DASHBOARD = "from_dashboard"
     }
 }
