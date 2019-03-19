@@ -5,15 +5,19 @@ import android.Manifest
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bluelinelabs.conductor.RouterTransaction
 import com.codekidlabs.storagechooser.StorageChooser
 import com.nabinbhandari.android.permissions.PermissionHandler
@@ -25,6 +29,8 @@ import kotlinx.android.synthetic.main.account_switch_server_view.view.*
 import kotlinx.android.synthetic.main.alert_control.view.*
 import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
+import kotlinx.android.synthetic.main.tour_view.*
+import org.jetbrains.anko.design.longSnackbar
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.toast
@@ -41,6 +47,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
@@ -50,10 +57,7 @@ import org.secfirst.umbrella.whitelabel.feature.tent.TentView
 import org.secfirst.umbrella.whitelabel.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.tent.presenter.TentBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
-import org.secfirst.umbrella.whitelabel.misc.appContext
-import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
-import org.secfirst.umbrella.whitelabel.misc.requestExternalStoragePermission
-import org.secfirst.umbrella.whitelabel.misc.setLocale
+import org.secfirst.umbrella.whitelabel.misc.*
 import java.io.File
 import javax.inject.Inject
 
@@ -68,8 +72,10 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     @Inject
     internal lateinit var presentTent: TentBasePresenter<TentView, TentBaseInteractor>
 
+    private lateinit var intentService: Intent
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var switchServerDialog: AlertDialog
+    private lateinit var switchServerProgress: ProgressDialog
     private lateinit var exportView: View
     private lateinit var switchServerView: View
     private var destinationPath = ""
@@ -82,6 +88,29 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
     private lateinit var refreshServerProgress: ProgressDialog
+    private val mMessageReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val percentage = intent.getIntExtra(ContentService.EXTRA_CONTENT_SERVICE_PROGRESS, -1)
+            val title = intent.getStringExtra(ContentService.EXTRA_CONTENT_SERVICE_TITLE_PROGRESS)
+                    ?: ""
+            val isCompleted = intent.getBooleanExtra(ContentService.ACTION_COMPLETED_FOREGROUND_SERVICE, false)
+            val lostConnection = intent.getBooleanExtra(ContentService.ACTION_LOST_CONNECTION, false)
+
+            if (title.isNotEmpty())
+                switchServerDialog.setTitle(title)
+
+            Handler().post {
+                switchServerProgress.progress = 0
+                switchServerProgress.incrementProgressBy(percentage)
+            }
+
+            if (isCompleted)
+                contentCompleted()
+
+            if (lostConnection)
+                errorLostConnectionMessage()
+        }
+    }
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -94,10 +123,12 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         super.onAttach(view)
         setUpToolbar()
         enableNavigation(false)
+        LocalBroadcastManager.getInstance(context)
+                .registerReceiver(mMessageReceiver, IntentFilter(ContentService.EXTRA_CONTENT_SERVICE_ID))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-
+        intentService = Intent(context, ContentService::class.java)
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)
         switchServerView = inflater.inflate(R.layout.account_switch_server_view, container, false)
@@ -150,7 +181,18 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         initExportGroup()
         feedLocationDialog = FeedLocationDialog(feedLocationView, this)
 
+        initProgress()
         return mainView
+    }
+
+    private fun initProgress() {
+        switchServerProgress = ProgressDialog(context)
+        switchServerProgress.setCancelable(false)
+        switchServerProgress.max = 100
+        switchServerProgress.setProgressStyle(R.style.ProgressDialogStyle)
+        switchServerProgress.progress = 0
+        switchServerProgress.setTitle(context.getString(R.string.notification_fetching_data))
+        switchServerProgress.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL)
     }
 
     private fun languageClick() {
@@ -210,16 +252,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         }
     }
 
-    private fun switchServerClick() {
-        val dialogManager = DialogManager(this)
-        val length = switchServerView.editServer.text.toString().length
-        switchServerView.editServer.setSelection(length)
-        dialogManager.showDialog(object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                return switchServerDialog
-            }
-        })
-    }
+    private fun switchServerClick() = switchServerDialog.show()
 
     private fun refreshServerClick() {
         val dialog = DialogManager(this)
@@ -430,12 +463,51 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         val newContentUrl = switchServerView.editServer.text.toString()
         if (isSwitch) {
             switchServerDialog.dismiss()
-            presentContent.manageContent(newContentUrl)
+            intentService.apply {
+                putExtra(ContentService.EXTRA_URL_REPOSITORY, newContentUrl)
+                action = ContentService.ACTION_START_FOREGROUND_SERVICE
+            }
+            if (context.isInternetConnected()) {
+                context.startService(intentService)
+                switchServerProgress.show()
+            } else
+                tourView?.apply { errorNoConnectionMessage(this) }
         } else
             context.longToast(context.getString(R.string.switch_server_error_message))
     }
 
+    override fun onDestroy() {
+        LocalBroadcastManager.getInstance(context)
+                .unregisterReceiver(mMessageReceiver)
+        mainActivity.stopService(intentService)
+        switchServerDialog.dismiss()
+    }
+
+    override fun onDestroyView(view: View) {
+        mainActivity.stopService(intentService)
+        super.onDestroyView(view)
+    }
+
     override fun onResetContent(res: Boolean) {
         if (res) doRestartApplication(context)
+    }
+
+    private fun errorNoConnectionMessage(view: View) {
+        val snackBar = view.longSnackbar(context.resources.getString(R.string.error_connection_tour_message))
+        val snackView = snackBar.view
+        snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+    }
+
+    private fun contentCompleted() {
+        switchServerProgress.dismiss()
+    }
+
+    private fun errorLostConnectionMessage() {
+        tourView?.let {
+            val snackBar = it.longSnackbar(context.resources.getString(R.string.notification_lost_connection))
+            val snackView = snackBar.view
+            snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+        }
+        switchServerDialog.dismiss()
     }
 }

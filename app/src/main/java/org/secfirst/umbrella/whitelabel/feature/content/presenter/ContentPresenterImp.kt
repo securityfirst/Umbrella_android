@@ -91,7 +91,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
             interactor?.let {
                 getView()?.downloadContentInProgress()
                 val intent = Intent(appContext(), ContentService::class.java).apply {
-                    putExtra(EXTRA_URL_REPOSITORY, baseUrlRepository)
+            putExtra(EXTRA_URL_REPOSITORY, url)
                     action = ContentService.ACTION_START_FOREGROUND_SERVICE
                 }
                 appContext().startService(intent)
