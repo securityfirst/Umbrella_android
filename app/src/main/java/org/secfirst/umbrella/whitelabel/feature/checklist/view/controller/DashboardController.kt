@@ -121,11 +121,18 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .setTitle(context.getString(R.string.checklist_delete_item))
                 .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
                 .setPositiveButton(context.getString(R.string.ok)) { _, _ ->
-                    presenter.submitDeleteChecklist(checklist)
+                    resetChecklist(checklist)
                     adapter.removeAt(position)
                 }
                 .create()
                 .show()
+    }
+
+    private fun resetChecklist(checklist: Checklist) {
+        checklist.content.forEach {
+            it.value = false
+        }
+        checklist.progress = 0
     }
 
     private fun startCustomChecklist() {
