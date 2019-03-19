@@ -51,6 +51,7 @@ const val LESSON_SEGMENT_IN_MODULE = 2
  */
 const val LESSON_SEGMENT_IN_SUBJECT = 4
 const val SCHEMA = "umbrella://"
+const val SEARCH_HOST = "search"
 
 suspend fun isLessonDeepLink(pathSplitted: List<String>): Boolean {
     var res = false
