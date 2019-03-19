@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.content.presenter
 
+import android.content.Intent
 import com.raizlabs.android.dbflow.config.FlowManager
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -9,17 +10,17 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
-import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
-
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_URL_REPOSITORY
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.appContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import org.secfirst.umbrella.whitelabel.misc.parseYmlFile
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils

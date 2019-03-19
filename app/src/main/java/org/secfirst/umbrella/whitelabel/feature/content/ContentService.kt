@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import br.com.goncalves.pugnotification.notification.PugNotification
+
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.TextProgressMonitor
@@ -182,6 +183,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         const val EXTRA_CONTENT_SERVICE_ID = "content_id"
         const val EXTRA_CONTENT_SERVICE_PROGRESS = "content_progress"
         const val EXTRA_CONTENT_SERVICE_TITLE_PROGRESS = "content_title_progress"
+        const val EXTRA_URL_REPOSITORY = "url_repository"
 
         const val ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE"
         const val ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE"

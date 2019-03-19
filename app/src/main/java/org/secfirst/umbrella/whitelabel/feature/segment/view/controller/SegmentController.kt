@@ -4,7 +4,9 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -62,6 +64,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val segmentAdapter = GroupAdapter()
     private lateinit var markdownPagination: SegmentPagination
     private lateinit var viewSegment: View
+    private lateinit var tabControl: HostSegmentTabControl
 
     constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
@@ -85,11 +88,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .create()
         presenter.onAttach(this)
         var removeLast = false
-        markdownIds?.let {if (it.size % 2 != 0) removeLast = true }
+        markdownIds?.let { if (it.size % 2 != 0) removeLast = true }
         presenter.submitMarkdownsAndChecklist(markdownIds, checklistId, removeLast)
-
-
-
+        tabControl = parentController as HostSegmentTabControl
         return viewSegment
     }
 
@@ -219,14 +220,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun onSegmentFavoriteClick(markdown: Markdown) = presenter.submitMarkdownFavorite(markdown)
 
     private fun onFootClicked(position: Int) {
-        val tabControl = parentController as HostSegmentTabControl
-        tabControl.moveTabAt(position + 1)
+        markdownIds?.let {
+            tabControl.moveTabAt(it.size + 1)
+        }
     }
 
-    private fun onSegmentClicked(position: Int) {
-        val test = parentController as HostSegmentTabControl
-        test.moveTabAt(position + 1)
-    }
+    private fun onSegmentClicked(position: Int) = tabControl.moveTabAt(position + 1)
 
     companion object {
         const val EXTRA_SEGMENT = "selected_segment"

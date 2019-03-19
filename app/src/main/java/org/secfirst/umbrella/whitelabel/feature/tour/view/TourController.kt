@@ -2,8 +2,11 @@ package org.secfirst.umbrella.whitelabel.feature.tour.view
 
 
 import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
-
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -17,7 +20,6 @@ import kotlinx.android.synthetic.main.tour_view.view.*
 import org.jetbrains.anko.design.longSnackbar
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.disk.EXTRA_URL_REPOSITORY
 import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
@@ -26,6 +28,7 @@ import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_ID
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_PROGRESS
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_CONTENT_SERVICE_TITLE_PROGRESS
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_URL_REPOSITORY
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.content.presenter.ContentBasePresenter
