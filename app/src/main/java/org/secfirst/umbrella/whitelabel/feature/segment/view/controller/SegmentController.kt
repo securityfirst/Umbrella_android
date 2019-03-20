@@ -82,6 +82,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
+        tabControl = parentController as HostSegmentTabControl
         viewSegment = inflater.inflate(R.layout.segment_view, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
         shareDialog = AlertDialog
@@ -95,8 +96,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         if(isFromDashboard){
             onSegmentClicked(markdownIds!!.size)
         }
-
-        tabControl = parentController as HostSegmentTabControl
         return viewSegment
     }
 
