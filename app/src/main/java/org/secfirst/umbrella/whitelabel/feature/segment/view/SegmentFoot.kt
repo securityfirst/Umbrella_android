@@ -24,7 +24,7 @@ class SegmentFoot(private val onFootClicked: (Int) -> Unit,
         viewHolder.segmentFootLayout.setOnClickListener { onFootClicked(position) }
         viewHolder.checklistFavorite.isChecked = checklist.favorite
         viewHolder.footLayout.backgroundColor = ContextCompat.getColor(appContext(), colours[position % 3])
-        viewHolder.checklistLayoutFav.setOnClickListener {
+        viewHolder.checklistFavorite.setOnClickListener {
             onChecklistFavoriteClick(viewHolder.checklistFavorite.isChecked)
         }
     }
