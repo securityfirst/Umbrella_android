@@ -23,6 +23,7 @@ const val FORM_HOST = "forms"
 const val FEED_HOST = "feed"
 const val CHECKLIST_HOST = "checklist"
 const val SCHEMA = "umbrella://"
+const val SEARCH_HOST = "search"
 
 suspend fun isLessonDeepLink(pathSplitted: List<String>): Boolean {
     var res = false

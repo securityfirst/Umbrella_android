@@ -4,7 +4,9 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,6 +65,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val segmentAdapter = GroupAdapter()
     private lateinit var markdownPagination: SegmentPagination
     private lateinit var viewSegment: View
+    private lateinit var tabControl: HostSegmentTabControl
 
     constructor(markdownIds: ArrayList<String>, checklistId: String, isFromDashboard: Boolean = false) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
@@ -79,6 +82,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         setHasOptionsMenu(true)
+        tabControl = parentController as HostSegmentTabControl
         viewSegment = inflater.inflate(R.layout.segment_view, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
         shareDialog = AlertDialog
@@ -87,12 +91,11 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .create()
         presenter.onAttach(this)
         var removeLast = false
-        markdownIds?.let {if (it.size % 2 != 0) removeLast = true }
+        markdownIds?.let { if (it.size % 2 != 0) removeLast = true }
         presenter.submitMarkdownsAndChecklist(markdownIds, checklistId, removeLast)
         if(isFromDashboard){
             onSegmentClicked(markdownIds!!.size)
         }
-
         return viewSegment
     }
 
@@ -152,10 +155,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
             segmentAdapter.add(Section(SegmentFoot(footClick,
                     checklistShareClick, checklistFavoriteClick, it)))
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        return inflater.inflate(R.menu.search_menu, menu)
     }
 
     override fun showSegmentDetail(markdown: Markdown) {
@@ -226,14 +225,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun onSegmentFavoriteClick(markdown: Markdown) = presenter.submitMarkdownFavorite(markdown)
 
     private fun onFootClicked(position: Int) {
-        val tabControl = parentController as HostSegmentTabControl
-        tabControl.moveTabAt(position + 1)
+        markdownIds?.let {
+            tabControl.moveTabAt(it.size + 1)
+        }
     }
 
-    private fun onSegmentClicked(position: Int) {
-        val test = parentController as HostSegmentTabControl
-        test.moveTabAt(position + 1)
-    }
+    private fun onSegmentClicked(position: Int) = tabControl.moveTabAt(position + 1)
 
     companion object {
         const val EXTRA_SEGMENT = "selected_segment"

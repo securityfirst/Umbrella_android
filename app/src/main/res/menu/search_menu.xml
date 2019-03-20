@@ -5,7 +5,7 @@
     tools:context="org.secfirst.umbrella.whitelabel.feature.main.MainActivity">
 
     <item
-        android:id="@+id/action_rss_share"
+        android:id="@+id/action_search"
         android:icon="@drawable/baseline_search_white_36"
         android:title="@string/send_to"
         app:actionProviderClass="android.widget.ShareActionProvider"

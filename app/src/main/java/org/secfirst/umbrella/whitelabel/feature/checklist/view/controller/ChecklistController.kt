@@ -122,13 +122,12 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun onAddItemClicked() {
         checklistViewDialog.checklistDialogTitle.text = context.getString(R.string.add_custom_checklist_item_title)
-        checklistViewDialog.editChecklistItem.text?.clear()
         checklistViewDialog.alertControlOk.onClick {
             checklist.content.add(Content(check = checklistViewDialog.editChecklistItem.text.toString(), checklist = checklist))
             onChecklistItemAdded(checklist.content.last())
-            checklistDialog.dismiss()
             onUpdateChecklistProgress(Math.ceil(checklist.content.filter { it.value }.size * 100.0 / checklist.content.size).toInt())
             currentProgress()
+            checklistDialog.dismiss()
         }
         checklistViewDialog.alertControlCancel.onClick { checklistDialog.dismiss() }
         checklistDialog.show()

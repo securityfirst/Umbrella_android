@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.feature.content.presenter
 
+import android.content.Intent
 import com.raizlabs.android.dbflow.config.FlowManager
 import org.apache.commons.io.FileUtils
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -9,16 +10,17 @@ import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
-import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.data.disk.*
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService
+import org.secfirst.umbrella.whitelabel.feature.content.ContentService.Companion.EXTRA_URL_REPOSITORY
 import org.secfirst.umbrella.whitelabel.feature.content.ContentView
 import org.secfirst.umbrella.whitelabel.feature.content.interactor.ContentBaseInteractor
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.appContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import org.secfirst.umbrella.whitelabel.misc.parseYmlFile
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
@@ -32,7 +34,6 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 @Inject internal constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), ContentBasePresenter<V, I> {
-
 
     override fun updateContent(pairFiles: List<Pair<String, File>>) {
         launchSilent(uiContext) {
@@ -86,21 +87,14 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
     }
 
     override fun manageContent(url: String) {
-        var isFetchData: Boolean
         launchSilent(uiContext) {
             interactor?.let {
                 getView()?.downloadContentInProgress()
-                isFetchData = it.fetchData(url)
-
-                if (isFetchData) {
-                    getView()?.onProcessProgress()
-                    val root = it.initParser()
-                    getView()?.onStoredProgress()
-                    it.persist(root)
+                val intent = Intent(appContext(), ContentService::class.java).apply {
+                    putExtra(EXTRA_URL_REPOSITORY, baseUrlRepository)
+                    action = ContentService.ACTION_START_FOREGROUND_SERVICE
                 }
-                it.persistFeedSource(createFeedSources())
-                it.persistRSS(createDefaultRSS())
-                getView()?.downloadContentCompleted(isFetchData)
+                appContext().startService(intent)
             }
         }
     }
@@ -203,40 +197,6 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
             }
         }
         return newForm
-    }
-
-    private fun createFeedSources(): List<FeedSource> {
-        val feedSources = mutableListOf<FeedSource>()
-        val feedSource1 = FeedSource("ReliefWeb", false, 0)
-        val feedSource2 = FeedSource("UN", false, 1)
-        val feedSource3 = FeedSource("FCO", false, 2)
-        val feedSource4 = FeedSource("CDC", false, 3)
-        val feedSource5 = FeedSource("Global Disaster Alert Coordination System", false, 4)
-        val feedSource6 = FeedSource("US State Department Country Warnings", false, 5)
-        feedSources.add(feedSource1)
-        feedSources.add(feedSource2)
-        feedSources.add(feedSource3)
-        feedSources.add(feedSource4)
-        feedSources.add(feedSource5)
-        feedSources.add(feedSource6)
-        return feedSources
-    }
-
-    private fun createDefaultRSS(): List<RSS> {
-        val rssList = mutableListOf<RSS>()
-        val rss1 = RSS("https://threatpost.com/feed/")
-        val rss2 = RSS("https://krebsonsecurity.com/feed/")
-        val rss3 = RSS("http://feeds.bbci.co.uk/news/world/rss.xml?edition=uk")
-        val rss4 = RSS("http://rss.cnn.com/rss/edition.rss")
-        val rss5 = RSS("https://www.aljazeera.com/xml/rss/all.xml")
-        val rss6 = RSS("https://www.theguardian.com/world/rss")
-        rssList.add(rss1)
-        rssList.add(rss2)
-        rssList.add(rss3)
-        rssList.add(rss4)
-        rssList.add(rss5)
-        rssList.add(rss6)
-        return rssList
     }
 
     override fun cleanContent() {

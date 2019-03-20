@@ -183,15 +183,14 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imageLanguage"
-                    android:layout_width="24dp"
+                    android:layout_width="34dp"
                     android:layout_height="24dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
-                    android:fontFamily="sans-serif"
                     android:layout_marginTop="2dp"
-                    android:lineSpacingExtra="8sp"
                     android:adjustViewBounds="true"
-                    android:visibility="gone"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="8sp"
                     android:scaleType="fitXY"
                     android:text="@string/settings_select_language"
                     android:textSize="@dimen/text_size_small"

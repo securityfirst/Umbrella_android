@@ -24,6 +24,11 @@
         <item name="colorControlActivated">#43a0ca</item>
     </style>
 
+    <style name="ProgressDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
+    </style>
+
     <style name="ContentText">
         <item name="android:textSize">@dimen/font_small</item>
         <item name="android:textColor">@android:color/black</item>

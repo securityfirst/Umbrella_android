@@ -102,3 +102,7 @@ inline fun <reified T> MutableList<Checklist>.associateChecklist(foreignKey: T) 
         }
     }
 }
+
+interface ContentMonitor {
+    fun onContentProgress(percentage: Int)
+}
