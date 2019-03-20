@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.tour.view
 
 
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -15,9 +16,11 @@ import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.ViewPager
 import com.bluelinelabs.conductor.RouterTransaction
+import kotlinx.android.synthetic.main.tour_alert.view.*
 import kotlinx.android.synthetic.main.tour_view.*
 import kotlinx.android.synthetic.main.tour_view.view.*
 import org.jetbrains.anko.design.longSnackbar
+import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.disk.baseUrlRepository
@@ -44,6 +47,7 @@ class TourController : BaseController(), ContentView {
     private var viewList: MutableList<TourUI> = mutableListOf()
     private lateinit var progressDialog: ProgressDialog
     private lateinit var intentService: Intent
+    private lateinit var warnerDialog: AlertDialog
 
 
     override fun onInject() {
@@ -91,9 +95,18 @@ class TourController : BaseController(), ContentView {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.tour_view, container, false)
+        val warnerView = inflater.inflate(R.layout.tour_alert, container, false)
+
         presenter.onAttach(this)
         intentService = Intent(context, ContentService::class.java)
-        view.acceptButton.setOnClickListener { startContentService() }
+        warnerDialog = AlertDialog
+                .Builder(activity)
+                .setView(warnerView)
+                .create()
+
+        warnerView.ok.onClick { startContentService() }
+        warnerView.cancel.onClick { warnerDialog.dismiss() }
+        view.acceptButton.setOnClickListener { warnerDialog.show() }
         initProgress()
         enableNavigation(false)
         initViewPager(view)
@@ -117,6 +130,7 @@ class TourController : BaseController(), ContentView {
     }
 
     private fun startContentService() {
+        warnerDialog.dismiss()
         intentService.apply {
             putExtra(EXTRA_URL_REPOSITORY, baseUrlRepository)
             action = ContentService.ACTION_START_FOREGROUND_SERVICE
