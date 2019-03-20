@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.checklist_custom_dialog.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard.*
 import kotlinx.android.synthetic.main.checklist_dashboard.view.*
 import kotlinx.android.synthetic.main.empty_view.*
+import kotlinx.android.synthetic.main.main_view.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
@@ -28,6 +29,7 @@ import org.secfirst.umbrella.whitelabel.feature.checklist.interactor.ChecklistBa
 import org.secfirst.umbrella.whitelabel.feature.checklist.presenter.ChecklistBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.ChecklistView
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.adapter.DashboardAdapter
+import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
@@ -113,7 +115,12 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     private fun onDashboardItemClicked(checklist: Checklist) {
-        parentController?.router?.pushController(RouterTransaction.with(ChecklistController(checklist.id)))
+        if (checklist.custom)
+            parentController?.router?.pushController(RouterTransaction.with(ChecklistController(checklist.id)))
+        else {
+            parentController?.router?.pushController(RouterTransaction.with(HostSegmentController(arrayListOf(checklist.difficulty!!.id), true, isFromDashboard = true)))
+            mainActivity.navigation.menu.getItem(3).isChecked = true
+        }
     }
 
     private fun onDashboardItemLongClicked(checklist: Checklist, position: Int) {

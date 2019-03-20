@@ -58,6 +58,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdownIds by lazy { args.getStringArrayList(EXTRA_SEGMENT) }
     private val checklistId by lazy { args.getString(EXTRA_CHECKLIST) }
+    private val isFromDashboard by lazy {args.getBoolean(EXTRA_DASHBOARD)}
     private var checklist: Checklist? = null
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
@@ -66,9 +67,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var viewSegment: View
     private lateinit var tabControl: HostSegmentTabControl
 
-    constructor(markdownIds: ArrayList<String>, checklistId: String) : this(Bundle().apply {
+    constructor(markdownIds: ArrayList<String>, checklistId: String, isFromDashboard: Boolean = false) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
         putString(EXTRA_CHECKLIST, checklistId)
+        putBoolean(EXTRA_DASHBOARD, isFromDashboard)
     })
 
     override fun onInject() {
@@ -90,6 +92,10 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         var removeLast = false
         markdownIds?.let { if (it.size % 2 != 0) removeLast = true }
         presenter.submitMarkdownsAndChecklist(markdownIds, checklistId, removeLast)
+        if(isFromDashboard){
+            onSegmentClicked(markdownIds!!.size)
+        }
+
         tabControl = parentController as HostSegmentTabControl
         return viewSegment
     }
@@ -230,5 +236,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     companion object {
         const val EXTRA_SEGMENT = "selected_segment"
         const val EXTRA_CHECKLIST = "selected_checklist"
+        const val EXTRA_DASHBOARD = "from_dashboard"
     }
 }
