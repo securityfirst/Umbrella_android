@@ -41,6 +41,13 @@ class RssAdapter(private val onClickPress: (RSS) -> Unit) : RecyclerView.Adapter
         notifyDataSetChanged()
     }
 
+    fun size() = rssList.size
+
+    fun removeAll() {
+        rssList.clear()
+        notifyDataSetChanged()
+    }
+
     fun getRss(): MutableList<RSS> = rssList
 
     fun remove(rss: RSS) {

@@ -42,7 +42,7 @@
     <string name="feed_interval_label">Set how often shall we check for news</string>
     <string name="set">SET</string>
     <string name="location">Location</string>
-    <string name="feed_location_label">Enter the country you want to see the feed for</string>
+    <string name="feed_location_label">Enter the country you want to see the feed for.</string>
     <string name="feed_sources">Feed sources</string>
     <string name="feed_source_label">Enter Sources</string>
     <string name="set_now">SET NOW</string>

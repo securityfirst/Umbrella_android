@@ -36,13 +36,13 @@ class RssController : BaseController(), ReaderView {
         parentController?.router?.pushController(RouterTransaction.with(ArticleController(rss)))
     }
 
+
     override fun onInject() {
         DaggerReanderComponent.builder()
                 .application(UmbrellaApplication.instance)
                 .build()
                 .inject(this)
     }
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
         val view = inflater.inflate(R.layout.rss_view, container, false)
@@ -52,16 +52,16 @@ class RssController : BaseController(), ReaderView {
                 .setView(rssDialogView)
                 .create()
         presenter.onAttach(this)
+        initDeleteChecklistItem(view)
         rssAdapter = RssAdapter(onClick)
         view.rssRecycleView.initRecyclerView(rssAdapter)
-        initDeleteChecklistItem(view)
         presenter.submitFetchRss()
+
         rssDialogView.rssOk.setOnClickListener { addRss() }
         rssDialogView.rssCancel.setOnClickListener { alertDialog.dismiss() }
         view.addRss.setOnClickListener { alertDialog.show() }
         return view
     }
-
 
     private fun addRss() {
         presenter.submitInsertRss(RSS(rssDialogView.rssEditText.text.toString()))
@@ -69,6 +69,7 @@ class RssController : BaseController(), ReaderView {
     }
 
     override fun showAllRss(rss: List<RSS>) {
+        rssAdapter.removeAll()
         rssAdapter.addAll(rss)
     }
 
