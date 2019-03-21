@@ -38,7 +38,7 @@ class RssAdapter(private val onClickPress: (RSS) -> Unit) : RecyclerView.Adapter
 
     fun add(rss: RSS) {
         rssList.add(rss)
-        notifyDataSetChanged()
+        notifyItemInserted(rssList.size)
     }
 
     fun size() = rssList.size

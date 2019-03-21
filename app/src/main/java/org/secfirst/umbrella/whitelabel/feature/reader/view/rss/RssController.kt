@@ -4,11 +4,14 @@ import android.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.add_rss_dialog.view.*
+import kotlinx.android.synthetic.main.rss_view.*
 import kotlinx.android.synthetic.main.rss_view.view.*
+import org.jetbrains.anko.design.longSnackbar
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
@@ -66,9 +69,14 @@ class RssController : BaseController(), ReaderView {
         alertDialog.dismiss()
     }
 
-    override fun showAllRss(rss: List<RSS>) {
-        rssAdapter.removeAll()
-        rssAdapter.addAll(rss)
+    override fun showRss(rss: RSS) {
+        rssAdapter.add(rss)
+    }
+
+    override fun showRssError() {
+        val snackBar = rssView?.longSnackbar(context.resources.getString(R.string.rss_message_error))
+        val snackView = snackBar?.view
+        snackView?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
     }
 
     override fun showNewestRss(rss: RSS) = rssAdapter.add(rss)

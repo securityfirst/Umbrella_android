@@ -91,7 +91,10 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         launchSilent(uiContext) {
             var rssList = listOf<RSS>()
             interactor?.let { rssList = it.fetchRss() }
-            getView()?.showAllRss(processRss(rssList))
+            rssList.forEach { rssIt ->
+                val rss = processRss(rssIt)
+                if (rss != null) getView()?.showRss(rss)
+            }
         }
     }
 
@@ -99,7 +102,11 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         launchSilent(uiContext) {
             interactor?.let {
                 it.insertRss(rss)
-                processRss(rss)?.let { rss -> getView()?.showNewestRss(rss) }
+                val rssProcessed = processRss(rss)
+                if (rssProcessed != null)
+                    getView()?.showNewestRss(rss)
+                else
+                    getView()?.showRssError()
             }
         }
     }

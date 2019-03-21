@@ -9,9 +9,11 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseView
 
 interface ReaderView : BaseView {
 
-    fun showAllRss(rss: List<RSS>) {}
+    fun showRss(rss: RSS) {}
 
     fun showNewestRss(rss: RSS) {}
+
+    fun showRssError(){}
 
     fun isSkipPassword(res: Boolean) {}
 
