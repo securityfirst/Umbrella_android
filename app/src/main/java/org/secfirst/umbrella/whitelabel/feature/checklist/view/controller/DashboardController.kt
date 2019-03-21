@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.RouterTransaction
@@ -41,7 +40,6 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private val dashboardItemClick: (Checklist) -> Unit = this::onDashboardItemClicked
     private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
     private lateinit var adapter: DashboardAdapter
-    private val dashboardItemOnLongClick: (Checklist, Int) -> Unit = this::onDashboardItemLongClicked
     private lateinit var customChecklistDialog: android.app.AlertDialog
     private lateinit var customChecklistView: View
 
@@ -95,9 +93,9 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val checklist = adapter.getChecklist(position)
-                if (checklist != null) {
-                    onDeleteChecklist(checklist)
-                }
+                if (!checklist!!.custom) {
+                    resetChecklist(checklist)
+                } else onDeleteChecklist(checklist)
                 adapter.removeAt(position)
             }
         }
@@ -109,9 +107,9 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         if (isCustomBoard) {
             addNewChecklistBtn?.show()
             presenter.submitLoadCustomDashboard()
-            initOnDeleteChecklist()
         } else
             presenter.submitLoadDashboard()
+            initOnDeleteChecklist()
     }
 
     private fun onDashboardItemClicked(checklist: Checklist) {
@@ -123,23 +121,12 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         }
     }
 
-    private fun onDashboardItemLongClicked(checklist: Checklist, position: Int) {
-        AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.checklist_delete_item))
-                .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ -> dialog.dismiss() }
-                .setPositiveButton(context.getString(R.string.ok)) { _, _ ->
-                    resetChecklist(checklist)
-                    adapter.removeAt(position)
-                }
-                .create()
-                .show()
-    }
-
     private fun resetChecklist(checklist: Checklist) {
         checklist.content.forEach {
             it.value = false
         }
         checklist.progress = 0
+        presenter.submitUpdateChecklist(checklist)
     }
 
     private fun startCustomChecklist() {
@@ -160,7 +147,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         } else {
             customChecklistContainer?.visibility = View.VISIBLE
             emptyDashboardView?.visibility = View.GONE
-            adapter = DashboardAdapter(dashboards, dashboardItemClick, dashboardItemOnLongClick)
+            adapter = DashboardAdapter(dashboards, dashboardItemClick)
             checklistDashboardRecyclerView?.initRecyclerView(adapter)
         }
     }
