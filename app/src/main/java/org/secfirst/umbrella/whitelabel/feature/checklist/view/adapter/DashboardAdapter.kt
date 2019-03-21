@@ -19,8 +19,7 @@ import org.secfirst.umbrella.whitelabel.misc.appContext
 
 @SuppressLint("SetTextI18n")
 class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
-                       private val onDashboardItemClicked: (Checklist) -> Unit,
-                       private val onDashboardItemLongClicked: (Checklist, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onDashboardItemClicked: (Checklist) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
@@ -55,8 +54,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
             holder.bind(dashboardItems[position].title)
         } else {
             holder as DashboardHolder
-            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },
-                    longClickListener = { onDashboardItemLongClicked(dashboardItems[position].checklist!!, position) })
+            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) })
         }
     }
 
@@ -68,8 +66,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
     class DashboardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit,
-                 longClickListener: (DashboardHolder) -> Unit) {
+        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit) {
 
             with(dashboardItem) {
                 itemView.itemLabel.text = label
@@ -78,15 +75,9 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                 setDifficultyColor(dashboardItem.levelLabel, isCustomChecklist)
                 if (adapterPosition > 1 || isCustomChecklist) {
                     itemView.setOnClickListener { clickListener(this@DashboardHolder) }
-                    itemView.setOnLongClickListener {
-                        longClickListener(this@DashboardHolder)
-                        true
-                    }
                 } else
                     itemView.levelColor
                             .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_total_done)
-
-
             }
         }
 
