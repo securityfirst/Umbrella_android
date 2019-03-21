@@ -1,6 +1,8 @@
 package org.secfirst.umbrella.whitelabel.feature.reader.view.rss
 
 import android.app.AlertDialog
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +34,7 @@ class RssController : BaseController(), ReaderView {
     private lateinit var rssAdapter: RssAdapter
     private lateinit var rssDialogView: View
     private lateinit var alertDialog: AlertDialog
+    private var stateRecycler: Parcelable? = null
     private val onClick: (RSS) -> Unit = this::onClickOpenArticle
 
     override fun onInject() {
@@ -52,6 +55,7 @@ class RssController : BaseController(), ReaderView {
         initDeleteChecklistItem(view)
         rssAdapter = RssAdapter(onClick)
         view.rssRecycleView.initRecyclerView(rssAdapter)
+        rssAdapter.removeAll()
         presenter.submitFetchRss()
 
         rssDialogView.rssOk.setOnClickListener { addRss() }
@@ -81,6 +85,17 @@ class RssController : BaseController(), ReaderView {
 
     override fun showNewestRss(rss: RSS) = rssAdapter.add(rss)
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        stateRecycler = rssRecycleView?.layoutManager?.onSaveInstanceState()
+        outState.putParcelable(EXTRA_RECYCLER_STATE, stateRecycler)
+    }
+
+    override fun onRestoreInstanceState(saveInstanceState: Bundle) {
+        super.onRestoreInstanceState(saveInstanceState)
+        stateRecycler = saveInstanceState.getParcelable(EXTRA_RECYCLER_STATE)
+    }
+
     private fun initDeleteChecklistItem(view: View) {
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -92,5 +107,9 @@ class RssController : BaseController(), ReaderView {
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
         itemTouchHelper.attachToRecyclerView(view.rssRecycleView)
+    }
+
+    companion object {
+        private const val EXTRA_RECYCLER_STATE = "extra_recycler_state"
     }
 }
