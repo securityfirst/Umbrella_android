@@ -23,9 +23,10 @@ fun Content.toSearchResult(): SearchResult {
 }
 
 fun createFeedSources(): List<FeedSource> {
+
     val feedSources = mutableListOf<FeedSource>()
     val feedSource1 = FeedSource("ReliefWeb / United Nations (UN)", false, 0)
-    val feedSource3 = FeedSource("foreign and commonwealth Office", false, 2)
+    val feedSource3 = FeedSource("Foreign and Commonwealth Office", false, 2)
     val feedSource4 = FeedSource("Centres for Disease Control", false, 3)
     val feedSource5 = FeedSource("Global Disaster Alert Coordination System", false, 4)
     val feedSource6 = FeedSource("US State Department Country Warnings", false, 5)
