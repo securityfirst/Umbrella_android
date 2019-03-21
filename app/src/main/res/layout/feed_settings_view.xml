@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#e5e5e5"
     android:padding="10dp">
-    
+
     <ScrollView
         android:id="@+id/no_feed_list"
         android:layout_width="match_parent"

@@ -43,7 +43,7 @@
                 android:layout_height="48dp"
                 android:background="@android:color/transparent"
                 android:fontFamily="sans-serif"
-                android:hint="@string/custom_checklist_hint_add_checklistTitle"
+                android:hint="@string/custom_checklist_hint_add_checklistItem"
                 android:imeOptions="actionNext"
                 android:padding="5dp"
                 android:textColor="#9b9b9b"

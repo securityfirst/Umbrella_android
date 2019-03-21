@@ -85,8 +85,6 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 adapter.removeAt(position)
-                if (position == INITIAL_INDEX)
-                    checklistContent.hint = context.getText(R.string.custom_checklist_hint_add_checklistTitle)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
