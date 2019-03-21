@@ -31,12 +31,6 @@ class RssController : BaseController(), ReaderView {
     private lateinit var alertDialog: AlertDialog
     private val onClick: (RSS) -> Unit = this::onClickOpenArticle
 
-
-    private fun onClickOpenArticle(rss: RSS) {
-        parentController?.router?.pushController(RouterTransaction.with(ArticleController(rss)))
-    }
-
-
     override fun onInject() {
         DaggerReanderComponent.builder()
                 .application(UmbrellaApplication.instance)
@@ -61,6 +55,10 @@ class RssController : BaseController(), ReaderView {
         rssDialogView.rssCancel.setOnClickListener { alertDialog.dismiss() }
         view.addRss.setOnClickListener { alertDialog.show() }
         return view
+    }
+
+    private fun onClickOpenArticle(rss: RSS) {
+        parentController?.router?.pushController(RouterTransaction.with(ArticleController(rss)))
     }
 
     private fun addRss() {

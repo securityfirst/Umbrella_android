@@ -115,7 +115,6 @@
     <string name="checklist_dialog_delete">删除</string>
     <string name="checklist_dialog_disable">DISABLE</string>
     <string name="custom_checklist_hint_add_checklistItem">添加核对清单项目</string>
-    <string name="custom_checklist_hint_add_checklistTitle">添加清单标题</string>
     <string name="custom_checklist_title">你的清单</string>
     <string name="export_lesson">出口课</string>
     <string name="export_button">出口</string>

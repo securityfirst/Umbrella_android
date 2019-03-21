@@ -5,121 +5,99 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/light_grey"
-    android:padding="8dp"
+    android:padding="5dp"
     tools:ignore="MissingPrefix">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/checklistCardItemView"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginBottom="2dp"
         android:background="@color/light_white"
-        card_view:cardCornerRadius="2dp">
+        card_view:cardCornerRadius="3dp"
+        card_view:contentPadding="8dp">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="320dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <ImageView
+                android:id="@+id/cardImage"
+                android:layout_width="match_parent"
+                android:layout_height="176dp"
+                android:background="@drawable/default_image"
+                android:scaleType="centerCrop"
+                android:src="#b1b1b1"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cardTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/cardImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="176dp"
-                    android:scaleType="centerCrop"
-                    android:src="#b1b1b1" />
-
-                <TextView
-                    android:id="@+id/cardTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/cardImage"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:ellipsize="end"
-                    android:lines="1"
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="6dp"
-                android:orientation="vertical">
+                android:layout_alignBottom="@+id/cardImage"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                card_view:layout_constraintBottom_toBottomOf="@+id/cardImage"
+                card_view:layout_constraintStart_toStartOf="parent"
+                tools:text="Brazil's fomer president Michel Temer" />
 
-                <TextView
-                    android:id="@+id/cardAuthor"
-                    fontPath="fonts/Roboto-Medium.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/cardLastUpdate"
-                    fontPath="fonts/Roboto-Regular.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="11sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:background="@color/white_transparent"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/cardDescription"
-                    fontPath="fonts/Roboto-Regular.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:textColor="@android:color/black"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/cardLastUpdate"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16sp"
-                android:layout_marginLeft="16sp"
-                android:layout_marginTop="20sp"
-                android:orientation="horizontal">
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"
+                card_view:layout_constraintStart_toStartOf="@+id/cardTitle"
+                card_view:layout_constraintTop_toBottomOf="@+id/cardTitle"
+                tools:text="03/21/2019 14:51:43" />
 
-                <TextView
-                    android:id="@+id/cardShare"
-                    fontPath="fonts/Roboto-Regular.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="@string/share_carpsLk"
-                    android:textColor="@color/blue"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/cardDescription"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:maxLines="3"
+                android:textSize="12sp"
+                card_view:layout_constraintStart_toStartOf="@+id/cardLastUpdate"
+                card_view:layout_constraintTop_toBottomOf="@+id/cardLastUpdate"
+                tools:text="Temer arredted as part of Operation Car Wash, which led to the convictions of numerous numbers of Brazili's political elite Brazils former president Michel Tementer" />
 
-                <TextView
-                    android:id="@+id/cardOpenLink"
-                    fontPath="fonts/Roboto-Regular.ttf"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:text="@string/learn_more"
-                    android:textColor="@color/blue"
-                    card_view:layout_constraintStart_toEndOf="@+id/cardShare"
-                    card_view:layout_constraintTop_toTopOf="@+id/cardShare" />
+            <TextView
+                android:id="@+id/cardShare"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/share_carpsLk"
+                android:textColor="@color/blue"
+                card_view:layout_constraintStart_toStartOf="@+id/cardDescription"
+                card_view:layout_constraintTop_toBottomOf="@+id/cardDescription" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+            <TextView
+                android:id="@+id/cardOpenLink"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:text="@string/learn_more"
+                android:textColor="@color/blue"
+                card_view:layout_constraintStart_toEndOf="@+id/cardShare"
+                card_view:layout_constraintTop_toTopOf="@+id/cardShare" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
 </LinearLayout>

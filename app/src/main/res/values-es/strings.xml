@@ -139,7 +139,6 @@ Escribir solicitud de permiso de almacenamiento externo fue denegada.
     <string name="checklist_dialog_delete">BORRAR</string>
     <string name="checklist_dialog_disable">INHABILITAR</string>
     <string name="custom_checklist_hint_add_checklistItem">Agregar elemento de lista de verificación</string>
-    <string name="custom_checklist_hint_add_checklistTitle">Añadir el título de la lista de verificación</string>
     <string name="custom_checklist_title">Su lista de verificación</string>
     <string name="export_lesson">Lección de exportación</string>
     <string name="export_button">EXPORTAR</string>
