@@ -6,14 +6,17 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bluelinelabs.conductor.RouterTransaction
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.add_rss_dialog.view.*
 import kotlinx.android.synthetic.main.rss_view.*
 import kotlinx.android.synthetic.main.rss_view.view.*
 import org.jetbrains.anko.design.longSnackbar
+import org.jetbrains.anko.textColor
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.SwipeToDeleteCallback
@@ -80,7 +83,9 @@ class RssController : BaseController(), ReaderView {
     override fun showRssError() {
         val snackBar = rssView?.longSnackbar(context.resources.getString(R.string.rss_message_error))
         val snackView = snackBar?.view
-        snackView?.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
+        snackView?.setBackgroundColor(ContextCompat.getColor(context, R.color.umbrella_purple_dark))
+        val textView = snackView?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+        textView?.setTextColor(ContextCompat.getColor(context, R.color.white))
     }
 
     override fun showNewestRss(rss: RSS) = rssAdapter.add(rss)
