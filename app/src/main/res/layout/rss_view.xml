@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rssView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rssView"
-    android:padding="10dp"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:padding="10dp">
 
     <ProgressBar
         android:id="@+id/rss_indeterminate_bar"
@@ -35,6 +34,7 @@
             android:id="@+id/rssRecycleView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
             android:scrollbars="vertical" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -42,9 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="70dp"
-            android:layout_marginLeft="280dp"
             android:layout_marginStart="280dp"
+            android:layout_marginLeft="280dp"
+            android:layout_marginBottom="70dp"
             android:src="@drawable/ic_add_white"
             app:backgroundTint="@color/umbrella_green" />
     </FrameLayout>
