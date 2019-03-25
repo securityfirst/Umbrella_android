@@ -14,12 +14,13 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.LocationInfo
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
+import org.secfirst.umbrella.whitelabel.misc.countryList
+import org.secfirst.umbrella.whitelabel.misc.countryNames
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 
 class FeedLocationDialog(private val feedLocationView: View,
                          private val feedLocationListener: FeedLocationListener) {
 
-    private lateinit var locationInfo: LocationInfo
     private val context = feedLocationView.context
     private val feedLocationAlertDialog: AlertDialog = AlertDialog
             .Builder(context)
@@ -37,15 +38,13 @@ class FeedLocationDialog(private val feedLocationView: View,
     }
 
     private fun startAutocompleteLocation() {
-        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, listOf())
+        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, countryNames())
         feedLocationView.location.threshold = 2
         feedLocationView.location.setAdapter(adapter)
         feedLocationView.location.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                prepareAutocomplete(s.toString())
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
     }
 
@@ -60,48 +59,12 @@ class FeedLocationDialog(private val feedLocationView: View,
 
     private fun feedLocationOk() {
         val newLocation = feedLocationView.location.text.toString()
-        if (newLocation.isNotBlank()) {
-            val feedLocation = FeedLocation(1, newLocation, locationInfo.countryCode)
+        val country = countryList().find { it.name == newLocation }
+        if (newLocation.isNotBlank() && country != null ) {
+            val feedLocation = FeedLocation(0, newLocation, country.codeAlpha2)
             feedLocationListener.onLocationSuccess(feedLocation)
         }
         feedLocationAlertDialog.dismiss()
-    }
-
-    private fun updateAddress(locationInfo: LocationInfo) {
-        this.locationInfo = locationInfo
-        val adapter = ArrayAdapter<String>(context, android.R.layout.select_dialog_item, locationInfo.locationNames)
-        feedLocationView.location.setAdapter(adapter)
-    }
-
-
-    private fun prepareAutocomplete(characters: String) {
-        launchSilent(uiContext) {
-            locationInfo = getAddress(characters)
-            if (locationInfo.locationNames.isNotEmpty())
-                updateAddress(locationInfo)
-        }
-    }
-
-    private suspend fun getAddress(locationName: String): LocationInfo {
-        val geocoder = Geocoder(context)
-        val addressLabelList = mutableListOf<String>()
-        var countryCode = ""
-        var locationInfo = LocationInfo()
-        withContext(ioContext) {
-            if (locationName.isNotBlank()) {
-                try {
-                    val addressList = geocoder.getFromLocationName(locationName, 5)
-                    addressList.forEach { fullAddress ->
-                        countryCode = fullAddress.countryCode ?: ""
-                        addressLabelList.add(fullAddress.getAddressLine(0))
-                    }
-                    locationInfo = LocationInfo(addressLabelList, countryCode)
-                } catch (e: Exception) {
-                    Log.e("prepareAutocomplete", "geolocation error.")
-                }
-            }
-        }
-        return locationInfo
     }
 
     interface FeedLocationListener {
