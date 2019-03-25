@@ -47,7 +47,8 @@
                 android:hint="@string/feed_location_enter_location"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:dropDownHeight="100dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <include
