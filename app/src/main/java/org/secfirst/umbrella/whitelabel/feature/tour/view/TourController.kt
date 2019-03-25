@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.viewpager.widget.ViewPager
@@ -89,6 +90,7 @@ class TourController : BaseController(), ContentView {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
+        mainActivity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         LocalBroadcastManager.getInstance(context)
                 .registerReceiver(mMessageReceiver, IntentFilter(EXTRA_CONTENT_SERVICE_ID))
     }
@@ -119,6 +121,7 @@ class TourController : BaseController(), ContentView {
         router.setRoot(RouterTransaction.with(HostChecklistController()))
         mainActivity.navigationPositionToCenter()
         enableNavigation(true)
+        mainActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun pageSelected(position: Int) {
