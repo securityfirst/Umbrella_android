@@ -71,7 +71,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     internal lateinit var presentContent: ContentBasePresenter<ContentView, ContentBaseInteractor>
     @Inject
     internal lateinit var presentTent: TentBasePresenter<TentView, TentBaseInteractor>
-
+    private var isShare = false
     private lateinit var intentService: Intent
     private lateinit var exportAlertDialog: AlertDialog
     private lateinit var switchServerDialog: AlertDialog
@@ -306,8 +306,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private fun initExportGroup() {
         exportView.exportDialogGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.exportDialogTypeExport -> checkPermission()
-                R.id.ExportDialogShareType -> presenter.prepareShareContent(getFilename())
+                R.id.exportDialogTypeExport -> isShare = false
+                R.id.ExportDialogShareType -> isShare = true
             }
         }
     }
@@ -324,6 +324,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         val pm = context.packageManager
         if (shareIntent.resolveActivity(pm) != null)
             startActivity(Intent.createChooser(shareIntent, context.getString(R.string.settings_umbrella_share_title)))
+        exportAlertDialog.dismiss()
     }
 
     private fun showFileChooserPreview() {
@@ -346,7 +347,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 .build()
         chooser.show()
         chooser.setOnSelectListener { path ->
-            destinationPath = path
+            presenter.submitExportDatabase(path, getFilename(), isWipeData)
+            exportAlertDialog.dismiss()
         }
     }
 
@@ -435,7 +437,12 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
     override fun onCleanDatabaseSuccess() = presentContent.manageContent(baseUrlRepository)
 
-    private fun exportDataOk() = presenter.submitExportDatabase(destinationPath, getFilename(), isWipeData)
+    private fun exportDataOk() {
+        if (isShare)
+            presenter.prepareShareContent(getFilename())
+        else
+            checkPermission()
+    }
 
     private fun exportDataClose() = exportAlertDialog.dismiss()
 
