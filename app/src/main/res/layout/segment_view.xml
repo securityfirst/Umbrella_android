@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e5e5e5">
@@ -14,4 +15,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <include
+        android:id="@+id/segmentEmptyView"
+        layout="@layout/empty_view"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="288dp"
+        tools:layout_editor_absoluteY="575dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

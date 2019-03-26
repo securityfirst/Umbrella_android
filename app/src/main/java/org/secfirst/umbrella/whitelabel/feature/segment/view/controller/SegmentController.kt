@@ -17,6 +17,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.xwray.groupie.Section
+import kotlinx.android.synthetic.main.empty_view.view.*
 import kotlinx.android.synthetic.main.segment_view.view.*
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import org.apache.commons.io.FilenameUtils.removeExtension
@@ -58,7 +59,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private val footClick: (Int) -> Unit = this::onFootClicked
     private val markdownIds by lazy { args.getStringArrayList(EXTRA_SEGMENT) }
     private val checklistId by lazy { args.getString(EXTRA_CHECKLIST) }
-    private val isFromDashboard by lazy {args.getBoolean(EXTRA_DASHBOARD)}
+    private val isFromDashboard by lazy { args.getBoolean(EXTRA_DASHBOARD) }
     private var checklist: Checklist? = null
     private lateinit var shareDialog: AlertDialog
     private lateinit var shareView: View
@@ -85,16 +86,21 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         tabControl = parentController as HostSegmentTabControl
         viewSegment = inflater.inflate(R.layout.segment_view, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
-        shareDialog = AlertDialog
-                .Builder(activity)
-                .setView(shareView)
-                .create()
-        presenter.onAttach(this)
-        var removeLast = false
-        markdownIds?.let { if (it.size % 2 != 0) removeLast = true }
-        presenter.submitMarkdownsAndChecklist(markdownIds, checklistId, removeLast)
-        if(isFromDashboard){
-            onSegmentClicked(markdownIds!!.size)
+        if (markdownIds.isNotEmpty()) {
+            shareDialog = AlertDialog
+                    .Builder(activity)
+                    .setView(shareView)
+                    .create()
+            presenter.onAttach(this)
+            var removeLast = false
+            markdownIds?.let { if (it.size % 2 != 0) removeLast = true }
+            presenter.submitMarkdownsAndChecklist(markdownIds, checklistId, removeLast)
+            if (isFromDashboard) {
+                onSegmentClicked(markdownIds!!.size)
+            }
+        } else {
+            viewSegment.segmentEmptyView.visibility = View.VISIBLE
+            viewSegment.emptyTitleView.text = context.getString(R.string.empty_favorites_message)
         }
         return viewSegment
     }

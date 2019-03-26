@@ -19,9 +19,6 @@
 
     <string name="tour_view_accept_button">ACCEPT</string>
     <string name="fab_dialog_transition_name">transition.fab</string>
-    <string name="loading_tour_download_message">Downloading data 1/3</string>
-    <string name="loading_tour_parse_message">Processing data 2/3</string>
-    <string name="loading_tour_store_message">Storing data 3/3</string>
     <string name="error_connection_tour_message">Looks like the server is taking to long to respond, try again later.</string>
 
     <string name="send_to">Share</string>
@@ -140,7 +137,7 @@
     <string name="rss_title_tab">RSS</string>
     <string name="account_reset_password">Reset password</string>
     <string name="reset_password_title">Confirm reset password</string>
-    <string name="reset_password_text">Are you sure you want to reset your password? This also means losing any data you might have entered so far\n</string>
+    <string name="reset_password_text">Are you sure you want to reset your password? This also means losing any data you might have entered so far.\n</string>
     <string name="login_reset_password">Reset password</string>
     <string name="form_menu_delete">Delete</string>
     <string name="form_menu_edit">Edit</string>
@@ -158,7 +155,7 @@
     <string name="checklist_add_item_message">Item added successfully.</string>
     <string name="checklist_edit_item_title">Edit checklist item</string>
     <string name="checklist_add_item_title">Add checklist item</string>
-    <string name="empty_checklist_message">Go to lessons and discover recommenced checklists or create your own custom checklists.</string>
+    <string name="empty_checklist_message">Go to lessons and discover recommended checklists or create your own custom checklists.</string>
     <string name="confirm_password_error_message">Password doesn\'t match</string>
     <string name="default_github_url">https://github.com/</string>
     <string name="switch_server_title_message">Switch server</string>
@@ -167,6 +164,7 @@
     <string name="chinese_language_title">Chinese</string>
     <string name="login_enter_pw">Enter password</string>
     <string name="default_refresh_feed">30 min</string>
+    <string name="empty_favorites_message">There is no favorite lessons.</string>
     <string name="custom_checklist_add_item_title">Custom Checklist</string>
     <string name="name_your_checklist">Name your checklist</string>
     <string name="name">Name</string>
