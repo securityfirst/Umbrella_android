@@ -41,7 +41,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/umbrella_purple"
-                android:textSize="@dimen/text_size_large" />
+                android:textSize="@dimen/text_size_large"
+                tools:text="Brazil" />
 
             <TextView
                 fontPath="fonts/Roboto-Regular.ttf"

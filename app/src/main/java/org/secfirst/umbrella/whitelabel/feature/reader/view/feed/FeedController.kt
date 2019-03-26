@@ -4,32 +4,33 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bluelinelabs.conductor.RouterTransaction
 import kotlinx.android.synthetic.main.feed_view.*
+import kotlinx.android.synthetic.main.feed_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.component.WebViewController
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
+import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.network.FeedItemResponse
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.reader.DaggerReanderComponent
 import org.secfirst.umbrella.whitelabel.feature.reader.interactor.ReaderBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.reader.presenter.ReaderBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.reader.view.ReaderView
-import org.secfirst.umbrella.whitelabel.misc.initRecyclerView
 import javax.inject.Inject
 
-class FeedController(bundle: Bundle) : BaseController(bundle) {
+class FeedController(bundle: Bundle) : BaseController(bundle), ReaderView {
 
     @Inject
     internal lateinit var presenter: ReaderBasePresenter<ReaderView, ReaderBaseInteractor>
     private val feeds by lazy { args.getParcelableArray(EXTRA_FEED_LIST) as Array<FeedItemResponse> }
     private val onClickOpenArticle: (String) -> Unit = this::onClickFeedItem
     private val onClickLocation: () -> Unit = this::onClickChangeLocation
-    private val placeName by lazy { args.getString(EXTRA_FEED_PLACE) }
 
-    constructor(feedItemResponse: Array<FeedItemResponse>, placeName: String) : this(Bundle().apply {
+    constructor(feedItemResponse: Array<FeedItemResponse>) : this(Bundle().apply {
         putParcelableArray(EXTRA_FEED_LIST, feedItemResponse)
-        putString(EXTRA_FEED_PLACE, placeName)
     })
 
     override fun onInject() {
@@ -40,7 +41,21 @@ class FeedController(bundle: Bundle) : BaseController(bundle) {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
-        return inflater.inflate(R.layout.feed_view, container, false)
+        val view = inflater.inflate(R.layout.feed_view, container, false)
+        view.feedItemRecyclerView.layoutManager = LinearLayoutManager(context)
+        presenter.onAttach(this)
+        if (feeds.isEmpty()) {
+            router.popCurrentController()
+            router.pushController(RouterTransaction.with(FeedEmptyController()))
+        } else
+            presenter.prepareView()
+        return view
+    }
+
+    override fun prepareView(feedSources: List<FeedSource>, refreshIntervalPosition: Int, feedLocation: FeedLocation) {
+        val adapter = FeedAdapter(onClickOpenArticle, onClickLocation, feedLocation.location)
+        feedItemRecyclerView?.adapter = adapter
+        adapter.addAll(feeds.toList())
     }
 
     private fun onClickFeedItem(url: String) {
@@ -52,19 +67,7 @@ class FeedController(bundle: Bundle) : BaseController(bundle) {
         router.popCurrentController()
     }
 
-    override fun onAttach(view: View) {
-        if (feeds.isNotEmpty()) {
-            val adapter = FeedAdapter(onClickOpenArticle, onClickLocation, placeName)
-            feedItemRecyclerView?.initRecyclerView(adapter)
-            adapter.addAll(feeds.toList())
-        } else {
-            router.popCurrentController()
-            router.pushController(RouterTransaction.with(FeedEmptyController(placeName)))
-        }
-    }
-
     companion object {
         const val EXTRA_FEED_LIST = "extra_feed_list"
-        const val EXTRA_FEED_PLACE = "extra_feed_place"
     }
 }

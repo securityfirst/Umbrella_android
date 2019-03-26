@@ -247,7 +247,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         with(feedLocation) {
             if (this != null)
                 router?.pushController(RouterTransaction
-                        .with(FeedController(feedItemResponse, this.location)))
+                        .with(FeedController(feedItemResponse)))
         }
     }
 

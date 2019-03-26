@@ -51,6 +51,7 @@ class FeedAdapter(private val onClickFeedItem: (String) -> Unit,
 
     fun addAll(feedItems: List<FeedItemResponse>) {
         this.feedItems = feedItems
+        notifyDataSetChanged()
     }
 
     class FeedHeadHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
