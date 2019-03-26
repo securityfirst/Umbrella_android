@@ -78,7 +78,6 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private lateinit var switchServerProgress: ProgressDialog
     private lateinit var exportView: View
     private lateinit var switchServerView: View
-    private var destinationPath = ""
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
@@ -335,7 +334,6 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
             mainActivity.requestExternalStoragePermission()
         }
     }
-
 
     private fun chooseFolderDialog() {
         val chooser = StorageChooser.Builder()
