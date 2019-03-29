@@ -10,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.WindowManager
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -36,7 +35,6 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import java.util.*
 import java.util.logging.Logger
 
 
@@ -196,11 +194,11 @@ class MainActivity : AppCompatActivity() {
             when (uri?.host) {
                 FEED_HOST -> openFeedByUrl(router, navigation)
                 FORM_HOST -> openFormByUrl(router, navigation, uriString)
-                CHECKLIST_HOST -> openChecklistByUrl(router, navigation, uriString)
+//                CHECKLIST_HOST -> openChecklistByUrl(router, navigation, uriString)
                 SEARCH_HOST -> {
                     val i = Intent(this@MainActivity, SearchActivity::class.java)
                     i.action = Intent.ACTION_SEARCH
-                    intent?.data?.lastPathSegment?.let{
+                    intent?.data?.lastPathSegment?.let {
                         i.putExtra(SearchManager.QUERY, it)
                     }
                     startActivity(i)
