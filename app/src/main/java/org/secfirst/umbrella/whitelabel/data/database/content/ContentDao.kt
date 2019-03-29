@@ -72,7 +72,9 @@ interface ContentDao : BaseDao, ContentMonitor {
         }
         forms.forEach { form ->
             form.screens.forEach { screen ->
-                modelAdapter<Item>().saveAll(screen.items)
+                screen.items.forEach { item ->
+                    modelAdapter<Item>().save(item)
+                }
             }
         }
         calculatePercentage(formCount, fileSize)
