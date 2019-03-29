@@ -51,7 +51,8 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                     } else {
                         safeModule.markdowns.let { markdowns ->
                             markdowns.forEach { markdown ->
-                                if (markdown.identifier.toLowerCase() == segmentSelected.deepLinkIdentifier())
+                                val segment = markdown.id.split("/").last().deepLinkIdentifier().toLowerCase()
+                                if (segment == segmentSelected.deepLinkIdentifier())
                                     indexSelected = markdown.index.toInt()
                             }
                             getView()?.showSegments(markdowns, indexSelected)
@@ -77,7 +78,8 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                     difficulties.forEach { difficulty ->
                         if (difficulty.rootDir == difficultySelected)
                             difficulty.markdowns.forEach { markdown ->
-                                if (markdown.identifier.toLowerCase() == segmentSelected.deepLinkIdentifier())
+                                val segment = markdown.id.split("/").last().deepLinkIdentifier().toLowerCase()
+                                if (segment == segmentSelected.deepLinkIdentifier())
                                     indexSelected = markdown.index.toInt()
                             }
                     }
