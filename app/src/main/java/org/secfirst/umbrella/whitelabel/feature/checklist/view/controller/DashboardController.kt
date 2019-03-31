@@ -89,13 +89,24 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     private fun initOnDeleteChecklist() {
+        val swipeHandler = object : SwipeToDeleteCallback(context, true) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val checklist = adapter.getChecklist(position)
+                resetChecklist(checklist!!)
+                adapter.removeAt(position)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(checklistDashboardRecyclerView)
+    }
+
+    private fun initOnDeleteCustomChecklist() {
         val swipeHandler = object : SwipeToDeleteCallback(context) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 val checklist = adapter.getChecklist(position)
-                if (!checklist!!.custom) {
-                    resetChecklist(checklist)
-                } else onDeleteChecklist(checklist)
+                onDeleteChecklist(checklist!!)
                 adapter.removeAt(position)
             }
         }
@@ -107,9 +118,11 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         if (isCustomBoard) {
             addNewChecklistBtn?.show()
             presenter.submitLoadCustomDashboard()
-        } else
+            initOnDeleteCustomChecklist()
+        } else {
             presenter.submitLoadDashboard()
             initOnDeleteChecklist()
+        }
     }
 
     private fun onDashboardItemClicked(checklist: Checklist) {
