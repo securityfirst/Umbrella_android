@@ -59,10 +59,10 @@ class TourController : BaseController(), ContentView {
     }
 
     init {
-        viewList.add(TourUI(R.color.umbrella_purple_dark, R.drawable.umbrella190, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
-        viewList.add(TourUI(R.color.umbrella_green, R.drawable.walktrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
-        viewList.add(TourUI(R.color.umbrella_yellow, R.drawable.walktrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
-        viewList.add(TourUI(R.color.umbrella_purple, R.drawable.walktrough4, org.secfirst.umbrella.whitelabel.R.string.terms_conditions, GONE, VISIBLE))
+        viewList.add(TourUI(R.color.umbrella_green, R.drawable.ic_walkthrough1, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_yellow, R.drawable.ic_walkthrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.umbrella_purple, R.drawable.ic_walkthrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
+        viewList.add(TourUI(R.color.macaroni_and_cheese, R.drawable.walktrough4, org.secfirst.umbrella.whitelabel.R.string.terms_conditions, GONE, VISIBLE))
     }
 
     private val mMessageReceiver = object : BroadcastReceiver() {

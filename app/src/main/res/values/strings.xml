@@ -12,10 +12,9 @@
     <string name="form_input_controller_name">Digital Security Incident</string>
     <string name="loading_tour_message">Fetching data…</string>
     <string name="terms_conditions">Terms and Conditions</string>
-    <string name="tour_slide_1_text">Umbrella makes your security simple</string>
-    <string name="tour_slide_2_text">Get advice on everything from sending a secure email to safe travel</string>
-    <string name="tour_slide_3_text">Use checklists to mark your progress</string>
-    <string name="tour_slide_4_text">Stay up to date with the latest information on where you are</string>
+    <string name="tour_slide_1_text">Get advice on everything from sending a secure email to safe travel</string>
+    <string name="tour_slide_2_text">Use checklists to mark your progress</string>
+    <string name="tour_slide_3_text">Stay up to date with the latest information on where you are</string>
 
     <string name="tour_view_accept_button">ACCEPT</string>
     <string name="fab_dialog_transition_name">transition.fab</string>
@@ -49,7 +48,7 @@
     <string name="feed_source_un">UN/ ReliefWeb</string>
     <string name="feed_source_name">Select The Feed Sources</string>
     <string name="feed_choose_refresh_interval">Choose refresh interval</string>
-    <string name="feed_location_enter_location">Enter location</string>
+    <string name="feed_location_enter_location"><font size = "11" >Enter the country you want to see the feed for</font></string>
 
     <string-array name="refresh_interval_array">
         <item>30 min</item>

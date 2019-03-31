@@ -43,17 +43,9 @@ const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
 
 fun MainActivity.requestExternalStoragePermission() {
 
-    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                PERMISSION_REQUEST_EXTERNAL_STORAGE)
-    } else {
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                PERMISSION_REQUEST_EXTERNAL_STORAGE)
-    }
+    ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+            PERMISSION_REQUEST_EXTERNAL_STORAGE)
 }
 
 fun doRestartApplication(context: Context) {

@@ -27,7 +27,7 @@ const val SEARCH_HOST = "search"
 
 suspend fun isLessonDeepLink(pathSplitted: List<String>): Boolean {
     var res = false
-    if (pathSplitted.last().contains("s_", true))
+    if (pathSplitted.last().contains("s_", true) || pathSplitted.last().contains("c_", true))
         res = true
     else {
         if (pathSplitted.size == 3) {

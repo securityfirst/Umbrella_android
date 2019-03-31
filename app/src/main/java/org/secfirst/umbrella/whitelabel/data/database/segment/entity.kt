@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Parcelable
+import com.commonsware.cwac.anddown.AndDown
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.ForeignKey
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
@@ -19,7 +20,6 @@ import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentC
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
 import org.secfirst.umbrella.whitelabel.serialize.PathUtils
-import java.util.logging.Logger
 
 
 @Parcelize
@@ -93,10 +93,13 @@ fun Markdown.removeHead(): Markdown {
 }
 
 fun Markdown.toSearchResult(): SearchResult {
+    val andDown = AndDown()
+    val result = andDown.markdownToHtml(text, AndDown.HOEDOWN_EXT_QUOTE, 0)
     return SearchResult(
             title,
-            text.substring(0, Math.min(text.length, 300))
-    ) { c: Context ->
+            result
+    )
+    { c: Context ->
         val withoutLanguage = id.split("/").drop(1).joinToString("/")
         c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://$withoutLanguage")))
     }

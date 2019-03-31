@@ -6,11 +6,8 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.whitelabel.feature.segment.interactor.SegmentBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.segment.view.SegmentView
+import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import org.secfirst.umbrella.whitelabel.misc.SCHEMA
-import org.secfirst.umbrella.whitelabel.misc.deepLinkIdentifier
-import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
 import javax.inject.Inject
 
 
@@ -51,7 +48,8 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                     } else {
                         safeModule.markdowns.let { markdowns ->
                             markdowns.forEach { markdown ->
-                                if (markdown.identifier.toLowerCase() == segmentSelected.deepLinkIdentifier())
+                                val segment = markdown.id.split("/").last().deepLinkIdentifier().toLowerCase()
+                                if (segment == segmentSelected.deepLinkIdentifier())
                                     indexSelected = markdown.index.toInt()
                             }
                             getView()?.showSegments(markdowns, indexSelected)
@@ -77,8 +75,11 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                     difficulties.forEach { difficulty ->
                         if (difficulty.rootDir == difficultySelected)
                             difficulty.markdowns.forEach { markdown ->
-                                if (markdown.identifier.toLowerCase() == segmentSelected.deepLinkIdentifier())
+                                val segment = markdown.id.split("/").last().deepLinkIdentifier().toLowerCase()
+                                if (segment == segmentSelected.deepLinkIdentifier())
                                     indexSelected = markdown.index.toInt()
+                                if (segmentSelected == CHECKLIST_EXTENSION)
+                                    indexSelected = difficulty.markdowns.size + 1
                             }
                     }
                     getView()?.showSegmentsWithDifficulty(sortDifficulty(difficulties, difficultySelected), indexSelected)

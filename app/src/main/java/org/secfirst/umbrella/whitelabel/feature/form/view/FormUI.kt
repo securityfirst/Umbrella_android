@@ -92,16 +92,18 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                 textSize = size
                                 textColor = formTextColor
                             }
-                            item.options.forEach { formOption ->
-                                val answer = formOption.hasAnswer(answers)
-                                val radioButton = tintedRadioButton {
-                                    text = formOption.label
-                                    isChecked = answer.choiceInput
-                                    textSize = size
-                                    textColor = formTextColor
+                            radioGroup {
+                                item.options.forEach { formOption ->
+                                    val answer = formOption.hasAnswer(answers)
+                                    val radioButton = tintedRadioButton {
+                                        text = formOption.label
+                                        isChecked = answer.choiceInput
+                                        textSize = size
+                                        textColor = formTextColor
+                                    }
+                                    answer.optionId = formOption.id
+                                    bindRadioButton(answer, radioButton, ui)
                                 }
-                                answer.optionId = formOption.id
-                                bindRadioButton(answer, radioButton, ui)
                             }
                         }
                     }

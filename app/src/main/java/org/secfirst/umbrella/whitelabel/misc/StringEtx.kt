@@ -11,6 +11,7 @@ import java.util.regex.Pattern
 
 const val DOWNLOAD_CHANNEL_ID = "dl_channel"
 const val DOWNLOAD_CHANNEL_NAME = "default"
+const val CHECKLIST_EXTENSION = "c_checklist.yml"
 
 val currentTime: String
     get() {

@@ -3,6 +3,7 @@ package org.secfirst.umbrella.whitelabel.feature.main
 import android.app.SearchManager
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.raizlabs.android.dbflow.sql.language.OperatorGroup
 import com.raizlabs.android.dbflow.sql.language.SQLite
@@ -28,8 +29,6 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Module_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.toSearchResult
-import java.util.logging.Logger
-import android.view.MenuItem
 
 
 class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
@@ -38,7 +37,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
         SEGMENT("Segment"),
         CHECKLIST("Checklist"),
         FORM("Form"),
-        FEED_ITEM("Feed item")
+//        FEED_ITEM("Feed item")
     }
 
     enum class ItemCriteria(val type: String) {
@@ -71,12 +70,12 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
+        android.R.id.home -> {
+            onBackPressed()
+            true
         }
+        else -> super.onOptionsItemSelected(item)
+    }
 
     override fun getCriteria(): List<SearchCriteria> {
         val uniqueDifficultyList = SQLite.select()
@@ -86,119 +85,126 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 .filter { it.difficulty?.id?.isNotEmpty() ?: false } // Only non-empty paths
                 .map { it.difficulty?.id ?: "" }
                 .filter { it.isNotEmpty() }
-                .map {difficulty -> WordUtils.capitalizeFully(difficulty.split('/').last { it.isNotEmpty() })}
+                .map { difficulty -> WordUtils.capitalizeFully(difficulty.split('/').last { it.isNotEmpty() }) }
                 .toSet()
                 .toList()
 
         val categories = SQLite.select()
                 .from(Module::class.java)
                 .queryList()
-                .filter { it.id.length>1 }
+                .filter { it.id.length > 1 }
                 .map { it.moduleTitle }
 
-           return listOf(
-                    SearchCriteria(
-                            ItemCriteria.CATEGORY.type,
-                            FieldTypes.PILLBOX,
-                            categories,
-                            null
-                    ),
-                    SearchCriteria(
-                            ItemCriteria.DIFFICULTY.type,
-                            FieldTypes.STRING,
-                            uniqueDifficultyList,
-                            null
-                    ),
-                    SearchCriteria(
-                            ItemCriteria.TYPE.type,
-                            FieldTypes.PILLBOX,
-                            possibleTypes,
-                            null
-                    ),
-                    // We leave this one alone cause it renders the main search view
-                    SearchCriteria(
-                            ItemCriteria.TEXT.type.toLowerCase(),
-                            FieldTypes.FREE_TEXT,
-                            null,
-                            null)
-            )}
+        return listOf(
+                SearchCriteria(
+                        ItemCriteria.CATEGORY.type,
+                        FieldTypes.PILLBOX,
+                        categories,
+                        null
+                ),
+                SearchCriteria(
+                        ItemCriteria.DIFFICULTY.type,
+                        FieldTypes.PILLBOX,
+                        uniqueDifficultyList,
+                        null
+                ),
+                SearchCriteria(
+                        ItemCriteria.TYPE.type,
+                        FieldTypes.PILLBOX,
+                        possibleTypes,
+                        null
+                ),
+                // We leave this one alone cause it renders the main search view
+                SearchCriteria(
+                        ItemCriteria.TEXT.type.toLowerCase(),
+                        FieldTypes.FREE_TEXT,
+                        null,
+                        null)
+        )
+    }
 
     override fun getDataProvider(): DataProvider = object : DataProvider {
         override fun findByCriteria(text: String, vararg additional: Pair<String, List<String>>): Flowable<List<SearchResult>> {
             val trimmedText = text.toLowerCase().trim()
-            val type = additional.find { it.first == ItemCriteria.TYPE.type.toLowerCase() }?.second?.getOrNull(0) ?: ""
-            val category = additional.find { it.first == ItemCriteria.CATEGORY.type.toLowerCase() }?.second?.getOrNull(0) ?: ""
-            val categoryId = SQLite.select()
-                    .from(Module::class.java)
-                    .where(Module_Table.moduleTitle.`in`(category)).and(Module_Table.moduleTitle.notEq("")).querySingle()?.id
-            val difficulty: String = additional.find { it.first == ItemCriteria.DIFFICULTY.type.toLowerCase() }?.second?.getOrNull(0) ?: ""
+            val type = additional.find { it.first.toLowerCase() == ItemCriteria.TYPE.type.toLowerCase() }?.second
+            val category = additional.find { it.first.toLowerCase() == ItemCriteria.CATEGORY.type.toLowerCase() }?.second
+            val categoryId = ArrayList<String>()
+            if (category != null) {
+                val categoriesId = SQLite.select()
+                        .from(Module::class.java)
+                        .where(Module_Table.moduleTitle.`in`(category.toCollection(ArrayList()) as MutableCollection<String>)).and(Module_Table.moduleTitle.notEq("")).queryList()
+                categoriesId.forEach { categoryId.add(it.id) }
+            }
 
-            Logger.getLogger("aaa").info("text $text diff: $difficulty, cat: $category, type: $type")
+            val difficulty = additional.find { it.first.toLowerCase() == ItemCriteria.DIFFICULTY.type.toLowerCase() }?.second
 
             val mutableMap: MutableList<SearchResult> = mutableListOf()
-            when(type.isEmpty()) {
+            when (type == null) {
                 true -> {
                     possibleTypes.forEach { possible ->
-                        when(possible) {
+                        when (possible) {
                             ItemType.FORM.type -> mutableMap.addAll(searchForForms(trimmedText))
                             ItemType.CHECKLIST.type -> mutableMap.addAll(searchForCheckLists(trimmedText, categoryId, difficulty))
                             ItemType.SEGMENT.type -> mutableMap.addAll(searchForSegments(trimmedText, categoryId, difficulty))
-                            ItemType.SEGMENT.type -> mutableMap.addAll(searchForFeedItems(trimmedText, categoryId, difficulty))
+//                            ItemType.FEED_ITEM.type -> mutableMap.addAll(searchForFeedItems(trimmedText, categoryId, difficulty))
                         }
                     }
                 }
                 false -> {
-                    when(type) {
-                        ItemType.FORM.type -> {
-                            mutableMap.addAll(searchForForms(trimmedText))
-                        }
-                        ItemType.CHECKLIST.type -> {
-                            mutableMap.addAll(searchForCheckLists(trimmedText, categoryId, difficulty))
-                        }
-                        ItemType.SEGMENT.type -> {
-                            mutableMap.addAll(searchForSegments(trimmedText, categoryId, difficulty))
-                        }
-                        ItemType.FEED_ITEM.type -> {
-                            mutableMap.addAll(searchForFeedItems(trimmedText, categoryId, difficulty))
-                        }
-                        else -> {
-
+                    type.forEach {
+                        when (it) {
+                            ItemType.FORM.type -> {
+                                mutableMap.addAll(searchForForms(trimmedText))
+                            }
+                            ItemType.CHECKLIST.type -> {
+                                mutableMap.addAll(searchForCheckLists(trimmedText, categoryId, difficulty))
+                            }
+                            ItemType.SEGMENT.type -> {
+                                mutableMap.addAll(searchForSegments(trimmedText, categoryId, difficulty))
+                            }
+//                            ItemType.FEED_ITEM.type -> {
+//                                mutableMap.addAll(searchForFeedItems(trimmedText, categoryId, difficulty))
+//                            }
                         }
                     }
                 }
             }
             return Flowable.just(mutableMap)
         }
-
     }
 
-    private fun searchForForms(text: String): List<SearchResult> = when(text.isEmpty()) {
-            true -> {
-                SQLite.select()
-                        .from(Form::class.java)
-                        .queryList().map { it.toSearchResult() }
-            }
-            false -> {
-                SQLite.select()
-                        .from(Form::class.java)
-                        .where(Form_Table.path.like("%${text.toLowerCase().trim()}%"))
-                        .queryList().map { it.toSearchResult() }
-            }
+    private fun searchForForms(text: String): List<SearchResult> = when (text.isEmpty()) {
+        true -> {
+            SQLite.select()
+                    .from(Form::class.java)
+                    .queryList().map { it.toSearchResult() }
         }
+        false -> {
+            SQLite.select()
+                    .from(Form::class.java)
+                    .where(Form_Table.path.like("%${text.toLowerCase().trim()}%"))
+                    .queryList().map { it.toSearchResult() }
+        }
+    }
 
-    private fun searchForCheckLists(text: String, category: String?, difficulty: String?): List<SearchResult> {
+    private fun searchForCheckLists(text: String, category: List<String>, difficulty: List<String>?): List<SearchResult> {
         val op = OperatorGroup.clause()
-        when(category?.isNotEmpty()) {
+        val cat = OperatorGroup.clause()
+        val dif = OperatorGroup.clause()
+
+        when (category.isNotEmpty()) {
             true -> {
-                op.and(Content_Table.checklist_id.like("%/$category/%"))
+                category.forEach { cat.or(Content_Table.checklist_id.like("%$it%")) }
+                op.and(cat)
             }
         }
-        when(difficulty?.isNotEmpty()) {
+        when (difficulty?.isNotEmpty()) {
             true -> {
-                op.and(Content_Table.checklist_id.like("%/$difficulty/%"))
+                difficulty.forEach { dif.or(Content_Table.checklist_id.like("%/$it/%")) }
+                op.and(dif)
             }
         }
-        when(text.isNotEmpty()) {
+        when (text.isNotEmpty()) {
             true -> {
                 op.and(Content_Table.check.like("%${text.toLowerCase().trim()}%"))
             }
@@ -210,19 +216,24 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 .queryList().map { it.toSearchResult() }
     }
 
-    private fun searchForSegments(text: String, category: String?, difficulty: String?): List<SearchResult> {
+    private fun searchForSegments(text: String, category: List<String>, difficulty: List<String>?): List<SearchResult> {
         val op = OperatorGroup.clause()
-        when(category?.isNotEmpty()) {
+        val cat = OperatorGroup.clause()
+        val dif = OperatorGroup.clause()
+
+        when (category.isNotEmpty()) {
             true -> {
-                op.and(Markdown_Table.difficulty_id.like("%/$category/%"))
+                category.forEach { cat.or(Markdown_Table.difficulty_id.like("%$it%")) }
+                op.and(cat)
             }
         }
-        when(difficulty?.isNotEmpty()) {
+        when (difficulty?.isNotEmpty()) {
             true -> {
-                op.and(Markdown_Table.difficulty_id.like("%/$difficulty/%"))
+                difficulty.forEach { dif.or(Markdown_Table.difficulty_id.like("%/$it/%")) }
+                op.and(dif)
             }
         }
-        when(text.isNotEmpty()) {
+        when (text.isNotEmpty()) {
             true -> {
                 op.and(Markdown_Table.text.like("%${text.toLowerCase().trim()}%"))
             }
@@ -233,7 +244,13 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 .queryList().map { it.toSearchResult() }
     }
 
-    private fun searchForFeedItems(text: String, category: String?, difficulty: String?): List<SearchResult> = listOf()
+//    private fun searchForFeedItems(text: String, category: List<String>, difficulty: List<String>?): List<SearchResult> {
+//
+//        return SQLite.select()
+//                .from(Content::class.java)
+//                .where()
+//                .queryList().map{it.toSearchResult()}
+//    }
 
     override fun getThreadSpec(): ThreadSpec = UmbrellaApplication.instance.threadSpec
 }
