@@ -19,12 +19,11 @@ class TourUI(private val color: Int,
 
         verticalLayout {
             backgroundColorResource = color
-            padding = dip(20)
 
             verticalLayout {
-                imageView(imageSource).lparams(width = dip(166), height = dip(166)) {
+                imageView(imageSource).lparams(width = wrapContent, height =  wrapContent) {
                     gravity = Gravity.CENTER
-                    topMargin = dip(100)
+                    topMargin = dip(20)
                 }
                 visibility = visibilityImage
             }
@@ -37,8 +36,10 @@ class TourUI(private val color: Int,
                 padding = dip(20)
             }.lparams { gravity = Gravity.CENTER }
 
-            val params = LinearLayout.LayoutParams(matchParent, matchParent)
-            params.bottomMargin = dip(30)
+            val params = LinearLayout.LayoutParams(wrapContent, wrapContent)
+            params.bottomMargin = dip(70)
+            params.leftMargin = dip(10)
+            params.rightMargin = dip(10)
             webView {
                 loadUrl("file:///android_asset/terms.html")
                 visibility = visibilityWebView

@@ -10,8 +10,11 @@ import androidx.core.content.ContextCompat
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import org.jetbrains.anko.*
+import org.jetbrains.anko.appcompat.v7.themedTintedCheckBox
+import org.jetbrains.anko.appcompat.v7.themedTintedRadioButton
 import org.jetbrains.anko.appcompat.v7.tintedCheckBox
 import org.jetbrains.anko.appcompat.v7.tintedRadioButton
+import org.jetbrains.anko.custom.style
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.database.form.Answer
 import org.secfirst.umbrella.whitelabel.data.database.form.Screen
@@ -77,11 +80,10 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             }.lparams { topMargin = dip(5) }
                             item.options.forEach { formOption ->
                                 val answer = formOption.hasAnswer(answers)
-                                val checkBox = tintedCheckBox {
+                                val checkBox = themedTintedCheckBox(R.style.checkBoxStyle) {
                                     text = formOption.label
                                     textColor = formTextColor
                                     isChecked = answer.choiceInput
-                                    textColor = formTextColor
                                 }.lparams { topMargin = dip(5) }
                                 answer.optionId = formOption.id
                                 bindCheckBox(answer, checkBox, ui)
@@ -95,7 +97,7 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             radioGroup {
                                 item.options.forEach { formOption ->
                                     val answer = formOption.hasAnswer(answers)
-                                    val radioButton = tintedRadioButton {
+                                    val radioButton = themedTintedRadioButton(R.style.radioStyle) {
                                         text = formOption.label
                                         isChecked = answer.choiceInput
                                         textSize = size
