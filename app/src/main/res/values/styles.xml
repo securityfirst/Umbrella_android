@@ -58,4 +58,14 @@
     <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/white</item>
     </style>
+
+    <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/umbrella_green</item>
+        <item name="android:textColorSecondary">@color/dark_grey</item>
+    </style>
+
+    <style name="radioStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/umbrella_green</item>
+        <item name="android:textColorSecondary">@color/dark_grey</item>
+    </style>
 </resources>
