@@ -20,6 +20,9 @@ class RssAdapter(private val onClickPress: (RSS) -> Unit) : RecyclerView.Adapter
 
     fun getAt(position: Int) = rssList[position]
 
+
+    override fun getItemViewType(position: Int) = 2
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RssHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rss_item_view, parent, false)
         return RssHolder(view)
