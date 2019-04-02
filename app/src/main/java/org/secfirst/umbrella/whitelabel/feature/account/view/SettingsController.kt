@@ -328,7 +328,9 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private fun showFileChooserPreview() {
         if (ContextCompat.checkSelfPermission(mainActivity,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            chooseFolderDialog()
+            Handler().postDelayed({
+                chooseFolderDialog()
+            }, 500)
         } else {
             mainActivity.requestExternalStoragePermission()
         }
@@ -350,7 +352,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     }
 
     private fun checkPermission() {
-        Permissions.check(appContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE, null, object : PermissionHandler() {
+        Permissions.check(context, Manifest.permission.WRITE_EXTERNAL_STORAGE, null, object : PermissionHandler() {
             override fun onGranted() {
                 showFileChooserPreview()
             }
