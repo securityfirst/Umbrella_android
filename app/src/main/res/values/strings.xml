@@ -47,7 +47,8 @@
     <string name="feed_source_cdc">CDC</string>
     <string name="feed_source_un">UN/ ReliefWeb</string>
     <string name="feed_source_name">Select The Feed Sources</string>
-    <string name="feed_choose_refresh_interval">Choose refresh interval</string>
+    <string name="feed_text_min">%1$s minutes</string>
+    <string name="feed_choose_refresh_interval">Enter interval in minutes (one day = 1440 minutes)</string>
     <string name="feed_location_enter_location">Enter the country you want to see \nthe feed for</string>
 
     <string-array name="refresh_interval_array">

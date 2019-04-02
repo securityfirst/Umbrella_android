@@ -173,12 +173,12 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         }
     }
 
-    override fun prepareView(feedSources: List<FeedSource>, refreshIntervalPosition: Int,
+    override fun prepareView(feedSources: List<FeedSource>, refreshInterval: String,
                              feedLocation: FeedLocation) {
 
         this.feedLocation = feedLocation
         this.feedsCheckbox = feedSources
-        prepareRefreshInterval(refreshIntervalPosition)
+        prepareRefreshInterval(refreshInterval)
         prepareFeedSource(feedSources)
         prepareFeedLocation(feedLocation)
         dispatchFeedRequest(feedLocation, feedSources, true)
@@ -189,9 +189,9 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         populateFeedSource(feedSources)
     }
 
-    private fun prepareRefreshInterval(refreshPosition: Int) {
-        feedRefreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshPosition, this)
-        feedRefreshInterval?.text = feedRefreshIntervalDialog.getCurrentChoice()
+    private fun prepareRefreshInterval(refreshInterval: String) {
+        feedRefreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshInterval, this)
+        feedRefreshInterval?.text = context.getString(R.string.feed_text_min, refreshInterval)
     }
 
     private fun prepareFeedLocation(feedLocation: FeedLocation) {
@@ -230,9 +230,11 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
             onClickFeedLocation()
     }
 
-    override fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String) {
-        feedRefreshInterval?.text = selectedInterval
-        presenter.submitPutRefreshInterval(selectedPosition)
+    override fun onRefreshIntervalSuccess(selectedInterval: String) {
+        if (selectedInterval.isNotEmpty()) {
+            feedRefreshInterval?.text = context.getString(R.string.feed_text_min, selectedInterval)
+            presenter.submitPutRefreshInterval(selectedInterval.toInt())
+        }
     }
 
     override fun startFeedController(feedItemResponse: Array<FeedItemResponse>, isFirstRequest: Boolean) {

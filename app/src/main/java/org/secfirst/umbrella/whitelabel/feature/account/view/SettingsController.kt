@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.account_settings_view.*
 import kotlinx.android.synthetic.main.account_settings_view.view.*
 import kotlinx.android.synthetic.main.account_switch_server_view.view.*
 import kotlinx.android.synthetic.main.alert_control.view.*
-import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import kotlinx.android.synthetic.main.settings_export_dialog.view.*
 import kotlinx.android.synthetic.main.tour_view.*
 import org.jetbrains.anko.design.longSnackbar
@@ -363,8 +362,8 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
         mainView.settingsLabelLocation.text = feedLocation?.location
                 ?: context.getText(R.string.settings_your_location)
-        refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval, this)
-        mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
+        refreshIntervalDialog = RefreshIntervalDialog(refreshIntervalView, refreshFeedInterval.toString(), this)
+        mainView.settingsLabelRefreshInterval.text = context.getString(R.string.feed_text_min, refreshFeedInterval.toString())
         feedSourceDialog = FeedSourceDialog(feedSource, context, this)
         prepareFeedSource(feedSource)
     }
@@ -400,9 +399,11 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         if (isWipeData) router.pushController(RouterTransaction.with(TourController()))
     }
 
-    override fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String) {
-        presenter.submitPutRefreshInterval(selectedPosition)
-        mainView.settingsLabelRefreshInterval.text = refreshIntervalView.refreshInterval.selectedItem.toString()
+    override fun onRefreshIntervalSuccess(selectedInterval: String) {
+        if (selectedInterval.isNotEmpty()) {
+            presenter.submitPutRefreshInterval(selectedInterval.toInt())
+            mainView.settingsLabelRefreshInterval.text = context.getString(R.string.feed_text_min, selectedInterval)
+        }
     }
 
     override fun onFeedSourceSuccess(feedSources: List<FeedSource>) {

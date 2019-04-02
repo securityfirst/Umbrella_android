@@ -49,7 +49,7 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
 
     override fun setRefreshInterval(position: Int) = prefs.edit().putInt(EXTRA_REFRESH_INTERVAL, position).commit()
 
-    override fun getRefreshInterval() = prefs.getInt(EXTRA_REFRESH_INTERVAL, 0)
+    override fun getRefreshInterval() = prefs.getInt(EXTRA_REFRESH_INTERVAL, 30)
 
 }
 

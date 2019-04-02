@@ -29,21 +29,29 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <Spinner
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/refreshInterval"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif"
-            android:hint="@string/feed_location_enter_location"
-            android:lineSpacingExtra="14sp"
-            android:textColor="#8a000000"
-            android:textSize="16sp"
-            android:textStyle="normal"
+            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/feedInterval"
+                fontPath="fonts/Roboto-Regular.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/feed_choose_refresh_interval"
+                android:imeOptions="actionDone"
+                android:textSize="16sp"
+                android:digits="0123456789"
+                android:inputType="phone"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <include
             android:id="@+id/alertControlLayout"
