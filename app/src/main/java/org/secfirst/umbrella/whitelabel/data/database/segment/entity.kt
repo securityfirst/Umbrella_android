@@ -85,7 +85,12 @@ fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
     return controllers
 }
 
-fun MutableList<Markdown>.sortByIndex() = sortedWith(compareBy { it.index.toInt() })
+fun MutableList<Markdown>.sortByIndex() = sortedWith(compareBy {
+    val charIndex = it.index.single()
+    if (charIndex.isDigit())
+        it.index.toInt()
+    else 0
+})
 
 fun Markdown.removeHead(): Markdown {
     text = text.substringAfterLast(text.lines()[3])
