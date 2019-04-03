@@ -90,6 +90,7 @@ class TourController : BaseController(), ContentView {
 
     override fun onAttach(view: View) {
         super.onAttach(view)
+        mainActivity.hideNavigation()
         mainActivity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         LocalBroadcastManager.getInstance(context)
                 .registerReceiver(mMessageReceiver, IntentFilter(EXTRA_CONTENT_SERVICE_ID))
