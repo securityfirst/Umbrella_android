@@ -41,4 +41,8 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
     fun submitDefaultLanguage()
 
     fun setDefaultLanguage(isoCountry : String)
+
+    fun submitFakeView(isShowFakeView : Boolean)
+
+    fun submitIsMaskApp()
 }

@@ -443,7 +443,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/updateNotificationTitle"
+                    android:id="@+id/maskModeTitle"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/settings_vertical_margin"
@@ -456,7 +456,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/notificationLabel" />
 
                 <TextView
-                    android:id="@+id/updateNotificationLabel"
+                    android:id="@+id/maskModeLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
@@ -466,10 +466,10 @@
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/updateNotificationTitle" />
+                    app:layout_constraintTop_toBottomOf="@+id/maskModeTitle" />
 
                 <Switch
-                    android:id="@+id/settingsUpdateNotification"
+                    android:id="@+id/switchMaskMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/settings_normal_padding"

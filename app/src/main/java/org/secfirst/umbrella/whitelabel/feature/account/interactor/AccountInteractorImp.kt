@@ -17,6 +17,10 @@ class AccountInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     : BaseInteractorImp(apiHelper, preferenceHelper, contentRepo), AccountBaseInteractor {
 
+    override fun getMaskApp() = preferenceHelper.isMaskApp()
+
+    override fun setFakeView(isShowFakeView: Boolean)  = preferenceHelper.setMockView(isShowFakeView)
+
     override fun setMaskApp(value: Boolean) = preferenceHelper.setMaskApp(value)
 
     override fun isMaskApp() = preferenceHelper.isMaskApp()

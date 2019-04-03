@@ -73,7 +73,7 @@
     <string name="account_password_alert_description">您的密码必须至少有8个字符，且必须包含至少一位数字和一个大写字母</string>
     <string name="account_set_password">设置密码</string>
     <string name="account_settings">设置</string>
-    <string name="account_mask">面具</string>
+    <string name="account_enable_mask">面具</string>
     <string name="account_language_dialog_title">选择语言</string>
     <string name="account_password_alert_password">密码</string>
     <string name="account_password_skip">跳跃</string>

@@ -19,7 +19,12 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
         const val PREF_NAME = "umbrella.preference"
         const val EXTRA_LOGGED_IN = "is_logged_in"
         const val EXTRA_LANGUAGE = "language"
+        const val EXTRA_SHOW_MOCK_VIEW = "extra_show_mock_view"
     }
+
+    override fun setMockView(result: Boolean) = prefs.edit().putBoolean(EXTRA_SHOW_MOCK_VIEW, result).commit()
+
+    override fun isShowMockView(): Boolean = prefs.getBoolean(EXTRA_SHOW_MOCK_VIEW, false)
 
     override fun setLanguage(isoCountry: String) = prefs.edit().putString(EXTRA_LANGUAGE, isoCountry).commit()
 
@@ -62,6 +67,10 @@ interface PreferenceHelper {
     fun isMaskApp(): Boolean
 
     fun setMaskApp(isMaskApp: Boolean): Boolean
+
+    fun setMockView(result: Boolean): Boolean
+
+    fun isShowMockView(): Boolean
 
     fun setSkipPassword(isSkip: Boolean): Boolean
 

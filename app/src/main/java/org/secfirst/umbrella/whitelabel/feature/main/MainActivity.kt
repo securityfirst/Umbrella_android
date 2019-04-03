@@ -23,7 +23,9 @@ import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.isRepository
-import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_LOGGED_IN
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_MASK_APP
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_SHOW_MOCK_VIEW
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
@@ -107,17 +109,22 @@ class MainActivity : AppCompatActivity() {
     private fun initRoute(savedInstanceState: Bundle?) {
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
-        when {
-            isMaskApp() -> router.setRoot(RouterTransaction.with(CalculatorController()))
-            isLoggedUser() -> {
-                router.setRoot(RouterTransaction.with(LoginController()))
-                navigation.menu.getItem(2).isChecked = true
+
+        if (isMaskMode() && isShowMockView()) {
+            router.setRoot(RouterTransaction.with(CalculatorController()))
+        } else {
+            setShowMockView()
+            when {
+                isLoggedUser() -> {
+                    router.setRoot(RouterTransaction.with(LoginController()))
+                    navigation.menu.getItem(2).isChecked = true
+                }
+                isRepository() -> {
+                    router.setRoot(RouterTransaction.with(HostChecklistController()))
+                    navigation.menu.getItem(2).isChecked = true
+                }
+                else -> router.setRoot(RouterTransaction.with(TourController()))
             }
-            isRepository() -> {
-                router.setRoot(RouterTransaction.with(HostChecklistController()))
-                navigation.menu.getItem(2).isChecked = true
-            }
-            else -> router.setRoot(RouterTransaction.with(TourController()))
         }
     }
 
@@ -174,15 +181,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun isLoggedUser(): Boolean {
         val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return shared.getBoolean(AppPreferenceHelper.EXTRA_LOGGED_IN, false)
+        return shared.getBoolean(EXTRA_LOGGED_IN, false)
     }
 
-    private fun isMaskApp(): Boolean {
+    private fun setShowMockView() {
+        if (isMaskMode()) {
+            val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+            shared.edit().putBoolean(EXTRA_SHOW_MOCK_VIEW, true).apply()
+        }
+    }
+
+    private fun isMaskMode(): Boolean {
         val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val res = shared.getBoolean(AppPreferenceHelper.EXTRA_MASK_APP, false)
-        if (!res)
+        val isMask = shared.getBoolean(EXTRA_MASK_APP, false)
+        if (!isMask)
             setMaskMode(this, false)
-        return res
+        return isMask
+    }
+
+    private fun isShowMockView(): Boolean {
+        val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return shared.getBoolean(EXTRA_SHOW_MOCK_VIEW, false)
     }
 
     private fun isDeepLink() {
@@ -214,5 +233,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 }

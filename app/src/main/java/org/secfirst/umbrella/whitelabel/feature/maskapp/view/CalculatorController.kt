@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.whitelabel.feature.maskapp.view
 
 import android.annotation.SuppressLint
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import kotlinx.android.synthetic.main.calculator_view.*
 import kotlinx.android.synthetic.main.calculator_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
+import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import org.secfirst.umbrella.whitelabel.feature.maskapp.DaggerMaskAppComponent
@@ -126,10 +129,19 @@ class CalculatorController : BaseController(), MaskAppView {
         super.onDestroy()
     }
 
+    private fun setShowMockView() {
+        val shared = mainActivity.getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        shared.edit().putBoolean(AppPreferenceHelper.EXTRA_SHOW_MOCK_VIEW, false).apply()
+    }
+
     private fun startShakeDetector() {
         activity?.let { safeActivity ->
-            setMaskMode(safeActivity, false)
-            presenter.setMaskApp()
+            setMaskMode(safeActivity, true)
+            setShowMockView()
+            val intent = Intent(safeActivity, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            safeActivity.finish()
         }
     }
 

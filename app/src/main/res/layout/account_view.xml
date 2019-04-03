@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e5e5e5"
@@ -64,23 +64,20 @@
             android:background="#fafafa"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/maskModeTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/account_mask"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="Mask" />
-            </FrameLayout>
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                tools:text="@string/enable_masking_mode"
+                android:textColor="#4a4a4a"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
         </androidx.cardview.widget.CardView>
 
@@ -93,23 +90,21 @@
             android:background="#fafafa"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/account_set_password"
+                android:textColor="#4a4a4a"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                tools:text="Set password" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/account_set_password"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="Set password" />
-            </FrameLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -117,10 +112,10 @@
             android:id="@+id/resetPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:visibility="invisible"
             android:layout_gravity="top"
             android:layout_marginTop="@dimen/feed_empty_big_margin_top"
             android:background="#fafafa"
+            android:visibility="invisible"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view">
 
             <FrameLayout

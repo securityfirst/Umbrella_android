@@ -17,7 +17,7 @@ interface AccountBaseInteractor : BaseInteractor {
     suspend fun fetchFeedSources(): List<FeedSource>
 
     suspend fun fetchFeedLocation(): FeedLocation?
-    
+
     suspend fun fetchRefreshInterval(): Int
 
     suspend fun putRefreshInterval(position: Int): Boolean
@@ -25,4 +25,8 @@ interface AccountBaseInteractor : BaseInteractor {
     fun setMaskApp(value: Boolean): Boolean
 
     fun isMaskApp(): Boolean
+
+    fun setFakeView(isShowFakeView: Boolean) : Boolean
+
+    fun getMaskApp() : Boolean
 }

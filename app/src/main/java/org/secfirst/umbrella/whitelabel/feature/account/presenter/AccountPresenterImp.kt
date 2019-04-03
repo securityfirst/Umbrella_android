@@ -19,6 +19,12 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
 
+    override fun submitIsMaskApp() {
+        interactor?.let {
+            getView()?.getMaskApp(it.isMaskApp())
+        }
+    }
+
     override fun setDefaultLanguage(isoCountry: String) {
         interactor?.setDefaultLanguage(isoCountry)
     }
@@ -27,6 +33,10 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         interactor?.let {
             getView()?.getDefaultLanguage(it.getDefaultLanguage())
         }
+    }
+
+    override fun submitFakeView(isShowFakeView: Boolean) {
+        interactor?.setFakeView(isShowFakeView)
     }
 
     override fun switchServerProcess(repoUrl: String) {
@@ -93,7 +103,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
     }
 
     override fun setMaskApp(value: Boolean) {
-        interactor?.setMaskApp(true)
+        interactor?.setMaskApp(value)
     }
 
     override fun submitSkippPassword() {

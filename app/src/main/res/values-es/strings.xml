@@ -89,7 +89,7 @@ Su contraseña debe tener al menos 8 caracteres y debe contener al menos un díg
 </string>
     <string name="account_set_password">Establecer contraseña</string>
     <string name="account_settings">Configuración</string>
-    <string name="account_mask">Máscara</string>
+    <string name="account_enable_mask">Máscara</string>
     <string name="account_language_dialog_title">Seleccione el idioma</string>
     <string name="account_password_alert_password">Contraseña</string>
     <string name="account_password_skip">OMITIR</string>

@@ -39,6 +39,7 @@ class AccountController : BaseController(), AccountView {
     private lateinit var maskAppView: View
     private lateinit var skipPasswordView: View
     private lateinit var accountView: View
+    private var isMaskMode = false
 
     override fun onInject() {
         DaggerAccountComponent.builder()
@@ -65,7 +66,6 @@ class AccountController : BaseController(), AccountView {
                 .Builder(activity)
                 .setView(maskAppView)
                 .create()
-
         skipPasswordDialog = AlertDialog
                 .Builder(activity)
                 .setView(skipPasswordView)
@@ -80,52 +80,74 @@ class AccountController : BaseController(), AccountView {
                 .create()
 
         presenter.onAttach(this)
+        presenter.submitIsMaskApp()
 
         accountView.accountSettings.setOnClickListener { clickOnSettings() }
-        accountView.accountPassword.setOnClickListener { clickOnPasswordAlert() }
+        accountView.accountPassword.setOnClickListener { passwordAlertDialog.show() }
         accountView.accountMask.setOnClickListener { clickOnMaskApp() }
-        accountView.resetPassword.setOnClickListener { clickResetPassword() }
+        accountView.resetPassword.setOnClickListener { resetPasswordDialog.show() }
 
         passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
         passwordView.alertPasswordOk.setOnClickListener { passwordAlertOk() }
-        passwordView.alertPasswordCancel.setOnClickListener { passwordAlertCancel() }
+        passwordView.alertPasswordCancel.setOnClickListener { passwordAlertDialog.dismiss() }
 
-        skipPasswordView.cancel.setOnClickListener { skipAlertCancel() }
+        skipPasswordView.cancel.setOnClickListener { skipPasswordDialog.dismiss() }
         skipPasswordView.ok.setOnClickListener { skipAlertOk() }
 
-        maskAppView.handsShakeCancel.setOnClickListener { maskAppCancel() }
+        maskAppView.handsShakeCancel.setOnClickListener { maskAppAlertDialog.dismiss() }
         maskAppView.handsShakeOk.setOnClickListener { maskAppOk() }
 
-        resetPasswordView.resetCancel.setOnClickListener { resetAlertCancel() }
+        resetPasswordView.resetCancel.setOnClickListener { resetPasswordDialog.dismiss() }
         resetPasswordView.resetOk.setOnClickListener { resetAlertOk() }
 
         presenter.submitIsLogged()
         return accountView
     }
 
-    private fun resetAlertCancel() = resetPasswordDialog.dismiss()
-
-    private fun passwordAlertCancel() = passwordAlertDialog.dismiss()
-
-    private fun skipAlertCancel() = skipPasswordDialog.dismiss()
-
     private fun maskAppOk() {
-        presenter.setMaskApp(true)
+        presenter.submitFakeView(isMaskMode)
+        if (isMaskMode)
+            disableMask()
+        else
+            enableMask()
+    }
+
+    private fun enableMask() {
         activity?.let {
             setMaskMode(it, true)
             maskAppAlertDialog.dismiss()
             presenter.setMaskApp(true)
+            presenter.submitFakeView(true)
             router.pushController(RouterTransaction.with(CalculatorController()))
+            accountView.maskModeTitle.text = context.getString(R.string.disable_mask_message)
         }
     }
 
-    private fun maskAppCancel() = maskAppAlertDialog.dismiss()
+    private fun disableMask() {
+        activity?.let {
+            setMaskMode(it, false)
+            presenter.setMaskApp(false)
+            presenter.submitFakeView(false)
+            accountView.maskModeTitle.text = context.getString(R.string.enable_masking_mode)
+        }
+    }
 
-    private fun clickOnMaskApp() = maskAppAlertDialog.show()
+    override fun getMaskApp(isMaskApp: Boolean) {
+        isMaskMode = isMaskApp
+        if (isMaskApp)
+            accountView.maskModeTitle.text = context.getString(R.string.account_disable_mask)
+        else
+            accountView.maskModeTitle.text = context.getString(R.string.enable_masking_mode)
+    }
 
-    private fun clickOnPasswordAlert() = passwordAlertDialog.show()
-
-    private fun clickResetPassword() = resetPasswordDialog.show()
+    private fun clickOnMaskApp() {
+        if (!isMaskMode)
+            maskAppAlertDialog.show()
+        else {
+            disableMask()
+            context.toast(context.getString(R.string.disable_mask_message))
+        }
+    }
 
     private fun skipAlertOk() {
         presenter.setSkipPassword(true)
