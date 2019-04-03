@@ -52,7 +52,7 @@ class FeedController(bundle: Bundle) : BaseController(bundle), ReaderView {
         return view
     }
 
-    override fun prepareView(feedSources: List<FeedSource>, refreshIntervalPosition: Int, feedLocation: FeedLocation) {
+    override fun prepareView(feedSources: List<FeedSource>, refreshInterval: String, feedLocation: FeedLocation) {
         val adapter = FeedAdapter(onClickOpenArticle, onClickLocation, feedLocation.location)
         feedItemRecyclerView?.adapter = adapter
         adapter.addAll(feeds.toList())

@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(searchToolbar)
         performDI()
         initRoute(savedInstanceState)
+        showNavigation()
         isDeepLink()
     }
 

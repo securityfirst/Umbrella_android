@@ -43,9 +43,9 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         launchSilent(uiContext) {
             interactor?.let {
                 val feedSources = it.fetchFeedSources()
-                val refreshIntervalPosition = it.fetchRefreshInterval()
+                val refreshInterval = it.fetchRefreshInterval()
                 val feedLocation = it.fetchFeedLocation() ?: FeedLocation()
-                getView()?.prepareView(feedSources, refreshIntervalPosition, feedLocation)
+                getView()?.prepareView(feedSources, refreshInterval.toString(), feedLocation)
             }
         }
     }
@@ -123,9 +123,9 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         }
     }
 
-    override fun submitPutRefreshInterval(position: Int) {
+    override fun submitPutRefreshInterval(interval: Int) {
         launchSilent(uiContext) {
-            interactor?.putRefreshInterval(position)
+            interactor?.putRefreshInterval(interval)
         }
     }
 

@@ -36,7 +36,7 @@ class FeedEmptyController : BaseController(), ReaderView {
         return view
     }
 
-    override fun prepareView(feedSources: List<FeedSource>, refreshIntervalPosition: Int, feedLocation: FeedLocation) {
+    override fun prepareView(feedSources: List<FeedSource>, refreshInterval: String, feedLocation: FeedLocation) {
         feedEmptyTitle?.let { it.text = feedLocation.location }
     }
 

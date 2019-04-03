@@ -23,7 +23,7 @@ interface ReaderView : BaseView {
     fun feedError() {}
 
     fun prepareView(feedSources: List<FeedSource>,
-                    refreshIntervalPosition: Int,
+                    refreshInterval: String,
                     feedLocation: FeedLocation) {
     }
 }

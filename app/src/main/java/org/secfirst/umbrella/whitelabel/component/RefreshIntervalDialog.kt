@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.feed_interval_dialog.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.misc.init
 
-class RefreshIntervalDialog(private val view: View, private val initialPosition: Int,
+class RefreshIntervalDialog(private val view: View, private val initialInterval: String,
                             private val listener: RefreshIntervalListener) {
 
     private val refreshIntervalDialog = AlertDialog
@@ -16,31 +16,20 @@ class RefreshIntervalDialog(private val view: View, private val initialPosition:
             .setView(view)
             .create()
 
-    private lateinit var spinner : Spinner
 
     init {
         view.alertControlOk.setOnClickListener { refreshIntervalOk() }
         view.alertControlCancel.setOnClickListener { refreshIntervalCancel() }
-        prepareRefreshInterval()
     }
 
     fun show() {
         refreshIntervalDialog.show()
     }
 
-    fun getCurrentChoice() = spinner.selectedItem.toString()
-
-    private fun prepareRefreshInterval() {
-        spinner = view.refreshInterval
-        spinner.init(R.array.refresh_interval_array)
-        spinner.setSelection(initialPosition)
-    }
-
     private fun refreshIntervalOk() {
-        val selectedInterval = view.refreshInterval.selectedItem.toString()
-        val position = view.refreshInterval.selectedItemPosition
+        val selectedInterval = view.feedInterval.text.toString()
         refreshIntervalDialog.dismiss()
-        listener.onRefreshIntervalSuccess(position, selectedInterval)
+        listener.onRefreshIntervalSuccess(selectedInterval)
     }
 
     private fun refreshIntervalCancel() {
@@ -49,7 +38,7 @@ class RefreshIntervalDialog(private val view: View, private val initialPosition:
     }
 
     interface RefreshIntervalListener {
-        fun onRefreshIntervalSuccess(selectedPosition: Int, selectedInterval: String)
+        fun onRefreshIntervalSuccess(selectedInterval: String)
         fun onRefreshIntervalCancel() {}
     }
 }
