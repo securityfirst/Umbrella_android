@@ -16,37 +16,39 @@ import javax.inject.Inject
 
 class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
 
-
     suspend fun load(root: Root): Root {
         withContext(ioContext) {
             val filesPair = tentRepo.loadFile()
-            filesPair.filter { it.second.extension != ExtensionFile.PNG.value }.forEach { pairFile ->
-                val file = pairFile.second
-                val absolutePath = file.path.substringAfterLast(PathUtils.basePath(), "")
-                val pwd = getWorkDirectory(absolutePath)
-                loadElement(pwd, pairFile, absolutePath, root)
-                loadForm(pairFile, root)
-            }
+            filesPair
+                    .filter { it.second.extension != ExtensionFile.PNG.value }
+                    .forEach {
+                        loadElement(it, root)
+                    }
+
+            loadForm(root)
         }
         return root
     }
 
-    private fun loadElement(pwd: String, pairFile: Pair<String, File>, absolutePath: String, root: Root) {
+    private fun loadElement(pairFile: Pair<String, File>, root: Root) {
+
         val file = pairFile.second
-        val pathId = pairFile.first
+        val id = pairFile.first
+        val absolutePath = file.path.substringAfterLast(PathUtils.basePath(), "")
+        val pwd = getWorkDirectory(absolutePath)
 
         when (getLevelOfPath(pwd)) {
             ELEMENT_LEVEL -> {
                 root.elements.forEach {
                     if (it.path == pwd) {
-                        when (getDelimiter(file.nameWithoutExtension)) {
+                        when (file.extension) {
                             TypeFile.SEGMENT.value -> {
                                 val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
-                                it.markdowns.add(Markdown(pathId, markdownFormatted).removeHead())
+                                it.markdowns.add(Markdown(id, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val newChecklist = parseYmlFile(file, Checklist::class)
-                                newChecklist.id = pathId
+                                newChecklist.id = id
                                 it.checklist.add(newChecklist)
                             }
                         }
@@ -56,14 +58,14 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
             SUB_ELEMENT_LEVEL -> {
                 root.elements.walkSubElement { subElement ->
                     if (subElement.path == pwd) {
-                        when (getDelimiter(file.nameWithoutExtension)) {
+                        when (file.extension) {
                             TypeFile.SEGMENT.value -> {
                                 val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
-                                subElement.markdowns.add(Markdown(pathId, markdownFormatted).removeHead())
+                                subElement.markdowns.add(Markdown(id, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val checklist = parseYmlFile(file, Checklist::class)
-                                checklist.id = pathId
+                                checklist.id = id
                                 subElement.checklist.add(checklist)
                             }
                         }
@@ -73,14 +75,14 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
             CHILD_LEVEL -> {
                 root.elements.walkChild { child ->
                     if (child.path == pwd) {
-                        when (getDelimiter(file.nameWithoutExtension)) {
+                        when (file.extension) {
                             TypeFile.SEGMENT.value -> {
                                 val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
-                                child.markdowns.add(Markdown(pathId, markdownFormatted).removeHead())
+                                child.markdowns.add(Markdown(id, markdownFormatted).removeHead())
                             }
                             TypeFile.CHECKLIST.value -> {
                                 val newChecklist = parseYmlFile(file, Checklist::class)
-                                newChecklist.id = pathId
+                                newChecklist.id = id
                                 child.checklist.add(newChecklist)
                             }
                         }
@@ -90,12 +92,12 @@ class ElementLoader @Inject constructor(private val tentRepo: TentRepo) {
         }
     }
 
-    private fun loadForm(pairFile: Pair<String, File>, root: Root) {
-        val file = pairFile.second
-        val sha1ID = pairFile.first
-        if (getDelimiter(file.nameWithoutExtension) == TypeFile.FORM.value) {
+    private fun loadForm(root: Root) {
+        tentRepo.loadFormFile().forEach {
+            val file = it.second
+            val id = it.first
             val form = parseYmlFile(file, Form::class)
-            form.path = sha1ID
+            form.path = id
             form.deeplinkTitle = form.title.toLowerCase()
             root.forms.add(form)
         }

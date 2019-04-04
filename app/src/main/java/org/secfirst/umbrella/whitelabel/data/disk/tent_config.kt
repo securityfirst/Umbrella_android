@@ -24,6 +24,8 @@ fun isNotRepository() = !File(repoPath).exists()
 
 fun getPathRepository(): String = repoPath
 
+fun defaultTentLanguage(): String = "en"
+
 enum class TypeFile(val value: String) {
     CHECKLIST("c"),
     FORM("f"),
@@ -49,16 +51,17 @@ enum class ExtensionFile(val value: String) {
     PNG("png"),
 }
 
-fun String.shortName(): String {
-    val fullName = this.substringAfterLast("/")
-    val fileName = fullName.substringBeforeLast(".")
-    return fileName.substringBeforeLast("_")
+fun tentLanguages(): List<String> {
+    val languages = mutableListOf<String>()
+    File(repoPath)
+            .walk()
+            .filter { !it.path.contains(".git") }
+            .filter { it.name.length == 2 }
+            .filter { it.isDirectory }
+            .forEach { languages.add(it.name) }
+    return languages
 }
 
-fun String.nameWithoutExtension(): String {
-    val fullName = this.substringAfterLast("/")
-    return fullName.substringBeforeLast(".")
-}
 
 fun getLastCommitID() {
     val git = Git.open(File("${getPathRepository()}/.git"))

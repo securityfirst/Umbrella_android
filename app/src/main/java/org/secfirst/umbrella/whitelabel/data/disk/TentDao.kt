@@ -85,34 +85,45 @@ interface TentDao {
         return files
     }
 
-    fun filterByElement(): List<Pair<String, File>> {
+    fun filterElements(): List<Pair<String, File>> {
         val files = mutableListOf<Pair<String, File>>()
-        val entry = getDiffEntry()
-
-        entry.forEach { diffEntry ->
-            val fileName = diffEntry.newPath.nameWithoutExtension().shortName()
-            val absoluteFilePath = getPathRepository() + diffEntry.newPath
-            println("${diffEntry.newPath} ${diffEntry.newId.name()}")
-            if (fileName == TypeFile.SEGMENT.value ||
-                    fileName == TypeFile.CHECKLIST.value ||
-                    fileName == TypeFile.FORM.value ||
-                    fileName == TypeFile.IMG_CATEGORY.value)
-                files.add(Pair(diffEntry.newPath, File(absoluteFilePath)))
-        }
+        val predicateLanguage = defaultTentLanguage()
+        File("${getPathRepository()}$predicateLanguage")
+                .walk()
+                .filter { !it.path.contains(".git") }
+                .filter {
+                    it.nameWithoutExtension == TypeFile.SEGMENT.value ||
+                            it.nameWithoutExtension == TypeFile.CHECKLIST.value ||
+                            it.extension == TypeFile.IMG_CATEGORY.value
+                }
+                .toList()
+                .reversed()
+                .forEach { files.add(Pair(it.path, it)) }
         return files.toList()
     }
 
-    suspend fun filterCategoryFiles(): List<Pair<String, File>> {
+    fun filterForms(): List<Pair<String, File>> {
         val files = mutableListOf<Pair<String, File>>()
-        withContext(ioContext) {
-            val entry = getDiffEntry()
-            entry.forEach { diffEntry ->
-                val fileName = diffEntry.newPath.nameWithoutExtension()
-                val absoluteFilePath = getPathRepository() + diffEntry.newPath
-                if (fileName == TypeFile.CATEGORY.value)
-                    files.add(Pair(diffEntry.newPath, File(absoluteFilePath)))
-            }
-        }
+        val predicateLanguage = defaultTentLanguage()
+        File("${getPathRepository()}$predicateLanguage")
+                .walk()
+                .filter { !it.path.contains(".git") }
+                .filter { it.nameWithoutExtension == TypeFile.FORM.value }
+                .toList()
+                .forEach { files.add(Pair(it.path, it)) }
+        return files.toList()
+    }
+
+    suspend fun filterCategories(): List<Pair<String, File>> {
+        val files = mutableListOf<Pair<String, File>>()
+        val predicateLanguage = defaultTentLanguage()
+        File("${getPathRepository()}$predicateLanguage")
+                .walkTopDown()
+                .filter { !it.path.contains(".git") }
+                .filter { it.nameWithoutExtension == TypeFile.CATEGORY.value }
+                .toList()
+                .reversed()
+                .forEach { files.add(Pair(it.path, it)) }
         return files.toList()
     }
 
