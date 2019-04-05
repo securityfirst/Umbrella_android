@@ -20,7 +20,6 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.isInternetConnected
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
-import org.secfirst.umbrella.whitelabel.serialize.ElementSerialize
 import org.secfirst.umbrella.whitelabel.serialize.ElementSerializeMonitor
 import java.io.File
 import java.io.PrintWriter
@@ -43,8 +42,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         get() = object : TentDao {}
 
     private val tentRepo = TentRepository(tentDao)
-    private val elementSerialize = ElementSerialize(tentRepo, this)
-    private val elementLoader = ElementLoader(tentRepo)
+    private val elementSerialize = ElementLoader(tentRepo, this)
 
     private val tentProgressMonitor = object : TextProgressMonitor(PrintWriter(System.out)) {
         override fun onUpdate(taskName: String, cmp: Int, totalWork: Int, pcnt: Int) {
@@ -56,7 +54,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         launchSilent(uiContext) {
             val isCloned = if (isInternetConnected()) cloneRepository(url) else false
             if (isCloned) {
-                val element = elementLoader.load(elementSerialize.process())
+                val element = elementSerialize.process()
                 contentDao.insertAllLessons(element)
                 contentDao.insertFeedSource(createFeedSources())
                 contentDao.insertDefaultRSS(createDefaultRSS())

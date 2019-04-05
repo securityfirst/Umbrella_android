@@ -92,9 +92,8 @@ interface TentDao {
                 .walk()
                 .filter { !it.path.contains(".git") }
                 .filter {
-                    it.nameWithoutExtension == TypeFile.SEGMENT.value ||
-                            it.nameWithoutExtension == TypeFile.CHECKLIST.value ||
-                            it.extension == TypeFile.IMG_CATEGORY.value
+                    val prefix = it.nameWithoutExtension.substringBeforeLast("_")
+                    prefix == TypeFile.SEGMENT.value || prefix == TypeFile.CHECKLIST.value
                 }
                 .toList()
                 .reversed()
