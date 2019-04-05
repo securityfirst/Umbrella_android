@@ -158,6 +158,13 @@ fun Context.setLocale(lang: String) {
     res.updateConfiguration(conf, dm)
 }
 
+fun deviceLanguage(): String {
+    val defaultLanguage = Locale.getDefault().displayLanguage
+    if (defaultLanguage == "gb")
+        return "en"
+    return defaultLanguage
+}
+
 fun Context.createNotification(title: String, body: String, channelId: String, id: Int) {
     val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle(title)

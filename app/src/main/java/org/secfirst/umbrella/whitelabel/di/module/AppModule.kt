@@ -43,7 +43,6 @@ import org.secfirst.umbrella.whitelabel.data.network.NetworkEndPoint.BASE_URL
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
-import org.secfirst.umbrella.whitelabel.serialize.ElementSerialize
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -60,11 +59,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun provideElementSerializer(tentRep: TentRepo) = ElementSerialize(tentRep)
-
-    @Provides
-    @Singleton
-    internal fun provideElementLoader(tentRep: TentRepo) = ElementLoader(tentRep)
+    internal fun provideElementSerializer(tentRep: TentRepo) = ElementLoader(tentRep)
 
     @Provides
     @Singleton

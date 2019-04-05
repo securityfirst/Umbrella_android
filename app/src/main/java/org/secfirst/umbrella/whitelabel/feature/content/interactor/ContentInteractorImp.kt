@@ -15,14 +15,12 @@ import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractorImp
 import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
-import org.secfirst.umbrella.whitelabel.serialize.ElementSerialize
 import javax.inject.Inject
 
 class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                                preferenceHelper: AppPreferenceHelper,
                                                contentRepo: ContentRepo,
                                                private val tentRepo: TentRepo,
-                                               private val elementSerialize: ElementSerialize,
                                                private val elementLoader: ElementLoader)
     : BaseInteractorImp(apiHelper, preferenceHelper, contentRepo), ContentBaseInteractor {
 
@@ -38,7 +36,7 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun getMarkdown(markdownId: String) = contentRepo.getMarkdown(markdownId)
 
-    override suspend fun getChecklist(checklistId: String) = contentRepo.    getChecklist(checklistId)
+    override suspend fun getChecklist(checklistId: String) = contentRepo.getChecklist(checklistId)
 
     override suspend fun getForm(formId: String) = contentRepo.getForm(formId)
 
@@ -56,9 +54,9 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun persistFeedSource(feedSources: List<FeedSource>) = contentRepo.insertFeedSource(feedSources)
 
-    override suspend fun fetchData(url : String) = tentRepo.fetchRepository(url)
+    override suspend fun fetchData(url: String) = tentRepo.fetchRepository(url)
 
-    override suspend fun initParser() = elementLoader.load(elementSerialize.process())
+    override suspend fun initParser() = elementLoader.process()
 
     override suspend fun persist(root: Root) = contentRepo.insertAllLessons(root)
 
