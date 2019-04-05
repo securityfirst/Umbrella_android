@@ -48,6 +48,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
     private lateinit var passwordView: View
     private lateinit var skipPasswordDialog: AlertDialog
     private lateinit var skipPasswordView: View
+    private var changeAllSettings = false
 
 
     override fun onInject() {
@@ -135,16 +136,8 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
 
 
     private fun onClickUndefinedFeed() {
-        val feedsChecked = feedsCheckbox.filter { it.lastChecked }
-        var stringLocation = ""
-        feedLocation?.let { stringLocation = it.location }
-        when {
-            stringLocation.isBlank() -> onClickFeedLocation()
-            feedsChecked.isEmpty() -> onClickFeedSource()
-            else -> {
-                feedLocation?.let { presenter.submitFeedRequest(it, feedsCheckbox) }
-            }
-        }
+        changeAllSettings = true
+        onClickRefreshInterval()
     }
 
     private fun onClickRefreshInterval() {
@@ -163,7 +156,6 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         var feedCheckInString = ""
         feedsChecked.forEach { if (it.lastChecked) feedCheckInString += "- ${it.name}\n" }
         this.feedsCheckbox = feedsChecked
-
         if (feedCheckInString.isEmpty()) {
             feedSource?.textColor = ContextCompat.getColor(context, R.color.feedSources_color)
             feedSource?.text = context.getString(R.string.feed_source_label)
@@ -204,36 +196,56 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         }
     }
 
-    override fun onLocationSuccess(feedLocation: FeedLocation) {
-        feedViewLocation?.text = feedLocation.location
+    override fun onLocationCancel() {
+        changeAllSettings = false
+        super.onLocationCancel()
+    }
+
+    override fun onLocationSuccess(feedLoc: FeedLocation) {
+        feedViewLocation?.text = feedLoc.location
         feedViewLocation?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)
         val feedsChecked = feedsCheckbox.filter { it.lastChecked }
-        if (feedsChecked.isNotEmpty())
-            dispatchFeedRequest(feedLocation, feedsCheckbox)
+        presenter.submitInsertFeedLocation(feedLoc)
+        feedLocation = feedLoc
+        if (changeAllSettings) onClickFeedSource()
         else
-            onClickFeedSource()
+            if (feedsChecked.isNotEmpty())
+                dispatchFeedRequest(feedLoc, feedsCheckbox)
+    }
 
-        presenter.submitInsertFeedLocation(feedLocation)
+    override fun onFeedSourceCancel() {
+        changeAllSettings = false
+        super.onFeedSourceCancel()
     }
 
     override fun onFeedSourceSuccess(feedSources: List<FeedSource>) {
+        changeAllSettings = false
         feedsCheckbox = feedSources
         val feedChecked = feedsCheckbox.filter { it.lastChecked }
         presenter.submitInsertFeedSource(feedsCheckbox)
         populateFeedSource(feedsCheckbox)
         var stringLocation = ""
         feedLocation?.let { stringLocation = it.location }
-
         if (stringLocation.isNotBlank() && feedChecked.isNotEmpty())
             feedLocation?.let { dispatchFeedRequest(it, feedsCheckbox) }
-        else
-            onClickFeedLocation()
+    }
+
+    override fun onRefreshIntervalCancel() {
+        changeAllSettings = false
+        super.onRefreshIntervalCancel()
     }
 
     override fun onRefreshIntervalSuccess(selectedInterval: String) {
         if (selectedInterval.isNotEmpty()) {
             feedRefreshInterval?.text = context.getString(R.string.feed_text_min, selectedInterval)
             presenter.submitPutRefreshInterval(selectedInterval.toInt())
+        }
+        if (changeAllSettings) onClickFeedLocation()
+        else {
+            val feedChecked = feedsCheckbox.filter { it.lastChecked }
+            if (feedChecked.isNotEmpty()) {
+                feedLocation?.let { dispatchFeedRequest(it, feedChecked) }
+            }
         }
     }
 

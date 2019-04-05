@@ -33,7 +33,7 @@
     <string name="lesson_tab">Lesson</string>
     <string name="url_server">URL server</string>
     <string name="feed_interval">Interval</string>
-    <string name="set_your_feed">Enter your feed</string>
+    <string name="set_your_feed">Set your feed</string>
     <string name="set_your_feed_label">You haven’t set the country and the sources for the feed yet. You have to do it in order for the feed to start displaying, and you can change it any time later in the settings.</string>
     <string name="feed_interval_label">Set how often shall we check for news</string>
     <string name="set">SET</string>
