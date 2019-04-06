@@ -19,30 +19,32 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.createDefaultFavori
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
+import org.secfirst.umbrella.whitelabel.data.database.segment.sortByIndex
 import org.secfirst.umbrella.whitelabel.data.disk.Root
-import org.secfirst.umbrella.whitelabel.data.disk.convertTo
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface ContentDao : BaseDao, ContentMonitor {
     suspend fun insertAllLessons(root: Root) {
         withContext(ioContext) {
-            val lessonCount = insertLesson(root.convertTo())
+            val lessonCount = insertLessons(root.modules)
             insertFormsContent(root.forms, lessonCount.first, lessonCount.second)
         }
     }
 
-    private suspend fun insertLesson(dataLesson: ContentData): Pair<Int, Int> {
+    private suspend fun insertLessons(modules: List<Module>): Pair<Int, Int> {
         var lessonCount = 0
-        val lessonSize = dataLesson.modules.size
+        val lessonSize = modules.size
         withContext(ioContext) {
             modelAdapter<Module>().save(createDefaultFavoriteModule())
-            modelAdapter<Module>().saveAll(dataLesson.modules)
-            dataLesson.modules.forEach { module ->
+            modelAdapter<Module>().saveAll(modules)
+            modules.forEach { module ->
+                modelAdapter<Markdown>().saveAll(module.markdowns)
                 module.subjects.forEach { subject ->
                     modelAdapter<Subject>().save(subject)
                     modelAdapter<Markdown>().saveAll(subject.markdowns)
                     modelAdapter<Checklist>().saveAll(subject.checklist)
                     subject.difficulties.forEach { difficulty ->
+                        difficulty.markdowns = difficulty.markdowns.sortByIndex().toMutableList()
                         modelAdapter<Difficulty>().save(difficulty)
                         insertChecklistContent(difficulty.checklist)
                     }

@@ -167,7 +167,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                     subject?.title ?: ""
                 } else {
                     val module = it.fetchModule(moduleId)
-                    module?.moduleTitle ?: ""
+                    module?.title ?: ""
                 }
                 getView()?.getTitleToolbar(title)
             }

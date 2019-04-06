@@ -13,7 +13,7 @@ data class Blog(@Expose
                 var coverImgUrl: String? = null,
 
                 @Expose
-                @SerializedName("moduleTitle")
+                @SerializedName("title")
                 var title: String? = null,
 
                 @Expose
