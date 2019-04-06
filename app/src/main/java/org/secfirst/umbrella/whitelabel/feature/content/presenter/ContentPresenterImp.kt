@@ -23,9 +23,6 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.appContext
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
 import org.secfirst.umbrella.whitelabel.misc.parseYmlFile
-import org.secfirst.umbrella.whitelabel.serialize.PathUtils
-import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getLevelOfPath
-import org.secfirst.umbrella.whitelabel.serialize.PathUtils.Companion.getWorkDirectory
 import java.io.File
 import javax.inject.Inject
 
@@ -45,7 +42,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
                 pairFiles.forEach { pair ->
                     val file = pair.second
                     val pathId = pair.first
-                    val absoluteFilePath = file.path.substringAfterLast(PathUtils.basePath(), "")
+                    val absoluteFilePath = file.path.substringAfterLast(basePath(), "")
                     val pwd = getWorkDirectory(absoluteFilePath)
 
                     when (getDelimiter(file.nameWithoutExtension)) {
@@ -91,7 +88,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
             interactor?.let {
                 getView()?.downloadContentInProgress()
                 val intent = Intent(appContext(), ContentService::class.java).apply {
-            putExtra(EXTRA_URL_REPOSITORY, url)
+                    putExtra(EXTRA_URL_REPOSITORY, url)
                     action = ContentService.ACTION_START_FOREGROUND_SERVICE
                 }
                 appContext().startService(intent)

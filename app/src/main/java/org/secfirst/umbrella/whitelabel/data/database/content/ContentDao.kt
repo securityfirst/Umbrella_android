@@ -15,7 +15,6 @@ import org.secfirst.umbrella.whitelabel.data.database.form.Item
 import org.secfirst.umbrella.whitelabel.data.database.form.associateFormForeignKey
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.database.lesson.associateForeignKey
 import org.secfirst.umbrella.whitelabel.data.database.lesson.createDefaultFavoriteModule
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
@@ -37,9 +36,8 @@ interface ContentDao : BaseDao, ContentMonitor {
         val lessonSize = dataLesson.modules.size
         withContext(ioContext) {
             modelAdapter<Module>().save(createDefaultFavoriteModule())
+            modelAdapter<Module>().saveAll(dataLesson.modules)
             dataLesson.modules.forEach { module ->
-                module.associateForeignKey()
-                modelAdapter<Module>().save(module)
                 module.subjects.forEach { subject ->
                     modelAdapter<Subject>().save(subject)
                     modelAdapter<Markdown>().saveAll(subject.markdowns)

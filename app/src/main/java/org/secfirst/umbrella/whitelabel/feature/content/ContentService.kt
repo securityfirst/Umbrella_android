@@ -19,8 +19,8 @@ import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.whitelabel.misc.isInternetConnected
 import org.secfirst.umbrella.whitelabel.misc.launchSilent
-import org.secfirst.umbrella.whitelabel.serialize.ElementLoader
-import org.secfirst.umbrella.whitelabel.serialize.ElementSerializeMonitor
+import org.secfirst.umbrella.whitelabel.data.disk.TentLoader
+import org.secfirst.umbrella.whitelabel.data.disk.ElementSerializeMonitor
 import java.io.File
 import java.io.PrintWriter
 import java.util.*
@@ -42,7 +42,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         get() = object : TentDao {}
 
     private val tentRepo = TentRepository(tentDao)
-    private val elementSerialize = ElementLoader(tentRepo, this)
+    private val elementSerialize = TentLoader(tentRepo, this)
 
     private val tentProgressMonitor = object : TextProgressMonitor(PrintWriter(System.out)) {
         override fun onUpdate(taskName: String, cmp: Int, totalWork: Int, pcnt: Int) {

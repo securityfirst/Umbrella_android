@@ -11,9 +11,9 @@ import java.io.File
 private val repoPath = UmbrellaApplication.instance.cacheDir.path + "/repo/"
 const val BRANCH_NAME: String = "refs/heads/master"
 const val baseUrlRepository = "https://github.com/securityfirst/umbrella-content"
-const val ELEMENT_LEVEL = 2
-const val SUB_ELEMENT_LEVEL = 3
-const val CHILD_LEVEL = 4
+const val ELEMENT_LEVEL = 1
+const val SUB_ELEMENT_LEVEL = 2
+const val CHILD_LEVEL = 3
 
 fun getDelimiter(fileName: String) = if (fileName == TypeFile.CATEGORY.value) fileName
 else fileName.substringBeforeLast("_")
@@ -62,7 +62,6 @@ fun tentLanguages(): List<String> {
     return languages
 }
 
-
 fun getLastCommitID() {
     val git = Git.open(File("${getPathRepository()}/.git"))
     val head = git.repository.getRef("HEAD")
@@ -86,3 +85,36 @@ suspend fun validateRepository(repositoryURL: String): Boolean {
     }
     return result
 }
+
+fun getLastDirectory(path: String): String {
+    val splitPath = path.split("/").filter { it.isNotEmpty() }
+    return splitPath[splitPath.lastIndex]
+}
+
+private fun getSplitPath(path: String) = path.split("/").filter { it.isNotEmpty() }
+
+fun getLevelOfPath(path: String): Int {
+    val pathSplitted = path.split("/").toMutableList()
+    if (pathSplitted.size > 1) {
+        pathSplitted.removeAt(pathSplitted.lastIndex)
+    }
+    return pathSplitted.size
+}
+
+fun getWorkDirectory(path: String): String {
+    val splitPath = getSplitPath(path)
+    var pwd = ""
+    for (i in 1 until splitPath.size - 1)
+        pwd += splitPath[i] + "/"
+    return pwd
+}
+
+fun getWorkDirectoryFromImage(path: String): String {
+    val splitPath = getSplitPath(path)
+    var pwd = ""
+    for (i in 0 until splitPath.size - 1)
+        pwd += splitPath[i] + "/"
+    return pwd
+}
+
+fun basePath(): String = UmbrellaApplication.instance.cacheDir.path
