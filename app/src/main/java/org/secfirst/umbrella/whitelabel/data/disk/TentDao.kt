@@ -85,10 +85,9 @@ interface TentDao {
         return files
     }
 
-    fun filterElements(): List<Pair<String, File>> {
-        val files = mutableListOf<Pair<String, File>>()
+    fun filterElements(): List<File> {
         val predicateLanguage = defaultTentLanguage()
-        File("${getPathRepository()}$predicateLanguage")
+        return File("${getPathRepository()}$predicateLanguage")
                 .walk()
                 .filter { !it.path.contains(".git") }
                 .filter {
@@ -97,33 +96,27 @@ interface TentDao {
                 }
                 .toList()
                 .reversed()
-                .forEach { files.add(Pair(it.path, it)) }
-        return files.toList()
+
     }
 
-    fun filterForms(): List<Pair<String, File>> {
-        val files = mutableListOf<Pair<String, File>>()
+    fun filterForms(): List<File> {
         val predicateLanguage = defaultTentLanguage()
-        File("${getPathRepository()}$predicateLanguage")
+        return File("${getPathRepository()}$predicateLanguage")
                 .walk()
                 .filter { !it.path.contains(".git") }
                 .filter { it.nameWithoutExtension == TypeFile.FORM.value }
                 .toList()
-                .forEach { files.add(Pair(it.path, it)) }
-        return files.toList()
     }
 
-    suspend fun filterCategories(): List<Pair<String, File>> {
-        val files = mutableListOf<Pair<String, File>>()
+    suspend fun filterCategories(): List<File> {
         val predicateLanguage = defaultTentLanguage()
-        File("${getPathRepository()}$predicateLanguage")
+        return File("${getPathRepository()}$predicateLanguage")
                 .walkTopDown()
                 .filter { !it.path.contains(".git") }
                 .filter { it.nameWithoutExtension == TypeFile.CATEGORY.value }
                 .toList()
                 .reversed()
-                .forEach { files.add(Pair(it.path, it)) }
-        return files.toList()
+
     }
 
     private fun getDiffEntry(): List<DiffEntry> {

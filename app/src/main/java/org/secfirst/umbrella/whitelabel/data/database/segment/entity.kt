@@ -16,10 +16,11 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
+import org.secfirst.umbrella.whitelabel.data.disk.basePath
+import org.secfirst.umbrella.whitelabel.data.disk.getWorkDirectoryFromImage
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
-import org.secfirst.umbrella.whitelabel.serialize.PathUtils
 
 
 @Parcelize
@@ -112,7 +113,7 @@ fun Markdown.toSearchResult(): SearchResult {
 }
 
 fun String.replaceMarkdownImage(absolutePath: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
-        "${Markdown.MARKDOWN_IMAGE_TAG}file://${PathUtils.basePath()}/${PathUtils.getWorkDirectoryFromImage(absolutePath)}")
+        "${Markdown.MARKDOWN_IMAGE_TAG}file://${basePath()}/${getWorkDirectoryFromImage(absolutePath)}")
 
 inline fun <reified T> MutableList<Markdown>.associateMarkdown(foreignKey: T) {
     this.forEach { mark ->

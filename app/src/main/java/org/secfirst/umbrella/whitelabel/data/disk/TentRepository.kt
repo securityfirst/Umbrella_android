@@ -6,7 +6,7 @@ import javax.inject.Inject
 class TentRepository @Inject constructor(private val tentDao: TentDao) : TentRepo {
 
 
-    override fun loadFormFile(): List<Pair<String, File>> = tentDao.filterForms()
+    override fun loadFormFile(): List<File> = tentDao.filterForms()
 
     override suspend fun updateRepository() = tentDao.rebaseBranch()
 

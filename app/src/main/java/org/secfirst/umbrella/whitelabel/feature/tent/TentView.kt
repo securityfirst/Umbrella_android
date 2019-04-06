@@ -6,11 +6,12 @@ import java.io.File
 interface TentView : BaseView {
 
     fun isUpdateRepository(pairFiles: List<Pair<String, File>>) {
-        println(pairFiles.forEach { it.second.absolutePath })}
+        println(pairFiles.forEach { it.second.absolutePath })
+    }
 
     fun isFetchRepository(res: Boolean) {}
 
-    fun onLoadElementSuccess(files: List<Pair<String, File>>) {}
+    fun onLoadElementSuccess(files: List<File>) {}
 
     fun getCategoryImage(imagePath: String) {}
 
