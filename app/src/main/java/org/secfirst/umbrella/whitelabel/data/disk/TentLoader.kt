@@ -4,6 +4,7 @@ import android.util.Log
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -24,88 +25,80 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     private var fileCount = 0
     private var listSize = 0
 
-    suspend fun process(): Root {
+    suspend fun serializeContent(): Root {
         withContext(ioContext) {
-            val categoriesFiles = tentRepo.loadElementsFile()
-            listSize = categoriesFiles.size
-            categoriesFiles.forEach {
-                fileCount++
-                calculatePercentage()
-                serializeFiles(it)
-            }
+            val files = tentRepo.loadElementsFile()
+            val formFiles = tentRepo.loadFormFile()
+            listSize = files.size + formFiles.size
+            processFiles(files)
+            loadForm(formFiles)
         }
         return root
     }
 
-    private fun serializeFiles(file: File) {
-        val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
-        val pwd = file.path.substringBeforeLast("/${file.name}")
-        when (getLevelOfPath(absolutePath)) {
-            ELEMENT_LEVEL -> {
-                val module = parseYmlFile(file, Module::class)
-                updateCategories(module, file)
-                filterSegmentAndChecklistFiles(pwd).forEach {
-                    when (it.nameWithoutExtension.substringBeforeLast("_")) {
-                        TypeFile.SEGMENT.value -> {
-                            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-                            val markdown = Markdown(it.path, markdownText).removeHead()
-                            markdown.module = module
-                            module.markdowns.add(markdown)
-                        }
-                        TypeFile.CHECKLIST.value -> {
-                            val newChecklist = parseYmlFile(it, Checklist::class)
-                            newChecklist.id = it.path
-                            newChecklist.module = module
-                            module.checklist.add(newChecklist)
-                        }
-                    }
-                }
+    private fun processFiles(files: List<File>) {
+        files.forEach { file ->
+            fileCount++
+            val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
+            val pwd = file.path.substringBeforeLast("/${file.name}")
+            when (getLevelOfPath(absolutePath)) {
+                ELEMENT_LEVEL -> serializeElement(pwd, absolutePath, file)
+                SUB_ELEMENT_LEVEL -> serializeSubElement(pwd, absolutePath, file)
+                CHILD_LEVEL -> serializeChild(pwd, absolutePath, file)
             }
-            SUB_ELEMENT_LEVEL -> {
-                val subject = parseYmlFile(file, Subject::class)
-                updateCategories(subject, file)
-                filterSegmentAndChecklistFiles(pwd).forEach {
-                    when (it.nameWithoutExtension.substringBeforeLast("_")) {
-                        TypeFile.SEGMENT.value -> {
-                            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-                            val markdown = Markdown(it.path, markdownText).removeHead()
-                            markdown.subject = subject
-                            subject.markdowns.add(markdown)
-                        }
-                        TypeFile.CHECKLIST.value -> {
-                            val newChecklist = parseYmlFile(it, Checklist::class)
-                            newChecklist.id = it.path
-                            newChecklist.subject = subject
-                            subject.checklist.add(newChecklist)
-                        }
-                    }
-                }
-            }
-            CHILD_LEVEL -> {
-                val difficulty = parseYmlFile(file, Difficulty::class)
-                updateCategories(difficulty, file)
-                filterSegmentAndChecklistFiles(pwd).forEach {
-                    when (it.nameWithoutExtension.substringBeforeLast("_")) {
-                        TypeFile.SEGMENT.value -> {
-                            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-                            val markdown = Markdown(it.path, markdownText).removeHead()
-                            markdown.difficulty = difficulty
-                            difficulty.markdowns.add(markdown)
-                        }
-                        TypeFile.CHECKLIST.value -> {
-                            val newChecklist = parseYmlFile(it, Checklist::class)
-                            newChecklist.id = it.path
-                            newChecklist.difficulty = difficulty
-                            difficulty.checklist.add(newChecklist)
-                        }
-                    }
-                }
-            }
+        }
+        calculatePercentage()
+    }
+
+    private fun serializeElement(pwd: String, absolutePath: String, file: File) {
+        val module = parseYmlFile(file, Module::class)
+        updateCategories(module, file)
+        filterSegmentFiles(pwd).forEach {
+            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+            val markdown = Markdown(it.path, markdownText).removeHead()
+            markdown.module = module
+            module.markdowns.add(markdown)
+        }
+        filterChecklistFiles(pwd).forEach {
+            val newChecklist = parseYmlFile(it, Checklist::class)
+            newChecklist.id = it.path
+            newChecklist.module = module
+            module.checklist.add(newChecklist)
         }
     }
 
-    private fun test() {
+    private fun serializeSubElement(pwd: String, absolutePath: String, file: File) {
+        val subject = parseYmlFile(file, Subject::class)
+        updateCategories(subject, file)
+        filterSegmentFiles(pwd).forEach {
+            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+            val markdown = Markdown(it.path, markdownText).removeHead()
+            markdown.subject = subject
+            subject.markdowns.add(markdown)
+        }
+        filterChecklistFiles(pwd).forEach {
+            val newChecklist = parseYmlFile(it, Checklist::class)
+            newChecklist.id = it.path
+            newChecklist.subject = subject
+            subject.checklist.add(newChecklist)
+        }
+    }
 
+    private fun serializeChild(pwd: String, absolutePath: String, file: File) {
+        val difficulty = parseYmlFile(file, Difficulty::class)
+        updateCategories(difficulty, file)
+        filterSegmentFiles(pwd).forEach {
+            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+            val markdown = Markdown(it.path, markdownText).removeHead()
+            markdown.difficulty = difficulty
+            difficulty.markdowns.add(markdown)
+        }
+        filterChecklistFiles(pwd).forEach {
+            val newChecklist = parseYmlFile(it, Checklist::class)
+            newChecklist.id = it.path
+            newChecklist.difficulty = difficulty
+            difficulty.checklist.add(newChecklist)
+        }
     }
 
     private inline fun <reified T> updateCategories(obj: T, file: File) {
@@ -136,12 +129,22 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         }
     }
 
+    private fun loadForm(formFiles: List<File>) {
+        formFiles.forEach {
+            val form = parseYmlFile(it, Form::class)
+            form.path = it.path
+            form.deeplinkTitle = form.title.toLowerCase()
+            root.forms.add(form)
+            fileCount++
+            calculatePercentage()
+        }
+    }
+
     private fun calculatePercentage() {
         val percentage = fileCount * 100 / listSize
         elementMonitor?.onSerializeProgress(percentage)
     }
 }
-
 
 interface ElementSerializeMonitor {
     fun onSerializeProgress(percentage: Int)
