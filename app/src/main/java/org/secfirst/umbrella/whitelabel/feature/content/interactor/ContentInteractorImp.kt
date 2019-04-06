@@ -56,7 +56,7 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun fetchData(url: String) = tentRepo.fetchRepository(url)
 
-    override suspend fun initParser() = tentLoader.process()
+    override suspend fun initParser() = tentLoader.serializeContent()
 
     override suspend fun persist(root: Root) = contentRepo.insertAllLessons(root)
 
