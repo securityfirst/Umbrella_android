@@ -131,6 +131,11 @@ interface TentDao {
     }
 }
 
+fun filterSegmentAndChecklistFiles(path: String) = File(path).listFiles { _, name ->
+    name.substringBeforeLast("_") == TypeFile.SEGMENT.value ||
+            name.substringBeforeLast("_") == TypeFile.CHECKLIST.value
+}.toList()
+
 fun String.filterImageCategoryFile(): String {
     val imgFile = File(getPathRepository())
             .walk()

@@ -6,7 +6,7 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class moduleTitle to the JavaScript interface
+# and specify the fully qualified class title to the JavaScript interface
 # class:
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
@@ -17,7 +17,7 @@
 #-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
-# hide the original source file moduleTitle.
+# hide the original source file title.
 #-renamesourcefileattribute SourceFile
 
 # DbFlow

@@ -93,7 +93,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 .from(Module::class.java)
                 .queryList()
                 .filter { it.id.length > 1 }
-                .map { it.moduleTitle }
+                .map { it.title }
 
         return listOf(
                 SearchCriteria(
@@ -132,7 +132,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
             if (category != null) {
                 val categoriesId = SQLite.select()
                         .from(Module::class.java)
-                        .where(Module_Table.moduleTitle.`in`(category.toCollection(ArrayList()) as MutableCollection<String>)).and(Module_Table.moduleTitle.notEq("")).queryList()
+                        .where(Module_Table.title.`in`(category.toCollection(ArrayList()) as MutableCollection<String>)).and(Module_Table.title.notEq("")).queryList()
                 categoriesId.forEach { categoryId.add(it.id) }
             }
 

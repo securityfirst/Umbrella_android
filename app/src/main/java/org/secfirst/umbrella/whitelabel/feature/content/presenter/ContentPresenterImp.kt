@@ -154,7 +154,7 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
 
     private fun Module.updateModuleContent(oldModule: Module): Module {
         oldModule.icon = icon
-        oldModule.moduleTitle = moduleTitle
+        oldModule.title = title
         oldModule.index = index
         return oldModule
     }

@@ -3,6 +3,9 @@ package org.secfirst.umbrella.whitelabel.data.disk
 import android.util.Log
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
+import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
@@ -16,7 +19,7 @@ import javax.inject.Inject
 
 class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentService: ContentService? = null) {
 
-    private val root: Root = Root()
+    private val root = Root()
     private val elementMonitor: ElementSerializeMonitor? = contentService
     private var fileCount = 0
     private var listSize = 0
@@ -24,91 +27,121 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     suspend fun process(): Root {
         withContext(ioContext) {
             val categoriesFiles = tentRepo.loadElementsFile()
-            val contentFiles = tentRepo.loadFile()
-            listSize = categoriesFiles.size + contentFiles.size
+            listSize = categoriesFiles.size
             categoriesFiles.forEach {
                 fileCount++
                 calculatePercentage()
-                serializeCategories(it)
-            }
-            contentFiles.forEach {
-                fileCount++
                 serializeFiles(it)
-                calculatePercentage()
             }
         }
         return root
     }
 
-    private fun calculatePercentage() {
-        val percentage = fileCount * 100 / listSize
-        elementMonitor?.onSerializeProgress(percentage)
-    }
-
     private fun serializeFiles(file: File) {
         val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
-        val pwd = absolutePath.substringBeforeLast("/${file.name}")
-        val elements = root.elements.filter { it.rootDir == pwd }
-        if (elements.isNotEmpty()) {
-            loadContent(elements.last(), file)
-        } else {
-            root.elements.forEach { element ->
-                val subElements = element.children.filter { it.rootDir == pwd }
-                if (subElements.isNotEmpty())
-                    loadContent(subElements.last(), file)
-                else {
-                    subElements.forEach { child ->
-                        val children = child.children.filter { it.rootDir == pwd }
-                        if (children.isNotEmpty())
-                            loadContent(children.last(), file)
+        val pwd = file.path.substringBeforeLast("/${file.name}")
+        when (getLevelOfPath(absolutePath)) {
+            ELEMENT_LEVEL -> {
+                val module = parseYmlFile(file, Module::class)
+                updateCategories(module, file)
+                filterSegmentAndChecklistFiles(pwd).forEach {
+                    when (it.nameWithoutExtension.substringBeforeLast("_")) {
+                        TypeFile.SEGMENT.value -> {
+                            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+                            val markdown = Markdown(it.path, markdownText).removeHead()
+                            markdown.module = module
+                            module.markdowns.add(markdown)
+                        }
+                        TypeFile.CHECKLIST.value -> {
+                            val newChecklist = parseYmlFile(it, Checklist::class)
+                            newChecklist.id = it.path
+                            newChecklist.module = module
+                            module.checklist.add(newChecklist)
+                        }
+                    }
+                }
+            }
+            SUB_ELEMENT_LEVEL -> {
+                val subject = parseYmlFile(file, Subject::class)
+                updateCategories(subject, file)
+                filterSegmentAndChecklistFiles(pwd).forEach {
+                    when (it.nameWithoutExtension.substringBeforeLast("_")) {
+                        TypeFile.SEGMENT.value -> {
+                            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+                            val markdown = Markdown(it.path, markdownText).removeHead()
+                            markdown.subject = subject
+                            subject.markdowns.add(markdown)
+                        }
+                        TypeFile.CHECKLIST.value -> {
+                            val newChecklist = parseYmlFile(it, Checklist::class)
+                            newChecklist.id = it.path
+                            newChecklist.subject = subject
+                            subject.checklist.add(newChecklist)
+                        }
+                    }
+                }
+            }
+            CHILD_LEVEL -> {
+                val difficulty = parseYmlFile(file, Difficulty::class)
+                updateCategories(difficulty, file)
+                filterSegmentAndChecklistFiles(pwd).forEach {
+                    when (it.nameWithoutExtension.substringBeforeLast("_")) {
+                        TypeFile.SEGMENT.value -> {
+                            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+                            val markdown = Markdown(it.path, markdownText).removeHead()
+                            markdown.difficulty = difficulty
+                            difficulty.markdowns.add(markdown)
+                        }
+                        TypeFile.CHECKLIST.value -> {
+                            val newChecklist = parseYmlFile(it, Checklist::class)
+                            newChecklist.id = it.path
+                            newChecklist.difficulty = difficulty
+                            difficulty.checklist.add(newChecklist)
+                        }
                     }
                 }
             }
         }
     }
 
-    private fun loadContent(element: Element, file: File) {
-        val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
-        when (file.nameWithoutExtension.substringBeforeLast("_")) {
-            TypeFile.SEGMENT.value -> {
-                val markdownFormatted = file.readText().replaceMarkdownImage(absolutePath)
-                element.markdowns.add(Markdown(file.path, markdownFormatted).removeHead())
-                Log.d("test", "id - ${element.path}")
-            }
-            TypeFile.CHECKLIST.value -> {
-                val newChecklist = parseYmlFile(file, Checklist::class)
-                newChecklist.id = file.path
-                element.checklist.add(newChecklist)
-                Log.d("test", "id - ${element.path}")
-            }
-        }
+    private fun test() {
+
     }
 
-    private fun serializeCategories(file: File) {
-        val element = parseYmlFile(file, Element::class)
+    private inline fun <reified T> updateCategories(obj: T, file: File) {
         val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
         val pwd = absolutePath.substringBeforeLast("/${file.name}")
-        element.pathId = file.path
-        element.path = file.path
-        element.resourcePath = element.icon.filterImageCategoryFile()
-        element.rootDir = pwd
-
-        when (getLevelOfPath(absolutePath)) {
-            ELEMENT_LEVEL -> {
-                root.elements.add(element)
-                Log.d("test", "id - ${element.path}")
+        when (obj) {
+            is Module -> {
+                obj.id = file.path
+                obj.resourcePath = obj.icon.filterImageCategoryFile()
+                obj.rootDir = pwd
+                root.modules.add(obj)
             }
-            SUB_ELEMENT_LEVEL -> {
-                root.elements.last().children.add(element)
-                Log.d("test", "id - ${element.path}")
+            is Subject -> {
+                val module = root.modules.last()
+                obj.id = file.path
+                obj.rootDir = pwd
+                obj.module = module
+                module.subjects.add(obj)
+                Log.d("test", "id - ${obj.id}")
             }
-            else -> {
-                root.elements.last().children.last().children.add(element)
-                Log.d("test", "id - ${element.path}")
+            is Difficulty -> {
+                val subject = root.modules.last().subjects.last()
+                obj.id = file.path
+                obj.rootDir = pwd
+                obj.subject = subject
+                subject.difficulties.add(obj)
             }
         }
     }
+
+    private fun calculatePercentage() {
+        val percentage = fileCount * 100 / listSize
+        elementMonitor?.onSerializeProgress(percentage)
+    }
 }
+
 
 interface ElementSerializeMonitor {
     fun onSerializeProgress(percentage: Int)

@@ -90,7 +90,7 @@ fun Checklist.covertToHTML(): String {
     return body
 }
 
-inline fun <reified T> MutableList<Checklist>.associateChecklist(foreignKey: T) {
+    inline fun <reified T> MutableList<Checklist>.associateChecklist(foreignKey: T) {
     this.forEach { checklist ->
         when (foreignKey) {
             is Module -> checklist.module = foreignKey
