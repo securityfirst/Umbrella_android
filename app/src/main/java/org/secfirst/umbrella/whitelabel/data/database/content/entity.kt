@@ -7,11 +7,12 @@ import android.net.Uri
 import org.apache.commons.text.WordUtils
 import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
+import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 
-class ContentData(val modules: MutableList<Module> = mutableListOf())
+class ContentData(val modules: MutableList<Module> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())
 
 fun Content.toSearchResult(): SearchResult {
     val segments = this.checklist?.id.orEmpty().split("/")

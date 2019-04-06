@@ -92,7 +92,7 @@ fun MutableList<Markdown>.sortByIndex() = sortedWith(compareBy {
     } catch (e: Exception) {
         0
     }
-})
+}).toMutableList()
 
 fun Markdown.removeHead(): Markdown {
     text = text.substringAfterLast(text.lines()[3])
@@ -114,16 +114,6 @@ fun Markdown.toSearchResult(): SearchResult {
 
 fun String.replaceMarkdownImage(absolutePath: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
         "${Markdown.MARKDOWN_IMAGE_TAG}file://${basePath()}/${getWorkDirectoryFromImage(absolutePath)}")
-
-inline fun <reified T> MutableList<Markdown>.associateMarkdown(foreignKey: T) {
-    this.forEach { mark ->
-        when (foreignKey) {
-            is Module -> mark.module = foreignKey
-            is Subject -> mark.subject = foreignKey
-            is Difficulty -> mark.difficulty = foreignKey
-        }
-    }
-}
 
 interface HostSegmentTabControl {
     fun moveTabAt(position: Int)

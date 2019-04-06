@@ -90,19 +90,6 @@ fun Checklist.covertToHTML(): String {
     return body
 }
 
-    inline fun <reified T> MutableList<Checklist>.associateChecklist(foreignKey: T) {
-    this.forEach { checklist ->
-        when (foreignKey) {
-            is Module -> checklist.module = foreignKey
-            is Subject -> checklist.subject = foreignKey
-            is Difficulty -> checklist.difficulty = foreignKey
-        }
-        checklist.content.forEach { content ->
-            content.checklist = checklist
-        }
-    }
-}
-
 interface ContentMonitor {
     fun onContentProgress(percentage: Int)
 }

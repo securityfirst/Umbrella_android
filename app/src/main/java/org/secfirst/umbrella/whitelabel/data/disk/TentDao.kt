@@ -104,7 +104,10 @@ interface TentDao {
         return File("${getPathRepository()}$predicateLanguage")
                 .walk()
                 .filter { !it.path.contains(".git") }
-                .filter { it.nameWithoutExtension == TypeFile.FORM.value }
+                .filter {
+                    val prefix = it.nameWithoutExtension.substringBeforeLast("_")
+                    prefix == TypeFile.FORM.value
+                }
                 .toList()
     }
 

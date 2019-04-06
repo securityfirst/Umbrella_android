@@ -9,7 +9,7 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.disk.Root
+import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
 import org.secfirst.umbrella.whitelabel.data.disk.TentRepo
 import org.secfirst.umbrella.whitelabel.data.network.ApiHelper
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
@@ -58,6 +58,6 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
 
     override suspend fun initParser() = tentLoader.serializeContent()
 
-    override suspend fun persist(root: Root) = contentRepo.insertAllLessons(root)
+    override suspend fun persist(contentData: ContentData) = contentRepo.insertAllLessons(contentData)
 
 }
