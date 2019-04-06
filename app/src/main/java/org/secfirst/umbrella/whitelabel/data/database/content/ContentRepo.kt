@@ -8,12 +8,11 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.disk.Root
 
 
 interface ContentRepo {
 
-    suspend fun insertAllLessons(root: Root)
+    suspend fun insertAllLessons(contentData: ContentData)
 
     suspend fun insertFeedSource(feedSources: List<FeedSource>)
 

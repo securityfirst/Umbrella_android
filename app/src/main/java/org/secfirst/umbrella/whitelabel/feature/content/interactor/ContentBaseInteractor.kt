@@ -8,16 +8,16 @@ import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
-import org.secfirst.umbrella.whitelabel.data.disk.Root
+import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
 import org.secfirst.umbrella.whitelabel.feature.base.interactor.BaseInteractor
 
 interface ContentBaseInteractor : BaseInteractor {
 
     suspend fun fetchData(url: String): Boolean
 
-    suspend fun persist(root: Root)
+    suspend fun persist(contentData: ContentData)
 
-    suspend fun initParser(): Root
+    suspend fun initParser(): ContentData
 
     suspend fun persistFeedSource(feedSources: List<FeedSource>)
 

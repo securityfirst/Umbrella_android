@@ -3,8 +3,10 @@ package org.secfirst.umbrella.whitelabel.data.disk
 import android.util.Log
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
+import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
+import org.secfirst.umbrella.whitelabel.data.database.form.associateFormForeignKey
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
@@ -20,12 +22,12 @@ import javax.inject.Inject
 
 class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentService: ContentService? = null) {
 
-    private val root = Root()
+    private val contentData = ContentData()
     private val elementMonitor: ElementSerializeMonitor? = contentService
     private var fileCount = 0
     private var listSize = 0
 
-    suspend fun serializeContent(): Root {
+    suspend fun serializeContent(): ContentData {
         withContext(ioContext) {
             val files = tentRepo.loadElementsFile()
             val formFiles = tentRepo.loadFormFile()
@@ -33,7 +35,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             processFiles(files)
             loadForm(formFiles)
         }
-        return root
+        return contentData
     }
 
     private fun processFiles(files: List<File>) {
@@ -109,10 +111,10 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
                 obj.id = file.path
                 obj.resourcePath = obj.icon.filterImageCategoryFile()
                 obj.rootDir = pwd
-                root.modules.add(obj)
+                contentData.modules.add(obj)
             }
             is Subject -> {
-                val module = root.modules.last()
+                val module = contentData.modules.last()
                 obj.id = file.path
                 obj.rootDir = pwd
                 obj.module = module
@@ -120,7 +122,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
                 Log.d("test", "id - ${obj.id}")
             }
             is Difficulty -> {
-                val subject = root.modules.last().subjects.last()
+                val subject = contentData.modules.last().subjects.last()
                 obj.id = file.path
                 obj.rootDir = pwd
                 obj.subject = subject
@@ -134,14 +136,15 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             val form = parseYmlFile(it, Form::class)
             form.path = it.path
             form.deeplinkTitle = form.title.toLowerCase()
-            root.forms.add(form)
+            contentData.forms.add(form)
             fileCount++
             calculatePercentage()
         }
+        contentData.forms.associateFormForeignKey()
     }
 
     private fun calculatePercentage() {
-        val percentage = fileCount * 100 / listSize
+        val percentage = fileCount * 50 / listSize
         elementMonitor?.onSerializeProgress(percentage)
     }
 }

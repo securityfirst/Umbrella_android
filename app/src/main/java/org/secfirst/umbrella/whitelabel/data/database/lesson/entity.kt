@@ -8,12 +8,10 @@ import kotlinx.android.parcel.Parcelize
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist_Table
-import org.secfirst.umbrella.whitelabel.data.database.checklist.associateChecklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown_Table
-import org.secfirst.umbrella.whitelabel.data.database.segment.associateMarkdown
 
 data class Lesson(var moduleId: String,
                   var moduleTitle: String = "",
@@ -153,25 +151,4 @@ fun createDefaultFavoriteModule(): Module {
     favoriteModule.title = "Bookmarked"
     favoriteModule.index = 1
     return favoriteModule
-}
-
-inline fun MutableList<Module>.walkThroughSubject(action: (Subject) -> Unit) {
-    this.forEach { module ->
-        module.subjects.forEach(action)
-    }
-}
-
-fun Module.associateForeignKey() {
-    markdowns.associateMarkdown(this)
-    checklist.associateChecklist(this)
-    subjects.forEach { subject ->
-        subject.module = this
-        subject.markdowns.associateMarkdown(subject)
-        subject.checklist.associateChecklist(subject)
-        subject.difficulties.forEach { difficulty ->
-            difficulty.subject = subject
-            difficulty.checklist.associateChecklist(difficulty)
-            difficulty.markdowns.associateMarkdown(difficulty)
-        }
-    }
 }

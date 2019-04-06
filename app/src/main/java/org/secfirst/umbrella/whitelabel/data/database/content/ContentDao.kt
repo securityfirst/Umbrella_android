@@ -12,7 +12,8 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.ContentMonitor
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.form.Form
 import org.secfirst.umbrella.whitelabel.data.database.form.Item
-import org.secfirst.umbrella.whitelabel.data.database.form.associateFormForeignKey
+import org.secfirst.umbrella.whitelabel.data.database.form.Option
+import org.secfirst.umbrella.whitelabel.data.database.form.Screen
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
 import org.secfirst.umbrella.whitelabel.data.database.lesson.createDefaultFavoriteModule
@@ -20,39 +21,34 @@ import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
 import org.secfirst.umbrella.whitelabel.data.database.reader.RSS
 import org.secfirst.umbrella.whitelabel.data.database.segment.Markdown
 import org.secfirst.umbrella.whitelabel.data.database.segment.sortByIndex
-import org.secfirst.umbrella.whitelabel.data.disk.Root
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
 
 interface ContentDao : BaseDao, ContentMonitor {
-    suspend fun insertAllLessons(root: Root) {
+    suspend fun insertAllContent(contentData: ContentData) {
         withContext(ioContext) {
-            val lessonCount = insertLessons(root.modules)
-            insertFormsContent(root.forms, lessonCount.first, lessonCount.second)
-        }
-    }
-
-    private suspend fun insertLessons(modules: List<Module>): Pair<Int, Int> {
-        var lessonCount = 0
-        val lessonSize = modules.size
-        withContext(ioContext) {
+            val modules = contentData.modules
+            val totalFiles = contentData.modules.size + contentData.forms.size
+            var lessonCount = 0
             modelAdapter<Module>().save(createDefaultFavoriteModule())
             modelAdapter<Module>().saveAll(modules)
             modules.forEach { module ->
+                module.markdowns = module.markdowns.sortByIndex()
                 modelAdapter<Markdown>().saveAll(module.markdowns)
                 module.subjects.forEach { subject ->
+                    subject.markdowns = subject.markdowns.sortByIndex()
                     modelAdapter<Subject>().save(subject)
                     modelAdapter<Markdown>().saveAll(subject.markdowns)
                     modelAdapter<Checklist>().saveAll(subject.checklist)
                     subject.difficulties.forEach { difficulty ->
-                        difficulty.markdowns = difficulty.markdowns.sortByIndex().toMutableList()
+                        difficulty.markdowns = difficulty.markdowns.sortByIndex()
                         modelAdapter<Difficulty>().save(difficulty)
                         insertChecklistContent(difficulty.checklist)
                     }
                 }
-                calculatePercentage(++lessonCount, lessonSize)
+                calculatePercentage(++lessonCount, totalFiles)
             }
+            insertAllForms(contentData.forms, lessonCount, totalFiles)
         }
-        return Pair(lessonCount, lessonSize)
     }
 
     private fun insertChecklistContent(checklist: MutableList<Checklist>) {
@@ -63,17 +59,16 @@ interface ContentDao : BaseDao, ContentMonitor {
         }
     }
 
-    private fun insertFormsContent(forms: MutableList<Form>, fileCount: Int, fileSize: Int) {
+    private fun insertAllForms(forms: MutableList<Form>, fileCount: Int, fileSize: Int) {
         var formCount = fileCount
-        forms.associateFormForeignKey()
+        modelAdapter<Form>().saveAll(forms)
         forms.forEach { form ->
-            modelAdapter<Form>().save(form)
             ++formCount
-        }
-        forms.forEach { form ->
+            modelAdapter<Screen>().saveAll(form.screens)
             form.screens.forEach { screen ->
+                modelAdapter<Item>().saveAll(screen.items)
                 screen.items.forEach { item ->
-                    modelAdapter<Item>().save(item)
+                    modelAdapter<Option>().saveAll(item.options)
                 }
             }
         }

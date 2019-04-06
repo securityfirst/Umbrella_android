@@ -10,7 +10,6 @@ import com.raizlabs.android.dbflow.structure.BaseModel
 import org.jsoup.Jsoup
 import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.umbrella.whitelabel.data.database.AppDatabase
-import org.secfirst.umbrella.whitelabel.data.database.content.toSearchResult
 import org.secfirst.umbrella.whitelabel.feature.form.FieldType
 import org.secfirst.umbrella.whitelabel.feature.form.hasAnswer
 import java.io.Serializable
