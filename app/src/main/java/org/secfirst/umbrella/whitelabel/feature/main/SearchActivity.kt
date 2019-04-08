@@ -209,6 +209,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 op.and(Content_Table.check.like("%${text.toLowerCase().trim()}%"))
             }
         }
+
         return SQLite.select()
                 .from(Content::class.java)
                 .where(op)

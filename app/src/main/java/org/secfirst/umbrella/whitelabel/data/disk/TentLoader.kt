@@ -57,14 +57,17 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(module, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(it.path, markdownText).removeHead()
+            val markdown = Markdown(absolutePath, markdownText).removeHead()
             markdown.module = module
             module.markdowns.add(markdown)
         }
         filterChecklistFiles(pwd).forEach {
             val newChecklist = parseYmlFile(it, Checklist::class)
-            newChecklist.id = it.path
+            newChecklist.id = absolutePath
             newChecklist.module = module
+            newChecklist.content.forEach { content->
+                content.checklist = newChecklist
+            }
             module.checklist.add(newChecklist)
         }
     }
@@ -74,14 +77,17 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(subject, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(it.path, markdownText).removeHead()
+            val markdown = Markdown(absolutePath, markdownText).removeHead()
             markdown.subject = subject
             subject.markdowns.add(markdown)
         }
         filterChecklistFiles(pwd).forEach {
             val newChecklist = parseYmlFile(it, Checklist::class)
-            newChecklist.id = it.path
+            newChecklist.id = absolutePath
             newChecklist.subject = subject
+            newChecklist.content.forEach { content->
+                content.checklist = newChecklist
+            }
             subject.checklist.add(newChecklist)
         }
     }
@@ -91,14 +97,17 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(difficulty, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(it.path, markdownText).removeHead()
+            val markdown = Markdown(absolutePath, markdownText).removeHead()
             markdown.difficulty = difficulty
             difficulty.markdowns.add(markdown)
         }
         filterChecklistFiles(pwd).forEach {
             val newChecklist = parseYmlFile(it, Checklist::class)
-            newChecklist.id = it.path
+            newChecklist.id = absolutePath
             newChecklist.difficulty = difficulty
+            newChecklist.content.forEach { content->
+                content.checklist = newChecklist
+            }
             difficulty.checklist.add(newChecklist)
         }
     }
