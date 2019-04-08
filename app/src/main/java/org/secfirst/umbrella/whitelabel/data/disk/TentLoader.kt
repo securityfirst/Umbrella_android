@@ -48,8 +48,8 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
                 SUB_ELEMENT_LEVEL -> serializeSubElement(pwd, absolutePath, file)
                 CHILD_LEVEL -> serializeChild(pwd, absolutePath, file)
             }
+            calculatePercentage()
         }
-        calculatePercentage()
     }
 
     private fun serializeElement(pwd: String, absolutePath: String, file: File) {

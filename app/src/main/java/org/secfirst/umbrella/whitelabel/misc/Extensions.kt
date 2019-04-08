@@ -159,7 +159,7 @@ fun Context.setLocale(lang: String) {
 }
 
 fun deviceLanguage(): String {
-    val defaultLanguage = Locale.getDefault().displayLanguage
+    val defaultLanguage = Locale.getDefault().language
     if (defaultLanguage == "gb")
         return "en"
     return defaultLanguage
