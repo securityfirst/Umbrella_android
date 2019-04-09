@@ -1,6 +1,5 @@
 package org.secfirst.umbrella.whitelabel.data.disk
 
-import android.util.Log
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
@@ -14,7 +13,6 @@ import org.secfirst.umbrella.whitelabel.data.database.segment.removeHead
 import org.secfirst.umbrella.whitelabel.data.database.segment.replaceMarkdownImage
 import org.secfirst.umbrella.whitelabel.feature.content.ContentService
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.ioContext
-import org.secfirst.umbrella.whitelabel.misc.deviceLanguage
 import org.secfirst.umbrella.whitelabel.misc.parseYmlFile
 import java.io.File
 import javax.inject.Inject
@@ -44,19 +42,19 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             val absolutePath = file.path.substringAfterLast(getPathRepository())
             val pwd = file.path.substringBeforeLast(file.name)
             when (getLevelOfPath(absolutePath)) {
-                ELEMENT_LEVEL -> serializeElement(pwd, absolutePath, file)
-                SUB_ELEMENT_LEVEL -> serializeSubElement(pwd, absolutePath, file)
-                CHILD_LEVEL -> serializeChild(pwd, absolutePath, file)
+                ELEMENT_LEVEL -> serializeElement(pwd, file)
+                SUB_ELEMENT_LEVEL -> serializeSubElement(pwd, file)
+                CHILD_LEVEL -> serializeChild(pwd, file)
             }
             calculatePercentage()
         }
     }
 
-    private fun serializeElement(pwd: String, absolutePath: String, file: File) {
+    private fun serializeElement(pwd: String, file: File) {
         val module = parseYmlFile(file, Module::class)
         updateCategories(module, file)
         filterSegmentFiles(pwd).forEach {
-            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+            val markdownText = it.readText().replaceMarkdownImage(pwd)
             val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.module = module
             module.markdowns.add(markdown)
@@ -65,18 +63,18 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             val newChecklist = parseYmlFile(it, Checklist::class)
             newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.module = module
-            newChecklist.content.forEach { content->
+            newChecklist.content.forEach { content ->
                 content.checklist = newChecklist
             }
             module.checklist.add(newChecklist)
         }
     }
 
-    private fun serializeSubElement(pwd: String, absolutePath: String, file: File) {
+    private fun serializeSubElement(pwd: String, file: File) {
         val subject = parseYmlFile(file, Subject::class)
         updateCategories(subject, file)
         filterSegmentFiles(pwd).forEach {
-            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+            val markdownText = it.readText().replaceMarkdownImage(pwd)
             val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.subject = subject
             subject.markdowns.add(markdown)
@@ -85,18 +83,18 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             val newChecklist = parseYmlFile(it, Checklist::class)
             newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.subject = subject
-            newChecklist.content.forEach { content->
+            newChecklist.content.forEach { content ->
                 content.checklist = newChecklist
             }
             subject.checklist.add(newChecklist)
         }
     }
 
-    private fun serializeChild(pwd: String, absolutePath: String, file: File) {
+    private fun serializeChild(pwd: String, file: File) {
         val difficulty = parseYmlFile(file, Difficulty::class)
         updateCategories(difficulty, file)
         filterSegmentFiles(pwd).forEach {
-            val markdownText = it.readText().replaceMarkdownImage(absolutePath)
+            val markdownText = it.readText().replaceMarkdownImage(pwd)
             val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.difficulty = difficulty
             difficulty.markdowns.add(markdown)
@@ -105,7 +103,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             val newChecklist = parseYmlFile(it, Checklist::class)
             newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.difficulty = difficulty
-            newChecklist.content.forEach { content->
+            newChecklist.content.forEach { content ->
                 content.checklist = newChecklist
             }
             difficulty.checklist.add(newChecklist)

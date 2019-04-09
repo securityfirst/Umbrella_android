@@ -16,8 +16,6 @@ import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Module
 import org.secfirst.umbrella.whitelabel.data.database.lesson.Subject
-import org.secfirst.umbrella.whitelabel.data.disk.basePath
-import org.secfirst.umbrella.whitelabel.data.disk.getWorkDirectoryFromImage
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.whitelabel.misc.removeSpecialCharacter
@@ -113,7 +111,7 @@ fun Markdown.toSearchResult(): SearchResult {
 }
 
 fun String.replaceMarkdownImage(absolutePath: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
-        "${Markdown.MARKDOWN_IMAGE_TAG}file://${basePath()}/${getWorkDirectoryFromImage(absolutePath)}")
+        "${Markdown.MARKDOWN_IMAGE_TAG}file://$absolutePath")
 
 interface HostSegmentTabControl {
     fun moveTabAt(position: Int)
