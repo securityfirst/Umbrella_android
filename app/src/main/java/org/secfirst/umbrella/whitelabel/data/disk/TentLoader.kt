@@ -41,8 +41,8 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     private fun processFiles(files: List<File>) {
         files.forEach { file ->
             fileCount++
-            val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
-            val pwd = file.path.substringBeforeLast("/${file.name}")
+            val absolutePath = file.path.substringAfterLast(getPathRepository())
+            val pwd = file.path.substringBeforeLast(file.name)
             when (getLevelOfPath(absolutePath)) {
                 ELEMENT_LEVEL -> serializeElement(pwd, absolutePath, file)
                 SUB_ELEMENT_LEVEL -> serializeSubElement(pwd, absolutePath, file)
@@ -57,13 +57,13 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(module, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(it.path, markdownText).removeHead()
+            val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.module = module
             module.markdowns.add(markdown)
         }
         filterChecklistFiles(pwd).forEach {
             val newChecklist = parseYmlFile(it, Checklist::class)
-            newChecklist.id = absolutePath
+            newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.module = module
             newChecklist.content.forEach { content->
                 content.checklist = newChecklist
@@ -77,13 +77,13 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(subject, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(it.path, markdownText).removeHead()
+            val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.subject = subject
             subject.markdowns.add(markdown)
         }
         filterChecklistFiles(pwd).forEach {
             val newChecklist = parseYmlFile(it, Checklist::class)
-            newChecklist.id = absolutePath
+            newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.subject = subject
             newChecklist.content.forEach { content->
                 content.checklist = newChecklist
@@ -97,13 +97,13 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(difficulty, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(it.path, markdownText).removeHead()
+            val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.difficulty = difficulty
             difficulty.markdowns.add(markdown)
         }
         filterChecklistFiles(pwd).forEach {
             val newChecklist = parseYmlFile(it, Checklist::class)
-            newChecklist.id = absolutePath
+            newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.difficulty = difficulty
             newChecklist.content.forEach { content->
                 content.checklist = newChecklist
@@ -113,27 +113,26 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     }
 
     private inline fun <reified T> updateCategories(obj: T, file: File) {
-        val absolutePath = file.path.substringAfterLast("${getPathRepository()}${deviceLanguage()}/")
-        val pwd = absolutePath.substringBeforeLast("/${file.name}")
+        val absolutePath = file.path.substringAfterLast(getPathRepository())
+        val pwd = absolutePath.substringBeforeLast(file.name)
         when (obj) {
             is Module -> {
-                obj.id = file.path
+                obj.id = pwd
                 obj.resourcePath = obj.icon.filterImageCategoryFile()
-                obj.rootDir = pwd
+                obj.rootDir = pwd.substringBeforeLast("/").substringAfterLast("/")
                 contentData.modules.add(obj)
             }
             is Subject -> {
                 val module = contentData.modules.last()
-                obj.id = file.path
-                obj.rootDir = pwd
+                obj.id = pwd
+                obj.rootDir = pwd.substringBeforeLast("/").substringAfterLast("/")
                 obj.module = module
                 module.subjects.add(obj)
-                Log.d("test", "id - ${obj.id}")
             }
             is Difficulty -> {
                 val subject = contentData.modules.last().subjects.last()
-                obj.id = file.path
-                obj.rootDir = pwd
+                obj.id = pwd
+                obj.rootDir = pwd.substringBeforeLast("/").substringAfterLast("/")
                 obj.subject = subject
                 subject.difficulties.add(obj)
             }
@@ -143,7 +142,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     private fun loadForm(formFiles: List<File>) {
         formFiles.forEach {
             val form = parseYmlFile(it, Form::class)
-            form.path = it.path
+            form.path = it.path.substringAfterLast(getPathRepository())
             form.deeplinkTitle = form.title.toLowerCase()
             contentData.forms.add(form)
             fileCount++
