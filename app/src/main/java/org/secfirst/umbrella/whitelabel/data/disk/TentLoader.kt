@@ -57,7 +57,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(module, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(absolutePath, markdownText).removeHead()
+            val markdown = Markdown(it.path, markdownText).removeHead()
             markdown.module = module
             module.markdowns.add(markdown)
         }
@@ -77,7 +77,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(subject, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(absolutePath, markdownText).removeHead()
+            val markdown = Markdown(it.path, markdownText).removeHead()
             markdown.subject = subject
             subject.markdowns.add(markdown)
         }
@@ -97,7 +97,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(difficulty, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(absolutePath)
-            val markdown = Markdown(absolutePath, markdownText).removeHead()
+            val markdown = Markdown(it.path, markdownText).removeHead()
             markdown.difficulty = difficulty
             difficulty.markdowns.add(markdown)
         }

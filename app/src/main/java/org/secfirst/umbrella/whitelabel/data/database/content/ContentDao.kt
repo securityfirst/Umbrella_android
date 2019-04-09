@@ -42,6 +42,7 @@ interface ContentDao : BaseDao, ContentMonitor {
                     subject.difficulties.forEach { difficulty ->
                         difficulty.markdowns = difficulty.markdowns.sortByIndex()
                         modelAdapter<Difficulty>().save(difficulty)
+                        modelAdapter<Markdown>().saveAll(difficulty.markdowns)
                         insertChecklistContent(difficulty.checklist)
                     }
                 }
