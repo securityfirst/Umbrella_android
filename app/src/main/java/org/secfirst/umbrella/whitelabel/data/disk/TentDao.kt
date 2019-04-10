@@ -114,12 +114,12 @@ interface TentDao {
     suspend fun filterCategories(): List<File> {
         val predicateLanguage = defaultTentLanguage()
         return File("${getPathRepository()}$predicateLanguage")
-                .walkTopDown()
+                .walkBottomUp()
                 .filter { !it.path.contains(".git") }
                 .filter { it.nameWithoutExtension == TypeFile.CATEGORY.value }
                 .toList()
                 .reversed()
-
+                .sorted()
     }
 
     private fun getDiffEntry(): List<DiffEntry> {

@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.whitelabel.data.disk
 
+import android.util.Log
 import kotlinx.coroutines.withContext
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Checklist
 import org.secfirst.umbrella.whitelabel.data.database.content.ContentData
@@ -113,6 +114,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     private inline fun <reified T> updateCategories(obj: T, file: File) {
         val absolutePath = file.path.substringAfterLast(getPathRepository())
         val pwd = absolutePath.substringBeforeLast(file.name)
+        Log.e("test", file.path)
         when (obj) {
             is Module -> {
                 obj.id = pwd
