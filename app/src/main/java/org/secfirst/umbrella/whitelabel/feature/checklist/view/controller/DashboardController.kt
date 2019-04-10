@@ -139,6 +139,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             it.value = false
         }
         checklist.progress = 0
+        checklist.favorite = false
         presenter.submitUpdateChecklist(checklist)
     }
 
