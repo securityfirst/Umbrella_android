@@ -17,6 +17,7 @@ import org.secfirst.advancedsearch.models.FieldTypes
 import org.secfirst.advancedsearch.models.SearchCriteria
 import org.secfirst.advancedsearch.models.SearchResult
 import org.secfirst.advancedsearch.util.mvp.ThreadSpec
+import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content
 import org.secfirst.umbrella.whitelabel.data.database.checklist.Content_Table
@@ -47,6 +48,10 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
         TEXT("Text")
     }
 
+    private lateinit var categoryHint: String
+    private lateinit var difficultyHint: String
+    private lateinit var typeHint: String
+
     private val possibleTypes = ItemType.values().map { it.type }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +72,9 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
             setDisplayHomeAsUpEnabled(true)
             title = getString(org.secfirst.umbrella.whitelabel.R.string.search_results)
         }
+        categoryHint = " (${getString(R.string.categoryHint)})"
+        difficultyHint = " (${getString(R.string.difficultyHint)})"
+        typeHint = " (${getString(R.string.typeHint)})"
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
@@ -97,19 +105,19 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
 
         return listOf(
                 SearchCriteria(
-                        ItemCriteria.CATEGORY.type,
+                        ItemCriteria.CATEGORY.type + categoryHint,
                         FieldTypes.PILLBOX,
                         categories,
                         null
                 ),
                 SearchCriteria(
-                        ItemCriteria.DIFFICULTY.type,
+                        ItemCriteria.DIFFICULTY.type + difficultyHint,
                         FieldTypes.PILLBOX,
                         uniqueDifficultyList,
                         null
                 ),
                 SearchCriteria(
-                        ItemCriteria.TYPE.type,
+                        ItemCriteria.TYPE.type + typeHint,
                         FieldTypes.PILLBOX,
                         possibleTypes,
                         null
@@ -126,8 +134,8 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
     override fun getDataProvider(): DataProvider = object : DataProvider {
         override fun findByCriteria(text: String, vararg additional: Pair<String, List<String>>): Flowable<List<SearchResult>> {
             val trimmedText = text.toLowerCase().trim()
-            val type = additional.find { it.first.toLowerCase() == ItemCriteria.TYPE.type.toLowerCase() }?.second
-            val category = additional.find { it.first.toLowerCase() == ItemCriteria.CATEGORY.type.toLowerCase() }?.second
+            val type = additional.find { it.first.toLowerCase().contains(ItemCriteria.TYPE.type.toLowerCase()) }?.second
+            val category = additional.find { it.first.toLowerCase().contains(ItemCriteria.CATEGORY.type.toLowerCase()) }?.second
             val categoryId = ArrayList<String>()
             if (category != null) {
                 val categoriesId = SQLite.select()
@@ -136,7 +144,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
                 categoriesId.forEach { categoryId.add(it.id) }
             }
 
-            val difficulty = additional.find { it.first.toLowerCase() == ItemCriteria.DIFFICULTY.type.toLowerCase() }?.second
+            val difficulty = additional.find { it.first.toLowerCase().contains(ItemCriteria.DIFFICULTY.type.toLowerCase()) }?.second
 
             val mutableMap: MutableList<SearchResult> = mutableListOf()
             when (type == null) {
