@@ -181,8 +181,10 @@
     <string name="notification_lost_connection">Lost connection to download content, please try again.</string>
     <string name="rss_message_error">There was an error when attempting to create the RSS feed. Make sure you\'re using the correct RSS.</string>
     <string name="tour_warner_message">Umbrella has lots of lessons and content. The first time you use the app these are downloaded so that they work offline. The process should take about 3 minutes at most.</string>
+
     <string name="categoryHint">Communications, Information, etc.</string>
     <string name="difficultyHint">Beginner, Advanced, Expert</string>
     <string name="typeHint">Checklist, Form, Segment</string>
+
     <string name="disable_mask_app">Mask app has been disabled.</string>
 </resources>
