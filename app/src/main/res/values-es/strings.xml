@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Umbrella</string>
     <string name="secondary_app_name">Calculadora</string>
-    <string name="feed_title">Lista de entradas</string>
+    <string name="feed_title">Feeds</string>
     <string name="form_title">Formularios</string>
     <string name="checklist_title">Lista de comprobación</string>
     <string name="lesson_title">Lecciones</string>
@@ -9,25 +9,17 @@
     <string name="message_title_active_forms">Formularios rellenados</string>
     <string name="message_title_all_forms">Formularios disponibles</string>
     <string name="message_body_form_new">NUEVO</string>
-    <string name="form_input_controller_name">Incidente de seguridad digital</string>
+    <string name="form_input_controller_name">Incidente de Seguridad Digital</string>
     <string name="loading_tour_message">Recuperacion de datos…</string>
     <string name="terms_conditions">Términos y Condiciones</string>
-    <string name="tour_slide_1_text">Umbrella hace que su seguridad sea sencilla</string>
-    <string name="tour_slide_2_text">
-Consiga asesoramiento en muchos temas, desde enviar un correo electrónico privado hasta viajar seguro
-</string>
-    <string name="tour_slide_3_text">Use listas de comprobación para seguir su progreso</string>
-    <string name="tour_slide_4_text">
-Permanezca al día con la última información sobre el lugar dónde se encuentra
-</string>
+    <string name="tour_slide_1_text">Consiga asesoramiento en muchos temas, desde enviar un correo electrónico privado hasta viajar seguro</string>
+    <string name="tour_slide_2_text">Use listas de comprobación para seguir su progreso</string>
+    <string name="tour_slide_3_text">Permanezca al día con la última información sobre el lugar dónde se encuentra</string>
+
     <string name="tour_view_accept_button">ACEPTAR</string>
     <string name="fab_dialog_transition_name">transición.fab</string>
-    <string name="loading_tour_download_message">Descarga de datos 1/3</string>
-    <string name="loading_tour_parse_message">Procesando datos 2/3</string>
-    <string name="loading_tour_store_message">Almacenando datos 3/3</string>
-    <string name="error_connection_tour_message">
-Parece que el servidor se está demorando en responder, inténtalo de nuevo más tarde.
-</string>
+    <string name="error_connection_tour_message">Parece que el servidor se está demorando en responder, inténtalo de nuevo más tarde.</string>
+
     <string name="send_to">Compartir</string>
     <string name="delete">Borrar</string>
     <string name="feed_source">Fuente de alimentación</string>
@@ -36,35 +28,29 @@ Parece que el servidor se está demorando en responder, inténtalo de nuevo más
     <string name="share_carpsLk">COMPARTIR</string>
     <string name="article_simple_list">Lista simple</string>
     <string name="card_list">Lista de tarjetas</string>
-    <string name="difficult_title">Secuestro</string>
+    <string name="difficult_title">Secuestros</string>
     <string name="title_checklist">Lista de comprobación</string>
     <string name="lesson_tab">Lección</string>
     <string name="url_server">Servidor de URL</string>
     <string name="feed_interval">Intervalo</string>
-    <string name="set_your_feed">Introduce tu feed</string>
-    <string name="set_your_feed_label">
-Aún no has configurado el país y las fuentes para el feed. Debe hacerlo para que el feed comience a mostrarse, y puede cambiarlo en cualquier momento más adelante en la configuración.
-</string>
-    <string name="feed_interval_label">
-Establecer con qué frecuencia debemos comprobar las noticias
-</string>
+    <string name="set_your_feed">Establece tu feed</string>
+    <string name="set_your_feed_label">Aún no has configurado el país y las fuentes para el feed. Debe hacerlo para que el feed comience a mostrarse, y puede cambiarlo en cualquier momento más adelante en la configuración.</string>
+    <string name="feed_interval_label">Establecer con qué frecuencia debemos comprobar las noticias</string>
     <string name="set">CONJUNTO</string>
-    <string name="location">Localización</string>
-    <string name="feed_location_label">Ingrese ubicación</string>
+    <string name="location">Ubicación</string>
+    <string name="feed_location_label">Ingrese el país para el que desea ver el feed.</string>
     <string name="feed_sources">Fuentes de suscripciones (feeds)</string>
     <string name="feed_source_label">Entrar en fuentes</string>
     <string name="set_now">CONFIGURAR AHORA</string>
-    <string name="feed_source_department">
-País Departamento de Estado de los Estados Unidos \ nAdvertencias
-</string>
-    <string name="feed_source_global">
-Alerta Global de Desastres \ nSistema de Coordinación
-</string>
+    <string name="feed_source_department">País del Departamento de Estado de los Estados Unidos</string>
+    <string name="feed_source_global">Alerta Global de Desastres \ nSistema de Coordinación</string>
     <string name="feed_source_cdc">CDC</string>
-    <string name="feed_source_un">ONU / ReliefWeb</string>
+    <string name="feed_source_un">UN / ReliefWeb</string>
     <string name="feed_source_name">Seleccionar las fuentes de la suscripción (feed)</string>
-    <string name="feed_choose_refresh_interval">Elegir intervalo de actualización</string>
-    <string name="feed_location_enter_location">Ingrese ubicación</string>
+    <string name="feed_text_min">%1$s minutos</string>
+    <string name="feed_choose_refresh_interval">Introduzca el intervalo en minutos (un día = 1440 minutos)</string>
+    <string name="feed_location_enter_location">Ingrese el país que desea ver en el feed de</string>
+
     <string-array name="refresh_interval_array">
         <item>30 min</item>
         <item>1 hora</item>
@@ -74,22 +60,19 @@ Alerta Global de Desastres \ nSistema de Coordinación
         <item>24 horas</item>
         <item>Manualmente</item>
     </string-array>
+
     <string name="feed_list_via">Via \ u0020</string>
     <string name="feed_change_header">CAMBIO</string>
-    <string name="feed_location_header">Localización</string>
+    <string name="feed_location_header">Ubicación</string>
     <string name="dashboard_feed_empty_change_location">CAMBIAR LOCACIÓN</string>
-    <string name="dashboard_empty_text">
-No hay eventos que mostrar para su ubicación. Los mostraremos cuando ocurran.
-</string>
+    <string name="dashboard_empty_text">No hay eventos que mostrar para su ubicación. Los mostraremos cuando ocurran.</string>
     <string name="empty_dashboard_title">Feed de seguridad establecido en:</string>
     <string name="checklistDetail_title">Lista de comprobación</string>
     <string name="account_password_alert_title">Establezca su contraseña</string>
-    <string name="account_password_alert_description">
-Su contraseña debe tener al menos 8 caracteres y debe contener al menos un dígito y una letra mayúscula
-</string>
+    <string name="account_password_alert_description">Su contraseña debe tener al menos 8 caracteres y debe contener al menos un dígito y una letra mayúscula</string>
     <string name="account_set_password">Establecer contraseña</string>
     <string name="account_settings">Configuración</string>
-    <string name="account_enable_mask">Máscara</string>
+    <string name="account_enable_mask">Habilitar aplicación de máscara</string>
     <string name="account_language_dialog_title">Seleccione el idioma</string>
     <string name="account_password_alert_password">Contraseña</string>
     <string name="account_password_skip">OMITIR</string>
@@ -102,9 +85,7 @@ Su contraseña debe tener al menos 8 caracteres y debe contener al menos un díg
     <string name="settings_your_location">Su ubicación</string>
     <string name="settings_show_updates_as_notification">Mostrar actualizaciones como notificación</string>
     <string name="settings_security_feed_sources">Fuentes de alimentación de seguridad</string>
-    <string name="settings_refresh_interval_for_custom_feeds">
-Intervalo de actualización para feeds personalizados
-</string>
+    <string name="settings_refresh_interval_for_custom_feeds">Intervalo de actualización para feeds personalizados</string>
     <string name="settings_feed">Lista de entradas</string>
     <string name="settings_export_your_data">Exporta tus datos</string>
     <string name="settings_import_your_data">Importa tus datos</string>
@@ -112,9 +93,7 @@ Intervalo de actualización para feeds personalizados
     <string name="settings_select_language">Seleccionar idioma</string>
     <string name="export_database_success">Base de datos exportada con éxito.</string>
     <string name="login_message_button">Iniciar sesión</string>
-    <string name="export_database_wipe_data">
-Eliminar y restablecer todo el contenido actual de Umbrella después de la exportación
-</string>
+    <string name="export_database_wipe_data">Eliminar y restablecer todo el contenido actual de Umbrella después de la exportación</string>
     <string name="backup_database_file_title">Archivo de base de datos de copia de seguridad</string>
     <string name="export_dialog_hint">Establece tu nombre de archivo</string>
     <string name="settings_umbrella_share_title">Paraguas de respaldo</string>
@@ -126,12 +105,8 @@ Eliminar y restablecer todo el contenido actual de Umbrella después de la expor
     <string name="export_wipe_data">Borrar información</string>
     <string name="export_dialog_default_message">umbrella_backup</string>
     <string name="import_dialog_fail_message">Archivo de importación no válido.</string>
-    <string name="write_external_permission_granted">
-Se concedió permiso de escritura de almacenamiento externo.
-</string>
-    <string name="write_external_permission_denied">
-Escribir solicitud de permiso de almacenamiento externo fue denegada.
-</string>
+    <string name="write_external_permission_granted">Se concedió permiso de escritura de almacenamiento externo.</string>
+    <string name="write_external_permission_denied">Escribir solicitud de permiso de almacenamiento externo fue denegada.</string>
     <string name="title_dialog">Seleccione una acción</string>
     <string name="checklist_dialog_cancel">CANCELAR</string>
     <string name="cancel">CANCELAR</string>
@@ -143,37 +118,25 @@ Escribir solicitud de permiso de almacenamiento externo fue denegada.
     <string name="export_lesson">Lección de exportación</string>
     <string name="export_button">EXPORTAR</string>
     <string name="password_one_digit">La contraseña debe tener al menos un dígito</string>
-    <string name="password_one_capital">
-La contraseña debe tener al menos una letra mayúscula
-</string>
-    <string name="password_one_small">
-La contraseña debe tener al menos una letra minúscula
-</string>
+    <string name="password_one_capital">La contraseña debe tener al menos una letra mayúscula</string>
+    <string name="password_one_small">La contraseña debe tener al menos una letra minúscula</string>
     <string name="password_too_short">Contraseña demasiado corta</string>
-    <string name="skip_password_warning">
-¿Está seguro de que quiere continuar usando la aplicación sin establecer la contraseña?\n\nEsto disminuye significativamente su seguridad en relación con cualquier dato identificable que introduzca en Umbrella
-</string>
+    <string name="skip_password_warning">¿Está seguro de que quiere continuar usando la aplicación sin establecer la contraseña?\n\nEsto disminuye significativamente su seguridad en relación con cualquier dato identificable que introduzca en Umbrella</string>
     <string name="error_password">Error al intentar cambiar tu contraseña.</string>
     <string name="password_changed">Contraseña cambiada.</string>
     <string name="app_calc">SimpleCalc</string>
-    <string name="hands_shake_info_description">
-Para desenmascararlo, debe agitar el dispositivo cuando esté en la aplicación SimpleCalc. Eso devolverá la aplicación a su estado normal.
-</string>
-    <string name="enable_masking_mode">Habilitar el modo de máscara</string>
+    <string name="hands_shake_info_description">Para desenmascararlo, debe agitar el dispositivo cuando esté en la aplicación SimpleCalc. Eso devolverá la aplicación a su estado normal.</string>
+    <string name="enable_masking_mode">Habilitar máscara</string>
     <string name="password_success">La contraseña fue creada exitosamente</string>
     <string name="update_repository_message_success">Actualizado con éxito.</string>
-    <string name="switch_server_error_message">
-Ocurrió un error. La URL parece no ser un servidor Git.
-</string>
+    <string name="switch_server_error_message">Ocurrió un error. La URL parece no ser un servidor Git.</string>
     <string name="pdf_name">PDF</string>
     <string name="html_name">HTML</string>
     <string name="feed_title_tab">ALIMENTAR</string>
     <string name="rss_title_tab">RSS</string>
     <string name="account_reset_password">Restablecer la contraseña</string>
     <string name="reset_password_title">Confirme el restablecimiento de la contraseña</string>
-    <string name="reset_password_text">
-¿Está seguro de que quiere restablecer su contraseña? Esto implica perder cualquier dato que pudiera haber introducido hasta ahora\n
-</string>
+    <string name="reset_password_text">¿Estás seguro de que quieres restablecer tu contraseña? Esto también significa perder cualquier información que haya ingresado hasta ahora. \ N</string>
     <string name="login_reset_password">Restablecer la contraseña</string>
     <string name="form_menu_delete">Borrar</string>
     <string name="form_menu_edit">Editar</string>
@@ -184,16 +147,14 @@ Ocurrió un error. La URL parece no ser un servidor Git.
     <string name="checklist_edit_item">Editar elemento de la lista de verificación</string>
     <string name="checklist_delete_item">Eliminar lista de verificación</string>
     <string name="settings_title_notification">Notificación</string>
-    <string name="settings_label_skip_pw">No vuelvas a pedir contraseña</string>
+    <string name="settings_label_skip_pw">No volver a pedir contraseña</string>
     <string name="settings_title_skip_pw">Omitir contraseña</string>
     <string name="settings_general_title">General</string>
     <string name="checklist_custom_empty_item_error_message">El artículo no debe estar en blanco.</string>
-    <string name="checklist_add_item_message">Artículo agregado exitosamente.</string>
+    <string name="checklist_add_item_message">Artículo añadido con éxito.</string>
     <string name="checklist_edit_item_title">Editar elemento de la lista de verificación</string>
     <string name="checklist_add_item_title">Agregar elemento de lista de verificación</string>
-    <string name="empty_checklist_message">
-Vaya a las lecciones y descubra listas de verificación recomenzadas o cree sus propias listas de verificación personalizadas.
-</string>
+    <string name="empty_checklist_message">Vaya a las lecciones y descubra las listas de verificación recomendadas o cree sus propias listas de verificación personalizadas.</string>
     <string name="confirm_password_error_message">La contraseña no coincide</string>
     <string name="default_github_url">https://github.com/</string>
     <string name="switch_server_title_message">Cambiar servidor</string>
@@ -201,4 +162,26 @@ Vaya a las lecciones y descubra listas de verificación recomenzadas o cree sus 
     <string name="spanish_language_title">Español</string>
     <string name="chinese_language_title">chino</string>
     <string name="login_enter_pw">Introducir la contraseña</string>
+    <string name="default_refresh_feed">30 min</string>
+    <string name="account_disable_mask">Desactivar máscara</string>
+    <string name="disable_mask_message">Desactivar máscara con éxito</string>
+    <string name="empty_favorites_message">No hay lecciones favoritas.</string>
+    <string name="custom_checklist_add_item_title">Lista de verificación personalizada</string>
+    <string name="name_your_checklist">Nombra tu lista de verificación</string>
+    <string name="name">Nombre</string>
+    <string name="invalid_name_custom_checklist_messenge">El nombre de la lista de verificación no debe estar en blanco.</string>
+    <string name="empty_custom_checklist_message">Crea tu propia lista de verificación personalizada.</string>
+    <string name="checklist_card_title">Listas de control</string>
+    <string name="checklist_title_tab">VISIÓN GENERAL</string>
+    <string name="custom_checklist_title_tab">PERSONALIZADO</string>
+    <string name="add_custom_checklist_item_title">Agregar elemento de lista de verificación</string>
+    <string name="notification_fetching_data">Recuperacion de datos</string>
+    <string name="notification_update_database">Actualización de la base de datos</string>
+    <string name="notification_lost_connection">Se perdió la conexión para descargar contenido, por favor intente nuevamente.</string>
+    <string name="rss_message_error">Se produjo un error al intentar crear la fuente RSS. Asegúrese de que está utilizando el RSS correcto.</string>
+    <string name="tour_warner_message">Umbrella tiene muchas lecciones y contenido. La primera vez que utiliza la aplicación, estas se descargan para que funcionen sin conexión. El proceso debe tomar aproximadamente 3 minutos como máximo.</string>
+    <string name="categoryHint">Comunicaciones, información, etc.</string>
+    <string name="difficultyHint">Principiante, avanzado, experto</string>
+    <string name="typeHint">Lista de verificación, formulario, segmento</string>
+    <string name="disable_mask_app">La aplicación de máscara ha sido desactivada.</string>
 </resources>
