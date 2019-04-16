@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Umbrella</string>
     <string name="secondary_app_name">Calculator</string>
-    <string name="feed_title">Feed</string>
+    <string name="feed_title">Feeds</string>
     <string name="form_title">Forms</string>
     <string name="checklist_title">Checklist</string>
     <string name="lesson_title">Lessons</string>
@@ -165,7 +165,7 @@
     <string name="login_enter_pw">Enter password</string>
     <string name="default_refresh_feed">30 min</string>
     <string name="account_disable_mask">Disable Mask</string>
-    <string name="disable_mask_message">Disable Mask with success</string>
+    <string name="disable_mask_message">Disable Mask successfully </string>
     <string name="empty_favorites_message">There is no favorite lessons.</string>
     <string name="custom_checklist_add_item_title">Custom Checklist</string>
     <string name="name_your_checklist">Name your checklist</string>
@@ -184,4 +184,5 @@
     <string name="categoryHint">Communications, Information, etc.</string>
     <string name="difficultyHint">Beginner, Advanced, Expert</string>
     <string name="typeHint">Checklist, Form, Segment</string>
+    <string name="disable_mask_app">Mask app has been disabled.</string>
 </resources>

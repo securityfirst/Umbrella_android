@@ -11,7 +11,6 @@ class MaskAppPresenterImp<V : MaskAppView, I : MaskAppBaseInteractor> @Inject co
         interactor = interactor), MaskAppBasePresenter<V, I> {
 
     override fun setMaskApp() {
-        val res = interactor?.setMaskApp(false) ?: false
-        getView()?.isMaskApp(res)
+        interactor?.setMaskApp(false)
     }
 }

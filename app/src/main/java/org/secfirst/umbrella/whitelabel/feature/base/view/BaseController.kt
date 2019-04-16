@@ -8,16 +8,18 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.*
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 
-abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), LayoutContainer {
 
-    init {
-        inject()
-    }
+abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), LayoutContainer {
 
     private fun inject() = onInject()
     lateinit var mainActivity: MainActivity
     lateinit var context: Context
+
     protected abstract fun onInject()
+
+    init {
+        inject()
+    }
 
     override val containerView: View?
         get() = view
@@ -29,8 +31,8 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
     }
 
     override fun onDestroyView(view: View) {
-        super.onDestroyView(view)
         clearFindViewByIdCache()
+        super.onDestroyView(view)
     }
 
     fun enableNavigation(isNavigation: Boolean) =

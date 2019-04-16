@@ -66,7 +66,7 @@ fun <T : Any> parseYmlFile(file: File, c: KClass<T>): T {
     return file.bufferedReader().use { mapper.readValue(it.readText(), c.java) }
 }
 
-fun setMaskMode(activity: Activity, masked: Boolean) {
+fun setMaskAppIcon(activity: Activity, masked: Boolean) {
     val packageName = BuildConfig.APPLICATION_ID
     val disableNames = ArrayList<String>()
     disableNames.add("$packageName.MainActivityNormal")
@@ -83,7 +83,6 @@ fun setMaskMode(activity: Activity, masked: Boolean) {
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
     }
 }
-
 
 fun htmlToPdf(doc: org.jsoup.nodes.Document, file: FileOutputStream) {
     //pdf

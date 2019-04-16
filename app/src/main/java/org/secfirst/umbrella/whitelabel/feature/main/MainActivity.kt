@@ -16,23 +16,23 @@ import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
+import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.data.disk.isRepository
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_LOGGED_IN
-import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_MASK_APP
-import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.EXTRA_SHOW_MOCK_VIEW
 import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.feature.account.view.AccountController
 import org.secfirst.umbrella.whitelabel.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
 import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.login.view.LoginController
+import org.secfirst.umbrella.whitelabel.feature.maskapp.*
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
+import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController.Companion.EXTRA_CALCULATOR_VIEW
 import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
@@ -47,17 +47,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(org.secfirst.umbrella.whitelabel.R.layout.main_view)
+        setContentView(R.layout.main_view)
         setSupportActionBar(searchToolbar)
         performDI()
         initRoute(savedInstanceState)
         showNavigation()
         isDeepLink()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        ShakeDetector.start()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,22 +105,24 @@ class MainActivity : AppCompatActivity() {
     private fun initRoute(savedInstanceState: Bundle?) {
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
-
-        if (isMaskMode() && isShowMockView()) {
-            router.setRoot(RouterTransaction.with(CalculatorController()))
-        } else {
-            setShowMockView()
-            when {
-                isLoggedUser() -> {
-                    router.setRoot(RouterTransaction.with(LoginController()))
-                    navigation.menu.getItem(2).isChecked = true
-                }
-                isRepository() -> {
-                    router.setRoot(RouterTransaction.with(HostChecklistController()))
-                    navigation.menu.getItem(2).isChecked = true
-                }
-                else -> router.setRoot(RouterTransaction.with(TourController()))
+        val isCalculatorView = intent.extras?.getBoolean(EXTRA_CALCULATOR_VIEW, false) ?: false
+        when {
+            isLoggedUser() -> {
+                router.setRoot(RouterTransaction.with(LoginController()))
+                navigation.menu.getItem(2).isChecked = true
             }
+            isCalculatorView -> {
+                router.setRoot(RouterTransaction.with(HostChecklistController()))
+                navigation.menu.getItem(2).isChecked = true
+            }
+            isMaskMode() -> {
+                router.setRoot(RouterTransaction.with(CalculatorController()))
+            }
+            isRepository() -> {
+                router.setRoot(RouterTransaction.with(HostChecklistController()))
+                navigation.menu.getItem(2).isChecked = true
+            }
+            else -> router.setRoot(RouterTransaction.with(TourController()))
         }
     }
 
@@ -133,23 +130,23 @@ class MainActivity : AppCompatActivity() {
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
                 when (item.itemId) {
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_feeds -> {
+                    R.id.navigation_feeds -> {
                         router.pushController(RouterTransaction.with(HostReaderController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_forms -> {
+                    R.id.navigation_forms -> {
                         router.pushController(RouterTransaction.with(HostFormController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_checklists -> {
+                    R.id.navigation_checklists -> {
                         router.pushController(RouterTransaction.with(HostChecklistController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_lessons -> {
+                    R.id.navigation_lessons -> {
                         router.pushController(RouterTransaction.with(LessonController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_account -> {
+                    R.id.navigation_account -> {
                         router.pushController(RouterTransaction.with(AccountController()))
                         return@OnNavigationItemSelectedListener true
                     }
@@ -157,19 +154,22 @@ class MainActivity : AppCompatActivity() {
                 false
             }
 
-    override fun onStop() {
-        super.onStop()
-        ShakeDetector.stop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        ShakeDetector.destroy()
-    }
-
     override fun onBackPressed() {
         if (!router.handleBack())
             super.onBackPressed()
+    }
+
+    private fun shakeDevice() {
+        if (isMaskMode()) {
+            setMaskAppIcon(this, false)
+            setMaskApp(false)
+            setShakeDeviceDelayed(1000)
+            toast(getString(R.string.disable_mask_app))
+        } else if (isNotMaskMode() && isNotShakeDevice()) {
+            setMaskAppIcon(this, true)
+            setMaskApp(true)
+            router.pushController(RouterTransaction.with(CalculatorController()))
+        }
     }
 
     fun hideNavigation() = navigation?.let { it.visibility = INVISIBLE }
@@ -183,26 +183,6 @@ class MainActivity : AppCompatActivity() {
     private fun isLoggedUser(): Boolean {
         val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return shared.getBoolean(EXTRA_LOGGED_IN, false)
-    }
-
-    private fun setShowMockView() {
-        if (isMaskMode()) {
-            val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-            shared.edit().putBoolean(EXTRA_SHOW_MOCK_VIEW, true).apply()
-        }
-    }
-
-    private fun isMaskMode(): Boolean {
-        val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val isMask = shared.getBoolean(EXTRA_MASK_APP, false)
-        if (!isMask)
-            setMaskMode(this, false)
-        return isMask
-    }
-
-    private fun isShowMockView(): Boolean {
-        val shared = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        return shared.getBoolean(EXTRA_SHOW_MOCK_VIEW, false)
     }
 
     private fun isDeepLink() {

@@ -23,7 +23,7 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
 import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
-import org.secfirst.umbrella.whitelabel.misc.setMaskMode
+import org.secfirst.umbrella.whitelabel.misc.setMaskAppIcon
 import javax.inject.Inject
 
 class AccountController : BaseController(), AccountView {
@@ -114,7 +114,7 @@ class AccountController : BaseController(), AccountView {
 
     private fun enableMask() {
         activity?.let {
-            setMaskMode(it, true)
+            setMaskAppIcon(it, true)
             maskAppAlertDialog.dismiss()
             presenter.setMaskApp(true)
             presenter.submitFakeView(true)
@@ -125,7 +125,7 @@ class AccountController : BaseController(), AccountView {
 
     private fun disableMask() {
         activity?.let {
-            setMaskMode(it, false)
+            setMaskAppIcon(it, true)
             presenter.setMaskApp(false)
             presenter.submitFakeView(false)
             accountView.maskModeTitle.text = context.getString(R.string.enable_masking_mode)

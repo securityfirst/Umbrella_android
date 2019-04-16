@@ -76,7 +76,6 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.romandanylyk:pageindicatorview:$pageindicatorview"
     implementation "org.jsoup:jsoup:$jsoup"
-    implementation "com.github.tbouron.shakedetector:library:$shakedetector"
     implementation 'com.github.securityfirst:AdvancedSearch:0.0.3'
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
@@ -187,6 +186,7 @@ dependencies {
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
     implementation 'com.nabinbhandari.android:permissions:3.8'
     implementation 'com.github.halysongoncalves:pugnotification:1.8.1'
+    implementation 'com.github.safetysystemtechnology:android-shake-detector:v1.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

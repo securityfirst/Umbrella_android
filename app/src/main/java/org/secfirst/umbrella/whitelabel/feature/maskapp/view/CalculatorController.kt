@@ -1,37 +1,42 @@
 package org.secfirst.umbrella.whitelabel.feature.maskapp.view
 
 import android.annotation.SuppressLint
-import android.content.Context.MODE_PRIVATE
+import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.tbouron.shakedetector.library.ShakeDetector
 import kotlinx.android.synthetic.main.calculator_view.*
 import kotlinx.android.synthetic.main.calculator_view.view.*
 import org.secfirst.umbrella.whitelabel.R
 import org.secfirst.umbrella.whitelabel.UmbrellaApplication
-import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper
-import org.secfirst.umbrella.whitelabel.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
 import org.secfirst.umbrella.whitelabel.feature.maskapp.DaggerMaskAppComponent
 import org.secfirst.umbrella.whitelabel.feature.maskapp.interactor.MaskAppBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.maskapp.presenter.MaskAppBasePresenter
-import org.secfirst.umbrella.whitelabel.misc.setMaskMode
+import org.secfirst.umbrella.whitelabel.feature.maskapp.setMaskModeDelayed
 import java.text.DecimalFormat
 import javax.inject.Inject
 
-class CalculatorController : BaseController(), MaskAppView {
+
+class CalculatorController : BaseController(), MaskAppView, SensorEventListener {
 
     @Inject
     internal lateinit var presenter: MaskAppBasePresenter<MaskAppView, MaskAppBaseInteractor>
+    private lateinit var sensorManager: SensorManager
+    private var lastUpdate: Long = 0
 
     companion object {
         private const val ADDITION = '+'
         private const val SUBTRACTION = '-'
         private const val MULTIPLICATION = '*'
         private const val DIVISION = '/'
+        const val EXTRA_CALCULATOR_VIEW = "calculator_action"
         private var CURRENT_ACTION: Char = ' '
         private var valueOne = java.lang.Double.NaN
         private var valueTwo: Double = 0.toDouble()
@@ -49,7 +54,6 @@ class CalculatorController : BaseController(), MaskAppView {
         val view = inflater.inflate(R.layout.calculator_view, container, false)
         init(view)
         presenter.onAttach(this)
-        enableNavigation(false)
         return view
     }
 
@@ -116,33 +120,24 @@ class CalculatorController : BaseController(), MaskAppView {
                 infoTextView.text = ""
             }
         }
+        sensorManager = context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        lastUpdate = System.currentTimeMillis()
     }
 
-    override fun onAttach(view: View) {
-        ShakeDetector.create(context) { startShakeDetector() }
-        ShakeDetector.start()
-        super.onAttach(view)
-    }
-
-    override fun onDestroy() {
-        ShakeDetector.destroy()
-        super.onDestroy()
-    }
-
-    private fun setShowMockView() {
-        val shared = mainActivity.getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-        shared.edit().putBoolean(AppPreferenceHelper.EXTRA_SHOW_MOCK_VIEW, false).apply()
-    }
-
-    private fun startShakeDetector() {
+    private fun openActivity() {
         activity?.let { safeActivity ->
-            setMaskMode(safeActivity, true)
-            setShowMockView()
             val intent = Intent(safeActivity, MainActivity::class.java)
+            intent.putExtra(EXTRA_CALCULATOR_VIEW, true)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             safeActivity.finish()
+            context.setMaskModeDelayed(9000)
         }
+    }
+
+    override fun onAttach(view: View) {
+        enableNavigation(false)
+        super.onAttach(view)
     }
 
     override fun handleBack(): Boolean {
@@ -150,14 +145,33 @@ class CalculatorController : BaseController(), MaskAppView {
         return super.handleBack()
     }
 
-    override fun isMaskApp(res: Boolean) {
-        activity?.let { safeActivity ->
-            val intent = Intent(safeActivity, MainActivity::class.java)
-            if (res) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-                safeActivity.finish()
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+
+    }
+
+    override fun onSensorChanged(event: SensorEvent) {
+        if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+            getAccelerometer(event)
+        }
+    }
+
+    private fun getAccelerometer(event: SensorEvent) {
+        val values = event.values
+        // Movement
+        val x = values[0]
+        val y = values[1]
+        val z = values[2]
+
+        val accelationSquareRoot = (x * x + y * y + z * z) / (SensorManager.GRAVITY_EARTH * SensorManager.GRAVITY_EARTH)
+        val actualTime = event.timestamp
+        if (accelationSquareRoot >= 2)
+        //
+        {
+            if (actualTime - lastUpdate < 1000) {
+                return
             }
+            lastUpdate = actualTime
+            openActivity()
         }
     }
 
