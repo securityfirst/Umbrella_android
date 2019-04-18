@@ -150,7 +150,7 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
                 val res = it.changeDatabaseAccess(userToken)
                 if (res) {
                     it.setLoggedIn(true)
-                    it.setSkipPassword(false)
+                    it.setSkipPassword(true)
                     it.enablePasswordBanner(false)
                 }
                 getView()?.isTokenChanged(res)
