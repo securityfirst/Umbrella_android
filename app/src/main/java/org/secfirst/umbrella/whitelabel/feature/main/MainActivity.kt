@@ -37,17 +37,18 @@ import org.secfirst.umbrella.whitelabel.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.whitelabel.feature.tour.view.TourController
 import org.secfirst.umbrella.whitelabel.misc.*
 import org.secfirst.umbrella.whitelabel.misc.AppExecutors.Companion.uiContext
-import java.util.logging.Logger
 
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var router: Router
     private fun performDI() = AndroidInjection.inject(this)
+    private lateinit var menuItem: Menu
+    private var disableSearch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(org.secfirst.umbrella.whitelabel.R.layout.main_view)
+        setContentView(R.layout.main_view)
         setSupportActionBar(searchToolbar)
         performDI()
         initRoute(savedInstanceState)
@@ -60,14 +61,20 @@ class MainActivity : AppCompatActivity() {
         ShakeDetector.start()
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        return true
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the options menu from XML
         val inflater = menuInflater
+        menuItem = menu
         inflater.inflate(R.menu.option_menu, menu)
-
+        val menuItem = menu.findItem(R.id.menu_search)
         // Get the SearchView and set the searchable configuration
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        (menu.findItem(R.id.menu_search).actionView as SearchView).apply {
+        (menuItem.actionView as SearchView).apply {
+            menuItem.isVisible = !disableSearch
             val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
             searchEditText.setTextColor(resources.getColor(R.color.white))
             searchEditText.setHintTextColor(resources.getColor(R.color.white))
@@ -97,8 +104,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val name = this@MainActivity.resources.getResourceEntryName(item.itemId)
-        Logger.getLogger("bbb").info("id $name")
         if (item.itemId == android.R.id.home) {
             onBackPressed()
             hideKeyboard()
@@ -119,37 +124,45 @@ class MainActivity : AppCompatActivity() {
                 isLoggedUser() -> {
                     router.setRoot(RouterTransaction.with(LoginController()))
                     navigation.menu.getItem(2).isChecked = true
+                    disableSearch = true
                 }
                 isRepository() -> {
                     router.setRoot(RouterTransaction.with(HostChecklistController()))
                     navigation.menu.getItem(2).isChecked = true
+                    disableSearch = false
                 }
                 else -> router.setRoot(RouterTransaction.with(TourController()))
             }
         }
     }
 
+
+    fun resetAppbar() {
+        disableSearch = false
+        menuItem.clear()
+    }
+
     private val navigationItemSelectedListener =
             BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
                 when (item.itemId) {
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_feeds -> {
+                    R.id.navigation_feeds -> {
                         router.pushController(RouterTransaction.with(HostReaderController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_forms -> {
+                    R.id.navigation_forms -> {
                         router.pushController(RouterTransaction.with(HostFormController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_checklists -> {
+                    R.id.navigation_checklists -> {
                         router.pushController(RouterTransaction.with(HostChecklistController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_lessons -> {
+                    R.id.navigation_lessons -> {
                         router.pushController(RouterTransaction.with(LessonController()))
                         return@OnNavigationItemSelectedListener true
                     }
-                    org.secfirst.umbrella.whitelabel.R.id.navigation_account -> {
+                    R.id.navigation_account -> {
                         router.pushController(RouterTransaction.with(AccountController()))
                         return@OnNavigationItemSelectedListener true
                     }

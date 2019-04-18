@@ -51,6 +51,9 @@ class LoginController : BaseController(), LoginView {
         resetPasswordView.resetCancel.setOnClickListener { resetAlertCancel() }
         resetPasswordView.resetOk.setOnClickListener { resetAlertOk() }
         view.loginButton.setOnClickListener { doLogin() }
+
+        setHasOptionsMenu(true)
+
         return view
     }
 
@@ -60,7 +63,6 @@ class LoginController : BaseController(), LoginView {
         resetPasswordDialog.dismiss()
         presenter.submitResetPassword()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         return inflater.inflate(R.menu.login_menu, menu)
@@ -72,6 +74,7 @@ class LoginController : BaseController(), LoginView {
             enableNavigation(true)
             router.pushController(RouterTransaction.with(HostChecklistController()))
             router.popController(this)
+            mainActivity.resetAppbar()
         } else
             Toast.makeText(context, "Incorrect login.", Toast.LENGTH_LONG).show()
     }

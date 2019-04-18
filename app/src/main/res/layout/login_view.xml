@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/segmentBarLayout"
+        android:id="@+id/loginBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:hint="@string/login_enter_pw"
+            android:text="D4d42010"
             android:inputType="textWebPassword" />
 
         <androidx.cardview.widget.CardView
