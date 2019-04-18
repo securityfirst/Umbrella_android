@@ -122,6 +122,7 @@ class CalculatorController : BaseController(), MaskAppView {
     override fun onAttach(view: View) {
         ShakeDetector.create(context) { startShakeDetector() }
         ShakeDetector.start()
+        mainActivity.hideNavigation()
         super.onAttach(view)
     }
 
