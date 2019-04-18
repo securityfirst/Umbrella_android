@@ -50,6 +50,7 @@ class CalculatorController : BaseController(), MaskAppView {
         init(view)
         presenter.onAttach(this)
         enableNavigation(false)
+        mainActivity.hideNavigation()
         return view
     }
 
