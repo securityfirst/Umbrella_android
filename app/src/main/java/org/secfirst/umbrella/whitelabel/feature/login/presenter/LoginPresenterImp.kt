@@ -29,6 +29,7 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
             launchSilent(uiContext) {
                 if (checkPassword(userToken)) {
                     it.dispatchLoginDatabaseAccess(userToken)
+                    it.setSkipPassword(true)
                     getView()?.isLoginOk(true)
                 } else {
                     getView()?.isLoginOk(false)

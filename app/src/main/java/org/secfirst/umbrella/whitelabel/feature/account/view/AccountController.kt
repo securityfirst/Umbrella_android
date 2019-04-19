@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.account_reset_password_alert.view.*
 import kotlinx.android.synthetic.main.account_skip_alert.view.*
 import kotlinx.android.synthetic.main.account_view.*
 import kotlinx.android.synthetic.main.account_view.view.*
+import kotlinx.android.synthetic.main.main_view.*
 import kotlinx.android.synthetic.main.mask_app_info_view.view.*
 import org.jetbrains.anko.toast
 import org.secfirst.umbrella.whitelabel.R
@@ -20,6 +21,7 @@ import org.secfirst.umbrella.whitelabel.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.whitelabel.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.account.presenter.AccountBasePresenter
 import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
+import org.secfirst.umbrella.whitelabel.feature.login.view.LoginController
 import org.secfirst.umbrella.whitelabel.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.whitelabel.misc.checkPasswordStrength
 import org.secfirst.umbrella.whitelabel.misc.doRestartApplication
@@ -85,6 +87,7 @@ class AccountController : BaseController(), AccountView {
         accountView.accountSettings.setOnClickListener { clickOnSettings() }
         accountView.accountPassword.setOnClickListener { passwordAlertDialog.show() }
         accountView.accountMask.setOnClickListener { clickOnMaskApp() }
+        accountView.logout.setOnClickListener { clickOnLogout() }
         accountView.resetPassword.setOnClickListener { resetPasswordDialog.show() }
 
         passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
@@ -179,6 +182,10 @@ class AccountController : BaseController(), AccountView {
     private fun resetAlertOk() {
         resetPasswordDialog.dismiss()
         presenter.submitCleanDatabase()
+    }
+
+    private fun clickOnLogout(){
+        mainActivity.recreate()
     }
 
     private fun clickOnSettings() = router.pushController(RouterTransaction.with(SettingsController()))

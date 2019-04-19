@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Umbrella</string>
     <string name="secondary_app_name">Calculator</string>
-    <string name="feed_title">Feed</string>
+    <string name="feed_title">Feeds</string>
     <string name="form_title">Forms</string>
-    <string name="checklist_title">Checklist</string>
+    <string name="checklist_title">Checklists</string>
     <string name="lesson_title">Lessons</string>
     <string name="account_title">Account</string>
     <string name="message_title_active_forms">Filled out forms</string>
@@ -81,7 +81,7 @@
     <string name="account_password_alert_confirm">Confirm</string>
     <string name="settings_title">Settings</string>
     <string name="settings_refresh_from_the_server">Refresh from the server</string>
-    <string name="settings_switch_server">Switch from the server</string>
+    <string name="settings_switch_server">Change repository</string>
     <string name="settings_your_location">Your location</string>
     <string name="settings_show_updates_as_notification">Show updates as notification</string>
     <string name="settings_security_feed_sources">Security feed sources</string>
@@ -184,4 +184,6 @@
     <string name="categoryHint">Communications, Information, etc.</string>
     <string name="difficultyHint">Beginner, Advanced, Expert</string>
     <string name="typeHint">Checklist, Form, Segment</string>
+    <string name="tour_slide_0_text">Umbrella makes your security simple</string>
+    <string name="logout">Logout</string>
 </resources>

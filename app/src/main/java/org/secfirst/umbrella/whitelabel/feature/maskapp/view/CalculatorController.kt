@@ -50,6 +50,7 @@ class CalculatorController : BaseController(), MaskAppView {
         init(view)
         presenter.onAttach(this)
         enableNavigation(false)
+        mainActivity.hideNavigation()
         return view
     }
 
@@ -121,6 +122,7 @@ class CalculatorController : BaseController(), MaskAppView {
     override fun onAttach(view: View) {
         ShakeDetector.create(context) { startShakeDetector() }
         ShakeDetector.start()
+        mainActivity.hideNavigation()
         super.onAttach(view)
     }
 

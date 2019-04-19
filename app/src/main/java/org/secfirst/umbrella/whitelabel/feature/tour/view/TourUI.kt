@@ -21,7 +21,7 @@ class TourUI(private val color: Int,
             backgroundColorResource = color
 
             verticalLayout {
-                imageView(imageSource).lparams(width = wrapContent, height =  wrapContent) {
+                imageView(imageSource).lparams(width = wrapContent, height = dip(400)) {
                     gravity = Gravity.CENTER
                     topMargin = dip(20)
                 }
