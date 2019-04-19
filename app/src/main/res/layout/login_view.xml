@@ -49,7 +49,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:hint="@string/login_enter_pw"
-            android:text="D4d42010"
             android:inputType="textWebPassword" />
 
         <androidx.cardview.widget.CardView

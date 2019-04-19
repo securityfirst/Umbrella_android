@@ -56,7 +56,7 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(org.secfirst.umbrella.whitelabel.R.layout.activity_search)
+        setContentView(R.layout.activity_search)
         if (intent.action == Intent.ACTION_SEARCH) {
             intent?.data?.lastPathSegment?.isNotEmpty()?.let {
                 AdvancedSearch.getSearchTermFromIntent(intent)
