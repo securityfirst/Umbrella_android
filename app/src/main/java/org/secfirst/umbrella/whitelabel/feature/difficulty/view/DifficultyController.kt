@@ -15,7 +15,6 @@ import org.secfirst.umbrella.whitelabel.feature.base.view.BaseController
 import org.secfirst.umbrella.whitelabel.feature.difficulty.DaggerDifficultyComponent
 import org.secfirst.umbrella.whitelabel.feature.difficulty.interactor.DifficultyBaseInteractor
 import org.secfirst.umbrella.whitelabel.feature.difficulty.presenter.DifficultyBasePresenter
-import org.secfirst.umbrella.whitelabel.feature.lesson.view.LessonController
 import org.secfirst.umbrella.whitelabel.feature.segment.view.controller.HostSegmentController
 import javax.inject.Inject
 
@@ -71,13 +70,6 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
             it.layoutManager = LinearLayoutManager(context)
             it.adapter = difficultyAdapter
         }
-    }
-
-    override fun handleBack(): Boolean {
-        if (isDeepLink)
-            router.pushController(RouterTransaction.with(LessonController()))
-        router.popCurrentController()
-        return true
     }
 
     private fun setUpToolbar(toolbarTitle: String) {

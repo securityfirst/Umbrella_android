@@ -33,7 +33,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     internal lateinit var presenter: SegmentBasePresenter<SegmentView, SegmentBaseInteractor>
     private val objectIds by lazy { args.getStringArrayList(EXTRA_OBJECT_IDS_HOST_SEGMENT) }
     private val enableFilter by lazy { args.getBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT) }
-    private val isFromDashboard by lazy {args.getBoolean(EXTRA_DASHBOARD)}
+    private val isFromDashboard by lazy { args.getBoolean(EXTRA_DASHBOARD) }
     private lateinit var hostAdapter: HostSegmentAdapter
     private lateinit var hostView: View
     private val uriString by lazy { args.getString(EXTRA_ENABLE_DEEP_LINK_SEGMENT) }
@@ -42,7 +42,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
     constructor(objectIds: ArrayList<String>, enableFilter: Boolean, isFromDashboard: Boolean = false) : this(Bundle().apply {
         putSerializable(EXTRA_OBJECT_IDS_HOST_SEGMENT, objectIds)
         putBoolean(EXTRA_ENABLE_FILTER_HOST_SEGMENT, enableFilter)
-        putBoolean(EXTRA_DASHBOARD,isFromDashboard)
+        putBoolean(EXTRA_DASHBOARD, isFromDashboard)
     })
 
     constructor(uri: String) : this(Bundle().apply {
@@ -135,11 +135,6 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
             controllers.add(controller)
         }
         return controllers
-    }
-
-    override fun handleBack(): Boolean {
-        router.popCurrentController()
-        return true
     }
 
     private fun setUpToolbar(view: View) {
