@@ -59,6 +59,7 @@ class TourController : BaseController(), ContentView {
     }
 
     init {
+        viewList.add(TourUI(R.color.umbrella_purple,R.drawable.ic_walkthrough,R.string.tour_slide_0_text,VISIBLE, GONE))
         viewList.add(TourUI(R.color.umbrella_green, R.drawable.ic_walkthrough1, org.secfirst.umbrella.whitelabel.R.string.tour_slide_1_text, VISIBLE, GONE))
         viewList.add(TourUI(R.color.umbrella_yellow, R.drawable.ic_walkthrough2, org.secfirst.umbrella.whitelabel.R.string.tour_slide_2_text, VISIBLE, GONE))
         viewList.add(TourUI(R.color.umbrella_purple, R.drawable.ic_walkthrough3, org.secfirst.umbrella.whitelabel.R.string.tour_slide_3_text, VISIBLE, GONE))
