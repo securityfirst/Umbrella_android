@@ -2,6 +2,8 @@ package org.secfirst.umbrella.whitelabel.feature.reader.presenter
 
 import android.util.Log
 import com.einmalfel.earl.EarlParser
+import com.einmalfel.earl.RSSFeed
+import com.einmalfel.earl.RSSItem
 import com.google.gson.Gson
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedLocation
 import org.secfirst.umbrella.whitelabel.data.database.reader.FeedSource
@@ -129,28 +131,28 @@ class ReaderPresenterImp<V : ReaderView, I : ReaderBaseInteractor>
         }
     }
 
-    private suspend fun processRss(rssList: List<RSS>): List<RSS> {
-        val rssResult = mutableListOf<RSS>()
-        interactor?.let {
-            rssList.forEach { rssIt ->
-                try {
-                    val responseBody = it.doRSsCallAsync(rssIt.url_).await()
-                    val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
-                    rssResult.add(feed.updateRSS(rssIt))
-                } catch (exception: Exception) {
-                    Log.e(tag, "could't load the RSS:, ${rssIt.link}")
-                }
-            }
-        }
-        return rssResult
-    }
+//    private suspend fun processRss(rssList: List<RSS>): List<RSS> {
+//        val rssResult = mutableListOf<RSS>()
+//        interactor?.let {
+//            rssList.forEach { rssIt ->
+//                try {
+//                    val responseBody = it.doRSsCallAsync(rssIt.url_).await()
+//                    val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
+//                    rssResult.add(feed.updateRSS(rssIt))
+//                } catch (exception: Exception) {
+//                    Log.e(tag, "could't load the RSS:, ${rssIt.link}")
+//                }
+//            }
+//        }
+//        return rssResult
+//    }
 
     private suspend fun processRss(rss: RSS): RSS? {
         interactor?.let {
             try {
                 val responseBody = it.doRSsCallAsync(rss.url_).await()
-                val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0)
-                return feed.updateRSS(rss)
+                val feed = EarlParser.parseOrThrow(responseBody.byteStream(), 0) as RSSFeed
+                return feed.updateRSS(rss, feed)
             } catch (exception: Exception) {
                 Log.e(tag, "could't load the RSS")
             }

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.einmalfel.earl.Enclosure
 import com.einmalfel.earl.Feed
 import com.einmalfel.earl.Item
+import com.einmalfel.earl.RSSFeed
 import com.raizlabs.android.dbflow.annotation.Column
 import com.raizlabs.android.dbflow.annotation.PrimaryKey
 import com.raizlabs.android.dbflow.annotation.Table
@@ -75,7 +76,7 @@ data class Article(var url_: String = "", var title_: String = "",
 }
 
 
-fun Feed.updateRSS(rss: RSS): RSS {
+fun Feed.updateRSS(rss: RSS, rssFeed: RSSFeed?): RSS {
     rss.url_ = this.link ?: rss.url_
     rss.title_ = this.title
     rss.description_ = this.description ?: ""
@@ -85,9 +86,12 @@ fun Feed.updateRSS(rss: RSS): RSS {
     rss.author_ = this.author ?: ""
     val articleList = mutableListOf<Article>()
     items.forEach {
+        var imageUrl = ""
+        if(it.imageLink != null) imageUrl = it.imageLink.toString()
+        else if (rssFeed!!.items[items.indexOf(it)].media != null) imageUrl = rssFeed.items[items.indexOf(it)].media!!.contents[0].url.toString()
         val article = Article(it.link
                 ?: "", it.title ?: "", it.description
-                ?: "", it.publicationDate!!, it.imageLink ?: "", "", it.author
+                ?: "", it.publicationDate!!, imageUrl, "", it.author
                 ?: "", it.enclosures)
         articleList.add(article)
     }
