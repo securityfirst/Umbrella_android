@@ -65,7 +65,7 @@ android {
             signingConfig signingConfigs.umbrella_beta
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -88,7 +88,6 @@ dependencies {
     implementation "io.github.inflationx:calligraphy3:$calligraphy3"
     implementation "io.github.inflationx:viewpump:$viewpump"
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_sdk"
-    implementation "com.google.firebase:firebase-core:$firebase"
     implementation "org.apache.commons:commons-text:1.6"
     implementation "org.apache.commons:commons-lang3:3.4"
 
@@ -188,5 +187,3 @@ dependencies {
     implementation 'com.nabinbhandari.android:permissions:3.8'
     implementation 'com.github.halysongoncalves:pugnotification:1.8.1'
 }
-
-apply plugin: 'com.google.gms.google-services'
