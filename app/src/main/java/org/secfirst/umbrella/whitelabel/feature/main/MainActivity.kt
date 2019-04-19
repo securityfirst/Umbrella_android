@@ -45,15 +45,17 @@ class MainActivity : AppCompatActivity() {
     private fun performDI() = AndroidInjection.inject(this)
     private lateinit var menuItem: Menu
     private var disableSearch = false
+    private var deepLink = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_view)
+        router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
         setSupportActionBar(searchToolbar)
         performDI()
-        initRoute(savedInstanceState)
-        showNavigation()
         isDeepLink()
+        initNavigation()
+        showNavigation()
     }
 
     override fun onResume() {
@@ -112,9 +114,8 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun initRoute(savedInstanceState: Bundle?) {
+    private fun initNavigation() {
         navigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener)
-        router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
 
         if (isMaskMode() && isShowMockView()) {
             router.setRoot(RouterTransaction.with(CalculatorController()))
@@ -122,9 +123,11 @@ class MainActivity : AppCompatActivity() {
             setShowMockView()
             when {
                 isLoggedUser() -> {
-                    router.setRoot(RouterTransaction.with(LoginController()))
-                    navigation.menu.getItem(2).isChecked = true
-                    disableSearch = true
+                    if (!deepLink){
+                        router.setRoot(RouterTransaction.with(LoginController()))
+                        navigation.menu.getItem(2).isChecked = true
+                        disableSearch = true
+                    }
                 }
                 isRepository() -> {
                     router.setRoot(RouterTransaction.with(HostChecklistController()))
@@ -135,7 +138,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     fun resetAppbar() {
         disableSearch = false
@@ -220,6 +222,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun isDeepLink() {
         if (ACTION_VIEW == intent.action) {
+            deepLink = true
             val uri = intent.data
             val uriString = uri?.toString() ?: ""
             val path = uriString.substringAfterLast(SCHEMA)
