@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel
+package org.secfirst.umbrella
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

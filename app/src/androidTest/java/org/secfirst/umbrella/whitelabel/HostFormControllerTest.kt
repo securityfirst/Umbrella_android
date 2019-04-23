@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel
+package org.secfirst.umbrella
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.assertion.ViewAssertions.matches
@@ -11,9 +11,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.secfirst.umbrella.whitelabel.data.database.form.Form
-import org.secfirst.umbrella.whitelabel.feature.form.view.controller.HostFormController
-import org.secfirst.umbrella.whitelabel.feature.main.MainActivity
+import org.secfirst.umbrella.R
+import org.secfirst.umbrella.data.database.form.Form
+import org.secfirst.umbrella.feature.form.view.controller.HostFormController
+import org.secfirst.umbrella.feature.main.MainActivity
 
 
 @RunWith(AndroidJUnit4::class)
