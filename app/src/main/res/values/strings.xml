@@ -38,7 +38,7 @@
     <string name="feed_interval_label">Set how often shall we check for news</string>
     <string name="set">SET</string>
     <string name="location">Location</string>
-    <string name="feed_location_label">Enter the country you want to see the feed for.</string>
+    <string name="feed_location_label">Enter location</string>
     <string name="feed_sources">Feed sources</string>
     <string name="feed_source_label">Enter Sources</string>
     <string name="set_now">SET NOW</string>
@@ -49,7 +49,7 @@
     <string name="feed_source_name">Select The Feed Sources</string>
     <string name="feed_text_min">%1$s minutes</string>
     <string name="feed_choose_refresh_interval">Enter interval in minutes (one day = 1440 minutes)</string>
-    <string name="feed_location_enter_location">Enter the country you want to see \nthe feed for</string>
+    <string name="feed_location_enter_location">Enter location</string>
 
     <string-array name="refresh_interval_array">
         <item>30 min</item>

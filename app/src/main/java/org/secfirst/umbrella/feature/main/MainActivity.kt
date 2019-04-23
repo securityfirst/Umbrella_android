@@ -36,7 +36,6 @@ import org.secfirst.umbrella.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.feature.tour.view.TourController
 import org.secfirst.umbrella.misc.*
-import org.secfirst.umbrella.misc.*
 import org.secfirst.umbrella.misc.AppExecutors.Companion.uiContext
 
 
@@ -124,16 +123,18 @@ class MainActivity : AppCompatActivity() {
             setShowMockView()
             when {
                 isLoggedUser() -> {
-                    if (!deepLink){
+                    if (!deepLink) {
                         router.setRoot(RouterTransaction.with(LoginController()))
                         navigation.menu.getItem(2).isChecked = true
                         disableSearch = true
                     }
                 }
                 isRepository() -> {
-                    router.setRoot(RouterTransaction.with(HostChecklistController()))
-                    navigation.menu.getItem(2).isChecked = true
-                    disableSearch = false
+                    if (!deepLink) {
+                        router.setRoot(RouterTransaction.with(HostChecklistController()))
+                        navigation.menu.getItem(2).isChecked = true
+                        disableSearch = false
+                    }
                 }
                 else -> router.setRoot(RouterTransaction.with(TourController()))
             }

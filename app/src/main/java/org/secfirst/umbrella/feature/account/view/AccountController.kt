@@ -85,7 +85,6 @@ class AccountController : BaseController(), AccountView {
         accountView.accountSettings.setOnClickListener { clickOnSettings() }
         accountView.accountPassword.setOnClickListener { passwordAlertDialog.show() }
         accountView.accountMask.setOnClickListener { clickOnMaskApp() }
-        accountView.logout.setOnClickListener { clickOnLogout() }
         accountView.resetPassword.setOnClickListener { resetPasswordDialog.show() }
 
         passwordView.alertPasswordSkip.setOnClickListener { clickOnSkipAlert() }
@@ -159,8 +158,10 @@ class AccountController : BaseController(), AccountView {
         val token = passwordView.alertPwText.text.toString()
         val confirmToken = passwordView.alertPwConfirm.text.toString()
         if (token == confirmToken) {
-            if (token.checkPasswordStrength(context))
+            if (token.checkPasswordStrength(context)) {
                 presenter.submitChangeDatabaseAccess(token)
+                accountView.logout.setOnClickListener { clickOnLogout() }
+            }
         } else
             context.toast(context.getString(R.string.confirm_password_error_message))
     }
@@ -182,14 +183,17 @@ class AccountController : BaseController(), AccountView {
         presenter.submitCleanDatabase()
     }
 
-    private fun clickOnLogout(){
+    private fun clickOnLogout() {
         mainActivity.recreate()
     }
 
     private fun clickOnSettings() = router.pushController(RouterTransaction.with(SettingsController()))
 
     override fun isUserLogged(res: Boolean) {
-        if (res) accountView.resetPassword.visibility = VISIBLE
+        if (res) {
+            accountView.resetPassword.visibility = VISIBLE
+            accountView.logout.setOnClickListener { clickOnLogout() }
+        }
     }
 
     override fun isTokenChanged(res: Boolean) {
