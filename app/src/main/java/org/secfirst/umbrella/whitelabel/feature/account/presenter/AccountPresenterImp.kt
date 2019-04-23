@@ -133,8 +133,6 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             interactor?.let {
                 it.setSkipPassword(value)
                 if (value) {
-                    it.setLoggedIn(false)
-                    it.changeDatabaseAccess(AppDatabase.DEFAULT)
                     it.enablePasswordBanner(false)
                 } else {
                     it.enablePasswordBanner(true)
