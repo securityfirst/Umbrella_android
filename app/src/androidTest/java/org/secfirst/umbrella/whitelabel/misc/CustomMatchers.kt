@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.misc
+package org.secfirst.umbrella.misc
 
 import android.support.test.espresso.matcher.BoundedMatcher
 import android.support.v7.widget.RecyclerView

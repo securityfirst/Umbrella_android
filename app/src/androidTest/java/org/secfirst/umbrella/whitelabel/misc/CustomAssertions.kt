@@ -1,4 +1,4 @@
-package org.secfirst.umbrella.whitelabel.misc
+package org.secfirst.umbrella.misc
 
 import android.support.test.espresso.NoMatchingViewException
 import android.support.test.espresso.ViewAssertion

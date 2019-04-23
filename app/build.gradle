@@ -38,12 +38,12 @@ android {
         experimental = true
     }
     defaultConfig {
-        applicationId "org.secfirst.umbrella.whitelabel"
+        applicationId "org.secfirst.umbrella"
         minSdkVersion 16
         compileSdkVersion 28
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0.10"
+        versionName "1.0.11"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
