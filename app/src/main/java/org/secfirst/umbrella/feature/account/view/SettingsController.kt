@@ -14,6 +14,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -263,7 +264,9 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 return refreshServerProgress
             }
         })
+        mainActivity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         presentTent.submitUpdateRepository()
+        mainActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun skipPasswordTip(isChecked: Boolean) {
