@@ -166,7 +166,7 @@
     <string name="default_refresh_feed">30 min</string>
     <string name="account_disable_mask">Disable Mask</string>
     <string name="disable_mask_message">Disable Mask with success</string>
-    <string name="empty_favorites_message">There is no favorite lessons.</string>
+    <string name="empty_favorites_message">No lessons have been added yet.</string>
     <string name="custom_checklist_add_item_title">Custom Checklist</string>
     <string name="name_your_checklist">Name your checklist</string>
     <string name="name">Name</string>
