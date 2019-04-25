@@ -164,6 +164,8 @@ fun deviceLanguage(): String {
 
     if (defaultLanguage == "gb")
         return "en"
+    else if(defaultLanguage.contains("zh", true))
+        return "zh-Hant"
     return defaultLanguage
 }
 
