@@ -177,10 +177,9 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun onChecklistShareClick() {
         val checklistHtml = checklist?.covertToHTML()
-        val intent = Intent(Intent.ACTION_SENDTO,
-                Uri.parse("mailto:?subject=Checklist&body=${Uri.encode(checklistHtml)}"))
-        startActivity(intent)
-
+        val doc = Jsoup.parse(checklistHtml)
+        doc.outputSettings().syntax(Document.OutputSettings.Syntax.xml)
+        showShareDialog(doc, context.getString(R.string.checklistDetail_title))
     }
 
     private fun onSegmentShareClick(markdown: Markdown) {
@@ -205,7 +204,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, removeExtension(fileToShare.name))
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         if (shareIntent.resolveActivity(pm) != null)
-            startActivity(Intent.createChooser(shareIntent, R.string.export_lesson.toString()))
+            startActivity(Intent.createChooser(shareIntent, context.getString(R.string.export_lesson)))
 
     }
 
