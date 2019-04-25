@@ -11,7 +11,5 @@ class TentInteractorImp @Inject constructor(private val tentRepo: TentRepo)
 
     override suspend fun fetchRepository(url: String) = tentRepo.fetchRepository(url)
 
-    override suspend fun loadElementsFile() = tentRepo.loadElementsFile()
-
-    override fun loadFile() = tentRepo.loadFile()
+    override suspend fun loadElementsFile(path : String) = tentRepo.loadElementsFile(path)
 }

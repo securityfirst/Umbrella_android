@@ -85,7 +85,7 @@ interface TentDao {
         return files
     }
 
-    fun filterElements(): List<File> {
+    fun filterElements(path : String): List<File> {
         val predicateLanguage = defaultTentLanguage()
         return File("${getPathRepository()}$predicateLanguage")
                 .walk()
@@ -99,7 +99,7 @@ interface TentDao {
 
     }
 
-    fun filterForms(): List<File> {
+    fun filterForms(path : String): List<File> {
         val predicateLanguage = defaultTentLanguage()
         return File("${getPathRepository()}$predicateLanguage")
                 .walk()
@@ -111,7 +111,7 @@ interface TentDao {
                 .toList()
     }
 
-    suspend fun filterCategories(): List<File> {
+    suspend fun filterCategories(path : String): List<File> {
         val predicateLanguage = defaultTentLanguage()
         return File("${getPathRepository()}$predicateLanguage")
                 .walkBottomUp()
