@@ -5,6 +5,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.secfirst.umbrella.UmbrellaApplication
 import org.secfirst.umbrella.misc.AppExecutors.Companion.ioContext
+import org.secfirst.umbrella.misc.deviceLanguage
 import java.io.File
 
 
@@ -24,7 +25,7 @@ fun isNotRepository() = !File(repoPath).exists()
 
 fun getPathRepository(): String = repoPath
 
-fun defaultTentLanguage(): String = "en"
+fun defaultContent(): String = "en"
 
 enum class TypeFile(val value: String) {
     CHECKLIST("c"),
@@ -60,6 +61,15 @@ fun tentLanguages(): List<String> {
             .filter { it.isDirectory }
             .forEach { languages.add(it.name) }
     return languages
+}
+
+fun defaultTentLanguage() : String{
+    var value = defaultContent()
+    tentLanguages().forEach { language ->
+        if (language == deviceLanguage())
+            value =   deviceLanguage()
+    }
+    return value
 }
 
 fun getLastCommitID() {

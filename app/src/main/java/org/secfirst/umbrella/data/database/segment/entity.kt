@@ -44,24 +44,28 @@ data class Markdown(
         var difficulty: Difficulty? = null,
         var isRemove: Boolean = false) : Parcelable {
 
-    constructor(id: String, text: String) : this(id, text, recoveryTitle(text),
-            recoveryIndex(text),
+    constructor(id: String, text: String) : this(id, text, recoveryTitleOrIndex(text, TAG_TITLE),
+            recoveryTitleOrIndex(text, TAG_INDEX),
             false,
-            recoveryTitle(text).removeSpecialCharacter())
+            recoveryTitleOrIndex(text, TAG_TITLE).removeSpecialCharacter())
 
     companion object {
         const val FAVORITE_INDEX = "1"
-        private const val TAG_INDEX = "index: "
-        private const val TAG_TITLE = "title: "
+         const val TAG_INDEX = "index: "
+         const val TAG_TITLE = "title: "
         const val SINGLE_CHOICE = 1
         const val MARKDOWN_IMAGE_TAG = "![image]("
-        fun recoveryIndex(text: String) = text.lines()[1].trim().substringAfterLast(TAG_INDEX)
-        fun recoveryTitle(text: String): String {
-            var res = text.lines()[2].trim().substringAfterLast(TAG_TITLE)
-            if (res.trim() == "_") res = ""
-            return res
+    }
+}
+
+private fun recoveryTitleOrIndex(text: String, tag : String): String {
+    val content = text.substringAfter("---").substringBefore("---").lines()
+    content.forEach { line->
+        if(line.contains(tag, true)){
+            return line.trim().substringAfter(tag)
         }
     }
+    return ""
 }
 
 fun List<Markdown>.ids(): ArrayList<String> {
