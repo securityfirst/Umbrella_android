@@ -6,6 +6,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.util.Base64
 import androidx.core.app.ActivityCompat
@@ -159,7 +160,8 @@ fun Context.setLocale(lang: String) {
 }
 
 fun deviceLanguage(): String {
-    val defaultLanguage = Locale.getDefault().language
+    val defaultLanguage = Resources.getSystem().configuration.locale.language
+
     if (defaultLanguage == "gb")
         return "en"
     return defaultLanguage

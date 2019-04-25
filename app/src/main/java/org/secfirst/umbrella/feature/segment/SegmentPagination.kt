@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.feature.segment
 
 import org.secfirst.umbrella.data.database.segment.Markdown
+import org.secfirst.umbrella.data.database.segment.sortByIndex
 
 class SegmentPagination(private val markdowns: MutableList<Markdown>) {
 
@@ -15,9 +16,9 @@ class SegmentPagination(private val markdowns: MutableList<Markdown>) {
         } else {
             if (markdowns.isNotEmpty()) {
                 (0..limitPage).forEach { pages.add(markdowns[it]) }
-                (0..limitPage).forEach { _ -> markdowns.removeAt(0) }
+                (0..limitPage).forEach { _ -> markdowns .removeAt(0) }
             }
         }
-        return pages.sortedWith(compareBy { it.index.toInt() })
+        return pages.sortByIndex()
     }
 }

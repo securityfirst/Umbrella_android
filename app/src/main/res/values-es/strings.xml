@@ -98,7 +98,7 @@
     <string name="export_dialog_hint">Establece tu nombre de archivo</string>
     <string name="settings_umbrella_share_title">Paraguas de respaldo</string>
     <string name="export_dialog_cancel">CANCELAR</string>
-    <string name="export_dialog_ok">Aceptar</string>
+    <string name="export_dialog_ok">ACEPTAR</string>
     <string name="export_view_export">Exportar</string>
     <string name="export_view_share">Compartir</string>
     <string name="export_view_backup_type">Tipo de copia de seguridad</string>

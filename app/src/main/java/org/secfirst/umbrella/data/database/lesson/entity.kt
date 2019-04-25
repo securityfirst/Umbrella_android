@@ -95,6 +95,7 @@ data class Subject(
         var rootDir: String = "",
         @PrimaryKey
         var id: String = "",
+        var icon: String = "",
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null) : Parcelable {
 
