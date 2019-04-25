@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import br.com.goncalves.pugnotification.notification.PugNotification
-
 import kotlinx.coroutines.withContext
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.lib.TextProgressMonitor
@@ -13,7 +12,6 @@ import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.content.ContentDao
 import org.secfirst.umbrella.data.database.content.createDefaultRSS
 import org.secfirst.umbrella.data.database.content.createFeedSources
-import org.secfirst.umbrella.data.disk.*
 import org.secfirst.umbrella.data.disk.*
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.misc.AppExecutors.Companion.ioContext
@@ -92,6 +90,7 @@ class ContentService : Service(), ElementSerializeMonitor {
         } catch (e: Exception) {
             result = false
             releaseService()
+            File(getPathRepository()).deleteRecursively()
             sendLostConnectionMessage()
         }
         return result
@@ -168,8 +167,6 @@ class ContentService : Service(), ElementSerializeMonitor {
     private fun releaseService() {
         val preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val isFinishProcess = preferences.getBoolean(EXTRA_STATE_PROCESS, false)
-        if (!isFinishProcess)
-            File(getPathRepository()).deleteRecursively()
         stopForegroundService()
     }
 

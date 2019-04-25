@@ -28,17 +28,11 @@ class TentPresenterImp<V : TentView, I : TentBaseInteractor>
         }
     }
 
-    override fun submitLoadElementsFile() {
+    override fun submitLoadElementsFile(path : String) {
         launchSilent(uiContext) {
             interactor?.let {
-                getView()?.onLoadElementSuccess(it.loadElementsFile())
+                getView()?.onLoadElementSuccess(it.loadElementsFile(path))
             }
-        }
-    }
-
-    override fun submitLoadFile() {
-        launchSilent(uiContext) {
-            interactor?.loadFile()
         }
     }
 }

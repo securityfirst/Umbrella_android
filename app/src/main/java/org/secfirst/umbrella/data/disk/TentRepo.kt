@@ -9,9 +9,7 @@ interface TentRepo {
 
     suspend fun updateRepository(): List<Pair<String, File>>
 
-    suspend fun loadElementsFile(): List<File>
+    suspend fun loadElementsFile(path : String): List<File>
 
-    fun loadFile(): List<File>
-
-    fun loadFormFile(): List<File>
+    fun loadFormFile(path : String): List<File>
 }
