@@ -480,6 +480,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
                 action = ContentService.ACTION_START_FOREGROUND_SERVICE
             }
             if (context.isInternetConnected()) {
+                mainActivity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 context.startService(intentService)
                 switchServerProgress.show()
             } else
@@ -512,6 +513,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
 
     private fun contentCompleted() {
         switchServerProgress.dismiss()
+        mainActivity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     private fun errorLostConnectionMessage() {

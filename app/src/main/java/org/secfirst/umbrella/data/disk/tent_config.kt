@@ -71,12 +71,13 @@ fun getLastCommitID() {
 
 suspend fun validateRepository(repositoryURL: String): Boolean {
     var result = false
+    val repoUrl = "$repositoryURL.git"
     withContext(ioContext) {
         try {
             val db = FileRepositoryBuilder.create(File("/tmp"))
             val git = Git.wrap(db)
             val lsCmd = git.lsRemote()
-            lsCmd.setRemote(repositoryURL)
+            lsCmd.setRemote(repoUrl)
             if (null != lsCmd.call())
                 result = true
         } catch (exception: Exception) {
