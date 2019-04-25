@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.feature.content.interactor
 
 import org.secfirst.umbrella.data.database.checklist.Checklist
+import org.secfirst.umbrella.data.database.content.ContentData
 import org.secfirst.umbrella.data.database.content.ContentRepo
 import org.secfirst.umbrella.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.data.database.form.Form
@@ -9,12 +10,11 @@ import org.secfirst.umbrella.data.database.lesson.Subject
 import org.secfirst.umbrella.data.database.reader.FeedSource
 import org.secfirst.umbrella.data.database.reader.RSS
 import org.secfirst.umbrella.data.database.segment.Markdown
-import org.secfirst.umbrella.data.database.content.ContentData
+import org.secfirst.umbrella.data.disk.TentLoader
 import org.secfirst.umbrella.data.disk.TentRepo
 import org.secfirst.umbrella.data.network.ApiHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.feature.base.interactor.BaseInteractorImp
-import org.secfirst.umbrella.data.disk.TentLoader
 import javax.inject.Inject
 
 class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
@@ -55,8 +55,6 @@ class ContentInteractorImp @Inject constructor(apiHelper: ApiHelper,
     override suspend fun persistFeedSource(feedSources: List<FeedSource>) = contentRepo.insertFeedSource(feedSources)
 
     override suspend fun fetchData(url: String) = tentRepo.fetchRepository(url)
-
-    override suspend fun initParser() = tentLoader.serializeContent()
 
     override suspend fun persist(contentData: ContentData) = contentRepo.insertAllLessons(contentData)
 

@@ -40,8 +40,10 @@ import org.secfirst.umbrella.component.DialogManager
 import org.secfirst.umbrella.component.RefreshIntervalDialog
 import org.secfirst.umbrella.data.database.reader.FeedLocation
 import org.secfirst.umbrella.data.database.reader.FeedSource
+import org.secfirst.umbrella.data.disk.ElementSerializeMonitor
 import org.secfirst.umbrella.data.disk.IsoCountry
 import org.secfirst.umbrella.data.disk.baseUrlRepository
+import org.secfirst.umbrella.data.disk.getPathRepository
 import org.secfirst.umbrella.feature.account.DaggerAccountComponent
 import org.secfirst.umbrella.feature.account.interactor.AccountBaseInteractor
 import org.secfirst.umbrella.feature.account.presenter.AccountBasePresenter
@@ -57,13 +59,18 @@ import org.secfirst.umbrella.feature.tent.interactor.TentBaseInteractor
 import org.secfirst.umbrella.feature.tent.presenter.TentBasePresenter
 import org.secfirst.umbrella.feature.tour.view.TourController
 import org.secfirst.umbrella.misc.*
-import org.secfirst.umbrella.misc.*
 import java.io.File
 import javax.inject.Inject
 
 
-class SettingsController : BaseController(), AccountView, ContentView, TentView, FeedLocationDialog.FeedLocationListener,
-        RefreshIntervalDialog.RefreshIntervalListener, FeedSourceDialog.FeedSourceListener {
+class SettingsController : BaseController(),
+        AccountView,
+        ContentView,
+        TentView,
+        FeedLocationDialog.FeedLocationListener,
+        RefreshIntervalDialog.RefreshIntervalListener,
+        FeedSourceDialog.FeedSourceListener,
+        ElementSerializeMonitor {
 
     @Inject
     internal lateinit var presenter: AccountBasePresenter<AccountView, AccountBaseInteractor>
@@ -71,6 +78,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     internal lateinit var presentContent: ContentBasePresenter<ContentView, ContentBaseInteractor>
     @Inject
     internal lateinit var presentTent: TentBasePresenter<TentView, TentBaseInteractor>
+
     private var isShare = false
     private lateinit var intentService: Intent
     private lateinit var exportAlertDialog: AlertDialog
@@ -87,6 +95,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
     private lateinit var refreshServerProgress: ProgressDialog
+
     private val mMessageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             val percentage = intent.getIntExtra(ContentService.EXTRA_CONTENT_SERVICE_PROGRESS, -1)
@@ -135,6 +144,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
 
+
         presenter.onAttach(this)
         presentContent.onAttach(this)
         presentTent.onAttach(this)
@@ -181,6 +191,9 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
         feedLocationDialog = FeedLocationDialog(feedLocationView, this)
 
         initProgress()
+        refreshServerProgress = ProgressDialog(context)
+        refreshServerProgress.setCancelable(false)
+        refreshServerProgress.setMessage(context.getString(R.string.loading_tour_message))
         return mainView
     }
 
@@ -204,29 +217,36 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     }
 
     private fun changeLanguageOk() {
+
         when {
             languageView.spanishCheck.isChecked -> {
                 context.setLocale(IsoCountry.SPANISH.value)
                 presenter.setDefaultLanguage(IsoCountry.SPANISH.value)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
+                presenter.changeContentLanguage("${getPathRepository()}es")
+                refreshServerProgress.show()
             }
             languageView.chineseCheck.isChecked -> {
                 context.setLocale(IsoCountry.CHINESE.value)
                 presenter.setDefaultLanguage(IsoCountry.CHINESE.value)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.cn)
+                presenter.changeContentLanguage("${getPathRepository()}zh-Hant")
+                refreshServerProgress.show()
             }
             else -> {
                 context.setLocale(IsoCountry.ENGLISH.value)
                 presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
+                presenter.changeContentLanguage("${getPathRepository()}en")
+                refreshServerProgress.show()
             }
+
         }
-        mainActivity.recreate()
-        mainActivity.navigationPositionToCenter()
         languageDialog.dismiss()
     }
 
     override fun getDefaultLanguage(isoCountry: String) {
+        switchServerProgress.setTitle(context.getString(R.string.notification_update_database))
         when (isoCountry) {
             IsoCountry.ENGLISH.value -> {
                 languageView.englishCheck.isChecked = true
@@ -254,15 +274,7 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
     private fun switchServerClick() = switchServerDialog.show()
 
     private fun refreshServerClick() {
-        val dialog = DialogManager(this)
-        dialog.showDialog(DialogManager.PROGRESS_DIALOG_TAG, object : DialogManager.DialogFactory {
-            override fun createDialog(context: Context?): Dialog {
-                refreshServerProgress = ProgressDialog(context)
-                refreshServerProgress.setCancelable(false)
-                refreshServerProgress.setMessage(context?.getString(R.string.loading_tour_message))
-                return refreshServerProgress
-            }
-        })
+        refreshServerProgress.show()
         presentTent.submitUpdateRepository()
     }
 
@@ -518,5 +530,20 @@ class SettingsController : BaseController(), AccountView, ContentView, TentView,
             snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
         switchServerDialog.dismiss()
+    }
+
+    override fun onChangedLanguageSuccess() {
+        refreshServerProgress.dismiss()
+        mainActivity.recreate()
+        mainActivity.navigationPositionToCenter()
+    }
+
+    override fun onChangedLanguageFail() {
+        context.toast(context.getString(R.string.change_language_error))
+        refreshServerProgress.dismiss()
+    }
+
+    override fun onSerializeProgress(percentage: Int) {
+        refreshServerProgress.incrementProgressBy(percentage)
     }
 }

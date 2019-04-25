@@ -186,4 +186,5 @@
     <string name="typeHint">Checklist, Form, Segment</string>
     <string name="tour_slide_0_text">Umbrella makes your security simple</string>
     <string name="logout">Logout</string>
+    <string name="change_language_error">An unexpected error occurred.</string>
 </resources>

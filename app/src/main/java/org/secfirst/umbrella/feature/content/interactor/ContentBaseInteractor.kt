@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.feature.content.interactor
 
 import org.secfirst.umbrella.data.database.checklist.Checklist
+import org.secfirst.umbrella.data.database.content.ContentData
 import org.secfirst.umbrella.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.data.database.form.Form
 import org.secfirst.umbrella.data.database.lesson.Module
@@ -8,7 +9,6 @@ import org.secfirst.umbrella.data.database.lesson.Subject
 import org.secfirst.umbrella.data.database.reader.FeedSource
 import org.secfirst.umbrella.data.database.reader.RSS
 import org.secfirst.umbrella.data.database.segment.Markdown
-import org.secfirst.umbrella.data.database.content.ContentData
 import org.secfirst.umbrella.feature.base.interactor.BaseInteractor
 
 interface ContentBaseInteractor : BaseInteractor {
@@ -16,8 +16,6 @@ interface ContentBaseInteractor : BaseInteractor {
     suspend fun fetchData(url: String): Boolean
 
     suspend fun persist(contentData: ContentData)
-
-    suspend fun initParser(): ContentData
 
     suspend fun persistFeedSource(feedSources: List<FeedSource>)
 

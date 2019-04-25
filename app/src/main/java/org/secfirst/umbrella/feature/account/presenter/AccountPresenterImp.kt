@@ -1,7 +1,6 @@
 package org.secfirst.umbrella.feature.account.presenter
 
 import com.raizlabs.android.dbflow.config.FlowManager
-import org.secfirst.umbrella.data.database.AppDatabase
 import org.secfirst.umbrella.data.database.AppDatabase.EXTENSION
 import org.secfirst.umbrella.data.database.AppDatabase.NAME
 import org.secfirst.umbrella.data.database.reader.FeedLocation
@@ -18,6 +17,19 @@ import javax.inject.Inject
 class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), AccountBasePresenter<V, I> {
+
+
+    override  fun changeContentLanguage(path: String) {
+        launchSilent (uiContext) {
+            interactor?.let {
+                if (it.serializeNewContent(path)) {
+                    getView()?.onChangedLanguageSuccess()
+                } else {
+                    getView()?.onChangedLanguageFail()
+                }
+            }
+        }
+    }
 
     override fun submitIsMaskApp() {
         interactor?.let {

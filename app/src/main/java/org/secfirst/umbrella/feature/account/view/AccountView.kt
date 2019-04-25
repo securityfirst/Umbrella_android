@@ -30,4 +30,8 @@ interface AccountView : BaseView {
     fun getDefaultLanguage(isoCountry: String){}
 
     fun getMaskApp(isMaskApp : Boolean){}
+
+    fun onChangedLanguageSuccess(){}
+
+    fun onChangedLanguageFail(){}
 }

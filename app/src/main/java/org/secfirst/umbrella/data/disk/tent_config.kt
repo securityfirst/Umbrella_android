@@ -57,17 +57,17 @@ fun tentLanguages(): List<String> {
     File(repoPath)
             .walk()
             .filter { !it.path.contains(".git") }
-            .filter { it.name.length == 2  || it.name.contains("zh", true)}
+            .filter { it.name.length == 2 || it.name.contains("zh", true) }
             .filter { it.isDirectory }
             .forEach { languages.add(it.name) }
     return languages
 }
 
-fun defaultTentLanguage() : String{
+fun defaultTentLanguage(): String {
     var value = defaultContent()
     tentLanguages().forEach { language ->
         if (language == deviceLanguage())
-            value =   deviceLanguage()
+            value = deviceLanguage()
     }
     return value
 }

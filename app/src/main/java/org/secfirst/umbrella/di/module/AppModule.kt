@@ -36,13 +36,13 @@ import org.secfirst.umbrella.data.database.segment.SegmentDao
 import org.secfirst.umbrella.data.database.segment.SegmentRepo
 import org.secfirst.umbrella.data.database.segment.SegmentRepository
 import org.secfirst.umbrella.data.disk.TentDao
+import org.secfirst.umbrella.data.disk.TentLoader
 import org.secfirst.umbrella.data.disk.TentRepo
 import org.secfirst.umbrella.data.disk.TentRepository
 import org.secfirst.umbrella.data.network.ApiHelper
 import org.secfirst.umbrella.data.network.NetworkEndPoint.BASE_URL
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
-import org.secfirst.umbrella.data.disk.TentLoader
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -59,10 +59,6 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun provideElementSerializer(tentRep: TentRepo) = TentLoader(tentRep)
-
-    @Provides
-    @Singleton
     internal fun providePreference(context: Context) = AppPreferenceHelper(context, PREF_NAME)
 
 }
@@ -75,6 +71,10 @@ class TentContentModule {
     @Provides
     @Singleton
     internal fun provideTentRepo(): TentRepo = TentRepository(tentDao)
+
+    @Provides
+    @Singleton
+    internal fun provideTentLoader(tentRep: TentRepo): TentLoader = TentLoader(tentRep)
 }
 
 
@@ -152,7 +152,6 @@ class RepositoryModule {
     @Provides
     @Singleton
     internal fun provideLoginDao(): LoginRepo = LoginRepository(loginDao)
-
 }
 
 @Module
