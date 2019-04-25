@@ -83,9 +83,12 @@ class Dashboard(var items: List<Item> = listOf()) {
 }
 
 fun Checklist.covertToHTML(): String {
-    var body = ""
+    var body = "<html><head><meta Content-Type: text/html; charset=\"UTF-8\"></head><body style=\"font-family: Roboto; font-size:16px; font-weight: normal;\" >"
     this.content.forEach { content ->
-        body += "\n" + if (content.value) "\u2713" + " ${content.check}" else "\u2717" + " ${content.check}"
+        if (content.check.isNotEmpty()) {
+            body += if (content.value) "✓" else "✗" + " ${content.check}"
+        }
+        body += "<br>"
     }
     return body
 }
