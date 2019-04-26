@@ -218,7 +218,7 @@ class SettingsController : BaseController(),
     }
 
     private fun changeLanguageOk() {
-
+        switchServerProgress.setTitle(context.getString(R.string.notification_update_database))
         when {
             languageView.spanishCheck.isChecked -> {
                 context.setLocale(IsoCountry.SPANISH.value)
@@ -247,7 +247,7 @@ class SettingsController : BaseController(),
     }
 
     override fun getDefaultLanguage(isoCountry: String) {
-        switchServerProgress.setTitle(context.getString(R.string.notification_update_database))
+
         when (isoCountry) {
             IsoCountry.ENGLISH.value -> {
                 languageView.englishCheck.isChecked = true
