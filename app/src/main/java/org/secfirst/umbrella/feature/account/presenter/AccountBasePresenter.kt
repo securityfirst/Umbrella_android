@@ -45,4 +45,6 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
     fun submitFakeView(isShowFakeView : Boolean)
 
     fun submitIsMaskApp()
+
+    fun  changeContentLanguage(path : String)
 }

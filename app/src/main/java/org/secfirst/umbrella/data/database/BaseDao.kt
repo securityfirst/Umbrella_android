@@ -128,5 +128,4 @@ interface BaseDao {
             }
         }
     }
-
 }

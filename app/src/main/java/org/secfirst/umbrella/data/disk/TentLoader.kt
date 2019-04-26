@@ -26,11 +26,10 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     private var fileCount = 0
     private var listSize = 0
 
-    suspend fun serializeContent(): ContentData {
+    suspend fun serializeContent(path : String):ContentData {
         withContext(ioContext) {
-            val predicateLanguage ="${getPathRepository()}${defaultTentLanguage()}"
-            val files = tentRepo.loadElementsFile(predicateLanguage)
-            val formFiles = tentRepo.loadFormFile(predicateLanguage)
+            val files = tentRepo.loadElementsFile(path)
+            val formFiles = tentRepo.loadFormFile(path)
             listSize = files.size + formFiles.size
             processFiles(files)
             loadForm(formFiles)

@@ -11,7 +11,7 @@ const val THREAD_COUNT = 3
  */
 open class AppExecutors {
     companion object {
-        val ioContext: kotlin.coroutines.CoroutineContext
+        val ioContext: CoroutineContext
             get() = Dispatchers.IO
 
         val networkContext: CoroutineContext

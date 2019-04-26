@@ -4,6 +4,7 @@ import org.secfirst.umbrella.data.database.account.AccountRepo
 import org.secfirst.umbrella.data.database.content.ContentRepo
 import org.secfirst.umbrella.data.database.reader.FeedLocation
 import org.secfirst.umbrella.data.database.reader.FeedSource
+import org.secfirst.umbrella.data.disk.TentLoader
 import org.secfirst.umbrella.data.network.ApiHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.feature.base.interactor.BaseInteractorImp
@@ -13,9 +14,22 @@ import javax.inject.Inject
 class AccountInteractorImp @Inject constructor(apiHelper: ApiHelper,
                                                preferenceHelper: AppPreferenceHelper,
                                                contentRepo: ContentRepo,
-                                               private val accountRepo: AccountRepo)
+                                               private val accountRepo: AccountRepo,
+                                               private val tentLoader : TentLoader)
 
     : BaseInteractorImp(apiHelper, preferenceHelper, contentRepo), AccountBaseInteractor {
+
+    override suspend fun serializeNewContent(path: String) :Boolean{
+        val res: Boolean
+        val newContent = tentLoader.serializeContent(path)
+        res = if (accountRepo.wipeMainContent()) {
+            contentRepo.insertAllLessons(newContent)
+            true
+        } else {
+            false
+        }
+        return res
+    }
 
     override fun getMaskApp() = preferenceHelper.isMaskApp()
 

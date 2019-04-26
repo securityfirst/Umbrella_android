@@ -51,7 +51,8 @@ class ContentService : Service(), ElementSerializeMonitor {
         launchSilent(uiContext) {
             val isCloned = if (isInternetConnected()) cloneRepository(url) else false
             if (isCloned) {
-                val element = elementSerialize.serializeContent()
+                val predicateLanguage ="${getPathRepository()}${defaultTentLanguage()}"
+                val element = elementSerialize.serializeContent(predicateLanguage)
                 contentDao.insertAllContent(element)
                 contentDao.insertFeedSource(createFeedSources())
                 contentDao.insertDefaultRSS(createDefaultRSS())

@@ -29,4 +29,6 @@ interface AccountBaseInteractor : BaseInteractor {
     fun setFakeView(isShowFakeView: Boolean) : Boolean
 
     fun getMaskApp() : Boolean
+
+    suspend fun serializeNewContent(path : String) : Boolean
 }
