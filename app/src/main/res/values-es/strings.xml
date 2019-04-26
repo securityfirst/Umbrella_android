@@ -110,7 +110,7 @@
     <string name="title_dialog">Seleccione una acción</string>
     <string name="checklist_dialog_cancel">CANCELAR</string>
     <string name="cancel">CANCELAR</string>
-    <string name="ok">Aceptar</string>
+    <string name="ok">ACEPTAR</string>
     <string name="checklist_dialog_delete">BORRAR</string>
     <string name="checklist_dialog_disable">INHABILITAR</string>
     <string name="custom_checklist_hint_add_checklistItem">Agregar elemento de lista de verificación</string>

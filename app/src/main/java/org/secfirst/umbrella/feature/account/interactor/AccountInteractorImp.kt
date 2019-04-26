@@ -2,6 +2,8 @@ package org.secfirst.umbrella.feature.account.interactor
 
 import org.secfirst.umbrella.data.database.account.AccountRepo
 import org.secfirst.umbrella.data.database.content.ContentRepo
+import org.secfirst.umbrella.data.database.content.createDefaultRSS
+import org.secfirst.umbrella.data.database.content.createFeedSources
 import org.secfirst.umbrella.data.database.reader.FeedLocation
 import org.secfirst.umbrella.data.database.reader.FeedSource
 import org.secfirst.umbrella.data.disk.TentLoader
@@ -24,6 +26,8 @@ class AccountInteractorImp @Inject constructor(apiHelper: ApiHelper,
         val newContent = tentLoader.serializeContent(path)
         res = if (accountRepo.wipeMainContent()) {
             contentRepo.insertAllLessons(newContent)
+            contentRepo.insertFeedSource(createFeedSources())
+            contentRepo.insertDefaultRSS(createDefaultRSS())
             true
         } else {
             false
