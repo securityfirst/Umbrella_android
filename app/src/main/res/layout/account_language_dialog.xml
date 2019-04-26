@@ -93,7 +93,7 @@
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
         app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2"
-        app:srcCompat="@drawable/cn" />
+        app:srcCompat="@drawable/tw" />
 
     <include
         android:id="@+id/alertControlLayout"

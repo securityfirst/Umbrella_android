@@ -230,7 +230,7 @@ class SettingsController : BaseController(),
             languageView.chineseCheck.isChecked -> {
                 context.setLocale(IsoCountry.CHINESE.value)
                 presenter.setDefaultLanguage(IsoCountry.CHINESE.value)
-                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.TW)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.tw)
                 presenter.changeContentLanguage("${getPathRepository()}zh-Hant")
                 refreshServerProgress.show()
             }
@@ -257,7 +257,7 @@ class SettingsController : BaseController(),
             IsoCountry.CHINESE.value -> {
                 languageView.chineseCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.chinese_language_title)
-                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.cn)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.tw)
             }
             IsoCountry.SPANISH.value -> {
                 languageView.spanishCheck.isChecked = true
