@@ -77,7 +77,7 @@
     <string name="account_password_alert_password">Contraseña</string>
     <string name="account_password_skip">OMITIR</string>
     <string name="account_cancel">CANCELAR</string>
-    <string name="account_ok">Aceptar</string>
+    <string name="account_ok">ACEPTAR</string>
     <string name="account_password_alert_confirm">Confirmar</string>
     <string name="settings_title">Configuración</string>
     <string name="settings_refresh_from_the_server">Refrescar desde el servidor</string>
