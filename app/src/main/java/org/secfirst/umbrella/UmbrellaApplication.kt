@@ -49,7 +49,7 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         super.onCreate()
         MultiDex.install(this)
         instance = this
-        val shared = getSharedPreferences(AppPreferenceHelper.PREF_NAME, MODE_PRIVATE)
+        val shared = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
         val isLogged = shared.getBoolean(AppPreferenceHelper.EXTRA_LOGGED_IN, false)
         if (!isLogged) initDatabase()
         initDaggerComponent()
