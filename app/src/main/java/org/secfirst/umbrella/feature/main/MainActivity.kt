@@ -22,7 +22,9 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.R
+import org.secfirst.umbrella.data.disk.IsoCountry
 import org.secfirst.umbrella.data.disk.isRepository
+import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_LOGGED_IN
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_MASK_APP
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_SHOW_MOCK_VIEW
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLanguage()
         setContentView(R.layout.main_view)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
         setSupportActionBar(searchToolbar)
@@ -112,6 +115,13 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun setLanguage() {
+        val preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val isoCountry = preference.getString(AppPreferenceHelper.EXTRA_LANGUAGE, IsoCountry.ENGLISH.value)
+                ?: IsoCountry.ENGLISH.value
+        this.setLocale(isoCountry)
     }
 
     private fun initNavigation() {
