@@ -16,6 +16,8 @@ import org.secfirst.umbrella.data.database.checklist.Checklist
 import org.secfirst.umbrella.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.data.database.lesson.Module
 import org.secfirst.umbrella.data.database.lesson.Subject
+import org.secfirst.umbrella.data.disk.defaultContent
+import org.secfirst.umbrella.data.disk.getPathRepository
 import org.secfirst.umbrella.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.misc.removeSpecialCharacter
@@ -51,17 +53,17 @@ data class Markdown(
 
     companion object {
         const val FAVORITE_INDEX = "1"
-         const val TAG_INDEX = "index: "
-         const val TAG_TITLE = "title: "
+        const val TAG_INDEX = "index: "
+        const val TAG_TITLE = "title: "
         const val SINGLE_CHOICE = 1
         const val MARKDOWN_IMAGE_TAG = "![image]("
     }
 }
 
-private fun recoveryTitleOrIndex(text: String, tag : String): String {
+private fun recoveryTitleOrIndex(text: String, tag: String): String {
     val content = text.substringAfter("---").substringBefore("---").lines()
-    content.forEach { line->
-        if(line.contains(tag, true)){
+    content.forEach { line ->
+        if (line.contains(tag, true)) {
             return line.trim().substringAfter(tag)
         }
     }
@@ -115,8 +117,14 @@ fun Markdown.toSearchResult(): SearchResult {
     }
 }
 
-fun String.replaceMarkdownImage(absolutePath: String) = this.replace(Markdown.MARKDOWN_IMAGE_TAG,
-        "${Markdown.MARKDOWN_IMAGE_TAG}file://$absolutePath")
+fun String.replaceMarkdownImage(pwd: String): String {
+    val absolutePath = pwd.substringAfterLast(getPathRepository())
+    val pathSplit = absolutePath.split("/").toMutableList()
+    pathSplit[0] = defaultContent()
+    val defaultImagePath = "${getPathRepository()}${pathSplit.joinToString("/")}"
+    return this.replace(Markdown.MARKDOWN_IMAGE_TAG,
+            "${Markdown.MARKDOWN_IMAGE_TAG}file://$defaultImagePath")
+}
 
 interface HostSegmentTabControl {
     fun moveTabAt(position: Int)
