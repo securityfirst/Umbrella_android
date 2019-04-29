@@ -223,7 +223,7 @@ class SettingsController : BaseController(),
             languageView.spanishCheck.isChecked -> {
                 context.setLocale(IsoCountry.SPANISH.value)
                 presenter.setDefaultLanguage(IsoCountry.SPANISH.value)
-                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
                 presenter.changeContentLanguage("${getPathRepository()}es")
                 refreshServerProgress.show()
             }
@@ -237,7 +237,7 @@ class SettingsController : BaseController(),
             else -> {
                 context.setLocale(IsoCountry.ENGLISH.value)
                 presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
-                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.gb)
                 presenter.changeContentLanguage("${getPathRepository()}en")
                 refreshServerProgress.show()
             }

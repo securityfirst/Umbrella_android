@@ -4,6 +4,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_VIEW
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,7 +23,6 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
 import org.secfirst.umbrella.R
-import org.secfirst.umbrella.data.disk.IsoCountry
 import org.secfirst.umbrella.data.disk.isRepository
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_LOGGED_IN
@@ -39,6 +39,7 @@ import org.secfirst.umbrella.feature.reader.view.HostReaderController
 import org.secfirst.umbrella.feature.tour.view.TourController
 import org.secfirst.umbrella.misc.*
 import org.secfirst.umbrella.misc.AppExecutors.Companion.uiContext
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -119,9 +120,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun setLanguage() {
         val preference = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val isoCountry = preference.getString(AppPreferenceHelper.EXTRA_LANGUAGE, IsoCountry.ENGLISH.value)
-                ?: IsoCountry.ENGLISH.value
-        this.setLocale(isoCountry)
+        val pref = preference.getString(AppPreferenceHelper.EXTRA_LANGUAGE, "")
+        val isoCountry: String
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (pref!!.isNotBlank())
+                this.setLocale(pref)
+        } else {
+            isoCountry = if (pref!!.isNotBlank()) pref
+            else Locale.getDefault().language
+            this.setLocale(isoCountry)
+        }
     }
 
     private fun initNavigation() {
