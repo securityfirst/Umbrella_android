@@ -173,7 +173,7 @@
     <string name="empty_custom_checklist_message">創建自己的自定義清單。</string>
     <string name="checklist_card_title">清單</string>
     <string name="checklist_title_tab">概述</string>
-    <string name="custom_checklist_title_tab">CUSTOM</string>
+    <string name="custom_checklist_title_tab">你的飼料</string>
     <string name="add_custom_checklist_item_title">添加核對清單項目</string>
     <string name="notification_fetching_data">獲取數據</string>
     <string name="notification_update_database">更新數據庫</string>
@@ -184,4 +184,5 @@
     <string name="difficultyHint">初學者，高級，專家</string>
     <string name="typeHint">清單，表格，細分</string>
     <string name="disable_mask_app">面具應用已被禁用。</string>
+    <string name="bookmark_title">书签</string>
 </resources>

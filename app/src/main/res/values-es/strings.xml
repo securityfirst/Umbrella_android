@@ -184,4 +184,6 @@
     <string name="difficultyHint">Principiante, avanzado, experto</string>
     <string name="typeHint">Lista de verificación, formulario, segmento</string>
     <string name="disable_mask_app">La aplicación de máscara ha sido desactivada.</string>
+    <string name="bookmark_title">Marcador</string>
+    <string name="logout">cerrar sesión</string>
 </resources>

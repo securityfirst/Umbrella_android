@@ -21,6 +21,7 @@ open class LessonHeader(private val moduleId: String,
         viewHolder.subHeaderText.text = titleHeader
 
         if (moduleId == Markdown.FAVORITE_INDEX) {
+            viewHolder.subHeaderText.text =  appContext().getString(R.string.bookmark_title)
             viewHolder.iconHeader.backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_fav_selected)
             viewHolder.iconHeader.setColorFilter(ContextCompat.getColor(appContext(), android.R.color.black))
         } else
