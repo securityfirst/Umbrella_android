@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import kotlinx.android.parcel.Parcelize
+import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.AppDatabase
 import org.secfirst.umbrella.data.database.checklist.Checklist
 import org.secfirst.umbrella.data.database.checklist.Checklist_Table
@@ -12,6 +13,7 @@ import org.secfirst.umbrella.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.data.database.difficulty.Difficulty_Table
 import org.secfirst.umbrella.data.database.segment.Markdown
 import org.secfirst.umbrella.data.database.segment.Markdown_Table
+import org.secfirst.umbrella.misc.appContext
 
 data class Lesson(var moduleId: String,
                   var moduleTitle: String = "",
@@ -150,5 +152,6 @@ fun createDefaultFavoriteModule(): Module {
     val favoriteModule = Module()
     favoriteModule.id = Module.FAVORITE_ID
     favoriteModule.index = 1
+    favoriteModule.title = appContext().getString(R.string.bookmark_title)
     return favoriteModule
 }
