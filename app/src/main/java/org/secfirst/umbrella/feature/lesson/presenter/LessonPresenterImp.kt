@@ -68,7 +68,8 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
                 val modules = it.fetchModules()
                         .filter { lesson -> lesson.title != "" }
                         .toList()
-                modules[0].markdowns = markdownsFavorite.toMutableList()
+                if (modules.isNotEmpty())
+                    modules[0].markdowns = markdownsFavorite.toMutableList()
                 getView()?.showAllLesson(modules.toLesson())
             }
         }

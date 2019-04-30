@@ -165,7 +165,8 @@ class CalculatorController : BaseController(), MaskAppView {
 
     private fun computeCalculation() {
         if (!java.lang.Double.isNaN(valueOne)) {
-            valueTwo = editTextCalc.text.toString().toDouble()
+            if (editTextCalc.text.toString().isNotBlank())
+                valueTwo = editTextCalc.text.toString().toDouble()
             editTextCalc.text = null
             when (CURRENT_ACTION) {
                 ADDITION -> valueOne += valueTwo
@@ -174,7 +175,8 @@ class CalculatorController : BaseController(), MaskAppView {
                 DIVISION -> valueOne /= valueTwo
             }
         } else {
-            valueOne = editTextCalc.text.toString().toDouble()
+            if (editTextCalc.text.toString().isNotBlank())
+                valueOne = editTextCalc.text.toString().toDouble()
         }
     }
 }
