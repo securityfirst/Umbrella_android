@@ -209,7 +209,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     }
 
     private fun showShareDialog(doc: Document, title: String) {
-        var type = ""
+        var type = context.getString(R.string.pdf_name)
         shareView.pdfRadio.text = context.getString(R.string.pdf_name)
         shareView.htmlRadio.text = context.getString(R.string.html_name)
 
