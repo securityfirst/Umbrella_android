@@ -28,7 +28,7 @@ abstract class SwipeToDeleteCallback(context: Context, private val isDisabled: B
          * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
          * if (viewHolder?.adapterPosition == 0) return 0
          */
-        if (viewHolder.itemViewType == 0 || (isDisabled && viewHolder.adapterPosition == 1 || (viewHolder.itemViewType == 2 && viewHolder.adapterPosition <5))) return 0
+        if (viewHolder.itemViewType == 0 || (isDisabled && viewHolder.adapterPosition == 1)) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
 
