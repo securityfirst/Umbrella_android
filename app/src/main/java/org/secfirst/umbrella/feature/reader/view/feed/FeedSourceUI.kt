@@ -2,13 +2,15 @@ package org.secfirst.umbrella.feature.reader.view.feed
 
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.ListView
 import androidx.core.content.ContextCompat
 import org.jetbrains.anko.*
 import org.secfirst.umbrella.R
-import org.secfirst.umbrella.data.database.reader.FeedSource
 import org.secfirst.umbrella.misc.medium
 
-class FeedSourceUI(private val feedSources: List<FeedSource>) : AnkoComponent<FeedSourceDialog> {
+class FeedSourceUI(private val sourcesAdapter: SourcesAdapter) : AnkoComponent<FeedSourceDialog> {
+
+    private var sourceList: ListView? = null
 
     override fun createView(ui: AnkoContext<FeedSourceDialog>) = ui.apply {
         linearLayout {
@@ -26,16 +28,22 @@ class FeedSourceUI(private val feedSources: List<FeedSource>) : AnkoComponent<Fe
             }
             linearLayout {
                 orientation = LinearLayout.VERTICAL
-                feedSources.forEach { feedSource ->
-                    checkBox(feedSource.name) {
-                        typeface = medium
-                        textColor = ContextCompat.getColor(ctx, R.color.feedSources_color)
-                        textSize = 16f
-                        isChecked = feedSource.lastChecked
-                        setOnClickListener { updateChecked(feedSource.name, isChecked) }
-                    }.lparams(width = wrapContent, height = wrapContent) {
-                        topMargin = dip(10)
+                verticalLayout {
+                    sourceList = listView {
+                        //assign adapter
+                        divider = null
+                        adapter = sourcesAdapter
                     }
+                }.lparams {
+                    margin = dip(5)
+                }
+                checkBox("Select All") {
+                    typeface = medium
+                    textColor = ContextCompat.getColor(ctx, R.color.feedSources_color)
+                    textSize = 16f
+                    setOnClickListener { sourcesAdapter.selectAllSources(isChecked) }
+                }.lparams(width = wrapContent, height = wrapContent) {
+                    topMargin = dip(10)
                 }
                 include<View>(R.layout.alert_control) {
                 }.lparams(width = wrapContent, height = wrapContent) {
@@ -51,12 +59,5 @@ class FeedSourceUI(private val feedSources: List<FeedSource>) : AnkoComponent<Fe
         }
     }.view
 
-    private fun updateChecked(feedSourceName: String, lastChecked: Boolean) {
-        feedSources.forEach {
-            if (it.name == feedSourceName)
-                it.lastChecked = lastChecked
-        }
-    }
-
-    fun getFeedSourcesUpdated() = feedSources
+    fun getFeedSourcesUpdated() = sourcesAdapter.feedSources
 }
