@@ -88,7 +88,9 @@ class SettingsController : BaseController(),
     private lateinit var exportView: View
     private lateinit var switchServerView: View
     private lateinit var switchLanguageAlertDialog: AlertDialog
-    private lateinit var switchLanguageAlertView : View
+    private lateinit var switchLanguageAlertView: View
+    private lateinit var switchRepoAlertDialog: AlertDialog
+    private lateinit var switchRepoAlertView: View
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
@@ -147,6 +149,7 @@ class SettingsController : BaseController(),
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
         switchLanguageAlertView = inflater.inflate(R.layout.switch_language_alert, container, false)
+        switchRepoAlertView = inflater.inflate(R.layout.switch_repo_alert, container, false)
 
 
 
@@ -175,6 +178,11 @@ class SettingsController : BaseController(),
                 .setView(switchLanguageAlertView)
                 .create()
 
+        switchRepoAlertDialog = AlertDialog
+                .Builder(activity)
+                .setView(switchRepoAlertView)
+                .create()
+
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
         exportView.alertControlOk.onClick { exportDataOk() }
         exportView.alertControlCancel.onClick { exportDataClose() }
@@ -182,8 +190,10 @@ class SettingsController : BaseController(),
         switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
         languageView.alertControlOk.onClick { switchLanguageAlert() }
         languageView.alertControlCancel.onClick { languageDialog.dismiss() }
-        switchLanguageAlertView.alertControlOk.onClick{changeLanguageOk()}
+        switchLanguageAlertView.alertControlOk.onClick { changeLanguageOk() }
         switchLanguageAlertView.alertControlCancel.onClick { switchLanguageAlertDialog.dismiss() }
+        switchRepoAlertView.alertControlOk.onClick { switchRepoAlert() }
+        switchRepoAlertView.alertControlCancel.onClick { switchRepoAlertDialog.dismiss() }
 
         mainView.settingsLanguage.onClick { languageClick() }
         mainView.settingsImportData.onClick { importDataClick() }
@@ -283,7 +293,7 @@ class SettingsController : BaseController(),
         }
     }
 
-    private fun switchServerClick() = switchServerDialog.show()
+    private fun switchServerClick() = switchRepoAlertDialog.show()
 
     private fun refreshServerClick() {
         refreshServerProgress.show()
@@ -566,5 +576,10 @@ class SettingsController : BaseController(),
     private fun switchLanguageAlert() {
         switchLanguageAlertDialog.show()
         languageDialog.dismiss()
+    }
+
+    private fun switchRepoAlert() {
+        switchServerDialog.show()
+        switchRepoAlertDialog.dismiss()
     }
 }
