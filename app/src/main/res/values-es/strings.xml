@@ -171,7 +171,7 @@
     <string name="name">Nombre</string>
     <string name="invalid_name_custom_checklist_messenge">El nombre de la lista de verificación no debe estar en blanco.</string>
     <string name="empty_custom_checklist_message">Crea tu propia lista de verificación personalizada.</string>
-    <string name="checklist_card_title">Listas de control</string>
+    <string name="checklist_card_title">Listas</string>
     <string name="checklist_title_tab">VISIÓN GENERAL</string>
     <string name="custom_checklist_title_tab">PERSONALIZADO</string>
     <string name="add_custom_checklist_item_title">Agregar elemento de lista de verificación</string>
@@ -184,6 +184,6 @@
     <string name="difficultyHint">Principiante, avanzado, experto</string>
     <string name="typeHint">Lista de verificación, formulario, segmento</string>
     <string name="disable_mask_app">La aplicación de máscara ha sido desactivada.</string>
-    <string name="bookmark_title">Marcador</string>
-    <string name="logout">cerrar sesión</string>
+    <string name="bookmark_title">Favoritos</string>
+    <string name="logout">Cerrar sesión</string>
 </resources>
