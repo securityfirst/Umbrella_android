@@ -87,6 +87,8 @@ class SettingsController : BaseController(),
     private lateinit var switchServerProgress: ProgressDialog
     private lateinit var exportView: View
     private lateinit var switchServerView: View
+    private lateinit var switchLanguageAlertDialog: AlertDialog
+    private lateinit var switchLanguageAlertView : View
     private var isWipeData: Boolean = false
     private lateinit var mainView: View
     private lateinit var feedLocationDialog: FeedLocationDialog
@@ -144,6 +146,8 @@ class SettingsController : BaseController(),
         languageView = inflater.inflate(R.layout.account_language_dialog, container, false)
         val feedLocationView = inflater.inflate(R.layout.feed_location_dialog, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)
+        switchLanguageAlertView = inflater.inflate(R.layout.switch_language_alert, container, false)
+
 
 
         presenter.onAttach(this)
@@ -166,13 +170,20 @@ class SettingsController : BaseController(),
                 .setTitle(context.getString(R.string.switch_server_title_message))
                 .create()
 
+        switchLanguageAlertDialog = AlertDialog
+                .Builder(activity)
+                .setView(switchLanguageAlertView)
+                .create()
+
         exportView.exportDialogWipeData.setOnClickListener { wipeDataClick() }
         exportView.alertControlOk.onClick { exportDataOk() }
         exportView.alertControlCancel.onClick { exportDataClose() }
         switchServerView.alertControlOk.onClick { switchServerOk() }
         switchServerView.alertControlCancel.onClick { switchServerDialog.dismiss() }
-        languageView.alertControlOk.onClick { changeLanguageOk() }
+        languageView.alertControlOk.onClick { switchLanguageAlert() }
         languageView.alertControlCancel.onClick { languageDialog.dismiss() }
+        switchLanguageAlertView.alertControlOk.onClick{changeLanguageOk()}
+        switchLanguageAlertView.alertControlCancel.onClick { switchLanguageAlertDialog.dismiss() }
 
         mainView.settingsLanguage.onClick { languageClick() }
         mainView.settingsImportData.onClick { importDataClick() }
@@ -550,5 +561,10 @@ class SettingsController : BaseController(),
 
     override fun onSerializeProgress(percentage: Int) {
         refreshServerProgress.incrementProgressBy(percentage)
+    }
+
+    private fun switchLanguageAlert() {
+        switchLanguageAlertDialog.show()
+        languageDialog.dismiss()
     }
 }
