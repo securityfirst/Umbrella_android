@@ -264,7 +264,7 @@ class SettingsController : BaseController(),
             }
 
         }
-        languageDialog.dismiss()
+        switchLanguageAlertDialog.dismiss()
     }
 
     override fun getDefaultLanguage(isoCountry: String) {
