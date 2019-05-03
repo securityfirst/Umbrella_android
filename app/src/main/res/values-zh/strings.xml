@@ -184,5 +184,6 @@
     <string name="difficultyHint">初學者，高級，專家</string>
     <string name="typeHint">清單，表格，細分</string>
     <string name="disable_mask_app">面具應用已被禁用。</string>
-    <string name="bookmark_title">书签</string>
+    <string name="bookmark_title">書籤</string>
+    <string name="logout">登出</string>
 </resources>

@@ -12,8 +12,9 @@ class FeedSourceDialog(feedSources: List<FeedSource>,
                        private val listener: FeedSourceListener) {
 
     private var feedSourceAlertDialog: AlertDialog
-    private var feedSourceUI = FeedSourceUI(feedSources)
     private var feedSourceView: View
+    private var sourceAdapter = SourcesAdapter(feedSources)
+    private var feedSourceUI = FeedSourceUI(sourceAdapter)
 
     init {
         feedSourceView = feedSourceUI.createView(AnkoContext.create(context, this, false))

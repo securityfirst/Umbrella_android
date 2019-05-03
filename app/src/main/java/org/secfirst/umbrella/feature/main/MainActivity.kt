@@ -270,9 +270,4 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    override fun onSaveInstanceState(oldInstanceState: Bundle) {
-        super.onSaveInstanceState(oldInstanceState)
-        oldInstanceState.clear()
-    }
 }
