@@ -40,6 +40,9 @@ enum class IsoCountry(val value: String) {
     ENGLISH("gb"),
     CHINESE("zh"),
     SPANISH("es"),
+    ARABIC("ar"),
+    FARSI("fa"),
+    RUSSIAN("ru")
 }
 
 enum class Template(val value: String) {

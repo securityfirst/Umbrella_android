@@ -255,6 +255,27 @@ class SettingsController : BaseController(),
                 presenter.changeContentLanguage("${getPathRepository()}zh-Hant")
                 refreshServerProgress.show()
             }
+            languageView.arabicCheck.isChecked -> {
+                context.setLocale(IsoCountry.ARABIC.value)
+                presenter.setDefaultLanguage(IsoCountry.ARABIC.value)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ae)
+                presenter.changeContentLanguage("${getPathRepository()}ar")
+                refreshServerProgress.show()
+            }
+            languageView.iranianCheck.isChecked -> {
+                context.setLocale(IsoCountry.FARSI.value)
+                presenter.setDefaultLanguage(IsoCountry.FARSI.value)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ir)
+                presenter.changeContentLanguage("${getPathRepository()}fa")
+                refreshServerProgress.show()
+            }
+            languageView.russianCheck.isChecked -> {
+                context.setLocale(IsoCountry.RUSSIAN.value)
+                presenter.setDefaultLanguage(IsoCountry.RUSSIAN.value)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ru)
+                presenter.changeContentLanguage("${getPathRepository()}ru")
+                refreshServerProgress.show()
+            }
             else -> {
                 context.setLocale(IsoCountry.ENGLISH.value)
                 presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
@@ -284,6 +305,21 @@ class SettingsController : BaseController(),
                 languageView.spanishCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.spanish_language_title)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.es)
+            }
+            IsoCountry.ARABIC.value -> {
+                languageView.arabicCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.arabic_language_title)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ae)
+            }
+            IsoCountry.SPANISH.value -> {
+                languageView.iranianCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.farsi_language_title)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ir)
+            }
+            IsoCountry.SPANISH.value -> {
+                languageView.russianCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.russian_language_title)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ru)
             }
             else -> {
                 languageView.englishCheck.isChecked = true
