@@ -104,6 +104,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                 }
 
                 val checklist = it.fetchChecklist(checklistId)
+                markdowns.sortBy { it.title.capitalize() }
                 getView()?.showSegments(markdowns, checklist)
             }
         }
@@ -136,6 +137,7 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
                         markdowns.add(markdown)
                     }
                 }
+                markdowns.sortBy { it.title.capitalize() }
                 getView()?.showSegments(markdowns)
             }
         }

@@ -65,6 +65,36 @@
             android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
+        <RadioButton
+            android:id="@+id/arabicCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/arabic_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/iranianCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/farsi_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/russianCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/russian_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
     </RadioGroup>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -88,12 +118,39 @@
         app:srcCompat="@drawable/es" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/chineseView"
         android:layout_width="38dp"
         android:layout_height="28dp"
         android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
         app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2"
         app:srcCompat="@drawable/ta" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/arabicView"
+        android:layout_width="38dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/chineseView"
+        app:layout_constraintTop_toBottomOf="@+id/chineseView"
+        app:srcCompat="@drawable/ae" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iranianView"
+        android:layout_width="38dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/arabicView"
+        app:layout_constraintTop_toBottomOf="@+id/arabicView"
+        app:srcCompat="@drawable/ir" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="38dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toStartOf="@+id/iranianView"
+        app:layout_constraintTop_toBottomOf="@+id/iranianView"
+        app:srcCompat="@drawable/ru" />
 
     <include
         android:id="@+id/alertControlLayout"
