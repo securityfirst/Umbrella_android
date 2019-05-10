@@ -186,4 +186,7 @@
     <string name="disable_mask_app">面具應用已被禁用。</string>
     <string name="bookmark_title">书签</string>
     <string name="logout">登出</string>
+    <string name="arabic_language_title">阿拉伯</string>
+    <string name="farsi_language_title">波斯語</string>
+    <string name="russian_language_title">俄語</string>
 </resources>
