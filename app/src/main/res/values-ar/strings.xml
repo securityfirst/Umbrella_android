@@ -189,4 +189,7 @@
     <string name="bookmark_title">إشارة مرجعية</string>
     <string name="switch_language_alert_message">قد تستغرق العملية بضع دقائق</string>
     <string name="switch_repo_alert_text">يؤدي تحميل البيانات من مستودع جديد إلى إعادة تعيين كل التقدم الذي أحرزته. النسخ الاحتياطي قبل أن تفعل ذلك!</string>
+    <string name="arabic_language_title">عربى</string>
+    <string name="farsi_language_title">الفارسية</string>
+    <string name="russian_language_title">الروسية</string>
 </resources>

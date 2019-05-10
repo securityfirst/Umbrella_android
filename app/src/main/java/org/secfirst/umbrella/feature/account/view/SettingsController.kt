@@ -311,12 +311,12 @@ class SettingsController : BaseController(),
                 mainView.titleLanguage.text = context.getText(R.string.arabic_language_title)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ae)
             }
-            IsoCountry.SPANISH.value -> {
+            IsoCountry.FARSI.value -> {
                 languageView.iranianCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.farsi_language_title)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ir)
             }
-            IsoCountry.SPANISH.value -> {
+            IsoCountry.RUSSIAN.value -> {
                 languageView.russianCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.russian_language_title)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ru)
