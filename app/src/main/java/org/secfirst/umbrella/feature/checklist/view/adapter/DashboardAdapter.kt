@@ -19,7 +19,8 @@ import org.secfirst.umbrella.misc.appContext
 
 @SuppressLint("SetTextI18n")
 class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
-                       private val onDashboardItemClicked: (Checklist) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onDashboardItemClicked: (Checklist) -> Unit,
+                       private val onChecklistShareClick: (Checklist) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
@@ -54,7 +55,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
             holder.bind(dashboardItems[position].title)
         } else {
             holder as DashboardHolder
-            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) })
+            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },shareListener = {onChecklistShareClick(dashboardItems[position].checklist!!)})
         }
     }
 
@@ -66,7 +67,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
     class DashboardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit) {
+        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit, shareListener: (DashboardHolder) -> Unit) {
 
             with(dashboardItem) {
                 itemView.itemLabel.text = label
@@ -74,7 +75,9 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                 val isCustomChecklist = dashboardItem.checklist?.custom ?: false
                 setDifficultyColor(dashboardItem.levelLabel, isCustomChecklist)
                 if (adapterPosition > 1 || isCustomChecklist) {
+                    itemView.checklistShare.visibility = View.VISIBLE
                     itemView.setOnClickListener { clickListener(this@DashboardHolder) }
+                    itemView.checklistShare.setOnClickListener { shareListener(this@DashboardHolder) }
                 } else
                     itemView.levelColor
                             .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_total_done)

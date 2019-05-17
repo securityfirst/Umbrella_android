@@ -86,7 +86,7 @@ fun Checklist.covertToHTML(): String {
     var body = "<html><head><meta Content-Type: text/html; charset=\"UTF-8\"></head><body style=\"font-family: Roboto; font-size:16px; font-weight: normal;\" >"
     this.content.forEach { content ->
         if (content.check.isNotEmpty()) {
-            body += if (content.value) "✓" else "✗" + " ${content.check}"
+            body += if (content.value) "✓ ${content.check}" else "✗ ${content.check}"
         }
         body += "<br>"
     }
