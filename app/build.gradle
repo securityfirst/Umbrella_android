@@ -25,6 +25,8 @@ android {
     configurations {
         all {
             exclude module: 'httpclient'
+            all*.exclude group: 'com.google.firebase', module: 'firebase-core'
+            all*.exclude group: 'com.google.firebase', module: 'firebase-iid'
         }
     }
     packagingOptions {
