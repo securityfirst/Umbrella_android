@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'io.fabric'
 apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 
@@ -54,14 +53,12 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
-            ext.nableCrashlytics = false
             testCoverageEnabled true
             buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
             buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
         }
         beta {
             minifyEnabled false
-            ext.nableCrashlytics = true
             signingConfig signingConfigs.umbrella_beta
         }
         release {
@@ -87,7 +84,6 @@ dependencies {
     implementation "com.android.support:multidex:$multidex_version"
     implementation "io.github.inflationx:calligraphy3:$calligraphy3"
     implementation "io.github.inflationx:viewpump:$viewpump"
-    implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_sdk"
     implementation "org.apache.commons:commons-text:1.6"
     implementation "org.apache.commons:commons-lang3:3.4"
 

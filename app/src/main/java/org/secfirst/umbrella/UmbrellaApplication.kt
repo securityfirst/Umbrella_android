@@ -4,15 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.core.CrashlyticsCore
 import com.raizlabs.android.dbflow.config.DatabaseConfig
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowLog
 import com.raizlabs.android.dbflow.config.FlowManager
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
-import io.fabric.sdk.android.Fabric
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
@@ -54,7 +51,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         if (!isLogged) initDatabase()
         initDaggerComponent()
         initFonts()
-        initFabric()
         initDefaultLocation()
     }
 
@@ -88,17 +84,6 @@ class UmbrellaApplication : Application(), HasActivityInjector {
                                 .setFontAttrId(R.attr.fontPath)
                                 .build()))
                 .build())
-    }
-
-    private fun initFabric() {
-        val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(true).build())
-                .build()
-        val fabric = Fabric.Builder(this)
-                .kits(crashlyticsKit)
-                .debuggable(true)
-                .build()
-        Fabric.with(fabric)
     }
 
     override fun onTerminate() {
