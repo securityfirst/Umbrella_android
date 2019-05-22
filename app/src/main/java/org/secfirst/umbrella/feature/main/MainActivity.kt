@@ -85,7 +85,8 @@ class MainActivity : AppCompatActivity() {
             searchEditText.setTextColor(resources.getColor(R.color.white))
             searchEditText.setHintTextColor(resources.getColor(R.color.white))
             // Assumes current activity is the searchable activity
-            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            if (searchManager.getSearchableInfo(componentName) != null)
+                setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
             isSubmitButtonEnabled = true
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
