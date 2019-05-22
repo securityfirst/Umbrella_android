@@ -44,16 +44,23 @@ interface TentDao {
 
     suspend fun rebaseBranch(): List<Pair<String, File>> {
         val files = mutableListOf<Pair<String, File>>()
-        val git = Git.open(File("${getPathRepository()}/.git"))
+        val git : Git? = try {
+            Git.open(File("${getPathRepository()}/.git"))
+        } catch (e: Exception) {
+            null
+        }
         withContext(ioContext) {
-            git.checkout().setName("master").call()
-            val branches = git.branchList().setListMode(ListBranchCommand.ListMode.ALL).call()
-            branches.forEach { branch ->
-                if (BRANCH_NAME == branch.name) {
-                    git.pull().setRemoteBranchName("master").setRebase(true).call()
-                    files.addAll(getUpdateFiles(git))
+            try {
+                git?.checkout()?.setName("master")?.call()
+                val branches = git?.branchList()?.setListMode(ListBranchCommand.ListMode.ALL)?.call()
+                branches?.forEach { branch ->
+                    if (BRANCH_NAME == branch.name) {
+                        git.pull().setRemoteBranchName("master").setRebase(true).call()
+                        files.addAll(getUpdateFiles(git))
+                    }
                 }
-
+            } catch (e: Exception) {
+                Log.i(TentDao::class.java.name, "Error rebasing branch")
             }
         }
         return files
@@ -85,7 +92,7 @@ interface TentDao {
         return files
     }
 
-    fun filterElements(path : String): List<File> {
+    fun filterElements(path: String): List<File> {
         return File(path)
                 .walk()
                 .filter { !it.path.contains(".git") }
@@ -98,7 +105,7 @@ interface TentDao {
 
     }
 
-    fun filterForms(path : String): List<File> {
+    fun filterForms(path: String): List<File> {
         return File(path)
                 .walk()
                 .filter { !it.path.contains(".git") }
@@ -109,7 +116,7 @@ interface TentDao {
                 .toList()
     }
 
-    suspend fun filterCategories(path : String): List<File> {
+    suspend fun filterCategories(path: String): List<File> {
         return File(path)
                 .walkBottomUp()
                 .filter { !it.path.contains(".git") }

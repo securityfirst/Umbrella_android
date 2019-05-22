@@ -189,4 +189,7 @@
     <string name="bookmark_title">Закладки</string>
     <string name="switch_language_alert_message">Процесс может занять несколько минут</string>
     <string name="switch_repo_alert_text">Загрузка данных из нового репозитория сбросит весь достигнутый вами прогресс. Сделайте резервную копию, прежде чем сделать это!</string>
+    <string name="arabic_language_title">арабский</string>
+    <string name="farsi_language_title">фарси</string>
+    <string name="russian_language_title">русский</string>
 </resources>

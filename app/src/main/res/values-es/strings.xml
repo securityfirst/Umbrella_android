@@ -160,7 +160,7 @@
     <string name="switch_server_title_message">Cambiar servidor</string>
     <string name="english_language_title">Inglés</string>
     <string name="spanish_language_title">Español</string>
-    <string name="chinese_language_title">chino</string>
+    <string name="chinese_language_title">Chino</string>
     <string name="login_enter_pw">Introducir la contraseña</string>
     <string name="default_refresh_feed">30 min</string>
     <string name="account_disable_mask">Desactivar máscara</string>
@@ -186,4 +186,7 @@
     <string name="disable_mask_app">La aplicación de máscara ha sido desactivada.</string>
     <string name="bookmark_title">Favoritos</string>
     <string name="logout">Cerrar sesión</string>
+    <string name="arabic_language_title">Arábica</string>
+    <string name="farsi_language_title">Farsi</string>
+    <string name="russian_language_title">Ruso</string>
 </resources>

@@ -189,4 +189,7 @@
     <string name="bookmark_title">نشانه گذاری شده</string>
     <string name="switch_language_alert_message">این فرایند می تواند چند دقیقه طول بکشد</string>
     <string name="switch_repo_alert_text">بارگیری داده ها از یک مخزن جدید تمام پیشرفت هایی را که ایجاد کرده اید تنظیم مجدد می کند. قبل از انجام این کار از قبل پشتیبان بگیرید</string>
+    <string name="arabic_language_title">عربی</string>
+    <string name="farsi_language_title">فارسی</string>
+    <string name="russian_language_title">روسی</string>
 </resources>
