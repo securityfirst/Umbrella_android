@@ -159,7 +159,8 @@ class TourController : BaseController(), ContentView {
             val snackView = snackBar.view
             snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
-        progressDialog.dismiss()
+        if (progressDialog.isShowing && !mainActivity.isFinishing)
+            progressDialog.dismiss()
     }
 
     private fun initProgress() {
