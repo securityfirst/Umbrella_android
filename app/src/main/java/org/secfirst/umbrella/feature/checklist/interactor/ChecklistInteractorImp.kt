@@ -34,4 +34,8 @@ class ChecklistInteractorImp @Inject constructor(private val checklistRepo: Chec
     override suspend fun persistChecklist(checklist: Checklist) = checklistRepo.insertChecklist(checklist)
 
     override suspend fun persistChecklistContent(checklistContent: Content) = checklistRepo.insertChecklistContent(checklistContent)
+
+    override suspend fun fetchPathways(): List<Checklist> = checklistRepo.loadAllPathways()
+
+    override suspend fun fetchFavoritePathways(): List<Checklist> = checklistRepo.loadFavoritePathways()
 }

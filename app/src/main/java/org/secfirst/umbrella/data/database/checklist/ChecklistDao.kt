@@ -58,6 +58,7 @@ interface ChecklistDao {
         SQLite.select()
                 .from(Checklist::class.java)
                 .where(Checklist_Table.favorite.`is`(true))
+                .and(Checklist_Table.pathways.`is`(false))
                 .queryList()
     }
 
@@ -70,6 +71,21 @@ interface ChecklistDao {
     suspend fun getAllChecklist(): List<Checklist> = withContext(ioContext) {
         SQLite.select()
                 .from(Checklist::class.java)
+                .queryList()
+    }
+
+    suspend fun getAllPathways(): List<Checklist> = withContext(ioContext) {
+        SQLite.select()
+                .from(Checklist::class.java)
+                .where(Checklist_Table.pathways.`is`(true))
+                .queryList()
+    }
+
+    suspend fun getFavoritePathways() : List<Checklist> = withContext(ioContext){
+        SQLite.select()
+                .from(Checklist::class.java)
+                .where(Checklist_Table.pathways.`is`(true))
+                .and(Checklist_Table.favorite.`is`(true))
                 .queryList()
     }
 

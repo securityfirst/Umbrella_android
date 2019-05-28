@@ -10,7 +10,7 @@ import java.io.File
 
 
 private val repoPath = UmbrellaApplication.instance.cacheDir.path + "/repo/"
-const val BRANCH_NAME: String = "refs/heads/master"
+const val BRANCH_NAME: String = "refs/heads/pathways"
 const val baseUrlRepository = "https://github.com/securityfirst/umbrella-content"
 const val ELEMENT_LEVEL = 2
 const val SUB_ELEMENT_LEVEL = 3

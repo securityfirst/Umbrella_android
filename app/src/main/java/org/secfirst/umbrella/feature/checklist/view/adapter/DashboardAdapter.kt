@@ -20,7 +20,8 @@ import org.secfirst.umbrella.misc.appContext
 @SuppressLint("SetTextI18n")
 class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                        private val onDashboardItemClicked: (Checklist) -> Unit,
-                       private val onChecklistShareClick: (Checklist) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onChecklistShareClick: (Checklist) -> Unit,
+                       private val onStarClick: (Checklist, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
     private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
@@ -55,7 +56,9 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
             holder.bind(dashboardItems[position].title)
         } else {
             holder as DashboardHolder
-            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },shareListener = {onChecklistShareClick(dashboardItems[position].checklist!!)})
+            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },
+                    shareListener = { onChecklistShareClick(dashboardItems[position].checklist!!) },
+                    starListener = { onStarClick(dashboardItems[position].checklist!!, position) })
         }
     }
 
@@ -67,11 +70,17 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
     class DashboardHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit, shareListener: (DashboardHolder) -> Unit) {
+        fun bind(dashboardItem: Dashboard.Item, clickListener: (DashboardHolder) -> Unit, shareListener: (DashboardHolder) -> Unit, starListener: (DashboardHolder) -> Unit) {
 
             with(dashboardItem) {
                 itemView.itemLabel.text = label
-                itemView.itemPercentage.text = "$progress%"
+                val pathways = dashboardItem.checklist?.pathways ?: false
+                if (pathways) {
+                    itemView.itemPercentage.visibility = View.INVISIBLE
+                    itemView.starPathways.visibility = View.VISIBLE
+                    itemView.starPathways.setOnClickListener{starListener(this@DashboardHolder)}
+                } else
+                    itemView.itemPercentage.text = "$progress%"
                 val isCustomChecklist = dashboardItem.checklist?.custom ?: false
                 setDifficultyColor(dashboardItem.levelLabel, isCustomChecklist)
                 if (adapterPosition > 1 || isCustomChecklist) {

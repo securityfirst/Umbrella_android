@@ -27,4 +27,6 @@ interface ChecklistBasePresenter<V : ChecklistView, I : ChecklistBaseInteractor>
     fun submitDeleteChecklist(checklist: Checklist)
 
     fun submitChecklist(checklistId: String)
+
+    fun submitLoadPathways()
 }

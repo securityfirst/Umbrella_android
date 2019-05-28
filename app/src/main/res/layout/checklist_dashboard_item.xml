@@ -55,17 +55,38 @@
                 android:layout_height="40dp"
                 android:layout_gravity="end|center"
                 android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
                 android:visibility="invisible"
                 card_view:layout_constraintBottom_toBottomOf="parent"
-                card_view:layout_constraintRight_toLeftOf="@id/itemPercentage">
+                card_view:layout_constraintRight_toRightOf="@id/itemPercentage">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_share_segment" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/starPathways"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:visibility="gone"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_share_segment" />
             </LinearLayout>

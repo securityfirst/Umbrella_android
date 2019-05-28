@@ -26,7 +26,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
     private var fileCount = 0
     private var listSize = 0
 
-    suspend fun serializeContent(path : String):ContentData {
+    suspend fun serializeContent(path: String): ContentData {
         withContext(ioContext) {
             val files = tentRepo.loadElementsFile(path)
             val formFiles = tentRepo.loadFormFile(path)
@@ -64,6 +64,7 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
             val newChecklist = parseYmlFile(it, Checklist::class)
             newChecklist.id = it.path.substringAfterLast(getPathRepository())
             newChecklist.module = module
+            newChecklist.pathways = true
             newChecklist.content.forEach { content ->
                 content.checklist = newChecklist
             }
