@@ -87,7 +87,6 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
 
             itemView.checkItem.isChecked = currentContent.value
             itemView.itemTitle.text = Html.fromHtml(currentContent.check.convertToMarkdown()).trim()
-            println(currentContent.check.convertToMarkdown())
             itemView.itemTitle.movementMethod = LinkMovementMethod.getInstance()
 
             itemView.checkItem.setOnClickListener {
