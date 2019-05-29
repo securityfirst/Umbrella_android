@@ -76,7 +76,8 @@ class Dashboard(var items: List<Item> = listOf()) {
                     var label: String = "",
                     var levelLabel: Int = 0,
                     var checklist: Checklist? = null,
-                    var difficulty: Difficulty? = null) {
+                    var difficulty: Difficulty? = null,
+                    var footer : Boolean = false) {
 
         constructor(progress: Int, label: String,
                     checklist: Checklist?,

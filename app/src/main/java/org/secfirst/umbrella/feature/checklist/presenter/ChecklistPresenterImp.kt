@@ -106,13 +106,15 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val favoriteList = dashboardMount(favoriteChecklist, "Favorites")
                 val inProgressList = dashboardMount(checklistInProgress, "My Checklists")
                 val favoritePathwaysList = dashboardMount(favoritePathways, "Top Tips")
+                val footer = Dashboard.Item(title = "See all", footer = true)
 
 
                 if (checklistInProgress.isNotEmpty() || favoriteChecklist.isNotEmpty() || favoritePathways.isNotEmpty()) {
                     allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
+                    allDashboard.addAll(favoritePathwaysList)
+                    allDashboard.add(footer)
                     allDashboard.addAll(favoriteList)
                     allDashboard.addAll(inProgressList)
-                    allDashboard.addAll(favoritePathwaysList)
                 }
 
                 getView()?.showDashboard(allDashboard)

@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/ic_share_segment" />
             </LinearLayout>
 
@@ -87,8 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
-                    android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_share_segment" />
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/ic_star_selected" />
             </LinearLayout>
 
 

@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.checklist_dashboard.view.*
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.main_view.*
 import kotlinx.android.synthetic.main.pathways.*
-import kotlinx.android.synthetic.main.pathways_item.*
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import org.apache.commons.io.FilenameUtils
 import org.jetbrains.anko.sdk27.coroutines.onClick
@@ -47,7 +46,6 @@ import org.secfirst.umbrella.feature.segment.view.controller.HostSegmentControll
 import org.secfirst.umbrella.misc.createDocument
 import org.secfirst.umbrella.misc.initRecyclerView
 import java.io.File
-import java.text.FieldPosition
 import javax.inject.Inject
 
 class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistView {
@@ -60,6 +58,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private val pathwaysItemClick: (Checklist) -> Unit = this::onPathwaysItemClicked
     private val starPathwaysClick: (Checklist, Int) -> Unit = this::onPathwaysStarClick
     private val starClick: (Checklist, Int) -> Unit = this::onStarClick
+    private val footerClick: () -> Unit = this::onFooterClick
     private val isCustomBoard by lazy { args.getBoolean(EXTRA_IS_CUSTOM_BOARD) }
     private lateinit var adapter: DashboardAdapter
     private lateinit var pathwaysAdapter: PathwaysAdapter
@@ -213,7 +212,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         } else {
             customChecklistContainer?.visibility = View.VISIBLE
             emptyDashboardView?.visibility = View.GONE
-            adapter = DashboardAdapter(dashboards, dashboardItemClick, shareChecklistClick, starClick)
+            adapter = DashboardAdapter(dashboards, dashboardItemClick, shareChecklistClick, starClick, footerClick)
             checklistDashboardRecyclerView?.initRecyclerView(adapter)
         }
     }
@@ -228,7 +227,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
             pathwaysRv.layoutManager = linearLayoutManager
             pathwaysRv.setHasFixedSize(true)
             pathwaysRv.adapter = pathwaysAdapter
-            setSkipPathways()
+            setSkipPathways(true)
             pathwaysDialog.show_me_button.onClick { dismissPathways() }
             pathwaysDialog.no_thanks_button.onClick { dismissPathways() }
         }
@@ -256,6 +255,11 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private fun onStarClick(checklist: Checklist, position: Int) {
         resetChecklist(checklist)
         adapter.removeAt(position)
+    }
+
+    private fun onFooterClick() {
+        setSkipPathways(false)
+        presenter.submitLoadPathways()
     }
 
     private fun onChecklistShareClick(checklist: Checklist) {
@@ -305,9 +309,9 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
         shareDialog.show()
     }
 
-    private fun setSkipPathways() {
+    private fun setSkipPathways(skip: Boolean) {
         val shared = mainActivity.getSharedPreferences(SKIP_PATHWAYS, Context.MODE_PRIVATE)
-        shared.edit().putBoolean(SKIP_PATHWAYS, true).apply()
+        shared.edit().putBoolean(SKIP_PATHWAYS, skip).apply()
     }
 
     private fun getSkipPathways(): Boolean {

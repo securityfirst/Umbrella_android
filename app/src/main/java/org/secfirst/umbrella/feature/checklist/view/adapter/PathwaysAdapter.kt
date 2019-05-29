@@ -44,9 +44,9 @@ class PathwaysAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
         fun bind(dashboardItem: Dashboard.Item, clickListener: (PathwaysHolder) -> Unit, starListener: (PathwaysHolder) -> Unit) {
             with(dashboardItem) {
                 if (dashboardItem.checklist!!.favorite)
-                    itemView.star.setImageResource(R.drawable.ic_share)
+                    itemView.star.setImageResource(R.drawable.ic_star_selected)
                 else
-                    itemView.star.setImageResource(R.drawable.ic_alarm)
+                    itemView.star.setImageResource(R.drawable.ic_star_border)
                 itemView.pathwaysLabel.text = label
                 itemView.setOnClickListener { clickListener(this@PathwaysHolder) }
                 itemView.pathwaysStar.setOnClickListener { starListener(this@PathwaysHolder) }

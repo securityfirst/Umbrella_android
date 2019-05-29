@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.checklist_dashboard_footer.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_header.view.*
 import kotlinx.android.synthetic.main.checklist_dashboard_item.view.*
 import org.jetbrains.anko.backgroundDrawable
@@ -13,6 +14,7 @@ import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.checklist.Checklist
 import org.secfirst.umbrella.data.database.checklist.Dashboard
 import org.secfirst.umbrella.data.database.difficulty.Difficulty
+import org.secfirst.umbrella.misc.ITEM_VIEW_TYPE_FOOTER
 import org.secfirst.umbrella.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.misc.ITEM_VIEW_TYPE_ITEM
 import org.secfirst.umbrella.misc.appContext
@@ -21,10 +23,13 @@ import org.secfirst.umbrella.misc.appContext
 class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                        private val onDashboardItemClicked: (Checklist) -> Unit,
                        private val onChecklistShareClick: (Checklist) -> Unit,
-                       private val onStarClick: (Checklist, Int) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                       private val onStarClick: (Checklist, Int) -> Unit,
+                       private val onFooterClick: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
-    private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank()
+    private fun isHeader(position: Int) = dashboardItems[position].title.isNotBlank() && !dashboardItems[position].footer
+
+    private fun isFooter(position: Int) = dashboardItems[position].title.isNotBlank() && dashboardItems[position].footer
 
     override fun getItemCount() = dashboardItems.size
 
@@ -36,7 +41,13 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
 
     fun getChecklist(position: Int) = dashboardItems[position].checklist
 
-    override fun getItemViewType(position: Int) = if (isHeader(position)) ITEM_VIEW_TYPE_HEADER else ITEM_VIEW_TYPE_ITEM
+    override fun getItemViewType(position: Int): Int {
+        when (true) {
+            isHeader(position) -> return ITEM_VIEW_TYPE_HEADER
+            isFooter(position) -> return ITEM_VIEW_TYPE_FOOTER
+            else -> return ITEM_VIEW_TYPE_ITEM
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -47,24 +58,44 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                     .inflate(R.layout.checklist_dashboard_header, parent, false)
             return DashboardHeaderViewHolder(headerView)
         }
+        if (viewType == ITEM_VIEW_TYPE_FOOTER) {
+            val footerView = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.checklist_dashboard_footer, parent, false)
+            return DashboardFooterViewHolder(footerView)
+        }
         return DashboardHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (isHeader(position)) {
-            holder as DashboardHeaderViewHolder
-            holder.bind(dashboardItems[position].title)
-        } else {
-            holder as DashboardHolder
-            holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },
-                    shareListener = { onChecklistShareClick(dashboardItems[position].checklist!!) },
-                    starListener = { onStarClick(dashboardItems[position].checklist!!, position) })
+
+        when (true) {
+            isHeader(position) -> {
+                holder as DashboardHeaderViewHolder
+                holder.bind(dashboardItems[position].title)
+            }
+            isFooter(position) -> {
+                holder as DashboardFooterViewHolder
+                holder.bind(dashboardItems[position].title, footerListener = { onFooterClick() })
+            }
+            else -> {
+                holder as DashboardHolder
+                holder.bind(dashboardItems[position], clickListener = { onDashboardItemClicked(dashboardItems[position].checklist!!) },
+                        shareListener = { onChecklistShareClick(dashboardItems[position].checklist!!) },
+                        starListener = { onStarClick(dashboardItems[position].checklist!!, position) })
+            }
         }
     }
 
     class DashboardHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(title: String) {
             itemView.headChecklistDashboard.text = title
+        }
+    }
+
+    class DashboardFooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(title: String, footerListener: (DashboardFooterViewHolder) -> Unit) {
+            itemView.footerChecklistDashboard.text = title
+            itemView.setOnClickListener { footerListener(this@DashboardFooterViewHolder) }
         }
     }
 
@@ -78,7 +109,7 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                 if (pathways) {
                     itemView.itemPercentage.visibility = View.INVISIBLE
                     itemView.starPathways.visibility = View.VISIBLE
-                    itemView.starPathways.setOnClickListener{starListener(this@DashboardHolder)}
+                    itemView.starPathways.setOnClickListener { starListener(this@DashboardHolder) }
                 } else
                     itemView.itemPercentage.text = "$progress%"
                 val isCustomChecklist = dashboardItem.checklist?.custom ?: false
