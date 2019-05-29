@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.data.database.checklist
 
 import android.os.Parcelable
+import com.commonsware.cwac.anddown.AndDown
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.raizlabs.android.dbflow.annotation.*
 import com.raizlabs.android.dbflow.sql.language.SQLite
@@ -27,6 +28,8 @@ data class Checklist(
         var favorite: Boolean = false,
         @Column
         var progress: Int = 0,
+        @Column
+        var pathways: Boolean = false,
         @ForeignKey(stubbedRelationship = true)
         var module: Module? = null,
 
@@ -73,7 +76,8 @@ class Dashboard(var items: List<Item> = listOf()) {
                     var label: String = "",
                     var levelLabel: Int = 0,
                     var checklist: Checklist? = null,
-                    var difficulty: Difficulty? = null) {
+                    var difficulty: Difficulty? = null,
+                    var footer : Boolean = false) {
 
         constructor(progress: Int, label: String,
                     checklist: Checklist?,
@@ -92,6 +96,11 @@ fun Checklist.covertToHTML(): String {
     }
     return body
 }
+
+fun String.convertToMarkdown(): String {
+    val andDown = AndDown()
+    return andDown.markdownToHtml(this, AndDown.HOEDOWN_EXT_QUOTE, 0)
+    }
 
 interface ContentMonitor {
     fun onContentProgress(percentage: Int)

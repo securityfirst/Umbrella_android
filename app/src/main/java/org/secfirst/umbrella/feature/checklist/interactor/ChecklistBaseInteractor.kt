@@ -36,4 +36,8 @@ interface ChecklistBaseInteractor : BaseInteractor {
     suspend fun fetchChecklist(checklistId: String): Checklist?
 
     suspend fun fetchModule(moduleName: String): Module?
+
+    suspend fun fetchPathways(): List<Checklist>
+
+    suspend fun fetchFavoritePathways(): List<Checklist>
 }

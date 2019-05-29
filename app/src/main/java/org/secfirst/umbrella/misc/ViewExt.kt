@@ -50,6 +50,7 @@ class HeaderViewHolder(headerView: View) : RecyclerView.ViewHolder(headerView) {
 
 const val ITEM_VIEW_TYPE_HEADER = 0
 const val ITEM_VIEW_TYPE_ITEM = 1
+const val ITEM_VIEW_TYPE_FOOTER = 2
 
 fun Spinner.init(array: Int) {
     ArrayAdapter.createFromResource(

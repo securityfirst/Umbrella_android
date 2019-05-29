@@ -193,4 +193,9 @@
     <string name="arabic_language_title">Arabic</string>
     <string name="farsi_language_title">Farsi</string>
     <string name="russian_language_title">Russian</string>
+    <string name="show_me_button">Show me</string>
+    <string name="no_thanks_button">No thanks, i\'ll explore on my own</string>
+    <string name="pathways_text">Select a guide to start your security journey or \nbookmark any guide for later</string>
+    <string name="pathways_title">What do you need most?</string>
+    <string name="see_all">See all</string>
 </resources>

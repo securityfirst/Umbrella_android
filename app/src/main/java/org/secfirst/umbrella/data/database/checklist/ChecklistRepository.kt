@@ -31,4 +31,8 @@ class ChecklistRepository @Inject constructor(private val checklistDao: Checklis
     override suspend fun insertChecklist(checklist: Checklist) = checklistDao.save(checklist)
 
     override suspend fun insertChecklistContent(checklistContent: Content) = checklistDao.save(checklistContent)
+
+    override suspend fun loadAllPathways(): List<Checklist> = checklistDao.getAllPathways()
+
+    override suspend fun loadFavoritePathways(): List<Checklist> = checklistDao.getFavoritePathways()
 }

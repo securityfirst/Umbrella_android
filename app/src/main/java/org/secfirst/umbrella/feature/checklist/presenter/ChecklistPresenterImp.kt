@@ -31,7 +31,6 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                                 getView()?.getChecklist(difficulty.checklist.last())
                         }
                 }
-                println()
             }
         }
     }
@@ -103,10 +102,16 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                 val allDashboard = mutableListOf<Dashboard.Item>()
                 val checklistInProgress = it.fetchAllChecklistInProgress()
                 val favoriteChecklist = it.fetchAllChecklistFavorite()
+                val favoritePathways = it.fetchFavoritePathways()
                 val favoriteList = dashboardMount(favoriteChecklist, "Favorites")
                 val inProgressList = dashboardMount(checklistInProgress, "My Checklists")
+                val favoritePathwaysList = dashboardMount(favoritePathways, "Top Tips")
+                val footer = Dashboard.Item(title = "See all", footer = true)
 
-                if (checklistInProgress.isNotEmpty() || favoriteChecklist.isNotEmpty()) {
+
+                if (checklistInProgress.isNotEmpty() || favoriteChecklist.isNotEmpty() || favoritePathways.isNotEmpty()) {
+                    allDashboard.addAll(favoritePathwaysList)
+                    allDashboard.add(footer)
                     allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
                     allDashboard.addAll(favoriteList)
                     allDashboard.addAll(inProgressList)
@@ -144,7 +149,21 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                             loadDifficulty,
                             loadDifficulty.index)
                     dashboards.add(dashboardItem)
+                } else if (checklist.pathways && checklist.favorite) {
+                    val dashboardItem = Dashboard.Item(checklist.progress, checklist.title, checklist, null, 0)
+                    dashboards.add(dashboardItem)
                 }
+            }
+        }
+        return dashboards
+    }
+
+    private fun pathwaysMount(itemList: List<Checklist>): List<Dashboard.Item> {
+        val dashboards = mutableListOf<Dashboard.Item>()
+        interactor?.let {
+            itemList.forEach {
+                val dashboardItem = Dashboard.Item(it.progress, it.title, it, null, 0)
+                dashboards.add(dashboardItem)
             }
         }
         return dashboards
@@ -169,6 +188,18 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
     override fun submitUpdateChecklist(checklist: Checklist) {
         launchSilent(uiContext) {
             interactor?.persistChecklist(checklist)
+        }
+    }
+
+    override fun submitLoadPathways() {
+        launchSilent(uiContext) {
+            interactor?.let {
+                val pathways = it.fetchPathways()
+                val pathwaysDashboard = mutableListOf<Dashboard.Item>()
+                val pathwaysList = pathwaysMount(pathways)
+                pathwaysDashboard.addAll(pathwaysList)
+                getView()?.showPathways(pathwaysDashboard)
+            }
         }
     }
 }

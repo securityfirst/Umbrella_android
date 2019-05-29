@@ -66,7 +66,7 @@ class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject const
             interactor?.let {
                 val markdownsFavorite = it.fetchAllFavorites()
                 val modules = it.fetchModules()
-                        .filter { lesson -> lesson.title != "" }
+                        .filter { lesson -> lesson.title != "" && lesson.index > 0 }
                         .toList()
                 if (modules.isNotEmpty())
                     modules[0].markdowns = markdownsFavorite.toMutableList()

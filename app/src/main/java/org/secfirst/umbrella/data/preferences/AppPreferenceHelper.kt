@@ -20,6 +20,7 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
         const val EXTRA_LOGGED_IN = "is_logged_in"
         const val EXTRA_LANGUAGE = "language"
         const val EXTRA_SHOW_MOCK_VIEW = "extra_show_mock_view"
+        const val SKIP_PATHWAYS = "skip_pathways"
     }
 
     override fun setMockView(result: Boolean) = prefs.edit().putBoolean(EXTRA_SHOW_MOCK_VIEW, result).commit()
@@ -55,6 +56,10 @@ class AppPreferenceHelper @Inject constructor(context: Context, @PreferenceInfo 
     override fun setRefreshInterval(position: Int) = prefs.edit().putInt(EXTRA_REFRESH_INTERVAL, position).commit()
 
     override fun getRefreshInterval() = prefs.getInt(EXTRA_REFRESH_INTERVAL, 30)
+
+    override fun setSkipPathways(skip: Boolean) = prefs.edit().putBoolean(SKIP_PATHWAYS, skip).commit()
+
+    override fun getSkipPathways() = prefs.getBoolean(SKIP_PATHWAYS, false)
 
 }
 
@@ -93,4 +98,8 @@ interface PreferenceHelper {
     fun isPasswordBanner(): Boolean
 
     fun enablePasswordBanner(enableBanner: Boolean): Boolean
+
+    fun setSkipPathways(skip: Boolean): Boolean
+
+    fun getSkipPathways(): Boolean
 }

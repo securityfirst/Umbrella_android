@@ -9,4 +9,6 @@ interface ChecklistView : BaseView {
     fun showDashboard(dashboards: MutableList<Dashboard.Item>) {}
 
     fun getChecklist(checklist: Checklist) {}
+
+    fun showPathways(dashboards: MutableList<Dashboard.Item>) {}
 }

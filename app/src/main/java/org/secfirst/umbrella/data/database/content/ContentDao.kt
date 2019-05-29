@@ -34,6 +34,8 @@ interface ContentDao : BaseDao, ContentMonitor {
             modules.forEach { module ->
                 module.markdowns = module.markdowns.sortByIndex()
                 modelAdapter<Markdown>().saveAll(module.markdowns)
+                modelAdapter<Checklist>().saveAll(module.checklist)
+                insertChecklistContent(module.checklist)
                 module.subjects.forEach { subject ->
                     subject.markdowns = subject.markdowns.sortByIndex()
                     modelAdapter<Subject>().save(subject)

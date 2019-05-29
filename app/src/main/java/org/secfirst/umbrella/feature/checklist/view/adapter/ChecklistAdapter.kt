@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.feature.checklist.view.adapter
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +10,7 @@ import kotlinx.android.synthetic.main.checklist_item.view.*
 import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.checklist.Content
+import org.secfirst.umbrella.data.database.checklist.convertToMarkdown
 import org.secfirst.umbrella.misc.ITEM_VIEW_TYPE_HEADER
 import org.secfirst.umbrella.misc.ITEM_VIEW_TYPE_ITEM
 
@@ -83,7 +86,8 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                  onLongClick: (ChecklistHolder) -> Unit) {
 
             itemView.checkItem.isChecked = currentContent.value
-            itemView.itemTitle.text = currentContent.check
+            itemView.itemTitle.text = Html.fromHtml(currentContent.check.convertToMarkdown()).trim()
+            itemView.itemTitle.movementMethod = LinkMovementMethod.getInstance()
 
             itemView.checkItem.setOnClickListener {
                 currentContent.value = itemView.checkItem.isChecked

@@ -33,4 +33,8 @@ interface ChecklistRepo {
     suspend fun loadChecklist(checklistId: String): Checklist?
 
     suspend fun loadModule(moduleName: String): Module?
+
+    suspend fun loadAllPathways(): List<Checklist>
+
+    suspend fun loadFavoritePathways() : List<Checklist>
 }

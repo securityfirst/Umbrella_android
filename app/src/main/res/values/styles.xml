@@ -69,4 +69,15 @@
         <item name="colorAccent">@color/umbrella_green</item>
         <item name="android:textColorSecondary">@color/dark_grey</item>
     </style>
+
+    <style name="DialogTheme" parent="android:Theme.Dialog">
+
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <!-- No backgrounds, titles or window float -->
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 </resources>
