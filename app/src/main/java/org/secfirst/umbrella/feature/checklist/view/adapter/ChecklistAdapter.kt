@@ -86,7 +86,8 @@ class ChecklistAdapter(private val checklistContent: MutableList<Content>,
                  onLongClick: (ChecklistHolder) -> Unit) {
 
             itemView.checkItem.isChecked = currentContent.value
-            itemView.itemTitle.text = Html.fromHtml(currentContent.check.convertToMarkdown())
+            itemView.itemTitle.text = Html.fromHtml(currentContent.check.convertToMarkdown()).trim()
+            println(currentContent.check.convertToMarkdown())
             itemView.itemTitle.movementMethod = LinkMovementMethod.getInstance()
 
             itemView.checkItem.setOnClickListener {
