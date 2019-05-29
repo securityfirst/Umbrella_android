@@ -141,7 +141,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 val position = viewHolder.adapterPosition
                 val checklist = adapter.getChecklist(position)
                 resetChecklist(checklist!!)
-                adapter.removeAt(position)
+                presenter.submitLoadDashboard()
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeHandler)
@@ -239,7 +239,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     }
 
     private fun onPathwaysStarClick(checklist: Checklist, position: Int) {
-        when (checklist.favorite) {
+        when (checklist.favorite && checklist.pathways) {
             true -> {
                 checklist.favorite = false
                 pathwaysAdapter.notifyItemChanged(position)
@@ -254,7 +254,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun onStarClick(checklist: Checklist, position: Int) {
         resetChecklist(checklist)
-        adapter.removeAt(position)
+        presenter.submitLoadDashboard()
     }
 
     private fun onFooterClick() {

@@ -114,13 +114,15 @@ class DashboardAdapter(private val dashboardItems: MutableList<Dashboard.Item>,
                     itemView.itemPercentage.text = "$progress%"
                 val isCustomChecklist = dashboardItem.checklist?.custom ?: false
                 setDifficultyColor(dashboardItem.levelLabel, isCustomChecklist)
-                if (adapterPosition > 1 || isCustomChecklist) {
+                if (this.label.contains("Total Done"))
+                    itemView.levelColor
+                            .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_total_done)
+                else {
                     itemView.checklistShare.visibility = View.VISIBLE
                     itemView.setOnClickListener { clickListener(this@DashboardHolder) }
                     itemView.checklistShare.setOnClickListener { shareListener(this@DashboardHolder) }
-                } else
-                    itemView.levelColor
-                            .backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_total_done)
+
+                }
             }
         }
 
