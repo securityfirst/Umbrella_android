@@ -148,8 +148,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
                             loadDifficulty.index)
                     dashboards.add(dashboardItem)
                 } else if (checklist.pathways && checklist.favorite) {
-                    val label = checklist.id.substringAfterLast("/").replace("c_", "").replace("-", " ").replace("_", "").replace(".yml", "").capitalize()
-                    val dashboardItem = Dashboard.Item(checklist.progress, label.split(' ').joinToString(" ") { it.capitalize() }, checklist, null, 0)
+                    val dashboardItem = Dashboard.Item(checklist.progress, checklist.title, checklist, null, 0)
                     dashboards.add(dashboardItem)
                 }
             }
@@ -161,8 +160,7 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         val dashboards = mutableListOf<Dashboard.Item>()
         interactor?.let {
             itemList.forEach {
-                val label = it.id.substringAfterLast("/").replace("c_", "").replace("-", " ").replace("_", "").replace(".yml", "").capitalize()
-                val dashboardItem = Dashboard.Item(it.progress, label.split(' ').joinToString(" ") { it.capitalize() }, it, null, 0)
+                val dashboardItem = Dashboard.Item(it.progress, it.title, it, null, 0)
                 dashboards.add(dashboardItem)
             }
         }
