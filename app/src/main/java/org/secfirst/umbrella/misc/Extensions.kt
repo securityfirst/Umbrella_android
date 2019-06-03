@@ -17,13 +17,10 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.itextpdf.text.Document
 import com.itextpdf.text.pdf.PdfWriter
-import com.itextpdf.tool.xml.XMLWorker
+import com.itextpdf.tool.xml.XMLWorkerFontProvider
 import com.itextpdf.tool.xml.XMLWorkerHelper
+import com.itextpdf.tool.xml.html.CssAppliersImpl
 import com.itextpdf.tool.xml.html.Tags
-import com.itextpdf.tool.xml.parser.XMLParser
-import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline
-import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline
-import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext
 import com.jakewharton.processphoenix.ProcessPhoenix
 import org.apache.commons.io.FileUtils
@@ -36,6 +33,7 @@ import org.secfirst.umbrella.data.database.lesson.Module
 import org.secfirst.umbrella.data.database.lesson.Subject
 import org.secfirst.umbrella.feature.main.MainActivity
 import java.io.*
+import java.nio.charset.Charset
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -91,26 +89,24 @@ fun htmlToPdf(doc: org.jsoup.nodes.Document, file: FileOutputStream) {
     val document = Document()
     val writer = PdfWriter.getInstance(document, file)
     document.open()
-    // CSS
-    val cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true)
-    // HTML
-    val htmlContext = HtmlPipelineContext(null)
-    htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory())
-    // Pipelines
-    val pdf = PdfWriterPipeline(document, writer)
-    val html = HtmlPipeline(htmlContext, pdf)
-    val css = CssResolverPipeline(cssResolver, html)
-    // XML Worker
-    val worker = XMLWorker(css, true)
-    val parser = XMLParser(worker)
 
-    parser.parse(ByteArrayInputStream(doc.toString().toByteArray()))
+    val fontProvider = XMLWorkerFontProvider(XMLWorkerFontProvider.DONTLOOKFORFONTS)
+    fontProvider.register("/assets/fonts/Roboto-Regular.ttf")
+    val cssAppliers = CssAppliersImpl(fontProvider)
+
+    // HTML
+    val htmlContext = HtmlPipelineContext(cssAppliers)
+    htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory())
+
+    XMLWorkerHelper.getInstance().parseXHtml(writer, document, ByteArrayInputStream(doc.toString().toByteArray(Charsets.UTF_8)), Charset.forName("UTF-8"), fontProvider)
+
     document.close()
     file.close()
 }
 
 fun createDocument(doc: org.jsoup.nodes.Document, filename: String, type: String, context: Context): File {
     val img: Elements = doc.getElementsByTag("img")
+    doc.body().attr("style", "font-family: Roboto")
     lateinit var src: String
     lateinit var base64img: String
 
@@ -164,7 +160,7 @@ fun deviceLanguage(): String {
 
     if (defaultLanguage == "gb")
         return "en"
-    else if(defaultLanguage.contains("zh", true))
+    else if (defaultLanguage.contains("zh", true))
         return "zh-Hant"
     return defaultLanguage
 }
