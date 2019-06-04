@@ -33,10 +33,13 @@
 
         <RadioButton
             android:id="@+id/englishCheck"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:checked="true"
+            android:drawableEnd="@drawable/gb"
+            android:drawableRight="@drawable/gb"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="8sp"
             android:text="@string/english_language_title"
@@ -47,9 +50,12 @@
 
         <RadioButton
             android:id="@+id/spanishCheck"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/es"
+            android:drawableRight="@drawable/es"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/spanish_language_title"
             android:textColor="#8a000000"
@@ -57,9 +63,12 @@
 
         <RadioButton
             android:id="@+id/chineseCheck"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ta"
+            android:drawableRight="@drawable/ta"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/chinese_language_title"
             android:textColor="#8a000000"
@@ -67,9 +76,12 @@
 
         <RadioButton
             android:id="@+id/arabicCheck"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ae"
+            android:drawableRight="@drawable/ae"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/arabic_language_title"
             android:textColor="#8a000000"
@@ -77,9 +89,12 @@
 
         <RadioButton
             android:id="@+id/iranianCheck"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ir"
+            android:drawableRight="@drawable/ir"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/farsi_language_title"
             android:textColor="#8a000000"
@@ -87,70 +102,18 @@
 
         <RadioButton
             android:id="@+id/russianCheck"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ru"
+            android:drawableRight="@drawable/ru"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/russian_language_title"
             android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
     </RadioGroup>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintStart_toEndOf="@+id/groupContainer"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/gb" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/appCompatImageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="@+id/appCompatImageView"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView"
-        app:srcCompat="@drawable/es" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/chineseView"
-        android:layout_width="38dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="@+id/appCompatImageView2"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatImageView2"
-        app:srcCompat="@drawable/ta" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/arabicView"
-        android:layout_width="38dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="@+id/chineseView"
-        app:layout_constraintTop_toBottomOf="@+id/chineseView"
-        app:srcCompat="@drawable/ae" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iranianView"
-        android:layout_width="38dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="@+id/arabicView"
-        app:layout_constraintTop_toBottomOf="@+id/arabicView"
-        app:srcCompat="@drawable/ir" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="38dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintStart_toStartOf="@+id/iranianView"
-        app:layout_constraintTop_toBottomOf="@+id/iranianView"
-        app:srcCompat="@drawable/ru" />
 
     <include
         android:id="@+id/alertControlLayout"
