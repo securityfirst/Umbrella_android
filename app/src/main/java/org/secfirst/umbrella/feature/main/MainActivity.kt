@@ -2,7 +2,6 @@ package org.secfirst.umbrella.feature.main
 
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.content.Intent.ACTION_VIEW
 import android.os.Build
 import android.os.Bundle
@@ -20,8 +19,11 @@ import com.bluelinelabs.conductor.RouterTransaction
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_search.*
 import kotlinx.android.synthetic.main.main_view.*
+import org.secfirst.advancedsearch.interfaces.AdvancedSearchPresenter
+import org.secfirst.advancedsearch.interfaces.DataProvider
+import org.secfirst.advancedsearch.models.SearchCriteria
+import org.secfirst.advancedsearch.util.mvp.ThreadSpec
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.disk.isRepository
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
@@ -36,31 +38,48 @@ import org.secfirst.umbrella.feature.lesson.view.LessonController
 import org.secfirst.umbrella.feature.login.view.LoginController
 import org.secfirst.umbrella.feature.maskapp.view.CalculatorController
 import org.secfirst.umbrella.feature.reader.view.HostReaderController
+import org.secfirst.umbrella.feature.search.view.SearchController
 import org.secfirst.umbrella.feature.tour.view.TourController
 import org.secfirst.umbrella.misc.*
 import org.secfirst.umbrella.misc.AppExecutors.Companion.uiContext
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
 
     lateinit var router: Router
     private fun performDI() = AndroidInjection.inject(this)
     private lateinit var menuItem: Menu
     private var disableSearch = false
     private var deepLink = false
+    private var searchProvider: AdvancedSearchPresenter? = null;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLanguage()
         setContentView(R.layout.main_view)
         router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
-        setSupportActionBar(searchToolbar)
         performDI()
         isDeepLink()
         initNavigation()
         showNavigation()
     }
+
+    override fun getCriteria(): List<SearchCriteria> {
+        return searchProvider?.getCriteria()
+                ?: throw UnsupportedOperationException("The SearchProvider should be registered in the MainActivity")
+    }
+
+    override fun getDataProvider(): DataProvider {
+        return searchProvider?.getDataProvider()
+                ?: throw UnsupportedOperationException("The SearchProvider should be registered in the MainActivity")
+    }
+
+    override fun getThreadSpec(): ThreadSpec {
+        return searchProvider?.getThreadSpec()
+                ?: throw UnsupportedOperationException("The SearchProvider should be registered in the MainActivity")
+    }
+
 
     override fun onResume() {
         super.onResume()
@@ -69,6 +88,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
         return true
+    }
+
+    fun registerSearchProvider(provider: AdvancedSearchPresenter) {
+        this.searchProvider = provider
+    }
+
+    fun releaseSearchProvider() {
+        this.searchProvider = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -90,12 +117,9 @@ class MainActivity : AppCompatActivity() {
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
             isSubmitButtonEnabled = true
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    p0?.let {
-                        val i = Intent(this@MainActivity, SearchActivity::class.java)
-                        i.action = Intent.ACTION_SEARCH
-                        i.putExtra(SearchManager.QUERY, it)
-                        startActivity(i)
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        router.pushController(RouterTransaction.with(SearchController(it)))
                         return true
                     }
                     return false
@@ -253,12 +277,9 @@ class MainActivity : AppCompatActivity() {
                 FORM_HOST -> openFormByUrl(router, navigation, uriString)
 //                CHECKLIST_HOST -> openChecklistByUrl(router, navigation, uriString)
                 SEARCH_HOST -> {
-                    val i = Intent(this@MainActivity, SearchActivity::class.java)
-                    i.action = Intent.ACTION_SEARCH
                     intent?.data?.lastPathSegment?.let {
-                        i.putExtra(SearchManager.QUERY, it)
+                        router.pushController(RouterTransaction.with(SearchController(it)))
                     }
-                    startActivity(i)
                 }
                 else -> {
                     launchSilent(uiContext) {

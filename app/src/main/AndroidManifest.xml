@@ -19,10 +19,6 @@
         android:theme="@style/AppTheme"
         tools:replace="android:label,android:allowBackup">
         <activity
-            android:name=".feature.main.SearchActivity"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity
             android:name=".feature.main.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
