@@ -29,10 +29,8 @@
 
         <TextView
             android:id="@+id/subHeaderText"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="40dp"
             android:layout_marginLeft="40dp"
@@ -41,7 +39,6 @@
             android:textColor="#de000000"
             android:textSize="16sp"
             android:textStyle="normal"
-            app:layout_constraintStart_toEndOf="@+id/iconHeader"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="TEXT" />
 
@@ -55,6 +52,7 @@
             android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
+            android:layout_alignRight="@id/subHeaderText"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_keyboard_arrow_down_black" />
 
