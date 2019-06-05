@@ -23,7 +23,7 @@
     <string name="send_to">به اشتراک گذاری</string>
     <string name="delete">پاک کردن</string>
     <string name="feed_source">منبع تغذیه</string>
-    <string name="hint_rss_edit">http: // yourfeed</string>
+    <string name="hint_rss_edit">http://yourfeed</string>
     <string name="learn_more">بیشتر بدانید</string>
     <string name="share_carpsLk">اشتراک گذاری</string>
     <string name="article_simple_list">فهرست ساده</string>
@@ -61,7 +61,7 @@
         <item>به صورت دستی</item>
     </string-array>
 
-    <string name="feed_list_via">از طریق \ u0020</string>
+    <string name="feed_list_via">Via\u0020</string>
     <string name="feed_change_header">تغییر دادن</string>
     <string name="feed_location_header">موقعيت</string>
     <string name="dashboard_feed_empty_change_location">تغییر موقعیت</string>
@@ -165,7 +165,7 @@
     <string name="default_refresh_feed">30 دقیقه</string>
     <string name="account_disable_mask">غیر فعال کردن Mask</string>
     <string name="disable_mask_message">ماسک را با موفقیت غیرفعال کنید</string>
-    <string name="empty_favorites_message">هیچ درس هنوز اضافه نشده است.</string>
+    <string name="empty_favorites_message">هنوز هیچ درسی اضافه نشده است.</string>
     <string name="custom_checklist_add_item_title">چک لیست سفارشی</string>
     <string name="name_your_checklist">چک لیست خود را نام گذاری کنید</string>
     <string name="name">نام</string>
@@ -188,8 +188,13 @@
     <string name="change_language_error">یک خطای غیرمنتظره رخ داده است</string>
     <string name="bookmark_title">نشانه گذاری شده</string>
     <string name="switch_language_alert_message">این فرایند می تواند چند دقیقه طول بکشد</string>
-    <string name="switch_repo_alert_text">بارگیری داده ها از یک مخزن جدید تمام پیشرفت هایی را که ایجاد کرده اید تنظیم مجدد می کند. قبل از انجام این کار از قبل پشتیبان بگیرید</string>
+    <string name="switch_repo_alert_text">بارگیری داده ها از یک مخزن جدید تمام پیشرفت هایی را که ایجاد کرده اید بازنشانی می کند. قبل از انجام این کار پشتیبان بگیرید</string>
     <string name="arabic_language_title">عربی</string>
     <string name="farsi_language_title">فارسی</string>
     <string name="russian_language_title">روسی</string>
+    <string name="show_me_button">به من نشان بده</string>
+    <string name="no_thanks_button">نه ممنون، خودم تنهایی کاوش خواهم کرد</string>
+    <string name="pathways_text">یک راهنمایی برای شروع سفر امنیتی خود انتخاب کنید یا \nbookmark هر راهنمایی برای بعد انتخاب کنید</string>
+    <string name="pathways_title">به چه چیزی بیشتر نیاز دارید؟</string>
+    <string name="see_all">همه را ببین</string>
 </resources>
