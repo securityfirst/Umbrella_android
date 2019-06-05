@@ -1,16 +1,10 @@
-package org.secfirst.umbrella.feature.main
+package org.secfirst.umbrella.feature.search.presenter
 
-import android.app.SearchManager
-import android.content.Intent
-import android.os.Bundle
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Application
 import com.raizlabs.android.dbflow.sql.language.OperatorGroup
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import io.reactivex.Flowable
-import kotlinx.android.synthetic.main.activity_search.*
 import org.apache.commons.text.WordUtils
-import org.secfirst.advancedsearch.AdvancedSearch
 import org.secfirst.advancedsearch.interfaces.AdvancedSearchPresenter
 import org.secfirst.advancedsearch.interfaces.DataProvider
 import org.secfirst.advancedsearch.models.FieldTypes
@@ -30,9 +24,16 @@ import org.secfirst.umbrella.data.database.lesson.Module_Table
 import org.secfirst.umbrella.data.database.segment.Markdown
 import org.secfirst.umbrella.data.database.segment.Markdown_Table
 import org.secfirst.umbrella.data.database.segment.toSearchResult
+import org.secfirst.umbrella.feature.base.presenter.BasePresenterImp
+import org.secfirst.umbrella.feature.search.interactor.SearchBaseInteractor
+import org.secfirst.umbrella.feature.search.view.SearchView
+import javax.inject.Inject
 
 
-class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
+class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject constructor(
+        val context: Application,
+        interactor: I) : BasePresenterImp<V, I>(
+        interactor = interactor), SearchBasePresenter<V, I>, AdvancedSearchPresenter {
 
     enum class ItemType(val type: String) {
         SEGMENT("Segment"),
@@ -54,35 +55,10 @@ class SearchActivity : AppCompatActivity(), AdvancedSearchPresenter {
 
     private val possibleTypes = ItemType.values().map { it.type }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-        if (intent.action == Intent.ACTION_SEARCH) {
-            intent?.data?.lastPathSegment?.isNotEmpty()?.let {
-                AdvancedSearch.getSearchTermFromIntent(intent)
-            }
-        } else {
-            intent?.data?.lastPathSegment?.let {
-                intent.action = Intent.ACTION_SEARCH
-                intent.putExtra(SearchManager.QUERY, it)
-            }
-        }
-        setSupportActionBar(searchToolbar)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = getString(org.secfirst.umbrella.R.string.search_results)
-        }
-        categoryHint = " (${getString(R.string.categoryHint)})"
-        difficultyHint = " (${getString(R.string.difficultyHint)})"
-        typeHint = " (${getString(R.string.typeHint)})"
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        android.R.id.home -> {
-            onBackPressed()
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
+    override fun submitSearchQuery(query: String) {
+        categoryHint = " (${context.getString(R.string.categoryHint)})"
+        difficultyHint = " (${context.getString(R.string.difficultyHint)})"
+        typeHint = " (${context.getString(R.string.typeHint)})"
     }
 
     override fun getCriteria(): List<SearchCriteria> {
