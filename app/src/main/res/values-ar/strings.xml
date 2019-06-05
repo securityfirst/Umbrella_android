@@ -192,4 +192,9 @@
     <string name="arabic_language_title">عربى</string>
     <string name="farsi_language_title">الفارسية</string>
     <string name="russian_language_title">الروسية</string>
+    <string name="show_me_button">أرني</string>
+    <string name="no_thanks_button">لا شكرا ، سأستكشف وحدي</string>
+    <string name="pathways_text">حدد دليلًا لبدء رحلة الأمان أو \ n قم بوضع إشارة على أي دليل لاحقًا</string>
+    <string name="pathways_title">ماذا تحتاج أكثر؟</string>
+    <string name="see_all">اظهار الكل</string>
 </resources>

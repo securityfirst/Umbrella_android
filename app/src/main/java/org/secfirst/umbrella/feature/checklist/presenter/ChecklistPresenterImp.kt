@@ -110,11 +110,11 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
 
 
                 if (checklistInProgress.isNotEmpty() || favoriteChecklist.isNotEmpty() || favoritePathways.isNotEmpty()) {
-                    allDashboard.addAll(favoritePathwaysList)
-                    allDashboard.add(footer)
                     allDashboard.addAll(totalDoneDashboard(rate.size, totalDone))
                     allDashboard.addAll(favoriteList)
                     allDashboard.addAll(inProgressList)
+                    allDashboard.addAll(favoritePathwaysList)
+                    allDashboard.add(footer)
                 }
 
                 getView()?.showDashboard(allDashboard)
