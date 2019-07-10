@@ -49,7 +49,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         ndk {
-            abiFilters "armeabi-v7a", "x86", "armeabi", "mips"
+            abiFilters "armeabi-v7a", "x86", "armeabi", "mips", "arm64-v8a", "x86_64"
         }
     }
     buildTypes {
@@ -170,7 +170,7 @@ dependencies {
     implementation "com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
-    implementation "net.zetetic:android-database-sqlcipher:${sqlcipher_version}@aar"
+    implementation "net.zetetic:android-database-sqlcipher:$sqlcipher_version"
     implementation "info.guardianproject.iocipher:IOCipher:$io_cipher"
 
     //file conversion
