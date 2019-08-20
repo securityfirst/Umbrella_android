@@ -46,12 +46,23 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         super.onCreate()
         MultiDex.install(this)
         instance = this
-        val shared = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-        val isLogged = shared.getBoolean(AppPreferenceHelper.EXTRA_LOGGED_IN, false)
-        if (!isLogged) initDatabase()
+        if (checkPassword()) initDatabase()
         initDaggerComponent()
         initFonts()
         initDefaultLocation()
+    }
+
+    fun checkPassword(): Boolean {
+        val application = UmbrellaApplication.instance
+        SQLiteDatabase.loadLibs(application)
+        return try {
+            val db = SQLiteDatabase.openOrCreateDatabase(application
+                    .getDatabasePath(AppDatabase.NAME + ".db").path, AppDatabase.DEFAULT, null)
+            db.isOpen
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
     }
 
     private fun initDaggerComponent() {
