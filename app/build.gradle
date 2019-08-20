@@ -87,7 +87,7 @@ dependencies {
     implementation "io.github.inflationx:calligraphy3:$calligraphy3"
     implementation "io.github.inflationx:viewpump:$viewpump"
     implementation "org.apache.commons:commons-text:1.6"
-    implementation "org.apache.commons:commons-lang3:3.4"
+    implementation "org.apache.commons:commons-lang3:3.8.1"
 
 
     //Framework for replacing fragments
@@ -97,7 +97,6 @@ dependencies {
     //OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp3"
     implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor"
-    implementation 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
 
     //JGit
     implementation "commons-io:commons-io:$commonsIo_version"
@@ -162,7 +161,6 @@ dependencies {
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
-    implementation 'com.gu.android:toolargetool:0.1.5@aar'
     //Database
     kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
     implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
