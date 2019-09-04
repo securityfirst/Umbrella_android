@@ -195,10 +195,12 @@ ChecklistBaseInteractor> @Inject constructor(interactor: I) :
         launchSilent(uiContext) {
             interactor?.let {
                 val pathways = it.fetchPathways()
-                val pathwaysDashboard = mutableListOf<Dashboard.Item>()
-                val pathwaysList = pathwaysMount(pathways)
-                pathwaysDashboard.addAll(pathwaysList)
-                getView()?.showPathways(pathwaysDashboard)
+                pathways.takeIf { it.isNotEmpty() }?.let {
+                    val pathwaysDashboard = mutableListOf<Dashboard.Item>()
+                    val pathwaysList = pathwaysMount(pathways)
+                    pathwaysDashboard.addAll(pathwaysList)
+                    getView()?.showPathways(pathwaysDashboard)
+                }
             }
         }
     }
