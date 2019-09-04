@@ -65,6 +65,9 @@ class LoginController : BaseController(), LoginView {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.findItem(R.id.menu_search).apply {
+            this.isVisible = false
+        }
         return inflater.inflate(R.menu.login_menu, menu)
     }
 
