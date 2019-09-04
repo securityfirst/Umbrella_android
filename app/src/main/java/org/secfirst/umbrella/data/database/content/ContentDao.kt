@@ -4,6 +4,7 @@ import com.raizlabs.android.dbflow.config.FlowManager
 import com.raizlabs.android.dbflow.kotlinextensions.modelAdapter
 import kotlinx.coroutines.withContext
 import org.apache.commons.io.FileUtils
+import org.secfirst.umbrella.UmbrellaApplication
 import org.secfirst.umbrella.data.database.AppDatabase
 import org.secfirst.umbrella.data.database.BaseDao
 import org.secfirst.umbrella.data.database.checklist.Checklist
@@ -97,9 +98,10 @@ interface ContentDao : BaseDao, ContentMonitor {
                 FileUtils.deleteDirectory(FlowManager.getContext().cacheDir)
                 FlowManager.getDatabase(AppDatabase.NAME).close()
                 FlowManager.getDatabase(AppDatabase.NAME).destroy()
+                UmbrellaApplication.instance.deleteDatabase("${AppDatabase.NAME}.${AppDatabase.EXTENSION}")
                 true
             } catch (e: Exception) {
-                false
+                UmbrellaApplication.instance.deleteDatabase("${AppDatabase.NAME}.${AppDatabase.EXTENSION}")
             }
         }
         return res
