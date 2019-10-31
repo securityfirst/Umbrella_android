@@ -96,12 +96,10 @@ interface ContentDao : BaseDao, ContentMonitor {
         withContext(ioContext) {
             res = try {
                 FileUtils.deleteDirectory(FlowManager.getContext().cacheDir)
-                FlowManager.getDatabase(AppDatabase.NAME).close()
-                FlowManager.getDatabase(AppDatabase.NAME).destroy()
-                UmbrellaApplication.instance.deleteDatabase("${AppDatabase.NAME}.${AppDatabase.EXTENSION}")
+                UmbrellaApplication.instance.getDatabasePath(AppDatabase.NAME + ".db").delete()
                 true
             } catch (e: Exception) {
-                UmbrellaApplication.instance.deleteDatabase("${AppDatabase.NAME}.${AppDatabase.EXTENSION}")
+                false
             }
         }
         return res

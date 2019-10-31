@@ -11,6 +11,4 @@ interface ContentBasePresenter<V : ContentView, I : ContentBaseInteractor> : Bas
     fun manageContent(url:String)
 
     fun updateContent(pairFiles: List<Pair<String, File>>)
-
-    fun cleanContent()
 }

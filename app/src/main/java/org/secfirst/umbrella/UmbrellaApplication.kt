@@ -19,11 +19,11 @@ import org.secfirst.advancedsearch.util.mvp.ThreadSpec
 import org.secfirst.umbrella.data.database.AppDatabase
 import org.secfirst.umbrella.data.database.SQLCipherHelperImpl
 import org.secfirst.umbrella.data.disk.IsoCountry
-import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_LANGUAGE
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.di.component.DaggerAppComponent
 import org.secfirst.umbrella.misc.setLocale
+import java.io.File
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -52,16 +52,19 @@ class UmbrellaApplication : Application(), HasActivityInjector {
         initDefaultLocation()
     }
 
-    fun checkPassword(): Boolean {
-        val application = UmbrellaApplication.instance
-        SQLiteDatabase.loadLibs(application)
+    fun checkPassword(password: String? = null): Boolean {
+        SQLiteDatabase.loadLibs(this)
+        var db: SQLiteDatabase? = null
         return try {
-            val db = SQLiteDatabase.openOrCreateDatabase(application
-                    .getDatabasePath(AppDatabase.NAME + ".db").path, AppDatabase.DEFAULT, null)
-            db.isOpen
+            File(applicationInfo.dataDir + "/databases").takeUnless { it.exists() }?.mkdirs()
+            val filePath = getDatabasePath(AppDatabase.NAME + ".db").path
+            db = SQLiteDatabase.openOrCreateDatabase(filePath, password ?: AppDatabase.DEFAULT, null)
+            db?.isOpen == true
         } catch (e: Exception) {
             e.printStackTrace()
             false
+        } finally {
+            db?.close()
         }
     }
 

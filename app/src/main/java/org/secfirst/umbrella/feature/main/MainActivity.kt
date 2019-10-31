@@ -20,14 +20,12 @@ import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.main_view.*
-import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.advancedsearch.interfaces.AdvancedSearchPresenter
 import org.secfirst.advancedsearch.interfaces.DataProvider
 import org.secfirst.advancedsearch.models.SearchCriteria
 import org.secfirst.advancedsearch.util.mvp.ThreadSpec
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.UmbrellaApplication
-import org.secfirst.umbrella.data.database.AppDatabase
 import org.secfirst.umbrella.data.disk.isRepository
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_LOGGED_IN
@@ -55,7 +53,7 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
     private lateinit var menuItem: Menu
     private var disableSearch = false
     private var deepLink = false
-    private var searchProvider: AdvancedSearchPresenter? = null;
+    private var searchProvider: AdvancedSearchPresenter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

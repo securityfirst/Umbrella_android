@@ -196,11 +196,4 @@ class ContentPresenterImp<V : ContentView, I : ContentBaseInteractor>
         }
         return newForm
     }
-
-    override fun cleanContent() {
-        val cacheDir = UmbrellaApplication.instance.cacheDir
-        FileUtils.deleteQuietly(cacheDir)
-        FlowManager.getDatabase(AppDatabase.NAME).reopen()
-        getView()?.onCleanDatabaseSuccess()
-    }
 }

@@ -1,8 +1,6 @@
 package org.secfirst.umbrella.feature.login.presenter
 
-import net.sqlcipher.database.SQLiteDatabase
 import org.secfirst.umbrella.UmbrellaApplication
-import org.secfirst.umbrella.data.database.AppDatabase
 import org.secfirst.umbrella.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.feature.login.interactor.LoginBaseInteractor
 import org.secfirst.umbrella.feature.login.view.LoginView
@@ -27,7 +25,7 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
     override fun submitChangeDatabaseAccess(userToken: String) {
         interactor?.let {
             launchSilent(uiContext) {
-                if (checkPassword(userToken)) {
+                if (UmbrellaApplication.instance.checkPassword(userToken)) {
                     it.dispatchLoginDatabaseAccess(userToken)
                     it.setSkipPassword(true)
                     getView()?.isLoginOk(true)
@@ -35,19 +33,6 @@ class LoginPresenterImp<V : LoginView, I : LoginBaseInteractor> @Inject construc
                     getView()?.isLoginOk(false)
                 }
             }
-        }
-    }
-
-    private fun checkPassword(userToken: String): Boolean {
-        val application = UmbrellaApplication.instance
-        SQLiteDatabase.loadLibs(application)
-        return try {
-            val db = SQLiteDatabase.openOrCreateDatabase(application
-                    .getDatabasePath(AppDatabase.NAME + ".db").path, userToken, null)
-            db.isOpen
-        } catch (e: Exception) {
-            e.printStackTrace()
-            false
         }
     }
 }
