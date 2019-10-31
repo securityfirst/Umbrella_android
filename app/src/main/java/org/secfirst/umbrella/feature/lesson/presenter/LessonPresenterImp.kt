@@ -3,6 +3,7 @@ package org.secfirst.umbrella.feature.lesson.presenter
 
 import org.secfirst.umbrella.data.database.difficulty.Difficulty
 import org.secfirst.umbrella.data.database.difficulty.ids
+import org.secfirst.umbrella.data.database.lesson.Lesson
 import org.secfirst.umbrella.data.database.lesson.Module
 import org.secfirst.umbrella.data.database.lesson.Subject
 import org.secfirst.umbrella.data.database.lesson.toLesson
@@ -13,22 +14,21 @@ import org.secfirst.umbrella.feature.lesson.interactor.LessonBaseInteractor
 import org.secfirst.umbrella.feature.lesson.view.LessonView
 import org.secfirst.umbrella.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.misc.launchSilent
+import java.util.logging.Logger
 import javax.inject.Inject
 
 class LessonPresenterImp<V : LessonView, I : LessonBaseInteractor> @Inject constructor(
         interactor: I) : BasePresenterImp<V, I>(
         interactor = interactor), LessonBasePresenter<V, I> {
 
-    override fun submitSelectHead(moduleId: String) {
+    override fun submitSelectHead(lesson: Lesson) {
         launchSilent(uiContext) {
             interactor?.let {
-                val module = it.fetchLesson(moduleId)
-                val favorites = it.fetchAllFavorites()
-                module?.let { safeModule ->
+                lesson?.let { safeModule ->
                     when {
                         safeModule.markdowns.size == SINGLE_CHOICE -> getView()?.startSegmentAlone(safeModule.markdowns.last())
                         safeModule.markdowns.size > SINGLE_CHOICE -> getView()?.startSegment(safeModule.markdowns.ids(), false)
-                        moduleId == Module.FAVORITE_ID -> getView()?.startSegment(favorites.ids(), false)
+                        lesson.moduleId == Module.FAVORITE_ID -> getView()?.startSegment(it.fetchAllFavorites().ids(), false)
                         else -> ""
                     }
                 }

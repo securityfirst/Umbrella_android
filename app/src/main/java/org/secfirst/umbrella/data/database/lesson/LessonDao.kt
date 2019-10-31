@@ -13,9 +13,26 @@ import org.secfirst.umbrella.misc.AppExecutors.Companion.ioContext
 interface LessonDao {
 
     suspend fun getAllLesson(): List<Module> = withContext(ioContext) {
-        SQLite.select()
-                .from(Module::class.java)
+        val modules = SQLite.select()
+                .from(ModuleModelView::class.java)
+                .orderBy(ModuleModelView_ViewTable.index, true)
                 .queryList()
+        val subjects = SQLite.select()
+                .from(SubjectModelView::class.java)
+                .where(SubjectModelView_ViewTable.module_id.`in`(modules.map { it.id }))
+                .orderBy(SubjectModelView_ViewTable.index, true)
+                .queryList()
+        val markdowns = SQLite.select()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.module_id.`in`(modules.map { it.id }))
+                .orderBy(Markdown_Table.index, true)
+                .queryList()
+        modules.map {
+            it.toModule().apply {
+                this.subjects = subjects.filter { it.module_id == this.id }.map { it.toSubject() }.toMutableList()
+                this.markdowns = markdowns.filter { it.module!!.id == this.id }.toMutableList()
+            }
+        }
     }
 
     suspend fun getDifficultyBySubject(subjectId: String): List<Difficulty> = withContext(ioContext) {

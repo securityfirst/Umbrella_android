@@ -34,7 +34,7 @@ class LessonController : BaseController(), LessonView {
     @Inject
     internal lateinit var presenter: LessonBasePresenter<LessonView, LessonBaseInteractor>
     private val lessonClick: (Subject) -> Unit = this::onLessonClicked
-    private val groupClick: (String) -> Unit = this::onGroupClicked
+    private val groupClick: (Lesson) -> Unit = this::onGroupClicked
     private val groupAdapter = GroupAdapter<ViewHolder>()
     private var isRecycledView = false
 
@@ -65,9 +65,7 @@ class LessonController : BaseController(), LessonView {
         if (!isRecycledView) {
             lessons.forEach { lesson ->
                 val hasChild = lesson.topics.isNotEmpty()
-                val lessonGroup = LessonGroup(lesson.moduleId,
-                        lesson.pathIcon,
-                        lesson.moduleTitle,
+                val lessonGroup = LessonGroup(lesson,
                         hasChild, groupClick)
                 val groups = ExpandableGroup(lessonGroup)
                 if (hasChild) groups.add(LessonDecorator())
@@ -100,7 +98,7 @@ class LessonController : BaseController(), LessonView {
 
     private fun onLessonClicked(subject: Subject) = presenter.submitSelectLesson(subject)
 
-    private fun onGroupClicked(moduleId: String) = presenter.submitSelectHead(moduleId)
+    private fun onGroupClicked(lesson: Lesson) = presenter.submitSelectHead(lesson)
 
     override fun startSegment(markdownIds: ArrayList<String>, enableFilter: Boolean) =
             router.pushController(RouterTransaction.with(HostSegmentController(markdownIds, enableFilter)))

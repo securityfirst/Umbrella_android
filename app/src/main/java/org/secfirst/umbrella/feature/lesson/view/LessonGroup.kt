@@ -6,20 +6,19 @@ import com.xwray.groupie.ExpandableItem
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.lesson_menu_head.*
 import org.secfirst.umbrella.R
+import org.secfirst.umbrella.data.database.lesson.Lesson
 import org.secfirst.umbrella.misc.appContext
 
-class LessonGroup(private val moduleId: String,
-                  iconPath: String,
-                  titleHeader: String,
+class LessonGroup(private val lesson: Lesson,
                   private val hasChild: Boolean,
-                  private val onclickGroup: (String) -> Unit) : LessonHeader(moduleId, iconPath, titleHeader), ExpandableItem {
+                  private val onclickGroup: (Lesson) -> Unit) : LessonHeader(lesson.moduleId, lesson.pathIcon, lesson.moduleTitle), ExpandableItem {
 
     private lateinit var expandableGroup: ExpandableGroup
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         super.bind(viewHolder, position)
         viewHolder.lessonHeaderLayout.setOnClickListener {
-            onclickGroup(moduleId)
+            onclickGroup(lesson)
             expandableGroup.onToggleExpanded()
             bindIcon(viewHolder)
         }

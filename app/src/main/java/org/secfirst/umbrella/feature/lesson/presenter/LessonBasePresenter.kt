@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.feature.lesson.presenter
 
+import org.secfirst.umbrella.data.database.lesson.Lesson
 import org.secfirst.umbrella.data.database.lesson.Subject
 import org.secfirst.umbrella.feature.base.presenter.BasePresenter
 import org.secfirst.umbrella.feature.lesson.interactor.LessonBaseInteractor
@@ -12,5 +13,5 @@ interface LessonBasePresenter<V : LessonView, I : LessonBaseInteractor> : BasePr
 
     fun submitSelectLesson(subject: Subject)
 
-    fun submitSelectHead(moduleId: String)
+    fun submitSelectHead(lesson: Lesson)
 }
