@@ -127,7 +127,7 @@
     <string name="app_calc">SimpleCalc</string>
     <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
     <string name="enable_masking_mode">Enable Mask</string>
-    <string name="empty"> </string>
+    <string name="empty" translatable="false"> </string>
     <string name="password_success">Password was successfully created</string>
     <string name="update_repository_message_success">Updated with success.</string>
     <string name="switch_server_error_message">An error occurred. URL seems not be a Git server.</string>
@@ -193,6 +193,7 @@
     <string name="arabic_language_title">Arabic</string>
     <string name="farsi_language_title">Farsi</string>
     <string name="russian_language_title">Russian</string>
+    <string name="french_language_title">French</string>
     <string name="show_me_button">Show me</string>
     <string name="no_thanks_button">No thanks, i\'ll explore on my own</string>
     <string name="pathways_text">Select a guide to start your security journey or \nbookmark any guide for later</string>

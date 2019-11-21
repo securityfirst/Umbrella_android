@@ -276,6 +276,13 @@ class SettingsController : BaseController(),
                 presenter.changeContentLanguage("${getPathRepository()}ru")
                 refreshServerProgress.show()
             }
+            languageView.frenchCheck.isChecked -> {
+                context.setLocale(IsoCountry.FRENCH.value)
+                presenter.setDefaultLanguage(IsoCountry.FRENCH.value)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.fr)
+                presenter.changeContentLanguage("${getPathRepository()}fr")
+                refreshServerProgress.show()
+            }
             else -> {
                 context.setLocale(IsoCountry.ENGLISH.value)
                 presenter.setDefaultLanguage(IsoCountry.ENGLISH.value)
@@ -320,6 +327,11 @@ class SettingsController : BaseController(),
                 languageView.russianCheck.isChecked = true
                 mainView.titleLanguage.text = context.getText(R.string.russian_language_title)
                 mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.ru)
+            }
+            IsoCountry.FRENCH.value -> {
+                languageView.frenchCheck.isChecked = true
+                mainView.titleLanguage.text = context.getText(R.string.french_language_title)
+                mainView.imageLanguage.background = ContextCompat.getDrawable(appContext(), R.drawable.fr)
             }
             else -> {
                 languageView.englishCheck.isChecked = true

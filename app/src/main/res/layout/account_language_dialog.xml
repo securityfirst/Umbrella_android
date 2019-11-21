@@ -113,6 +113,19 @@
             android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
+        <RadioButton
+            android:id="@+id/frenchCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/fr"
+            android:drawableRight="@drawable/fr"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/french_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
     </RadioGroup>
 
     <include
