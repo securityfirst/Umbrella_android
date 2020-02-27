@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Handler
+import android.os.PowerManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -108,7 +109,10 @@ class TourController : BaseController(), ContentView {
                 .setView(warnerView)
                 .create()
 
-        warnerView.ok.onClick { startContentService() }
+        warnerView.ok.onClick {
+            warnerView.keepScreenOn = true
+            startContentService()
+        }
         warnerView.cancel.onClick { warnerDialog.dismiss() }
         view.acceptButton.setOnClickListener { warnerDialog.show() }
         initProgress()
