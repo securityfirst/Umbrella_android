@@ -24,6 +24,7 @@ import com.itextpdf.tool.xml.html.Tags
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext
 import com.jakewharton.processphoenix.ProcessPhoenix
 import org.apache.commons.io.FileUtils
+import org.jsoup.nodes.TextNode
 import org.jsoup.select.Elements
 import org.secfirst.umbrella.BuildConfig
 import org.secfirst.umbrella.R
@@ -35,6 +36,7 @@ import org.secfirst.umbrella.feature.main.MainActivity
 import java.io.*
 import java.nio.charset.Charset
 import java.util.*
+import java.util.logging.Logger
 import kotlin.reflect.KClass
 
 
@@ -173,4 +175,21 @@ fun Context.createNotification(title: String, body: String, channelId: String, i
             .build()
     val notificationManagerCompat = NotificationManagerCompat.from(this)
     notificationManagerCompat.notify(id, notification)
+}
+
+fun TextNode.wrapTextWithElement(strToWrap: String, wrapperHTML: String) {
+    var textNode = this
+    while (textNode.text().toLowerCase().contains(strToWrap.toLowerCase())) {
+        var indexPosition = 0;
+        indexPosition = textNode.text().toLowerCase().indexOf(strToWrap.toLowerCase())
+        val rightNodeFromSplit =
+                textNode.splitText(indexPosition)
+        if (rightNodeFromSplit.text().length > strToWrap.length) {
+            textNode = rightNodeFromSplit.splitText(strToWrap.length)
+            rightNodeFromSplit.wrap(wrapperHTML)
+        } else {
+            rightNodeFromSplit.wrap(wrapperHTML)
+            return
+        }
+    }
 }

@@ -5,6 +5,7 @@ import com.raizlabs.android.dbflow.sql.language.OperatorGroup
 import com.raizlabs.android.dbflow.sql.language.SQLite
 import io.reactivex.Flowable
 import org.apache.commons.text.WordUtils
+import org.jsoup.Jsoup
 import org.secfirst.advancedsearch.interfaces.AdvancedSearchPresenter
 import org.secfirst.advancedsearch.interfaces.DataProvider
 import org.secfirst.advancedsearch.models.FieldTypes
@@ -27,6 +28,7 @@ import org.secfirst.umbrella.data.database.segment.toSearchResult
 import org.secfirst.umbrella.feature.base.presenter.BasePresenterImp
 import org.secfirst.umbrella.feature.search.interactor.SearchBaseInteractor
 import org.secfirst.umbrella.feature.search.view.SearchView
+import org.secfirst.umbrella.misc.wrapTextWithElement
 import javax.inject.Inject
 
 
@@ -152,6 +154,18 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
                         }
                     }
                 }
+            }
+            mutableMap.forEachIndexed { index, searchResult ->
+                val fullText = searchResult.summary.let { htmlText ->
+                    val doc = Jsoup.parse(htmlText)
+                    for (e in doc.body().allElements) {
+                        for (tn in e.textNodes()) {
+                            tn.wrapTextWithElement(text, "<b>");
+                        }
+                    }
+                    doc.toString()
+                }
+                mutableMap[index] = searchResult.copy(summary = fullText)
             }
             return Flowable.just(mutableMap)
         }
