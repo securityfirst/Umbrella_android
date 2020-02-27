@@ -132,18 +132,18 @@ class CalculatorController : BaseController(), MaskAppView {
     }
 
     private fun setShowMockView() {
-        val shared = mainActivity.getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-        shared.edit().putBoolean(AppPreferenceHelper.EXTRA_SHOW_MOCK_VIEW, false).apply()
+        mainActivity.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit().putBoolean(AppPreferenceHelper.EXTRA_SHOW_MOCK_VIEW, false).apply()
     }
 
     private fun startShakeDetector() {
         activity?.let { safeActivity ->
-            setMaskMode(safeActivity, true)
+            setMaskMode(safeActivity, false)
             setShowMockView()
             val intent = Intent(safeActivity, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             safeActivity.finish()
+            mainActivity.getSharedPreferences(PREF_NAME, MODE_PRIVATE).edit().putBoolean(AppPreferenceHelper.EXTRA_MASK_APP, false).apply()
         }
     }
 
