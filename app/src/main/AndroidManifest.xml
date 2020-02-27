@@ -20,6 +20,7 @@
         tools:replace="android:label,android:allowBackup">
         <activity
             android:name=".feature.main.MainActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
