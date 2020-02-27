@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
-
 android {
     lintOptions {
         abortOnError false
@@ -43,8 +42,8 @@ android {
         minSdkVersion 16
         compileSdkVersion 28
         targetSdkVersion 28
-        versionCode 53
-        versionName "1.0.28"
+        versionCode 54
+        versionName "1.0.29"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -76,7 +75,7 @@ dependencies {
     implementation "com.romandanylyk:pageindicatorview:$pageindicatorview"
     implementation "org.jsoup:jsoup:$jsoup"
     implementation "com.github.tbouron.shakedetector:library:$shakedetector"
-    implementation 'com.github.securityfirst:AdvancedSearch:0.0.3'
+    implementation 'com.github.securityfirst:AdvancedSearch:0.0.4'
     implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
     implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
     implementation "com.jakewharton:process-phoenix:$process_phoenix"
