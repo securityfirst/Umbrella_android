@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="org.secfirst.umbrella.rss.views.ArticleActivity">
+
+    <item
+        android:id="@+id/action_card_list"
+        android:orderInCategory="100"
+        android:title="@string/article_simple_list"
+        app:showAsAction="never" />
+</menu>

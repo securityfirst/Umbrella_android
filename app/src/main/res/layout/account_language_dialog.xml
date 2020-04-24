@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/account_language_dialog_title"
+        android:textColor="#de000000"
+        android:textSize="@dimen/font_larger"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/groupContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <RadioButton
+            android:id="@+id/englishCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:checked="true"
+            android:drawableEnd="@drawable/gb"
+            android:drawableRight="@drawable/gb"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:fontFamily="sans-serif"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/english_language_title"
+            android:textColor="@color/feedSources_color"
+            android:textSize="@dimen/text_size_smaller"
+            android:textStyle="normal" />
+
+
+        <RadioButton
+            android:id="@+id/spanishCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/es"
+            android:drawableRight="@drawable/es"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/spanish_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/chineseCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ta"
+            android:drawableRight="@drawable/ta"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/chinese_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/arabicCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ae"
+            android:drawableRight="@drawable/ae"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/arabic_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/iranianCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ir"
+            android:drawableRight="@drawable/ir"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/farsi_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/russianCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/ru"
+            android:drawableRight="@drawable/ru"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/russian_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+        <RadioButton
+            android:id="@+id/frenchCheck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableEnd="@drawable/fr"
+            android:drawableRight="@drawable/fr"
+            android:drawablePadding="@dimen/recycler_view_margin_bottom"
+            android:lineSpacingExtra="8sp"
+            android:text="@string/french_language_title"
+            android:textColor="#8a000000"
+            android:textSize="@dimen/text_size_smaller" />
+
+    </RadioGroup>
+
+    <include
+        android:id="@+id/alertControlLayout"
+        layout="@layout/alert_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/groupContainer" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sectionText"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:layout_marginTop="3dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginLeft="10dp"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:singleLine="true"
+    android:textSize="16sp"
+    android:textStyle="bold" />

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/share_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/share_dialog_small_space"
+        android:layout_marginLeft="@dimen/share_dialog_small_space"
+        android:layout_marginTop="@dimen/share_dialog_little_space"
+        android:fontFamily="sans-serif-medium"
+        android:padding="@dimen/dashboard_feed_normal_padding"
+        android:text="@string/export_lesson"
+        android:textColor="#de000000"
+        android:textSize="@dimen/font_large"
+        android:textStyle="normal" />
+
+    <View
+        android:id="@+id/lineAbove"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/share_title"
+        android:layout_marginTop="@dimen/share_dialog_little_space"
+        android:background="#e0e0e0"
+        android:padding="5dp" />
+
+    <RadioGroup
+        android:id="@+id/shareGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lineAbove"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="@dimen/share_dialog_normal_space"
+        android:layout_marginLeft="@dimen/share_dialog_normal_space"
+        android:orientation="vertical"
+        android:padding="@dimen/dashboard_feed_normal_padding">
+
+        <RadioButton
+            android:id="@+id/pdfRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" />
+
+        <RadioButton
+            android:id="@+id/htmlRadio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp" />
+    </RadioGroup>
+
+    <View
+        android:id="@+id/lineBelow"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/shareGroup"
+        android:layout_marginTop="@dimen/share_dialog_little_space"
+        android:background="#e0e0e0"
+        android:padding="5dp" />
+
+    <RelativeLayout
+        android:id="@+id/buttonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/lineBelow"
+        android:padding="@dimen/dashboard_feed_normal_padding">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/shareDocumentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/dashboard_feed_normal_padding"
+            android:text="@string/export_button"
+            android:textColor="@color/umbrella_green" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/cancelShareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/shareDocumentButton"
+            android:layout_toLeftOf="@id/shareDocumentButton"
+            android:background="@android:color/transparent"
+            android:padding="@dimen/dashboard_feed_normal_padding"
+            android:text="@string/export_dialog_cancel"
+            android:textColor="@color/umbrella_green" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

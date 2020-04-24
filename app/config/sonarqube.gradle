@@ -1,0 +1,16 @@
+sonarqube {
+    properties {
+        property "sonar.organization", "douglasalipio-github"
+        property "sonar.login", "2dd380994315b3f52fb88d40e2f68ccf887355ee"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.projectKey", "Umbrella_android_kotlin"
+        property "sonar.projectName", "Umbrella"
+        property "sonar.projectVersion", "${dependencies}"
+        property "sonar.sources", "src/main/java"
+        property "sonar.android.lint.report", "build/outputs/lint-results.xml"
+        property "sonar.java.binaries", "$buildDir/tmp/kotlin-classes"
+        property "sonar.jacoco.reportPath", "$buildDir/jacoco/testDebugUnitTest.exec"
+        property "sonar.junit.reportsPath", "$buildDir/test-results/testDebugUnitTest"
+        property "detekt.sonar.kotlin.config.id", "/config/detekt-config.yml"
+    }
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lessonHeaderLayout"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iconHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:tint="@android:color/black"
+            app:srcCompat="@drawable/ic_fav_selected" />
+
+        <TextView
+            android:id="@+id/subHeaderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:fontFamily="sans-serif"
+            android:lineSpacingExtra="8sp"
+            android:textColor="#de000000"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="TEXT" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/arrow"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:layout_alignRight="@id/subHeaderText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

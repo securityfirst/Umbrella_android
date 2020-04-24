@@ -1,207 +1,184 @@
 apply plugin: 'com.android.application'
-apply plugin: 'idea'
-apply plugin: 'witness'
-apply plugin: 'io.fabric'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: 'config/jacoco.gradle'
+apply from: 'config/sonarqube.gradle'
 android {
+    lintOptions {
+        abortOnError false
+    }
     signingConfigs {
-        release {
-        }
-    }
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
-    dataBinding.enabled = true
-    useLibrary 'org.apache.http.legacy'
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
-
-    defaultConfig {
-        applicationId "org.secfirst.umbrella"
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 39
-        versionName "0.5.0"
-        multiDexEnabled true
-        ndk {
-            abiFilters "armeabi-v7a", "x86", "armeabi", "mips"
-        }
-        vectorDrawables.useSupportLibrary = true
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-    }
-    buildTypes {
-        release {
-            debuggable false
-            minifyEnabled false
-            signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            ext.enableCrashlytics = false
-        }
-        debug {
-            debuggable true
-            signingConfig signingConfigs.debug
-            minifyEnabled false
-            ext.enableCrashlytics = false
-        }
-        beta {
-            debuggable true
-            signingConfig signingConfigs.debug
-            ext.enableCrashlytics = true
+        umbrella_beta {
+            keyAlias 'umbrella'
+            keyPassword 'android'
+            storeFile file("$project.projectDir/config/beta_keystore.jks")
+            storePassword 'android'
         }
 
-    }
-    sourceSets {
-        main {
-            jniLibs.srcDir file('jniLibs')
-            assets.srcDirs = ['assets']
-        }
-    }
-    // Always show the result of every unit test, even if it passes.
-    testOptions.unitTests.all {
-        testLogging {
-            events 'passed', 'skipped', 'failed', 'standardOut', 'standardError'
-        }
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-}
+    configurations {
+        all {
+            exclude module: 'httpclient'
+            exclude group: 'com.google.firebase', module: 'firebase-core'
+            exclude group: 'com.google.firebase', module: 'firebase-iid'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE*'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE*'
+    }
 
-task copyResDirectoryToClasses(type: Copy) {
-    from "${projectDir}/src/test/res"
-    into "${buildDir}/intermediates/classes/test/debug/res"
-}
-def Properties props = new Properties()
-def propFile = new File('keystore.properties')
-if (propFile.canRead()) {
-    props.load(new FileInputStream(propFile))
-    if (props != null && props.containsKey('storeFile') && props.containsKey('storePassword') &&
-            props.containsKey('keyAlias') && props.containsKey('keyPassword')) {
-        android.signingConfigs.release.storeFile = file(props['storeFile'])
-        android.signingConfigs.release.storePassword = props['storePassword']
-        android.signingConfigs.release.keyAlias = props['keyAlias']
-        android.signingConfigs.release.keyPassword = props['keyPassword']
-    } else {
-        println 'signing.properties found but some entries are missing'
-        android.buildTypes.release.signingConfig = null
+    androidExtensions {
+        experimental = true
     }
-} else {
-    println 'signing.properties not found'
-    android.buildTypes.release.signingConfig = null
+    defaultConfig {
+        applicationId "org.secfirst.umbrella"
+        minSdkVersion 16
+        compileSdkVersion 28
+        targetSdkVersion 28
+        versionCode 54
+        versionName "1.0.29"
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        ndk {
+            abiFilters "armeabi-v7a", "x86", "armeabi", "mips", "arm64-v8a", "x86_64"
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            testCoverageEnabled true
+            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
+            buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
+        }
+        beta {
+            minifyEnabled false
+            signingConfig signingConfigs.umbrella_beta
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:support-vector-drawable:27.0.2'
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:preference-v7:27.0.2'
-    compile 'com.android.support:support-v4:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-    compile 'com.android.support:gridlayout-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.j256.ormlite:ormlite-core:4.48'
-    compile 'net.zetetic:android-database-sqlcipher:3.5.7@aar'
-    compile 'com.google.guava:guava:20.0'
-    compile 'org.thoughtcrime.ssl.pinning:AndroidPinning:1.0.0'
-    compile 'com.loopj.android:android-async-http:1.4.8'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'org.jsoup:jsoup:1.8.2'
-    compile 'com.viewpagerindicator:library:2.4.1'
-    compile 'org.apache.commons:commons-collections4:4.1'
-    compile 'com.jakewharton.timber:timber:4.5.1'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
-    compile 'com.squareup:seismic:1.0.2'
-    compile 'com.stepstone.stepper:material-stepper:3.3.0'
-    compile 'org.apache.commons:commons-lang3:3.6'
-    compile 'com.android.support:multidex:1.0.2'
-    compile 'info.guardianproject.iocipher:IOCipher:0.4'
-    provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
-    compile 'uk.co.samuelwall:material-tap-target-prompt:2.3.0'
-    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
-    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-    compile 'com.mobsandgeeks:android-saripaar:2.0.3'
-    compile 'com.jakewharton:process-phoenix:2.0.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
-        transitive = true
+    implementation "com.einmalfel:earl:$rss_library"
+    implementation "com.squareup.picasso:picasso:$picasso_version"
+    implementation "com.romandanylyk:pageindicatorview:$pageindicatorview"
+    implementation "org.jsoup:jsoup:$jsoup"
+    implementation "com.github.tbouron.shakedetector:library:$shakedetector"
+    implementation 'com.github.securityfirst:AdvancedSearch:0.0.4'
+    implementation "com.github.tiagohm.MarkdownView:library:$markdown_view_version"
+    implementation "com.github.codekidX:storage-chooser:$codekidX_storage_chooser"
+    implementation "com.jakewharton:process-phoenix:$process_phoenix"
+    implementation "com.commonsware.cwac:anddown:$anddown"
+    implementation "io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:$sectionedrecyclerviewadapter"
+    implementation "com.stepstone.stepper:material-stepper:$stepper_version"
+    implementation "com.android.support:multidex:$multidex_version"
+    implementation "io.github.inflationx:calligraphy3:$calligraphy3"
+    implementation "io.github.inflationx:viewpump:$viewpump"
+    implementation "org.apache.commons:commons-text:1.6"
+    implementation "org.apache.commons:commons-lang3:3.8.1"
+
+
+    //Framework for replacing fragments
+    implementation "com.bluelinelabs:conductor:$conductor_version"
+    implementation "com.bluelinelabs:conductor-support:$conductor_version"
+
+    //OkHttp
+    implementation "com.squareup.okhttp3:okhttp:$okhttp3"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_interceptor"
+
+    //JGit
+    implementation "commons-io:commons-io:$commonsIo_version"
+    implementation "org.eclipse.jgit:org.eclipse.jgit:$jgit_version"
+
+    //Parse lib
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_databind_version"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jackson_yaml_version"
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_module_version"
+    implementation "com.google.code.gson:gson:$gson_version"
+
+    //Google libs
+    implementation "com.android.support:appcompat-v7:$support_library_version"
+    implementation "com.android.support.constraint:constraint-layout:$support_constraint_version"
+    implementation "com.android.support:design:$support_library_version"
+    implementation "com.android.support:support-vector-drawable:$support_library_version"
+    implementation "com.android.support:cardview-v7:$support_library_version"
+
+    //Dependencies for local unit tests
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "org.hamcrest:hamcrest-core:$hamcrest_core_version"
+    testImplementation "org.hamcrest:hamcrest-library:$hamcrest_version"
+
+    // Android Testing Support Library's runner and rules
+    androidTestImplementation "com.android.support.test:runner:$runner_version"
+    androidTestImplementation "com.android.support.test:rules:$runner_version"
+    testImplementation 'com.android.support.test:testing-support-lib:0.1'
+
+    // Espresso UI Testing
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
+    implementation "com.android.support.test.espresso:espresso-idling-resource:$espresso_version"
+    androidTestImplementation('com.forkingcode.espresso.contrib:espresso-descendant-actions:1.2.0') {
+        exclude module: 'support-annotations'
     }
-    compile 'com.mindorks.android:prdownloader:0.4.0'
 
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    implementation 'com.android.support:recyclerview-v7:27.0.2'
-    compile 'com.einmalfel:earl:1.2.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    // network
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_adapter"
 
-    //Dependencies for Android unit tests
-    testImplementation 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-all:1.10.19"
-    testCompile "org.robolectric:robolectric:3.6.1"
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    testImplementation "org.robolectric:robolectric:3.6.1"
-    testCompile "org.robolectric:shadows-multidex:3.0"
-    androidTestCompile "org.mockito:mockito-core:2.7.19"
-}
+    // dependency injection
+    implementation "com.google.dagger:dagger:$dagger2_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger2_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger2_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger2_version"
 
-//generate using: `gradle -q calculateChecksums`
-dependencyVerification {
-    verify = [
-            'com.android.support:preference-v7:d9f32ddc92f8d6a0bd86a18f4fcaff805fa021245e395b6e7dd382907443ee53',
-            'com.android.support:design:fa5c27a705310e95a8f4099c98777132ed901a0d69178942306bb34cd76f0d57',
-            'com.afollestad.material-dialogs:core:2b1aa5be9380bc4e95227170d28ea889846647bebd27a52f069c83389bed4484',
-            'com.stepstone.stepper:material-stepper:545a59792adf75232cf14db4296e54f6fea70a968ef103510cbdfc7f8d8c4a24',
-            'uk.co.chrisjenx:calligraphy:9b71a6bdef63d47584496f068616e35daf93a3653d16586bdbd951d505de1656',
-            'me.zhanghai.android.materialprogressbar:library:f7581b3f719a274ae24f025989f391a68c94299ceb86e3b27b41f2d634a228d0',
-            'com.android.support:appcompat-v7:b2825e8b47f665d3362d8481c8d147d1af9230d16f23a2b94f6ccbc53c68cec1',
-            'com.android.support:support-v4:1b2b37169fcccfef5e563d273749e3792decdce9818bc17932403a2363f537b4',
-            'com.android.support:cardview-v7:57f867a3c8f33e2d4dc0a03e2dfa03cad6267a908179f04a725a68ea9f0b8ccf',
-            'com.android.support:recyclerview-v7:3eb953930f10941f2b0447ec123a9b03d2746a42a99c523e82c3ece3308ca70b',
-            'com.android.support:gridlayout-v7:227b5fdffa20f53bd562503aab6d2293d52cf64b5a6ab1116d2150f87bff9e88',
-            'com.j256.ormlite:ormlite-core:2beb9bd890a705fe25f6d74c7b1fdb5667da09f7063ba8e8eb501cb899dd5002',
-            'net.zetetic:android-database-sqlcipher:20e9276aacd18f0fffe62221545046696460775af56736ddd33b8a04a78bc756',
-            'com.google.guava:guava:36a666e3b71ae7f0f0dca23654b67e086e6c93d192f60ba5dfd5519db6c288c8',
-            'org.thoughtcrime.ssl.pinning:AndroidPinning:afa1d74e699257fa75cb109ff29bac50726ef269c6e306bdeffe8223cee06ef4',
-            'com.loopj.android:android-async-http:8ded08eaf313d1debfaa715f2952fe72135980cf146a5869f22cb5dddb41479d',
-            'com.google.code.gson:gson:c6221763bd79c4f1c3dc7f750b5f29a0bb38b367b81314c4f71896e340c40825',
-            'org.jsoup:jsoup:e87f0ee62a7592afc121dae468975d97ce47f432c965b5ba47350ca18ed6a473',
-            'com.viewpagerindicator:library:10670a99f8a30266f7c5a30c3af5dbf7e6419ba901184b37f44a877269f975e2',
-            'org.apache.commons:commons-collections4:b1fe8b5968b57d8465425357ed2d9dc695504518bed2df5b565c4b8e68c1c8a5',
-            'com.jakewharton.timber:timber:d553d3d3e883ce7d061f1b21b95d6ee0840f3bfbf6d3bd51c5671f0b0f0b0091',
-            'com.squareup:seismic:4fc9984aed7a689d24ae2574e9239aec14cc4d5d587621091104c9a4c4a83774',
-            'org.apache.commons:commons-lang3:89c27f03fff18d0b06e7afd7ef25e209766df95b6c1269d6c3ebbdea48d5f284',
-            'com.android.support:multidex:7cd48755c7cfdb6dd2d21cbb02236ec390f6ac91cde87eb62f475b259ab5301d',
-            'info.guardianproject.iocipher:IOCipher:ab7da0f23e256a2ced9492c73e37812c26e7beccc1a99815e6d65a75728ba6d3',
-            'uk.co.samuelwall:material-tap-target-prompt:f4eaa1ccc7900c9d6145689c75ac258e511ba2d85e5051f9acf1b70cbcf70ea0',
-            'com.github.aakira:expandable-layout:f3959b6f91de509671c9343b146e7e2e0ff6129d25277d383e0a1aa697609a23',
-            'com.mobsandgeeks:android-saripaar:2633246870fe82204405018990b9d801f514df11ec941c5798e1f1406c756b1d',
-            'com.jakewharton:process-phoenix:229c481a90067878d9b0bceee54600fe2ea48a771c6ff1fb47f0d865cf660844',
-            'com.crashlytics.sdk.android:crashlytics:b448501aabdf3f6c846329f65f35754fd23fc5e7406b7f36c2a05a92df07931c',
-            'com.mindorks.android:prdownloader:f25ec007142b80ce647cf835a8868dd9c14e5cb80b991065f5da94c680409a3a',
-            'com.squareup.okhttp3:okhttp:c1d57f913f74f61d424d4250a92723ba9a61affc12a0ab194d84cc179b472841',
-            'com.einmalfel:earl:d3bcc11fc1f46e81e957fea33c175b3014d572e146934ed3c5584564450ae22a',
-            'com.squareup.picasso:picasso:233e18f59d25b6aff475df1e01a0661677f88af73838a27eb23aa21b96a3ac6e',
-            'com.android.support:support-fragment:e4358388022a2205777575a7251fe357334658e4123d5d6e3b082f5899d9b011',
-            'com.android.support:support-core-utils:b69c6e1e7731b876b910fc7100bcadf40a57f27b32ca26b91400995542112c96',
-            'com.android.support:support-media-compat:6dd9327ee9aa467cab479aad97df375072b2b6ba61eadffdaa5a88de3843c457',
-            'com.android.support:animated-vector-drawable:5b117a2c13a898c2a3c84c480d64edcfac2ef720aa9b742c29249fac774ffc48',
-            'com.android.support:support-core-ui:2284072511a95d504c074de80c82cd33724c6d2754117833b98ba3a09994163e',
-            'com.android.support:transition:1a7db0453c1467fc8fd815e6d50ca6bb475a7a9ba6b5f3b307329688a7c62a68',
-            'com.android.support:support-vector-drawable:bf4f4fcbf58b1380616581224e6487c230bfdb3434ec353d4adaa4b1f4865cfa',
-            'com.android.support:support-compat:ed4d25d91a0b13d8b9def1c0de69ed03d7fb89d50fb37eb0e9b63b0cf7a42357',
-            'com.android.support:support-annotations:af05330d997eb92a066534dbe0a3ea24347d26d7001221092113ae02a8f233da',
-            'com.crashlytics.sdk.android:crashlytics-core:cd212bac8c42aa4c27f5b3e3db08637a1bc7aa8b2fe88c1fa01fe15e759eee0b',
-            'com.crashlytics.sdk.android:beta:5045a1dcfd4461ef398ea999a94d8f7fa31ab589d296cb849ea0b751e91d75ca',
-            'com.crashlytics.sdk.android:answers:8ac7ec5ae3977f2e8e59889853f958d818b60f751973ea3b8108a8695a1de6c5',
-            'io.fabric.sdk.android:fabric:2d2e8b920042bc59b7610639885314718b53ac3f3f9744587d04d0304880a557',
-            'com.squareup.okio:okio:734269c3ebc5090e3b23566db558f421f0b4027277c79ad5d176b8ec168bb850',
-            'android.arch.lifecycle:runtime:d0b36278878c82b838acc4308595bec61a3b5f6e7f2acc34172d7e071b2cf26d',
-            'android.arch.lifecycle:common:ff0215b54e7cbaaa898f8fd00e265ed6ea198859e10604bc1c5e78477df48b5c',
-            'android.arch.core:common:5192934cd73df32e2c15722ed7fc488dde90baaec9ae030010dd1a80fb4e74e1',
-    ]
+    //Kotlin API
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    //Dynamic layout lib
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+    implementation "org.jetbrains.anko:anko:$anko_version"
+    implementation "org.jetbrains.anko:anko-design:$anko_version"
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutine_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+    //Database
+    kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-rx2-kotlinextensions:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}"
+    implementation "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
+    implementation "net.zetetic:android-database-sqlcipher:$sqlcipher_version"
+    implementation "info.guardianproject.iocipher:IOCipher:$io_cipher"
+
+    //file conversion
+    implementation "com.itextpdf:itextpdf:$itextpdf"
+    implementation "com.itextpdf.tool:xmlworker:$itextpdf"
+
+    //Expandable recycler view
+    implementation "com.xwray:groupie:$groupie"
+    implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
+    implementation 'com.google.android:flexbox:1.1.0'
+    implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    implementation 'com.nabinbhandari.android:permissions:3.8'
+    implementation 'com.github.halysongoncalves:pugnotification:1.8.1'
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp">
+
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/checklistCardItemView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="2dp"
+        android:background="@color/light_white"
+        android:padding="2dp"
+        card_view:cardCornerRadius="2dp"
+        card_view:contentPadding="5dp">
+
+        <CheckBox
+            android:id="@+id/checkItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            android:textColor="#4a4a4a"
+            android:textStyle="normal" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/itemTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            android:padding="2dp"
+            android:textColor="@color/black_38"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            tools:text="Understand local kidnapping threat" />
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
