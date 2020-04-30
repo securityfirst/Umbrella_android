@@ -117,7 +117,6 @@ These are the tools currrently covered in the tool guide. (A number of them are 
 * Chatsecure
 * Cobian Backup
 * Facebook
-* Jitsi
 * K9 Mail & APG
 * KeePassX
 * ObscuraCam
@@ -131,7 +130,7 @@ These are the tools currrently covered in the tool guide. (A number of them are 
 * Signal
 * Tor for macOS
 * Tor for Windows
-* TrueCrypt
+* VeraCrypt
 
 ## Glossary
 Contains explanations of the various terms used in the app.
@@ -236,7 +235,7 @@ information.
 
 **License**
 
-Copyright 2013-2017 Global Security First Ltd. (trading as Security
+Copyright 2013-2018 Global Security First Ltd. (trading as Security
 First)
 
 Licensed under the
