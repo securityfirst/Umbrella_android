@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
             searchEditText.setTextColor(resources.getColor(R.color.white))
             searchEditText.setHintTextColor(resources.getColor(R.color.white))
             // Assumes current activity is the searchable activity
-            if (searchManager.getSearchableInfo(componentName) != null)
+            if (componentName!=null && searchManager.getSearchableInfo(componentName) != null)
                 setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
             isSubmitButtonEnabled = true
