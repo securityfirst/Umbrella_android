@@ -82,16 +82,16 @@ dependencies {
     implementation "com.commonsware.cwac:anddown:$anddown"
     implementation "io.github.luizgrp.sectionedrecyclerviewadapter:sectionedrecyclerviewadapter:$sectionedrecyclerviewadapter"
     implementation "com.stepstone.stepper:material-stepper:$stepper_version"
-    implementation "com.android.support:multidex:$multidex_version"
+    implementation "androidx.multidex:multidex:$multidex_version"
     implementation "io.github.inflationx:calligraphy3:$calligraphy3"
     implementation "io.github.inflationx:viewpump:$viewpump"
-    implementation "org.apache.commons:commons-text:1.6"
-    implementation "org.apache.commons:commons-lang3:3.8.1"
+    implementation "org.apache.commons:commons-text:$commonsText"
+    implementation "org.apache.commons:commons-lang3:$commonsLang"
 
 
     //Framework for replacing fragments
     implementation "com.bluelinelabs:conductor:$conductor_version"
-    implementation "com.bluelinelabs:conductor-support:$conductor_version"
+    implementation "com.bluelinelabs:conductor-support:$conductor_version_support"
 
     //OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp3"
@@ -115,7 +115,6 @@ dependencies {
     implementation "com.android.support:cardview-v7:$support_library_version"
 
     //Dependencies for local unit tests
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation "junit:junit:$junit_version"
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "org.hamcrest:hamcrest-core:$hamcrest_core_version"
@@ -131,7 +130,7 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$espresso_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:$espresso_version"
     implementation "com.android.support.test.espresso:espresso-idling-resource:$espresso_version"
-    androidTestImplementation('com.forkingcode.espresso.contrib:espresso-descendant-actions:1.2.0') {
+    androidTestImplementation("com.forkingcode.espresso.contrib:espresso-descendant-actions:$espresso_descendant_actions") {
         exclude module: 'support-annotations'
     }
 
@@ -177,8 +176,8 @@ dependencies {
     //Expandable recycler view
     implementation "com.xwray:groupie:$groupie"
     implementation "com.xwray:groupie-kotlin-android-extensions:$groupie"
-    implementation 'com.google.android:flexbox:1.1.0'
-    implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
-    implementation 'com.nabinbhandari.android:permissions:3.8'
-    implementation 'com.github.halysongoncalves:pugnotification:1.8.1'
+    implementation "com.google.android:flexbox:$flexbox"
+    implementation "com.felipecsl.asymmetricgridview:library:$asymetric_grid_view"
+    implementation "com.nabinbhandari.android:permissions:$android_permissions"
+    implementation "com.github.halysongoncalves:pugnotification:$pug_notifications"
 }
