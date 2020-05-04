@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 android {
+    viewBinding.enabled = true
     lintOptions {
         abortOnError false
     }
