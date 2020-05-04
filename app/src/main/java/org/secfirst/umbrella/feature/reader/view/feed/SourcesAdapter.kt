@@ -19,7 +19,7 @@ class SourcesAdapter(val feedSources: List<FeedSource>) : BaseAdapter() {
                 orientation = LinearLayout.VERTICAL
                 checkBox(feedSources[position].name) {
                     typeface = medium
-                    textColor = ContextCompat.getColor(ctx, R.color.feedSources_color)
+                    textColor = ContextCompat.getColor(this@with, R.color.feedSources_color)
                     textSize = 16f
                     isChecked = feedSources[position].lastChecked
                     setOnClickListener { updateChecked(feedSources[position].name, isChecked) }
