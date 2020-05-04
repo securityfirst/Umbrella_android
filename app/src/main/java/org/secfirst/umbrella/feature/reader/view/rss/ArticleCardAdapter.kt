@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.feature.reader.view.rss
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,14 +45,14 @@ class ArticleCardAdapter(private val onClickLearnMore: (Article) -> Unit) : Recy
                 itemView.cardOpenLink.setOnClickListener { clickListener(this@CardHolder) }
                 itemView.cardShare.setOnClickListener { itemView.context.shareLink(link) }
                 if (imageLink_ != "")
-                    Picasso.with(itemView.context)
+                    Picasso.get()
                             .load(imageLink_)
-                            .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.default_image))
+                            .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.default_image) ?: ColorDrawable(Color.TRANSPARENT))
                             .into(itemView.cardImage)
                 else
-                    Picasso.with(itemView.context)
+                    Picasso.get()
                             .load("nothing")
-                            .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.default_image))
+                            .placeholder(ContextCompat.getDrawable(itemView.context, R.drawable.default_image) ?: ColorDrawable(Color.TRANSPARENT))
                             .into(itemView.cardImage)
             }
         }
