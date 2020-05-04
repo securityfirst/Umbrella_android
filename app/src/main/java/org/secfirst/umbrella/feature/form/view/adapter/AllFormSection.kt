@@ -4,7 +4,7 @@ package org.secfirst.umbrella.feature.form.view.adapter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
-import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import kotlinx.android.synthetic.main.all_form_item_view.view.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.form.Form
@@ -12,7 +12,7 @@ import org.secfirst.umbrella.misc.HeaderViewHolder
 
 class AllFormSection(private val onItemClick: (Form) -> Unit,
                      private val titleSection: String,
-                     private val forms: MutableList<Form>) : StatelessSection(SectionParameters.builder()
+                     private val forms: MutableList<Form>) : Section(SectionParameters.builder()
         .itemResourceId(R.layout.all_form_item_view)
         .headerResourceId(R.layout.head_section)
         .build()) {
