@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.feature.login.view
 
 import android.app.AlertDialog
+import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import com.bluelinelabs.conductor.RouterTransaction
@@ -39,7 +40,7 @@ class LoginController : BaseController(), LoginView {
         setUpToolbar()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         presenter.onAttach(this)
         val view = inflater.inflate(R.layout.login_view, container, false)
         resetPasswordView = inflater.inflate(R.layout.account_reset_password_alert, container, false)

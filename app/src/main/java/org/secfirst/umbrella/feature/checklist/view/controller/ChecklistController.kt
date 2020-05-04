@@ -57,7 +57,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         checklistView = inflater.inflate(R.layout.checklist_view, container, false)
         checklistViewDialog = inflater.inflate(R.layout.checklist_add_item_dialog, container, false)
         checklistDialog = AlertDialog.Builder(context)

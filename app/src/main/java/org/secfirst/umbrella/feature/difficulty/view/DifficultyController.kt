@@ -40,7 +40,7 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         presenter.onAttach(this)
         presenter.submitDifficulty(subjectId)
         return inflater.inflate(R.layout.difficulty_view, container, false)

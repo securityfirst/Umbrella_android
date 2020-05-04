@@ -39,12 +39,12 @@ class SearchController(bundle: Bundle) : BaseController(bundle), SearchView {
                 setUpToolbar()
             }
     
-        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
                 presenter.onAttach(this)
+                mainActivity.registerSearchProvider(presenter as AdvancedSearchPresenter)
                 mainActivity.intent.action?.let { mainIntentAction = it }
                 presenter.submitSearchQuery(query)
                 mainActivity.hideNavigation()
-                mainActivity.registerSearchProvider(presenter as AdvancedSearchPresenter)
                 mainActivity.intent.action = Intent.ACTION_SEARCH
                 mainActivity.intent.putExtra(SearchManager.QUERY, query)
                 return inflater.inflate(R.layout.searching_view, container, false)

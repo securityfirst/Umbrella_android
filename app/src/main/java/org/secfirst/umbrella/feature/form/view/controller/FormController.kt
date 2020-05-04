@@ -59,7 +59,7 @@ class FormController(bundle: Bundle) : BaseController(bundle), FormView, Stepper
         setUpToolbar()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.form_view, container, false)
         createFormUI()
         totalScreens = activeForm.form.screens.size

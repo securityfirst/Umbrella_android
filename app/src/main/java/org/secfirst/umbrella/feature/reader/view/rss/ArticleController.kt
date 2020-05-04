@@ -44,7 +44,7 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         setHasOptionsMenu(true)
         return inflater.inflate(R.layout.article_view, container, false)
     }

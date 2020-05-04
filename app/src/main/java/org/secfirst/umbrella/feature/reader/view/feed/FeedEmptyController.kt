@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.feature.reader.view.feed
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class FeedEmptyController : BaseController(), ReaderView {
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.feed_empty_view, container, false)
         presenter.onAttach(this)
         presenter.prepareView()

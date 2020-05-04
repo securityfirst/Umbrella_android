@@ -42,7 +42,7 @@ class HostChecklistController(bundle: Bundle) : BaseController(bundle), Checklis
         hostChecklistTab?.setupWithViewPager(hostChecklistPager)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.host_checklist, container, false)
         presenter.onAttach(this)
         if (uriString.isNotBlank()) presenter.submitChecklistById(uriString)

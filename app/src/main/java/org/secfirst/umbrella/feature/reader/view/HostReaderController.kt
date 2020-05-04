@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.feature.reader.view
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +21,7 @@ class HostReaderController : BaseController() {
         feedTab?.setupWithViewPager(feedPager)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.host_reader_view, container, false)
         view.toolbar.let {
             mainActivity.setSupportActionBar(it)

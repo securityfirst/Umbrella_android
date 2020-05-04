@@ -47,7 +47,7 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
         enableNavigation(false)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.checklist_custom_view, container, false)
         presenter.onAttach(this)
         adapter = ChecklistCustomAdapter()

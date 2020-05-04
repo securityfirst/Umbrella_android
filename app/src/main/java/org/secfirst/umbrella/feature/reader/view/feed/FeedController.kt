@@ -40,7 +40,7 @@ class FeedController(bundle: Bundle) : BaseController(bundle), ReaderView {
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.feed_view, container, false)
         view.feedItemRecyclerView.layoutManager = LinearLayoutManager(context)
         presenter.onAttach(this)
