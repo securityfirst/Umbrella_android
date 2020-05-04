@@ -23,7 +23,7 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
         putParcelable(EXTRA_SELECTED_SEGMENT_DETAIL, markdown)
     })
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.segment_detail, container, false)
         loadMarkdown(view)
         return view

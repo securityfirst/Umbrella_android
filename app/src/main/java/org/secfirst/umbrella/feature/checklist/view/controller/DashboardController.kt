@@ -84,7 +84,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.checklist_dashboard, container, false)
         customChecklistView = inflater.inflate(R.layout.checklist_custom_dialog, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)

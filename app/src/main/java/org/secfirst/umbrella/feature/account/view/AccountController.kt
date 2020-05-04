@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.feature.account.view
 
 import android.app.AlertDialog
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -54,7 +55,7 @@ class AccountController : BaseController(), AccountView {
         enableNavigation(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
 
         accountView = inflater.inflate(R.layout.account_view, container, false)
         passwordView = inflater.inflate(R.layout.account_password_alert, container, false)

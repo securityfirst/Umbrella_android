@@ -13,9 +13,9 @@ import android.view.View.VISIBLE
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import com.bluelinelabs.conductor.Conductor
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
+import com.bluelinelabs.conductor.attachRouter
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
         super.onCreate(savedInstanceState)
         setLanguage()
         setContentView(R.layout.main_view)
-        router = Conductor.attachRouter(this, baseContainer, savedInstanceState)
+        router = attachRouter(baseContainer, savedInstanceState)
         performDI()
         isDeepLink()
         initNavigation()
@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
             searchEditText.setTextColor(resources.getColor(R.color.white))
             searchEditText.setHintTextColor(resources.getColor(R.color.white))
             // Assumes current activity is the searchable activity
-            if (searchManager.getSearchableInfo(componentName) != null)
+            if (componentName!=null && searchManager.getSearchableInfo(componentName) != null)
                 setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false) // Do not iconify the widget; expand it by default
             isSubmitButtonEnabled = true

@@ -93,7 +93,7 @@ class HostFormController(bundle: Bundle) : BaseController(bundle), FormView {
         presenter.submitShareFormHtml(activeForm)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         return inflater.inflate(R.layout.form_host_view, container, false)
     }
 

@@ -8,8 +8,9 @@ import com.raizlabs.android.dbflow.config.DatabaseConfig
 import com.raizlabs.android.dbflow.config.FlowConfig
 import com.raizlabs.android.dbflow.config.FlowLog
 import com.raizlabs.android.dbflow.config.FlowManager
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.HasAndroidInjector
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
@@ -28,12 +29,12 @@ import java.util.concurrent.Executors
 import javax.inject.Inject
 
 
-class UmbrellaApplication : Application(), HasActivityInjector {
+class UmbrellaApplication : Application(), HasAndroidInjector {
 
     @Inject
-    internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+    internal lateinit var activityAndroidInjector: DispatchingAndroidInjector<Any>
 
-    override fun activityInjector() = activityDispatchingAndroidInjector
+    override fun androidInjector(): AndroidInjector<Any> = activityAndroidInjector
 
     companion object {
         lateinit var instance: UmbrellaApplication

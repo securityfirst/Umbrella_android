@@ -49,7 +49,7 @@ class LessonController : BaseController(), LessonView {
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.lesson_view, container, false)
         presenter.onAttach(this)
         presenter.submitLoadAllLesson()

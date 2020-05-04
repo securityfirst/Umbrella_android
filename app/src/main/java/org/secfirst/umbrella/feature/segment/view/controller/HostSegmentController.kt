@@ -56,7 +56,7 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         hostView = inflater.inflate(R.layout.host_segment_view, container, false)
         presenter.onAttach(this)
         initView(hostView)

@@ -33,7 +33,7 @@ class AboutController(bundle: Bundle) : BaseController(bundle) {
         setUpToolbar()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         return inflater.inflate(R.layout.about, container, false)
     }
 

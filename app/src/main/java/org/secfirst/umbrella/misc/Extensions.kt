@@ -1,6 +1,7 @@
 package org.secfirst.umbrella.misc
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Context
@@ -8,10 +9,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.net.ConnectivityManager
+import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -29,14 +30,10 @@ import org.jsoup.select.Elements
 import org.secfirst.umbrella.BuildConfig
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.UmbrellaApplication
-import org.secfirst.umbrella.data.database.difficulty.Difficulty
-import org.secfirst.umbrella.data.database.lesson.Module
-import org.secfirst.umbrella.data.database.lesson.Subject
 import org.secfirst.umbrella.feature.main.MainActivity
 import java.io.*
 import java.nio.charset.Charset
 import java.util.*
-import java.util.logging.Logger
 import kotlin.reflect.KClass
 
 
@@ -143,12 +140,7 @@ fun appContext(): Context = UmbrellaApplication.instance.applicationContext
 fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
         ?: ""
 
-enum class TypeHelper(val value: String) {
-    MODULE(Module::class.java.name),
-    SUBJECT(Subject::class.java.name),
-    DIFFICULTY(Difficulty::class.java.name)
-}
-
+@Suppress("DEPRECATION")
 fun Context.setLocale(lang: String) {
     val res = resources
     val dm = res.displayMetrics
@@ -157,8 +149,13 @@ fun Context.setLocale(lang: String) {
     res.updateConfiguration(conf, dm)
 }
 
+@SuppressLint("NewApi")
+@Suppress("DEPRECATION")
 fun deviceLanguage(): String {
-    val defaultLanguage = Resources.getSystem().configuration.locale.language
+    val defaultLanguage = when(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        true -> Resources.getSystem().configuration.locales.get(0).language
+        false -> Resources.getSystem().configuration.locale.language
+    }
 
     if (defaultLanguage == "gb")
         return "en"
@@ -167,21 +164,10 @@ fun deviceLanguage(): String {
     return defaultLanguage
 }
 
-fun Context.createNotification(title: String, body: String, channelId: String, id: Int) {
-    val notification = NotificationCompat.Builder(this, channelId)
-            .setContentTitle(title)
-            .setContentText(body)
-            .setSmallIcon(R.drawable.umbrella190)
-            .build()
-    val notificationManagerCompat = NotificationManagerCompat.from(this)
-    notificationManagerCompat.notify(id, notification)
-}
-
 fun TextNode.wrapTextWithElement(strToWrap: String, wrapperHTML: String) {
     var textNode = this
     while (textNode.text().toLowerCase().contains(strToWrap.toLowerCase())) {
-        var indexPosition = 0;
-        indexPosition = textNode.text().toLowerCase().indexOf(strToWrap.toLowerCase())
+        val indexPosition: Int = textNode.text().toLowerCase().indexOf(strToWrap.toLowerCase())
         val rightNodeFromSplit =
                 textNode.splitText(indexPosition)
         if (rightNodeFromSplit.text().length > strToWrap.length) {

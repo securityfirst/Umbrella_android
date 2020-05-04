@@ -45,7 +45,7 @@ class RssController : BaseController(), ReaderView {
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.rss_view, container, false)
         rssDialogView = inflater.inflate(R.layout.add_rss_dialog, container, false)
         alertDialog = AlertDialog

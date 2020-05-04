@@ -25,7 +25,7 @@ open class LessonHeader(private val moduleId: String,
             viewHolder.iconHeader.backgroundDrawable = ContextCompat.getDrawable(appContext(), R.drawable.ic_fav_selected)
             viewHolder.iconHeader.setColorFilter(ContextCompat.getColor(appContext(), android.R.color.black))
         } else
-            Picasso.with(viewHolder.iconHeader.context)
+            Picasso.get()
                     .load(File(iconPath))
                     .resize(appContext().resources.getDimensionPixelSize(R.dimen.width_icon),
                             appContext().resources.getDimensionPixelSize(R.dimen.height_icon))

@@ -4,7 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter
-import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection
+import io.github.luizgrp.sectionedrecyclerviewadapter.Section
 import kotlinx.android.synthetic.main.active_form_item_view.view.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.form.ActiveForm
@@ -15,7 +15,7 @@ class ActiveFormSection(private val onEditItemClick: (ActiveForm) -> Unit,
                         private val onDeleteItemClick: (Int, ActiveForm) -> Unit,
                         private val onShareItemClick: (ActiveForm) -> Unit,
                         private val titleSection: String,
-                        private val activeForms: MutableList<ActiveForm>) : StatelessSection(SectionParameters.builder()
+                        private val activeForms: MutableList<ActiveForm>) : Section(SectionParameters.builder()
         .itemResourceId(R.layout.active_form_item_view)
         .headerResourceId(R.layout.head_section)
         .build()) {

@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
@@ -140,7 +141,7 @@ class SettingsController : BaseController(),
                 .registerReceiver(mMessageReceiver, IntentFilter(ContentService.EXTRA_CONTENT_SERVICE_ID))
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         intentService = Intent(context, ContentService::class.java)
         mainView = inflater.inflate(R.layout.account_settings_view, container, false)
         exportView = inflater.inflate(R.layout.settings_export_dialog, container, false)

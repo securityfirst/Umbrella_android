@@ -3,6 +3,7 @@ package org.secfirst.umbrella.feature.reader.view.feed
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -62,7 +63,7 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         presenter.isSkipPassword()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         presenter.onAttach(this)
         val mainView = inflater.inflate(R.layout.feed_settings_view, container, false)
         refreshIntervalView = inflater.inflate(R.layout.feed_interval_dialog, container, false)

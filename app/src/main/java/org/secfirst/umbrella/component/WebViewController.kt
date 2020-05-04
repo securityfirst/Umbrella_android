@@ -45,7 +45,7 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
         super.onDestroyView(view)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         return inflater.inflate(R.layout.web_view, container, false)
     }
 

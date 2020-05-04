@@ -81,7 +81,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                 .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         setHasOptionsMenu(true)
         tabControl = parentController as HostSegmentTabControl
         viewSegment = inflater.inflate(R.layout.segment_view, container, false)
