@@ -22,7 +22,7 @@ F-Droid fingerprint: 39EB57052F8D684514176819D1645F6A0A7BD943DBC31AB101949006AC0
 ## Example Usage
 Umbrella is designed for everyone (people looking to increase their security, folks living in high risk areas, regular travellers, business people, techies, journalists, NGO staff, aid workers, human rights defenders, social workers, environmental activists etc).
 
-However, when we built Umbrella we tried to keep in mind the story of Glen Greenwald and Edward Snowden. Greenwald couldn't communicate with Snowden at the start because he found it cumbersome to setup encryption (he nearly missed the one of biggest storys of the decade because of this!). Also, when he (and Laura Poitras) travelled to Hong Kong - they didn't have much knowledge about how to meet securely with Snowden and detect surveillance. This is common problem for journalists and acitivists. Umbrella is designed to solve this problem (and others) by having nearly everything they would have needed to know in the one place - in their pocket.
+However, when we built Umbrella we tried to keep in mind the story of Glen Greenwald and Edward Snowden. Greenwald couldn't communicate with Snowden at the start because he found it cumbersome to setup encryption (he nearly missed the one of biggest storys of the decade because of this!). Also, when he (and Laura Poitras) travelled to Hong Kong - they didn't have much knowledge about how to meet securely with Snowden and detect surveillance. This is common problem for journalists and activists. Umbrella is designed to solve this problem (and others) by having nearly everything they would have needed to know in the one place - in their pocket.
 
 ## Main Parts of Umbrella
 **Introduction:**
@@ -65,7 +65,7 @@ These lessons mostly cover the security of information that is stored on your co
 * Backing Up
 
 **Communications:**
-These lessons mostly cover the security of information when it is sent or recieved.
+These lessons mostly cover the security of information when it is sent or received.
 
 * Mobile Phones
 * Making a call
@@ -73,7 +73,7 @@ These lessons mostly cover the security of information when it is sent or reciev
 * Email
 * The Internet
 * Social Media
-* Radios and Satelite Phones
+* Radios and Satellite Phones
 
 
 **Travel:**
@@ -110,7 +110,7 @@ Explains places to get extra help if you have a problem.
 
 
 ## Tools
-These are the tools currrently covered in the tool guide. (A number of them are due to be changed, removed or updated.)
+These are the tools currently covered in the tool guide. (A number of them are due to be changed, removed or updated.)
 
 * Adium
 * Android
