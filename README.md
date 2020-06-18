@@ -168,7 +168,7 @@ Unfortunately stuff breaks sometimes. If you are in a hurry and have found a cod
 If the issue you have identified is a security risk to users, please
 read the documentation about our responsible disclosure policy here:
 
-<https://secfirst.org/legal.html>
+<https://secfirst.org/legal>
 
 If you wish to contact us via PGP, please drop a mail to
 <rory@secfirst.org> (2C1D3B4D)
