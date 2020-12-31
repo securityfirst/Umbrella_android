@@ -164,7 +164,7 @@ Contains explanations of the various terms used in the app.
 Explains the licences that we use for and by Umbrella. Also says a big THANKYOU to everyone who's work we built on to make it happen.
 
 ## Dashboard Feed Sources
-![](https://github.com/rorymbyrne/Umbrella_android/blob/master/DASHBOARDLOGOS.png?raw=true)
+![](/DASHBOARDLOGOS.png?raw=true)
 
 These are the sources that we currently include for real-time updated security customFeeds. For privacy reasons, users never connect directly to these services. We are always looking for more useful sources that will help users keep updated on the move.
 * [ReliefWeb / UN](http://reliefweb.int): excellent physical security updates that amalgamate information from the UN and various NGOs - though not available in every country
