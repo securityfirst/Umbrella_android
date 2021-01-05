@@ -125,7 +125,7 @@
     <string name="error_password">Error when try to change your password.</string>
     <string name="password_changed">Password changed.</string>
     <string name="app_calc">SimpleCalc</string>
-    <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to it’s normal state.</string>
+    <string name="hands_shake_info_description">To unmask it you need to shake the device when in SimpleCalc app. That will return the app to its normal state.</string>
     <string name="enable_masking_mode">Enable Mask</string>
     <string name="empty" translatable="false"> </string>
     <string name="password_success">Password was successfully created</string>
