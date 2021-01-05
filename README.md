@@ -8,13 +8,16 @@ Umbrella is an Android mobile app developed by [Security First](https://www.secf
 
 <a href="https://play.google.com/store/apps/details?id=org.secfirst.umbrella">
   <img alt="Umbrella on Google Play Store"
-       src="https://github.com/securityfirst/Umbrella_android/blob/master/GOOGLEPLAY1.png?raw=true" height="76" width="220"/></a href>
+       src="/GOOGLEPLAY1.png?raw=true" height="76" width="220"/></a href>
        <a href="https://www.amazon.co.uk/Security-First-Umbrella-made-easy/dp/B01AKN9M1Y">
   <img alt="Umbrella on Amazon App Store"
-       src="https://github.com/securityfirst/Umbrella_android/blob/master/AMAZON1.png?raw=true" height="80" width="220"/></a href>
+       src="/AMAZON1.png?raw=true" height="80" width="220"/></a href>
 <a href="https://secfirst.org/fdroid/repo">
   <img alt="Umbrella on FDroid"
-       src="https://github.com/securityfirst/Umbrella_android/blob/master/FDROID1.png?raw=true" height="80" width="220" /></a href>
+       src="/FDROID1.png?raw=true" height="80" width="220" /></a href>
+<a href="https://apps.apple.com/us/app/umbrella-security/id1453715310">
+  <img alt="Umbrella on Apple App Store"
+       src="/APPSTORE1.png?raw=true" height="80" width="220" /></a href>
 
 F-Droid fingerprint: 39EB57052F8D684514176819D1645F6A0A7BD943DBC31AB101949006AC0BC228
 
