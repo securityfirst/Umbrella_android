@@ -4,7 +4,7 @@
 
 Umbrella is an Android mobile app developed by [Security First](https://www.secfirst.org) that provides human rights defenders with the information on what to do in any given security situation and the tools to do it. It allows the user to choose what they want to do, such as: protect data; securely make a call/email; securely access the internet; plan secure travel; protect their office/home; conduct counter-surveillance; or deal with kidnapping, arrest or evacuation. Once a situation is chosen, the app outlines what to do and what tools to use given your circumstances. This is followed by a simple checklist of recommended actions that can be customised, saved and shared securely. Umbrella’s Feed also provides users with an up-to-the-minute account of potential risks in their chosen location.
 
-## Installation
+## Installation on Android
 
 <a href="https://play.google.com/store/apps/details?id=org.secfirst.umbrella">
   <img alt="Umbrella on Google Play Store"
@@ -15,13 +15,17 @@ Umbrella is an Android mobile app developed by [Security First](https://www.secf
 <a href="https://secfirst.org/fdroid/repo">
   <img alt="Umbrella on FDroid"
        src="/FDROID1.png?raw=true" height="80" width="220" /></a href>
-<a href="https://apps.apple.com/us/app/umbrella-security/id1453715310">
-  <img alt="Umbrella on Apple App Store"
-       src="/APPSTORE1.png?raw=true" height="80" width="220" /></a href>
 
 F-Droid fingerprint: 39EB57052F8D684514176819D1645F6A0A7BD943DBC31AB101949006AC0BC228
 
+## Available on iOS
 
+[Umbrella is available on iOS](https://github.com/securityfirst/Umbrella_iOS) devices too. 
+
+<a href="https://apps.apple.com/us/app/umbrella-security/id1453715310">
+  <img alt="Umbrella on Apple App Store"
+       src="/APPSTORE1.png?raw=true" height="80" width="220" /></a href>
+       
 ## Example Usage
 Umbrella is designed for everyone (people looking to increase their security, folks living in high-risk areas, regular travellers, business people, techies, journalists, NGO staff, aid workers, human rights defenders, social workers, environmental activists, etc).
 
