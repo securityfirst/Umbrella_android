@@ -66,9 +66,9 @@ These lessons mostly cover the security of information that is stored on your co
 
 - Managing information
 - Malware
-- Password
+- Passwords
 - Protecting Files
-- Safety Deleting
+- Safely Deleting
 - Backing Up
 - Protect your workplace
 - Workplace raids
