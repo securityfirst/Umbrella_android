@@ -2,391 +2,316 @@
  
 Dates and release notes for some production releases of the Umbrella Android app.
  
-## 1.0.32
+### 1.0.32
 2020-05-06
-- Fix for layout making submission in Advanced search difficult
-- Added next and submit buttons to keyboard in Advanced search
-- Fix mask mode issues
-- Prevent sleep at initial download
-- Other stability improvements
+- Fixed bugs, deprecation warnings and unused methods
+- Upgrated code and other dependencies
 
-## 1.0.31
+### 1.0.31
 2020-05-03
-- Fix for layout making submission in Advanced search difficult
-- Added next and submit buttons to keyboard in Advanced search
-- Fix mask mode issues
-- Prevent sleep at initial download
-- Other stability improvements
+- Fixed bugs to improve app stability
  
-## 1.0.29
+### 1.0.29
 2019-02-27
-- Fix for layout making submission in Advanced search difficult
 - Added next and submit buttons to keyboard in Advanced search
-- Fix mask mode issues
-- Prevent sleep at initial download
+- Added ability to prevent sleep at initial download
+- Fixed layout that made submission in Advanced search difficult
+- Fixed mask mode issues
 - Other stability improvements
 
-## 1.0.28
+### 1.0.28
 2019-11-13
-- Fixes for lesson loading speed
-- Add french language
+- Added French language
+- Fixed bug affecting lesson loading speed
 
-## 1.0.27
+### 1.0.27
 2019-10-08
-- Fixes for issues with database access on certain devices
+- Fixed issues with database access on certain devices
  
-## 1.0.24
+### 1.0.24
 2019-09-03
-- Fix for the reset database when the database file has been corrupted
-- Only show pathways dialog if pathways are found 
+- Added way to only show pathways dialog if pathways are found 
+- Fixed issue with database reset when the database file has been corrupted
 
-## 1.0.23
+### 1.0.23
 2019-08-20
-- Fix for the crash on startup when doing the password check
+- Added new translations in Chinese and other languages
+- Added share button to checklist dashboard and icons
+- Fixed crash on startup when doing the password check
+- Fixed some crashes reported on Google Play console
+- Fixed layout bugs with checklist and lesson dashboards
+- Fixed bug affecting export PDF to different languages
+- Removed Crashlytics, Fabric and Firebase
 
-- added some chinese translations
-- added share button to checklist dashboard
-- removed crashlytics and fabric and firebase
-- fixed some crashes reported on google play console
-- Added icons, button and fixed layout bugs
-- fixed export pdf to different languages
-- added new translations
-- fixed some layout issues on checklist and lesson dashboards
-
-## 1.0.22
+### 1.0.22
 2019-07-18
-- Umbrella now available in Arabic, Russian and Farsi
+- Added Arabic, Russian and Farsi languages
 - Added pathways to help new users find content
-- Assorted fixes
+- Added warning dialog box for switching language and repo
+- Added "select all" button to feed sources
+- Changed glossary order alphabetically
+- Fixed logout issue
+- Fixed some Spanish and Chinese translations
+- Fixed issue with switch language warning
 
-
-- fixed an issue with logout
-- fixed some spanish and chinese translations
-- fixed navigation translation in spanish
-- added warning dialog box for switching language and repo
-- added select all button to feed sources
-- fixed issue with switch language warning
-- added Arabic, Farsi, Russian
-- glossary ordered alphabetically
-- fixed some translations
-
-## 1.0.12
+### 1.0.12
 2019-04-30
-- New topics such as dealing with online abuse, internet shutdowns, dangerous assignments and much much more.
-- Update of all existing content
-- Now you can share lessons as well as checklists
-- Easier navigation
-- Custom checklists
-- Advanced search
-- Export and import your data to a new device
-- Change the content source to your own custom content
-- Stability improvements, other bug fixes
+- Added new topics such as dealing with online abuse, internet shutdowns, dangerous assignments and much much more.
+- Added feature to share lessons as well as checklists
+- Added advanced search
+- Added feature to export and import your data to a new device
+- Added way to change the content source to your own custom content
+- Added export option to checklist
+- Added ability to keep screen on during refresh from server
+- Added option to delete all RSS feeds
+- Added ability to change repo URL without adding .git at the end
+- Changed navigation for easier use
+- Fixed custom checklist issue and HTML conversion for checklist
+- Fixed flags and responsivity on smaller screens
+- Fixed crashed when searching from RSS tab and calculator crash
+- Fixed default language and language switch
+- Fixed checklist export bug and make export feature to work consistently
+- Fixed bug with some strings not being translated
+- Fixed bug when language switching back to default after app restart
+- Fixed other bugs and stability 
+- Updated of all existing content
 
-- keep screen on during refresh from server
-- added export option to checklist
-- fixed html conversion for checklist
-- Checklist export and Floating button position fixes
-- change repo url without adding .git at the end
-- Fix flags and responsivity on smaller screens
-- fixed crash when searching from rss tab
-- fixed default language and language switch
-- Fix for some string not translated
-- fixed language switching back to default after app restart
-- fixed calculator crash
-- fixed export not working consistently
-- rss feeds can all be deleted
-
-## 1.0.11
+### 1.0.11
 2019-04-23
-- modified feed settings interaction
-- fixed favorite checklist not being deleted from dashboard
-- added hints to advanced search
-- password not asked again in feeds after setting it
-- fixed switch from server string, fixed navigation labels, calculator navigation fix on app closed
-- Fix for deeplink and deeplink navigation
-- updated translations
-- navigation fixes
-- added logout button, fixed logout
-- calculator navigation fix on app closed
-- Disable advanced search in Login screen.
-- added page to tour screen
-- fix for feed images
+- Added hints to advanced search
+- Add ability for password to be not asked again in feeds after setting it
+- Added logout feature
+- Added page to tour screen
+- Changed feed settings interaction
+- Fixed favorite checklist not being deleted from dashboard
+- Fixed switch from server, navigation issues and calculator navigation
+- Fixed deeplink and deeplink navigation
+- Fixed issue with feed images
+- Updated translations
+- Removed advanced search in Login screen.
 
-
-## 1.0.10
+### 1.0.10
 2019-04-03
-- added autocomplete function to location for rss feed
-- Fix for export data and empty views
-- Fix form issues with options, deeplinks and advanced search filters
-- Updated app icon and tour screens layout fixes
-- enable deletion of rss feeds added by the user
-- Enable mask app.
+- Added autocomplete function to location for RSS feed
+- Added option to delete of RSS feeds added by the user
+- Fixed tour screen layout
+- Fixed mask issues
+- Updated app icon
 
-
-## 1.0.7
+### 1.0.7
 2019-03-22
-- Empty view for Favorites lessons, Fix for export data and empty view
-- fixed advanced search filters, deeplinks and form issue with options
-- device now go in sleep mode when app is idle
-- Fixes of article card, feed names, duplicated RSS, feed dialog, invalid RSS
-- make error when adding wrong RSS url clearer
+- Added enhancement that enables device now go in sleep mode when app is idle
+- Fixed export data feature and empty views
+- Fixed form issues with options, deeplinks and advanced search filters
+- Fixed article card, feed names and dialog, duplicated and invalid RSS
+- Changed error when adding wrong RSS URL to improve clarity
 
-## 1.0.6
+### 1.0.6
 2019-03-20
-- Added a progress dialog, increase database speed, Release resource after OS kill the app
-- Clicking on checklist in dashboard leads to the checklist in lesson
-- Show a progress when clicked switch server.
-- Add dialog to download additional content
+- Added way to go to the checklist in lesson upon clicking on checklist in dashboard
+- Added a progress dialog
+- Added performance improvements
+- Added dialog to download additional content
 
-## 1.0.3
+### 1.0.3
 2019-03-16
-- Change your language dialog.
-- Translated strings for Chinese and Spanish.
-- Checklist and database export fixes
-- Changed the style of background menu.
-- Add flag to the setting, notification function
-- Custom checklist fixes
-- fixed progress not updating when adding items to custom checklist
+- Added dialog to change your language
+- Added translated strings for Chinese and Spanish
+- Added notification functionality
+- Added flags to language setting
+- Changed background menu style
+- Fixed checklist and database export bugs
+- Fixed bug that stops progress from updating when adding items to custom checklist
 
-
-## 0.9.9
+### 0.9.9
 2019-03-01
-- Password validation improvements
-- move switch server view to account
-- Changed the style of form's screen.
-- Fix for lesson icon, share database, custom checklist
+- Added password validation improvements
+- Add option to share database
+- Changed form styling
+- Fixed lesson icon and custom checklist
 
-## 0.9.0
+### 0.9.0
 2019-02-19
-- Styling fixes and advanced search implementation
-- Deeplink for forms, checklists, lessons
-- bottom navigation and other layout updates
-- Added and positioned icons
+- Added deeplinks for Forms, Checklists, Lessons
+- Added new icons
+- Fixed styling and advanced search implementation
+- Updated bottom navigation and other layouts
 
-
-## 0.7.0
+### 0.7.0
 2019-02-05
-- Add existing whitelabel development 
-- difficult category, difficult feature
-- Toolbars for lessons, article, web view, form and difficulty. 
-- Layout changes
-- save the preferred topic by user.
-- bug fix - save markdowns and checklist of all subcategories.
-- enable glossary on lesson menu
-- Fix - pick up the right difficulty
-- checklist UI
-- Lesson navigation update
-- show checklist inside the lessons tab
-- go to checklist by checklist button
-- Checklist progress, checklist dashboard, favorite checklist, checklist UI
-- improve peformance of markdowns
-- switch server feature setting
-- bug fix- tools lesson
-- Feed UI update, refresh interval dialog, feed sources fixes, checklist colors
-- share checklist
-- bug fix for delete form and save form draft
-- Fixes and layout for checklist items
-- Feed autocomplete location, layout changes
-- Feed lists and feed source changes
-- Delete feed location, back feed settings when doesn't have data.
-- Fixes for database import and export
-- Location setting, refresh interval setting, feed source setting
-- Update UI of checklist and the form
-- Delete checklist and check item
-- Add custom checklist to dashboard
-- Export lessons as html or pdf
-- Export Lessons to HTML with images
-- Added checklist difficulty to checklists dashboard
-- Improved password workflow
-- Added options to add html to checklist items and made link clickable as requested here
-- Set mask mode, launch app with SimpleCalc icon, mask mode improvements
-- Delete custom checklist, Added option to add and edit items of custom checklist
-- reset password on settings
-- Menu layout and icons
-- Fix for reset password (After reset the password, the application doesn't open)
-- Performance and stability improvements
-- Fix for bookmarked
-- Better approch to open favorite
-- Quit app with back button.
-- Enable app only portrait mode
-- Layout fixes for header, forms, small devices and feed
-- Long click for edit a checklist item, checklist item styling
+- Added existing whitelabel development 
+- Added toolbars for lessons, article, web view, forms and difficulty
+- Added ability to save the preferred topic by user
+- Added Glossary to Lessons menu and Checklists to Lessons tab
+- Added Checklist progress, Checklist dashboard, Checklist sharing and favorite Checklist features
+- Added ability to delete Checklists and check items, and to long-press to edit a Checklist item
+- Added "switch server" to Settings page
+- Added Feed location autocomplete and delete feed option
+- Added options to export lessons as HTML or PDF, add HTML to Checklist items and make links clickable
+- Added mask mode and ability to launch SimpleCalc with icon
+- Added reset password to Settings
+- Added way to quit app with "back" button
+- Changed Feed list and Feed sources
+- Changed password workflow to improve UX
+- Fixed issues with selecting difficulty
+- Fixed Markdown and Checklist issues
+- Fixed bug with deleting Form and saving Form draft
+- Fixed bugs with bookmarks and database import/export
+- Fixed bug that prevents app from opening after password reset
+- Updated UI for Feeds, Checklists, navigation, Checklist and check items
+- Other performance and stability improvements
 
-
-## 0.5.0
+### 0.5.0
 2018-07-31
-- Fix for the lesson deep link routes with category and difficulty
-- Other bug fixes
+- Fixed bug that affected the lesson deeplink routes with category and difficulty
+- Fixed other bugs
 
-## 0.4.9
+### 0.4.9
 2018-06-05
-- Migration and sync update
-- Dependencies fixes
-- Search fixes, Allowed users to search up to 2 characters
-- Bug fix - Navigation form
 - Added Chinese translation phrases
-- Bug fix - change lesson difficulty
-- Fix for the NPE on some deeplinks
+- Fixed search issues and enhanced search ability
+- Fixed navigation bug
+- Fixed bug that affected abiity to change lesson difficulty
+- Fixed bugs on some deeplinks
 
-## 0.4.8
+### 0.4.8
 2018-05-22
-- Code refactoring
-- Bug fix - Link to lesson by difficult level doesn't work
-- Bug fix for: clicking the back arrow when filling out a form brings you back to the my checklists screen not to the forms screen
+- Fixed bug that stopped link to lesson by difficult level from working
+- Fixed bug that brings you back to the "My Checklists" screen instead of the "Forms" screen after clicking the back arrow when filling out a form
+- Refactored code
 
-## 0.4.6
+### 0.4.6
 2018-05-17
-- Select language and export data fixes
-- Open terms and conditions in app
+- Added feature to open Terms and Conditions in app
+- Fixed select language and export data bugs
  
-## 0.4.5
+### 0.4.5
 2018-02-28
-- Fixed feed when there's no information to show
 - Added internet access error
-- Fixed some bugs on checkList
-- Fixed total done value of the checklist
-- Added RSS feed and RSS dialog
-- Fix for: Set your feed/set location leads to "this address is not valid" error.
-- Added Custom Feed on main menu.
-- Refactoring Custom Feed
-- Created Feed/Articles feature
-- Polished custom feed, feed layout changes
-- Make feed list able to Share and Delete
-- Other bug fixes
-- Dialog to remove feed
-- WebView activity for open RSS article.
-- Changed background color, added default images, new icons
+- Added RSS feed, RSS dialog and way to read RSS article in app
+- Added Feed/Articles feature and dialog
+- Added default images and new icons
+- Added way to share and delete feed list
+- Changed background color
+- Fixed feed when there's no information to show
+- Fixed checklist total done value and other checklist bugs
+- Fixed "this address is not valid" error when setting feed location
+- Fixed other bugs
+- Refactored code
+- Updated feed layout
 
-## 0.4.4
+### 0.4.4
 2018-01-29
-- Gradle and pinning updates
-- Add missing background
-- Update missing Spanish strings
-- Fix for bug: Log-out asks to create new password when already set
-- Fixes for dashboard layout, show refresh interval, feed list layout fixes
-- Fixes for swipe to refresh
-- Fixes for location dialog, empty feed view, location component
-- Fix "set" button positioning and other dashboard layout fixes
-- Bug fix for: Attempting to share a filled out form leads to a crash
-- Polish UI on editing forms
-- Bug fix location and location dialog
-- Fix for NPE, exception errors and crashes
-- New design of masking feature, added "Shake to unmask" dialog
-- Fix share form bug
-- Code refactoring
-- Fix for check items and difficulties
-- Fix for difficulty selection 
-- Fixes for forms
-- Fix for search NPE
-- Fix for the missing glossary intro page
-- Fixes for non-localized strings and localization glitches
-- Added a missing translations
-- Fixing support libraries
-- Bug fix - missing words in location field
-- Fix Share form error, make possible to share html file from Whatsapp.
-- Other bug fixes
-- set up crashlytics
+- Added missing words, glossary, background and translations
+- Added "Shake to unmask" dialog
+- Added feature to share HTML file using Whatsapp
+- Change design of masking feature
+- Changed UI for editing forms
+- Fixed bug that causes log-out to ask to create new password when already set
+- Fixed bugs that affected dashboard layout and refresh interval
+- Fixed feed list layout and "swipe to refresh" issue
+- Fixed location issues, location dialog, empty feed view and location component
+- Fixed bug that leads to crash when attempting to share a filled-out form
+- Fixed NPE errors, crashes and support libraries
+- Fixed lesson difficulty selection issue
+- Fixed form, check list items and difficulty selection issues
+- Fixed other bugs
+- Updated missing Spanish strings
 
-## 0.3.9
+### 0.3.9
 2018-11-14
-- Invalidate options menu to refresh after language change
-- Fixes for difficulty
-- Default language selection when no language set
-- API fixes
-- added progress bar
-- Fixes for check items rendering
-- Remove password as a requirement for server refresh
-- Dependencies updates
+- Added progress bar to checklist
+- Added default language selection when no language set
+- Fixed lesson difficulty selection issue
+- Fixed API bugs
+- Fixed check items rendering
+- Removed options menu to refresh after language change
+- Removed password as a requirement for server refresh
 
-## 0.3.8
+### 0.3.8
 2017-11-13
-- Fixes for localization
-- Code refactoring
+- Fixed localization issue
+- Refactored code
 
-## 0.3.7
+### 0.3.7
 2017-11-06
-- Dependency fixes
-- Styling fixes for checkmarks
-- Layout updates
+- Fixed styling for checkmarks
+- Updated layouts
 
-## 0.3.6
+### 0.3.6
 2017-06-30
-- Basic forms layouts 
-- Icons refreshed and other layout fixes
-- Basic pdf generation added
+- Added basic forms layouts and ability to view form as HTML
+- Added basic PDF generation
+- Fixed other layout issues
 - Added Multidex config and other compatibility fixes
-- View form as HTML 
-- Fixes to FormActivity and HTML output, padding fixes
 
-## 0.3.2
+### 0.3.2
 2017-06-06
-- Attach instead of view html 
-- Added html outputs for single item and toggle item 
-- Fix for content provider in a cache folder
-- layout fixes, dependencies and gradle updates
-- Small fixes for crashes
+- Added HTML outputs and ability to attach instead of view HTML
+- Fixed issue that that affect content provider in a cache folder
+- Fixed layout bugs
+- Fixed small bugs that caused crashes
 
-## 0.3.0
+### 0.3.0
 2017-04-10
-- Added mask mode
-- Added missing migration
-- Gradle and dependencies update
-- Added shake to mask and fixed the copy
-- prevent unmasking when out of focus
-- Increase sensitivity in masked mode to prevent accidental unmasking
-- Fix for bad token crash and NullPointerException
-- Fix for dashboard crash
+- Added mask mode and ability to shake to mask
+- Added ability to prevent unmasking when out of focus
+- Added increased sensitivity in masked mode to prevent accidental unmasking
+- Fixed bugs for bad token crash and NullPointerException
+- Fixed bug that crashes dashboard
 
-## 0.2.4
+### 0.2.4
 2017-02-20
-- Bug Fix for uncaught SQLite exception before the app has the chance to decrypt
+- Fixed bug for uncaught SQLite exception before the app has the chance to decrypt
 
-## 0.2.3
+### 0.2.3
 2017-02-02
-- Database, Gradle and dependencies updates
-- Fixed bug (Dashboard updates appear in the notification tray)
-- Using Timber for logging
-- Fix for login glitches
+- Added Timber for logging
 - Added change password action
-- Fixes to notification and login skip password settings
-- Code refactoring
-- Hide nav after shown first time 
-- Adding feed sources and language switch
-- added accept-language headers
-- added a missing spanish resource
-- Hide add sources menu temporarily
-- Add licences, terms and thank you
-- Other Bugfixes
+- Added login skip password settings
+- Added ability to hide navigation after shown first time 
+- Added feed sources and language switch
+- Added a missing Spanish resource
+- Added feature to hide add sources menu temporarily
+- Added licences, terms and thank you
+- Fixed login glitches
+- Fixed notification bugs
+- Fixed other bugs
+- Fixed bug that affected dashboard updates in the notification tray
+- Updated database and refactored code
 
-## 0.2.0
+### 0.2.0
 2016-10-06
-- Dependencies updates, added missing resources
-- added notifications settings, added send notification when new feeds are retrieved
+- Added missing resources
+- Added notifications settings
+- Added feature to send notification when new feeds are retrieved
 
-## 0.1.9
+### 0.1.9
 2016-01-14
-- allow "panic button" apps to make Umbrella log out
-- Gradle updates
-- Bugfixes
+- Added feature to allow "panic button" apps to make Umbrella log out
+- Fixed bugs
 
-## 0.1.8
+### 0.1.8
 2015-12-08
-- Content changes
-- Dependencies updates
-- Bug fixes reported by Google Play Store Crash and ANR tool 
+- Changed lessons content
+- Fixed bugs reported by Google Play Store Crash and ANR tool 
 
-## 0.1.7
+### 0.1.7
 2015-10-10
-- Bug fixes (dashboard when no results, bug when changing the country, inaccurate content link, unresponsive button on tour slides)
+- Changed inaccurate content link
+- Fixed bug on dashboard when there are no results
+- Fixed bug when changing country
+- Fixed unresponsive button on tour slides
 
-## 0.1.5 (Public beta)
+### 0.1.5 (Public beta)
 2015-09-29
-- Content changes
-- Skip password feature, remove unused feed sources
-- Database updates
-- Bugfixes
+- Added skip password feature
+- Changed lessons and tool guides content
+- Fixed bugs
+- Removed unused feed sources
+- Updated database
 
-## 0.1.4
+### 0.1.4
 2015-09-23
 - First release
 - Checklists, lessons, checklists, dashboard, search, settings, set password
