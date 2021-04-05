@@ -88,7 +88,7 @@ Here are a few guidelines and Markdown conventions to keep in mind when writing 
 ## Translating Umbrella
 
 You can help correct, improve, or complete the translations of Umbrella content into your native language. 
-Most of Umbrella can be translated directly online, through a simple web interface, after logging in with [Transifex](https://www.transifex.com). 
+Most of Umbrella can be translated directly online, through a simple web interface, after logging in with [Transifex](https://www.transifex.com/otf/umbrella-app/). 
 Umbrella can be translated into more than 140 languages this way.
 
 To get started with using Transifex, you can [watch their introductory video](https://www.youtube.com/watch?v=3y0x8q3Oj7Q).
