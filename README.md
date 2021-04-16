@@ -39,18 +39,30 @@ This is the part the user sees first. It explains briefly how the app works and 
 **Menu:** The bottom navigation menu is the main way for a user to navigate. It lists the feed, forms, lessons (with tool guides), checklists and account.
 
 **Feed:**
+![](/FEEDS.png)
+
 The feed contains security feeds from places like the UN Relief Web and the US Centers for Disease Control. You enter your location (and how often you want to be updated). Every a new update is released (e.g a disease outbreak in your location), the information comes up on the dashboard.
 
 **Lessons:**
+
+![](/LESSONS.png)
+
 Lessons are where users can learn about topics and things that they can do to improve their security. Some of the lessons have different levels (Beginner, Advanced, Expert) depending on your needs, ability, and risk. Each module is broken down into sections. At the end of each module is a list of other resources and further reading.
 
 **Tool Guides:**
+
 These are detailed guides about how to use software and apps mentioned in the lessons.
 
 **Checklists:**
+
+![](/CHECKLIST.png)
+
 Checklists are quick and easy references to help users implement the advice in the lessons. You can tick them off as you complete each item. Items can be edited. You may also create custom checklists. If you start ticking a checklist, you will then see them on the Checklists page. Checklists can also be shared through other apps such as your email.
 
 **Forms:**
+
+![](/FORMS.png)
+
 Forms allow a user to quickly fill out and share important information about issues such as their travel plan in a high-risk location or report on a digital/physical security incident.
 
 
