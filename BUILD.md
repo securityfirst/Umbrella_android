@@ -44,7 +44,7 @@ Select the `develop` branch and **Checkout**
 
 ![](/building/7.png)
 
-8\) When the build process finishes, click **locate** from the Event Log to open the folder containing the APK file, **app-debug.apk**. You can [sideload](http://www.digitalcitizen.life/how-sideload-apps-using-apk-files-android-devices) this file onto any Android device.
+8\) When the build process finishes, click **locate** from the Event Log to open the folder containing the APK file, **app-debug.apk**. See the [Android Studio documentation](https://developer.android.com/studio/run/device) for instructions on how to run the app.
 
 ![](/building/8.png)
 
@@ -58,7 +58,7 @@ Alternatively, you can also use the **Update Project** button on the toolbar:
 
 ![](/building/09-2.png)
 
-10\) Choose whether to "Merge incoming changes into the current branch" or to "Rebase the current branch on top of incoming changes" and click **OK** to proceed.
+10\) Choose whether to "Merge incoming changes into the current branch" or to "Rebase the current branch on top of incoming changes" (Recommended) and click **OK** to proceed.
 
 ![](/building/10.png)
 
