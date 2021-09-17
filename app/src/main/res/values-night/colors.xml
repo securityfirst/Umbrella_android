@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- change the values below to customise dark mode appearance -->
+    <color name="colorPrimary">#4a148c</color>
+    <color name="colorPrimaryDark">#12005e</color>
+    <color name="colorAccent">@color/umbrella_green</color>
+    <color name="light_grey">#e5e5e5</color>
+    <color name="light_white">#e5e5e5</color>
+    <color name="macaroni_and_cheese">#f3bc2b</color>
+    <color name="umbrella_green">#FF9ABE2E</color>
+    <color name="umbrella_purple">#FFB83657</color>
+    <color name="umbrella_purple_dark">#FF8D2A43</color>
+    <color name="umbrella_yellow">#FFF2BC2B</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="blue_pea">#4285f4</color>
+    <color name="dialog_background">#fafafa</color>
+    <color name="immersive_background">#88000000</color>
+    <color name="green_button">#CC9BBF2E</color>
+    <color name="grey_location">#9b9b9b</color>
+    <color name="green_dashboard">#9bbf2e</color>
+    <color name="white_transparent">#CCFFFFFF</color>
+    <color name="blue">#21449e</color>
+    <color name="macaroni_cheese">#f3bc2b</color>
+    <color name="form_background">#f6f6f6</color>
+    <color name="chilist_view_background">#e5e5e5</color>
+    <color name="feedSources_color">#000000</color>
+    <color name="color_line_settings">#1e000000</color>
+    <color name="teal_settings">#009789</color>
+    <color name="dark_grey">#FF333333</color>
+    <color name="feed_list_site_name">#828282</color>
+    <color name="coachmark_background_dark">#BB000000</color>
+    <color name="hands_shake_info_text_color">#9b9b9b</color>
+    <color name="black_38">#4a4a4a</color>
+    <color name="menu_item_color">#757575</color>
+    <color name="custom_check_list_item_color">#9b9b9b</color>
+    <color name="bg_error_view">#e5e5e5</color>
+    <color name="blue_light">#43a0ca</color>
+    <color name="form_title_color">#030303</color>
+    <color name="default_umbrella_black">#de000000</color>
+    <color name="subtitle_settings_color">#8b000000</color>
+    <color name="very_light_pink">#e3e3e3</color>
+</resources>

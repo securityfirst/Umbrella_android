@@ -1,5 +1,7 @@
 package org.secfirst.umbrella.feature.base.interactor
 
+import androidx.appcompat.app.AppCompatDelegate
+
 interface BaseInteractor {
 
     fun isUserLoggedIn(): Boolean

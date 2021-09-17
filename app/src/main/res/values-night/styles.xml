@@ -1,0 +1,83 @@
+<resources>
+
+    <!-- Base application theme.-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="ms_stepperStyle">@style/DotStepperStyle</item>
+        <item name="android:textColor">#de000000</item>
+        <item name="android:itemBackground">@color/white</item>
+    </style>
+
+    <style name="DotStepperStyle">
+        <item name="ms_stepperType">dots</item>
+        <item name="ms_activeStepColor">@color/umbrella_green</item>
+        <item name="ms_inactiveStepColor">#cecece</item>
+        <item name="ms_bottomNavigationBackground">?attr/colorAccent</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#030303</item>
+        <item name="colorControlActivated">#43a0ca</item>
+    </style>
+
+    <style name="ProgressDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:textColorSecondary">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="ContentText">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="LinearProgress" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/umbrella_purple_dark</item>
+        <!--<item name="android:progressBackgroundTint">@color/umbrella_purple_dark</item>-->
+    </style>
+
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/green_button</item>
+        <item name="android:textColorHint">@color/green_button</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Autocomplete" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="colorControlNormal">@color/green_button</item>
+        <item name="colorControlActivated">@color/green_button</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/white</item>
+    </style>
+
+    <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/umbrella_green</item>
+        <item name="android:textColorSecondary">@color/dark_grey</item>
+    </style>
+
+    <style name="radioStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/umbrella_green</item>
+        <item name="android:textColorSecondary">@color/dark_grey</item>
+    </style>
+
+    <style name="DialogTheme" parent="android:Theme.Dialog">
+
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <!-- No backgrounds, titles or window float -->
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+</resources>

@@ -3,6 +3,7 @@ package org.secfirst.umbrella.feature.account.view
 
 import android.Manifest
 import android.app.AlertDialog
+import android.app.Application
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.BroadcastReceiver
@@ -16,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -63,6 +65,14 @@ import org.secfirst.umbrella.feature.tour.view.TourController
 import org.secfirst.umbrella.misc.*
 import java.io.File
 import javax.inject.Inject
+import android.content.SharedPreferences
+import android.content.Context.MODE_PRIVATE
+
+
+
+
+
+
 
 
 class SettingsController : BaseController(),
@@ -101,6 +111,8 @@ class SettingsController : BaseController(),
     private lateinit var refreshIntervalDialog: RefreshIntervalDialog
     private lateinit var feedSourceDialog: FeedSourceDialog
     private lateinit var refreshServerProgress: ProgressDialog
+    private lateinit var editor: SharedPreferences.Editor
+    private var isDarkModeOn= false
 
     private val mMessageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -207,6 +219,10 @@ class SettingsController : BaseController(),
         mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
             skipPasswordTip(isChecked)
         }
+        mainView.settingsDarkMode.setOnCheckedChangeListener{_, isChecked ->
+            toggleDarkMode(isChecked)
+        }
+
         presenter.submitDefaultLanguage()
         presenter.submitSkippPassword()
         presenter.prepareView()
@@ -217,6 +233,17 @@ class SettingsController : BaseController(),
         refreshServerProgress = ProgressDialog(context)
         refreshServerProgress.setCancelable(false)
         refreshServerProgress.setMessage(context.getString(R.string.loading_tour_message))
+
+
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(
+            "sharedPrefs", MODE_PRIVATE
+        )
+        editor = sharedPreferences.edit()
+        isDarkModeOn = sharedPreferences.getBoolean("isDarkModeOn", false)
+
+        //Check if dark mode is on and set the dark mode switch initial position accordingly
+        mainView.settingsDarkMode.isChecked = isDarkModeOn
+
         return mainView
     }
 
@@ -353,6 +380,20 @@ class SettingsController : BaseController(),
 
     private fun skipPasswordTip(isChecked: Boolean) {
         if (isChecked) presenter.setSkipPassword(true) else presenter.setSkipPassword(false)
+    }
+
+    private fun toggleDarkMode(isChecked: Boolean) {
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            editor.putBoolean(
+                "isDarkModeOn", true);
+            editor.apply();
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            editor.putBoolean(
+                "isDarkModeOn", false);
+            editor.apply();
+        }
     }
 
     private fun feedSourceClick() = feedSourceDialog.show()

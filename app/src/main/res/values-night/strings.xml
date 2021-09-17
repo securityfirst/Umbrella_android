@@ -199,6 +199,4 @@
     <string name="pathways_text">Select a guide to start your security journey or \nbookmark any guide for later</string>
     <string name="pathways_title">What do you need most?</string>
     <string name="see_all">See all</string>
-    <string name="toggle_dark_mode">Toggle Dark Mode</string>
-    <string name="turn_dark_mode_on_or_off">Turn dark mode on or off</string>
 </resources>

@@ -3,6 +3,8 @@ package org.secfirst.umbrella
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.multidex.MultiDex
 import com.raizlabs.android.dbflow.config.DatabaseConfig
 import com.raizlabs.android.dbflow.config.FlowConfig
@@ -51,6 +53,28 @@ class UmbrellaApplication : Application(), HasAndroidInjector {
         initDaggerComponent()
         initFonts()
         initDefaultLocation()
+
+        //check if dark mode is currently on or off and set the appearance accordingly
+        val sharedPreferences = getSharedPreferences(
+            "sharedPrefs", MODE_PRIVATE
+        )
+        val isDarkModeOn = sharedPreferences
+            .getBoolean(
+                "isDarkModeOn", false
+            )
+
+        if (isDarkModeOn) {
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    AppCompatDelegate
+                        .MODE_NIGHT_YES);
+        }
+        else {
+            AppCompatDelegate
+                .setDefaultNightMode(
+                    AppCompatDelegate
+                        .MODE_NIGHT_NO);
+        }
     }
 
     fun checkPassword(password: String? = null): Boolean {
