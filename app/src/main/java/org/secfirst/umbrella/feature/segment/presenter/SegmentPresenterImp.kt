@@ -92,7 +92,6 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
     override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
         launchSilent(uiContext) {
             val markdowns = mutableListOf<Markdown>()
-            var index = 0
             interactor?.let {
                 markdownIds.forEach { markdownId ->
                     it.fetchMarkdown(markdownId)?.let { markdown -> markdowns.add(markdown) }
