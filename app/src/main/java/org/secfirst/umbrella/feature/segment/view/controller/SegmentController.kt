@@ -92,7 +92,6 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
                     .setView(shareView)
                     .create()
             presenter.onAttach(this)
-            //markdownIds?.let { if (it.size % 2 != 0) removeLast = true }
             presenter.submitMarkdownsAndChecklist(markdownIds, checklistId)
             if (isFromDashboard) {
                 onSegmentClicked(markdownIds!!.size)
