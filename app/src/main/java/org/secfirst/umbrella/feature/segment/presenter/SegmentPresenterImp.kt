@@ -89,22 +89,24 @@ class SegmentPresenterImp<V : SegmentView, I : SegmentBaseInteractor> @Inject co
         }
     }
 
-    override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String, removeLastItem: Boolean) {
+    override fun submitMarkdownsAndChecklist(markdownIds: ArrayList<String>, checklistId: String) {
         launchSilent(uiContext) {
             val markdowns = mutableListOf<Markdown>()
             interactor?.let {
                 markdownIds.forEach { markdownId ->
                     it.fetchMarkdown(markdownId)?.let { markdown -> markdowns.add(markdown) }
                 }
-                if (removeLastItem) {
-                    val removeLastMark = Markdown()
-                    removeLastMark.isRemove = true
-                    removeLastMark.index = "500"
-                    markdowns.add(removeLastMark)
-                }
-
                 val checklist = it.fetchChecklist(checklistId)
                 markdowns.sortBy { it.title.capitalize() }
+
+                // In case of uneven number of markdowns, add an empty markdown so that the last markdown doesn't take the entire width
+                if (markdowns.size % 2 != 0) {
+                    val emptyBufferMark = Markdown()
+                    emptyBufferMark.isRemove = true
+                    emptyBufferMark.index = "500"
+                    markdowns.add(markdowns.size, emptyBufferMark)
+                }
+
                 getView()?.showSegments(markdowns, checklist)
             }
         }
