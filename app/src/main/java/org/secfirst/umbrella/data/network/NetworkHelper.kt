@@ -15,10 +15,12 @@ import javax.inject.Inject
  */
 class ApiHeader @Inject constructor(internal val publicApiHeader: PublicApiHeader) {
 
-    class PublicApiHeader @Inject constructor(@ApiKeyInfo
-                                              @Expose
-                                              @SerializedName
-                                              ("api_key") val apiKey: String)
+    class PublicApiHeader @Inject constructor(
+        @ApiKeyInfo
+        @Expose
+        @SerializedName
+            ("api_key") val apiKey: String
+    )
 }
 
 /**
@@ -31,9 +33,11 @@ interface ApiHelper {
 
     @GET(NetworkEndPoint.FEED_LIST)
     @Wrapped
-    fun getFeedList(@Query("country") countryCode: String,
-                    @Query("sources") sources: String,
-                    @Query("since") since: String): Deferred<ResponseBody>
+    fun getFeedList(
+        @Query("country") countryCode: String,
+        @Query("sources") sources: String,
+        @Query("since") since: String
+    ): Deferred<ResponseBody>
 
     @GET
     fun getRss(@Url url: String): Deferred<ResponseBody>

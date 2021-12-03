@@ -11,7 +11,6 @@
     android:paddingStart="5dp"
     android:paddingEnd="5dp"
     android:singleLine="true"
-    android:textColor="#999999"
     android:textSize="14sp"
     android:textStyle="normal"
     tools:text="Checklist Total" />

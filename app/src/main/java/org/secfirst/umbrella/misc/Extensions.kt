@@ -11,7 +11,6 @@ import android.content.res.Resources
 import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Base64
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
@@ -41,14 +40,17 @@ const val PERMISSION_REQUEST_EXTERNAL_STORAGE = 1
 
 fun MainActivity.requestExternalStoragePermission() {
 
-    ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            PERMISSION_REQUEST_EXTERNAL_STORAGE)
+    ActivityCompat.requestPermissions(
+        this,
+        arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+        PERMISSION_REQUEST_EXTERNAL_STORAGE
+    )
 }
 
 fun doRestartApplication(context: Context) {
     val tourIntent = Intent(context, MainActivity::class.java)
-    tourIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+    tourIntent.flags =
+        Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     ProcessPhoenix.triggerRebirth(context, tourIntent)
 }
 
@@ -72,13 +74,15 @@ fun setMaskMode(activity: Activity, masked: Boolean) {
     val activeName = disableNames.removeAt(if (masked) 1 else 0)
 
     activity.packageManager.setComponentEnabledSetting(
-            ComponentName(packageName, activeName),
-            PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP)
+        ComponentName(packageName, activeName),
+        PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP
+    )
 
     for (i in disableNames.indices) {
         activity.packageManager.setComponentEnabledSetting(
-                ComponentName(packageName, disableNames[i]),
-                PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP)
+            ComponentName(packageName, disableNames[i]),
+            PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP
+        )
     }
 }
 
@@ -97,13 +101,24 @@ fun htmlToPdf(doc: org.jsoup.nodes.Document, file: FileOutputStream) {
     val htmlContext = HtmlPipelineContext(cssAppliers)
     htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory())
 
-    XMLWorkerHelper.getInstance().parseXHtml(writer, document, ByteArrayInputStream(doc.toString().toByteArray(Charsets.UTF_8)), Charset.forName("UTF-8"), fontProvider)
+    XMLWorkerHelper.getInstance().parseXHtml(
+        writer,
+        document,
+        ByteArrayInputStream(doc.toString().toByteArray(Charsets.UTF_8)),
+        Charset.forName("UTF-8"),
+        fontProvider
+    )
 
     document.close()
     file.close()
 }
 
-fun createDocument(doc: org.jsoup.nodes.Document, filename: String, type: String, context: Context): File {
+fun createDocument(
+    doc: org.jsoup.nodes.Document,
+    filename: String,
+    type: String,
+    context: Context
+): File {
     val img: Elements = doc.getElementsByTag("img")
     doc.body().attr("style", "font-family: Roboto")
     lateinit var src: String
@@ -137,7 +152,8 @@ fun createDocument(doc: org.jsoup.nodes.Document, filename: String, type: String
 
 fun appContext(): Context = UmbrellaApplication.instance.applicationContext
 
-fun encodeToBase64(file: File) = Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
+fun encodeToBase64(file: File) =
+    Base64.encodeToString(FileUtils.readFileToByteArray(file), Base64.DEFAULT)
         ?: ""
 
 @Suppress("DEPRECATION")
@@ -152,7 +168,7 @@ fun Context.setLocale(lang: String) {
 @SuppressLint("NewApi")
 @Suppress("DEPRECATION")
 fun deviceLanguage(): String {
-    val defaultLanguage = when(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    val defaultLanguage = when (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
         true -> Resources.getSystem().configuration.locales.get(0).language
         false -> Resources.getSystem().configuration.locale.language
     }
@@ -169,7 +185,7 @@ fun TextNode.wrapTextWithElement(strToWrap: String, wrapperHTML: String) {
     while (textNode.text().toLowerCase().contains(strToWrap.toLowerCase())) {
         val indexPosition: Int = textNode.text().toLowerCase().indexOf(strToWrap.toLowerCase())
         val rightNodeFromSplit =
-                textNode.splitText(indexPosition)
+            textNode.splitText(indexPosition)
         if (rightNodeFromSplit.text().length > strToWrap.length) {
             textNode = rightNodeFromSplit.splitText(strToWrap.length)
             rightNodeFromSplit.wrap(wrapperHTML)

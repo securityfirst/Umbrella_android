@@ -14,6 +14,10 @@ interface AccountBasePresenter<V : AccountView, I : AccountBaseInteractor> : Bas
 
     fun setUserLogIn()
 
+    fun changeDarkMode(value: Boolean)
+
+    fun getDarkMode(): Boolean
+
     fun setSkipPassword(value: Boolean)
 
     fun submitSkippPassword()

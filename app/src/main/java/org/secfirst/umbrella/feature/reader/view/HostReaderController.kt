@@ -24,8 +24,8 @@ class HostReaderController : BaseController() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         val view = inflater.inflate(R.layout.host_reader_view, container, false)
         view.toolbar.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.feed_title)
+            //mainActivity.setSupportActionBar(it)
+            it.title = context.getString(R.string.feed_title)
         }
         return view
     }

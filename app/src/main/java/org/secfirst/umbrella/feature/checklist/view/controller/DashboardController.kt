@@ -277,7 +277,7 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private fun shareDocument(fileToShare: File) {
         val pm = context.packageManager
         val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, fileToShare)
-        val shareIntent = ShareCompat.IntentBuilder.from(activity)
+        val shareIntent = ShareCompat.IntentBuilder.from(activity!!)
                 .setType(context.contentResolver.getType(uri))
                 .setStream(uri)
                 .intent

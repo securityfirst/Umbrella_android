@@ -13,6 +13,7 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import kotlinx.android.synthetic.main.segment_detail.*
 import kotlinx.android.synthetic.main.web_view.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.feature.base.view.BaseController
@@ -86,9 +87,10 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
 
     private fun setUpToolbar() {
         webViewToolbar?.let {
-            mainActivity.setSupportActionBar(it)
+            it.title = markdownView.title
+            /*mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
         }
     }
 }

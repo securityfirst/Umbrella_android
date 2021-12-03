@@ -7,9 +7,10 @@ import org.secfirst.umbrella.data.database.AppDatabase.DEFAULT
 
 
 class SQLCipherHelperImpl(
-        databaseDefinition: DatabaseDefinition,
-        databaseHelperListener: DatabaseHelperListener?,
-        private val userToken: String? = null) : SQLCipherOpenHelper(databaseDefinition, databaseHelperListener) {
+    databaseDefinition: DatabaseDefinition,
+    databaseHelperListener: DatabaseHelperListener?,
+    private val userToken: String? = null
+) : SQLCipherOpenHelper(databaseDefinition, databaseHelperListener) {
 
     override fun getCipherSecret(): String {
         return userToken ?: DEFAULT

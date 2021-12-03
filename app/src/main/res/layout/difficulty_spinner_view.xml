@@ -6,6 +6,5 @@
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:maxLines="2"
-    android:textColor="@color/ms_white"
     android:textSize="18sp"
     tools:text="Dangerous Assigments Advanced" />

@@ -47,8 +47,7 @@ class HostChecklistController(bundle: Bundle) : BaseController(bundle), Checklis
         presenter.onAttach(this)
         if (uriString.isNotBlank()) presenter.submitChecklistById(uriString)
         view.toolbar.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.checklist_title)
+            it.title = context.getString(R.string.checklist_title)
         }
         mainActivity.navigationPositionToCenter()
         return view

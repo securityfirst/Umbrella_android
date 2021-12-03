@@ -92,7 +92,7 @@ class LessonController : BaseController(), LessonView {
     private fun setUpToolbar(view: View) {
         view.lessonToolbar.let {
             mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.lesson_title)
+            it.title = context.getString(R.string.lesson_title)
         }
     }
 

@@ -4,19 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/segmentBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/ActionBarStyle">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/accountToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:layout_height="?actionBarSize"
+            android:background="?colorPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
@@ -25,154 +25,126 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/empty_dashboard"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/accountSettings"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="top"
             android:layout_marginTop="@dimen/feed_empty_big_margin_top"
-            android:background="#fafafa"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view"
             card_view:cardUseCompatPadding="true">
 
-            <FrameLayout
-                android:id="@+id/accountSettings"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
+                android:fontFamily="sans-serif"
+                android:text="@string/account_settings"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                tools:text="Settings" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/account_settings"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="Settings" />
-            </FrameLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/accountMask"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_gravity="top"
+            android:layout_gravity="center_vertical|start"
             android:layout_marginTop="@dimen/feed_empty_big_margin_top"
-            android:background="#fafafa"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view"
             card_view:cardUseCompatPadding="true">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/maskModeTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
+                android:fontFamily="sans-serif"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                tools:text="@string/enable_masking_mode" />
 
-                <TextView
-                    android:id="@+id/maskModeTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="@string/enable_masking_mode" />
-            </FrameLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/accountPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="top"
             android:layout_marginTop="@dimen/feed_empty_big_margin_top"
-            android:background="#fafafa"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view"
             card_view:cardUseCompatPadding="true">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
+                android:fontFamily="sans-serif"
+                android:text="@string/account_set_password"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                tools:text="Set password" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/account_set_password"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="Set password" />
-            </FrameLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/resetPassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="top"
             android:layout_marginTop="@dimen/feed_empty_big_margin_top"
-            android:background="#fafafa"
             android:visibility="gone"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view"
             card_view:cardUseCompatPadding="true">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
+                android:fontFamily="sans-serif"
+                android:text="@string/account_reset_password"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                tools:text="Reset password" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/account_reset_password"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="Reset password" />
-            </FrameLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/logout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="top"
             android:layout_marginTop="@dimen/feed_empty_big_margin_top"
-            android:background="#fafafa"
             card_view:cardCornerRadius="@dimen/feed_empty_card_view"
             card_view:cardUseCompatPadding="true">
 
-            <FrameLayout
-                android:layout_width="match_parent"
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp">
+                android:fontFamily="sans-serif"
+                android:text="@string/logout"
+                android:textSize="18sp"
+                android:textStyle="normal"
+                tools:text="Logout" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/logout"
-                    android:textColor="#4a4a4a"
-                    android:textSize="18sp"
-                    android:textStyle="normal"
-                    tools:text="Logout" />
-            </FrameLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
 </LinearLayout>

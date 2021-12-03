@@ -13,11 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="2dp"
-        android:background="@color/light_white"
         card_view:cardCornerRadius="2dp"
         card_view:contentPadding="5dp">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/checkCustomItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +25,6 @@
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
             android:fontFamily="sans-serif"
-            android:textColor="#4a4a4a"
             android:textStyle="normal"
             tools:text="Understand local kidnapping threat" />
 

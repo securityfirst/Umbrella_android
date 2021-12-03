@@ -135,8 +135,8 @@ class HostFormController(bundle: Bundle) : BaseController(bundle), FormView {
 
     private fun setUpToolbar() {
         hostFormToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.form_title)
+//            mainActivity.setSupportActionBar(it)
+            it.title = context.getString(R.string.form_title)
         }
     }
 

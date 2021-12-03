@@ -17,7 +17,7 @@
         android:layout_marginBottom="30dp"
         android:textSize="30sp" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/editTextCalc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

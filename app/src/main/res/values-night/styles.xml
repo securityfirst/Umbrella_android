@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/umbrella_purple_dark</item>
+        <item name="colorPrimaryDark">@color/umbrella_purple_dark</item>
+        <item name="colorAccent">@color/umbrella_green</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorOnPrimary">@android:color/black</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+        <item name="ms_stepperStyle">@style/DotStepperStyle</item>
+        <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView.CardViewTheme</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.CardView.CardViewTheme">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/cardview_dark_background</item>
+    </style>
+
+    <style name="DotStepperStyle">
+        <item name="ms_stepperType">dots</item>
+        <item name="ms_activeStepColor">@color/umbrella_green</item>
+        <item name="ms_inactiveStepColor">@color/black_38</item>
+        <item name="ms_bottomNavigationBackground">@color/black_38</item>
+    </style>
+
+    <style name="EditTextStyle" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <item name="colorControlNormal">@color/grey_location</item>
+        <item name="colorControlActivated">@color/blue_light</item>
+    </style>
+
+
+    <style name="ContentText">
+        <item name="android:textSize">@dimen/font_small</item>
+        <item name="android:textColor">@color/dialog_background</item>
+    </style>
+
+
+</resources>

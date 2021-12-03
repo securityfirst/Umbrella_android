@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:text="@string/switch_repo_alert_text"
-        android:textColor="#de000000"
         android:textSize="18sp"
         android:textStyle="normal"
         app:layout_constraintLeft_toLeftOf="parent"

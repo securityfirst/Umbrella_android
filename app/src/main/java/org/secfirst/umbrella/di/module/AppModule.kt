@@ -127,7 +127,8 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    internal fun provideVirtualStorage(application: Application): VirtualStorage = VirtualStorage(application)
+    internal fun provideVirtualStorage(application: Application): VirtualStorage =
+        VirtualStorage(application)
 
     @Provides
     @Singleton
@@ -167,9 +168,9 @@ class NetworkModule {
     @Reusable
     internal fun provideRetrofitInterface(): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .build()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
     }
 }

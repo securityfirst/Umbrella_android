@@ -83,7 +83,6 @@ class RssController : BaseController(), ReaderView {
         val snackView = snackBar?.view
         snackView?.setBackgroundColor(ContextCompat.getColor(context, R.color.umbrella_purple_dark))
         val textView = snackView?.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-        textView?.setTextColor(ContextCompat.getColor(context, R.color.white))
     }
 
     override fun showNewestRss(rss: RSS) = rssAdapter.add(rss)

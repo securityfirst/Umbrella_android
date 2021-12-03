@@ -18,6 +18,7 @@
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:background="@drawable/ic_cast_connected"
+            app:tint="?attr/colorControlNormal"
             tools:ignore="ContentDescription" />
     </LinearLayout>
 
@@ -25,7 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@android:color/white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -38,11 +38,11 @@
             android:layout_marginRight="15dp"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/rssEditText"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="fonts/Roboto-Regular.ttf"
                 android:hint="@string/feed_source"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions"
@@ -57,7 +57,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/rssCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,9 +70,8 @@
                 android:text="@android:string/cancel"
                 android:textColor="@color/umbrella_green" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/rssOk"
-                fontPath="fonts/Roboto-Medium.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -81,6 +80,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:fontFamily="fonts/Roboto-Medium.ttf"
                 android:padding="10dp"
                 android:text="@android:string/ok"
                 android:textColor="@color/umbrella_green" />

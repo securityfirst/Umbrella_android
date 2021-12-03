@@ -9,19 +9,21 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/segmentBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/ActionBarStyle">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/hostSegmentToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_height="?actionBarSize"
+            android:background="?colorPrimary"
+            tools:targetApi="lollipop">
 
             <Spinner
                 android:id="@+id/hostSegmentSpinner"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:popupBackground="@color/white" />
+                android:layout_height="wrap_content" />
+
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -29,11 +31,14 @@
         android:id="@+id/hostSegmentTab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:elevation="6dp"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:background="?colorPrimary"
+        android:elevation="@dimen/dialog_elevation"
+        android:minHeight="?actionBarSize"
+        app:tabIndicatorColor="@color/umbrella_green"
+        app:tabIndicatorGravity="bottom"
         app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/white_transparent"
         tools:targetApi="lollipop" />
 
     <androidx.viewpager.widget.ViewPager

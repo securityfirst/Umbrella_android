@@ -42,7 +42,7 @@ android {
         applicationId "org.secfirst.umbrella"
         minSdkVersion 16
         compileSdkVersion 28
-        targetSdkVersion 28
+        targetSdkVersion 31
         versionCode 56
         versionName "1.0.32"
         multiDexEnabled true
@@ -88,6 +88,9 @@ dependencies {
     implementation "io.github.inflationx:viewpump:$viewpump"
     implementation "org.apache.commons:commons-text:$commonsText"
     implementation "org.apache.commons:commons-lang3:$commonsLang"
+
+    //Material Design for Light/ Dark mode
+    implementation "com.google.android.material:material:$material_version"
 
 
     //Framework for replacing fragments

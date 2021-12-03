@@ -26,30 +26,33 @@ import org.secfirst.umbrella.misc.removeSpecialCharacter
 @Parcelize
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false, cachingEnabled = true)
 data class Markdown(
-        @PrimaryKey
-        var id: String = "",
-        @Column
-        var text: String = "",
-        @Column
-        var title: String = "",
-        @Column
-        var index: String = "",
-        @Column
-        var favorite: Boolean = false,
-        @Column
-        var identifier: String = "",
-        @ForeignKey(stubbedRelationship = true)
-        var module: Module? = null,
-        @ForeignKey(stubbedRelationship = true)
-        var subject: Subject? = null,
-        @ForeignKey(stubbedRelationship = true)
-        var difficulty: Difficulty? = null,
-        var isRemove: Boolean = false) : Parcelable {
+    @PrimaryKey
+    var id: String = "",
+    @Column
+    var text: String = "",
+    @Column
+    var title: String = "",
+    @Column
+    var index: String = "",
+    @Column
+    var favorite: Boolean = false,
+    @Column
+    var identifier: String = "",
+    @ForeignKey(stubbedRelationship = true)
+    var module: Module? = null,
+    @ForeignKey(stubbedRelationship = true)
+    var subject: Subject? = null,
+    @ForeignKey(stubbedRelationship = true)
+    var difficulty: Difficulty? = null,
+    var isRemove: Boolean = false
+) : Parcelable {
 
-    constructor(id: String, text: String) : this(id, text, recoveryTitleOrIndex(text, TAG_TITLE),
-            recoveryTitleOrIndex(text, TAG_INDEX),
-            false,
-            recoveryTitleOrIndex(text, TAG_TITLE).removeSpecialCharacter())
+    constructor(id: String, text: String) : this(
+        id, text, recoveryTitleOrIndex(text, TAG_TITLE),
+        recoveryTitleOrIndex(text, TAG_INDEX),
+        false,
+        recoveryTitleOrIndex(text, TAG_TITLE).removeSpecialCharacter()
+    )
 
     companion object {
         const val FAVORITE_INDEX = "1"
@@ -76,10 +79,15 @@ fun List<Markdown>.ids(): ArrayList<String> {
     return res
 }
 
-fun List<Markdown>.toSegmentController(pChecklist: List<Checklist>, isFromDashboard: Boolean = false): SegmentController {
+fun List<Markdown>.toSegmentController(
+    pChecklist: List<Checklist>,
+    isFromDashboard: Boolean = false
+): SegmentController {
     val checklist = if (pChecklist.isEmpty()) null else pChecklist.last()
-    return SegmentController(ArrayList(this.ids()), checklist?.id
-            ?: "", isFromDashboard)
+    return SegmentController(
+        ArrayList(this.ids()), checklist?.id
+            ?: "", isFromDashboard
+    )
 }
 
 fun List<Markdown>.toSegmentDetailControllers(): List<SegmentDetailController> {
@@ -108,8 +116,8 @@ fun Markdown.toSearchResult(): SearchResult {
     val andDown = AndDown()
     val result = andDown.markdownToHtml(text, AndDown.HOEDOWN_EXT_QUOTE, 0)
     return SearchResult(
-            title,
-            result
+        title,
+        result
     )
     { c: Context ->
         val withoutLanguage = id.split("/").drop(1).joinToString("/")
@@ -122,8 +130,10 @@ fun String.replaceMarkdownImage(pwd: String): String {
     val pathSplit = absolutePath.split("/").toMutableList()
     pathSplit[0] = defaultContent()
     val defaultImagePath = "${getPathRepository()}${pathSplit.joinToString("/")}"
-    return this.replace(Markdown.MARKDOWN_IMAGE_TAG,
-            "${Markdown.MARKDOWN_IMAGE_TAG}file://$defaultImagePath")
+    return this.replace(
+        Markdown.MARKDOWN_IMAGE_TAG,
+        "${Markdown.MARKDOWN_IMAGE_TAG}file://$defaultImagePath"
+    )
 }
 
 interface HostSegmentTabControl {

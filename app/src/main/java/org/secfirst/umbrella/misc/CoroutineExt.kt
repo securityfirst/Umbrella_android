@@ -15,8 +15,10 @@ import kotlin.coroutines.EmptyCoroutineContext
  * }
  * ```
  */
-fun launchSilent(context: CoroutineContext = Dispatchers.Default,
-                 block: suspend CoroutineScope.() -> Unit) {
+fun launchSilent(
+    context: CoroutineContext = Dispatchers.Default,
+    block: suspend CoroutineScope.() -> Unit
+) {
 
     GlobalScope.launch(context, CoroutineStart.DEFAULT, block)
 }
@@ -32,7 +34,10 @@ fun launchSilent(context: CoroutineContext = Dispatchers.Default,
  * }
  * ```
  */
-fun <T> runBlockingSilent(context: CoroutineContext = EmptyCoroutineContext, block: suspend CoroutineScope.() -> T) {
+fun <T> runBlockingSilent(
+    context: CoroutineContext = EmptyCoroutineContext,
+    block: suspend CoroutineScope.() -> T
+) {
     runBlocking(context, block)
 }
 

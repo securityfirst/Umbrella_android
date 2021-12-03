@@ -24,27 +24,29 @@ interface TentDao {
             withContext(ioContext) {
                 if (isNotRepository()) {
                     Git.cloneRepository()
-                            .setURI(url)
-                            .setDirectory(File(getPathRepository()))
-                            .setBranchesToClone(Arrays.asList(BRANCH_NAME))
-                            .setProgressMonitor(TextProgressMonitor(PrintWriter(System.out)))
-                            .setBranch(BRANCH_NAME)
-                            .call()
+                        .setURI(url)
+                        .setDirectory(File(getPathRepository()))
+                        .setBranchesToClone(Arrays.asList(BRANCH_NAME))
+                        .setProgressMonitor(TextProgressMonitor(PrintWriter(System.out)))
+                        .setBranch(BRANCH_NAME)
+                        .call()
                 }
             }
         } catch (e: Exception) {
             result = false
             File(getPathRepository()).deleteRecursively()
-            Log.i(TentDao::class.java.name,
-                    "Repository wasn't created - ${isNotRepository()} " +
-                            "id - ${getPathRepository()}")
+            Log.i(
+                TentDao::class.java.name,
+                "Repository wasn't created - ${isNotRepository()} " +
+                        "id - ${getPathRepository()}"
+            )
         }
         return result
     }
 
     suspend fun rebaseBranch(): List<Pair<String, File>> {
         val files = mutableListOf<Pair<String, File>>()
-        val git : Git? = try {
+        val git: Git? = try {
             Git.open(File("${getPathRepository()}/.git"))
         } catch (e: Exception) {
             null
@@ -52,7 +54,8 @@ interface TentDao {
         withContext(ioContext) {
             try {
                 git?.checkout()?.setName("master")?.call()
-                val branches = git?.branchList()?.setListMode(ListBranchCommand.ListMode.ALL)?.call()
+                val branches =
+                    git?.branchList()?.setListMode(ListBranchCommand.ListMode.ALL)?.call()
                 branches?.forEach { branch ->
                     if (BRANCH_NAME == branch.name) {
                         git.pull().setRemoteBranchName("master").setRebase(true).call()
@@ -94,36 +97,36 @@ interface TentDao {
 
     fun filterElements(path: String): List<File> {
         return File(path)
-                .walk()
-                .filter { !it.path.contains(".git") }
-                .filter {
-                    val prefix = it.nameWithoutExtension.substringBeforeLast("_")
-                    prefix == TypeFile.SEGMENT.value || prefix == TypeFile.CHECKLIST.value
-                }
-                .toList()
-                .reversed()
+            .walk()
+            .filter { !it.path.contains(".git") }
+            .filter {
+                val prefix = it.nameWithoutExtension.substringBeforeLast("_")
+                prefix == TypeFile.SEGMENT.value || prefix == TypeFile.CHECKLIST.value
+            }
+            .toList()
+            .reversed()
 
     }
 
     fun filterForms(path: String): List<File> {
         return File(path)
-                .walk()
-                .filter { !it.path.contains(".git") }
-                .filter {
-                    val prefix = it.nameWithoutExtension.substringBeforeLast("_")
-                    prefix == TypeFile.FORM.value
-                }
-                .toList()
+            .walk()
+            .filter { !it.path.contains(".git") }
+            .filter {
+                val prefix = it.nameWithoutExtension.substringBeforeLast("_")
+                prefix == TypeFile.FORM.value
+            }
+            .toList()
     }
 
     suspend fun filterCategories(path: String): List<File> {
         return File(path)
-                .walkBottomUp()
-                .filter { !it.path.contains(".git") }
-                .filter { it.nameWithoutExtension == TypeFile.CATEGORY.value }
-                .toList()
-                .reversed()
-                .sorted()
+            .walkBottomUp()
+            .filter { !it.path.contains(".git") }
+            .filter { it.nameWithoutExtension == TypeFile.CATEGORY.value }
+            .toList()
+            .reversed()
+            .sorted()
     }
 
     private fun getDiffEntry(): List<DiffEntry> {
@@ -159,10 +162,10 @@ fun filterSegmentFiles(path: String): List<File> {
 
 fun String.filterImageCategoryFile(): String {
     val imgFile = File(getPathRepository())
-            .walk()
-            .filter { file -> !file.path.contains(".git") }
-            .filter { file -> file.name == this }
-            .filter { it.isFile }
-            .toList()
+        .walk()
+        .filter { file -> !file.path.contains(".git") }
+        .filter { file -> file.name == this }
+        .filter { it.isFile }
+        .toList()
     return if (imgFile.isNotEmpty()) imgFile.last().path else ""
 }

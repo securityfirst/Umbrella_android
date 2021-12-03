@@ -173,9 +173,9 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
 
     private fun setUpToolbar() {
         checklistView.checklistToolbar.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            mainActivity.supportActionBar?.title = getTitle()
+            /*mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
+            it.title = getTitle()
         }
     }
 }

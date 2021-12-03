@@ -1,5 +1,6 @@
 package org.secfirst.umbrella.feature.segment.view.controller
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,12 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.core.content.ContextCompat
+import com.codekidlabs.storagechooser.Content
 import kotlinx.android.synthetic.main.host_segment_view.*
 import kotlinx.android.synthetic.main.host_segment_view.view.*
+import kotlinx.android.synthetic.main.segment_detail.*
+import kotlinx.android.synthetic.main.simple_article_view.view.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.UmbrellaApplication
 import org.secfirst.umbrella.data.database.checklist.Checklist

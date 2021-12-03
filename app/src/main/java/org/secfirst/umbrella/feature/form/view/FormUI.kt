@@ -1,17 +1,20 @@
 package org.secfirst.umbrella.feature.form.view
 
 
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Color
+import android.os.Build
 import android.view.Gravity
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.RadioButton
-import androidx.core.content.ContextCompat
+import androidx.annotation.RequiresApi
+import com.google.android.material.color.MaterialColors
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.VerificationError
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.themedTintedCheckBox
 import org.jetbrains.anko.appcompat.v7.themedTintedRadioButton
+import org.jetbrains.anko.design.themedTextInputEditText
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.data.database.form.Answer
 import org.secfirst.umbrella.data.database.form.Screen
@@ -22,12 +25,11 @@ import org.secfirst.umbrella.feature.form.view.controller.FormController
 
 class FormUI(private val screen: Screen, private val answers: List<Answer>?) : AnkoComponent<FormController>, Step {
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun createView(ui: AnkoContext<FormController>) = ui.apply {
         val size = 16f
-        val formTextColor = ContextCompat.getColor(ui.ctx, R.color.default_umbrella_black)
 
         scrollView {
-            background = ColorDrawable(ContextCompat.getColor(context, R.color.form_background))
             verticalLayout {
 
                 padding = dip(10)
@@ -35,51 +37,42 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                     when (item.type) {
 
                         FieldType.LABEL.value ->
-                            textView(item.label) {
+                            themedTextView(item.label,  theme = R.style.textViewTheme) {
                                 textSize = 18f
-                                textColor = formTextColor
                             }.lparams { gravity = Gravity.CENTER }
 
                         FieldType.TEXT_AREA.value -> {
                             val answer = item.hasAnswer(answers)
-                            textView(item.label) {
+                            themedTextView(item.label, theme = R.style.textViewTheme) {
                                 textSize = size
-                                textColor = formTextColor
                             }.lparams { topMargin = dip(5) }
-                            val editText = themedEditText(theme = R.style.EditTextStyle) {
+                            val editText = themedTextInputEditText(theme = R.style.EditTextStyle) {
                                 hint = item.hint
                                 setText(answer.textInput)
-                                textColor = formTextColor
-
                             }.lparams(width = matchParent)
                             answer.itemId = item.id
                             bindEditText(answer, editText, ui)
                         }
                         FieldType.TEXT_INPUT.value -> {
                             val answer = item.hasAnswer(answers)
-                            textView(item.label) {
+                            themedTextView(item.label, theme = R.style.textViewTheme) {
                                 textSize = size
-                                textSize = size
-                                textColor = formTextColor
                             }.lparams { topMargin = dip(5) }
-                            val editText = themedEditText(theme = R.style.EditTextStyle) {
+                            val editText = themedTextInputEditText(theme = R.style.EditTextStyle) {
                                 hint = item.hint
                                 setText(answer.textInput)
-                                textColor = formTextColor
                             }.lparams(width = matchParent)
                             answer.itemId = item.id
                             answer.run { bindEditText(answer, editText, ui) }
                         }
                         FieldType.MULTIPLE_CHOICE.value -> {
-                            textView(item.label) {
+                            themedTextView(item.label, theme = R.style.textViewTheme) {
                                 textSize = size
-                                textColor = formTextColor
                             }.lparams { topMargin = dip(5) }
                             item.options.forEach { formOption ->
                                 val answer = formOption.hasAnswer(answers)
                                 val checkBox = themedTintedCheckBox(R.style.checkBoxStyle) {
                                     text = formOption.label
-                                    textColor = formTextColor
                                     isChecked = answer.choiceInput
                                 }.lparams { topMargin = dip(5) }
                                 answer.optionId = formOption.id
@@ -87,9 +80,8 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                             }
                         }
                         FieldType.SINGLE_CHOICE.value -> {
-                            textView(item.label) {
+                            themedTextView(item.label, theme = R.style.textViewTheme) {
                                 textSize = size
-                                textColor = formTextColor
                             }
                             radioGroup {
                                 item.options.forEach { formOption ->
@@ -98,7 +90,6 @@ class FormUI(private val screen: Screen, private val answers: List<Answer>?) : A
                                         text = formOption.label
                                         isChecked = answer.choiceInput
                                         textSize = size
-                                        textColor = formTextColor
                                     }
                                     answer.optionId = formOption.id
                                     bindRadioButton(answer, radioButton, ui)

@@ -15,8 +15,16 @@ import kotlinx.android.synthetic.main.head_section.view.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.feature.base.view.BaseController
 
-val TextView.regular: Typeface get() = Typeface.createFromAsset(context.assets, "fonts/Roboto-Regular.ttf")
-val TextView.medium: Typeface get() = Typeface.createFromAsset(context.assets, "fonts/Roboto-Medium.ttf")
+val TextView.regular: Typeface
+    get() = Typeface.createFromAsset(
+        context.assets,
+        "fonts/Roboto-Regular.ttf"
+    )
+val TextView.medium: Typeface
+    get() = Typeface.createFromAsset(
+        context.assets,
+        "fonts/Roboto-Medium.ttf"
+    )
 
 fun Context.shareLink(link: String) {
     val sendIntent = Intent()
@@ -26,21 +34,25 @@ fun Context.shareLink(link: String) {
     this.startActivity(Intent.createChooser(sendIntent, this.resources.getText(R.string.send_to)))
 }
 
-fun RecyclerView.initRecyclerView(adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
-                                  layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
-                                  hasFixedSize: Boolean = true) {
+fun RecyclerView.initRecyclerView(
+    adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
+    layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context),
+    hasFixedSize: Boolean = true
+) {
     this.layoutManager = layoutManager
     this.adapter = adapter
     setHasFixedSize(hasFixedSize)
 }
 
 fun BaseController.hideKeyboard() {
-    val inputMethodManager = this.activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val inputMethodManager =
+        this.activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(this.view?.windowToken, 0)
 }
 
 fun Activity.hideKeyboard() {
-    val inputMethodManager = this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    val inputMethodManager =
+        this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, 0)
 }
 
@@ -54,8 +66,8 @@ const val ITEM_VIEW_TYPE_FOOTER = 2
 
 fun Spinner.init(array: Int) {
     ArrayAdapter.createFromResource(
-            this.context, array,
-            android.R.layout.simple_spinner_item
+        this.context, array,
+        android.R.layout.simple_spinner_item
     ).also { adapter ->
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         this.adapter = adapter

@@ -96,8 +96,8 @@ class LoginController : BaseController(), LoginView {
 
     private fun setUpToolbar() {
         loginToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            /*mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)*/
         }
     }
 

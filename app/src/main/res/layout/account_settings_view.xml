@@ -10,13 +10,16 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/segmentBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/ActionBarStyle">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/settingsToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:foregroundTint="@color/white"
+            tools:targetApi="lollipop" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -30,7 +33,7 @@
             android:layout_height="wrap_content">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/SkipContainer"
+                android:id="@+id/DarkModeContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/settings_vertical_margin"
@@ -49,18 +52,43 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+
                 <TextView
-                    android:id="@+id/labelSkipPw"
+                    android:id="@+id/labelDarkMode"
                     android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/settings_label_dark_mode"
+                    android:textSize="@dimen/text_size_smallest"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/settingsDarkMode" />
+
+                <Switch
+                    android:id="@+id/settingsDarkMode"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/settings_normal_padding"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
-                    android:text="@string/settings_title_skip_pw"
+                    android:text="@string/settings_title_dark_mode"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/general" />
+                    app:layout_constraintTop_toBottomOf="@+id/general"
+                    tools:ignore="UseSwitchCompatOrMaterialXml,TouchTargetSizeCheck" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SkipContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/settings_vertical_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/DarkModeContainer">
+
 
                 <TextView
                     android:id="@+id/labelSkipPwMessage"
@@ -69,24 +97,24 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_label_skip_pw"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/labelSkipPw" />
+                    app:layout_constraintTop_toBottomOf="@+id/settingsSkipPassword" />
 
                 <Switch
                     android:id="@+id/settingsSkipPassword"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/settings_bigger_padding"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
-                    android:textColor="#de000000"
+                    android:text="@string/settings_title_skip_pw"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="UseSwitchCompatOrMaterialXml,TouchTargetSizeCheck" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -105,7 +133,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_refresh_from_the_server"
-                    android:textColor="#de000000"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -117,7 +144,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_refresh_from_the_server"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +167,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="8sp"
                     android:text="@string/settings_switch_server"
-                    android:textColor="#de000000"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -153,7 +178,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_switch_server"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -208,7 +232,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_english"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toEndOf="@+id/imageLanguage"
@@ -243,7 +266,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_import_your_data"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -277,7 +299,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_export_your_data"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -289,7 +310,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="@dimen/settings_bigger_padding"
-                android:background="@color/color_line_settings"
+                android:background="?android:attr/listDivider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsExportData" />
 
@@ -333,7 +354,6 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -369,7 +389,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_your_location"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -404,7 +423,6 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_security_feed_sources"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -416,7 +434,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:layout_marginTop="@dimen/settings_bigger_padding"
-                android:background="@color/color_line_settings"
+                android:background="?android:attr/listDivider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settingsSecurityFeed" />
 
@@ -441,18 +459,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/maskModeTitle"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/settings_vertical_margin"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/settings_show_updates_as_notification"
-                    android:textSize="@dimen/text_size_small"
-                    android:textStyle="normal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/notificationLabel" />
 
                 <TextView
                     android:id="@+id/maskModeLabel"
@@ -461,23 +467,22 @@
                     android:fontFamily="sans-serif"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/settings_show_updates_as_notification"
-                    android:textColor="@color/subtitle_settings_color"
                     android:textSize="@dimen/text_size_smallest"
                     android:textStyle="normal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/maskModeTitle" />
+                    app:layout_constraintTop_toBottomOf="@+id/switchMaskMode" />
 
                 <Switch
                     android:id="@+id/switchMaskMode"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/settings_normal_padding"
                     android:fontFamily="sans-serif"
-                    android:lineSpacingExtra="8sp"
+                    android:text="@string/settings_show_updates_as_notification"
                     android:textSize="@dimen/text_size_small"
-                    android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/notificationLabel"
+                    app:layout_goneMarginTop="@dimen/settings_vertical_margin"
+                    tools:ignore="UseSwitchCompatOrMaterialXml,TouchTargetSizeCheck" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

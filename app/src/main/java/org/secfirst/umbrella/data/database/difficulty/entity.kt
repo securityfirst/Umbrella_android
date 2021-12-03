@@ -15,30 +15,31 @@ import org.secfirst.umbrella.data.database.segment.Markdown_Table
 @Parcelize
 @Table(database = AppDatabase::class)
 data class Difficulty(
-        @PrimaryKey
-        var id: String = "",
-        @ForeignKey(stubbedRelationship = true)
-        var subject: Subject? = null,
-        @Column
-        var index: Int = 0,
-        @Column
-        var title: String = "",
-        @Column
-        var description: String = "",
-        var markdowns: MutableList<Markdown> = arrayListOf(),
-        var checklist: MutableList<Checklist> = arrayListOf(),
-        @Column
-        var rootDir: String = "",
-        @JsonIgnore
-        var layoutColor: String = "") : Parcelable {
+    @PrimaryKey
+    var id: String = "",
+    @ForeignKey(stubbedRelationship = true)
+    var subject: Subject? = null,
+    @Column
+    var index: Int = 0,
+    @Column
+    var title: String = "",
+    @Column
+    var description: String = "",
+    var markdowns: MutableList<Markdown> = arrayListOf(),
+    var checklist: MutableList<Checklist> = arrayListOf(),
+    @Column
+    var rootDir: String = "",
+    @JsonIgnore
+    var layoutColor: String = ""
+) : Parcelable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "markdowns")
     fun oneToManyMarkdowns(): MutableList<Markdown> {
         if (markdowns.isEmpty()) {
             markdowns = SQLite.select()
-                    .from(Markdown::class.java)
-                    .where(Markdown_Table.difficulty_id.eq(id))
-                    .queryList()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.difficulty_id.eq(id))
+                .queryList()
         }
         return markdowns
     }
@@ -47,9 +48,9 @@ data class Difficulty(
     fun oneToManyChecklist(): MutableList<Checklist> {
         if (checklist.isEmpty()) {
             checklist = SQLite.select()
-                    .from(Checklist::class.java)
-                    .where(Checklist_Table.difficulty_id.eq(id))
-                    .queryList()
+                .from(Checklist::class.java)
+                .where(Checklist_Table.difficulty_id.eq(id))
+                .queryList()
         }
         return checklist
     }
@@ -95,7 +96,9 @@ fun MutableList<Difficulty>.withColors(): List<Difficulty> {
 }
 
 @Table(database = AppDatabase::class)
-data class DifficultyPreferred(@PrimaryKey
-                               var subjectId: String = "",
-                               @ForeignKey
-                               var difficulty: Difficulty? = null)
+data class DifficultyPreferred(
+    @PrimaryKey
+    var subjectId: String = "",
+    @ForeignKey
+    var difficulty: Difficulty? = null
+)

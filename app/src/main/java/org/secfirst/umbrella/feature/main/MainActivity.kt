@@ -33,6 +33,7 @@ import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTR
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.EXTRA_SHOW_MOCK_VIEW
 import org.secfirst.umbrella.data.preferences.AppPreferenceHelper.Companion.PREF_NAME
 import org.secfirst.umbrella.feature.account.view.AccountController
+import org.secfirst.umbrella.feature.account.view.SettingsController
 import org.secfirst.umbrella.feature.checklist.view.controller.HostChecklistController
 import org.secfirst.umbrella.feature.form.view.controller.HostFormController
 import org.secfirst.umbrella.feature.lesson.view.LessonController
@@ -59,11 +60,19 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
         super.onCreate(savedInstanceState)
         setLanguage()
         setContentView(R.layout.main_view)
+        switchDarkMode()
         router = attachRouter(baseContainer, savedInstanceState)
         performDI()
         isDeepLink()
         initNavigation()
         showNavigation()
+    }
+
+    private fun switchDarkMode() {
+
+        val controller = SettingsController()
+        val darkState = controller.presenter.getDarkMode()
+        controller.presenter.changeDarkMode(darkState)
     }
 
     override fun getCriteria(): List<SearchCriteria> {
@@ -110,8 +119,6 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
         (menuItem.actionView as SearchView).apply {
             menuItem.isVisible = !disableSearch
             val searchEditText = this.findViewById<View>(androidx.appcompat.R.id.search_src_text) as EditText
-            searchEditText.setTextColor(resources.getColor(R.color.white))
-            searchEditText.setHintTextColor(resources.getColor(R.color.white))
             // Assumes current activity is the searchable activity
             if (componentName!=null && searchManager.getSearchableInfo(componentName) != null)
                 setSearchableInfo(searchManager.getSearchableInfo(componentName))

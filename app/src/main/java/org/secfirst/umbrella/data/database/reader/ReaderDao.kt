@@ -45,19 +45,19 @@ interface ReaderDao : BaseDao {
 
     suspend fun getAllRss(): List<RSS> = withContext(ioContext) {
         SQLite.select()
-                .from(RSS::class.java)
-                .queryList()
+            .from(RSS::class.java)
+            .queryList()
     }
 
     suspend fun getAllFeedSource(): List<FeedSource> = withContext(ioContext) {
         SQLite.select()
-                .from(FeedSource::class.java)
-                .queryList()
+            .from(FeedSource::class.java)
+            .queryList()
     }
 
     suspend fun getFeedLocation() = withContext(ioContext) {
         SQLite.select()
-                .from(FeedLocation::class.java)
-                .querySingle()
+            .from(FeedLocation::class.java)
+            .querySingle()
     }
 }

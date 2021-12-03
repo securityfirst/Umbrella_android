@@ -10,9 +10,13 @@ interface BaseInteractor {
 
     fun setSkipPassword(isSkip: Boolean): Boolean
 
+    fun setDarkMode(value: Boolean)
+
+    fun isDarkMode(): Boolean
+
     fun isSkippPassword(): Boolean
 
-    fun setDefaultLanguage(isoCountry: String) : Boolean
+    fun setDefaultLanguage(isoCountry: String): Boolean
 
     fun getDefaultLanguage(): String
 

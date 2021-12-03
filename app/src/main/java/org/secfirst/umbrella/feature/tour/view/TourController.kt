@@ -155,14 +155,12 @@ class TourController : BaseController(), ContentView {
     private fun errorNoConnectionMessage(view: View) {
         val snackBar = view.longSnackbar(context.resources.getString(R.string.error_connection_tour_message))
         val snackView = snackBar.view
-        snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
     }
 
     private fun errorLostConnectionMessage() {
         tourView?.let {
             val snackBar = it.longSnackbar(context.resources.getString(R.string.notification_lost_connection))
             val snackView = snackBar.view
-            snackView.setBackgroundColor(ContextCompat.getColor(context, R.color.white))
         }
         if (progressDialog.isShowing && !mainActivity.isFinishing)
             progressDialog.dismiss()

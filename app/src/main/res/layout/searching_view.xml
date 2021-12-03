@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aandroid="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -8,10 +8,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/searchToolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:theme="@style/ToolBarTheme"
-        app:titleTextColor="@color/white" />
+        android:layout_height="?actionBarSize"
+        aandroid:background="?colorPrimary" />
 
     <org.secfirst.advancedsearch.views.SearchResultView
         android:id="@+id/searchResultView"

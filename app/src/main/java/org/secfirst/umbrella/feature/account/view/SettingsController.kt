@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -207,6 +208,12 @@ class SettingsController : BaseController(),
         mainView.settingsSkipPassword.setOnCheckedChangeListener { _, isChecked ->
             skipPasswordTip(isChecked)
         }
+
+        mainView.settingsDarkMode.isChecked = getDarkMode()
+
+        mainView.settingsDarkMode.setOnCheckedChangeListener { _, isChecked ->
+            setDarkMode(isChecked)
+        }
         presenter.submitDefaultLanguage()
         presenter.submitSkippPassword()
         presenter.prepareView()
@@ -354,6 +361,13 @@ class SettingsController : BaseController(),
     private fun skipPasswordTip(isChecked: Boolean) {
         if (isChecked) presenter.setSkipPassword(true) else presenter.setSkipPassword(false)
     }
+
+
+    private fun setDarkMode(isChecked: Boolean) {
+        presenter.changeDarkMode(isChecked)
+    }
+
+    private fun getDarkMode(): Boolean = presenter.getDarkMode()
 
     private fun feedSourceClick() = feedSourceDialog.show()
 

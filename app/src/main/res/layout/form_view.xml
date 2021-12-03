@@ -11,6 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
+        android:theme="@style/ActionBarStyle"
         app:layout_constraintBottom_toTopOf="@+id/stepperLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,10 +20,10 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/formToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_height="?actionBarSize"
+            android:background="?colorPrimary"
+            tools:targetApi="lollipop" />
 
-        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.stepstone.stepper.StepperLayout
@@ -38,8 +39,7 @@
         app:layout_constraintVertical_bias="1.0"
         app:ms_showErrorState="true"
         app:ms_showErrorStateOnBack="true"
-        app:ms_stepperType="tabs"
-        tools:theme="@style/AppTheme" />
+        app:ms_stepperType="tabs" />
 
     <include
         android:id="@+id/include"

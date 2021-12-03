@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/light_grey"
     android:padding="5dp"
     tools:ignore="MissingPrefix">
 
@@ -14,7 +13,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginBottom="2dp"
-        android:background="@color/light_white"
         card_view:cardCornerRadius="3dp"
         card_view:contentPadding="8dp">
 
@@ -29,7 +27,6 @@
                 android:layout_height="176dp"
                 android:background="@drawable/default_image"
                 android:scaleType="centerCrop"
-                android:src="#b1b1b1"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +38,6 @@
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:lines="1"
-                android:textColor="@android:color/white"
                 android:textSize="24sp"
                 card_view:layout_constraintBottom_toBottomOf="@+id/cardImage"
                 card_view:layout_constraintStart_toStartOf="parent"
@@ -49,13 +45,12 @@
 
             <TextView
                 android:id="@+id/cardLastUpdate"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:ellipsize="end"
+                android:fontFamily="fonts/Roboto-Regular.ttf"
                 android:maxLines="3"
-                android:textColor="@android:color/black"
                 android:textSize="13sp"
                 card_view:layout_constraintStart_toStartOf="@+id/cardTitle"
                 card_view:layout_constraintTop_toBottomOf="@+id/cardTitle"
@@ -63,10 +58,10 @@
 
             <TextView
                 android:id="@+id/cardDescription"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:fontFamily="fonts/Roboto-Regular.ttf"
                 android:maxLines="3"
                 android:textSize="12sp"
                 card_view:layout_constraintStart_toStartOf="@+id/cardLastUpdate"
@@ -75,12 +70,12 @@
 
             <TextView
                 android:id="@+id/cardShare"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:clickable="true"
                 android:focusable="true"
+                android:fontFamily="fonts/Roboto-Regular.ttf"
                 android:text="@string/share_carpsLk"
                 android:textColor="@color/blue"
                 card_view:layout_constraintStart_toStartOf="@+id/cardDescription"
@@ -88,11 +83,11 @@
 
             <TextView
                 android:id="@+id/cardOpenLink"
-                fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
+                android:fontFamily="`fonts/Roboto-Regular.ttf"
                 android:text="@string/learn_more"
                 android:textColor="@color/blue"
                 card_view:layout_constraintStart_toEndOf="@+id/cardShare"

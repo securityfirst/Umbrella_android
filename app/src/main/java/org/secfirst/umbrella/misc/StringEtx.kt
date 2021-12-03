@@ -39,7 +39,7 @@ fun String?.hostURL(): String {
 fun Long?.timestampToStringFormat(): String {
     val timestamp = this ?: 0
     return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-            .format(Date(timestamp * 1000))
+        .format(Date(timestamp * 1000))
 }
 
 fun String.checkPasswordStrength(context: Context): Boolean {

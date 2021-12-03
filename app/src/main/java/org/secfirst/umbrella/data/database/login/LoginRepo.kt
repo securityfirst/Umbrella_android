@@ -6,5 +6,5 @@ interface LoginRepo {
 
     suspend fun changeToken(userToken: String): Boolean
 
-    fun verifyDatabaseIntegrity() : Boolean
+    fun verifyDatabaseIntegrity(): Boolean
 }

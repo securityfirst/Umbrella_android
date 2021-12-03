@@ -29,7 +29,6 @@
             android:layout_marginTop="28dp"
             android:gravity="center"
             android:text="@string/enable_masking_mode"
-            android:textColor="@color/coachmark_background_dark"
             android:textSize="@dimen/text_size_large" />
 
         <TextView
@@ -40,7 +39,6 @@
             android:layout_marginTop="28dp"
             android:gravity="start"
             android:text="@string/hands_shake_info_description"
-            android:textColor="@color/coachmark_background_dark"
             android:textSize="13sp" />
 
 
@@ -54,7 +52,7 @@
         android:gravity="right"
         android:orientation="horizontal">
 
-        <androidx.appcompat.widget.ContentFrameLayout
+        <FrameLayout
             android:id="@+id/handsShakeCancel"
             android:layout_width="wrap_content"
             android:layout_height="36dp">
@@ -68,9 +66,9 @@
                 android:text="@string/cancel"
                 android:textColor="@color/hands_shake_info_text_color"
                 android:textSize="@dimen/text_size_smallest" />
-        </androidx.appcompat.widget.ContentFrameLayout>
+        </FrameLayout>
 
-        <androidx.appcompat.widget.ContentFrameLayout
+        <FrameLayout
             android:id="@+id/handsShakeOk"
             android:layout_width="60dp"
             android:layout_height="36dp"
@@ -86,7 +84,7 @@
                 android:text="@string/ok"
                 android:textColor="@color/umbrella_green"
                 android:textSize="@dimen/text_size_smallest" />
-        </androidx.appcompat.widget.ContentFrameLayout>
+        </FrameLayout>
 
     </LinearLayout>
 </LinearLayout>

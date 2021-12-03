@@ -74,9 +74,10 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     private fun setUpToolbar(toolbarTitle: String) {
         difficultyToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = toolbarTitle
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            /*mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
+            it.title = toolbarTitle
+
         }
     }
 

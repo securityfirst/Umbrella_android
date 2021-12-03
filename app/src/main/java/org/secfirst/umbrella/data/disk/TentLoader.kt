@@ -19,7 +19,10 @@ import java.io.File
 import javax.inject.Inject
 
 
-class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentService: ContentService? = null) {
+class TentLoader @Inject constructor(
+    private val tentRepo: TentRepo,
+    contentService: ContentService? = null
+) {
 
     private val contentData = ContentData()
     private val elementMonitor: ElementSerializeMonitor? = contentService
@@ -56,7 +59,8 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(module, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(pwd)
-            val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
+            val markdown =
+                Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.module = module
             module.markdowns.add(markdown)
         }
@@ -77,7 +81,8 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(subject, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(pwd)
-            val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
+            val markdown =
+                Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.subject = subject
             subject.markdowns.add(markdown)
         }
@@ -97,7 +102,8 @@ class TentLoader @Inject constructor(private val tentRepo: TentRepo, contentServ
         updateCategories(difficulty, file)
         filterSegmentFiles(pwd).forEach {
             val markdownText = it.readText().replaceMarkdownImage(pwd)
-            val markdown = Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
+            val markdown =
+                Markdown(it.path.substringAfterLast(getPathRepository()), markdownText).removeHead()
             markdown.difficulty = difficulty
             difficulty.markdowns.add(markdown)
         }

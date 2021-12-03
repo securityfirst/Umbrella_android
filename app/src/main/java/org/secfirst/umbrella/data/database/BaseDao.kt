@@ -28,19 +28,21 @@ interface BaseDao {
     fun initDatabase(userToken: String) {
 
         val dbConfig = FlowConfig.Builder(UmbrellaApplication.instance)
-                .addDatabaseConfig(DatabaseConfig
-                        .Builder(AppDatabase::class.java)
-                        .databaseName(AppDatabase.NAME)
-                        .openHelper { databaseDefinition, helperListener ->
-                            SQLCipherHelperImpl(databaseDefinition, helperListener, userToken)
-                        }.build())
-                .build()
+            .addDatabaseConfig(DatabaseConfig
+                .Builder(AppDatabase::class.java)
+                .databaseName(AppDatabase.NAME)
+                .openHelper { databaseDefinition, helperListener ->
+                    SQLCipherHelperImpl(databaseDefinition, helperListener, userToken)
+                }.build()
+            )
+            .build()
         FlowManager.init(dbConfig)
     }
 
     fun changeDatabaseAccess(userToken: String): Boolean {
         return try {
-            FlowManager.getWritableDatabase(AppDatabase.NAME).execSQL("PRAGMA rekey = '$userToken';")
+            FlowManager.getWritableDatabase(AppDatabase.NAME)
+                .execSQL("PRAGMA rekey = '$userToken';")
             true
         } catch (exception: Exception) {
             Log.e("test", "Error when try to change the password. ${exception.message}")
@@ -51,68 +53,68 @@ interface BaseDao {
     fun isDatabaseOK() = FlowManager.getDatabase(AppDatabase.NAME).isDatabaseIntegrityOk
 
     suspend fun saveModules(modules: List<Module>) =
-            withContext(ioContext) { modelAdapter<Module>().updateAll(modules) }
+        withContext(ioContext) { modelAdapter<Module>().updateAll(modules) }
 
     suspend fun saveSubjects(subjects: List<Subject>) =
-            withContext(ioContext) { modelAdapter<Subject>().saveAll(subjects) }
+        withContext(ioContext) { modelAdapter<Subject>().saveAll(subjects) }
 
     suspend fun saveDifficulties(difficulties: List<Difficulty>) =
-            withContext(ioContext) { modelAdapter<Difficulty>().saveAll(difficulties) }
+        withContext(ioContext) { modelAdapter<Difficulty>().saveAll(difficulties) }
 
     suspend fun saveMarkdowns(markdowns: List<Markdown>) =
-            withContext(ioContext) { modelAdapter<Markdown>().saveAll(markdowns) }
+        withContext(ioContext) { modelAdapter<Markdown>().saveAll(markdowns) }
 
     suspend fun saveChecklists(checklists: List<Checklist>) =
-            withContext(ioContext) { modelAdapter<Checklist>().saveAll(checklists) }
+        withContext(ioContext) { modelAdapter<Checklist>().saveAll(checklists) }
 
 
     suspend fun getModule(id: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Module::class.java)
-                        .where(Module_Table.id.`is`(id))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Module::class.java)
+                .where(Module_Table.id.`is`(id))
+                .querySingle()
+        }
 
     suspend fun getSubject(id: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Subject::class.java)
-                        .where(Subject_Table.id.`is`(id))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Subject::class.java)
+                .where(Subject_Table.id.`is`(id))
+                .querySingle()
+        }
 
     suspend fun getDifficulty(id: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Difficulty::class.java)
-                        .where(Difficulty_Table.id.`is`(id))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Difficulty::class.java)
+                .where(Difficulty_Table.id.`is`(id))
+                .querySingle()
+        }
 
     suspend fun getChecklist(id: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Checklist::class.java)
-                        .where(Checklist_Table.id.`is`(id))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Checklist::class.java)
+                .where(Checklist_Table.id.`is`(id))
+                .querySingle()
+        }
 
     suspend fun getMarkdown(id: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Markdown::class.java)
-                        .where(Markdown_Table.id.`is`(id))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Markdown::class.java)
+                .where(Markdown_Table.id.`is`(id))
+                .querySingle()
+        }
 
     suspend fun getForm(id: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Form::class.java)
-                        .where(Form_Table.path.`is`(id))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Form::class.java)
+                .where(Form_Table.path.`is`(id))
+                .querySingle()
+        }
 
     suspend fun saveForms(forms: List<Form>) {
         withContext(ioContext) {
