@@ -63,6 +63,7 @@ class AccountController : BaseController(), AccountView {
         maskAppView = inflater.inflate(R.layout.mask_app_info_view, container, false)
         resetPasswordView = inflater.inflate(R.layout.account_reset_password_alert, container, false)
 
+
         maskAppAlertDialog = AlertDialog
                 .Builder(activity)
                 .setView(maskAppView)
@@ -82,6 +83,7 @@ class AccountController : BaseController(), AccountView {
 
         presenter.onAttach(this)
         presenter.submitIsMaskApp()
+
 
         accountView.accountSettings.setOnClickListener { clickOnSettings() }
         accountView.accountPassword.setOnClickListener { passwordAlertDialog.show() }
@@ -174,8 +176,8 @@ class AccountController : BaseController(), AccountView {
 
     private fun setUpToolbar() {
         accountToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.title = context.getString(R.string.settings_title)
+            //mainActivity.setSupportActionBar(it)
+            it.title = context.getString(R.string.account_title)
         }
     }
 

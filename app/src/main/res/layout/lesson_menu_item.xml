@@ -15,7 +15,6 @@
         android:fontFamily="sans-serif"
         android:gravity="center"
         android:padding="5dp"
-        android:textColor="#de000000"
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="parent"

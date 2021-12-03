@@ -3,4 +3,4 @@
     android:id="@+id/lessonItemLayout"
     android:layout_width="match_parent"
     android:layout_height="2dp"
-    android:background="@color/very_light_pink" />
+    android:background="?android:attr/listDivider" />

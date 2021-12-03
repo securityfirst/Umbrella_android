@@ -5,7 +5,7 @@
     android:id="@+id/lessonHeaderLayout"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="?attr/selectableItemBackground"
+    android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center"
@@ -24,7 +24,7 @@
             android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:tint="@android:color/black"
+            android:tint="?colorControlNormal"
             app:srcCompat="@drawable/ic_fav_selected" />
 
         <TextView
@@ -36,7 +36,6 @@
             android:layout_marginLeft="40dp"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="8sp"
-            android:textColor="#de000000"
             android:textSize="16sp"
             android:textStyle="normal"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,7 +51,7 @@
             android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
-            android:layout_alignRight="@id/subHeaderText"
+            android:tint="?colorControlNormal"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_keyboard_arrow_down_black" />
 

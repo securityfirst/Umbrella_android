@@ -9,19 +9,20 @@ import org.secfirst.umbrella.data.database.segment.Markdown
 
 
 data class Element(
-        var pathId: String = "",
-        var index: Int = 0,
-        var title: String = "",
-        var template: String = "",
-        var description: String = "",
-        var markdowns: MutableList<Markdown> = arrayListOf(),
-        var children: MutableList<Element> = arrayListOf(),
-        var checklist: MutableList<Checklist> = arrayListOf(),
-        var rootDir: String = "",
-        var icon: String = "",
-        var path: String = "",
-        @JsonIgnore
-        var resourcePath: String = "")
+    var pathId: String = "",
+    var index: Int = 0,
+    var title: String = "",
+    var template: String = "",
+    var description: String = "",
+    var markdowns: MutableList<Markdown> = arrayListOf(),
+    var children: MutableList<Element> = arrayListOf(),
+    var checklist: MutableList<Checklist> = arrayListOf(),
+    var rootDir: String = "",
+    var icon: String = "",
+    var path: String = "",
+    @JsonIgnore
+    var resourcePath: String = ""
+)
 
 
 val Element.convertToModule: Module

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="2"
@@ -23,8 +22,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_weight="1"
-        android:background="@color/ms_white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -43,12 +44,12 @@
                 android:id="@+id/location"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?actionBarSize"
+                android:dropDownHeight="100dp"
                 android:hint="@string/feed_location_enter_location"
                 android:imeOptions="actionDone"
                 android:inputType="textCapSentences"
-                android:textSize="16sp"
-                android:dropDownHeight="100dp"/>
+                android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <include

@@ -6,8 +6,7 @@
     android:padding="5dp"
     tools:ignore="MissingPrefix">
 
-    <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <com.google.android.material.card.MaterialCardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/feedHeadCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,7 +25,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/feed_location_header"
-                android:textColor="@color/ms_black"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -59,5 +57,5 @@
                 android:textSize="14sp"
                 android:textStyle="normal" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </FrameLayout>

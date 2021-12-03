@@ -108,9 +108,9 @@ class CalculatorController : BaseController(), MaskAppView {
         }
 
         view.buttonClear.setOnClickListener {
-            if (editTextCalc.text.isNotEmpty()) {
+            if (editTextCalc.text!!.isNotEmpty()) {
                 val currentText = editTextCalc.text
-                editTextCalc.setText(currentText.subSequence(0, currentText.length - 1))
+                editTextCalc.setText(currentText!!.subSequence(0, currentText.length - 1))
             } else {
                 valueOne = Double.NaN
                 valueTwo = Double.NaN

@@ -59,11 +59,11 @@ enum class ExtensionFile(val value: String) {
 fun tentLanguages(): List<String> {
     val languages = mutableListOf<String>()
     File(repoPath)
-            .walk()
-            .filter { !it.path.contains(".git") }
-            .filter { it.name.length == 2 || it.name.contains("zh", true) }
-            .filter { it.isDirectory }
-            .forEach { languages.add(it.name) }
+        .walk()
+        .filter { !it.path.contains(".git") }
+        .filter { it.name.length == 2 || it.name.contains("zh", true) }
+        .filter { it.isDirectory }
+        .forEach { languages.add(it.name) }
     return languages
 }
 

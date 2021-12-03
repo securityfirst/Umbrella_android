@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/share_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,7 +15,6 @@
         android:fontFamily="sans-serif-medium"
         android:padding="@dimen/dashboard_feed_normal_padding"
         android:text="@string/export_lesson"
-        android:textColor="#de000000"
         android:textSize="@dimen/font_large"
         android:textStyle="normal" />
 
@@ -25,7 +24,7 @@
         android:layout_height="1dp"
         android:layout_below="@id/share_title"
         android:layout_marginTop="@dimen/share_dialog_little_space"
-        android:background="#e0e0e0"
+        android:background="?android:attr/listDivider"
         android:padding="5dp" />
 
     <RadioGroup
@@ -59,7 +58,7 @@
         android:layout_height="1dp"
         android:layout_below="@id/shareGroup"
         android:layout_marginTop="@dimen/share_dialog_little_space"
-        android:background="#e0e0e0"
+        android:background="?android:attr/listDivider"
         android:padding="5dp" />
 
     <RelativeLayout

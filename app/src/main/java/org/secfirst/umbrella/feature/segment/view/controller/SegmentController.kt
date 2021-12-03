@@ -193,7 +193,7 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun shareDocument(fileToShare: File) {
         val pm = context.packageManager
         val uri = FileProvider.getUriForFile(context, APPLICATION_ID, fileToShare)
-        val shareIntent = ShareCompat.IntentBuilder.from(activity)
+        val shareIntent = ShareCompat.IntentBuilder.from(activity!!)
                 .setType(context.contentResolver.getType(uri))
                 .setStream(uri)
                 .intent

@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_gravity="center"
-        android:background="@color/light_white"
         card_view:cardCornerRadius="2dp"
         card_view:layout_constraintTop_toTopOf="parent">
 
@@ -30,7 +29,6 @@
                 android:fontFamily="sans-serif"
                 android:lineSpacingExtra="0sp"
                 android:text="@string/checklist_card_title"
-                android:textColor="@color/ms_white"
                 android:textSize="24sp"
                 android:textStyle="normal" />
         </FrameLayout>

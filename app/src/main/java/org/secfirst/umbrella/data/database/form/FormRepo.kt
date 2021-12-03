@@ -16,5 +16,5 @@ interface FormRepo {
 
     suspend fun loadForm(formTitle: String): Form?
 
-    suspend fun loadScreenBy(sh1ID : String): List<Screen>
+    suspend fun loadScreenBy(sh1ID: String): List<Screen>
 }

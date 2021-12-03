@@ -14,7 +14,10 @@ interface FormDao {
             try {
                 modelAdapter<Answer>().insert(answer)
             } catch (e: Exception) {
-                Log.e(FormDao::class.simpleName, "Error when tried to insert a answer - ${e.stackTrace}")
+                Log.e(
+                    FormDao::class.simpleName,
+                    "Error when tried to insert a answer - ${e.stackTrace}"
+                )
             }
         }
     }
@@ -34,7 +37,10 @@ interface FormDao {
             try {
                 res = modelAdapter<ActiveForm>().save(activeForm)
             } catch (e: Exception) {
-                Log.e(FormDao::class.simpleName, "Error when tried to insert a activeForm - ${e.stackTrace}")
+                Log.e(
+                    FormDao::class.simpleName,
+                    "Error when tried to insert a activeForm - ${e.stackTrace}"
+                )
             }
         }
         return res
@@ -42,34 +48,34 @@ interface FormDao {
 
     suspend fun getAnswerBy(formId: Long): List<Answer> = withContext(ioContext) {
         SQLite.select()
-                .from(Answer::class.java)
-                .where(Answer_Table.activeForm_id.`is`(formId))
-                .queryList()
+            .from(Answer::class.java)
+            .where(Answer_Table.activeForm_id.`is`(formId))
+            .queryList()
     }
 
     suspend fun getAllFormModel(): List<Form> = withContext(ioContext) {
         SQLite.select()
-                .from(Form::class.java)
-                .queryList()
+            .from(Form::class.java)
+            .queryList()
     }
 
     suspend fun getForm(formTitle: String): Form? = withContext(ioContext) {
         SQLite.select()
-                .from(Form::class.java)
-                .where(Form_Table.deeplinkTitle.`is`(formTitle))
-                .querySingle()
+            .from(Form::class.java)
+            .where(Form_Table.deeplinkTitle.`is`(formTitle))
+            .querySingle()
     }
 
     suspend fun getAllActiveForms(): List<ActiveForm> = withContext(ioContext) {
         SQLite.select()
-                .from(ActiveForm::class.java)
-                .queryList()
+            .from(ActiveForm::class.java)
+            .queryList()
     }
 
     suspend fun getScreenBy(pathID: String): List<Screen> = withContext(ioContext) {
         SQLite.select()
-                .from(Screen::class.java)
-                .where(Screen_Table.form_path.`is`(pathID))
-                .queryList()
+            .from(Screen::class.java)
+            .where(Screen_Table.form_path.`is`(pathID))
+            .queryList()
     }
 }

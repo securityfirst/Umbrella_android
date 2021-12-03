@@ -34,5 +34,5 @@ abstract class BaseController(bundle: Bundle = Bundle()) : Controller(bundle), L
     }
 
     fun enableNavigation(isNavigation: Boolean) =
-            if (isNavigation) mainActivity.showNavigation() else mainActivity.hideNavigation()
+        if (isNavigation) mainActivity.showNavigation() else mainActivity.hideNavigation()
 }

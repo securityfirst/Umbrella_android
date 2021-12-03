@@ -17,5 +17,5 @@ interface AccountRepo {
 
     suspend fun saveFeedLocation(feedLocation: FeedLocation)
 
-    suspend fun wipeMainContent() : Boolean
+    suspend fun wipeMainContent(): Boolean
 }

@@ -106,7 +106,7 @@ interface ContentDao : BaseDao, ContentMonitor {
     }
 
     private fun calculatePercentage(fileCount: Int, listSize: Int) {
-        val percentage = if(listSize != 0) fileCount * 100 / listSize else 0
+        val percentage = if (listSize != 0) fileCount * 100 / listSize else 0
         onContentProgress(percentage)
     }
 }

@@ -19,7 +19,7 @@
             android:id="@+id/segmentLayout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/segment_item_card_height"
-            android:background="@color/umbrella_purple"
+            android:background="?colorPrimary"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -31,7 +31,6 @@
             android:layout_marginTop="8dp"
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="0sp"
-            android:textColor="@color/ms_white"
             android:textSize="@dimen/text_size_larger"
             android:textStyle="normal"
             card_view:layout_constraintStart_toStartOf="parent"
@@ -47,7 +46,6 @@
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="0sp"
             android:maxLines="3"
-            android:textColor="@color/ms_white"
             android:textSize="@dimen/text_size_smaller"
             android:textStyle="normal"
             card_view:layout_constraintStart_toStartOf="@+id/segmentIndex"
@@ -56,14 +54,16 @@
 
         <CheckBox
             android:id="@+id/segmentFavorite"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/favorite_bg"
             android:button="@android:color/transparent"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/segmentShare" />
+            card_view:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/segmentShare"
@@ -72,6 +72,7 @@
             android:layout_gravity="bottom|center"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
+            android:contentDescription="TODO"
             android:src="@drawable/ic_share_segment"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent" />

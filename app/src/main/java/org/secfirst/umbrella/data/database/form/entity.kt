@@ -17,21 +17,22 @@ import java.io.Serializable
 
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 data class Form(
-        @PrimaryKey
-        var path: String = "",
-        @Column
-        var title: String = "",
-        @Column
-        var deeplinkTitle: String = "",
-        var screens: MutableList<Screen> = arrayListOf()) : BaseModel(), Serializable {
+    @PrimaryKey
+    var path: String = "",
+    @Column
+    var title: String = "",
+    @Column
+    var deeplinkTitle: String = "",
+    var screens: MutableList<Screen> = arrayListOf()
+) : BaseModel(), Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "screens")
     fun oneToManyScreens(): MutableList<Screen> {
         if (screens.isEmpty()) {
             screens = SQLite.select()
-                    .from(Screen::class.java)
-                    .where(Screen_Table.form_path.eq(path))
-                    .queryList()
+                .from(Screen::class.java)
+                .where(Screen_Table.form_path.eq(path))
+                .queryList()
         }
         return screens
     }
@@ -39,22 +40,23 @@ data class Form(
 
 @Table(database = AppDatabase::class)
 data class Screen(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var title: String = "",
-        @JsonIgnore
-        @ForeignKey(stubbedRelationship = true)
-        var form: Form? = null,
-        var items: MutableList<Item> = arrayListOf()) : BaseModel(), Serializable {
+    @PrimaryKey(autoincrement = true)
+    var id: Long = 0,
+    @Column
+    var title: String = "",
+    @JsonIgnore
+    @ForeignKey(stubbedRelationship = true)
+    var form: Form? = null,
+    var items: MutableList<Item> = arrayListOf()
+) : BaseModel(), Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "items")
     fun oneToManyItems(): MutableList<Item> {
         if (items.isEmpty()) {
             items = SQLite.select()
-                    .from(Item::class.java)
-                    .where(Item_Table.screen_id.eq(id))
-                    .queryList()
+                .from(Item::class.java)
+                .where(Item_Table.screen_id.eq(id))
+                .queryList()
         }
         return items
     }
@@ -63,29 +65,30 @@ data class Screen(
 
 @Table(database = AppDatabase::class)
 data class Item(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var name: String = "",
-        @Column
-        var type: String = "",
-        @Column
-        var label: String = "",
-        @ForeignKey(stubbedRelationship = true)
-        var screen: Screen? = null,
-        var options: MutableList<Option> = arrayListOf(),
-        @Column
-        var value: String = "",
-        @Column
-        var hint: String = "") : Serializable {
+    @PrimaryKey(autoincrement = true)
+    var id: Long = 0,
+    @Column
+    var name: String = "",
+    @Column
+    var type: String = "",
+    @Column
+    var label: String = "",
+    @ForeignKey(stubbedRelationship = true)
+    var screen: Screen? = null,
+    var options: MutableList<Option> = arrayListOf(),
+    @Column
+    var value: String = "",
+    @Column
+    var hint: String = ""
+) : Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "options")
     fun oneToManyOptions(): MutableList<Option> {
         if (options.isEmpty()) {
             options = SQLite.select()
-                    .from(Option::class.java)
-                    .where(Option_Table.item_id.eq(id))
-                    .queryList()
+                .from(Option::class.java)
+                .where(Option_Table.item_id.eq(id))
+                .queryList()
         }
         return options
     }
@@ -94,35 +97,38 @@ data class Item(
 
 @Table(database = AppDatabase::class, allFields = false)
 data class Option(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var label: String = "",
-        @ForeignKey(stubbedRelationship = true)
-        var item: Item? = null,
-        @Column
-        var value: String = "") : BaseModel(), Serializable
+    @PrimaryKey(autoincrement = true)
+    var id: Long = 0,
+    @Column
+    var label: String = "",
+    @ForeignKey(stubbedRelationship = true)
+    var item: Item? = null,
+    @Column
+    var value: String = ""
+) : BaseModel(), Serializable
 
 @Table(database = AppDatabase::class)
-data class ActiveForm(@PrimaryKey(autoincrement = true)
-                      var id: Long = 0,
-                      var form: Form = Form(),
-                      @Column(name = "form_sha1")
-                      var sha1Form: String = "",
-                      @Column
-                      var date: String = "",
-                      @Column
-                      var title: String = "",
-                      var answers: MutableList<Answer>? = arrayListOf()) : BaseModel(), Serializable {
+data class ActiveForm(
+    @PrimaryKey(autoincrement = true)
+    var id: Long = 0,
+    var form: Form = Form(),
+    @Column(name = "form_sha1")
+    var sha1Form: String = "",
+    @Column
+    var date: String = "",
+    @Column
+    var title: String = "",
+    var answers: MutableList<Answer>? = arrayListOf()
+) : BaseModel(), Serializable {
 
     @OneToMany(methods = [(OneToMany.Method.ALL)], variableName = "answers")
     fun oneToManyAnswers(): MutableList<Answer>? {
         answers?.let {
             if (it.isEmpty()) {
                 answers = SQLite.select()
-                        .from(Answer::class.java)
-                        .where(Answer_Table.activeForm_id.eq(id))
-                        .queryList()
+                    .from(Answer::class.java)
+                    .where(Answer_Table.activeForm_id.eq(id))
+                    .queryList()
             }
         }
         return answers
@@ -131,20 +137,23 @@ data class ActiveForm(@PrimaryKey(autoincrement = true)
 
 @Table(database = AppDatabase::class, useBooleanGetterSetters = false)
 data class Answer(
-        @PrimaryKey(autoincrement = true)
-        var id: Long = 0,
-        @Column
-        var textInput: String = "",
-        @Column
-        var choiceInput: Boolean = false,
-        @Column
-        var itemId: Long = 0,
-        @Column
-        var optionId: Long = 0,
-        @ForeignKey(onUpdate = ForeignKeyAction.CASCADE,
-                onDelete = ForeignKeyAction.CASCADE,
-                deleteForeignKeyModel = false, stubbedRelationship = true)
-        var activeForm: ActiveForm? = null) : Serializable
+    @PrimaryKey(autoincrement = true)
+    var id: Long = 0,
+    @Column
+    var textInput: String = "",
+    @Column
+    var choiceInput: Boolean = false,
+    @Column
+    var itemId: Long = 0,
+    @Column
+    var optionId: Long = 0,
+    @ForeignKey(
+        onUpdate = ForeignKeyAction.CASCADE,
+        onDelete = ForeignKeyAction.CASCADE,
+        deleteForeignKeyModel = false, stubbedRelationship = true
+    )
+    var activeForm: ActiveForm? = null
+) : Serializable
 
 fun ActiveForm.asHTML(): String {
     var fileName = this.title.replace("[^a-zA-Z0-9.-]", "_")
@@ -204,7 +213,8 @@ fun MutableList<Form>.associateFormForeignKey() {
 }
 
 fun Form.toSearchResult(): SearchResult {
-    return SearchResult(this.title, "Summary of ${this.title}"
+    return SearchResult(
+        this.title, "Summary of ${this.title}"
     ) { c: Context ->
         val withoutLanguage = this.path.split("/").drop(1).joinToString("/")
         c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://forms/$withoutLanguage")))

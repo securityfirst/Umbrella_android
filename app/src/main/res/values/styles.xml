@@ -1,27 +1,44 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme.-->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionModeOverlay">true</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@android:color/black</item>
         <item name="ms_stepperStyle">@style/DotStepperStyle</item>
-        <item name="android:textColor">#de000000</item>
-        <item name="android:itemBackground">@color/white</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.ToolbarTheme</item>
+        <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView.CardViewTheme</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Widget.MaterialComponents.CardView.CardViewTheme">
+        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/form_background</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.Toolbar.ToolbarTheme">
+        <item name="iconTint">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:layout_height">?actionBarSize</item>
+    </style>
+
 
     <style name="DotStepperStyle">
         <item name="ms_stepperType">dots</item>
         <item name="ms_activeStepColor">@color/umbrella_green</item>
-        <item name="ms_inactiveStepColor">#cecece</item>
-        <item name="ms_bottomNavigationBackground">?attr/colorAccent</item>
+        <item name="ms_inactiveStepColor">@color/grey_location</item>
+        <item name="ms_bottomNavigationBackground">@color/white_transparent</item>
     </style>
 
-    <style name="EditTextStyle" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">#030303</item>
-        <item name="colorControlActivated">#43a0ca</item>
+    <style name="textViewTheme" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@color/grey_location</item>
     </style>
 
     <style name="ProgressDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
@@ -36,7 +53,8 @@
 
     <style name="LinearProgress" parent="Theme.AppCompat.Light">
         <item name="colorAccent">@color/umbrella_purple_dark</item>
-        <!--<item name="android:progressBackgroundTint">@color/umbrella_purple_dark</item>-->
+        <item name="android:progressBackgroundTint" tools:targetApi="lollipop">
+            @color/umbrella_purple_dark</item>-=
     </style>
 
     <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
@@ -45,33 +63,25 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="Autocomplete" parent="Widget.AppCompat.Light.AutoCompleteTextView">
+    <style name="Autocomplete" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@android:color/transparent</item>
         <item name="colorControlNormal">@color/green_button</item>
         <item name="colorControlActivated">@color/green_button</item>
     </style>
 
-    <style name="ToolbarStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">?colorPrimary</item>
-        <item name="colorControlNormal">@color/white</item>
-    </style>
 
-    <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="colorControlNormal">@color/white</item>
-    </style>
-
-    <style name="checkBoxStyle" parent="Theme.AppCompat.Light">
+    <style name="checkBoxStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorAccent">@color/umbrella_green</item>
         <item name="android:textColorSecondary">@color/dark_grey</item>
     </style>
 
-    <style name="radioStyle" parent="Theme.AppCompat.Light">
+    <style name="radioStyle" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorAccent">@color/umbrella_green</item>
         <item name="android:textColorSecondary">@color/dark_grey</item>
     </style>
 
-    <style name="DialogTheme" parent="android:Theme.Dialog">
 
+    <style name="DialogTheme" parent="Theme.MaterialComponents.Dialog">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <!-- No backgrounds, titles or window float -->

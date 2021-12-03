@@ -34,26 +34,27 @@ interface SegmentDao : BaseDao {
         }
     }
 
-    suspend fun getDifficultyBySubjectId(subjectId: String): List<Difficulty> = withContext(ioContext) {
-        SQLite.select()
+    suspend fun getDifficultyBySubjectId(subjectId: String): List<Difficulty> =
+        withContext(ioContext) {
+            SQLite.select()
                 .from(Difficulty::class.java)
                 .where(Difficulty_Table.subject_id.`is`(subjectId))
                 .queryList()
-    }
+        }
 
     suspend fun getSubjectByRootDir(rootDir: String): Subject? = withContext(ioContext) {
         SQLite.select()
-                .from(Subject::class.java)
-                .where(Subject_Table.rootDir.`is`(rootDir))
-                .querySingle()
+            .from(Subject::class.java)
+            .where(Subject_Table.rootDir.`is`(rootDir))
+            .querySingle()
     }
 
     suspend fun getModuleByRootDir(rootDir: String) =
-            withContext(ioContext) {
-                SQLite.select()
-                        .from(Module::class.java)
-                        .where(Module_Table.rootDir.`is`(rootDir))
-                        .querySingle()
-            }
+        withContext(ioContext) {
+            SQLite.select()
+                .from(Module::class.java)
+                .where(Module_Table.rootDir.`is`(rootDir))
+                .querySingle()
+        }
 
 }

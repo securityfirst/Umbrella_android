@@ -13,12 +13,14 @@ import org.secfirst.umbrella.di.module.TentContentModule
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [(AndroidInjectionModule::class),
-    (AppModule::class),
-    (RepositoryModule::class),
-    (NetworkModule::class),
-    (TentContentModule::class),
-    (ActivityBuilder::class)])
+@Component(
+    modules = [(AndroidInjectionModule::class),
+        (AppModule::class),
+        (RepositoryModule::class),
+        (NetworkModule::class),
+        (TentContentModule::class),
+        (ActivityBuilder::class)]
+)
 
 interface AppComponent {
 

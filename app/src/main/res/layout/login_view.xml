@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/loginBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:theme="@style/ActionBarStyle">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/loginToolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_height="?actionBarSize"
+            android:background="?colorPrimary"
             app:title="@string/app_name" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -39,11 +40,10 @@
             android:layout_marginTop="40dp"
             android:fontFamily="sans-serif-medium"
             android:text="@string/login_your_password"
-            android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="normal" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/loginPwText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,35 +51,24 @@
             android:hint="@string/login_enter_pw"
             android:inputType="textWebPassword" />
 
-        <androidx.cardview.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/loginButton"
             android:layout_width="93dp"
             android:layout_height="39dp"
             android:layout_marginTop="60dp"
             card_view:cardCornerRadius="2dp">
 
-            <LinearLayout
+            <Button
                 android:id="@+id/location_layout"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/umbrella_green"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:backgroundTint="@color/umbrella_green"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/login_message_button"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:targetApi="lollipop" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_horizontal"
-                    android:text="@string/login_message_button"
-                    android:textColor="@color/ms_white"
-                    android:textSize="14sp"
-                    android:textStyle="normal" />
-
-            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

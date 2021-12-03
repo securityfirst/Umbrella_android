@@ -15,7 +15,6 @@
         android:layout_marginTop="20dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/account_language_dialog_title"
-        android:textColor="#de000000"
         android:textSize="@dimen/font_larger"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +42,6 @@
             android:fontFamily="sans-serif"
             android:lineSpacingExtra="8sp"
             android:text="@string/english_language_title"
-            android:textColor="@color/feedSources_color"
             android:textSize="@dimen/text_size_smaller"
             android:textStyle="normal" />
 
@@ -58,7 +56,6 @@
             android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/spanish_language_title"
-            android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
         <RadioButton
@@ -71,7 +68,6 @@
             android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/chinese_language_title"
-            android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
         <RadioButton
@@ -84,7 +80,6 @@
             android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/arabic_language_title"
-            android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
         <RadioButton
@@ -97,7 +92,6 @@
             android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/farsi_language_title"
-            android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
         <RadioButton
@@ -110,7 +104,6 @@
             android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/russian_language_title"
-            android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
         <RadioButton
@@ -123,7 +116,6 @@
             android:drawablePadding="@dimen/recycler_view_margin_bottom"
             android:lineSpacingExtra="8sp"
             android:text="@string/french_language_title"
-            android:textColor="#8a000000"
             android:textSize="@dimen/text_size_smaller" />
 
     </RadioGroup>

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:text="@string/tour_warner_message"
-        android:textColor="#de000000"
         android:textSize="18sp"
         android:textStyle="normal" />
 
