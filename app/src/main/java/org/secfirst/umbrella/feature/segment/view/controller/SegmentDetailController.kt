@@ -15,7 +15,7 @@ import org.secfirst.umbrella.misc.launchSilent
 
 class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
 
-    private val markdown by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT_DETAIL) as Markdown }
+    private val markdown by lazy { args.getParcelable(EXTRA_SELECTED_SEGMENT_DETAIL) as Markdown? }
 
     override fun onInject() {}
 
@@ -33,10 +33,10 @@ class SegmentDetailController(bundle: Bundle) : BaseController(bundle) {
         val css = Github()
         css.addRule("body", "line-height: 1.6", "padding: 0px")
         view.markdownView.addStyleSheet(css)
-        launchSilent(uiContext) { view.markdownView.loadMarkdown(markdown.text) }
+        launchSilent(uiContext) { view.markdownView.loadMarkdown(markdown?.text) }
     }
 
-    fun getTitle() = markdown.title
+    fun getTitle() = markdown?.title
 
     companion object {
         const val EXTRA_SELECTED_SEGMENT_DETAIL = "selected_segment_detail"

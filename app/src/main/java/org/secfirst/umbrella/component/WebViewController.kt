@@ -51,7 +51,7 @@ class WebViewController(bundle: Bundle) : BaseController(bundle) {
 
     private fun setUpWebView() {
         webView?.let {
-            it.loadUrl(url)
+            url?.let { it1 -> it.loadUrl(it1) }
             it.webViewClient = object : WebViewClient() {
                 override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
                     webViewLoad?.visibility = INVISIBLE

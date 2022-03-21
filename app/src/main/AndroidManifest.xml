@@ -21,7 +21,9 @@
         <activity
             android:name=".feature.main.MainActivity"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -39,7 +41,8 @@
             android:label="@string/app_calc"
             android:roundIcon="@mipmap/calc"
             android:screenOrientation="portrait"
-            android:targetActivity=".feature.main.MainActivity">
+            android:targetActivity=".feature.main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 
@@ -55,7 +58,8 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_umbrella"
             android:screenOrientation="portrait"
-            android:targetActivity=".feature.main.MainActivity">
+            android:targetActivity=".feature.main.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
 

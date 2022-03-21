@@ -277,15 +277,17 @@ class DashboardController(bundle: Bundle) : BaseController(bundle), ChecklistVie
     private fun shareDocument(fileToShare: File) {
         val pm = context.packageManager
         val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, fileToShare)
-        val shareIntent = ShareCompat.IntentBuilder.from(activity)
+        val shareIntent = activity?.let {
+            ShareCompat.IntentBuilder(it)
                 .setType(context.contentResolver.getType(uri))
                 .setStream(uri)
                 .intent
+        }
 
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, FilenameUtils.removeExtension(fileToShare.name))
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        if (shareIntent.resolveActivity(pm) != null)
+        shareIntent?.action = Intent.ACTION_SEND
+        shareIntent?.putExtra(Intent.EXTRA_SUBJECT, FilenameUtils.removeExtension(fileToShare.name))
+        shareIntent?.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        if (shareIntent?.resolveActivity(pm) != null)
             startActivity(Intent.createChooser(shareIntent, context.getString(R.string.export_lesson)))
 
     }

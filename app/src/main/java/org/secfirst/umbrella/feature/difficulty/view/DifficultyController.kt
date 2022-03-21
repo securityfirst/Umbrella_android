@@ -42,13 +42,13 @@ class DifficultyController(bundle: Bundle) : BaseController(bundle), DifficultyV
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
         presenter.onAttach(this)
-        presenter.submitDifficulty(subjectId)
+        subjectId?.let { presenter.submitDifficulty(it) }
         return inflater.inflate(R.layout.difficulty_view, container, false)
     }
 
     private fun onDifficultClick(position: Int) {
         val itemSelected = difficultyAdapter.getItem(position)
-        presenter.saveDifficultySelect(itemSelected, subjectId)
+        subjectId?.let { presenter.saveDifficultySelect(itemSelected, it) }
         presenter.submitDifficultySelect(difficultyAdapter.getItems(position))
     }
 

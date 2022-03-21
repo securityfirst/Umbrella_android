@@ -68,7 +68,11 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private lateinit var viewSegment: View
     private lateinit var tabControl: HostSegmentTabControl
 
-    constructor(markdownIds: ArrayList<String>, checklistId: String, isFromDashboard: Boolean = false) : this(Bundle().apply {
+    constructor(
+        markdownIds: ArrayList<String>,
+        checklistId: String,
+        isFromDashboard: Boolean = false
+    ) : this(Bundle().apply {
         putStringArrayList(EXTRA_SEGMENT, markdownIds)
         putString(EXTRA_CHECKLIST, checklistId)
         putBoolean(EXTRA_DASHBOARD, isFromDashboard)
@@ -76,23 +80,31 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     override fun onInject() {
         DaggerSegmentComponent.builder()
-                .application(UmbrellaApplication.instance)
-                .build()
-                .inject(this)
+            .application(UmbrellaApplication.instance)
+            .build()
+            .inject(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup,
+        savedViewState: Bundle?
+    ): View {
         setHasOptionsMenu(true)
         tabControl = parentController as HostSegmentTabControl
         viewSegment = inflater.inflate(R.layout.segment_view, container, false)
         shareView = inflater.inflate(R.layout.share_dialog, container, false)
-        if (markdownIds.isNotEmpty()) {
+        if (markdownIds?.isNotEmpty() == true) {
             shareDialog = AlertDialog
-                    .Builder(activity)
-                    .setView(shareView)
-                    .create()
+                .Builder(activity)
+                .setView(shareView)
+                .create()
             presenter.onAttach(this)
-            presenter.submitMarkdownsAndChecklist(markdownIds, checklistId)
+            checklistId?.let {
+                markdownIds?.let { it1 ->
+                    presenter.submitMarkdownsAndChecklist(it1, it)
+                }
+            }
             if (isFromDashboard) {
                 onSegmentClicked(markdownIds!!.size)
             }
@@ -139,10 +151,12 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         launchSilent(uiContext) {
             markdowns.forEach { markdown ->
                 if (markdown.isRemove) {
-                    val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, null)
+                    val segmentItem =
+                        SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, null)
                     section.add(segmentItem)
                 } else {
-                    val segmentItem = SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
+                    val segmentItem =
+                        SegmentItem(segmentClick, segmentShareClick, segmentFavoriteClick, markdown)
                     section.add(segmentItem)
                 }
             }
@@ -156,13 +170,25 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
 
     private fun createChecklistCard() {
         checklist?.let {
-            segmentAdapter.add(Section(SegmentFoot(footClick,
-                    checklistShareClick, checklistFavoriteClick, it)))
+            segmentAdapter.add(
+                Section(
+                    SegmentFoot(
+                        footClick,
+                        checklistShareClick, checklistFavoriteClick, it
+                    )
+                )
+            )
         }
     }
 
     override fun showSegmentDetail(markdown: Markdown) {
-        parentController?.router?.pushController(RouterTransaction.with(SegmentDetailController(markdown)))
+        parentController?.router?.pushController(
+            RouterTransaction.with(
+                SegmentDetailController(
+                    markdown
+                )
+            )
+        )
 
     }
 
@@ -193,16 +219,23 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
     private fun shareDocument(fileToShare: File) {
         val pm = context.packageManager
         val uri = FileProvider.getUriForFile(context, APPLICATION_ID, fileToShare)
-        val shareIntent = ShareCompat.IntentBuilder.from(activity)
+        val shareIntent = activity?.let {
+            ShareCompat.IntentBuilder(it)
                 .setType(context.contentResolver.getType(uri))
                 .setStream(uri)
                 .intent
+        }
 
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, removeExtension(fileToShare.name))
-        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        if (shareIntent.resolveActivity(pm) != null)
-            startActivity(Intent.createChooser(shareIntent, context.getString(R.string.export_lesson)))
+        shareIntent?.action = Intent.ACTION_SEND
+        shareIntent?.putExtra(Intent.EXTRA_SUBJECT, removeExtension(fileToShare.name))
+        shareIntent?.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        if (shareIntent?.resolveActivity(pm) != null)
+            startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    context.getString(R.string.export_lesson)
+                )
+            )
 
     }
 
@@ -225,7 +258,8 @@ class SegmentController(bundle: Bundle) : BaseController(bundle), SegmentView {
         shareDialog.show()
     }
 
-    private fun onSegmentFavoriteClick(markdown: Markdown) = presenter.submitMarkdownFavorite(markdown)
+    private fun onSegmentFavoriteClick(markdown: Markdown) =
+        presenter.submitMarkdownFavorite(markdown)
 
     private fun onFootClicked(position: Int) {
         markdownIds?.let {

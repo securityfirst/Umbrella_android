@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/android:api-28-alpha
+      - image: circleci/android:api-30
     environment:
       ANDROID_HOME: "/opt/android/sdk"
       JAVA_OPTIONS: "-Xms512m -Xmx3200m"

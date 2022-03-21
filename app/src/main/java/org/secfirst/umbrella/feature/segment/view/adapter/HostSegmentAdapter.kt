@@ -3,16 +3,18 @@ package org.secfirst.umbrella.feature.segment.view.adapter
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.support.RouterPagerAdapter
+import com.bluelinelabs.conductor.viewpager.RouterPagerAdapter
 import org.secfirst.umbrella.feature.checklist.view.controller.ChecklistController
 import org.secfirst.umbrella.feature.segment.view.controller.SegmentController
 import org.secfirst.umbrella.feature.segment.view.controller.SegmentDetailController
 import org.secfirst.umbrella.misc.AppExecutors.Companion.uiContext
 import org.secfirst.umbrella.misc.launchSilent
 
-class HostSegmentAdapter(host: Controller,
-                         private val controllers: List<Controller>,
-                         private val segmentPageLimit: Int) : RouterPagerAdapter(host) {
+class HostSegmentAdapter(
+    host: Controller,
+    private val controllers: List<Controller>,
+    private val segmentPageLimit: Int
+) : RouterPagerAdapter(host) {
 
 
     override fun configureRouter(router: Router, position: Int) {
@@ -20,7 +22,13 @@ class HostSegmentAdapter(host: Controller,
             when (position) {
                 0 -> {
                     val segmentController = controllers[position] as SegmentController
-                    launchSilent(uiContext) { router.setRoot(RouterTransaction.with(segmentController)) }
+                    launchSilent(uiContext) {
+                        router.setRoot(
+                            RouterTransaction.with(
+                                segmentController
+                            )
+                        )
+                    }
                 }
                 in 1..segmentPageLimit -> {
                     val detailController = controllers[position] as SegmentDetailController
@@ -28,7 +36,13 @@ class HostSegmentAdapter(host: Controller,
                 }
                 else -> {
                     val checklistController = controllers[position] as ChecklistController
-                    launchSilent(uiContext) { router.setRoot(RouterTransaction.with(checklistController)) }
+                    launchSilent(uiContext) {
+                        router.setRoot(
+                            RouterTransaction.with(
+                                checklistController
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -42,7 +56,7 @@ class HostSegmentAdapter(host: Controller,
             }
             in 1..segmentPageLimit -> {
                 val currentController = controllers[position] as SegmentDetailController
-                currentController.getTitle()
+                currentController.getTitle() ?: ""
 
             }
             else -> {

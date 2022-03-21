@@ -30,6 +30,7 @@ import org.secfirst.umbrella.feature.search.interactor.SearchBaseInteractor
 import org.secfirst.umbrella.feature.search.view.SearchView
 import org.secfirst.umbrella.misc.wrapTextWithElement
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 
 class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject constructor(
@@ -102,7 +103,7 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
                 ),
                 // We leave this one alone cause it renders the main search view
                 SearchCriteria(
-                        ItemCriteria.TEXT.type.toLowerCase(),
+                        ItemCriteria.TEXT.type.lowercase(),
                         FieldTypes.FREE_TEXT,
                         null,
                         null)
@@ -111,9 +112,9 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
 
     override fun getDataProvider(): DataProvider = object : DataProvider {
         override fun findByCriteria(text: String, vararg additional: Pair<String, List<String>>): Flowable<List<SearchResult>> {
-            val trimmedText = text.toLowerCase().trim()
-            val type = additional.find { it.first.toLowerCase().contains(ItemCriteria.TYPE.type.toLowerCase()) }?.second
-            val category = additional.find { it.first.toLowerCase().contains(ItemCriteria.CATEGORY.type.toLowerCase()) }?.second
+            val trimmedText = text.lowercase().trim()
+            val type = additional.find { it.first.lowercase().contains(ItemCriteria.TYPE.type.lowercase()) }?.second
+            val category = additional.find { it.first.lowercase().contains(ItemCriteria.CATEGORY.type.lowercase()) }?.second
             val categoryId = ArrayList<String>()
             if (category != null) {
                 val categoriesId = SQLite.select()
@@ -122,7 +123,7 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
                 categoriesId.forEach { categoryId.add(it.id) }
             }
 
-            val difficulty = additional.find { it.first.toLowerCase().contains(ItemCriteria.DIFFICULTY.type.toLowerCase()) }?.second
+            val difficulty = additional.find { it.first.lowercase().contains(ItemCriteria.DIFFICULTY.type.lowercase()) }?.second
 
             val mutableMap: MutableList<SearchResult> = mutableListOf()
             when (type == null) {
@@ -160,7 +161,7 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
                     val doc = Jsoup.parse(htmlText)
                     for (e in doc.body().allElements) {
                         for (tn in e.textNodes()) {
-                            tn.wrapTextWithElement(text, "<b>");
+                            tn.wrapTextWithElement(text, "<b>")
                         }
                     }
                     doc.toString()
@@ -180,7 +181,7 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
         false -> {
             SQLite.select()
                     .from(Form::class.java)
-                    .where(Form_Table.path.like("%${text.toLowerCase().trim()}%"))
+                    .where(Form_Table.path.like("%${text.lowercase().trim()}%"))
                     .queryList().map { it.toSearchResult() }
         }
     }
@@ -195,17 +196,20 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
                 category.forEach { cat.or(Content_Table.checklist_id.like("%$it%")) }
                 op.and(cat)
             }
+            else -> {}
         }
         when (difficulty?.isNotEmpty()) {
             true -> {
                 difficulty.forEach { dif.or(Content_Table.checklist_id.like("%/$it/%")) }
                 op.and(dif)
             }
+            else -> {}
         }
         when (text.isNotEmpty()) {
             true -> {
-                op.and(Content_Table.check.like("%${text.toLowerCase().trim()}%"))
+                op.and(Content_Table.check.like("%${text.lowercase().trim()}%"))
             }
+            else -> {}
         }
 
         return SQLite.select()
@@ -225,17 +229,20 @@ class SearchPresenterImp<V : SearchView, I : SearchBaseInteractor> @Inject const
                 category.forEach { cat.or(Markdown_Table.difficulty_id.like("%$it%")) }
                 op.and(cat)
             }
+            else -> {}
         }
         when (difficulty?.isNotEmpty()) {
             true -> {
                 difficulty.forEach { dif.or(Markdown_Table.difficulty_id.like("%/$it/%")) }
                 op.and(dif)
             }
+            else -> {}
         }
         when (text.isNotEmpty()) {
             true -> {
-                op.and(Markdown_Table.text.like("%${text.toLowerCase().trim()}%"))
+                op.and(Markdown_Table.text.like("%${text.lowercase().trim()}%"))
             }
+            else -> {}
         }
         return SQLite.select()
                 .from(Markdown::class.java)

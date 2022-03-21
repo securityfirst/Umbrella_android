@@ -3,7 +3,7 @@ package org.secfirst.umbrella.feature.reader.view
 import com.bluelinelabs.conductor.Controller
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.support.RouterPagerAdapter
+import com.bluelinelabs.conductor.viewpager.RouterPagerAdapter
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.feature.reader.view.feed.FeedSettingsController
 import org.secfirst.umbrella.feature.reader.view.rss.RssController

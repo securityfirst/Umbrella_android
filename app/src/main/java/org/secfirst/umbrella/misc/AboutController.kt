@@ -12,7 +12,7 @@ import org.secfirst.umbrella.feature.base.view.BaseController
 
 class AboutController(bundle: Bundle) : BaseController(bundle) {
 
-    private val markdown by lazy { args.getParcelable(EXTRA_ABOUT) as Markdown }
+    private val markdown by lazy { args.getParcelable(EXTRA_ABOUT) as Markdown? }
 
     constructor(markdown: Markdown) : this(Bundle().apply {
         putParcelable(EXTRA_ABOUT, markdown)
@@ -29,7 +29,7 @@ class AboutController(bundle: Bundle) : BaseController(bundle) {
     override fun onAttach(view: View) {
         super.onAttach(view)
         aboutMarkdownView.addStyleSheet(Github())
-        aboutMarkdownView.loadMarkdown(markdown.text)
+        aboutMarkdownView.loadMarkdown(markdown?.text)
         setUpToolbar()
     }
 
@@ -41,7 +41,7 @@ class AboutController(bundle: Bundle) : BaseController(bundle) {
         aboutToolbar?.let {
             mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            mainActivity.supportActionBar?.title = markdown.title
+            mainActivity.supportActionBar?.title = markdown?.title
         }
     }
 }
