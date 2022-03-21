@@ -55,7 +55,7 @@ If there is something you want to help out with in the interim, then here is som
 ## Writing content for Umbrella
 
 Depending on your technical knowledge, there are several ways to contribute content for Umbrella. 
-If you just want to tell us about one tiny thing and you don’t have bandwidth for a tutorial right now, feel free to email a short description of the change you want to propose to  info@secfirst.org or [open an issue](https://github.com/securityfirst/tent-content/issues/new) in our [Tent content repo](https://github.com/securityfirst/tent-content).
+If you just want to tell us about one tiny thing and you don’t have bandwidth for a tutorial right now, feel free to email a short description of the change you want to propose to  info@secfirst.org or [open an issue](https://github.com/securityfirst/umbrella-content/issues/new) in our [Umbrella content repo](https://github.com/securityfirst/umbrella-content).
 
 ### Using GitHub and Prose.io 
 
@@ -64,7 +64,7 @@ If you are not familiar with git, GitHub and Markdown, read our [beginner tutori
 ### Using GitHub and Markdown
 You can also use Markdown to can write new content for Umbrella or edit existing Umbrella content from GitHub's interface. 
 Follow these steps:
-- Fork the [tent-content](https://github.com/securityfirst/tent-content) repository
+- Fork the [umbrella-content](https://github.com/securityfirst/umbrella-content) repository
 - [Create a new branch](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository#creating-a-branch)
 - Make your changes and commit
 - Submit a [pull request](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork)
