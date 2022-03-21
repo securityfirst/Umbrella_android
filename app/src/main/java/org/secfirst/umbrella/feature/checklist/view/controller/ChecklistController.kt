@@ -64,7 +64,7 @@ class ChecklistController(bundle: Bundle) : BaseController(bundle), ChecklistVie
                 .setView(checklistViewDialog)
                 .create()
         presenter.onAttach(this)
-        presenter.submitChecklist(checklistId)
+        checklistId?.let { presenter.submitChecklist(it) }
         checklistView.addNewItemChecklist.setOnClickListener { onAddItemClicked() }
         swipeToDeleteCallback()
         checkIsNavigation()

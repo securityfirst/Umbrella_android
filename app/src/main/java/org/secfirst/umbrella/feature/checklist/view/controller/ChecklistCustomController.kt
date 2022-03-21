@@ -76,8 +76,13 @@ class ChecklistCustomController(bundle: Bundle) : BaseController(bundle), Checkl
 
     private fun submitChecklist() {
         if (adapter.getChecklistItems().isNotEmpty())
-            presenter.submitInsertCustomChecklist(checklistName,
-                    checklistId, adapter.getChecklistItems())
+            checklistName?.let {
+                checklistId?.let { it1 ->
+                    presenter.submitInsertCustomChecklist(
+                        it,
+                        it1, adapter.getChecklistItems())
+                }
+            }
     }
 
     private fun initDeleteChecklistItem(view: View) {

@@ -15,7 +15,7 @@ class DialogManager(private val controller: Controller) {
     }
 
     init {
-        controller.addLifecycleListener(object : Controller.LifecycleListener {
+        controller.addLifecycleListener(object : Controller.LifecycleListener() {
             override fun postCreateView(controller: Controller, view: View) {
                 for (combo in combos) {
                     combo.dialog = combo.factory.createDialog(controller.activity)

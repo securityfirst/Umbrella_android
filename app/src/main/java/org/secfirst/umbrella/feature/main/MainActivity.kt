@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.bluelinelabs.conductor.Router
 import com.bluelinelabs.conductor.RouterTransaction
-import com.bluelinelabs.conductor.attachRouter
+import com.bluelinelabs.conductor.Conductor.attachRouter
 import com.github.tbouron.shakedetector.library.ShakeDetector
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjection
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), AdvancedSearchPresenter {
         super.onCreate(savedInstanceState)
         setLanguage()
         setContentView(R.layout.main_view)
-        router = attachRouter(baseContainer, savedInstanceState)
+        router = attachRouter(this@MainActivity, baseContainer, savedInstanceState)
         performDI()
         isDeepLink()
         initNavigation()

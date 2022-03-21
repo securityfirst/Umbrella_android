@@ -6,9 +6,6 @@ apply from: 'config/jacoco.gradle'
 apply from: 'config/sonarqube.gradle'
 android {
     viewBinding.enabled = true
-    lintOptions {
-        abortOnError false
-    }
     signingConfigs {
         umbrella_beta {
             keyAlias 'umbrella'
@@ -27,12 +24,20 @@ android {
             exclude module: 'httpclient'
             exclude group: 'com.google.firebase', module: 'firebase-core'
             exclude group: 'com.google.firebase', module: 'firebase-iid'
+            resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+                if (details.requested.group == 'com.google.dagger') {
+                    details.useVersion "HEAD-SNAPSHOT"
+                }
+            }
         }
     }
     packagingOptions {
-        exclude 'META-INF/LICENSE*'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/NOTICE*'
+        jniLibs {
+            excludes += ['META-INF/LICENSE*', 'META-INF/NOTICE*']
+        }
+        resources {
+            excludes += ['META-INF/LICENSE*', 'META-INF/DEPENDENCIES', 'META-INF/NOTICE*']
+        }
     }
 
     androidExtensions {
@@ -41,8 +46,8 @@ android {
     defaultConfig {
         applicationId "org.secfirst.umbrella"
         minSdkVersion 16
-        compileSdkVersion 28
-        targetSdkVersion 28
+        compileSdkVersion 31
+        targetSdkVersion 31
         versionCode 56
         versionName "1.0.32"
         multiDexEnabled true
@@ -68,6 +73,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lint {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -92,7 +100,8 @@ dependencies {
 
     //Framework for replacing fragments
     implementation "com.bluelinelabs:conductor:$conductor_version"
-    implementation "com.bluelinelabs:conductor-support:$conductor_version_support"
+//    implementation "com.bluelinelabs:conductor-support:$conductor_version_support"
+    implementation "com.bluelinelabs:conductor-viewpager:$conductor_version_support"
 
     //OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp3"

@@ -66,17 +66,19 @@ class HostSegmentController(bundle: Bundle) : BaseController(bundle), SegmentVie
 
     private fun initView(view: View) {
         setUpToolbar(view)
-        when {
-            uriString != null -> presenter.submitMarkdownsByURI(uriString)
+        objectIds?.let {
+            when {
+                uriString != null -> presenter.submitMarkdownsByURI(uriString!!)
 
-            enableFilter -> {
-                view.hostSegmentSpinner.visibility = VISIBLE
-                presenter.submitDifficulties(objectIds)
-            }
+                enableFilter -> {
+                    view.hostSegmentSpinner.visibility = VISIBLE
+                    presenter.submitDifficulties(it)
+                }
 
-            else -> {
-                presenter.submitMarkdowns(objectIds)
-                view.hostSegmentSpinner.visibility = INVISIBLE
+                else -> {
+                    presenter.submitMarkdowns(it)
+                    view.hostSegmentSpinner.visibility = INVISIBLE
+                }
             }
         }
     }

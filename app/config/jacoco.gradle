@@ -12,29 +12,33 @@ jacoco {
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
     group = "Reporting"
     description = "Generate Jacoco coverage reports for Debug build"
-    classDirectories = fileTree(
-            dir: "$buildDir/intermediates/classes/debug",
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewBinder*.*',
-                       '**/*$InjectAdapter*.*',
-                       '**/*Injector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       '**/*Test*.*',
-                       '**/*Activity*.*',
-                       '**/CiMattersApplication*.*',
-                       'android/**/*.*']
+    getClassDirectories().setFrom(
+            fileTree(
+                    dir: "$buildDir/intermediates/classes/debug",
+                    excludes: ['**/R.class',
+                               '**/R$*.class',
+                               '**/*$ViewBinder*.*',
+                               '**/*$InjectAdapter*.*',
+                               '**/*Injector*.*',
+                               '**/BuildConfig.*',
+                               '**/Manifest*.*',
+                               '**/*Test*.*',
+                               '**/*Activity*.*',
+                               '**/CiMattersApplication*.*',
+                               'android/**/*.*']
+            )
     )
     reports {
         xml.enabled = true
         html.enabled = true
     }
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData =  fileTree(dir: project.buildDir, includes: [
-            'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
-    ])
+    getAdditionalSourceDirs().setFrom(files(coverageSourceDirs))
+    getSourceDirectories().setFrom(files(coverageSourceDirs))
+    getExecutionData().setFrom(
+            fileTree(dir: project.buildDir, includes: [
+                    'jacoco/testDebugUnitTest.exec', 'outputs/code-coverage/connected/*coverage.ec'
+            ])
+    )
     // Bit hacky but fixes https://code.google.com/p/android/issues/detail?id=69174.
     // We iterate through the compiled .class tree and rename $$ to $.
     doFirst {

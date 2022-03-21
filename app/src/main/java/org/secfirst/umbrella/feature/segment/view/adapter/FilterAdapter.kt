@@ -14,7 +14,7 @@ import org.secfirst.umbrella.data.database.difficulty.Difficulty
 class FilterAdapter(context: Context, private val difficulties: List<Difficulty>) :
         ArrayAdapter<Difficulty>(context, android.R.layout.simple_dropdown_item_1line, difficulties) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return createViewFromResource(position, convertView, parent)
     }
 
