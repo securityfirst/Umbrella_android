@@ -1,5 +1,9 @@
 package org.secfirst.umbrella.feature.account.presenter
 
+import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import com.raizlabs.android.dbflow.config.FlowManager
 import org.secfirst.umbrella.data.database.AppDatabase.EXTENSION
 import org.secfirst.umbrella.data.database.AppDatabase.NAME
@@ -154,6 +158,25 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
         }
     }
 
+    override fun getDarkMode(): Boolean {
+        return interactor!!.isDarkMode()
+    }
+
+    override fun changeDarkMode(value: Boolean) {
+            AppCompatDelegate.setDefaultNightMode(
+                when(value){
+                    false -> {
+                        MODE_NIGHT_NO
+                    }
+                    else -> {
+                        MODE_NIGHT_YES
+                    }
+                })
+           interactor!!.setDarkMode(value)
+
+
+    }
+
     override fun submitChangeDatabaseAccess(userToken: String) {
         launchSilent(uiContext) {
             interactor?.let {
@@ -167,4 +190,5 @@ class AccountPresenterImp<V : AccountView, I : AccountBaseInteractor> @Inject co
             }
         }
     }
+
 }

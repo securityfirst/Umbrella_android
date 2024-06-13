@@ -1,11 +1,13 @@
 package org.secfirst.umbrella.misc
 
-data class Country(val name: String,
-                   val codeAlpha2: String,
-                   val codeAlpha3: String,
-                   val numericCode: Int,
-                   val latitude: Double,
-                   val longitude: Double)
+data class Country(
+    val name: String,
+    val codeAlpha2: String,
+    val codeAlpha3: String,
+    val numericCode: Int,
+    val latitude: Double,
+    val longitude: Double
+)
 
 fun countryList(): ArrayList<Country> {
 
@@ -143,7 +145,16 @@ fun countryList(): ArrayList<Country> {
     countries.add(Country("Lithuania", "LT", "LTU", 440, 56.0, 24.0))
     countries.add(Country("Luxembourg", "LU", "LUX", 442, 49.75, 6.1667))
     countries.add(Country("Macao", "MO", "MAC", 446, 22.1667, 113.55))
-    countries.add(Country("Macedonia, the former Yugoslav Republic of", "MK", "MKD", 807, 41.8333, 22.0))
+    countries.add(
+        Country(
+            "Macedonia, the former Yugoslav Republic of",
+            "MK",
+            "MKD",
+            807,
+            41.8333,
+            22.0
+        )
+    )
     countries.add(Country("Madagascar", "MG", "MDG", 450, -20.0, 47.0))
     countries.add(Country("Malawi", "MW", "MWI", 454, -13.5, 34.0))
     countries.add(Country("Malaysia", "MY", "MYS", 458, 2.5, 112.5))
@@ -199,7 +210,16 @@ fun countryList(): ArrayList<Country> {
     countries.add(Country("Russian Federation", "RU", "RUS", 643, 60.0, 100.0))
     countries.add(Country("Russia", "RU", "RUS", 643, 60.0, 100.0))
     countries.add(Country("Rwanda", "RW", "RWA", 646, -2.0, 30.0))
-    countries.add(Country("Saint Helena, Ascension and Tristan da Cunha", "SH", "SHN", 654, -15.9333, -5.7))
+    countries.add(
+        Country(
+            "Saint Helena, Ascension and Tristan da Cunha",
+            "SH",
+            "SHN",
+            654,
+            -15.9333,
+            -5.7
+        )
+    )
     countries.add(Country("Saint Kitts and Nevis", "KN", "KNA", 659, 17.3333, -62.75))
     countries.add(Country("Saint Lucia", "LC", "LCA", 662, 13.8833, -61.1333))
     countries.add(Country("Saint Pierre and Miquelon", "PM", "SPM", 666, 46.8333, -56.3333))
@@ -220,7 +240,16 @@ fun countryList(): ArrayList<Country> {
     countries.add(Country("Solomon Islands", "SB", "SLB", 90, -8.0, 159.0))
     countries.add(Country("Somalia", "SO", "SOM", 706, 10.0, 49.0))
     countries.add(Country("South Africa", "ZA", "ZAF", 710, -29.0, 24.0))
-    countries.add(Country("South Georgia and the South Sandwich Islands", "GS", "SGS", 239, -54.5, -37.0))
+    countries.add(
+        Country(
+            "South Georgia and the South Sandwich Islands",
+            "GS",
+            "SGS",
+            239,
+            -54.5,
+            -37.0
+        )
+    )
     countries.add(Country("Spain", "ES", "ESP", 724, 40.0, -4.0))
     countries.add(Country("Sri Lanka", "LK", "LKA", 144, 7.0, 81.0))
     countries.add(Country("Sudan", "SD", "SDN", 736, 15.0, 30.0))

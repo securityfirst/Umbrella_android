@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
     tools:ignore="MissingPrefix">
 
-    <androidx.cardview.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/feedItemCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        card_view:cardCornerRadius="@dimen/feed_list_card_view_radius">
+        card_view:cardCornerRadius="@dimen/feed_list_card_view_radius"
+        tools:ignore="MissingConstraints">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/feed_list_small_margin_bottom"
                 android:gravity="start"
-                android:textColor="@color/ms_black"
                 android:textSize="@dimen/text_size_smaller"
                 android:textStyle="bold"
                 tools:text="UNICEF Sudan Humanitarian Situation Report" />
@@ -43,7 +41,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/feed_list_via"
-                    android:textColor="@color/feed_list_site_name"
                     android:textSize="@dimen/text_size_like_really_small" />
 
                 <TextView
@@ -51,7 +48,6 @@
                     fontPath="fonts/Roboto-Medium.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="#828282"
                     android:textSize="@dimen/text_size_like_really_small"
                     tools:text="Relief" />
 
@@ -62,7 +58,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/feed_list_smallest_margin_left"
                     android:layout_marginLeft="@dimen/feed_list_smallest_margin_left"
-                    android:textColor="@color/coachmark_background_dark"
                     android:textSize="@dimen/text_size_like_really_small"
                     tools:text="11/7/20127 4:22 PM" />
             </LinearLayout>
@@ -75,7 +70,6 @@
                 android:layout_marginTop="@dimen/feed_list_small_margin_top"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:textColor="@color/dark_grey"
                 android:textSize="@dimen/text_size_smallest"
                 tools:text="In the tumultuous business of cutting-in and attending to a whale, there is much running backwards. In the tumultuous business of cutting-in and attending to a whale, there is much running backwards. In the tumultuous business of cutting-in and attending to a whale, there is much running backwards." />
 

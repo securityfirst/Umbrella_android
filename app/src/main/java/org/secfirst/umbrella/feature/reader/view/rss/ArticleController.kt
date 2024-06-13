@@ -100,10 +100,10 @@ class ArticleController(bundle: Bundle) : BaseController(bundle) {
 
     private fun setUpToolbar() {
         articleToolbar?.let {
-            mainActivity.title = rss.title_
-            mainActivity.setSupportActionBar(it)
+            it.title = rss.title_
+            /*mainActivity.setSupportActionBar(it)
             mainActivity.supportActionBar?.setDisplayShowHomeEnabled(true)
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
         }
     }
 }

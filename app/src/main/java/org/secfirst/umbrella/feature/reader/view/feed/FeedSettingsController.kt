@@ -158,7 +158,6 @@ class FeedSettingsController : BaseController(), ReaderView, FeedLocationDialog.
         feedsChecked.forEach { if (it.lastChecked) feedCheckInString += "- ${it.name}\n" }
         this.feedsCheckbox = feedsChecked
         if (feedCheckInString.isEmpty()) {
-            feedSource?.textColor = ContextCompat.getColor(context, R.color.feedSources_color)
             feedSource?.text = context.getString(R.string.feed_source_label)
         } else {
             feedSource?.textColor = ContextCompat.getColor(context, R.color.umbrella_green)

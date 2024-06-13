@@ -26,14 +26,14 @@ interface AccountDao : BaseDao {
 
     suspend fun getAllFeedSource(): List<FeedSource> = withContext(ioContext) {
         SQLite.select()
-                .from(FeedSource::class.java)
-                .queryList()
+            .from(FeedSource::class.java)
+            .queryList()
     }
 
     suspend fun getFeedLocation() = withContext(ioContext) {
         SQLite.select()
-                .from(FeedLocation::class.java)
-                .querySingle()
+            .from(FeedLocation::class.java)
+            .querySingle()
     }
 
     suspend fun deleteMainContent(): Boolean {

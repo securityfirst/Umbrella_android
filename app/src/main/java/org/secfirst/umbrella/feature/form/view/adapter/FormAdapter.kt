@@ -1,9 +1,11 @@
 package org.secfirst.umbrella.feature.form.view.adapter
 
+import android.os.Build.VERSION_CODES.LOLLIPOP
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntRange
+import androidx.annotation.RequiresApi
 import com.stepstone.stepper.Step
 import com.stepstone.stepper.adapter.AbstractStepAdapter
 import com.stepstone.stepper.viewmodel.StepViewModel
@@ -22,6 +24,7 @@ class FormAdapter(private val form: Form, private val controller: FormController
             .setTitle(form.screens[position].title)
             .create()
 
+    @RequiresApi(LOLLIPOP)
     override fun instantiateItem(container: ViewGroup, position: Int): View {
         var step: Step? = pages.get(position)
         if (step == null) {

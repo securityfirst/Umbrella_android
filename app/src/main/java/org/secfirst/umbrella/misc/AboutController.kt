@@ -33,15 +33,19 @@ class AboutController(bundle: Bundle) : BaseController(bundle) {
         setUpToolbar()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup, savedViewState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup,
+        savedViewState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.about, container, false)
     }
 
     private fun setUpToolbar() {
         aboutToolbar?.let {
-            mainActivity.setSupportActionBar(it)
-            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            mainActivity.supportActionBar?.title = markdown.title
+            /*mainActivity.setSupportActionBar(it)
+            mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)*/
+            it.title = markdown.title
         }
     }
 }

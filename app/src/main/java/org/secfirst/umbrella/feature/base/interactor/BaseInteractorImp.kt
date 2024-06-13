@@ -11,7 +11,11 @@ open class BaseInteractorImp() : BaseInteractor {
     protected lateinit var preferenceHelper: AppPreferenceHelper
     protected lateinit var contentRepo: ContentRepo
 
-    constructor(apiHelper: ApiHelper, preferenceHelper: AppPreferenceHelper, contentRepo: ContentRepo) : this() {
+    constructor(
+        apiHelper: ApiHelper,
+        preferenceHelper: AppPreferenceHelper,
+        contentRepo: ContentRepo
+    ) : this() {
         this.apiHelper = apiHelper
         this.preferenceHelper = preferenceHelper
         this.contentRepo = contentRepo
@@ -29,11 +33,18 @@ open class BaseInteractorImp() : BaseInteractor {
 
     override fun getDefaultLanguage() = preferenceHelper.getLanguage()
 
+    override fun setDarkMode(value: Boolean) {
+        preferenceHelper.setDarkMode(value)
+    }
+
+    override fun isDarkMode(): Boolean = preferenceHelper.getDarkMode()
+
     override fun setSkipPassword(isSkip: Boolean) = preferenceHelper.setSkipPassword(isSkip)
 
     override fun isSkippPassword(): Boolean = preferenceHelper.getSkipPassword()
 
-    override fun enablePasswordBanner(enableBanner: Boolean) = preferenceHelper.enablePasswordBanner(enableBanner)
+    override fun enablePasswordBanner(enableBanner: Boolean) =
+        preferenceHelper.enablePasswordBanner(enableBanner)
 
     override fun isUserLoggedIn() = preferenceHelper.isLoggedIn()
 

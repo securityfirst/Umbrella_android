@@ -12,9 +12,11 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDao) 
 
     override suspend fun changeToken(userToken: String) = accountDao.changeDatabaseAccess(userToken)
 
-    override suspend fun saveFeedLocation(feedLocation: FeedLocation) = accountDao.saveFeedLocation(feedLocation)
+    override suspend fun saveFeedLocation(feedLocation: FeedLocation) =
+        accountDao.saveFeedLocation(feedLocation)
 
-    override suspend fun saveAllFeedSources(feedSources: List<FeedSource>) = accountDao.saveAllFeedSource(feedSources)
+    override suspend fun saveAllFeedSources(feedSources: List<FeedSource>) =
+        accountDao.saveAllFeedSource(feedSources)
 
     override suspend fun getFeedLocation() = accountDao.getFeedLocation()
 

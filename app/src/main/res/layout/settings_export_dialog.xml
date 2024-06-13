@@ -24,7 +24,7 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ExportDialogFileName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

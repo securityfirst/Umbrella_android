@@ -4,8 +4,8 @@
     android:id="@+id/article_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
     android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
     android:layout_marginTop="5dp"
     android:orientation="vertical"
     android:padding="8dp"
@@ -13,35 +13,33 @@
 
     <TextView
         android:id="@+id/title"
-        fontPath="fonts/Roboto-Medium.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="fonts/Roboto-Medium.ttf"
         android:text="Title"
-        android:textColor="@android:color/black"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/lastUpdate"
-        fontPath="fonts/Roboto-Regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="fonts/Roboto-Regular.ttf"
         android:text="By Author name"
         android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:textColor="@android:color/black" />
+        android:layout_height="10dp" />
 
     <TextView
         android:id="@+id/description"
-        fontPath="fonts/Roboto-Regular.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
+        android:fontFamily="fonts/Roboto-Regular.ttf"
         android:maxLines="3"
         android:text="descriptions"
-        android:textColor="@android:color/black"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        tools:ignore="HardcodedText" />
 
 </LinearLayout>

@@ -42,5 +42,5 @@ interface ContentRepo {
 
     suspend fun getForm(formId: String): Form?
 
-    suspend fun resetContent() : Boolean
+    suspend fun resetContent(): Boolean
 }

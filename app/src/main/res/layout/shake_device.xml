@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:color/white"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -23,7 +22,7 @@
             android:layout_marginRight="15dp"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/urlServer"
                 fontPath="fonts/Roboto-Regular.ttf"
                 android:layout_width="match_parent"
@@ -31,8 +30,8 @@
                 android:hint="@string/url_server"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions"
-                android:textSize="16sp"
                 android:text="https://github.com/douglasalipio/umbrella-content"
+                android:textSize="16sp"
                 android:theme="@style/Autocomplete" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +43,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/urlServerCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,12 +53,10 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:padding="10dp"
-                android:text="@android:string/cancel"
-                android:textColor="@color/grey_location" />
+                android:text="@android:string/cancel" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:id="@+id/urlServerOk"
-                fontPath="fonts/Roboto-Medium.ttf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -68,6 +65,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
+                android:fontFamily="fonts/Roboto-Medium.ttf"
                 android:padding="10dp"
                 android:text="@android:string/ok"
                 android:textColor="@color/green_dashboard" />

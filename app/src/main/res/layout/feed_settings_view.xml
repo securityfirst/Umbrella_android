@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5"
     android:padding="10dp">
 
     <ScrollView
@@ -20,7 +19,7 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -44,7 +43,6 @@
                         android:layout_marginLeft="14dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/set_your_feed"
-                        android:textColor="#000000"
                         android:textSize="24sp"
                         android:textStyle="normal" />
 
@@ -58,7 +56,6 @@
                         android:lineSpacingExtra="7sp"
                         android:padding="5dp"
                         android:text="@string/set_your_feed_label"
-                        android:textColor="#000000"
                         android:textSize="13sp"
                         android:textStyle="normal" />
 
@@ -73,9 +70,9 @@
                 </LinearLayout>
 
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -99,7 +96,6 @@
                         android:layout_marginTop="@dimen/dashboard_feed_small_margin_top"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/feed_interval"
-                        android:textColor="#000000"
                         android:textSize="24sp"
                         android:textStyle="normal" />
 
@@ -139,9 +135,9 @@
                 </LinearLayout>
 
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="fill_parent"
                 android:layout_height="120dp"
                 android:layout_gravity="top"
@@ -164,7 +160,6 @@
                         android:layout_marginLeft="14dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/location"
-                        android:textColor="#000000"
                         android:textSize="24sp"
                         android:textStyle="normal" />
 
@@ -178,7 +173,6 @@
                         android:fontFamily="sans-serif"
                         android:lineSpacingExtra="7sp"
                         android:text="@string/feed_location_label"
-                        android:textColor="#000000"
                         android:textSize="13sp"
                         android:textStyle="normal" />
 
@@ -199,9 +193,9 @@
                 </LinearLayout>
 
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
@@ -224,7 +218,6 @@
                         android:layout_marginLeft="14dp"
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/feed_sources"
-                        android:textColor="#000000"
                         android:textSize="24sp"
                         android:textStyle="normal" />
 
@@ -238,7 +231,6 @@
                         android:fontFamily="sans-serif"
                         android:lineSpacingExtra="7sp"
                         android:text="@string/feed_source_label"
-                        android:textColor="#000000"
                         android:textSize="13sp"
                         android:textStyle="normal" />
 
@@ -257,7 +249,7 @@
                         android:textStyle="normal" />
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 

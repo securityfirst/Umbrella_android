@@ -36,5 +36,5 @@ interface ChecklistRepo {
 
     suspend fun loadAllPathways(): List<Checklist>
 
-    suspend fun loadFavoritePathways() : List<Checklist>
+    suspend fun loadFavoritePathways(): List<Checklist>
 }

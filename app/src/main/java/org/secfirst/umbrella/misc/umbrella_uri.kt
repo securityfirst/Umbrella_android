@@ -43,11 +43,11 @@ suspend fun isLessonDeepLink(pathSplitted: List<String>): Boolean {
 }
 
 fun String.deepLinkIdentifier() = this.removePrefix("s_")
-        .removePrefix("f_")
-        .removePrefix("c_")
-        .substringBeforeLast(".md")
-        .substringBeforeLast(".yml")
-        .removeSpecialCharacter().toLowerCase()
+    .removePrefix("f_")
+    .removePrefix("c_")
+    .substringBeforeLast(".md")
+    .substringBeforeLast(".yml")
+    .removeSpecialCharacter().toLowerCase()
 
 private fun getUriSplitted(path: String) = path.split("/")
 
@@ -78,7 +78,14 @@ fun openDifficultyByUrl(router: Router, navigation: BottomNavigationView, path: 
         val module = getModuleBy(moduleName)
         module?.subjects?.forEach { subject ->
             if (subject.rootDir == subjectName.decapitalize())
-                router.pushController(RouterTransaction.with(DifficultyController(subject.id, true)))
+                router.pushController(
+                    RouterTransaction.with(
+                        DifficultyController(
+                            subject.id,
+                            true
+                        )
+                    )
+                )
 
             navigation.menu.getItem(3).isChecked = true
         }
@@ -86,23 +93,23 @@ fun openDifficultyByUrl(router: Router, navigation: BottomNavigationView, path: 
 }
 
 private suspend fun getModuleBy(rootDir: String) =
-        withContext(ioContext) {
-            SQLite.select()
-                    .from(Module::class.java)
-                    .where(Module_Table.rootDir.`is`(rootDir))
-                    .querySingle()
-        }
+    withContext(ioContext) {
+        SQLite.select()
+            .from(Module::class.java)
+            .where(Module_Table.rootDir.`is`(rootDir))
+            .querySingle()
+    }
 
 suspend fun getDifficultyBySubjectId(subjectId: String): List<Difficulty> = withContext(ioContext) {
     SQLite.select()
-            .from(Difficulty::class.java)
-            .where(Difficulty_Table.subject_id.`is`(subjectId))
-            .queryList()
+        .from(Difficulty::class.java)
+        .where(Difficulty_Table.subject_id.`is`(subjectId))
+        .queryList()
 }
 
 suspend fun getSubjectByRootDir(rootDir: String): Subject? = withContext(ioContext) {
     SQLite.select()
-            .from(Subject::class.java)
-            .where(Subject_Table.rootDir.`is`(rootDir))
-            .querySingle()
+        .from(Subject::class.java)
+        .where(Subject_Table.rootDir.`is`(rootDir))
+        .querySingle()
 }

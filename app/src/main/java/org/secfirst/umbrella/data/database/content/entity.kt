@@ -12,11 +12,15 @@ import org.secfirst.umbrella.data.database.lesson.Module
 import org.secfirst.umbrella.data.database.reader.FeedSource
 import org.secfirst.umbrella.data.database.reader.RSS
 
-class ContentData(val modules: MutableList<Module> = arrayListOf(), val forms: MutableList<Form> = arrayListOf())
+class ContentData(
+    val modules: MutableList<Module> = arrayListOf(),
+    val forms: MutableList<Form> = arrayListOf()
+)
 
 fun Content.toSearchResult(): SearchResult {
     val segments = this.checklist?.id.orEmpty().split("/")
-    return SearchResult("${WordUtils.capitalizeFully(segments[1])} - ${WordUtils.capitalizeFully(segments[2])}", ""
+    return SearchResult(
+        "${WordUtils.capitalizeFully(segments[1])} - ${WordUtils.capitalizeFully(segments[2])}", ""
     ) { c: Context ->
         val withoutLanguage = this.checklist?.id?.split("/")?.drop(1)?.joinToString("/")
         c.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("umbrella://$withoutLanguage")))

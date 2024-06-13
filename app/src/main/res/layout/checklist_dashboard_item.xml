@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,7 +13,6 @@
         android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginBottom="2dp"
-        android:background="@color/light_white"
         card_view:cardCornerRadius="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +42,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="12dp"
                 android:fontFamily="sans-serif"
-                android:textColor="#4a4a4a"
                 android:textSize="@dimen/font_list_item"
                 android:textStyle="normal"
                 card_view:layout_constraintStart_toEndOf="@+id/levelColor"
@@ -67,7 +66,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_share_segment" />
+                    android:src="@drawable/ic_share_segment"
+                    app:tint="?attr/colorControlNormal" />
             </LinearLayout>
 
             <LinearLayout
@@ -88,7 +88,8 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="5dp"
-                    android:src="@drawable/ic_star_selected" />
+                    android:src="@drawable/ic_star_selected"
+                    app:tint="?attr/colorControlNormal" />
             </LinearLayout>
 
 

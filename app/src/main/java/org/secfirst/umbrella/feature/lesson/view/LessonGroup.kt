@@ -40,8 +40,7 @@ class LessonGroup(private val lesson: Lesson,
             } else {
                 setImageResource(R.drawable.ic_keyboard_arrow_up_black)
                 viewHolder.iconHeader.clearColorFilter()
-                viewHolder.subHeaderText
-                        .setTextColor(ContextCompat.getColor(appContext(), android.R.color.black))
+
             }
         }
     }

@@ -19,7 +19,6 @@
         android:padding="10dp"
         android:text="@android:string/cancel"
         android:textAllCaps="true"
-        android:textColor="#9b9b9b"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="ACEITAR" />

@@ -31,7 +31,6 @@ class TourUI(private val color: Int,
             textView {
                 textResource = textTourSource
                 textSize = 24f
-                textColor = Color.WHITE
                 gravity = Gravity.CENTER
                 padding = dip(20)
             }.lparams { gravity = Gravity.CENTER }

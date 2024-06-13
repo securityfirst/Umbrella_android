@@ -3,7 +3,6 @@ package org.secfirst.umbrella.feature.reader.view.feed
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ListView
-import androidx.core.content.ContextCompat
 import org.jetbrains.anko.*
 import org.secfirst.umbrella.R
 import org.secfirst.umbrella.misc.medium
@@ -19,7 +18,6 @@ class FeedSourceUI(private val sourcesAdapter: SourcesAdapter) : AnkoComponent<F
 
             textView(ctx.getString(R.string.feed_source_name)) {
                 typeface = medium
-                textColor = 0xde000000.toInt()
                 textSize = 20f
 
             }.lparams(width = wrapContent, height = wrapContent) {
@@ -39,13 +37,12 @@ class FeedSourceUI(private val sourcesAdapter: SourcesAdapter) : AnkoComponent<F
                 }
                 checkBox("Select All") {
                     typeface = medium
-                    textColor = ContextCompat.getColor(ctx, R.color.feedSources_color)
                     textSize = 16f
                     setOnClickListener { sourcesAdapter.selectAllSources(isChecked) }
                 }.lparams(width = wrapContent, height = wrapContent) {
                     topMargin = dip(10)
                 }
-                include<View>(R.layout.alert_control) {
+                this.include<View>(R.layout.alert_control) {
                 }.lparams(width = wrapContent, height = wrapContent) {
                     topMargin = dip(40)
                     leftMargin = dip(140)

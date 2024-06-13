@@ -42,8 +42,10 @@ abstract class TentMonitor(private val out: Writer) : BatchingProgressMonitor() 
         send(s)
     }
 
-    private fun format(s: StringBuilder, taskName: String, cmp: Int,
-                       totalWork: Int, pcnt: Int) {
+    private fun format(
+        s: StringBuilder, taskName: String, cmp: Int,
+        totalWork: Int, pcnt: Int
+    ) {
         s.append("\r") //$NON-NLS-1$
         s.append(taskName)
         s.append(": ") //$NON-NLS-1$
